@@ -20,6 +20,13 @@
         http://www.springframework.org/schema/data/neo4j http://www.springframework.org/schema/data/neo4j/spring-neo4j-2.2.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+	<context:annotation-config/>
+
+	<neo4j:config storeDirectory="target/neo4j" />
+
+ 	<neo4j:repositories base-package="eu.ueb.acem.dao"/>
+
+<!-- 
     <context:annotation-config/>
     <context:component-scan base-package="eu.ueb.acem.domain">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -28,24 +35,13 @@
     <context:spring-configured/>
 
     <neo4j:config storeDirectory="target/data/graph.db"/>
-    <neo4j:repositories base-package="eu.ueb.acem.repository"/>
-
+    <neo4j:repositories base-package="eu.ueb.acem.dao"/>
+ -->
 	<!-- 
     <neo4j:config graphDatabaseService="graphDatabaseService"/>
     <bean id="graphDatabaseService" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">
         <constructor-arg value="http://localhost:7474"/>
     </bean>
     -->
-
-<!-- 
-    <bean class="org.neo4j.cineasts.movieimport.MovieDbApiClient">
-        <constructor-arg value="926d2a79e82920b62f03b1cb57e532e6"/>
-    </bean>
-    <bean class="org.neo4j.cineasts.movieimport.MovieDbLocalStorage">
-        <constructor-arg value="data/json"/>
-    </bean>
- -->
- 
-    <tx:annotation-driven mode="proxy"/>
 
 </beans>

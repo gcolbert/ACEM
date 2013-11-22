@@ -58,7 +58,13 @@ public class BesoinNode implements Besoin {
     	this.nom = nom;
     }
 
-    public Long getId() {
+    public BesoinNode(Besoin besoin) {
+		this.setNom(besoin.getNom());
+		this.setBesoins(besoin.getBesoins());
+		this.setReponses(besoin.getReponses());
+	}
+
+	public Long getId() {
     	return id;
     }
 
@@ -78,8 +84,16 @@ public class BesoinNode implements Besoin {
     	return besoins;
     }
 
+    public void setBesoins(Collection<Besoin> besoins) {
+    	this.besoins = (Set<Besoin>) besoins;
+    }
+    
     public Collection<Reponse> getReponses() {
     	return reponses;
     }
 
+    public void setReponses(Collection<Reponse> reponses) {
+    	this.reponses = (Set<Reponse>) reponses;
+    }
+    
 }

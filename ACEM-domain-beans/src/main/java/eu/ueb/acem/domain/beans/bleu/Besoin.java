@@ -27,6 +27,8 @@ import java.util.Collection;
  */
 public interface Besoin extends Serializable {
 
+	public Long getId();
+	
     public String getNom();
 
     public void setNom(String nom);
