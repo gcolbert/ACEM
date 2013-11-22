@@ -21,6 +21,7 @@ package eu.ueb.acem.dao.bleu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dao.DAO;
 import eu.ueb.acem.dao.bleu.neo4j.BesoinRepository;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
@@ -30,7 +31,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
  *
  */
 @Repository("besoinDAO")
-public class BesoinDAO {
+public class BesoinDAO implements DAO<Besoin> {
 
 	@Autowired
 	private BesoinRepository besoinRepository;
