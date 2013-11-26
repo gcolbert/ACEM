@@ -16,21 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.gris;
+package eu.ueb.acem.dal.violet.neo4j;
 
-import java.util.Collection;
+import eu.ueb.acem.domain.beans.violet.neo4j.DiplomeNode;
 
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
+import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
 
 /**
  * @author gcolbert @since 2013-11-20
  *
  */
-public interface Enseignant extends Personne {
+public interface DiplomeRepository extends GraphRepository<DiplomeNode>, RelationshipOperationsRepository<DiplomeNode> {
 
-	public Collection<Ressource> getRessourcesFavorites();
-
-	public Collection<SeanceDeCours> getSeancesDeCours();
-	
 }

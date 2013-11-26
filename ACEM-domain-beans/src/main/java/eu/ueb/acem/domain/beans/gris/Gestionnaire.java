@@ -36,8 +36,4 @@ public interface Gestionnaire extends Personne {
 
 	public Set<Ressource> getRessources();
 
-	public String getNom();
-
-	public void setNom(String nom);
-
 }

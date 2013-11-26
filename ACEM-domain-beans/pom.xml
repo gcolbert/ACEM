@@ -18,26 +18,4 @@
     </parent>
     <artifactId>ACEM-domain-beans</artifactId>
     <description>The business object</description>
-    <dependencies>
-		<dependency>
-		    <groupId>org.slf4j</groupId>
-    		<artifactId>slf4j-simple</artifactId>
-    		<version>1.7.1</version>
-		</dependency>
-		<!-- 
-        <dependency>
-            <groupId>org.esupportail</groupId>
-            <artifactId>esup-commons2-core</artifactId>
-            <version>${esupcommons.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-            <exclusions>
-            	<exclusion>
-          			<groupId>org.slf4j</groupId>
-          			<artifactId>slf4j-simple</artifactId>
-        		</exclusion>
-            </exclusions>
-        </dependency>
-         -->
-    </dependencies>
 </project>

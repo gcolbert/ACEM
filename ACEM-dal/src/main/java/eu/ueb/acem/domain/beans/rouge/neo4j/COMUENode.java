@@ -16,21 +16,40 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.gris;
+package eu.ueb.acem.domain.beans.rouge.neo4j;
 
-import java.util.Collection;
+import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.Indexed;
+import org.springframework.data.neo4j.annotation.NodeEntity;
 
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
+import eu.ueb.acem.domain.beans.rouge.CUE;
 
 /**
  * @author gcolbert @since 2013-11-20
  *
  */
-public interface Enseignant extends Personne {
+@NodeEntity
+public class COMUENode extends OrganisationNode implements CUE {
 
-	public Collection<Ressource> getRessourcesFavorites();
+	private static final long serialVersionUID = 1861762804925897713L;
 
-	public Collection<SeanceDeCours> getSeancesDeCours();
+	@GraphId private Long id;
+	
+	@Indexed(indexName = "rechercher-cue") private String nom;
+	
+    public COMUENode()  {
+    }
+
+    public COMUENode(String nom) {
+    	this.setNom(nom);
+    }
+
+    public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 	
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ *     Copyright Grégoire COLBERT 2013
+ * 
+ *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
+ * 
+ *     ACEM is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     ACEM is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>ACEM</artifactId>
+		<groupId>eu.ueb</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>ACEM-dal</artifactId>
+	<description>couche d'accès aux données</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java-version>1.7</java-version>
+		<org.springframework-version>3.1.4.RELEASE</org.springframework-version>
+		<org.springframework.data-version>2.3.2.RELEASE</org.springframework.data-version>
+		<org.slf4j-version>1.7.1</org.slf4j-version>
+		<javax.validation-version>1.1.0.Final</javax.validation-version>
+		<junit-version>4.11</junit-version>
+		<cglib-version>2.2.2</cglib-version>
+	</properties>
+	<dependencies>
+		<!-- Compilation -->
+		<dependency>
+      		<groupId>eu.ueb</groupId>
+      		<artifactId>ACEM-domain-beans</artifactId>
+      		<version>1.0-SNAPSHOT</version>
+    	</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-neo4j</artifactId>
+			<version>${org.springframework.data-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-neo4j-rest</artifactId>
+			<version>${org.springframework.data-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+
+		<!-- Test -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>		<!-- CGLIB is required to process @Configuration classes -->
+			<artifactId>cglib</artifactId>
+			<version>${cglib-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax.validation-version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<testResources>
+			<testResource>
+				<directory>src/test/ressources</directory>
+				<filtering>true</filtering>
+			</testResource>
+			<testResource>
+				<directory>src/test/java</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*-context.xml</include>
+				</includes>
+			</testResource>
+		</testResources>
+	</build>
+</project>

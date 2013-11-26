@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface Reponse extends Serializable {
 
+	public Long getId();
+	
 	public Collection<Ressource> getRessources();
 
 	public String getNom();

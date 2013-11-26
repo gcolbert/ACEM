@@ -16,21 +16,24 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.gris;
-
-import java.util.Collection;
-
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
+package eu.ueb.acem.dal;
 
 /**
  * @author gcolbert @since 2013-11-20
  *
  */
-public interface Enseignant extends Personne {
+public interface DAO<E> {
 
-	public Collection<Ressource> getRessourcesFavorites();
+	public E create(String name);
 
-	public Collection<SeanceDeCours> getSeancesDeCours();
+	public E retrieve(String name);
+	
+	public E update(E entity);
+	
+	public void delete(E entity);
+	
+	public void deleteAll();
+
+	public Long count();
 	
 }

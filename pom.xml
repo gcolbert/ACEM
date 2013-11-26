@@ -106,7 +106,7 @@
     </properties>
   <modules>
     <!-- <module>ACEM-batch</module> -->
-    <module>ACEM-dao</module>
+    <module>ACEM-dal</module>
     <!-- <module>ACEM-utils</module> -->
     <module>ACEM-domain-beans</module>
     <module>ACEM-domain-services</module>

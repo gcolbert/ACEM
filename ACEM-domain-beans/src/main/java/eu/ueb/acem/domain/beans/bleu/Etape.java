@@ -29,7 +29,11 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface Etape extends Serializable {
 
-	public Collection<Ressource> getRessources();
+	public Long getId();
+
+    public String getNom();
+
+    public void setNom(String nom);
 	
 	public Scenario getScenario();
 
@@ -45,4 +49,6 @@ public interface Etape extends Serializable {
 
 	public void setDuree(String duree);
 
+	public Collection<Ressource> getRessources();
+	
 }
