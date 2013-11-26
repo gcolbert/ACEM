@@ -10,28 +10,33 @@
       gcolbert - initial API and implementation
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:neo4j="http://www.springframework.org/schema/data/neo4j"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository-1.6.xsd
-        http://www.springframework.org/schema/data/neo4j http://www.springframework.org/schema/data/neo4j/spring-neo4j-2.2.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:neo4j="http://www.springframework.org/schema/data/neo4j"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/data/repository
+						http://www.springframework.org/schema/data/repository/spring-repository-1.6.xsd
+						http://www.springframework.org/schema/data/neo4j 
+						http://www.springframework.org/schema/data/neo4j/spring-neo4j-2.2.xsd">
 
 	<context:annotation-config/>
 
  	<context:component-scan base-package="eu.ueb.acem.dal"/>
 
-	<neo4j:config storeDirectory="target/neo4j" />
-	<!-- 
-    <neo4j:config graphDatabaseService="graphDatabaseService"/>
-    <bean id="graphDatabaseService" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">
-       	<constructor-arg value="http://localhost:7474"/>
-    </bean>
-     -->
+ 	<!-- CHOIX 1 : pour utiliser une base temporaire créée dynamiquement dans le répertoire "target/neo4j-test" -->
+ 	<!-- 
+	<neo4j:config storeDirectory="target/neo4j-test" />
+	-->
 
- 	<neo4j:repositories base-package="eu.ueb.acem.dao"/>
+ 	<!-- CHOIX 2 : pour utiliser un serveur autonome -->
+	<neo4j:config graphDatabaseService="graphDatabaseService"/>
+	<bean id="graphDatabaseService" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">
+		<constructor-arg value="http://localhost:7474/db/data"/>
+	</bean>
+
+  	<neo4j:repositories base-package="eu.ueb.acem.dal"/>
 
 </beans>

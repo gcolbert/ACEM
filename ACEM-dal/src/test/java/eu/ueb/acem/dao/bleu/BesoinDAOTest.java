@@ -20,6 +20,8 @@ package eu.ueb.acem.dao.bleu;
 
 import junit.framework.TestCase;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,18 +44,26 @@ public class BesoinDAOTest extends TestCase {
 
 	public BesoinDAOTest() {
 	}
-	
+
+	@Before
+	public void before() {
+		besoinDAO.deleteAll();
+	}
+
+	@After
+	public void after() {
+		besoinDAO.deleteAll();
+	}
+	 
 	/**
 	 * Create
 	 */
 	@Test
-	public final void t0TestBesoinDAOCreate() {
-		// Setting up
-		besoinDAO.deleteAll();
+	public final void t01_TestBesoinDAOCreate() {
 		assertEquals(new Long(0), besoinDAO.count());
 		
 		// We create a new object in the datastore
-		besoinDAO.create("besoin de test t0TestBesoinDAOCreate");
+		besoinDAO.create("besoin de test t01_TestBesoinDAOCreate");
 
 		// There must be 1 object in the datastore
 		assertEquals(new Long(1), besoinDAO.count());
@@ -63,11 +73,10 @@ public class BesoinDAOTest extends TestCase {
 	 * Retrieve
 	 */
 	@Test
-	public final void t1TestBesoinDAORetrieve() {
+	public final void t02_TestBesoinDAORetrieve() {
 		// Setting up
-		besoinDAO.deleteAll();
 		assertEquals(new Long(0), besoinDAO.count());
-		Besoin besoin1 = besoinDAO.create("besoin de test t1TestBesoinDAORetrieve");
+		Besoin besoin1 = besoinDAO.create("besoin de test t02_TestBesoinDAORetrieve");
 		assertEquals(new Long(1), besoinDAO.count());
 
 		// We retrieve the object from the datastore with its name
@@ -79,22 +88,21 @@ public class BesoinDAOTest extends TestCase {
 	 * Update
 	 */
 	@Test
-	public final void t2TestBesoinDAOUpdate() {
+	public final void t03_TestBesoinDAOUpdate() {
 		// Setting up
-		besoinDAO.deleteAll();
 		assertEquals(new Long(0), besoinDAO.count());
-		Besoin besoin1 = besoinDAO.create("besoin de test t2TestBesoinDAOUpdate");
+		Besoin besoin1 = besoinDAO.create("besoin de test t03_TestBesoinDAOUpdate");
 		assertEquals(new Long(1), besoinDAO.count());
 
 		// We update the object
-		besoin1.setNom("besoin de test t2TestBesoinDAOUpdate mis à jour");
+		besoin1.setNom("besoin de test t03_TestBesoinDAOUpdate mis à jour");
 		besoinDAO.update(besoin1);
 
 		// We check that the object cannot be retrieved anymore with its original name
-		assertNull(besoinDAO.retrieve("besoin de test t2TestBesoinDAOUpdate"));
+		assertNull(besoinDAO.retrieve("besoin de test t03_TestBesoinDAOUpdate"));
 
 		// We check that the object can be retrieved with its new name
-		assertNotNull(besoinDAO.retrieve("besoin de test t2TestBesoinDAOUpdate mis à jour"));
+		assertNotNull(besoinDAO.retrieve("besoin de test t03_TestBesoinDAOUpdate mis à jour"));
 		
 		// We check that there is still only 1 object in the datastore
 		assertEquals(new Long(1), besoinDAO.count());
@@ -104,11 +112,9 @@ public class BesoinDAOTest extends TestCase {
 	 * Delete
 	 */
 	@Test
-	public final void t3TestBesoinDAODelete() {
-		// Setting up
-		besoinDAO.deleteAll();
+	public final void t04_TestBesoinDAODelete() {
 		assertEquals(new Long(0), besoinDAO.count());
-		Besoin besoin1 = besoinDAO.create("besoin de test t3TestBesoinDAODelete");
+		Besoin besoin1 = besoinDAO.create("besoin de test t04_TestBesoinDAODelete");
 		assertEquals(new Long(1), besoinDAO.count());
 
 		// We delete the object
