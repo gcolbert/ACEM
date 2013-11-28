@@ -73,5 +73,5 @@ public class BesoinDAO implements DAO<Besoin> {
 	public Long count() {
 		return besoinRepository.count();
 	}
-	
+
 }

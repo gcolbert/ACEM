@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dao.bleu;
+package eu.ueb.acem.dal.tests.bleu;
 
 import junit.framework.TestCase;
 
@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.bleu.BesoinDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 
 /**
@@ -36,11 +36,11 @@ import eu.ueb.acem.domain.beans.bleu.Besoin;
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/test-context.xml")
+@ContextConfiguration("/dal-test-context.xml")
 public class BesoinDAOTest extends TestCase {
 
 	@Autowired
-	private DAO<Besoin> besoinDAO;
+	private BesoinDAO besoinDAO;
 
 	public BesoinDAOTest() {
 	}
@@ -54,7 +54,7 @@ public class BesoinDAOTest extends TestCase {
 	public void after() {
 		besoinDAO.deleteAll();
 	}
-	 
+
 	/**
 	 * Create
 	 */
@@ -123,5 +123,35 @@ public class BesoinDAOTest extends TestCase {
 		// We check that there is 0 object in the datastore
 		assertEquals(new Long(0), besoinDAO.count());
 	}
+	
+	/**
+	 * GetBesoinsAssocies
+	 */
+	/*
+	@Test
+	public final void t05_TestBesoinDAOAddChild() {
+		assertEquals(new Long(0), besoinDAO.count());
+		Besoin besoin1 = besoinDAO.create(  "t05_TestBesoinDAOGetBesoinsAssocies, besoin 1");
+		Besoin besoin11 = besoinDAO.create( "t05_TestBesoinDAOGetBesoinsAssocies, besoin 1.1");
+		besoinDAO.addChild(besoin1, besoin11);
+		Besoin besoin12 = besoinDAO.create( "t05_TestBesoinDAOGetBesoinsAssocies, besoin 1.2");
+		besoinDAO.addChild(besoin1, besoin12);
+		Besoin besoin2 = besoinDAO.create(  "t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.0");
+		Besoin besoin21 = besoinDAO.create( "t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.1");
+		besoinDAO.addChild(besoin2, besoin21);
+		Besoin besoin211 = besoinDAO.create("t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.1.1");
+		besoinDAO.addChild(besoin2, besoin211);
+		Besoin besoin212 = besoinDAO.create("t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.1.2");
+		besoinDAO.addChild(besoin2, besoin212);
+		Besoin besoin22 = besoinDAO.create( "t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.2");
+		assertEquals(new Long(8), besoinDAO.count());
+		
+		// We get the
+		besoinDAO.delete(besoin1);
+		
+		// We check that there is 0 object in the datastore
+		assertEquals(new Long(0), besoinDAO.count());
+	}
+	*/
 	
 }

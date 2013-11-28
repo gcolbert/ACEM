@@ -45,6 +45,9 @@ public class ScenarioNode implements Scenario {
 	
 	@Indexed(indexName = "rechercher-scenario") private String nom;
 
+	private String titre;
+	private String objectif;
+	
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "reference", direction = OUTGOING)
 	private Set<SeanceDeCours> seancesDeCours;
 	
@@ -75,8 +78,28 @@ public class ScenarioNode implements Scenario {
 	}
     
 	@Override
+	public String getObjectif() {
+		return objectif;
+	}
+
+	@Override
+	public void setObjectif(String objectif) {
+		this.objectif = objectif;
+	}
+
+	@Override
+	public String getTitre() {
+		return titre;
+	}
+
+	@Override
+	public void setTitre(String titre) {
+		this.titre = titre;
+	}
+	
+	@Override
 	public Collection<SeanceDeCours> getSeancesDeCours() {
 		return seancesDeCours;
 	}
-    
+	
 }

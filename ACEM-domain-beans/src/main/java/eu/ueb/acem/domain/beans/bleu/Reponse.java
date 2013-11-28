@@ -31,10 +31,12 @@ public interface Reponse extends Serializable {
 
 	public Long getId();
 	
-	public Collection<Ressource> getRessources();
-
 	public String getNom();
 
 	public void setNom(String nom);
+
+	public Collection<Besoin> getBesoins();
+
+	public Collection<Ressource> getRessources();
 
 }

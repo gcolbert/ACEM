@@ -22,10 +22,11 @@ import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
-import static org.neo4j.graphdb.Direction.BOTH;
+import static org.neo4j.graphdb.Direction.INCOMING;
 
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -44,25 +45,27 @@ public class BesoinNode implements Besoin {
 	@GraphId private Long id;
 	
 	@Indexed(indexName = "rechercher-besoin-pedagogique") private String nom;
-	
-	@RelatedTo(elementClass = BesoinNode.class, type = "reference", direction = BOTH)
-	private Set<Besoin> besoins;
 
-	@RelatedTo(elementClass = ReponseNode.class, type = "reference", direction = OUTGOING)
-	private Set<Reponse> reponses;
+	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinEnfant", direction = INCOMING)
+	private Besoin parent;
+	
+	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinEnfant", direction = OUTGOING)
+	private Set<Besoin> besoins = new HashSet<Besoin>();
+
+	@RelatedTo(elementClass = ReponseNode.class, type = "aPourReponse", direction = OUTGOING)
+	private Set<Reponse> reponses = new HashSet<Reponse>();
 
     public BesoinNode() {
     }
 
     public BesoinNode(String nom) {
-    	this.nom = nom;
+    	this.setNom(nom);
     }
-
-    public BesoinNode(Besoin besoin) {
-		this.setNom(besoin.getNom());
-		this.setBesoins(besoin.getBesoins());
-		this.setReponses(besoin.getReponses());
-	}
+    
+    public BesoinNode(String nom, Besoin parent) {
+    	this(nom);
+    	this.setParent(parent);
+    }
 
     @Override
     public Long getId() {
@@ -101,4 +104,24 @@ public class BesoinNode implements Besoin {
     	this.reponses = (Set<Reponse>) reponses;
     }
     
+    @Override
+    public void addBesoin(Besoin besoin) {
+    	besoins.add(besoin);
+    }
+    
+    @Override
+    public void addReponse(Reponse reponse) {
+   		reponses.add(reponse);
+    }
+
+    @Override
+	public Besoin getParent() {
+		return parent;
+	}
+    
+    @Override
+	public void setParent(Besoin parent) {
+		this.parent = parent;
+	}
+
 }

@@ -24,19 +24,22 @@
 
 	<context:annotation-config/>
 
- 	<context:component-scan base-package="eu.ueb.acem.dal"/>
+ 	<!-- <context:component-scan base-package="eu.ueb.acem.dal.bleu"/> -->
+	<context:component-scan base-package="eu.ueb.acem">
+	
+	</context:component-scan>
 
  	<!-- CHOIX 1 : pour une base temporaire créé dynamiquement dans le répertoire "target/neo4j-test" -->
- 	<!--
 	<neo4j:config storeDirectory="target/neo4j-test" />
- 	-->
  	
  	<!-- CHOIX 2 : pour utiliser un serveur autonome -->
+ 	<!--
 	<neo4j:config graphDatabaseService="graphDatabaseService"/>
 	<bean id="graphDatabaseService" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">
 		<constructor-arg value="http://localhost:7474/db/data"/>
 	</bean>
+	-->
 	
-  	<neo4j:repositories base-package="eu.ueb.acem.dal"/>
+  	<neo4j:repositories base-package="eu.ueb.acem.dal.*.neo4j"/>
  	
 </beans>

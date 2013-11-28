@@ -16,33 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.bleu;
+package eu.ueb.acem.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
+
+import eu.ueb.acem.domain.beans.gris.Personne;
 
 /**
- * @author gcolbert @since 2013-11-20
- *
+ * @author Grégoire Colbert @since 2013-11-25
+ * @author Yves Deschamps (Universite de Lille 1) - 2010
+ * 
  */
-public interface Besoin extends Serializable {
-
-	public Long getId();
+public interface DomainService extends Serializable {
 	
-    public String getNom();
-
-    public void setNom(String nom);
-
-    public Collection<Besoin> getBesoins();
-
-    public Collection<Reponse> getReponses();
-    
-    public void addBesoin(Besoin besoin);
-    
-    public void addReponse(Reponse reponse);
-
-	public Besoin getParent();
-
-	public void setParent(Besoin parent);
+	/**
+	 * @param uid
+	 * @return a user.
+	 */
+	Personne getUser(String uid);
 
 }

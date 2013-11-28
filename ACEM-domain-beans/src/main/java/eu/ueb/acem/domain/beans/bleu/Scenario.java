@@ -30,11 +30,19 @@ import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 public interface Scenario extends Serializable {
 
 	public Long getId();
-	
-	public Collection<SeanceDeCours> getSeancesDeCours();
-	
+		
     public String getNom();
 
     public void setNom(String nom);
+
+	public String getTitre();
+	
+	public void setTitre(String titre);
+	
+	public String getObjectif();
+	
+	public void setObjectif(String objectif);
+	
+	public Collection<SeanceDeCours> getSeancesDeCours();
 	
 }

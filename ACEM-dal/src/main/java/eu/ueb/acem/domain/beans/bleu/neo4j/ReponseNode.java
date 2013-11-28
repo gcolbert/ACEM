@@ -22,6 +22,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -29,6 +30,7 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
@@ -45,18 +47,18 @@ public class ReponseNode implements Reponse {
 	@GraphId private Long id;
 	
 	@Indexed(indexName = "rechercher-reponse-pedagogique") private String nom;
-
-	@RelatedTo(elementClass = BesoinNode.class, type = "reference", direction = INCOMING)
-	private Set<BesoinNode> besoins;
 	
-	@RelatedTo(elementClass = RessourceNode.class, type = "reference", direction = OUTGOING)
-	private Set<Ressource> ressources;
+	@RelatedTo(elementClass = BesoinNode.class, type = "aPourReponse", direction = INCOMING)
+	private Set<Besoin> besoins = new HashSet<Besoin>();
+	
+	@RelatedTo(elementClass = RessourceNode.class, type = "referenceRessource", direction = OUTGOING)
+	private Set<Ressource> ressources = new HashSet<Ressource>();
 
     public ReponseNode()  {
     }
 
     public ReponseNode(String nom) {
-    	this.nom = nom;
+       	this.setNom(nom);
     }
 
     @Override
@@ -76,6 +78,11 @@ public class ReponseNode implements Reponse {
     @Override
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+
+    @Override
+	public Collection<Besoin> getBesoins() {
+		return besoins;
 	}
     
     @Override
