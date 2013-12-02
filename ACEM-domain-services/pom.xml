@@ -90,7 +90,7 @@
 	<build>
 		<testResources>
 			<testResource>
-				<directory>src/test/ressources</directory>
+				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
 			</testResource>
 			<testResource>
