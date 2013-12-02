@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+                              "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+<!-- 
+	/properties/jsf/navigation-rules.xml
+	The configuration file of Java Server Faces that gives 
+	the navigation rules between views.
+	This file is referenced by /webapp/WEB-INF/web.xml. 
+	It should not be modified but by the developers. 
+-->
+
+<faces-config>
+<!-- 
+	<navigation-rule>
+		<description>Accueil</description>
+		<navigation-case>
+			<from-outcome>accueil</from-outcome>
+			<to-view-id>/pages/accueil.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<description>Besoins et réponses pédagogiques</description>
+		<navigation-case>
+			<from-outcome>besoins-et-reponses</from-outcome>
+			<to-view-id>/pages/besoins-et-reponses.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<description>Ressources</description>
+		<navigation-case>
+			<from-outcome>ressources</from-outcome>
+			<to-view-id>/pages/ressources.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<description>Services</description>
+		<navigation-case>
+			<from-outcome>services</from-outcome>
+			<to-view-id>/pages/services.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<description>Mes enseignements</description>
+		<navigation-case>
+			<from-outcome>mes-enseignements</from-outcome>
+			<to-view-id>/pages/mes-enseignements.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<description>Mes scénarios</description>
+		<navigation-case>
+			<from-outcome>mes-scenarios</from-outcome>
+			<to-view-id>/pages/mes-scenarios.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+ -->
+	<navigation-rule>
+		<description>Gestion des exceptions</description>
+		<navigation-case>
+			<from-outcome>go_exception</from-outcome>
+			<to-view-id>/stylesheets/exceptions/exception.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+ 
+</faces-config>

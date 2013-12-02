@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain;
+package eu.ueb.acem.services;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.gris.Personne;
@@ -24,6 +24,7 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Grégoire Colbert @since 2013-11-25
@@ -43,13 +44,13 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	@SuppressWarnings("unused")
 	private final Logger logger = new LoggerImpl(this.getClass());
 
+	@Autowired
 	private DAO<Personne> personneDAO;
 
 	/**
 	 * Constructor.
 	 */
-	public DomainServiceImpl(DAO<Personne> dao) {
-		this.personneDAO = dao;
+	public DomainServiceImpl() {
 	}
 
 	@Override

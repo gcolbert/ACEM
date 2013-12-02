@@ -48,13 +48,13 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 	
 	@Indexed(indexName = "rechercher-gestionnaire") private String nom;
 
-	@RelatedTo(elementClass = BesoinNode.class, type = "redige", direction = OUTGOING)
+	@RelatedTo(elementClass = BesoinNode.class, type = "redigeBesoin", direction = OUTGOING)
 	private Set<Besoin> besoins;
 
-	@RelatedTo(elementClass = ReponseNode.class, type = "redige", direction = OUTGOING)
+	@RelatedTo(elementClass = ReponseNode.class, type = "redigeReponse", direction = OUTGOING)
 	private Set<Reponse> reponses;
 	
-	@RelatedTo(elementClass = RessourceNode.class, type = "redige", direction = OUTGOING)
+	@RelatedTo(elementClass = RessourceNode.class, type = "redigeRessource", direction = OUTGOING)
 	private Set<Ressource> ressources;
 	
 	public GestionnaireNode() {

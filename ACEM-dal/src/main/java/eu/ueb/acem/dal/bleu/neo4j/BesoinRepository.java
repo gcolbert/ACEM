@@ -18,11 +18,8 @@
  */
 package eu.ueb.acem.dal.bleu.neo4j;
 
-import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 
-import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
 
@@ -31,7 +28,7 @@ import org.springframework.data.neo4j.repository.RelationshipOperationsRepositor
  *
  */
 public interface BesoinRepository extends GraphRepository<BesoinNode>, RelationshipOperationsRepository<BesoinNode> {
-
+/*
 	// renvoie les besoins associés au besoin dont le nom est passé en paramètre
 	@Query("start besoin=node:Besoin(nom={0}) " +
 			"match (besoin)&lt;-[r:aPourBesoinEnfant]-(autreBesoin) " +
@@ -43,5 +40,5 @@ public interface BesoinRepository extends GraphRepository<BesoinNode>, Relations
 			"match (besoin)&lt;-[r:aPourReponse]-(reponse) " +
 			"return reponse")
 	Iterable<Reponse> getReponses(String nom);
-
+*/
 }

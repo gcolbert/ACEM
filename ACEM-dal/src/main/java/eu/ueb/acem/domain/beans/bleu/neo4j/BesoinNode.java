@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
-import static org.neo4j.graphdb.Direction.INCOMING;
 
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -46,7 +45,7 @@ public class BesoinNode implements Besoin {
 	
 	@Indexed(indexName = "rechercher-besoin-pedagogique") private String nom;
 
-	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinEnfant", direction = INCOMING)
+	@RelatedTo(elementClass = BesoinNode.class, type = "aPourParent", direction = OUTGOING)
 	private Besoin parent;
 	
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinEnfant", direction = OUTGOING)

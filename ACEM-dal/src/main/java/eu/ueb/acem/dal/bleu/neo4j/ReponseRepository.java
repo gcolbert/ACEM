@@ -20,7 +20,6 @@ package eu.ueb.acem.dal.bleu.neo4j;
 
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
-import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
 

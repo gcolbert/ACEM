@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13825422303000" configfile="/ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/navigation-rules.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" comment="Gestion des exceptions" id="pf138254523940336" outlinks="pf138254523940337" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="stylesheets/exceptions/exception.xhtml" id="pf138254523940338" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf138254523940337" path="/stylesheets/exceptions/exception.xhtml"/>
+  <links id="pf138254523940337" target="pf138254523940338" source="pf138254523940336" outcome="go_exception" redirect="true"/>
+</pageflow:Pageflow>

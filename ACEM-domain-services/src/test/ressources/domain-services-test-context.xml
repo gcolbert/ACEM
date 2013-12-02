@@ -24,13 +24,13 @@
 
 	<context:annotation-config/>
 
- 	<context:component-scan base-package="eu.ueb.acem"/>
+ 	<context:component-scan base-package="eu.ueb.acem.dal"/>
 
 <!-- 
 	<import resource="classpath*:dal-test-context.xml"/>
- -->
- 	
+ 	-->
+
 	<neo4j:config storeDirectory="target/neo4j-test" />
-  	<neo4j:repositories base-package="eu.ueb.acem.dal.*.neo4j"/>	
+  	<neo4j:repositories base-package="eu.ueb.acem.dal.*.neo4j"/>
 
 </beans>
