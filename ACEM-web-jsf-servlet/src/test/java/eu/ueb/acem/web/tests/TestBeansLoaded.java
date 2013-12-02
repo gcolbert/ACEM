@@ -24,7 +24,7 @@ public class TestBeansLoaded extends TestCase {
 	@Before
 	public void before() {
 	}
-	/*
+	
 	@Test
 	public void testContext() {
 		if (ApplicationContextHolder.getContext() == null) {
@@ -32,7 +32,7 @@ public class TestBeansLoaded extends TestCase {
 		}
 		ApplicationContext context = ApplicationContextHolder.getContext();
 		assertTrue(context.containsBean("treeBean"));
-	}*/
+	}
 	
     @Test
     public void testSpringBeans() {
