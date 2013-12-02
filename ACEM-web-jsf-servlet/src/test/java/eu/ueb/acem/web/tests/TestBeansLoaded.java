@@ -41,6 +41,7 @@ public class TestBeansLoaded extends TestCase {
 		ApplicationContext context = ApplicationContextHolder.getContext();
 		assertFalse(context.containsBean("inexistantBean"));
 	}
+
 /*
     @Test
     public void testSpringBeans() {

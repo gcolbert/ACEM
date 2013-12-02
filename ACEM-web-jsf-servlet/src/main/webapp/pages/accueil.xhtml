@@ -43,9 +43,18 @@
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
+		
+		<p:panel header="Test">
+			<h:form>
+				<h:inputText id="counter">
+					<p:ajax update="out" listener="#{counterBean.increment}"/>
+				</h:inputText>
+				<h:outputText id="out" value="#{counterBean.count}" />
+			</h:form>
+		</p:panel>
 
 		<p:panel header="Besoins et réponses">
-			<h:form id="form">  
+			<h:form>  
     			<p:tree value="#{treeBean.root}" var="node" id="tree">  
         			<p:treeNode id="treeNode">  
             			<h:outputText value="#{node}" id="lblNode"/>  

@@ -28,6 +28,5 @@
 		<property name="cacheManager" ref="cacheManager" />
 		<property name="cacheName" value="" />
 	</bean>
-	
 
 </beans>

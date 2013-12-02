@@ -13,6 +13,6 @@
 		This file is referenced by /properties/applicationContext.xml.
 	-->
 	
-	<bean id="treeBean" class="eu.ueb.acem.web.viewbeans.TreeBean" scope="session"/>
+	<bean id="treeBean" class="eu.ueb.acem.web.viewbeans.TreeBean" scope="application"/>
 
 </beans>

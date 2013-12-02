@@ -1,18 +1,19 @@
 package eu.ueb.acem.web.viewbeans;
 
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-
 import org.primefaces.model.TreeNode;  
 import org.primefaces.model.DefaultTreeNode;  
 
 @ManagedBean
-@SessionScoped
+@ApplicationScoped
 public class TreeBean {
     
   private TreeNode root;  
 
-  public TreeBean() {  
+  public TreeBean() {
+	  // TODO : call BesoinReponseService (to be written)
+	  
       root = new DefaultTreeNode("Root", null);  
       TreeNode node0 = new DefaultTreeNode("Node 0", root);  
       TreeNode node1 = new DefaultTreeNode("Node 1", root);  
