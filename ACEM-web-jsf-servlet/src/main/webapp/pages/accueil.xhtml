@@ -6,6 +6,14 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../stylesheets/template.xhtml">
 	<ui:define name="navigation">
+		<p:menu>
+			<p:menuitem icon="ui-icon ui-icon-home" value="Actualités" url="/" />
+			<p:menuitem icon="ui-icon ui-icon-person" value="Mes enseignements" url="/mes-enseignements" />
+			<p:menuitem value="Scénarios" url="/scenarios" />
+			<p:menuitem value="Besoins et réponses pédagogiques" url="/besoins-et-reponses-pedagogiques" />
+			<p:menuitem value="Ressources" url="/ressources" />
+			<p:menuitem value="Services-supports" url="/services-supports" />
+		</p:menu>
 		<p:menubar>
 			<p:submenu icon="ui-icon ui-icon-info">
 				<p:menuitem value="#{msgs['BLANK.MENU']}" url="#" onclick="info.show();"></p:menuitem>
@@ -43,12 +51,10 @@
 				</h:panelGrid>
 			</h:form>
 		</p:dialog>
-		
-		<p:panel header="Test">
+
+		<p:panel header="Compteur">
 			<h:form>
-				<h:inputText id="counter">
-					<p:ajax update="out" listener="#{counterBean.increment}"/>
-				</h:inputText>
+				<p:commandButton value="Incrémenter le compteur" action="#{counterBean.increment}" update="out"/>
 				<h:outputText id="out" value="#{counterBean.count}" />
 			</h:form>
 		</p:panel>
@@ -56,13 +62,13 @@
 		<p:panel header="Besoins et réponses">
 			<h:form>  
     			<p:tree value="#{treeBean.root}" var="node" id="tree">  
-        			<p:treeNode id="treeNode">  
-            			<h:outputText value="#{node}" id="lblNode"/>  
+        			<p:treeNode>  
+            			<h:outputText value="#{node}"/>  
         			</p:treeNode>  
     			</p:tree>  
 			</h:form>  
 		</p:panel>
-
+<!--  
 		<p:dialog header="#{applicationService.name}" modal="true" showEffect="fade"
 		          resizable="false" visible="true" width="500" widgetVar="welcome">
 			<h:outputText value="#{msgs['BLANK.WELCOME']}" />
@@ -76,17 +82,7 @@
 			<p:menuitem icon="/media/images/finder.png" url="#" onclick="info.show();" />
 			<p:menuitem icon="/media/images/terminal.png" url="#" onclick="welcome.show();" />
 		</p:dock>
-		<script type="text/javascript">
-        jQuery(function() {
-            var title = '#{msgs['BLANK.INFORMATION']}';
-            var describe = '#{msgs['BLANK.INFORMATION.DESCRIBE']}';
-            jQuery.gritter
-                            .add({
-                                    title : title,
-                                    text : describe,
-                                    image : '/javax.faces.resource/growl/assets/info.png.xhtml?ln=primefaces&amp;v=2.2'
-                            });
-		}]);
-		</script>
+-->
+ 		
 	</ui:define>
 </ui:composition>
