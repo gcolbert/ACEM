@@ -2,7 +2,7 @@ package eu.ueb.acem.web.viewbeans;
 
 public class CounterBean {
 	
-	private int count = 0;
+	private int count = 1;
 
 	public int getCount() {
 		return count;

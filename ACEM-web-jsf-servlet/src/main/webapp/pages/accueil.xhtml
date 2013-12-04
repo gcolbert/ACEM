@@ -4,34 +4,11 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.prime.com.tr/ui"
 	xmlns:e="http://commons.esup-portail.org"
-	template="../stylesheets/template.xhtml">
-	<ui:define name="navigation">
-		<p:menu>
-			<p:menuitem icon="ui-icon ui-icon-home" value="Actualités" url="/" />
-			<p:menuitem icon="ui-icon ui-icon-person" value="Mes enseignements" url="/mes-enseignements" />
-			<p:menuitem value="Scénarios" url="/scenarios" />
-			<p:menuitem value="Besoins et réponses pédagogiques" url="/besoins-et-reponses-pedagogiques" />
-			<p:menuitem value="Ressources" url="/ressources" />
-			<p:menuitem value="Services-supports" url="/services-supports" />
-		</p:menu>
-		<p:menubar>
-			<p:submenu icon="ui-icon ui-icon-info">
-				<p:menuitem value="#{msgs['BLANK.MENU']}" url="#" onclick="info.show();"></p:menuitem>
-			</p:submenu>
-			<p:submenu label="Besoins et réponses pédagogiques">
-				<p:menuitem value="Exemple" onclick="demo.show();" url="#"></p:menuitem>
-			</p:submenu>
-			<p:submenu label="Edit">
-				<p:menuitem value="Undo" url="#" onclick="demo.show();" helpText="⌘Z"></p:menuitem>
-				<p:menuitem value="Redo" url="#" onclick="demo.show();" helpText="⌘Y"></p:menuitem>
-			</p:submenu>
-			<p:submenu label="View">
-				<p:menuitem value="Source" url="#" onclick="demo.show();"></p:menuitem>
-			</p:submenu>
-		</p:menubar>
-	</ui:define>
+	template="../templates/template.xhtml">
 	<ui:define name="content">
+
 		<p:growl showDetail="true" />
+
 		<p:dialog header="#{msgs['BLANK.MENU.TITLE']}" draggable="true" widgetVar="info" showEffect="fade" hideEffect="fade" width="450">
 			<h:form>
 				<h:panelGrid columns="1" style="width:100%;text-align:center;">

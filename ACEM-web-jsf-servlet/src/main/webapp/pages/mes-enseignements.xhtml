@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:e="http://commons.esup-portail.org"
+	template="../templates/template.xhtml">
+	<ui:define name="content">
+		<p:panel header="Compteur">
+			<h:form>
+				<p:commandButton value="Incrémenter le compteur" action="#{counterBean.increment}" update="out"/>
+				<h:outputText id="out" value="#{counterBean.count}" />
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
