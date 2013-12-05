@@ -6,5 +6,16 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
+		<p:panel header="Besoins et réponses">
+			<h:form>  
+    			<p:tree value="#{treeBean.root}" var="node" id="tree">  
+        			<p:treeNode>  
+            			<h:outputText value="#{node}"/>  
+        			</p:treeNode>  
+    			</p:tree>  
+			</h:form>  
+		</p:panel>
+		<p:panel header="Exemples de scénarios pédagogiques">
+		</p:panel>
 	</ui:define>
 </ui:composition>

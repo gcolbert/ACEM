@@ -36,10 +36,10 @@
 	</navigation-rule>
 
 	<navigation-rule>
-		<description>Services</description>
+		<description>Services supports</description>
 		<navigation-case>
-			<from-outcome>services</from-outcome>
-			<to-view-id>/pages/services.xhtml</to-view-id>
+			<from-outcome>services-supports</from-outcome>
+			<to-view-id>/pages/services-supports.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 
@@ -63,7 +63,7 @@
 		<description>Gestion des exceptions</description>
 		<navigation-case>
 			<from-outcome>go_exception</from-outcome>
-			<to-view-id>/stylesheets/exceptions/exception.xhtml</to-view-id>
+			<to-view-id>/templates/exceptions/exception.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>

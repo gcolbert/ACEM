@@ -48,6 +48,16 @@
 	    <to>/pages/scenarios.xhtml</to>
 	</rule>
 
+	<rule>
+	    <from>^/ressources$</from>
+	    <to>/pages/ressources.xhtml</to>
+	</rule>
+
+	<rule>
+	    <from>^/services-supports$</from>
+	    <to>/pages/services-supports.xhtml</to>
+	</rule>
+
     <!--
 
     INSTALLATION

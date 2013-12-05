@@ -2,32 +2,22 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
 
-		<p:growl showDetail="true" />
+		<p:panel header="Explication de l'ACEM">
+			<h:outputText>L'Atelier de Création d'Enseignement Multimodal (ACEM) vous permet de visualiser l'ensemble des services numériques, équipements et appuis que vous pouvez utiliser quand vous préparez vos cours.</h:outputText>
+		</p:panel>
 
-		<p:dialog header="#{msgs['BLANK.MENU.TITLE']}" draggable="true" widgetVar="info" showEffect="fade" hideEffect="fade" width="450">
-			<h:form>
-				<h:panelGrid columns="1" style="width:100%;text-align:center;">
-					<p:graphicImage value="/media/images/esup.png" />
-					<h:outputText value="#{applicationService.name}" style="font-size:16px" />
-					<h:outputText value="#{msgs['ABOUT.VERSION']} #{applicationService.version}" />
-					<h:outputText value="#{applicationService.copyright}" />
-				</h:panelGrid>
-				<br />
-				<h:panelGrid columns="2">
-					<h:outputText value="#{msgs['ABOUT.AUTHOR']} : " style="font-weight:bold" />
-					<h:outputText value="#{msgs['ABOUT.AUTHOR.NAME']}" />
+		<p:panel header="Actualités">
+		
+		</p:panel>
 
-					<h:outputText value="#{msgs['ABOUT.SOCIETY']} : " style="font-weight:bold" />
-					<h:outputText value="#{msgs['ABOUT.SOCIETY.NAME']}" />
-
-				</h:panelGrid>
-			</h:form>
-		</p:dialog>
+		<p:panel header="Ressources les plus utilisées">
+		
+		</p:panel>
 
 		<p:panel header="Compteur">
 			<h:form>
@@ -35,31 +25,6 @@
 				<h:outputText id="out" value="#{counterBean.count}" />
 			</h:form>
 		</p:panel>
-
-		<p:panel header="Besoins et réponses">
-			<h:form>  
-    			<p:tree value="#{treeBean.root}" var="node" id="tree">  
-        			<p:treeNode>  
-            			<h:outputText value="#{node}"/>  
-        			</p:treeNode>  
-    			</p:tree>  
-			</h:form>  
-		</p:panel>
-<!--  
-		<p:dialog header="#{applicationService.name}" modal="true" showEffect="fade"
-		          resizable="false" visible="true" width="500" widgetVar="welcome">
-			<h:outputText value="#{msgs['BLANK.WELCOME']}" />
-		</p:dialog>
-
-		<p:dialog header="Demo" showEffect="fade" resizable="true" widgetVar="demo" width="600">
-			<h:outputText value="Ces menus ne sont disponibles que pour une démonstration." />
-		</p:dialog>
-
-		<p:dock>
-			<p:menuitem icon="/media/images/finder.png" url="#" onclick="info.show();" />
-			<p:menuitem icon="/media/images/terminal.png" url="#" onclick="welcome.show();" />
-		</p:dock>
--->
  		
 	</ui:define>
 </ui:composition>

@@ -24,6 +24,7 @@ autres : preconiser declinaison a partir de la couleur secondaire.
  * uPortal is namespaced with "up", a class of the <body> tag.
  */ /* Page */
 html {
+	font-family: "lucida grande",tahoma,lucide,Arial,sans-serif;
 }
 
 /* Body */

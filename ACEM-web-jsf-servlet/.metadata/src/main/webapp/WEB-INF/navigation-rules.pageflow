@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13825422303000" configfile="/ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/navigation-rules.xml">
-  <nodes xsi:type="pageflow:PFPage" name="*" comment="Gestion des exceptions" x="96" y="156" id="pf138254523940336" outlinks="pf138254523940337 pf13861504747270 pf13861504747281 pf13861504747282 pf13861504747283 pf13861504747284 pf138615653698412" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="stylesheets/exceptions/exception.xhtml" x="312" y="156" id="pf138254523940338" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf138254523940337" path="/stylesheets/exceptions/exception.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" comment="Accueil" x="96" y="156" id="pf138254523940336" outlinks="pf13861504747270 pf13861504747281 pf13861504747282 pf13861504747284 pf138615653698412 pf13862346344280 pf13862381712922" path="*"/>
   <nodes xsi:type="pageflow:PFPage" name="pages/accueil.xhtml" id="pf13861504747286" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf13861504747270" path="/pages/accueil.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="pages/besoins-et-reponses.xhtml" id="pf13861504747287" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf13861504747281" path="/pages/besoins-et-reponses.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="pages/ressources.xhtml" id="pf13861504747288" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf13861504747282" path="/pages/ressources.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="pages/services.xhtml" id="pf13861504747289" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" inlinks="pf13861504747283" path="/pages/services.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="pages/mes-enseignements.xhtml" id="pf138615047472810" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" inlinks="pf13861504747284" path="/pages/mes-enseignements.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="pages/scenarios.xhtml" id="pf138615653698413" referenceLink="//@navigationRule.5/@navigationCase.0/@toViewId|" inlinks="pf138615653698412" path="/pages/scenarios.xhtml"/>
-  <links id="pf138254523940337" target="pf138254523940338" source="pf138254523940336" outcome="go_exception" redirect="true"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/services-supports.xhtml" id="pf13862346344291" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" inlinks="pf13862346344280" path="/pages/services-supports.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="templates/exceptions/exception.xhtml" id="pf13862381712923" referenceLink="//@navigationRule.6/@navigationCase.0/@toViewId|" inlinks="pf13862381712922" path="/templates/exceptions/exception.xhtml"/>
   <links id="pf13861504747270" target="pf13861504747286" source="pf138254523940336" outcome="accueil"/>
   <links id="pf13861504747281" target="pf13861504747287" source="pf138254523940336" outcome="besoins-et-reponses"/>
   <links id="pf13861504747282" target="pf13861504747288" source="pf138254523940336" outcome="ressources"/>
-  <links id="pf13861504747283" target="pf13861504747289" source="pf138254523940336" outcome="services"/>
   <links id="pf13861504747284" target="pf138615047472810" source="pf138254523940336" outcome="mes-enseignements"/>
   <links id="pf138615653698412" target="pf138615653698413" source="pf138254523940336" outcome="scenarios"/>
+  <links id="pf13862346344280" target="pf13862346344291" source="pf138254523940336" outcome="services-supports"/>
+  <links id="pf13862381712922" target="pf13862381712923" source="pf138254523940336" outcome="go_exception" redirect="true"/>
 </pageflow:Pageflow>
