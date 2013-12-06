@@ -18,15 +18,19 @@
  */
 package eu.ueb.acem.dal;
 
+import java.util.Set;
+
 /**
  * @author gcolbert @since 2013-11-20
  *
  */
 public interface DAO<E> {
-
-	public E create(String name);
-
+	
+	public void create(E entity);
+	
 	public E retrieve(String name);
+
+	public Set<E> retrieveAll();
 	
 	public E update(E entity);
 	
@@ -35,5 +39,5 @@ public interface DAO<E> {
 	public void deleteAll();
 
 	public Long count();
-	
+
 }

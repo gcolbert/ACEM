@@ -2,10 +2,16 @@ package eu.ueb.acem.web.viewbeans;
 
 import org.primefaces.model.TreeNode;  
 import org.primefaces.model.DefaultTreeNode;  
+import org.springframework.beans.factory.annotation.Autowired;
+
+import eu.ueb.acem.services.BesoinReponseService;
 
 public class TreeBean {
     
   private TreeNode root;  
+  
+  @Autowired
+  private BesoinReponseService besoinReponseService;
 
   public TreeBean() {
       root = new DefaultTreeNode("Root", null);  

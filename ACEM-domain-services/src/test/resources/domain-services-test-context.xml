@@ -16,21 +16,12 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context 
-						http://www.springframework.org/schema/context/spring-context.xsd
-						http://www.springframework.org/schema/data/repository
-						http://www.springframework.org/schema/data/repository/spring-repository-1.6.xsd
-						http://www.springframework.org/schema/data/neo4j 
-						http://www.springframework.org/schema/data/neo4j/spring-neo4j-2.2.xsd">
+						http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:annotation-config/>
 
- 	<context:component-scan base-package="eu.ueb.acem.dal"/>
+ 	<context:component-scan base-package="eu.ueb.acem"/>
 
-<!-- 
-	<import resource="classpath*:dal-test-context.xml"/>
- 	-->
-
-	<neo4j:config storeDirectory="target/neo4j-test" />
-  	<neo4j:repositories base-package="eu.ueb.acem.dal.*.neo4j"/>
-
+	<import resource="classpath*:META-INF/ACEM-domain-services-init.xml"/>
+	
 </beans>

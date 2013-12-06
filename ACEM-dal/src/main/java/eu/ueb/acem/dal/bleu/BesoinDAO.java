@@ -18,6 +18,12 @@
  */
 package eu.ueb.acem.dal.bleu;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -33,6 +39,12 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 @Repository("besoinDAO")
 public class BesoinDAO implements DAO<Besoin> {
 
+	/**
+	 * For Logging.
+	 */
+	@SuppressWarnings("unused")
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@Autowired
 	private BesoinRepository besoinRepository;
 	
@@ -41,27 +53,36 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 	
 	@Override
-	public Besoin create(String nom) {
-		BesoinNode besoin = new BesoinNode(nom);
-		besoinRepository.save(besoin);
-		return besoin;
+	public void create(Besoin besoin) {
+		besoinRepository.save((BesoinNode) besoin);
 	}
 
 	@Override
 	public Besoin retrieve(String nom) {
 		return besoinRepository.findByPropertyValue("nom", nom);
 	}
+
+	@Override
+	public Set<Besoin> retrieveAll() {
+		Iterable<BesoinNode> endResults = besoinRepository.findAll();
+		Set<Besoin> set = new HashSet<Besoin>();
+		if (endResults.iterator() != null) {
+			Iterator<BesoinNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				set.add(iterator.next());
+			}
+		}
+		return set;
+	}
 	
 	@Override
 	public Besoin update(Besoin besoin) {
-		BesoinNode besoinNode = (BesoinNode) besoin;
-		return besoinRepository.save(besoinNode);
+		return besoinRepository.save((BesoinNode) besoin);
 	}
 	
 	@Override
 	public void delete(Besoin besoin) {
-		BesoinNode besoinNode = (BesoinNode) besoin;
-		besoinRepository.delete(besoinNode);
+		besoinRepository.delete((BesoinNode) besoin);
 	}
 	
 	@Override
@@ -73,5 +94,5 @@ public class BesoinDAO implements DAO<Besoin> {
 	public Long count() {
 		return besoinRepository.count();
 	}
-
+	
 }

@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.tests.bleu;
 
+import java.util.Set;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -28,8 +30,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import eu.ueb.acem.dal.bleu.BesoinDAO;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
+import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 
 /**
  * @author gcolbert @since 2013-11-22
@@ -40,7 +43,7 @@ import eu.ueb.acem.domain.beans.bleu.Besoin;
 public class BesoinDAOTest extends TestCase {
 
 	@Autowired
-	private BesoinDAO besoinDAO;
+	private DAO<Besoin> besoinDAO;
 
 	public BesoinDAOTest() {
 	}
@@ -63,7 +66,8 @@ public class BesoinDAOTest extends TestCase {
 		assertEquals(new Long(0), besoinDAO.count());
 		
 		// We create a new object in the datastore
-		besoinDAO.create("besoin de test t01_TestBesoinDAOCreate");
+		Besoin besoin1 = new BesoinNode("besoin de test t01_TestBesoinDAOCreate");
+		besoinDAO.create(besoin1);
 
 		// There must be 1 object in the datastore
 		assertEquals(new Long(1), besoinDAO.count());
@@ -76,11 +80,13 @@ public class BesoinDAOTest extends TestCase {
 	public final void t02_TestBesoinDAORetrieve() {
 		// Setting up
 		assertEquals(new Long(0), besoinDAO.count());
-		Besoin besoin1 = besoinDAO.create("besoin de test t02_TestBesoinDAORetrieve");
+		Besoin besoin1 = new BesoinNode("besoin de test t02_TestBesoinDAORetrieve");
+		besoinDAO.create(besoin1);
 		assertEquals(new Long(1), besoinDAO.count());
 
 		// We retrieve the object from the datastore with its name
 		Besoin besoin2 = besoinDAO.retrieve(besoin1.getNom());
+		
 		assertEquals(besoin1.getNom(), besoin2.getNom());
 	}
 
@@ -91,7 +97,8 @@ public class BesoinDAOTest extends TestCase {
 	public final void t03_TestBesoinDAOUpdate() {
 		// Setting up
 		assertEquals(new Long(0), besoinDAO.count());
-		Besoin besoin1 = besoinDAO.create("besoin de test t03_TestBesoinDAOUpdate");
+		Besoin besoin1 = new BesoinNode("besoin de test t03_TestBesoinDAOUpdate");
+		besoinDAO.create(besoin1);
 		assertEquals(new Long(1), besoinDAO.count());
 
 		// We update the object
@@ -114,7 +121,8 @@ public class BesoinDAOTest extends TestCase {
 	@Test
 	public final void t04_TestBesoinDAODelete() {
 		assertEquals(new Long(0), besoinDAO.count());
-		Besoin besoin1 = besoinDAO.create("besoin de test t04_TestBesoinDAODelete");
+		Besoin besoin1 = new BesoinNode("besoin de test t04_TestBesoinDAODelete");
+		besoinDAO.create(besoin1);
 		assertEquals(new Long(1), besoinDAO.count());
 
 		// We delete the object
@@ -123,35 +131,65 @@ public class BesoinDAOTest extends TestCase {
 		// We check that there is 0 object in the datastore
 		assertEquals(new Long(0), besoinDAO.count());
 	}
-	
+
 	/**
-	 * GetBesoinsAssocies
+	 * Retrieve all
 	 */
-	/*
 	@Test
-	public final void t05_TestBesoinDAOAddChild() {
+	public final void t05_TestBesoinDAORetrieveAll() {
 		assertEquals(new Long(0), besoinDAO.count());
-		Besoin besoin1 = besoinDAO.create(  "t05_TestBesoinDAOGetBesoinsAssocies, besoin 1");
-		Besoin besoin11 = besoinDAO.create( "t05_TestBesoinDAOGetBesoinsAssocies, besoin 1.1");
-		besoinDAO.addChild(besoin1, besoin11);
-		Besoin besoin12 = besoinDAO.create( "t05_TestBesoinDAOGetBesoinsAssocies, besoin 1.2");
-		besoinDAO.addChild(besoin1, besoin12);
-		Besoin besoin2 = besoinDAO.create(  "t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.0");
-		Besoin besoin21 = besoinDAO.create( "t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.1");
-		besoinDAO.addChild(besoin2, besoin21);
-		Besoin besoin211 = besoinDAO.create("t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.1.1");
-		besoinDAO.addChild(besoin2, besoin211);
-		Besoin besoin212 = besoinDAO.create("t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.1.2");
-		besoinDAO.addChild(besoin2, besoin212);
-		Besoin besoin22 = besoinDAO.create( "t05_TestBesoinDAOGetBesoinsAssocies, besoin 2.2");
-		assertEquals(new Long(8), besoinDAO.count());
 		
-		// We get the
-		besoinDAO.delete(besoin1);
+		Besoin besoin1 = new BesoinNode("besoin de test t05_TestBesoinDAORetrieveAll 1");
+		besoinDAO.create(besoin1);
 		
-		// We check that there is 0 object in the datastore
-		assertEquals(new Long(0), besoinDAO.count());
+		Besoin besoin11 = new BesoinNode("besoin de test t05_TestBesoinDAORetrieveAll 1.1");
+		besoinDAO.create(besoin11);
+		
+		besoin1.addBesoin(besoin11);
+		besoinDAO.update(besoin1);
+
+		Besoin besoin12 = new BesoinNode("besoin de test t05_TestBesoinDAORetrieveAll 1.2");
+		besoinDAO.create(besoin12);
+		
+		besoin1.addBesoin(besoin12);
+		besoinDAO.update(besoin1);
+		
+		Besoin besoin2 = new BesoinNode("besoin de test t05_TestBesoinDAORetrieveAll 2");
+		besoinDAO.create(besoin2);
+		
+		// We retrieve all objects
+		Set<Besoin> allBesoins = besoinDAO.retrieveAll();
+		
+		// We check that there are 4 objects in the Set
+		assertEquals(new Long(4), new Long(allBesoins.size()));
 	}
-	*/
+
+	/**
+	 * Check AddBesoin
+	 */
+	@Test
+	public final void t06_TestBesoinDAOCheckParentChildRelationship() {
+		assertEquals(new Long(0), besoinDAO.count());
+
+		Besoin besoin1 = new BesoinNode("besoin de test t06_TestBesoinDAOCheckParentChildRelationship 1");
+		besoinDAO.create(besoin1);
+
+		Besoin besoin11 = new BesoinNode("besoin de test t06_TestBesoinDAOCheckParentChildRelationship 1.1");
+		besoinDAO.create(besoin11);
+
+		assertEquals(new Long(2), besoinDAO.count());
+
+		// We add besoin11 as a child of besoin1
+		besoin1.addBesoin(besoin11);
+		besoinDAO.update(besoin1);
+		besoinDAO.update(besoin11);
+
+		Besoin besoin1bis = besoinDAO.retrieve(besoin1.getNom());
+		Besoin besoin11bis = besoinDAO.retrieve(besoin11.getNom());
+		
+		// We check that entities know about each other
+		assertFalse(besoin1bis.getBesoins().isEmpty());
+		assertNotNull(besoin11bis.getParent());
+	}
 	
 }

@@ -28,17 +28,5 @@ import org.springframework.data.neo4j.repository.RelationshipOperationsRepositor
  *
  */
 public interface BesoinRepository extends GraphRepository<BesoinNode>, RelationshipOperationsRepository<BesoinNode> {
-/*
-	// renvoie les besoins associés au besoin dont le nom est passé en paramètre
-	@Query("start besoin=node:Besoin(nom={0}) " +
-			"match (besoin)&lt;-[r:aPourBesoinEnfant]-(autreBesoin) " +
-			"return autreBesoin")
-	Iterable<Besoin> getBesoinsEnfants(String nom);
-
-	// renvoie les besoins associés au besoin dont le nom est passé en paramètre
-	@Query("start besoin=node:Besoin(nom={0}) " +
-			"match (besoin)&lt;-[r:aPourReponse]-(reponse) " +
-			"return reponse")
-	Iterable<Reponse> getReponses(String nom);
-*/
+	
 }

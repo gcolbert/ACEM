@@ -18,7 +18,8 @@
  */
 package eu.ueb.acem.services;
 
-import eu.ueb.acem.dal.gris.EnseignantDAO;
+import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 
 import org.esupportail.commons.services.logging.Logger;
@@ -45,7 +46,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	private final Logger logger = new LoggerImpl(this.getClass());
 
 	@Autowired
-	private EnseignantDAO enseignantDAO;
+	private DAO<Enseignant> enseignantDAO;
 
 	/**
 	 * Constructor.
@@ -62,8 +63,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	public Personne getUser(String uid) {
 		Personne user = enseignantDAO.retrieve(uid);
 		if (user == null) {
-			// On cree l'utilisateur, son nom prend la valeur de l'uid.
-			user = enseignantDAO.create(uid);
+			// TODO : on crée l'utilisateur (ou alors on récupère son profil par le service CAS?)
 			//user.setLogin(uid);
 			//user.setNom(uid);
 			//user.setLanguage("fr");

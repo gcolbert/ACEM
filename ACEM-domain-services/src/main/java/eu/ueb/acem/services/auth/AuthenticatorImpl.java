@@ -71,6 +71,7 @@ public class AuthenticatorImpl implements Serializable, InitializingBean,
 	@Override
 	public Personne getUser() throws Exception {
 		try {
+			/*
 			AuthInfo authInfo = (AuthInfo) ContextUtils.getSessionAttribute(AUTH_INFO_ATTRIBUTE);
 			if (authInfo != null) {
 				Personne user = (Personne) ContextUtils.getSessionAttribute(USER_ATTRIBUTE);
@@ -105,6 +106,7 @@ public class AuthenticatorImpl implements Serializable, InitializingBean,
 				storeToSession(authInfo, user);
 				return user;
 			}
+			*/
 		} catch (Exception e) {
 			String[] args = { e.getMessage() };
 			throw new Exception(I18nUtils.createI18nService().getString("AUTHENTICATION_EXCEPTION.TITLE", args));

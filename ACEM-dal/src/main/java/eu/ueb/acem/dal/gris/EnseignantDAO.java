@@ -1,5 +1,9 @@
 package eu.ueb.acem.dal.gris;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,44 +16,55 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 public class EnseignantDAO implements DAO<Enseignant> {
 
 	@Autowired
-	private EnseignantRepository enseignantRepository;
+	private EnseignantRepository repository;
 	
 	public EnseignantDAO() {
 		
 	}
 	
 	@Override
-	public Enseignant create(String nom) {
-		EnseignantNode enseignant = new EnseignantNode(nom);
-		enseignantRepository.save(enseignant);
-		return enseignant;
+	public void create(Enseignant enseignant) {
+		repository.save((EnseignantNode) enseignant);
 	}
 	
 	@Override
 	public Enseignant retrieve(String nom) {
-		return enseignantRepository.findByPropertyValue("nom", nom);
+		return repository.findByPropertyValue("nom", nom);
+	}
+	
+	@Override
+	public Set<Enseignant> retrieveAll() {
+		Iterable<EnseignantNode> endResults = repository.findAll();
+		Set<Enseignant> set = new HashSet<Enseignant>();
+		if (endResults.iterator() != null) {
+			Iterator<EnseignantNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				set.add(iterator.next());
+			}
+		}
+		return set;
 	}
 	
 	@Override
 	public Enseignant update(Enseignant enseignant) {
 		EnseignantNode EnseignantNode = (EnseignantNode) enseignant;
-		return enseignantRepository.save(EnseignantNode);
+		return repository.save(EnseignantNode);
 	}
 	
 	@Override
 	public void delete(Enseignant enseignant) {
 		EnseignantNode enseignantNode = (EnseignantNode) enseignant;
-		enseignantRepository.delete(enseignantNode);
+		repository.delete(enseignantNode);
 	}
 	
 	@Override
 	public void deleteAll() {
-		enseignantRepository.deleteAll();
+		repository.deleteAll();
 	}
 
 	@Override
 	public Long count() {
-		return enseignantRepository.count();
+		return repository.count();
 	}
 
 }

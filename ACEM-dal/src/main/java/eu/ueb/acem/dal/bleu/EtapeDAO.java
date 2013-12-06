@@ -1,5 +1,9 @@
 package eu.ueb.acem.dal.bleu;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,44 +20,55 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode;
 public class EtapeDAO implements DAO<Etape>{
 
 	@Autowired
-	private EtapeRepository etapeRepository;
+	private EtapeRepository repository;
 	
 	public EtapeDAO() {
 		
 	}
 	
 	@Override
-	public Etape create(String nom) {
-		EtapeNode etape = new EtapeNode(nom);
-		etapeRepository.save(etape);
-		return etape;
+	public void create(Etape etape) {
+		repository.save((EtapeNode) etape);
 	}
 
 	@Override
 	public Etape retrieve(String nom) {
-		return etapeRepository.findByPropertyValue("nom", nom);
+		return repository.findByPropertyValue("nom", nom);
+	}
+
+	@Override
+	public Set<Etape> retrieveAll() {
+		Iterable<EtapeNode> endResults = repository.findAll();
+		Set<Etape> set = new HashSet<Etape>();
+		if (endResults.iterator() != null) {
+			Iterator<EtapeNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				set.add(iterator.next());
+			}
+		}
+		return set;
 	}
 	
 	@Override
 	public Etape update(Etape etape) {
 		EtapeNode etapeNode = (EtapeNode) etape;
-		return etapeRepository.save(etapeNode);
+		return repository.save(etapeNode);
 	}
 	
 	@Override
 	public void delete(Etape etape) {
 		EtapeNode etapeNode = (EtapeNode) etape;
-		etapeRepository.delete(etapeNode);
+		repository.delete(etapeNode);
 	}
 	
 	@Override
 	public void deleteAll() {
-		etapeRepository.deleteAll();
+		repository.deleteAll();
 	}
 
 	@Override
 	public Long count() {
-		return etapeRepository.count();
+		return repository.count();
 	}
-	
+
 }

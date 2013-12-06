@@ -90,4 +90,14 @@ public class ReponseNode implements Reponse {
 		return ressources;
 	}
 
+    @Override
+    public void addBesoin(Besoin besoin) {
+    	besoins.add(besoin);
+    }
+
+	@Override
+	public void addRessource(Ressource ressource) {
+		ressources.add(ressource);
+	}
+    
 }

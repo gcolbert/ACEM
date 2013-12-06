@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.bleu;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -34,44 +38,55 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 public class ReponseDAO implements DAO<Reponse> {
 
 	@Autowired
-	private ReponseRepository reponseRepository;
+	private ReponseRepository repository;
 	
 	public ReponseDAO() {
 		
 	}
 	
 	@Override
-	public Reponse create(String nom) {
-		ReponseNode reponse = new ReponseNode(nom);
-		reponseRepository.save(reponse);
-		return reponse;
+	public void create(Reponse reponse) {
+		repository.save((ReponseNode) reponse);
 	}
 	
 	@Override
 	public Reponse retrieve(String nom) {
-		return reponseRepository.findByPropertyValue("nom", nom);
+		return repository.findByPropertyValue("nom", nom);
+	}
+
+	@Override
+	public Set<Reponse> retrieveAll() {
+		Iterable<ReponseNode> endResults = repository.findAll();
+		Set<Reponse> set = new HashSet<Reponse>();
+		if (endResults.iterator() != null) {
+			Iterator<ReponseNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				set.add(iterator.next());
+			}
+		}
+		return set;
 	}
 	
 	@Override
 	public Reponse update(Reponse reponse) {
 		ReponseNode reponseNode = (ReponseNode) reponse;
-		return reponseRepository.save(reponseNode);
+		return repository.save(reponseNode);
 	}
 	
 	@Override
 	public void delete(Reponse reponse) {
 		ReponseNode reponseNode = (ReponseNode) reponse;
-		reponseRepository.delete(reponseNode);
+		repository.delete(reponseNode);
 	}
 	
 	@Override
 	public void deleteAll() {
-		reponseRepository.deleteAll();
+		repository.deleteAll();
 	}
 
 	@Override
 	public Long count() {
-		return reponseRepository.count();
+		return repository.count();
 	}
 
 }

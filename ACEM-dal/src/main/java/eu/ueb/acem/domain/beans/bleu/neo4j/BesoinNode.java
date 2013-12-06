@@ -46,7 +46,7 @@ public class BesoinNode implements Besoin {
 	@Indexed(indexName = "rechercher-besoin-pedagogique") private String nom;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourParent", direction = OUTGOING)
-	private Besoin parent;
+	private Besoin parent = null;
 	
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinEnfant", direction = OUTGOING)
 	private Set<Besoin> besoins = new HashSet<Besoin>();
@@ -89,28 +89,22 @@ public class BesoinNode implements Besoin {
     public Collection<Besoin> getBesoins() {
     	return besoins;
     }
-
-    public void setBesoins(Collection<Besoin> besoins) {
-    	this.besoins = (Set<Besoin>) besoins;
-    }
     
     @Override
     public Collection<Reponse> getReponses() {
     	return reponses;
     }
-
-    public void setReponses(Collection<Reponse> reponses) {
-    	this.reponses = (Set<Reponse>) reponses;
-    }
     
     @Override
     public void addBesoin(Besoin besoin) {
     	besoins.add(besoin);
+    	besoin.setParent(this);
     }
     
     @Override
     public void addReponse(Reponse reponse) {
    		reponses.add(reponse);
+   		reponse.addBesoin(this);
     }
 
     @Override

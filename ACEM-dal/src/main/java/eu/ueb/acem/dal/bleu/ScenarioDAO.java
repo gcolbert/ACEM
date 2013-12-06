@@ -1,5 +1,9 @@
 package eu.ueb.acem.dal.bleu;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,44 +16,55 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 public class ScenarioDAO implements DAO<Scenario>{
 
 	@Autowired
-	private ScenarioRepository scenarioRepository;
+	private ScenarioRepository repository;
 	
 	public ScenarioDAO() {
 		
 	}
 	
 	@Override
-	public Scenario create(String nom) {
-		ScenarioNode scenario = new ScenarioNode(nom);
-		scenarioRepository.save(scenario);
-		return scenario;
+	public void create(Scenario scenario) {
+		repository.save((ScenarioNode) scenario);
 	}
 	
 	@Override
 	public Scenario retrieve(String nom) {
-		return scenarioRepository.findByPropertyValue("nom", nom);
+		return repository.findByPropertyValue("nom", nom);
+	}
+	
+	@Override
+	public Set<Scenario> retrieveAll() {
+		Iterable<ScenarioNode> endResults = repository.findAll();
+		Set<Scenario> set = new HashSet<Scenario>();
+		if (endResults.iterator() != null) {
+			Iterator<ScenarioNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				set.add(iterator.next());
+			}
+		}
+		return set;
 	}
 	
 	@Override
 	public Scenario update(Scenario scenario) {
 		ScenarioNode scenarioNode = (ScenarioNode) scenario;
-		return scenarioRepository.save(scenarioNode);
+		return repository.save(scenarioNode);
 	}
 	
 	@Override
 	public void delete(Scenario scenario) {
 		ScenarioNode scenarioNode = (ScenarioNode) scenario;
-		scenarioRepository.delete(scenarioNode);
+		repository.delete(scenarioNode);
 	}
 	
 	@Override
 	public void deleteAll() {
-		scenarioRepository.deleteAll();
+		repository.deleteAll();
 	}
 
 	@Override
 	public Long count() {
-		return scenarioRepository.count();
+		return repository.count();
 	}
 	
 }
