@@ -49,6 +49,7 @@ public class BesoinReponseTest {
 	public final void t01_TestGetBesoinsRacines() {
 		assertEquals(new Long(0), besoinReponseService.getBesoinDAO().count());
 
+		// TODO : trouver comment ne pas appeler BesoinNode (on est dans la couche "services")
 		Besoin besoin1 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1");
 		Besoin besoin11 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1.1", besoin1);
 		Besoin besoin111 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1.1.1", besoin11);

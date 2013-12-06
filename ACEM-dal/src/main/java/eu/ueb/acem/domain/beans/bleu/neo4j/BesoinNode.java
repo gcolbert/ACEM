@@ -21,7 +21,6 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -86,12 +85,12 @@ public class BesoinNode implements Besoin {
     }
 
     @Override
-    public Collection<Besoin> getBesoins() {
+    public Set<Besoin> getBesoins() {
     	return besoins;
     }
     
     @Override
-    public Collection<Reponse> getReponses() {
+    public Set<Reponse> getReponses() {
     	return reponses;
     }
     

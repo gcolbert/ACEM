@@ -19,7 +19,7 @@
 package eu.ueb.acem.domain.beans.bleu;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author gcolbert @since 2013-11-20
@@ -33,9 +33,9 @@ public interface Besoin extends Serializable {
 
     public void setNom(String nom);
 
-    public Collection<Besoin> getBesoins();
+    public Set<Besoin> getBesoins();
 
-    public Collection<Reponse> getReponses();
+    public Set<Reponse> getReponses();
     
     public void addBesoin(Besoin besoin);
     

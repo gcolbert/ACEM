@@ -2,7 +2,6 @@ package eu.ueb.acem.services;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +32,6 @@ public class BesoinReponseServiceImpl implements BesoinReponseService {
 		return reponseDAO;
 	}
 	
-	@Override
-	public List<Besoin> getChildren(Besoin parent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void addChild(Besoin parent, Besoin enfant) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public Set<Besoin> getBesoinsRacines() {
 		Set<Besoin> besoins = besoinDAO.retrieveAll();
