@@ -20,7 +20,7 @@
 
 	<context:annotation-config/>
 
- 	<context:component-scan base-package="eu.ueb.acem"/>
+ 	<context:component-scan base-package="eu.ueb.acem.services"/>
 
 	<import resource="classpath*:META-INF/ACEM-domain-services-init.xml"/>
 	
