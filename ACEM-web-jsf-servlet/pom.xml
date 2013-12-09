@@ -121,18 +121,5 @@
 		        </configuration>
 		    </plugin>
 	    </plugins>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-			<testResource>
-				<directory>src/test/java</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/*-context.xml</include>
-				</includes>
-			</testResource>
-		</testResources>
     </build>
 </project>
