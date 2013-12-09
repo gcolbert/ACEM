@@ -63,6 +63,13 @@
         
 		<!-- Test -->
 		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework-version}</version>
@@ -88,18 +95,19 @@
 		</dependency>
     </dependencies>
 	<build>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-			<testResource>
-				<directory>src/test/java</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/*-context.xml</include>
-				</includes>
-			</testResource>
-		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 </project>

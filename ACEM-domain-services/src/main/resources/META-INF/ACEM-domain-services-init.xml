@@ -15,5 +15,6 @@
 	<import resource="classpath*:META-INF/ACEM-dal-context.xml" />
 
 	<bean id="besoinReponseService" class="eu.ueb.acem.services.BesoinReponseServiceImpl"/>
-	 
+	<bean id="domainService" class="eu.ueb.acem.services.DomainServiceImpl"/>
+
 </beans>

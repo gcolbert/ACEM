@@ -12,7 +12,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:neo4j="http://www.springframework.org/schema/data/neo4j"	
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context 
@@ -22,6 +21,9 @@
 
  	<context:component-scan base-package="eu.ueb.acem.services"/>
 
-	<import resource="classpath*:META-INF/ACEM-domain-services-init.xml"/>
-	
+	<import resource="classpath*:dal-test-context.xml"/>
+
+	<bean id="besoinReponseService" class="eu.ueb.acem.services.BesoinReponseServiceImpl"/>
+	<bean id="domainService" class="eu.ueb.acem.services.DomainServiceImpl"/>
+
 </beans>
