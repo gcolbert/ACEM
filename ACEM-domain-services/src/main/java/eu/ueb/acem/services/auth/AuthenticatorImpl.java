@@ -5,10 +5,6 @@ package eu.ueb.acem.services.auth;
 
 import java.io.Serializable;
 
-import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.domain.beans.gris.Personne;
-
-import org.esupportail.commons.services.authentication.AuthUtils;
 import org.esupportail.commons.services.authentication.AuthenticationService;
 import org.esupportail.commons.services.authentication.info.AuthInfo;
 import org.esupportail.commons.services.i18n.I18nUtils;
@@ -17,6 +13,9 @@ import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.Assert;
 import org.esupportail.commons.utils.ContextUtils;
 import org.springframework.beans.factory.InitializingBean;
+
+import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.domain.beans.gris.Personne;
 
 /**
  * @author Grégoire Colbert @since 2013-11-25

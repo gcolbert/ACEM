@@ -18,8 +18,8 @@
  */
 package eu.ueb.acem.domain.beans.bleu.neo4j;
 
-import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Collection;
 import java.util.HashSet;

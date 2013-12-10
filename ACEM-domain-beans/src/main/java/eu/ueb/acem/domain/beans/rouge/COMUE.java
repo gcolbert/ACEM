@@ -22,6 +22,6 @@ package eu.ueb.acem.domain.beans.rouge;
  * @author gcolbert @since 2013-11-20
  *
  */
-public interface CUE extends Organisation {
+public interface COMUE extends Organisation {
 
 }

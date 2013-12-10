@@ -18,10 +18,10 @@
  */
 package eu.ueb.acem.dal.jaune.neo4j;
 
-import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
-
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
+
+import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
 
 /**
  * @author gcolbert @since 2013-11-20

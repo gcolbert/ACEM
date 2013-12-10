@@ -18,10 +18,10 @@
  */
 package eu.ueb.acem.dal.vert.neo4j;
 
-import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
-
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
+
+import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
 
 /**
  * @author gcolbert @since 2013-11-20

@@ -25,7 +25,7 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.rouge.CUE;
+import eu.ueb.acem.domain.beans.rouge.COMUE;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 
 /**
@@ -41,8 +41,8 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 
 	@Indexed(indexName = "rechercher-etablissement") private String nom;
 
-	@RelatedTo(elementClass = CUE.class, type = "estMembreDe", direction = OUTGOING)
-	CUE cue;
+	@RelatedTo(elementClass = COMUE.class, type = "estMembreDe", direction = OUTGOING)
+	COMUE cue;
 
     public EtablissementNode()  {
     }
@@ -52,7 +52,7 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
     	this.setNom(nom);
     }
 
-	public CUE getCUE() {
+	public COMUE getCUE() {
 		return cue;
 	}
 

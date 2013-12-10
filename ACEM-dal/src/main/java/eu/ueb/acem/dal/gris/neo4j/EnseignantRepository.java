@@ -10,10 +10,10 @@
  ******************************************************************************/
 package eu.ueb.acem.dal.gris.neo4j;
 
-import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
-
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
+
+import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
  * @author gcolbert @since 2013-11-20

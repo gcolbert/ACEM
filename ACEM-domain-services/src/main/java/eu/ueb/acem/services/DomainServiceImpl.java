@@ -18,14 +18,14 @@
  */
 package eu.ueb.acem.services;
 
-import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.Personne;
-
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.gris.Personne;
 
 /**
  * @author Grégoire Colbert @since 2013-11-25

@@ -27,11 +27,11 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.gris.Gestionnaire;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
+import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.gris.Gestionnaire;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
 

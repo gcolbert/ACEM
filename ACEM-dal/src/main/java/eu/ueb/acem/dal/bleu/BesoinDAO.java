@@ -46,7 +46,7 @@ public class BesoinDAO implements DAO<Besoin> {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private BesoinRepository besoinRepository;
+	private BesoinRepository repository;
 	
 	public BesoinDAO() {
 		
@@ -54,17 +54,17 @@ public class BesoinDAO implements DAO<Besoin> {
 	
 	@Override
 	public void create(Besoin besoin) {
-		besoinRepository.save((BesoinNode) besoin);
+		repository.save((BesoinNode) besoin);
 	}
 
 	@Override
 	public Besoin retrieve(String nom) {
-		return besoinRepository.findByPropertyValue("nom", nom);
+		return repository.findByPropertyValue("nom", nom);
 	}
 
 	@Override
 	public Set<Besoin> retrieveAll() {
-		Iterable<BesoinNode> endResults = besoinRepository.findAll();
+		Iterable<BesoinNode> endResults = repository.findAll();
 		Set<Besoin> set = new HashSet<Besoin>();
 		if (endResults.iterator() != null) {
 			Iterator<BesoinNode> iterator = endResults.iterator();
@@ -77,22 +77,22 @@ public class BesoinDAO implements DAO<Besoin> {
 	
 	@Override
 	public Besoin update(Besoin besoin) {
-		return besoinRepository.save((BesoinNode) besoin);
+		return repository.save((BesoinNode) besoin);
 	}
 	
 	@Override
 	public void delete(Besoin besoin) {
-		besoinRepository.delete((BesoinNode) besoin);
+		repository.delete((BesoinNode) besoin);
 	}
 	
 	@Override
 	public void deleteAll() {
-		besoinRepository.deleteAll();
+		repository.deleteAll();
 	}
 
 	@Override
 	public Long count() {
-		return besoinRepository.count();
+		return repository.count();
 	}
 	
 }

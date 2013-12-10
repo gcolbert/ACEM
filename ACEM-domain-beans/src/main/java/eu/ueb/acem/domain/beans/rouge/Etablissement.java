@@ -24,6 +24,6 @@ package eu.ueb.acem.domain.beans.rouge;
  */
 public interface Etablissement extends Organisation {
 
-	public CUE getCUE();
+	public COMUE getCUE();
 
 }

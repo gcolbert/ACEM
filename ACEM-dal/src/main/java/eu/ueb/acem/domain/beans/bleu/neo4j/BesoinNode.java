@@ -18,18 +18,18 @@
  */
 package eu.ueb.acem.domain.beans.bleu.neo4j;
 
-import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
+
+import eu.ueb.acem.domain.beans.bleu.Besoin;
+import eu.ueb.acem.domain.beans.bleu.Reponse;
 
 /**
  * @author gcolbert @since 2013-11-20
