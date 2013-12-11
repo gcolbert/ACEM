@@ -6,7 +6,7 @@ import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 
-public interface BesoinReponseService {
+public interface BesoinsReponsesService {
 
 	Set<Besoin> getBesoinsRacines();
 	

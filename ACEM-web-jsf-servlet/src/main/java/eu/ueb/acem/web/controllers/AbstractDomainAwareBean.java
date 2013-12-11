@@ -1,7 +1,3 @@
-/**
- * ESUP-Portail Blank Application - Copyright (c) 2006 ESUP-Portail consortium
- * http://sourcesup.cru.fr/projects/ACEM
- */
 package eu.ueb.acem.web.controllers;
 
 import java.util.Locale;
@@ -75,7 +71,7 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 	 * @return the current user.
 	 */
 	protected Personne getCurrentUser() throws Exception {
-		// TODO this method should be overriden
+		// this method should be overriden
 		return null;
 	}
 
@@ -84,7 +80,6 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 	 */
 	@Override
 	public Locale getCurrentUserLocale() {
-		/*
 		if (logger.isDebugEnabled()) {
 			logger.debug(this.getClass().getName() + ".getCurrentUserLocale()");
 		}
@@ -114,8 +109,6 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 			logger.debug("language for user '" + currentUser.getLogin() + "' is '" + locale + "'");
 		}
 		return locale;
-		*/
-		return new Locale("fr");
 	}
 	
 	/**

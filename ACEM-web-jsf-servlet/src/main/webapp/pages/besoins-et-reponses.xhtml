@@ -8,7 +8,7 @@
 	<ui:define name="content">
 		<p:panel header="Besoins et réponses">
 			<h:form>  
-    			<p:tree value="#{treeBean.root}" var="node" id="tree">  
+    			<p:tree value="#{besoinsReponsesController.data}" var="node" id="tree">  
         			<p:treeNode>  
             			<h:outputText value="#{node}"/>  
         			</p:treeNode>  

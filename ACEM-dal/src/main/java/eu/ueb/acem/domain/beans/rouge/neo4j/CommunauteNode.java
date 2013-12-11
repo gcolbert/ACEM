@@ -22,34 +22,26 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
-import eu.ueb.acem.domain.beans.rouge.COMUE;
+import eu.ueb.acem.domain.beans.rouge.Communaute;
 
 /**
  * @author gcolbert @since 2013-11-20
  *
  */
 @NodeEntity
-public class COMUENode extends OrganisationNode implements COMUE {
+public class CommunauteNode extends OrganisationNode implements Communaute {
 
 	private static final long serialVersionUID = 1861762804925897713L;
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-cue") private String nom;
+	@Indexed(indexName = "rechercher-communaute") private String nom;
 	
-    public COMUENode()  {
+    public CommunauteNode()  {
     }
 
-    public COMUENode(String nom) {
+    public CommunauteNode(String nom) {
     	this.setNom(nom);
     }
-
-    public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
 	
 }

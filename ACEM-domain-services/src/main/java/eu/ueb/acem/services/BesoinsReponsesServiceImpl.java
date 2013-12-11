@@ -10,7 +10,7 @@ import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 
-public class BesoinReponseServiceImpl implements BesoinReponseService {
+public class BesoinsReponsesServiceImpl implements BesoinsReponsesService {
 	
 	@Autowired
 	DAO<Besoin> besoinDAO;
@@ -18,7 +18,7 @@ public class BesoinReponseServiceImpl implements BesoinReponseService {
 	@Autowired
 	DAO<Reponse> reponseDAO;
 	
-	public BesoinReponseServiceImpl() {
+	public BesoinsReponsesServiceImpl() {
 		
 	}
 

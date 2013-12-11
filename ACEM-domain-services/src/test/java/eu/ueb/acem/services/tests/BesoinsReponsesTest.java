@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
-import eu.ueb.acem.services.BesoinReponseService;
+import eu.ueb.acem.services.BesoinsReponsesService;
 
 /**
  * @author gcolbert @since 2013-11-27
@@ -22,24 +22,24 @@ import eu.ueb.acem.services.BesoinReponseService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/domain-services-test-context.xml")
-public class BesoinReponseTest {
+public class BesoinsReponsesTest {
 
 	@Autowired
-	private BesoinReponseService besoinReponseService;
+	private BesoinsReponsesService besoinsReponsesService;
 	
-	public BesoinReponseTest() {
+	public BesoinsReponsesTest() {
 	}
 
 	@Before
 	public void before() {
-		besoinReponseService.getBesoinDAO().deleteAll();
-		besoinReponseService.getReponseDAO().deleteAll();
+		besoinsReponsesService.getBesoinDAO().deleteAll();
+		besoinsReponsesService.getReponseDAO().deleteAll();
 	}
 
 	@After
 	public void after() {
-		besoinReponseService.getBesoinDAO().deleteAll();
-		besoinReponseService.getReponseDAO().deleteAll();
+		besoinsReponsesService.getBesoinDAO().deleteAll();
+		besoinsReponsesService.getReponseDAO().deleteAll();
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class BesoinReponseTest {
 	 */
 	@Test
 	public final void t01_TestGetBesoinsRacines() {
-		assertEquals(new Long(0), besoinReponseService.getBesoinDAO().count());
+		assertEquals(new Long(0), besoinsReponsesService.getBesoinDAO().count());
 
 		// TODO : trouver comment ne pas appeler BesoinNode (on est dans la couche "services")
 		Besoin besoin1 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1");
@@ -59,16 +59,16 @@ public class BesoinReponseTest {
 		Besoin besoin2 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 2");
 		Besoin besoin3 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 3");
 		
-		besoinReponseService.getBesoinDAO().create(besoin1);
-		besoinReponseService.getBesoinDAO().create(besoin11);
-		besoinReponseService.getBesoinDAO().create(besoin111);
-		besoinReponseService.getBesoinDAO().create(besoin112);
-		besoinReponseService.getBesoinDAO().create(besoin12);
-		besoinReponseService.getBesoinDAO().create(besoin13);
-		besoinReponseService.getBesoinDAO().create(besoin2);
-		besoinReponseService.getBesoinDAO().create(besoin3);
+		besoinsReponsesService.getBesoinDAO().create(besoin1);
+		besoinsReponsesService.getBesoinDAO().create(besoin11);
+		besoinsReponsesService.getBesoinDAO().create(besoin111);
+		besoinsReponsesService.getBesoinDAO().create(besoin112);
+		besoinsReponsesService.getBesoinDAO().create(besoin12);
+		besoinsReponsesService.getBesoinDAO().create(besoin13);
+		besoinsReponsesService.getBesoinDAO().create(besoin2);
+		besoinsReponsesService.getBesoinDAO().create(besoin3);
 
-		Set<Besoin> besoinsRacines = besoinReponseService.getBesoinsRacines();
+		Set<Besoin> besoinsRacines = besoinsReponsesService.getBesoinsRacines();
 		assertEquals(3, besoinsRacines.size());
 	}
 	

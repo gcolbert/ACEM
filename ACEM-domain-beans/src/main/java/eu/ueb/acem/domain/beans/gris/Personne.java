@@ -40,4 +40,8 @@ public interface Personne extends Serializable {
 	
 	public void setLogin(String login);
 
+	public String getLanguage();
+
+	public void setLanguage(String language);
+
 }

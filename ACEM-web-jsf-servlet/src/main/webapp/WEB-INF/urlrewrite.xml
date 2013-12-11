@@ -58,6 +58,11 @@
 	    <to>/pages/services-supports.xhtml</to>
 	</rule>
 
+	<rule>
+	    <from>^/exception$</from>
+	    <to>/templates/exceptions/exception.xhtml</to>
+	</rule>
+
     <!--
 
     INSTALLATION

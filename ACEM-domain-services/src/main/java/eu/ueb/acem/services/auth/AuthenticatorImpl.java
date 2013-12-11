@@ -5,6 +5,7 @@ package eu.ueb.acem.services.auth;
 
 import java.io.Serializable;
 
+import org.esupportail.commons.services.authentication.AuthUtils;
 import org.esupportail.commons.services.authentication.AuthenticationService;
 import org.esupportail.commons.services.authentication.info.AuthInfo;
 import org.esupportail.commons.services.i18n.I18nUtils;
@@ -13,9 +14,11 @@ import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.Assert;
 import org.esupportail.commons.utils.ContextUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-25
@@ -53,6 +56,7 @@ public class AuthenticatorImpl implements Serializable, InitializingBean,
 	/**
 	 * DAO for user
 	 */
+	@Autowired
 	private DAO<Personne> personneDAO;
 	
 	/**
@@ -70,7 +74,6 @@ public class AuthenticatorImpl implements Serializable, InitializingBean,
 	@Override
 	public Personne getUser() throws Exception {
 		try {
-			/*
 			AuthInfo authInfo = (AuthInfo) ContextUtils.getSessionAttribute(AUTH_INFO_ATTRIBUTE);
 			if (authInfo != null) {
 				Personne user = (Personne) ContextUtils.getSessionAttribute(USER_ATTRIBUTE);
@@ -93,7 +96,7 @@ public class AuthenticatorImpl implements Serializable, InitializingBean,
 				if (logger.isDebugEnabled()) {
 					logger.debug("Shibboleth authentication");
 				}
-				Personne user = personneDAO.create(authInfo.getId());
+				Personne user = new EnseignantNode(authInfo.getId());
 				storeToSession(authInfo, user);
 				return user;
 			}
@@ -101,14 +104,13 @@ public class AuthenticatorImpl implements Serializable, InitializingBean,
 				if (logger.isDebugEnabled()) {
 					logger.debug("CAS authentication");
 				}
-				Personne user = personneDAO.create(authInfo.getId());
+				Personne user = new EnseignantNode(authInfo.getId());
 				storeToSession(authInfo, user);
 				return user;
 			}
-			*/
 		} catch (Exception e) {
 			String[] args = { e.getMessage() };
-			throw new Exception(I18nUtils.createI18nService().getString("AUTHENTICATION_EXCEPTION.TITLE", args));
+			throw new Exception(I18nUtils.createI18nService().getString("AUTHENTICATION_EXCEPTION.TITLE", (Object[]) args));
 		}
 		return null;
 	}

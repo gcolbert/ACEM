@@ -45,5 +45,10 @@
 		<description>A bean to manage exception reports.</description>
 	</bean>
 
+	<bean id="besoinsReponsesController"
+		class="eu.ueb.acem.web.controllers.BesoinsReponsesController"
+		scope="session">
+		<description>A bean for the "besoins-reponses" page.</description>
+	</bean>
 
 </beans>

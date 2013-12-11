@@ -46,19 +46,12 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 
 	public ComposanteNode()  {
     }
-
+	
     public ComposanteNode(String nom) {
     	this.setNom(nom);
     }
 
-    public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
+	@Override
     public Etablissement getEtablissement() {
 		return etablissement;
 	}

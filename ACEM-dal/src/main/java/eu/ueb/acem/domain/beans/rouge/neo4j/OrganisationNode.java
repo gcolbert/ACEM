@@ -65,18 +65,22 @@ public abstract class OrganisationNode implements Organisation {
 		this.id = id;
 	}
 
+	@Override
 	public String getNom() {
 		return nom;
 	}
 
+	@Override
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
+	@Override
 	public Set<Ressource> getRessourcesPossedees() {
 		return ressourcesPossedees;
 	}
 
+	@Override
 	public Set<Ressource> getRessourcesVues() {
 		return ressourcesVues;
 	}

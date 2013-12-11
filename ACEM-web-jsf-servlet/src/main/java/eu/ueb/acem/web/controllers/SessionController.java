@@ -1,7 +1,3 @@
-/**
- * ESUP-Portail Blank Application - Copyright (c) 2006 ESUP-Portail consortium
- * http://sourcesup.cru.fr/projects/ACEM
- */
 package eu.ueb.acem.web.controllers;
 
 import java.io.IOException;
@@ -62,10 +58,8 @@ public class SessionController extends AbstractDomainAwareBean {
 	 */
 	@Override
 	public void afterPropertiesSetInternal() {
-		Assert.notNull(this.exceptionController, "property exceptionController of class " 
-				+ this.getClass().getName() + " can not be null");
-		Assert.notNull(this.authenticator, "property authenticator of class " 
-				+ this.getClass().getName() + " can not be null");
+		Assert.notNull(this.exceptionController, "property exceptionController of class " + this.getClass().getName() + " can not be null");
+		Assert.notNull(this.authenticator, "property authenticator of class " + this.getClass().getName() + " can not be null");
 	}
 
 	

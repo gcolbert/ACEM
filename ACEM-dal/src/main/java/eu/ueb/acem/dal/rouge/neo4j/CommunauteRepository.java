@@ -21,12 +21,12 @@ package eu.ueb.acem.dal.rouge.neo4j;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
 
-import eu.ueb.acem.domain.beans.rouge.neo4j.COMUENode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
 
 /**
  * @author gcolbert @since 2013-11-20
  *
  */
-public interface COMUERepository extends GraphRepository<COMUENode>, RelationshipOperationsRepository<COMUENode> {
+public interface CommunauteRepository extends GraphRepository<CommunauteNode>, RelationshipOperationsRepository<CommunauteNode> {
 
 }

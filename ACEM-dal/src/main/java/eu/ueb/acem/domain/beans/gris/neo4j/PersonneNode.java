@@ -45,6 +45,8 @@ public abstract class PersonneNode implements Personne {
 	private OrganisationNode organisation;
 	
 	private String login;
+	
+	private String language = "fr";
 
 	@Override
 	public Long getId() {
@@ -78,5 +80,15 @@ public abstract class PersonneNode implements Personne {
 	@Override
 	public void setLogin(String login) {
 		this.login = login;
+	}
+	
+	@Override
+	public String getLanguage() {
+		return language;
+	}
+	
+	@Override
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }

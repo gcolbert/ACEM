@@ -51,6 +51,7 @@ public class ServiceNode extends OrganisationNode implements Service {
     	this.setNom(nom);
     }
 
+	@Override
 	public Etablissement getEtablissement() {
 		return etablissement;
 	}

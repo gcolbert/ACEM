@@ -25,7 +25,7 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.rouge.COMUE;
+import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 
 /**
@@ -41,8 +41,8 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 
 	@Indexed(indexName = "rechercher-etablissement") private String nom;
 
-	@RelatedTo(elementClass = COMUE.class, type = "estMembreDe", direction = OUTGOING)
-	COMUE cue;
+	@RelatedTo(elementClass = Communaute.class, type = "estMembreDe", direction = OUTGOING)
+	Communaute communaute;
 
     public EtablissementNode()  {
     }
@@ -52,8 +52,9 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
     	this.setNom(nom);
     }
 
-	public COMUE getCUE() {
-		return cue;
+    @Override
+	public Communaute getCommunaute() {
+		return communaute;
 	}
 
 }

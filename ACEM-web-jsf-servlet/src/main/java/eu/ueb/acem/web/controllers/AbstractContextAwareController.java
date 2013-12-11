@@ -1,7 +1,3 @@
-/**
- * ESUP-Portail Blank Application - Copyright (c) 2006 ESUP-Portail consortium
- * http://sourcesup.cru.fr/projects/ACEM
- */
 package eu.ueb.acem.web.controllers;
 
 import org.esupportail.commons.utils.Assert;
@@ -46,8 +42,7 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	 */
 	@Override
 	public void afterPropertiesSetInternal() {
-		Assert.notNull(this.sessionController, "property sessionController of class " 
-				+ this.getClass().getName() + " can not be null");
+		Assert.notNull(this.sessionController, "property sessionController of class " + this.getClass().getName() + " can not be null");
 	}
 
 	/*

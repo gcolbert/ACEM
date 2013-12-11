@@ -42,6 +42,25 @@ public class TestBeansLoaded extends TestCase {
 		assertFalse(context.containsBean("inexistantBean"));
 	}
 
+	@Test
+	public void testBesoinsReponsesController() {
+		if (ApplicationContextHolder.getContext() == null) {
+			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier application.xml");
+		}
+		ApplicationContext context = ApplicationContextHolder.getContext();
+		assertTrue(context.containsBean("besoinsReponsesController"));
+	}
+	
+	@Test
+	public void testBesoinsReponsesService() {
+		if (ApplicationContextHolder.getContext() == null) {
+			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier application.xml");
+		}
+		ApplicationContext context = ApplicationContextHolder.getContext();
+		assertTrue(context.containsBean("besoinsReponsesService"));
+	}
+
+	
 /*
     @Test
     public void testSpringBeans() {
