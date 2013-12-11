@@ -46,6 +46,7 @@
 	</bean>
 
 	<bean id="besoinsReponsesController"
+		parent="abstractContextAwareController"
 		class="eu.ueb.acem.web.controllers.BesoinsReponsesController"
 		scope="session">
 		<description>A bean for the "besoins-reponses" page.</description>

@@ -67,5 +67,14 @@
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
+
+	<navigation-rule>
+		<description>Retour d'exception</description>
+		<navigation-case>
+			<from-outcome>applicationRestarted</from-outcome>
+			<to-view-id>/pages/accueil.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
  
 </faces-config>
