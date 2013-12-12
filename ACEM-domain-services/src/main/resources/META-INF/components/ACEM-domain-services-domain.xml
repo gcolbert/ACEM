@@ -35,7 +35,7 @@
 		</aop:aspect>
 	</aop:config>
  -->
-
+<!-- 
 	<bean id="domainService" class="eu.ueb.acem.services.DomainServiceImpl"/>
-
+ -->
 </beans>

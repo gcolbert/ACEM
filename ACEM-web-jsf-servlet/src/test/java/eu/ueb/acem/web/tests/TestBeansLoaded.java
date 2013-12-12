@@ -22,42 +22,33 @@ public class TestBeansLoaded extends TestCase {
 
 	@Before
 	public void before() {
+		if (ApplicationContextHolder.getContext() == null) {
+			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier application.xml");
+		}
 	}
 	
 	@Test
 	public void testTreeBean() {
-		if (ApplicationContextHolder.getContext() == null) {
-			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier application.xml");
-		}
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue(context.containsBean("treeBean"));
+		assertTrue("Le composant treeBean n'est pas chargé", context.containsBean("treeBean"));
 	}
 
 	@Test
 	public void testBeanInexistant() {
-		if (ApplicationContextHolder.getContext() == null) {
-			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier application.xml");
-		}
 		ApplicationContext context = ApplicationContextHolder.getContext();
 		assertFalse(context.containsBean("inexistantBean"));
 	}
 
 	@Test
 	public void testBesoinsReponsesController() {
-		if (ApplicationContextHolder.getContext() == null) {
-			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier application.xml");
-		}
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue(context.containsBean("besoinsReponsesController"));
+		assertTrue("Le composant besoinsReponsesController n'est pas chargé", context.containsBean("besoinsReponsesController"));
 	}
 	
 	@Test
 	public void testBesoinsReponsesService() {
-		if (ApplicationContextHolder.getContext() == null) {
-			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier application.xml");
-		}
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue(context.containsBean("besoinsReponsesService"));
+		assertTrue("Le composant besoinsReponsesService n'est pas chargé", context.containsBean("besoinsReponsesService"));
 	}
 
 	

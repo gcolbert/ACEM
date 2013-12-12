@@ -69,6 +69,11 @@
 			<artifactId>cglib</artifactId>
 			<version>${cglib-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax.validation-version}</version>
+		</dependency>
 		
 		<!-- Test -->
 		<dependency>
@@ -97,12 +102,6 @@
 			<version>${junit-version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>${javax.validation-version}</version>
-			<scope>test</scope>
-		</dependency>		
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>

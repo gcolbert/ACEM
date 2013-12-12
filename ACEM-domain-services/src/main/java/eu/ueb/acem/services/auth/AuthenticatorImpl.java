@@ -17,16 +17,17 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.gris.Gestionnaire;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-25
+ * @author Grégoire Colbert (Université européenne de Bretagne) @since 2013-11-25
  * @author Yves Deschamps (Universite de Lille 1) - 2010
  * 
  */
-public class AuthenticatorImpl implements Serializable, InitializingBean,
-		Authenticator {
+public class AuthenticatorImpl implements Serializable, InitializingBean, Authenticator {
 
 	/**
 	 * The serialization id.
@@ -57,7 +58,9 @@ public class AuthenticatorImpl implements Serializable, InitializingBean,
 	 * DAO for user
 	 */
 	@Autowired
-	private DAO<Personne> personneDAO;
+	private DAO<Enseignant> enseignantDAO;
+	@Autowired
+	private DAO<Gestionnaire> gestionnaireDAO;
 	
 	/**
 	 * Bean constructor.

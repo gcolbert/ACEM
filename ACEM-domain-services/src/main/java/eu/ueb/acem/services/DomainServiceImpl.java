@@ -22,6 +22,7 @@ import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
@@ -32,6 +33,7 @@ import eu.ueb.acem.domain.beans.gris.Personne;
  * @author Yves Deschamps (Universite de Lille 1) - 2010
  * 
  */
+@Service("domainService")
 public class DomainServiceImpl implements DomainService, InitializingBean {
 
 	/**

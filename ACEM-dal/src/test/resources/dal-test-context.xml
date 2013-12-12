@@ -28,7 +28,7 @@
 
   	<neo4j:repositories base-package="eu.ueb.acem.dal"/>
 
- 	<!-- CHOIX 1 : pour une base temporaire créé dynamiquement dans le répertoire "target/neo4j-test-db" -->
+ 	<!-- CHOIX 1 : pour utiliser une base temporaire créée dynamiquement dans le répertoire "target/neo4j-test-db" -->
 	<neo4j:config storeDirectory="target/neo4j-test-db" />
  	
  	<!-- CHOIX 2 : pour utiliser un serveur autonome -->

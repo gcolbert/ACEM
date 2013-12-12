@@ -9,8 +9,8 @@
 		<p:panel header="Besoins et réponses">
 			<h:form>  
     			<p:tree value="#{besoinsReponsesController.data}" var="node" id="tree">  
-        			<p:treeNode>  
-            			<h:outputText value="#{node}"/>  
+        			<p:treeNode id="treeNode">  
+            			<h:outputText value="#{node}" id="lblNode"/>  
         			</p:treeNode>  
     			</p:tree>  
 			</h:form>  

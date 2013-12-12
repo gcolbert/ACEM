@@ -5,7 +5,13 @@
     <artifactId>ACEM</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>An Blank Application to start your project</description>
+    <description>Atelier de Création d'Enseignement Multimodal</description>
+    <properties>
+    	<!-- TODO 1 Pick the version of jetty you want. -->
+        <jetty.version>9.1.0.v20131115</jetty.version>
+        <esupcommons.version>0.3.2</esupcommons.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <repositories>
         <repository>
             <id>esup-snapshots</id>
@@ -107,7 +113,9 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
+                <!-- 
                 <configuration>
+                	<jvmArgs>-Xmx512M -XX:MaxPermSize=512m</jvmArgs>
                     <contextPath>/</contextPath>
 					<scanIntervalSeconds>3</scanIntervalSeconds>
 					<scanTargetPatterns>
@@ -123,15 +131,18 @@
 						</scanTargetPattern>
 					</scanTargetPatterns>
                 </configuration>
+                <executions>
+                	<execution>
+                		<phase>test</phase>
+                		<goals>
+                			<goal>run-exploded</goal>
+                		</goals>
+                	</execution>
+                </executions>
+                -->
             </plugin>
         </plugins>
     </build>
-    <properties>
-    	<!-- TODO 1 Pick the version of jetty you want. -->
-        <jetty.version>9.1.0.v20131115</jetty.version>
-        <esupcommons.version>0.3.2</esupcommons.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
   <modules>
     <!-- <module>ACEM-batch</module> -->
     <module>ACEM-dal</module>
