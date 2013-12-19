@@ -43,7 +43,7 @@ public class ReponseDAO implements DAO<Reponse> {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final static Logger logger = LoggerFactory.getLogger(ReponseDAO.class);
 
 	@Autowired
 	private ReponseRepository repository;
@@ -77,14 +77,12 @@ public class ReponseDAO implements DAO<Reponse> {
 	
 	@Override
 	public Reponse update(Reponse reponse) {
-		ReponseNode reponseNode = (ReponseNode) reponse;
-		return repository.save(reponseNode);
+		return repository.save((ReponseNode) reponse);
 	}
 	
 	@Override
 	public void delete(Reponse reponse) {
-		ReponseNode reponseNode = (ReponseNode) reponse;
-		repository.delete(reponseNode);
+		repository.delete((ReponseNode) reponse);
 	}
 	
 	@Override

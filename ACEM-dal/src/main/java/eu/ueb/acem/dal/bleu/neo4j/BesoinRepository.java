@@ -18,8 +18,13 @@
  */
 package eu.ueb.acem.dal.bleu.neo4j;
 
+import java.util.Set;
+
+import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.data.neo4j.repository.NamedIndexRepository;
 import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
+import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 
@@ -27,6 +32,20 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
  * @author gcolbert @since 2013-11-20
  *
  */
-public interface BesoinRepository extends GraphRepository<BesoinNode>, RelationshipOperationsRepository<BesoinNode> {
+public interface BesoinRepository extends GraphRepository<BesoinNode>, RelationshipOperationsRepository<BesoinNode>, NamedIndexRepository<BesoinNode> {
+
+	//@Query(value = "start besoin=node({0}) match (besoin)-[:aPourBesoinEnfant]->(n) return n")
+	//Set<BesoinNode> findChildrenOf(Long id);
+
+	@Query(value = "start besoin=node:indexBesoin(nom={nom}) match (besoin)-[:aPourBesoinEnfant]->(n) return n")
+	Set<BesoinNode> findChildrenOf(@Param("nom") String nom);
+
+	/*
+	@Query(value = "start n=node(*) where has(n.__type__) and not (n)-[:aPourBesoinParent]->() return n")
+	Set<BesoinNode> findRoots();
+	*/
 	
+	@Query(value = "start n=node(*) where has(n.__type__) and not ()-[:aPourBesoinEnfant]->(n) return n")
+	Set<BesoinNode> findRoots();
+
 }

@@ -31,14 +31,6 @@
 	</bean>
 	<bean id="app_context" class="org.esupportail.commons.context.ApplicationContextHolder"/>
 	
-	<!-- 
-	<import resource="classpath*:META-INF/ACEM-domain-services-auth.xml" />
-	<import resource="classpath*:META-INF/ACEM-domain-services-domain.xml" />
-	<import resource="classpath*:META-INF/ACEM-domain-services-abstractBeans.xml" />
-	<import resource="classpath*:META-INF/ACEM-domain-services-application.xml" />
-	<import resource="classpath*:META-INF/ACEM-domain-services-i18n.xml" />
- -->
- 
 	<import resource="exceptionHandling/exceptionHandling.xml" />
 	<import resource="cache/cache.xml"/>
 	<import resource="smtp/smtp.xml" />
@@ -46,4 +38,16 @@
 	<import resource="web/controllers.xml" />
 	<import resource="web/converters.xml" />
 	<import resource="web/beans.xml" />
+	
+	<!-- Enables the @Scope("view") for Spring's components and controllers -->
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+	    <property name="scopes">
+	        <map>
+	            <entry key="view">
+	                <bean class="eu.ueb.acem.spring.extensions.ViewScope" />
+	            </entry>
+	        </map>
+	    </property>
+	</bean>
+
 </beans>

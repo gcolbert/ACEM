@@ -43,7 +43,7 @@ public class ScenarioDAO implements DAO<Scenario>{
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final static Logger logger = LoggerFactory.getLogger(ScenarioDAO.class);
 
 	@Autowired
 	private ScenarioRepository repository;
@@ -77,14 +77,12 @@ public class ScenarioDAO implements DAO<Scenario>{
 	
 	@Override
 	public Scenario update(Scenario scenario) {
-		ScenarioNode scenarioNode = (ScenarioNode) scenario;
-		return repository.save(scenarioNode);
+		return repository.save((ScenarioNode) scenario);
 	}
 	
 	@Override
 	public void delete(Scenario scenario) {
-		ScenarioNode scenarioNode = (ScenarioNode) scenario;
-		repository.delete(scenarioNode);
+		repository.delete((ScenarioNode) scenario);
 	}
 	
 	@Override

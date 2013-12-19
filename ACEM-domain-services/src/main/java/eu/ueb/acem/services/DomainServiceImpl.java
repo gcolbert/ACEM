@@ -18,8 +18,8 @@
  */
 package eu.ueb.acem.services;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final Logger logger = new LoggerImpl(this.getClass());
+	private final static Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
 
 	@Autowired
 	private DAO<Enseignant> enseignantDAO;

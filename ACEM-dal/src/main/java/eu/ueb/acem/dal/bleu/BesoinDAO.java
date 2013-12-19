@@ -42,24 +42,45 @@ public class BesoinDAO implements DAO<Besoin> {
 	/**
 	 * For Logging.
 	 */
-	@SuppressWarnings("unused")
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final static Logger logger = LoggerFactory.getLogger(BesoinDAO.class);
 
 	@Autowired
 	private BesoinRepository repository;
-	
+
 	public BesoinDAO() {
 		
 	}
-	
+
 	@Override
 	public void create(Besoin besoin) {
+		logger.debug("Persisting Besoin with nom '{}'", besoin.getNom());
 		repository.save((BesoinNode) besoin);
 	}
 
 	@Override
 	public Besoin retrieve(String nom) {
 		return repository.findByPropertyValue("nom", nom);
+	}
+
+	public Set<Besoin> retrieveChildrenOf(Besoin besoin) {
+		logger.info("retrieveChildrenOf({})", besoin);
+
+		Set<BesoinNode> nodes;
+		if (besoin != null) {
+			logger.info("calling BesoinRepository.findChildrenOf({})",besoin.getNom());
+			nodes = repository.findChildrenOf(besoin.getNom());
+		}
+		else {
+			logger.info("calling BesoinRepository.findRoots()");
+			nodes = repository.findRoots();
+		}
+
+		Set<Besoin> children = new HashSet<Besoin>();
+		for (BesoinNode childNode : nodes) {
+			logger.info("retrieved child {}", childNode.getNom());
+			children.add(childNode);
+		}
+		return children;
 	}
 
 	@Override
@@ -74,17 +95,17 @@ public class BesoinDAO implements DAO<Besoin> {
 		}
 		return set;
 	}
-	
+
 	@Override
 	public Besoin update(Besoin besoin) {
 		return repository.save((BesoinNode) besoin);
 	}
-	
+
 	@Override
 	public void delete(Besoin besoin) {
 		repository.delete((BesoinNode) besoin);
 	}
-	
+
 	@Override
 	public void deleteAll() {
 		repository.deleteAll();
@@ -94,5 +115,5 @@ public class BesoinDAO implements DAO<Besoin> {
 	public Long count() {
 		return repository.count();
 	}
-	
+
 }

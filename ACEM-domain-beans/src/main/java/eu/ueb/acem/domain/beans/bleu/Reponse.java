@@ -39,8 +39,12 @@ public interface Reponse extends Serializable {
 
 	public Collection<Ressource> getRessources();
 
-	void addBesoin(Besoin besoin);
+	public void addBesoin(Besoin besoin);
 
-	void addRessource(Ressource ressource);
+	public void removeBesoin(Besoin besoin);
+	
+	public void addRessource(Ressource ressource);
+
+	public void removeRessource(Ressource ressource);
 
 }

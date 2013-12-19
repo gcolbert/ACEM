@@ -1,5 +1,10 @@
 package eu.ueb.acem.web.viewbeans;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component("counterBean")
+@Scope("session")
 public class CounterBean {
 	
 	private int count = 1;

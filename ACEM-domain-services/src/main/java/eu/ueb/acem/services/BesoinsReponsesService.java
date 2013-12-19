@@ -8,10 +8,12 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
 
 public interface BesoinsReponsesService {
 
-	Set<Besoin> getBesoinsRacines();
-	
-	DAO<Besoin> getBesoinDAO();
-	
-	DAO<Reponse> getReponseDAO();
-	
+	public Set<Besoin> getBesoinsLies(Besoin besoin);
+
+	public Set<Reponse> getReponses(String parent);
+
+	public DAO<Besoin> getBesoinDAO();
+
+	public DAO<Reponse> getReponseDAO();
+
 }

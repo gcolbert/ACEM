@@ -9,7 +9,7 @@
 
 -->
 <urlrewrite use-query-string="true" decode-using="UTF-8">
-
+<!-- 
 	<rule>
 		<note>Cette règle force le mode HTTPS</note>
 	    <condition type="scheme" operator="notequal">https</condition>
@@ -250,7 +250,7 @@
 		<run class="com.old.kiosque.servlets.WebViewServlet" method="doGet"/>
 		<to>null</to>
 	</rule>
-
+-->
     <!--
 
     INSTALLATION

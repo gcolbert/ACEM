@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN" "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title> Editable Tree </title>
+        <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/javax.faces.resource/theme.css.jsf?ln=primefaces-black-tie" />
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:panel id="menuPanel" header="Editable Tree" style="width: 330px;" >
+                <p:treeTable value="#{editableTreeBean.treeRoot}" var="menu"> 
+                    <p:column>
+                        <p:inplace editor="true">
+                            <p:inputText value="#{menu.menuName}"/>
+                        </p:inplace>
+                    </p:column>
+                </p:treeTable>
+
+                <br/>
+                <p:commandButton action="#{editableTreeBean.saveTree}" value="save"/>
+
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

@@ -43,7 +43,7 @@ public class ActiviteDAO implements DAO<Activite> {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final static Logger logger = LoggerFactory.getLogger(ActiviteDAO.class);
 
 	@Autowired
 	private ActiviteRepository repository;

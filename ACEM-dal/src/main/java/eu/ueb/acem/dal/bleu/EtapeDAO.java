@@ -43,7 +43,7 @@ public class EtapeDAO implements DAO<Etape>{
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final static Logger logger = LoggerFactory.getLogger(EtapeDAO.class);
 
 	@Autowired
 	private EtapeRepository repository;
@@ -77,14 +77,12 @@ public class EtapeDAO implements DAO<Etape>{
 	
 	@Override
 	public Etape update(Etape etape) {
-		EtapeNode etapeNode = (EtapeNode) etape;
-		return repository.save(etapeNode);
+		return repository.save((EtapeNode) etape);
 	}
 	
 	@Override
 	public void delete(Etape etape) {
-		EtapeNode etapeNode = (EtapeNode) etape;
-		repository.delete(etapeNode);
+		repository.delete((EtapeNode) etape);
 	}
 	
 	@Override

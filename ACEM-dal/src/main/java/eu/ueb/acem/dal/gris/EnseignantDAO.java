@@ -43,7 +43,7 @@ public class EnseignantDAO implements DAO<Enseignant> {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final static Logger logger = LoggerFactory.getLogger(EnseignantDAO.class);
 	
 	@Autowired
 	private EnseignantRepository repository;
@@ -77,14 +77,12 @@ public class EnseignantDAO implements DAO<Enseignant> {
 	
 	@Override
 	public Enseignant update(Enseignant enseignant) {
-		EnseignantNode EnseignantNode = (EnseignantNode) enseignant;
-		return repository.save(EnseignantNode);
+		return repository.save((EnseignantNode) enseignant);
 	}
 	
 	@Override
 	public void delete(Enseignant enseignant) {
-		EnseignantNode enseignantNode = (EnseignantNode) enseignant;
-		repository.delete(enseignantNode);
+		repository.delete((EnseignantNode) enseignant);
 	}
 	
 	@Override

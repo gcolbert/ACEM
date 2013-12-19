@@ -9,10 +9,10 @@ import org.esupportail.commons.services.authentication.AuthUtils;
 import org.esupportail.commons.services.authentication.AuthenticationService;
 import org.esupportail.commons.services.authentication.info.AuthInfo;
 import org.esupportail.commons.services.i18n.I18nUtils;
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.Assert;
 import org.esupportail.commons.utils.ContextUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -45,9 +45,9 @@ public class AuthenticatorImpl implements Serializable, InitializingBean, Authen
 	private static final String USER_ATTRIBUTE = AuthenticatorImpl.class.getName() + ".user";
 
 	/**
-	 * A logger.
+	 * For logging
 	 */
-	private final Logger logger = new LoggerImpl(this.getClass());
+	private final static Logger logger = LoggerFactory.getLogger(AuthenticatorImpl.class);
 
 	/**
 	 * The external authenticator.

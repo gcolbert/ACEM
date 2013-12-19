@@ -49,16 +49,19 @@ public class ReponseNode implements Reponse {
 	@Indexed(indexName = "rechercher-reponse-pedagogique") private String nom;
 	
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourReponse", direction = INCOMING)
-	private Set<Besoin> besoins = new HashSet<Besoin>();
+	private Set<Besoin> besoins;
 	
 	@RelatedTo(elementClass = RessourceNode.class, type = "referenceRessource", direction = OUTGOING)
-	private Set<Ressource> ressources = new HashSet<Ressource>();
+	private Set<Ressource> ressources;
 
     public ReponseNode()  {
+    	besoins = new HashSet<Besoin>();
+    	ressources = new HashSet<Ressource>();
     }
 
     public ReponseNode(String nom) {
-       	this.setNom(nom);
+    	this();
+       	setNom(nom);
     }
 
     @Override
@@ -95,9 +98,19 @@ public class ReponseNode implements Reponse {
     	besoins.add(besoin);
     }
 
+    @Override
+    public void removeBesoin(Besoin besoin) {
+    	besoins.remove(besoin);
+    }
+    
 	@Override
 	public void addRessource(Ressource ressource) {
 		ressources.add(ressource);
 	}
-    
+
+    @Override
+    public void removeRessource(Ressource ressource) {
+    	besoins.remove(ressource);
+    }
+	
 }

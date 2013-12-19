@@ -26,11 +26,11 @@ public class TestBeansLoaded extends TestCase {
 			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier application.xml");
 		}
 	}
-	
+
 	@Test
-	public void testTreeBean() {
+	public void testEditableTreeBean() {
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Le composant treeBean n'est pas chargé", context.containsBean("treeBean"));
+		assertTrue("Le composant editableTreeBean n'est pas chargé", context.containsBean("editableTreeBean"));
 	}
 
 	@Test

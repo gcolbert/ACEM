@@ -23,6 +23,8 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -37,32 +39,36 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
  */
 @NodeEntity
 public class BesoinNode implements Besoin {
-
+	
 	private static final long serialVersionUID = -774562771501521566L;
+
+	/**
+	 * For Logging.
+	 */
+	private final static Logger logger = LoggerFactory.getLogger(BesoinNode.class);
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-besoin-pedagogique") private String nom;
+	@Indexed(indexName = "indexBesoin") private String nom;
 
-	@RelatedTo(elementClass = BesoinNode.class, type = "aPourParent", direction = OUTGOING)
-	private Besoin parent = null;
+	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinParent", direction = OUTGOING)
+	private Set<Besoin> parents;
 	
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinEnfant", direction = OUTGOING)
-	private Set<Besoin> besoins = new HashSet<Besoin>();
+	private Set<Besoin> enfants;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "aPourReponse", direction = OUTGOING)
-	private Set<Reponse> reponses = new HashSet<Reponse>();
+	private Set<Reponse> reponses;
 
     public BesoinNode() {
+    	parents = new HashSet<Besoin>();
+    	enfants = new HashSet<Besoin>();
+    	reponses = new HashSet<Reponse>();
     }
 
     public BesoinNode(String nom) {
-    	this.setNom(nom);
-    }
-    
-    public BesoinNode(String nom, Besoin parent) {
-    	this(nom);
-    	this.setParent(parent);
+    	this();
+    	setNom(nom);
     }
 
     @Override
@@ -85,8 +91,13 @@ public class BesoinNode implements Besoin {
     }
 
     @Override
-    public Set<Besoin> getBesoins() {
-    	return besoins;
+	public Set<Besoin> getParents() {
+		return parents;
+	}
+    
+    @Override
+    public Set<Besoin> getEnfants() {
+    	return enfants;
     }
     
     @Override
@@ -94,26 +105,92 @@ public class BesoinNode implements Besoin {
     	return reponses;
     }
     
-    @Override
-    public void addBesoin(Besoin besoin) {
-    	besoins.add(besoin);
-    	besoin.setParent(this);
-    }
+	@Override
+	public void addParent(Besoin parent) {
+		parents.add(parent);
+       	if (! parent.getEnfants().contains(this)) {
+       		logger.info("'{}'.addParent('{}') : parent doesn't already contains this node as a child, we create it", this.getNom(), parent.getNom());
+       		parent.addEnfant(this);
+       	}
+       	else {
+       		logger.info("'{}'.addParent('{}') : parent already contains this node as a child, we don't create it", this.getNom(), parent.getNom());
+       	}
+	}
     
+    @Override
+    public void addEnfant(Besoin besoin) {
+       	enfants.add(besoin);
+       	if (! besoin.getParents().contains(this)) {
+       		logger.info("'{}'.addEnfant('{}') : the child doesn't already have a reference to this, we create it", this.getNom(), besoin.getNom());
+       		besoin.addParent(this);
+       	}
+       	else {
+       		logger.info("'{}'.addEnfant('{}') : the child already has a reference to this, we don't create it", this.getNom(), besoin.getNom());
+       	}
+    }
+
+    @Override
+    public void removeEnfant(Besoin besoin) {
+    	enfants.remove(besoin);
+    }
+
     @Override
     public void addReponse(Reponse reponse) {
    		reponses.add(reponse);
    		reponse.addBesoin(this);
     }
 
-    @Override
-	public Besoin getParent() {
-		return parent;
-	}
-    
-    @Override
-	public void setParent(Besoin parent) {
-		this.parent = parent;
+	@Override
+	public void removeParent(Besoin besoin) {
+		parents.remove(besoin);
 	}
 
+    @Override
+    public void removeReponse(Reponse reponse) {
+       	reponses.remove(reponse);
+    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		//result = prime * result + ((enfants == null) ? 0 : enfants.hashCode());
+		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		//result = prime * result + ((parents == null) ? 0 : parents.hashCode()); // avoids a stack overflow
+		//result = prime * result + ((reponses == null) ? 0 : reponses.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BesoinNode other = (BesoinNode) obj;
+		if (enfants == null) {
+			if (other.enfants != null)
+				return false;
+		} else if (!enfants.equals(other.enfants))
+			return false;
+		if (nom == null) {
+			if (other.nom != null)
+				return false;
+		} else if (!nom.equals(other.nom))
+			return false;
+		if (parents == null) {
+			if (other.parents != null)
+				return false;
+		} else if (!parents.equals(other.parents))
+			return false;
+		if (reponses == null) {
+			if (other.reponses != null)
+				return false;
+		} else if (!reponses.equals(other.reponses))
+			return false;
+		return true;
+	}
+    
 }
