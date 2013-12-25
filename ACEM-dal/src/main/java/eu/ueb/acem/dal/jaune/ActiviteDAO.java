@@ -53,8 +53,8 @@ public class ActiviteDAO implements DAO<Activite> {
 	}
 	
 	@Override
-	public void create(Activite activite) {
-		repository.save((ActiviteNode) activite);
+	public Activite create(Activite activite) {
+		return repository.save((ActiviteNode) activite);
 	}
 
 	@Override

@@ -53,8 +53,8 @@ public class ScenarioDAO implements DAO<Scenario>{
 	}
 	
 	@Override
-	public void create(Scenario scenario) {
-		repository.save((ScenarioNode) scenario);
+	public Scenario create(Scenario scenario) {
+		return repository.save((ScenarioNode) scenario);
 	}
 	
 	@Override

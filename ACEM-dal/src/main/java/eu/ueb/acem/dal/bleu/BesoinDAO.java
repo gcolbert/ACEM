@@ -52,9 +52,9 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 
 	@Override
-	public void create(Besoin besoin) {
+	public Besoin create(Besoin besoin) {
 		logger.debug("Persisting Besoin with nom '{}'", besoin.getNom());
-		repository.save((BesoinNode) besoin);
+		return repository.save((BesoinNode) besoin);
 	}
 
 	@Override
@@ -63,21 +63,21 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 
 	public Set<Besoin> retrieveChildrenOf(Besoin besoin) {
-		logger.info("retrieveChildrenOf({})", besoin);
+		logger.debug("retrieveChildrenOf({})", besoin);
 
 		Set<BesoinNode> nodes;
 		if (besoin != null) {
-			logger.info("calling BesoinRepository.findChildrenOf({})",besoin.getNom());
+			logger.debug("calling BesoinRepository.findChildrenOf({})",besoin);
 			nodes = repository.findChildrenOf(besoin.getNom());
 		}
 		else {
-			logger.info("calling BesoinRepository.findRoots()");
+			logger.debug("calling BesoinRepository.findRoots()");
 			nodes = repository.findRoots();
 		}
 
 		Set<Besoin> children = new HashSet<Besoin>();
 		for (BesoinNode childNode : nodes) {
-			logger.info("retrieved child {}", childNode.getNom());
+			logger.debug("retrieved child {}", childNode.getNom());
 			children.add(childNode);
 		}
 		return children;

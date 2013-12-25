@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public interface DAO<E> {
 	
-	public void create(E entity);
+	public E create(E entity);
 	
 	public E retrieve(String name);
 

@@ -53,8 +53,8 @@ public class EnseignantDAO implements DAO<Enseignant> {
 	}
 	
 	@Override
-	public void create(Enseignant enseignant) {
-		repository.save((EnseignantNode) enseignant);
+	public Enseignant create(Enseignant enseignant) {
+		return repository.save((EnseignantNode) enseignant);
 	}
 	
 	@Override

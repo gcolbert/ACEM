@@ -53,8 +53,8 @@ public class EtapeDAO implements DAO<Etape>{
 	}
 	
 	@Override
-	public void create(Etape etape) {
-		repository.save((EtapeNode) etape);
+	public Etape create(Etape etape) {
+		return repository.save((EtapeNode) etape);
 	}
 
 	@Override

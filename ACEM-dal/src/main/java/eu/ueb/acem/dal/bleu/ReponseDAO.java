@@ -53,8 +53,8 @@ public class ReponseDAO implements DAO<Reponse> {
 	}
 	
 	@Override
-	public void create(Reponse reponse) {
-		repository.save((ReponseNode) reponse);
+	public Reponse create(Reponse reponse) {
+		return repository.save((ReponseNode) reponse);
 	}
 	
 	@Override

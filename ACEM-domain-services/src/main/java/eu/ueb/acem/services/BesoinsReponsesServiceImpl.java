@@ -43,23 +43,7 @@ public class BesoinsReponsesServiceImpl implements BesoinsReponsesService {
 
 	@Override
 	public Set<Besoin> getBesoinsLies(Besoin besoin) {
-		Set<Besoin> besoins = null;
-		besoins = besoinDAO.retrieveChildrenOf(besoin);
-		/*
-		if (nom == null) {
-			besoins = besoinDAO.retrieveAll();
-			Iterator<Besoin> iterator = besoins.iterator();
-			while (iterator.hasNext()) {
-				if (iterator.next().getParent() != null) {
-					iterator.remove();
-				}
-			}
-		}
-		else {
-			besoins = besoinDAO.retrieveChildrenOf(nom);
-		}
-		*/
-		logger.info("getChildrenOf({}) returned {} children.", besoin.getNom(), besoins.size());
+		Set<Besoin> besoins = besoinDAO.retrieveChildrenOf(besoin);
 		return besoins;
 	}
 

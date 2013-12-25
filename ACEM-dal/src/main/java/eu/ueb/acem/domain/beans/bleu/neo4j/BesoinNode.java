@@ -29,6 +29,7 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
@@ -95,37 +96,54 @@ public class BesoinNode implements Besoin {
 		return parents;
 	}
     
+	@Override
+	public void setParents(Set<Besoin> parents) {
+		this.parents = parents;
+	}
+    
     @Override
     public Set<Besoin> getEnfants() {
     	return enfants;
     }
-    
+
+
+	@Override
+	public void setEnfants(Set<Besoin> enfants) {
+		this.enfants = enfants;		
+	}
+
     @Override
     public Set<Reponse> getReponses() {
     	return reponses;
     }
+
+	@Override
+	public void setReponses(Set<Reponse> reponses) {
+		this.reponses = reponses;
+	}
     
 	@Override
 	public void addParent(Besoin parent) {
 		parents.add(parent);
        	if (! parent.getEnfants().contains(this)) {
-       		logger.info("'{}'.addParent('{}') : parent doesn't already contains this node as a child, we create it", this.getNom(), parent.getNom());
+       		logger.debug("'{}'.addParent('{}') : parent doesn't already contains this node as a child, we create it", this.getNom(), parent.getNom());
        		parent.addEnfant(this);
        	}
        	else {
-       		logger.info("'{}'.addParent('{}') : parent already contains this node as a child, we don't create it", this.getNom(), parent.getNom());
+       		logger.debug("'{}'.addParent('{}') : parent already contains this node as a child, we don't create it", this.getNom(), parent.getNom());
        	}
 	}
     
     @Override
+    @Transactional
     public void addEnfant(Besoin besoin) {
        	enfants.add(besoin);
        	if (! besoin.getParents().contains(this)) {
-       		logger.info("'{}'.addEnfant('{}') : the child doesn't already have a reference to this, we create it", this.getNom(), besoin.getNom());
+       		logger.debug("'{}'.addEnfant('{}') : the child doesn't already have a reference to this, we create it", this.getNom(), besoin.getNom());
        		besoin.addParent(this);
        	}
        	else {
-       		logger.info("'{}'.addEnfant('{}') : the child already has a reference to this, we don't create it", this.getNom(), besoin.getNom());
+       		logger.debug("'{}'.addEnfant('{}') : the child already has a reference to this, we don't create it", this.getNom(), besoin.getNom());
        	}
     }
 
@@ -154,7 +172,7 @@ public class BesoinNode implements Besoin {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = prime * result + ((enfants == null) ? 0 : enfants.hashCode());
+		result = prime * result + ((enfants == null) ? 0 : enfants.hashCode());
 		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
 		//result = prime * result + ((parents == null) ? 0 : parents.hashCode()); // avoids a stack overflow
 		//result = prime * result + ((reponses == null) ? 0 : reponses.hashCode());
@@ -192,5 +210,5 @@ public class BesoinNode implements Besoin {
 			return false;
 		return true;
 	}
-    
+
 }

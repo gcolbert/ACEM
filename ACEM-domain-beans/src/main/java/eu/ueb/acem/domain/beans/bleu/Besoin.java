@@ -34,10 +34,16 @@ public interface Besoin extends Serializable {
     public void setNom(String nom);
 
     public Set<Besoin> getParents();
+    
+    public void setParents(Set<Besoin> parents);
 
     public Set<Besoin> getEnfants();
 
+    public void setEnfants(Set<Besoin> enfants);
+    
     public Set<Reponse> getReponses();
+
+    public void setReponses(Set<Reponse> reponses);
     
 	public void addParent(Besoin parent);
 

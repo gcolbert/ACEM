@@ -31,7 +31,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.BesoinDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
@@ -76,11 +78,11 @@ public class BesoinDAOTest extends TestCase {
 		Besoin besoin1 = new BesoinNode("besoin de test t01_TestBesoinDAOCreate");
 		
 		// We create our object
-		besoinDAO.create(besoin1);
+		besoin1 = besoinDAO.create(besoin1);
 		
 		// We check that "create" is idempotent (multiple calls must not duplicate data)
-		besoinDAO.create(besoin1);
-
+		besoin1 = besoinDAO.create(besoin1);
+		
 		// There must exactly 1 object in the datastore
 		assertEquals("There are more than one object in the datastore", new Long(1), besoinDAO.count());
 	}
@@ -92,13 +94,14 @@ public class BesoinDAOTest extends TestCase {
 	public final void t02_TestBesoinDAORetrieve() {
 		// We create a new object in the datastore
 		Besoin besoin1 = new BesoinNode("besoin de test t02_TestBesoinDAORetrieve");
-		besoinDAO.create(besoin1);
+		besoin1 = besoinDAO.create(besoin1);
 		assertEquals(new Long(1), besoinDAO.count());
 
 		// We retrieve the object from the datastore using its name
 		Besoin besoin2 = besoinDAO.retrieve(besoin1.getNom());
 		
 		assertEquals(besoin1, besoin2);
+		assertEquals(besoin1.getId(), besoin2.getId());
 		assertEquals(besoin1.getNom(), besoin2.getNom());
 	}
 
@@ -176,33 +179,31 @@ public class BesoinDAOTest extends TestCase {
 	 * Check that the relationships are saved
 	 */
 	@Test
+	@Transactional
 	public final void t06_TestBesoinDAOCheckParentChildRelationship() {
 		Besoin besoin1 = new BesoinNode("besoin de test t06_TestBesoinDAOCheckParentChildRelationship 1");
-		besoinDAO.create(besoin1);
+		besoin1 = besoinDAO.create(besoin1);
 
 		Besoin besoin11 = new BesoinNode("besoin de test t06_TestBesoinDAOCheckParentChildRelationship 1.1");
-		besoinDAO.create(besoin11);
+		besoin11 = besoinDAO.create(besoin11);
 
 		assertEquals(new Long(2), besoinDAO.count());
 
 		// We add besoin11 as a child of besoin1 and check that a call to addEnfant is sufficient to create the relationships
 		besoin1.addEnfant(besoin11);
-		besoinDAO.update(besoin1);
-		besoinDAO.update(besoin11);
-
+		besoin1 = besoinDAO.update(besoin1);
+		besoin11 = besoinDAO.update(besoin11);
+		
 		// We retrieve the entities
 		Besoin besoin1bis = besoinDAO.retrieve(besoin1.getNom());
 		Besoin besoin11bis = besoinDAO.retrieve(besoin11.getNom());
-
-		assertTrue(besoin11bis.getParents().contains(besoin1bis));
 		
-		// We check that entities know about each other
+		// We check that entities have parent-child relationships
 		assertEquals(new Long(0), new Long(besoin1bis.getParents().size()));
 		assertEquals(new Long(1), new Long(besoin1bis.getEnfants().size()));
 		assertEquals(new Long(0), new Long(besoin11bis.getEnfants().size()));
 		assertEquals(new Long(1), new Long(besoin11bis.getParents().size()));
 
-		/*
 		// Now we check that addParent is sufficient to create the relationships, too
 		Besoin besoin12 = new BesoinNode("besoin de test t06_TestBesoinDAOCheckParentChildRelationship 1.2");
 		besoinDAO.create(besoin12);
@@ -210,12 +211,13 @@ public class BesoinDAOTest extends TestCase {
 		assertEquals(new Long(3), besoinDAO.count());
 
 		besoin12.addParent(besoin1);
-		besoinDAO.update(besoin1);
-		besoinDAO.update(besoin12);
+		besoin1 = besoinDAO.update(besoin1);
+		besoin12 = besoinDAO.update(besoin12);
 
 		// We retrieve the entities
 		Besoin besoin1ter = besoinDAO.retrieve(besoin1.getNom());
-		besoinDAO.retrieveChildrenOf(besoin1ter);
+		Set<Besoin> children = besoinDAO.retrieveChildrenOf(besoin1ter);
+		besoin1ter.setEnfants(children);
 		Besoin besoin12bis = besoinDAO.retrieve(besoin12.getNom());
 
 		// We check that entities know about each other
@@ -225,7 +227,6 @@ public class BesoinDAOTest extends TestCase {
 		assertEquals(new Long(1), new Long(besoin11bis.getParents().size()));
 		assertEquals(new Long(0), new Long(besoin12bis.getEnfants().size()));
 		assertEquals(new Long(1), new Long(besoin12bis.getParents().size()));
-		*/
 	}
 
 	/**

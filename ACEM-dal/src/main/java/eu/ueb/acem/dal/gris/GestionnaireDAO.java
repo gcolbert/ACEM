@@ -53,8 +53,8 @@ public class GestionnaireDAO implements DAO<Gestionnaire> {
 	}
 	
 	@Override
-	public void create(Gestionnaire gestionnaire) {
-		repository.save((GestionnaireNode) gestionnaire);
+	public Gestionnaire create(Gestionnaire gestionnaire) {
+		return repository.save((GestionnaireNode) gestionnaire);
 	}
 	
 	@Override
