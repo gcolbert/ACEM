@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/properties/applicationContext.xml", "/web-test-context.xml"})
+//@ContextConfiguration(locations = {"/web-test-context.xml"})
 public class TestBeansLoaded extends TestCase {
 
 	@After
@@ -23,7 +24,7 @@ public class TestBeansLoaded extends TestCase {
 	@Before
 	public void before() {
 		if (ApplicationContextHolder.getContext() == null) {
-			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier application.xml");
+			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier applicationContext.xml");
 		}
 	}
 

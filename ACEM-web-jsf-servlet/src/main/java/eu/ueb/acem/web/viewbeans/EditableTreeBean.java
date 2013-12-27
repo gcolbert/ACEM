@@ -46,32 +46,32 @@ public class EditableTreeBean implements Serializable {
     }
 
     public TreeNode getRoot() {
-        /*
+    	/*
         if (root == null) {
         	root = new DefaultTreeNode();
         	
-            TreeNode mainMenu1 = new DefaultTreeNode(new Menu("1", "Folder1"), root);
-            TreeNode mainMenu2 = new DefaultTreeNode(new Menu("2", "Folder2"), root);
-            TreeNode mainMenu3 = new DefaultTreeNode(new Menu("3", "Folder3"), root);
+            TreeNode mainMenu1 = new DefaultTreeNode(new Menu("Folder1"), root);
+            TreeNode mainMenu2 = new DefaultTreeNode(new Menu("Folder2"), root);
+            TreeNode mainMenu3 = new DefaultTreeNode(new Menu("Folder3"), root);
 
-            TreeNode subMenu1 = new DefaultTreeNode(new Menu("4", "SubFolder1.1"), mainMenu1);
-            TreeNode subMenu2 = new DefaultTreeNode(new Menu("5", "SubFolder1.2"), mainMenu1);
+            TreeNode subMenu1 = new DefaultTreeNode(new Menu("SubFolder1.1"), mainMenu1);
+            TreeNode subMenu2 = new DefaultTreeNode(new Menu("SubFolder1.2"), mainMenu1);
 
             //Menus 
-            TreeNode leaf1 = new DefaultTreeNode("Menu", new Menu("6", "Leaf1"), subMenu1);
-            TreeNode leaf2 = new DefaultTreeNode("Menu", new Menu("7", "Leaf2"), subMenu1);
-            TreeNode leaf3 = new DefaultTreeNode("Menu", new Menu("8", "Leaf3"), subMenu2);
+            TreeNode leaf1 = new DefaultTreeNode("Menu", new Menu("Leaf1"), subMenu1);
+            TreeNode leaf2 = new DefaultTreeNode("Menu", new Menu("Leaf2"), subMenu1);
+            TreeNode leaf3 = new DefaultTreeNode("Menu", new Menu("Leaf3"), subMenu2);
 
             //Pictures 
-            TreeNode subMenu3 = new DefaultTreeNode("picture", new Menu("9", "SubFolder2.1"), mainMenu2);
-            TreeNode leaf4 = new DefaultTreeNode("picture", new Menu("10", "Leaf4"), subMenu3);
-            TreeNode leaf5 = new DefaultTreeNode("picture", new Menu("11", "Leaf5"), subMenu3);
+            TreeNode subMenu3 = new DefaultTreeNode("picture", new Menu("SubFolder2.1"), mainMenu2);
+            TreeNode leaf4 = new DefaultTreeNode("picture", new Menu("Leaf4"), subMenu3);
+            TreeNode leaf5 = new DefaultTreeNode("picture", new Menu("Leaf5"), subMenu3);
 
             //Movies 
-            TreeNode leaf6 = new DefaultTreeNode(new Menu("12", "Leaf6"), mainMenu3);
-            TreeNode leaf7 = new DefaultTreeNode(new Menu("13", "Leaf7"), mainMenu3);
+            TreeNode leaf6 = new DefaultTreeNode(new Menu("Leaf6"), mainMenu3);
+            TreeNode leaf7 = new DefaultTreeNode(new Menu("Leaf7"), mainMenu3);
         }
-            */
+        */
         return root;
     }
 
@@ -89,17 +89,18 @@ public class EditableTreeBean implements Serializable {
 
     private void iterateNodes(TreeNode node) {
 
-        for (TreeNode iterateNode : node.getChildren()) {
-            editedData.add((Menu) node.getData());
-            if (!iterateNode.isLeaf()) {
-                iterateNodes(iterateNode);
-            }
-        }
-
+    	if (node != null) {
+	        for (TreeNode iterateNode : node.getChildren()) {
+	            editedData.add((Menu) node.getData());
+	            if (!iterateNode.isLeaf()) {
+	                iterateNodes(iterateNode);
+	            }
+	        }
+    	}
     }
 
     public void addChild(TreeNode parent, String label) {
-    	new DefaultTreeNode(label, new Menu(label), parent);
+    	new DefaultTreeNode(new Menu(label), parent);
     }
     
     public static class Menu implements Serializable {

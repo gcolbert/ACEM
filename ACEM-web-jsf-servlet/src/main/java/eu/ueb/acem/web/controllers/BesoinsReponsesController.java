@@ -36,18 +36,23 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 	private TreeNode selectedNode;
 	
 	public BesoinsReponsesController() {
-		Set<Besoin> besoins = besoinsReponsesService.getBesoinsLies(null);
-		logger.info("Rechargement des besoins à la racine à partir du service effectué. Nombre total de besoins : {}", Integer.toString(besoins.size()));
 	}
 
 	public void updateTreeBean() {
+		if (besoinsReponsesService == null) {
+			logger.info("BesoinsReponsesController constructor : besoinsReponsesService is null");
+		}
 		Set<Besoin> besoins = besoinsReponsesService.getBesoinsLies(null);
 		for (Besoin besoin : besoins) {
 			editableTreeBean.addChild(editableTreeBean.getVisibleRoot(), besoin.getNom());
 		}
+		if (besoins != null) {
+			logger.info("Rechargement des besoins à la racine à partir du service effectué. Nombre total de besoins : {}", Integer.toString(besoins.size()));
+		}
 	}
 	
 	public TreeNode getTreeRoot() {
+		updateTreeBean();
 		return editableTreeBean.getRoot();
 	}
 
@@ -63,15 +68,18 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		return editableTreeBean;
 	}
 
-    public void deleteSelectedNode() {  
-    	selectedNode.getChildren().clear();  
-    	selectedNode.getParent().getChildren().remove(selectedNode);  
-    	selectedNode.setParent(null);  
+    public void deleteSelectedNode() {
+    	if (selectedNode != null) {
+	    	selectedNode.getChildren().clear();  
+	    	selectedNode.getParent().getChildren().remove(selectedNode);  
+	    	selectedNode.setParent(null);  
+    	}
           
     	this.selectedNode = null;  
     }
 
     public void addChildToSelectedNode() {
+    	logger.info("[addChildToSelectedNode, selectedNode={}]", selectedNode);
     	editableTreeBean.addChild(selectedNode, "Nouveau");
     }
 

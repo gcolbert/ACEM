@@ -9,24 +9,21 @@
 		<p:panel header="Besoins et réponses">
 			<h:form>
 				<p:growl id="messages" showDetail="true" />
-				
 				<p:contextMenu for="treeSingle">
 				    <p:menuitem value="Voir informations" update="messages" actionListener="#{besoinsReponsesController.displaySelectedSingle}" icon="ui-icon-search" />
 				    <p:menuitem value="Ajouter un fils" update="treeSingle" actionListener="#{besoinsReponsesController.addChildToSelectedNode}" icon="ui-icon-plus"/>
 				    <p:menuitem value="Supprimer ce noeud et ses fils" update="treeSingle" actionListener="#{besoinsReponsesController.deleteSelectedNode}" icon="ui-icon-minus"/>
 				</p:contextMenu>
 				<p:tree id="treeSingle" value="#{besoinsReponsesController.treeRoot}" var="node"
-				        selectionMode="single" orientation="vertical"  
-				        selection="#{besoinsReponsesController.treeBean.selectedNode}"  
-				        dynamic="true">  
+				        selectionMode="single" orientation="vertical"
+				        selection="#{besoinsReponsesController.selectedNode}"
+				        dynamic="true">
 				    <p:treeNode>
                         <p:inplace editor="true">
-                        <!-- 
                         	<p:ajax event="save" listener="#{besoinsReponsesController.treeBean.saveTree}" update="treeSingle" />
-                        	 -->
-                            <p:inputText value="#{node}"/>
+                            <p:inputText value="#{node.menuName}"/>
                         </p:inplace>
-				    </p:treeNode>  
+				    </p:treeNode>
 				</p:tree>
 			</h:form>
 		</p:panel>
