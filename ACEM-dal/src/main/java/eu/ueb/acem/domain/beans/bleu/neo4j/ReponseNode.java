@@ -46,7 +46,7 @@ public class ReponseNode implements Reponse {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-reponse-pedagogique") private String nom;
+	@Indexed(indexName = "indexReponse") private String nom;
 	
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourReponse", direction = INCOMING)
 	private Set<Besoin> besoins;

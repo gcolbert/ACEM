@@ -43,14 +43,12 @@ public class BesoinsReponsesServiceImpl implements BesoinsReponsesService {
 
 	@Override
 	public Set<Besoin> getBesoinsLies(Besoin besoin) {
-		Set<Besoin> besoins = besoinDAO.retrieveChildrenOf(besoin);
-		return besoins;
+		return besoinDAO.retrieveChildrenOf(besoin);
 	}
 
 	@Override
-	public Set<Reponse> getReponses(String parent) {
-		Set<Reponse> reponses = reponseDAO.retrieveAll();
-		return reponses;
+	public Set<Reponse> getReponses(Besoin besoin) {
+		return besoinDAO.retrieveLinkedWith(besoin);
 	}
 
 }

@@ -29,7 +29,9 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.ReponseRepository;
+import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
@@ -75,6 +77,15 @@ public class ReponseDAO implements DAO<Reponse> {
 		return set;
 	}
 	
+	public Set<Besoin> retrieveNeedsOf(Reponse reponse) {
+		Set<BesoinNode> nodes = repository.findNeedsOf(reponse.getNom());
+		Set<Besoin> needs = new HashSet<Besoin>();
+		for (BesoinNode node : nodes) {
+			needs.add(node);
+		}
+		return needs;
+	}
+
 	@Override
 	public Reponse update(Reponse reponse) {
 		return repository.save((ReponseNode) reponse);

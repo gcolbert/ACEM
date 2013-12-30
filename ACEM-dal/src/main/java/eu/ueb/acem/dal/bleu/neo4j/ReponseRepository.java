@@ -18,9 +18,14 @@
  */
 package eu.ueb.acem.dal.bleu.neo4j;
 
+import java.util.Set;
+
+import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
+import org.springframework.data.repository.query.Param;
 
+import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
@@ -28,5 +33,8 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  *
  */
 public interface ReponseRepository extends GraphRepository<ReponseNode>, RelationshipOperationsRepository<ReponseNode> {
-	
+
+	@Query(value = "start reponse=node:indexReponse(nom={nom}) match (besoin)-[:aPourReponse]->(reponse) return besoin")
+	Set<BesoinNode> findNeedsOf(@Param("nom") String nom);
+
 }

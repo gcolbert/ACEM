@@ -45,6 +45,7 @@
     		</description>
     		<list>
     			<value>style/esup.css</value>
+    			<value>style/acem-primefaces.css</value>
     		</list>
     	</property>
     	<property name="sectionTag" value="h1" >

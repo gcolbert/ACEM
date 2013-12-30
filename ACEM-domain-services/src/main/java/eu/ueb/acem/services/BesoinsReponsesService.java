@@ -7,10 +7,10 @@ import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 
 public interface BesoinsReponsesService {
-
+	
 	public Set<Besoin> getBesoinsLies(Besoin besoin);
 
-	public Set<Reponse> getReponses(String parent);
+	public Set<Reponse> getReponses(Besoin besoin);
 
 	public DAO<Besoin> getBesoinDAO();
 

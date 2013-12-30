@@ -30,7 +30,9 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.BesoinRepository;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
+import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
  * @author gcolbert @since 2013-11-20
@@ -63,24 +65,28 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 
 	public Set<Besoin> retrieveChildrenOf(Besoin besoin) {
-		logger.debug("retrieveChildrenOf({})", besoin);
-
 		Set<BesoinNode> nodes;
 		if (besoin != null) {
-			logger.debug("calling BesoinRepository.findChildrenOf({})",besoin);
 			nodes = repository.findChildrenOf(besoin.getNom());
 		}
 		else {
-			logger.debug("calling BesoinRepository.findRoots()");
 			nodes = repository.findRoots();
 		}
 
 		Set<Besoin> children = new HashSet<Besoin>();
 		for (BesoinNode childNode : nodes) {
-			logger.debug("retrieved child {}", childNode.getNom());
 			children.add(childNode);
 		}
 		return children;
+	}
+
+	public Set<Reponse> retrieveLinkedWith(Besoin besoin) {
+		Set<ReponseNode> nodes = repository.findAnswersOf(besoin.getNom());
+		Set<Reponse> reponses = new HashSet<Reponse>();
+		for (ReponseNode node : nodes) {
+			reponses.add(node);
+		}
+		return reponses;
 	}
 
 	@Override
@@ -95,7 +101,7 @@ public class BesoinDAO implements DAO<Besoin> {
 		}
 		return set;
 	}
-
+	
 	@Override
 	public Besoin update(Besoin besoin) {
 		return repository.save((BesoinNode) besoin);

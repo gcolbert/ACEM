@@ -44,7 +44,7 @@ public class EtapeNode implements Etape {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-etape") private String nom;
+	@Indexed(indexName = "indexEtape") private String nom;
 
 	@RelatedTo(elementClass = ScenarioNode.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Scenario scenario;

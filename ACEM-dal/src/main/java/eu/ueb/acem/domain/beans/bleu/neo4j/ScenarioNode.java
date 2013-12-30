@@ -43,7 +43,7 @@ public class ScenarioNode implements Scenario {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-scenario") private String nom;
+	@Indexed(indexName = "indexScenario") private String nom;
 
 	private String titre;
 	private String objectif;
