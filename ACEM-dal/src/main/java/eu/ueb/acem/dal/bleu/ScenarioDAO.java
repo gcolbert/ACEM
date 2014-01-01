@@ -56,12 +56,17 @@ public class ScenarioDAO implements DAO<Scenario>{
 	public Scenario create(Scenario scenario) {
 		return repository.save((ScenarioNode) scenario);
 	}
-	
+
+	@Override
+	public Scenario retrieve(Long id) {
+		return repository.findOne(id);
+	}
+
 	@Override
 	public Scenario retrieve(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}
-	
+
 	@Override
 	public Set<Scenario> retrieveAll() {
 		Iterable<ScenarioNode> endResults = repository.findAll();

@@ -61,7 +61,12 @@ public class GestionnaireDAO implements DAO<Gestionnaire> {
 	public Gestionnaire retrieve(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}
-	
+
+	@Override
+	public Gestionnaire retrieve(Long id) {
+		return repository.findOne(id);
+	}
+
 	@Override
 	public Set<Gestionnaire> retrieveAll() {
 		Iterable<GestionnaireNode> endResults = repository.findAll();

@@ -16,4 +16,7 @@ public interface BesoinsReponsesService {
 
 	public DAO<Reponse> getReponseDAO();
 
+	public Besoin createOrUpdateBesoin(Long id, String name, Long idParent);
+
+	public void deleteBesoin(Long id);
 }

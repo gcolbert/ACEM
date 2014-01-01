@@ -60,6 +60,16 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 
 	@Override
+	public Besoin retrieve(Long id) {
+		if (id != null) {
+			return repository.findOne(id);
+		}
+		else {
+			return null;
+		}
+	}
+
+	@Override
 	public Besoin retrieve(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}

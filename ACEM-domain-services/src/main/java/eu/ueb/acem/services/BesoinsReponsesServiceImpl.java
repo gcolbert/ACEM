@@ -12,6 +12,7 @@ import eu.ueb.acem.dal.bleu.BesoinDAO;
 import eu.ueb.acem.dal.bleu.ReponseDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 
 @Service("besoinsReponsesService")
 public class BesoinsReponsesServiceImpl implements BesoinsReponsesService {
@@ -51,4 +52,28 @@ public class BesoinsReponsesServiceImpl implements BesoinsReponsesService {
 		return besoinDAO.retrieveLinkedWith(besoin);
 	}
 
+	@Override
+	public Besoin createOrUpdateBesoin(Long id, String name, Long idParent) {
+		Besoin existingBesoin = besoinDAO.retrieve(id);
+		logger.info("updateBesoin, existingBesoin == {}", existingBesoin);
+		if (existingBesoin == null) {
+			// TODO : ne pas appeler BesoinNode, passer par une factory (?)
+			Besoin newBesoin = besoinDAO.create(new BesoinNode(name));
+			if (idParent != null) {
+				Besoin parent = besoinDAO.retrieve(idParent);
+				newBesoin.addParent(parent);
+			}
+			return newBesoin;
+		}
+		else {
+			existingBesoin.setNom(name);
+			return besoinDAO.update(existingBesoin);
+		}
+	}
+
+	@Override
+	public void deleteBesoin(Long id) {
+		Besoin besoin = besoinDAO.retrieve(id);
+		besoinDAO.delete(besoin);
+	}
 }

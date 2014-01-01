@@ -56,7 +56,12 @@ public class EnseignantDAO implements DAO<Enseignant> {
 	public Enseignant create(Enseignant enseignant) {
 		return repository.save((EnseignantNode) enseignant);
 	}
-	
+
+	@Override
+	public Enseignant retrieve(Long id) {
+		return repository.findOne(id);
+	}
+
 	@Override
 	public Enseignant retrieve(String nom) {
 		return repository.findByPropertyValue("nom", nom);

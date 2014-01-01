@@ -19,8 +19,6 @@
 package eu.ueb.acem.web.viewbeans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -49,13 +47,10 @@ public class EditableTreeBean implements Serializable {
 	
 	private TreeNode visibleRoot;
 
-    // Contains the Edited Node data
-    private List<Menu> editedData;
-
     public EditableTreeBean() {
-        editedData = new ArrayList<Menu>();
+    	// For some reason, the root of the tree is not visible
         root = new DefaultTreeNode();
-		// We add a visible root so that it is possible to right click and add children nodes
+		// Therefore, we add a visible root so that it is possible to right click and add children nodes
         visibleRoot = new DefaultTreeNode(new Menu("Besoins"), root);
     }
 
@@ -71,38 +66,19 @@ public class EditableTreeBean implements Serializable {
 		this.root = root;
 	}
 
-	/*
-    public void saveTree() {
-        iterateNodes(root);
-    }
-
-    public void saveNode(TreeNode node) {
-    	iterateNodes(node);
-    }
-
-    private void iterateNodes(TreeNode node) {
-    	if (node != null) {
-	        for (TreeNode iterateNode : node.getChildren()) {
-	            editedData.add((Menu) node.getData());
-	            if (!iterateNode.isLeaf()) {
-	            	iterateNodes(iterateNode);
-	            }
-	        }
-    	}
-    	else {
-    		logger.error("iterateNodes(null)");
-    	}
-    	logger.info("iterateNodes, getChildCount={}, editedData.size={}",root.getChildCount(),editedData.size());
-    }
-    */
-
-    public TreeNode addChild(TreeNode parent, String label) {
-    	return new DefaultTreeNode(new Menu(label), parent);
+	public TreeNode addChild(TreeNode parent, String label) {
+    	TreeNode child = new DefaultTreeNode(new Menu(label), parent);
+    	child.setSelected(true);
+    	parent.setSelected(false);
+    	parent.setExpanded(true);
+    	return child;
     }
     
     public static class Menu implements Serializable {
 
 		private static final long serialVersionUID = -5623188924862380160L;
+
+		private Long id = null;
 
         private String menuName;
 
@@ -118,6 +94,14 @@ public class EditableTreeBean implements Serializable {
             this.menuName = menuName;
         }
 
+        public Long getId() {
+        	return id;
+        }
+        
+        public void setId(Long id) {
+        	this.id = id;
+        }
+        
         @Override
         public String toString() {
         	return "Menu{ menuName=" + menuName + '}';

@@ -58,6 +58,11 @@ public class ActiviteDAO implements DAO<Activite> {
 	}
 
 	@Override
+	public Activite retrieve(Long id) {
+		return repository.findOne(id);
+	}
+	
+	@Override
 	public Activite retrieve(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}

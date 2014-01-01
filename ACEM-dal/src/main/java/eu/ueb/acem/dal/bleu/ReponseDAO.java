@@ -58,6 +58,11 @@ public class ReponseDAO implements DAO<Reponse> {
 	public Reponse create(Reponse reponse) {
 		return repository.save((ReponseNode) reponse);
 	}
+
+	@Override
+	public Reponse retrieve(Long id) {
+		return repository.findOne(id);
+	}
 	
 	@Override
 	public Reponse retrieve(String nom) {

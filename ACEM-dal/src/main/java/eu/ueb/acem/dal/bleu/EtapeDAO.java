@@ -58,6 +58,11 @@ public class EtapeDAO implements DAO<Etape>{
 	}
 
 	@Override
+	public Etape retrieve(Long id) {
+		return repository.findOne(id);
+	}
+
+	@Override
 	public Etape retrieve(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}

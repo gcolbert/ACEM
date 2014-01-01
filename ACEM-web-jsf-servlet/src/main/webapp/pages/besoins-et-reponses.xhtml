@@ -14,13 +14,16 @@
 				    <p:menuitem value="Ajouter un fils" update="treeSingle" actionListener="#{besoinsReponsesController.addChildToSelectedNode}" icon="ui-icon-plus"/>
 				    <p:menuitem value="Supprimer ce noeud et ses fils" update="treeSingle" actionListener="#{besoinsReponsesController.deleteSelectedNode}" icon="ui-icon-minus"/>
 				</p:contextMenu>
-				<p:tree id="treeSingle" orientation="vertical" dynamic="true"
-						var="node" value="#{besoinsReponsesController.treeRoot}"
+				<p:tree id="treeSingle" orientation="vertical" dynamic="true" cache="true"
+						value="#{besoinsReponsesController.treeRoot}" var="node" 
 						selectionMode="single" selection="#{besoinsReponsesController.selectedNode}">
+						<!-- 
+					<p:ajax event="select" update="treeSingle" listener="#{besoinsReponsesController.onNodeSelect}" />
+					 -->
 				    <p:treeNode>
 				    	<span onclick="this.parentNode.parentNode.firstChild.click();">
 	                        <p:inplace editor="true" event="dblclick">
-	                        	<p:ajax event="save" listener="#{besoinsReponsesController.saveTree}" update="treeSingle" />
+	                        	<p:ajax event="save" listener="#{besoinsReponsesController.saveSelectedNode}" update="treeSingle" />
 	                            <p:inputText value="#{node.menuName}"/>
 	                        </p:inplace>
 						</span>
