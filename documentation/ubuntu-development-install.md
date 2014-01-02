@@ -1,15 +1,17 @@
-INSTALL OPENJDK-7-JDK
-===
+UBUNTU CONFIGURATION
+====================
 
+INSTALL OPENJDK-7-JDK
+---------------------
 - sudo apt-get install openjdk-7-jdk
 
 INSTALL MAVEN 2
-====
+---------------------
 
 - sudo apt-get install maven2
 
 INSTALL ECLIPSE FOR JAVA EE
-====
+---------------------
 
 - Download Eclipse IDE for Java EE developers at http://www.eclipse.org/downloads/
 
@@ -28,12 +30,12 @@ where ~/ACEM-project/eclipse/eclipse is the path to launch the eclipse executabl
 - chmod +x ~/ACEM-project/eclipse/eclipse-with-menus.sh
 
 CREATE WORKSPACE DIRECTORY FOR THE ACEM PROJECT
-====
+---------------------
 
 - mkdir ~/ACEM-project/workspace-ACEM
 
 DOWNLOAD SOURCES FROM GITHUB
-====
+---------------------
 
 - sudo apt-get install git
 
@@ -54,7 +56,7 @@ It should download sources into ~/ACEM-project/workspace-ACEM/ACEM
 - Click Finish
 
 BUILDING THE PROJECT FROM THE COMMAND LINE
-====
+---------------------
 
 - cd ~/ACEM-project/workspace-ACEM/ACEM
 
@@ -63,7 +65,7 @@ BUILDING THE PROJECT FROM THE COMMAND LINE
 Note : you can skip tests with "mvn clean install -DskipTests"
 
 RUNNING THE SERVER
-====
+---------------------
 
 - cd ACEM-web-jsf-servlet
 
