@@ -1,0 +1,16 @@
+- Download Eclipse IDE for Java EE developers at http://www.eclipse.org/downloads/
+
+- Put the tar.gz inside a folder in your $HOME directory (e.g. in ~/GREGOIRE)
+
+- tar -xzf eclipse-jee-kepler-SR1-linux-gtk-x86_64.tar.gz 
+
+- there's currently a bug in Ubuntu not displaying Eclipse menu.
+Workaround : create a file "eclipse-with-menus.sh" inside the "eclipse" folder.
+
+#!/bin/bash
+env UBUNTU_MENUPROXY=0 ~/GREGOIRE/eclipse/eclipse
+
+where ~/GREGOIRE/eclipse/eclipse is the path to acess the eclipse executable.
+
+- chmod +x eclipse-with-menus.sh
+
