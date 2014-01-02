@@ -47,3 +47,18 @@ It should download sources into ~/ACEM-project/workspace-ACEM/ACEM
 - Set root directory to: ~/ACEM-project/workspace-ACEM/ACEM
 
 - Click Finish
+
+BUILDING THE PROJECT FROM THE COMMAND LINE
+
+- cd ~/ACEM-project/workspace-ACEM/ACEM
+
+- mvn clean install
+
+Note : you can skip tests with "mvn clean install -DskipTests"
+
+RUNNING THE SERVER
+
+- cd ACEM-web-jsf-servlet
+
+- mvn jetty:run
+
