@@ -51,7 +51,7 @@ public class EditableTreeBean implements Serializable {
     	// For some reason, the root of the tree is not visible
         root = new DefaultTreeNode();
 		// Therefore, we add a visible root so that it is possible to right click and add children nodes
-        visibleRoot = new DefaultTreeNode(new Menu("Besoins"), root);
+        visibleRoot = new DefaultTreeNode(new Menu(null, "Besoins"), root);
     }
 
     public TreeNode getRoot() {
@@ -66,10 +66,8 @@ public class EditableTreeBean implements Serializable {
 		this.root = root;
 	}
 
-	public TreeNode addChild(TreeNode parent, String label) {
-    	TreeNode child = new DefaultTreeNode(new Menu(label), parent);
-    	child.setSelected(true);
-    	parent.setSelected(false);
+	public TreeNode addChild(TreeNode parent, Long id, String label) {
+    	TreeNode child = new DefaultTreeNode(new Menu(id, label), parent);
     	parent.setExpanded(true);
     	return child;
     }
@@ -82,7 +80,8 @@ public class EditableTreeBean implements Serializable {
 
         private String menuName;
 
-        public Menu(String menuName) {
+        public Menu(Long id, String menuName) {
+        	this.id = id;
             this.menuName = menuName;
         }
 
@@ -104,7 +103,7 @@ public class EditableTreeBean implements Serializable {
         
         @Override
         public String toString() {
-        	return "Menu{ menuName=" + menuName + '}';
+        	return "Menu{ id=" + id + ", menuName=" + menuName + " }";
         }
     }
 

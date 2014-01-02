@@ -46,7 +46,7 @@ public class ReponseNode implements Reponse {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "indexReponse") private String nom;
+	@Indexed(indexName = "indexReponse") private String name;
 	
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourReponse", direction = INCOMING)
 	private Set<Besoin> besoins;
@@ -59,9 +59,9 @@ public class ReponseNode implements Reponse {
     	ressources = new HashSet<Ressource>();
     }
 
-    public ReponseNode(String nom) {
+    public ReponseNode(String name) {
     	this();
-       	setNom(nom);
+       	setName(name);
     }
 
     @Override
@@ -74,13 +74,13 @@ public class ReponseNode implements Reponse {
     }
     
     @Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
     @Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
     @Override

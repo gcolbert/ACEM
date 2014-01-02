@@ -58,15 +58,15 @@ public class BesoinsReponsesTest {
 
 		Besoin besoin1 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1");
 		Besoin besoin11 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1.1");
-		besoin1.addEnfant(besoin11);
+		besoin1.addChild(besoin11);
 		Besoin besoin111 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1.1.1");
-		besoin11.addEnfant(besoin111);
+		besoin11.addChild(besoin111);
 		Besoin besoin112 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1.1.2");
-		besoin11.addEnfant(besoin112);
+		besoin11.addChild(besoin112);
 		Besoin besoin12 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1.2");
-		besoin1.addEnfant(besoin12);
+		besoin1.addChild(besoin12);
 		Besoin besoin13 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 1.3");
-		besoin1.addEnfant(besoin13);
+		besoin1.addChild(besoin13);
 		Besoin besoin2 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 2");
 		Besoin besoin3 = new BesoinNode("besoin de test t01_TestGetBesoinsRacines 3");
 
@@ -93,12 +93,12 @@ public class BesoinsReponsesTest {
 
 		Besoin besoin11 = new BesoinNode("besoin de test t02_TestGetBesoinsLies 1.1");
 		besoinsReponsesService.getBesoinDAO().create(besoin11);
-		besoin1.addEnfant(besoin11);
+		besoin1.addChild(besoin11);
 		besoinsReponsesService.getBesoinDAO().update(besoin1);
 
 		Besoin besoin111 = new BesoinNode("besoin de test t02_TestGetBesoinsLies 1.1.1");
 		besoinsReponsesService.getBesoinDAO().create(besoin111);
-		besoin11.addEnfant(besoin111);
+		besoin11.addChild(besoin111);
 		besoinsReponsesService.getBesoinDAO().update(besoin11);
 
 		// We check that the node with name "besoin de test t07_TestBesoinDAORetrieveChildren 1" has one child
@@ -111,18 +111,18 @@ public class BesoinsReponsesTest {
 
 		Besoin besoin12 = new BesoinNode("besoin de test t02_TestGetBesoinsLies 1.2");
 		besoinsReponsesService.getBesoinDAO().create(besoin12);
-		besoin1.addEnfant(besoin12);
+		besoin1.addChild(besoin12);
 		besoinsReponsesService.getBesoinDAO().update(besoin1);
 
 		// We add children to besoin12
 		Besoin besoin121 = new BesoinNode("besoin de test t02_TestGetBesoinsLies 1.2.1");
-		besoin12.addEnfant(besoin121);
+		besoin12.addChild(besoin121);
 		besoinsReponsesService.getBesoinDAO().create(besoin121);
 		Besoin besoin122 = new BesoinNode("besoin de test t02_TestGetBesoinsLies 1.2.2");
-		besoin12.addEnfant(besoin122);
+		besoin12.addChild(besoin122);
 		besoinsReponsesService.getBesoinDAO().create(besoin122);
 		Besoin besoin123 = new BesoinNode("besoin de test t02_TestGetBesoinsLies 1.2.3");
-		besoin12.addEnfant(besoin123);
+		besoin12.addChild(besoin123);
 		besoinsReponsesService.getBesoinDAO().create(besoin123);
 	}
 

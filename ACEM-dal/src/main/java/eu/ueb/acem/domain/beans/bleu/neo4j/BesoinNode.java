@@ -50,26 +50,26 @@ public class BesoinNode implements Besoin {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "indexBesoin") private String nom;
+	@Indexed(indexName = "indexBesoin") private String name;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinParent", direction = OUTGOING)
 	private Set<Besoin> parents;
 	
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinEnfant", direction = OUTGOING)
-	private Set<Besoin> enfants;
+	private Set<Besoin> children;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "aPourReponse", direction = OUTGOING)
 	private Set<Reponse> reponses;
 
     public BesoinNode() {
     	parents = new HashSet<Besoin>();
-    	enfants = new HashSet<Besoin>();
+    	children = new HashSet<Besoin>();
     	reponses = new HashSet<Reponse>();
     }
 
     public BesoinNode(String nom) {
     	this();
-    	setNom(nom);
+    	setName(nom);
     }
 
     @Override
@@ -82,13 +82,13 @@ public class BesoinNode implements Besoin {
     }
 
     @Override
-    public String getNom() {
-    	return nom;
+    public String getName() {
+    	return name;
     }
 
     @Override
-    public void setNom(String nom) {
-    	this.nom = nom;
+    public void setName(String nom) {
+    	this.name = nom;
     }
 
     @Override
@@ -97,19 +97,21 @@ public class BesoinNode implements Besoin {
 	}
     
 	@Override
+	@Transactional
 	public void setParents(Set<Besoin> parents) {
 		this.parents = parents;
 	}
     
     @Override
-    public Set<Besoin> getEnfants() {
-    	return enfants;
+    public Set<Besoin> getChildren() {
+    	return children;
     }
 
 
 	@Override
-	public void setEnfants(Set<Besoin> enfants) {
-		this.enfants = enfants;		
+	@Transactional
+	public void setChildren(Set<Besoin> children) {
+		this.children = children;
 	}
 
     @Override
@@ -118,52 +120,58 @@ public class BesoinNode implements Besoin {
     }
 
 	@Override
+	@Transactional
 	public void setReponses(Set<Reponse> reponses) {
 		this.reponses = reponses;
 	}
     
 	@Override
+	@Transactional
 	public void addParent(Besoin parent) {
 		parents.add(parent);
-       	if (! parent.getEnfants().contains(this)) {
-       		logger.debug("'{}'.addParent('{}') : parent doesn't already contains this node as a child, we create it", this.getNom(), parent.getNom());
-       		parent.addEnfant(this);
+       	if (! parent.getChildren().contains(this)) {
+       		logger.debug("'{}'.addParent('{}') : parent doesn't already contains this node as a child, we add it", this.getName(), parent.getName());
+       		parent.addChild(this);
        	}
        	else {
-       		logger.debug("'{}'.addParent('{}') : parent already contains this node as a child, we don't create it", this.getNom(), parent.getNom());
+       		logger.debug("'{}'.addParent('{}') : parent already contains this node as a child, we don't add it", this.getName(), parent.getName());
        	}
 	}
     
     @Override
     @Transactional
-    public void addEnfant(Besoin besoin) {
-       	enfants.add(besoin);
+    public void addChild(Besoin besoin) {
+       	children.add(besoin);
        	if (! besoin.getParents().contains(this)) {
-       		logger.debug("'{}'.addEnfant('{}') : the child doesn't already have a reference to this, we create it", this.getNom(), besoin.getNom());
+       		logger.debug("'{}'.addEnfant('{}') : the child doesn't already have a reference to this, we add it", this.getName(), besoin.getName());
        		besoin.addParent(this);
        	}
        	else {
-       		logger.debug("'{}'.addEnfant('{}') : the child already has a reference to this, we don't create it", this.getNom(), besoin.getNom());
+       		logger.debug("'{}'.addEnfant('{}') : the child already has a reference to this, we don't add it", this.getName(), besoin.getName());
        	}
     }
 
     @Override
-    public void removeEnfant(Besoin besoin) {
-    	enfants.remove(besoin);
+    @Transactional
+    public void removeChild(Besoin besoin) {
+    	children.remove(besoin);
     }
 
     @Override
+    @Transactional
     public void addReponse(Reponse reponse) {
    		reponses.add(reponse);
    		reponse.addBesoin(this);
     }
 
 	@Override
+	@Transactional
 	public void removeParent(Besoin besoin) {
 		parents.remove(besoin);
 	}
 
     @Override
+    @Transactional
     public void removeReponse(Reponse reponse) {
        	reponses.remove(reponse);
     }
@@ -172,8 +180,8 @@ public class BesoinNode implements Besoin {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((enfants == null) ? 0 : enfants.hashCode());
-		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		result = prime * result + ((children == null) ? 0 : children.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		//result = prime * result + ((parents == null) ? 0 : parents.hashCode()); // avoids a stack overflow
 		//result = prime * result + ((reponses == null) ? 0 : reponses.hashCode());
 		return result;
@@ -188,15 +196,15 @@ public class BesoinNode implements Besoin {
 		if (getClass() != obj.getClass())
 			return false;
 		BesoinNode other = (BesoinNode) obj;
-		if (enfants == null) {
-			if (other.enfants != null)
+		if (children == null) {
+			if (other.children != null)
 				return false;
-		} else if (!enfants.equals(other.enfants))
+		} else if (!children.equals(other.children))
 			return false;
-		if (nom == null) {
-			if (other.nom != null)
+		if (name == null) {
+			if (other.name != null)
 				return false;
-		} else if (!nom.equals(other.nom))
+		} else if (!name.equals(other.name))
 			return false;
 		if (parents == null) {
 			if (other.parents != null)

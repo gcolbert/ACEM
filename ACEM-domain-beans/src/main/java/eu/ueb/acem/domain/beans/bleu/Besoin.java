@@ -29,17 +29,17 @@ public interface Besoin extends Serializable {
 
 	public Long getId();
 	
-    public String getNom();
+    public String getName();
 
-    public void setNom(String nom);
+    public void setName(String name);
 
     public Set<Besoin> getParents();
     
     public void setParents(Set<Besoin> parents);
 
-    public Set<Besoin> getEnfants();
+    public Set<Besoin> getChildren();
 
-    public void setEnfants(Set<Besoin> enfants);
+    public void setChildren(Set<Besoin> children);
     
     public Set<Reponse> getReponses();
 
@@ -47,13 +47,13 @@ public interface Besoin extends Serializable {
     
 	public void addParent(Besoin parent);
 
-	public void addEnfant(Besoin besoin);
+	public void addChild(Besoin besoin);
     
     public void addReponse(Reponse reponse);
 
     public void removeParent(Besoin besoin);
     
-	public void removeEnfant(Besoin besoin);
+	public void removeChild(Besoin besoin);
 
 	public void removeReponse(Reponse reponse);
 

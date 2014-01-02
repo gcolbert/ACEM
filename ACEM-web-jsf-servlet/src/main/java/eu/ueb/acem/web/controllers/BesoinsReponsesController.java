@@ -1,5 +1,6 @@
 package eu.ueb.acem.web.controllers;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -7,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,21 +48,21 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		Set<Besoin> besoins = besoinsReponsesService.getBesoinsLies(null);
 		logger.info("[BesoinsReponsesController.initTree] Récupération de {} besoins à la racine de l'arbre.", besoins.size());
 		for (Besoin besoin : besoins) {
-			editableTreeBean.addChild(editableTreeBean.getVisibleRoot(), besoin.getNom());
+			//TreeNode treeNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoot(), besoin.getId(), besoin.getName());
+	    	createTree(besoin, editableTreeBean.getVisibleRoot());
 		}
     }
 
     /**
      * Recursive function to construct Tree
-    public TreeNode createTree(Tree treeObj, TreeNode rootNode) {
-        TreeNode newNode = new DefaultTreeNode(treeObj, rootNode);
-        List<Tree> childNodes1 = treeService.getChildNodes(treeObj.getNodeId());
-        for (Tree tt : childNodes1) {
-            TreeNode newNode2 = createTree(tt, newNode);
+     */
+    public void createTree(Besoin besoin, TreeNode rootNode) {
+        TreeNode newNode = new DefaultTreeNode(new Menu(besoin.getId(), besoin.getName()), rootNode);
+        Set<Besoin> childrenNodes = besoinsReponsesService.getBesoinsLies(besoin);
+        for (Besoin besoinChild : childrenNodes) {
+            createTree(besoinChild, newNode);
         }
-        return newNode;
     }
-    */
     
 	public EditableTreeBean getTreeBean() {
 		return editableTreeBean;
@@ -75,7 +77,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     }
   
     public void setSelectedNode(TreeNode selectedNode) {
-    	logger.info("début setSelectedNode({})", selectedNode);
+    	logger.info("entering setSelectedNode({})", selectedNode);
     	if (this.selectedNode != null) {
 	        if (this.selectedNode.isSelected()) {
 	        	this.selectedNode.setSelected(false);
@@ -87,11 +89,11 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 	        	this.selectedNode.setSelected(true);
 	        }
     	}
-    	logger.info("fin setSelectedNode({})", selectedNode);
+    	logger.info("leaving setSelectedNode({})", selectedNode);
     }
 
     public void onNodeSelect(NodeSelectEvent event) {
-    	logger.info("BesoinsReponsesController.onNodeSelect");
+    	logger.info("onNodeSelect");
     	/*
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
         FacesContext.getCurrentInstance().addMessage(null, message);      	
@@ -106,24 +108,36 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     }
 
     public void addChildToSelectedNode() {
-    	logger.info("[addChildToSelectedNode, selectedNode={}]", selectedNode.getData().toString());
-    	TreeNode newNode = editableTreeBean.addChild(selectedNode, "Nouveau");
+    	logger.info("entering addChildToSelectedNode, selectedNode={}", selectedNode.getData().toString());
+    	TreeNode newNode = editableTreeBean.addChild(selectedNode, null, "Nouveau");
     	setSelectedNode(newNode);
     	saveSelectedNode();
+    	logger.info("leaving addChildToSelectedNode, selectedNode={}", selectedNode.getData().toString());
+		logger.info("------");
     }
 
 	public void saveSelectedNode() {
-		logger.info("saveSelectedNode({}) début",((Menu)selectedNode.getData()).getId(), ((Menu)selectedNode.getData()).getMenuName());
+		logger.info("entering saveSelectedNode, selectedNode={}", selectedNode.getData().toString());
 		// Si selectedNode est un Besoin
-		Besoin savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
-																			((Menu)selectedNode.getData()).getMenuName(),
-																			((Menu) (selectedNode.getParent().getData())).getId());
+		Besoin savedBesoin;
+		if ((selectedNode.getParent() != null) && (selectedNode.getParent().getData() != null)) {
+			savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
+										((Menu) selectedNode.getData()).getMenuName(),
+										((Menu) selectedNode.getParent().getData()).getId());
+		}
+		else {
+			savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
+										((Menu)selectedNode.getData()).getMenuName(),
+										null);
+		}
 		((Menu)selectedNode.getData()).setId(savedBesoin.getId());
-		logger.info("saveSelectedNode({}) fin",((Menu)selectedNode.getData()).getId(), ((Menu)selectedNode.getData()).getMenuName());
 		// TODO sinon si selectedNode est une Reponse
+		logger.info("leaving saveSelectedNode, selectedNode={}", selectedNode.getData().toString());
+		logger.info("------");
 	}
 
     public void deleteSelectedNode() {
+		logger.info("entering deleteSelectedNode, selectedNode={}", selectedNode.getData().toString());
     	if (selectedNode != null) {
         	if (selectedNode.getChildCount() == 0) {
         		besoinsReponsesService.deleteBesoin(((Menu) selectedNode.getData()).getId());
@@ -136,6 +150,8 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 	    		logger.info("The selected node has children, cannot delete!");
 	    	}
     	}
+		logger.info("leaving deleteSelectedNode");
+		logger.info("------");
     }
 
 }

@@ -55,12 +55,12 @@ public class BesoinDAO implements DAO<Besoin> {
 
 	@Override
 	public Besoin create(Besoin besoin) {
-		logger.debug("Persisting Besoin with nom '{}'", besoin.getNom());
+		logger.debug("Persisting Besoin with nom '{}'", besoin.getName());
 		return repository.save((BesoinNode) besoin);
 	}
 
 	@Override
-	public Besoin retrieve(Long id) {
+	public Besoin retrieveById(Long id) {
 		if (id != null) {
 			return repository.findOne(id);
 		}
@@ -70,14 +70,14 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 
 	@Override
-	public Besoin retrieve(String nom) {
-		return repository.findByPropertyValue("nom", nom);
+	public Besoin retrieveByName(String name) {
+		return repository.findByPropertyValue("name", name);
 	}
 
 	public Set<Besoin> retrieveChildrenOf(Besoin besoin) {
 		Set<BesoinNode> nodes;
 		if (besoin != null) {
-			nodes = repository.findChildrenOf(besoin.getNom());
+			nodes = repository.findChildrenOf(besoin.getName());
 		}
 		else {
 			nodes = repository.findRoots();
@@ -91,7 +91,7 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 
 	public Set<Reponse> retrieveLinkedWith(Besoin besoin) {
-		Set<ReponseNode> nodes = repository.findAnswersOf(besoin.getNom());
+		Set<ReponseNode> nodes = repository.findAnswersOf(besoin.getName());
 		Set<Reponse> reponses = new HashSet<Reponse>();
 		for (ReponseNode node : nodes) {
 			reponses.add(node);

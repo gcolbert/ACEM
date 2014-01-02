@@ -60,12 +60,12 @@ public class ReponseDAO implements DAO<Reponse> {
 	}
 
 	@Override
-	public Reponse retrieve(Long id) {
+	public Reponse retrieveById(Long id) {
 		return repository.findOne(id);
 	}
 	
 	@Override
-	public Reponse retrieve(String nom) {
+	public Reponse retrieveByName(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}
 
@@ -83,7 +83,7 @@ public class ReponseDAO implements DAO<Reponse> {
 	}
 	
 	public Set<Besoin> retrieveNeedsOf(Reponse reponse) {
-		Set<BesoinNode> nodes = repository.findNeedsOf(reponse.getNom());
+		Set<BesoinNode> nodes = repository.findNeedsOf(reponse.getName());
 		Set<Besoin> needs = new HashSet<Besoin>();
 		for (BesoinNode node : nodes) {
 			needs.add(node);

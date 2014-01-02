@@ -63,7 +63,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 
 	@Override
 	public Personne getUser(String uid) {
-		Personne user = enseignantDAO.retrieve(uid);
+		Personne user = enseignantDAO.retrieveByName(uid);
 		if (user == null) {
 			// TODO : on récupère l'utilisateur par le service CAS
 			//user.setLogin(uid);

@@ -58,12 +58,12 @@ public class ScenarioDAO implements DAO<Scenario>{
 	}
 
 	@Override
-	public Scenario retrieve(Long id) {
+	public Scenario retrieveById(Long id) {
 		return repository.findOne(id);
 	}
 
 	@Override
-	public Scenario retrieve(String nom) {
+	public Scenario retrieveByName(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}
 

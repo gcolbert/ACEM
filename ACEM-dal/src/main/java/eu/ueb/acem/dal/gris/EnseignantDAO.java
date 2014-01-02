@@ -58,12 +58,12 @@ public class EnseignantDAO implements DAO<Enseignant> {
 	}
 
 	@Override
-	public Enseignant retrieve(Long id) {
+	public Enseignant retrieveById(Long id) {
 		return repository.findOne(id);
 	}
 
 	@Override
-	public Enseignant retrieve(String nom) {
+	public Enseignant retrieveByName(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}
 	

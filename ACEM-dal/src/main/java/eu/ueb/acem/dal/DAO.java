@@ -28,9 +28,9 @@ public interface DAO<E> {
 	
 	public E create(E entity);
 	
-	public E retrieve(Long id);
+	public E retrieveById(Long id);
 	
-	public E retrieve(String name);
+	public E retrieveByName(String name);
 
 	public Set<E> retrieveAll();
 	

@@ -98,11 +98,11 @@ public class BesoinDAOTest extends TestCase {
 		assertEquals(new Long(1), besoinDAO.count());
 
 		// We retrieve the object from the datastore using its name
-		Besoin besoin2 = besoinDAO.retrieve(besoin1.getNom());
+		Besoin besoin2 = besoinDAO.retrieveByName(besoin1.getName());
 		
 		assertEquals(besoin1, besoin2);
 		assertEquals(besoin1.getId(), besoin2.getId());
-		assertEquals(besoin1.getNom(), besoin2.getNom());
+		assertEquals(besoin1.getName(), besoin2.getName());
 	}
 
 	/**
@@ -116,14 +116,14 @@ public class BesoinDAOTest extends TestCase {
 		assertEquals(new Long(1), besoinDAO.count());
 
 		// We update the object
-		besoin1.setNom("besoin de test t03_TestBesoinDAOUpdate mis à jour");
+		besoin1.setName("besoin de test t03_TestBesoinDAOUpdate mis à jour");
 		besoinDAO.update(besoin1);
 
 		// We check that the object cannot be retrieved anymore with its original name
-		assertNull(besoinDAO.retrieve("besoin de test t03_TestBesoinDAOUpdate"));
+		assertNull(besoinDAO.retrieveByName("besoin de test t03_TestBesoinDAOUpdate"));
 
 		// We check that the object can be retrieved with its new name
-		assertNotNull(besoinDAO.retrieve("besoin de test t03_TestBesoinDAOUpdate mis à jour"));
+		assertNotNull(besoinDAO.retrieveByName("besoin de test t03_TestBesoinDAOUpdate mis à jour"));
 		
 		// We check that there is still only 1 object in the datastore
 		assertEquals(new Long(1), besoinDAO.count());
@@ -156,13 +156,13 @@ public class BesoinDAOTest extends TestCase {
 		Besoin besoin11 = new BesoinNode("besoin de test t05_TestBesoinDAORetrieveAll 1.1");
 		besoinDAO.create(besoin11);
 		
-		besoin1.addEnfant(besoin11);
+		besoin1.addChild(besoin11);
 		besoinDAO.update(besoin1);
 		
 		Besoin besoin12 = new BesoinNode("besoin de test t05_TestBesoinDAORetrieveAll 1.2");
 		besoinDAO.create(besoin12);
 		
-		besoin1.addEnfant(besoin12);
+		besoin1.addChild(besoin12);
 		besoinDAO.update(besoin1);
 		
 		Besoin besoin2 = new BesoinNode("besoin de test t05_TestBesoinDAORetrieveAll 2");
@@ -190,18 +190,18 @@ public class BesoinDAOTest extends TestCase {
 		assertEquals(new Long(2), besoinDAO.count());
 
 		// We add besoin11 as a child of besoin1 and check that a call to addEnfant is sufficient to create the relationships
-		besoin1.addEnfant(besoin11);
+		besoin1.addChild(besoin11);
 		besoin1 = besoinDAO.update(besoin1);
 		besoin11 = besoinDAO.update(besoin11);
 		
 		// We retrieve the entities
-		Besoin besoin1bis = besoinDAO.retrieve(besoin1.getNom());
-		Besoin besoin11bis = besoinDAO.retrieve(besoin11.getNom());
+		Besoin besoin1bis = besoinDAO.retrieveByName(besoin1.getName());
+		Besoin besoin11bis = besoinDAO.retrieveByName(besoin11.getName());
 		
 		// We check that entities have parent-child relationships
 		assertEquals(new Long(0), new Long(besoin1bis.getParents().size()));
-		assertEquals(new Long(1), new Long(besoin1bis.getEnfants().size()));
-		assertEquals(new Long(0), new Long(besoin11bis.getEnfants().size()));
+		assertEquals(new Long(1), new Long(besoin1bis.getChildren().size()));
+		assertEquals(new Long(0), new Long(besoin11bis.getChildren().size()));
 		assertEquals(new Long(1), new Long(besoin11bis.getParents().size()));
 
 		// Now we check that addParent is sufficient to create the relationships, too
@@ -215,17 +215,17 @@ public class BesoinDAOTest extends TestCase {
 		besoin12 = besoinDAO.update(besoin12);
 
 		// We retrieve the entities
-		Besoin besoin1ter = besoinDAO.retrieve(besoin1.getNom());
+		Besoin besoin1ter = besoinDAO.retrieveByName(besoin1.getName());
 		Set<Besoin> children = besoinDAO.retrieveChildrenOf(besoin1ter);
-		besoin1ter.setEnfants(children);
-		Besoin besoin12bis = besoinDAO.retrieve(besoin12.getNom());
+		besoin1ter.setChildren(children);
+		Besoin besoin12bis = besoinDAO.retrieveByName(besoin12.getName());
 
 		// We check that entities know about each other
 		assertEquals(new Long(0), new Long(besoin1ter.getParents().size()));
-		assertEquals(new Long(2), new Long(besoin1ter.getEnfants().size()));
-		assertEquals(new Long(0), new Long(besoin11bis.getEnfants().size()));
+		assertEquals(new Long(2), new Long(besoin1ter.getChildren().size()));
+		assertEquals(new Long(0), new Long(besoin11bis.getChildren().size()));
 		assertEquals(new Long(1), new Long(besoin11bis.getParents().size()));
-		assertEquals(new Long(0), new Long(besoin12bis.getEnfants().size()));
+		assertEquals(new Long(0), new Long(besoin12bis.getChildren().size()));
 		assertEquals(new Long(1), new Long(besoin12bis.getParents().size()));
 	}
 
@@ -240,7 +240,7 @@ public class BesoinDAOTest extends TestCase {
 		Besoin besoin11 = new BesoinNode("besoin de test t07_TestBesoinDAORetrieveBesoinsRacines 1.1");
 		besoinDAO.create(besoin11);
 		
-		besoin1.addEnfant(besoin11);
+		besoin1.addChild(besoin11);
 		besoinDAO.update(besoin1);
 
 		Besoin besoin2 = new BesoinNode("besoin de test t07_TestBesoinDAORetrieveBesoinsRacines 2");
@@ -252,12 +252,12 @@ public class BesoinDAOTest extends TestCase {
 		Besoin besoin31 = new BesoinNode("besoin de test t07_TestBesoinDAORetrieveBesoinsRacines 3.1");
 		besoinDAO.create(besoin31);
 
-		besoin3.addEnfant(besoin31);
+		besoin3.addChild(besoin31);
 		
 		Besoin besoin32 = new BesoinNode("besoin de test t07_TestBesoinDAORetrieveBesoinsRacines 3.2");
 		besoinDAO.create(besoin32);
 		
-		besoin3.addEnfant(besoin32);
+		besoin3.addChild(besoin32);
 
 		besoinDAO.update(besoin3);
 		
@@ -276,12 +276,12 @@ public class BesoinDAOTest extends TestCase {
 
 		Besoin besoin11 = new BesoinNode("besoin de test t08_TestBesoinDAORetrieveChildren 1.1");
 		besoinDAO.create(besoin11);
-		besoin1.addEnfant(besoin11);
+		besoin1.addChild(besoin11);
 		besoinDAO.update(besoin1);
 
 		Besoin besoin111 = new BesoinNode("besoin de test t08_TestBesoinDAORetrieveChildren 1.1.1");
 		besoinDAO.create(besoin111);
-		besoin11.addEnfant(besoin111);
+		besoin11.addChild(besoin111);
 		besoinDAO.update(besoin11);
 
 		// We check that the node with name "besoin de test t07_TestBesoinDAORetrieveChildren 1" has one child
@@ -295,24 +295,24 @@ public class BesoinDAOTest extends TestCase {
 		Besoin besoin12 = new BesoinNode("besoin de test t08_TestBesoinDAORetrieveChildren 1.2");
 		besoinDAO.create(besoin12);
 		
-		besoin1.addEnfant(besoin12);
+		besoin1.addChild(besoin12);
 		besoinDAO.update(besoin1);
 
 		// We add children to besoin12
 		Besoin besoin121 = new BesoinNode("besoin de test t08_TestBesoinDAORetrieveChildren 1.2.1");
 		besoinDAO.create(besoin121);
 		
-		besoin12.addEnfant(besoin121);
+		besoin12.addChild(besoin121);
 
 		Besoin besoin122 = new BesoinNode("besoin de test t08_TestBesoinDAORetrieveChildren 1.2.2");
 		besoinDAO.create(besoin122);
 
-		besoin12.addEnfant(besoin122);
+		besoin12.addChild(besoin122);
 		
 		Besoin besoin123 = new BesoinNode("besoin de test t08_TestBesoinDAORetrieveChildren 1.2.3");
 		besoinDAO.create(besoin123);
 
-		besoin12.addEnfant(besoin123);
+		besoin12.addChild(besoin123);
 		
 		besoinDAO.update(besoin12);
 		
