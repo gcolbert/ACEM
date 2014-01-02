@@ -1,5 +1,5 @@
 INSTALL OPENJDK-7-JDK
-====
+=====
 
 - sudo apt-get install openjdk-7-jdk
 
