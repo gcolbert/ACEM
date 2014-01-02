@@ -1,3 +1,5 @@
+INSTALL ECLIPSE FOR JAVA EE
+
 - Download Eclipse IDE for Java EE developers at http://www.eclipse.org/downloads/
 
 - Put the tar.gz inside a folder in your $HOME directory (e.g. in ~/GREGOIRE)
@@ -10,7 +12,22 @@ Workaround : create a file "eclipse-with-menus.sh" inside the "eclipse" folder.
 #!/bin/bash
 env UBUNTU_MENUPROXY=0 ~/GREGOIRE/eclipse/eclipse
 
-where ~/GREGOIRE/eclipse/eclipse is the path to acess the eclipse executable.
+where ~/GREGOIRE/eclipse/eclipse is the path to launch the eclipse executable.
 
-- chmod +x eclipse-with-menus.sh
+- chmod +x ~/GREGOIRE/eclipse/eclipse-with-menus.sh
 
+- Launch Eclipse with ~/GREGOIRE/eclipse/eclipse-with-menus.sh
+
+INSTALL GIT
+
+- sudo apt-get install git
+
+CREATE WORKSPACE DIRECTORY FOR THE ACEM PROJECT
+
+- mkdir ~/GREGOIRE/workspace-ACEM
+
+- cd workspace-ACEM
+
+DOWNLOAD SOURCES FROM GITHUB
+
+- git 
