@@ -20,7 +20,7 @@ INSTALL ECLIPSE FOR JAVA EE
 - there's currently a bug in Ubuntu not displaying Eclipse menu.
 Workaround : create a file "eclipse-with-menus.sh" inside the "eclipse" folder.
 
-    #!/bin/bash
+    \#!/bin/bash
     env UBUNTU_MENUPROXY=0 ~/ACEM-project/eclipse/eclipse
 
 where ~/ACEM-project/eclipse/eclipse is the path to launch the eclipse executable.
