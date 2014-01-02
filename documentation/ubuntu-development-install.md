@@ -45,6 +45,9 @@ Download sources from GitHub.com
 
 It should download sources into ~/ACEM-project/workspace-ACEM/ACEM
 
+Configuring Eclipse
+-------------------
+
 - Launch Eclipse with ~/ACEM-project/eclipse/eclipse-with-menus.sh
 
 - Choose ~/ACEM-project/workspace-ACEM as workspace
@@ -70,5 +73,7 @@ Running the server using Maven
 - cd ACEM-web-jsf-servlet
 
 - mvn jetty:run
+
+Wait for "[INFO] Started Jetty Server"
 
 - Point your browser to http://localhost:8080
