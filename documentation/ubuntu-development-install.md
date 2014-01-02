@@ -1,5 +1,5 @@
-UBUNTU CONFIGURATION
-====================
+ACEM development with Ubuntu
+============================
 
 Install OpenJDK 7
 -----------------
