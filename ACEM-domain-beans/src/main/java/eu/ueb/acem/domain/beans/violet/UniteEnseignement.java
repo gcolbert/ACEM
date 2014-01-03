@@ -26,9 +26,9 @@ import java.io.Serializable;
  */
 public interface UniteEnseignement extends Serializable {
 
-	public String getIntitule();
+	public String getName();
 
-	public void setIntitule(String intitule);
+	public void setName(String intitule);
 
 	public String getDuree();
 

@@ -33,7 +33,7 @@ public interface Reponse extends Serializable {
 	
 	public String getName();
 
-	public void setName(String nom);
+	public void setName(String name);
 
 	public Collection<Besoin> getBesoins();
 

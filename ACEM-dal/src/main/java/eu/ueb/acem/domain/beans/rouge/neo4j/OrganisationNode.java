@@ -42,7 +42,7 @@ public abstract class OrganisationNode implements Organisation {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-organisation") private String nom;
+	@Indexed(indexName = "indexOrganisation") private String name;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "possede", direction = OUTGOING)
 	private Set<Ressource> ressourcesPossedees;
@@ -53,8 +53,8 @@ public abstract class OrganisationNode implements Organisation {
     public OrganisationNode()  {
     }
 
-    public OrganisationNode(String nom) {
-    	this.setNom(nom);
+    public OrganisationNode(String name) {
+    	this.setName(name);
     }
 
     public Long getId() {
@@ -66,13 +66,13 @@ public abstract class OrganisationNode implements Organisation {
 	}
 
 	@Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
 	@Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override

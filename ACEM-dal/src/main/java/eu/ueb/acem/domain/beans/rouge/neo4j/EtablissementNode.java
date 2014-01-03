@@ -39,7 +39,7 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-etablissement") private String nom;
+	@Indexed(indexName = "indexEtablissement") private String name;
 
 	@RelatedTo(elementClass = Communaute.class, type = "estMembreDe", direction = OUTGOING)
 	Communaute communaute;
@@ -47,9 +47,9 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
     public EtablissementNode()  {
     }
 
-    public EtablissementNode(String nom) {
+    public EtablissementNode(String name) {
     	this();
-    	this.setNom(nom);
+    	this.setName(name);
     }
 
     @Override

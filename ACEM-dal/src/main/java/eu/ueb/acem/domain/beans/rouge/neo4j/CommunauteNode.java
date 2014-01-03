@@ -35,13 +35,13 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-communaute") private String nom;
+	@Indexed(indexName = "indexCommunaute") private String name;
 	
     public CommunauteNode()  {
     }
 
-    public CommunauteNode(String nom) {
-    	this.setNom(nom);
+    public CommunauteNode(String name) {
+    	this.setName(name);
     }
 	
 }

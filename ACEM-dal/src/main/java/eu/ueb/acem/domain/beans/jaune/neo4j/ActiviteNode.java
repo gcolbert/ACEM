@@ -36,23 +36,23 @@ public class ActiviteNode extends RessourceNode implements Activite {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-activite") private String nom;
+	@Indexed(indexName = "indexActivite") private String name;
 
 	public ActiviteNode() {
 	}
 
-	public ActiviteNode(String nom) {
-		this.setNom(nom);
+	public ActiviteNode(String name) {
+		this.setName(name);
 	}
 	
 	@Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
 	@Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

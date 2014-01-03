@@ -43,7 +43,7 @@ public class ScenarioNode implements Scenario {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "indexScenario") private String nom;
+	@Indexed(indexName = "indexScenario") private String name;
 
 	private String titre;
 	private String objectif;
@@ -54,8 +54,8 @@ public class ScenarioNode implements Scenario {
 	public ScenarioNode() {
 	}
 
-	public ScenarioNode(String nom) {
-		setNom(nom);
+	public ScenarioNode(String name) {
+		setName(name);
 	}
 	
 	@Override
@@ -68,13 +68,13 @@ public class ScenarioNode implements Scenario {
     }
     
     @Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
     @Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
     
 	@Override

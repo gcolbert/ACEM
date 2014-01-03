@@ -39,7 +39,7 @@ public class ServiceNode extends OrganisationNode implements Service {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-service") private String nom;
+	@Indexed(indexName = "indexService") private String name;
 
 	@RelatedTo(elementClass = Etablissement.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Etablissement etablissement;
@@ -47,8 +47,8 @@ public class ServiceNode extends OrganisationNode implements Service {
     public ServiceNode()  {
     }
 
-    public ServiceNode(String nom) {
-    	this.setNom(nom);
+    public ServiceNode(String name) {
+    	this.setName(name);
     }
 
 	@Override

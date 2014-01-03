@@ -35,23 +35,23 @@ public class RessourcePedagogiqueEtDocumentaireNode extends RessourceNode implem
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-ressource-pedagogique-et-documentaire") private String nom;
+	@Indexed(indexName = "indexRessourcePedagogiqueEtDocumentaire") private String name;
 
 	public RessourcePedagogiqueEtDocumentaireNode() {
 	}
 	
-	public RessourcePedagogiqueEtDocumentaireNode(String nom) {
-		this.setNom(nom);
+	public RessourcePedagogiqueEtDocumentaireNode(String name) {
+		this.setName(name);
 	}
 	
 	@Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
 	@Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

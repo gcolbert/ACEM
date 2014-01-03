@@ -39,7 +39,7 @@ public class CoursNode implements Cours {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-cours") private String intitule;
+	@Indexed(indexName = "indexCours") private String name;
 
 	private String duree;
 	
@@ -49,16 +49,16 @@ public class CoursNode implements Cours {
 	public CoursNode() {
 	}
 	
-	public CoursNode(String intitule) {
-		this.intitule = intitule;
+	public CoursNode(String name) {
+		this.name = name;
 	}
 
-	public String getIntitule() {
-		return intitule;
+	public String getName() {
+		return name;
 	}
 
-	public void setIntitule(String intitule) {
-		this.intitule = intitule;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDuree() {

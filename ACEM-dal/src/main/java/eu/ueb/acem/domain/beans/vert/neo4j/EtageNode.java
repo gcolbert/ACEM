@@ -39,7 +39,7 @@ public class EtageNode extends EspacePhysiqueNode implements Etage {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-etage") private Integer numero;
+	@Indexed(indexName = "indexEtage") private Integer numero;
 	
 	@RelatedTo(elementClass = Batiment.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Batiment batiment;

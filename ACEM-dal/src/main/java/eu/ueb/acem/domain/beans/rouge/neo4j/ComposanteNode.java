@@ -39,7 +39,7 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-composante") private String nom;
+	@Indexed(indexName = "indexComposante") private String name;
 
 	@RelatedTo(elementClass = Etablissement.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Etablissement etablissement;
@@ -47,8 +47,8 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 	public ComposanteNode()  {
     }
 	
-    public ComposanteNode(String nom) {
-    	this.setNom(nom);
+    public ComposanteNode(String name) {
+    	this.setName(name);
     }
 
 	@Override

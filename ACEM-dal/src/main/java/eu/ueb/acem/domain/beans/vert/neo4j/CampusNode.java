@@ -35,13 +35,13 @@ public class CampusNode extends EspacePhysiqueNode implements Campus {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-campus") private String nom;
+	@Indexed(indexName = "indexCampus") private String name;
 
 	private Double latitude;
 	private Double longitude;
 	
-	public CampusNode(String nom) {
-		this.nom = nom;
+	public CampusNode(String name) {
+		this.name = name;
 	}
 
 	public Double getLatitude() {

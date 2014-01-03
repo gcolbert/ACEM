@@ -24,10 +24,6 @@ package eu.ueb.acem.domain.beans.rouge;
  */
 public interface Composante extends Organisation {
 
-    //public String getNom();
-
-	//public void setNom(String nom);
-
     public Etablissement getEtablissement();
 
 }

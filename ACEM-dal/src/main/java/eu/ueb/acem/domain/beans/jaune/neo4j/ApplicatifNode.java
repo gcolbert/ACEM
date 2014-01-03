@@ -35,23 +35,23 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-applicatif") private String nom;
+	@Indexed(indexName = "indexApplicatif") private String name;
 
 	public ApplicatifNode() {
 	}
 
-	public ApplicatifNode(String nom) {
-		this.setNom(nom);
+	public ApplicatifNode(String name) {
+		this.setName(name);
 	}
 	
 	@Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
 	@Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

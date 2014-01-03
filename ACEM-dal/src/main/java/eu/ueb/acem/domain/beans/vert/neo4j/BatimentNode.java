@@ -39,7 +39,7 @@ public class BatimentNode extends EspacePhysiqueNode implements Batiment {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-batiment") private String nom;
+	@Indexed(indexName = "indexBatiment") private String name;
 
 	@RelatedTo(elementClass = Campus.class, type = "estContenuDans", direction = OUTGOING)
 	private Campus campus;
@@ -47,8 +47,8 @@ public class BatimentNode extends EspacePhysiqueNode implements Batiment {
 	private Double latitude;
 	private Double longitude;
 	
-	public BatimentNode(String nom) {
-		this.nom = nom;
+	public BatimentNode(String name) {
+		this.name = name;
 	}
 
 	public Campus getCampus() {

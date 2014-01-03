@@ -63,8 +63,8 @@ public class EtapeDAO implements DAO<Etape>{
 	}
 
 	@Override
-	public Etape retrieveByName(String nom) {
-		return repository.findByPropertyValue("nom", nom);
+	public Etape retrieveByName(String name) {
+		return repository.findByPropertyValue("name", name);
 	}
 
 	@Override

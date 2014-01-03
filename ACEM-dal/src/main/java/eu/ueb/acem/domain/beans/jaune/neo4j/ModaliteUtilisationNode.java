@@ -35,7 +35,7 @@ public class ModaliteUtilisationNode implements ModaliteUtilisation {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-modalite-utilisation") private String nom;
+	@Indexed(indexName = "indexModaliteUtilisation") private String name;
 	
 	/**
 	 * La catégorie permet de classer les modalités d'utilisation
@@ -45,16 +45,16 @@ public class ModaliteUtilisationNode implements ModaliteUtilisation {
 	public ModaliteUtilisationNode() {
 	}
 	
-	public ModaliteUtilisationNode(String nom) {
-		this.setNom(nom);
+	public ModaliteUtilisationNode(String name) {
+		this.setName(name);
 	}
 	
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String getCategorie() {

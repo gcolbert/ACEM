@@ -45,7 +45,7 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-enseignant") private String nom;
+	@Indexed(indexName = "indexEnseignant") private String name;
 	
 	@RelatedTo(elementClass = RessourceNode.class, type = "aPourFavori", direction = OUTGOING)
 	private Set<Ressource> ressourcesFavorites;
@@ -56,8 +56,8 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 	public EnseignantNode() {
 	}
 
-	public EnseignantNode(String nom) {
-		setNom(nom);
+	public EnseignantNode(String name) {
+		this.name = name;
 	}
 	
 	@Override

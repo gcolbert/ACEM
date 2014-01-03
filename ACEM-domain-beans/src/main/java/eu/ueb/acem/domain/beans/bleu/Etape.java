@@ -31,9 +31,9 @@ public interface Etape extends Serializable {
 
 	public Long getId();
 
-    public String getNom();
+    public String getName();
 
-    public void setNom(String nom);
+    public void setName(String name);
 	
 	public Scenario getScenario();
 

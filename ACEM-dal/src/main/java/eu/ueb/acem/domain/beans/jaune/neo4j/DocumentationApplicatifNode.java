@@ -39,7 +39,7 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-documentation-applicatif") private String nom;
+	@Indexed(indexName = "indexDocumentationApplicatif") private String name;
 
 	@RelatedTo(elementClass = Applicatif.class, type = "reference", direction = OUTGOING)
 	private Applicatif applicatif;
@@ -47,8 +47,8 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	public DocumentationApplicatifNode() {
 	}
 
-	public DocumentationApplicatifNode(String nom) {
-		this.setNom(nom);
+	public DocumentationApplicatifNode(String name) {
+		this.setName(name);
 	}
 	
 	public Applicatif getApplicatif() {
@@ -56,13 +56,13 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	}
 
 	@Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
 	@Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

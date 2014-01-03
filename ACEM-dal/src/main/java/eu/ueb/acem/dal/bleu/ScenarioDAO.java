@@ -63,8 +63,8 @@ public class ScenarioDAO implements DAO<Scenario>{
 	}
 
 	@Override
-	public Scenario retrieveByName(String nom) {
-		return repository.findByPropertyValue("nom", nom);
+	public Scenario retrieveByName(String name) {
+		return repository.findByPropertyValue("name", name);
 	}
 
 	@Override

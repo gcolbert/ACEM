@@ -35,21 +35,21 @@ public class DiplomeNode implements Diplome {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-diplome") private String intitule;
+	@Indexed(indexName = "indexDiplome") private String name;
 	
 	public DiplomeNode() {
 	}
 	
-	public DiplomeNode(String intitule) {
-		this.intitule = intitule;
+	public DiplomeNode(String name) {
+		this.name = name;
 	}
 
-	public String getIntitule() {
-		return intitule;
+	public String getName() {
+		return name;
 	}
 
-	public void setIntitule(String intitule) {
-		this.intitule = intitule;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

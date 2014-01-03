@@ -35,7 +35,7 @@ public abstract class EspacePhysiqueNode implements EspacePhysique {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-espace-physique") private String nom;
+	@Indexed(indexName = "indexEspacePhysique") private String name;
 
 	public EspacePhysiqueNode() {
 	}

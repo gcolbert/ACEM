@@ -39,7 +39,7 @@ public class UniteEnseignementNode implements UniteEnseignement {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-unite-enseignement") private String intitule;
+	@Indexed(indexName = "indexUniteEnseignement") private String name;
 
 	private String duree;
 	
@@ -49,16 +49,16 @@ public class UniteEnseignementNode implements UniteEnseignement {
 	public UniteEnseignementNode() {
 	}
 	
-	public UniteEnseignementNode(String intitule) {
-		this.intitule = intitule;
+	public UniteEnseignementNode(String name) {
+		this.name = name;
 	}
 
-	public String getIntitule() {
-		return intitule;
+	public String getName() {
+		return name;
 	}
 
-	public void setIntitule(String intitule) {
-		this.intitule = intitule;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDuree() {

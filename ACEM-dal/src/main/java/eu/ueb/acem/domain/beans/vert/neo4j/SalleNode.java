@@ -35,7 +35,7 @@ public class SalleNode extends EspacePhysiqueNode implements Salle {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-salle") private String numero;
+	@Indexed(indexName = "indexSalle") private String numero;
 	private Boolean accesWifi;
 	private Integer capaciteAccueil;
 

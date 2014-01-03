@@ -42,7 +42,7 @@ public abstract class RessourceNode implements Ressource {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-ressource") private String nom;
+	@Indexed(indexName = "indexRessource") private String name;
 
 	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "reference", direction = OUTGOING)
 	private Set<ModaliteUtilisation> modalitesUtilisation;
@@ -50,8 +50,8 @@ public abstract class RessourceNode implements Ressource {
     public RessourceNode()  {
     }
 
-	public RessourceNode(String nom) {
-    	this.setNom(nom);
+	public RessourceNode(String name) {
+    	this.setName(name);
     }
 
     public Long getId() {
@@ -62,12 +62,12 @@ public abstract class RessourceNode implements Ressource {
 		this.id = id;
 	}
 
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Collection<ModaliteUtilisation> getModalitesUtilisation() {

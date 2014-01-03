@@ -35,23 +35,23 @@ public class PersonnelNode extends RessourceNode implements Personnel {
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-personnel") private String nom;
+	@Indexed(indexName = "indexPersonnel") private String name;
 	
 	public PersonnelNode() {
 	}
 	
-	public PersonnelNode(String nom) {
-		this.setNom(nom);
+	public PersonnelNode(String name) {
+		this.setName(name);
 	}
 	
 	@Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
 	@Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

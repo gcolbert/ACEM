@@ -65,8 +65,8 @@ public class ReponseDAO implements DAO<Reponse> {
 	}
 	
 	@Override
-	public Reponse retrieveByName(String nom) {
-		return repository.findByPropertyValue("nom", nom);
+	public Reponse retrieveByName(String name) {
+		return repository.findByPropertyValue("name", name);
 	}
 
 	@Override

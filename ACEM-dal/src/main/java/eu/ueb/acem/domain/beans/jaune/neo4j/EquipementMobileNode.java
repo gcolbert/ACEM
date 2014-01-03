@@ -35,25 +35,25 @@ public class EquipementMobileNode extends EquipementNode implements EquipementMo
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-equipement-mobile") private String nom;
+	@Indexed(indexName = "indexEquipementMobile") private String name;
 	
 	private Integer quantite;
 
 	public EquipementMobileNode() {
 	}
 
-	public EquipementMobileNode(String nom) {
-		this.setNom(nom);
+	public EquipementMobileNode(String name) {
+		this.setName(name);
 	}
 	
 	@Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
 	@Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public Integer getQuantite() {

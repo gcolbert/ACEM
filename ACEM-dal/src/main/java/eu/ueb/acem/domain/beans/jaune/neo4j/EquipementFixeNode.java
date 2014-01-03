@@ -35,21 +35,21 @@ public class EquipementFixeNode extends EquipementNode implements EquipementFixe
 
 	@GraphId private Long id;
 
-	@Indexed(indexName = "rechercher-equipement-fixe") private String nom;
+	@Indexed(indexName = "indexEquipementFixe") private String name;
 	
 	public EquipementFixeNode() {
 	}
 
-	public EquipementFixeNode(String nom) {
-		this.setNom(nom);
+	public EquipementFixeNode(String name) {
+		this.setName(name);
 	}
 	
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

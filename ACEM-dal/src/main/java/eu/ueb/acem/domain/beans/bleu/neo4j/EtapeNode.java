@@ -44,7 +44,7 @@ public class EtapeNode implements Etape {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "indexEtape") private String nom;
+	@Indexed(indexName = "indexEtape") private String name;
 
 	@RelatedTo(elementClass = ScenarioNode.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Scenario scenario;
@@ -59,8 +59,8 @@ public class EtapeNode implements Etape {
 	public EtapeNode() {
 	}
 
-	public EtapeNode(String nom) {
-		setNom(nom);
+	public EtapeNode(String name) {
+		setName(name);
 	}
 	
     @Override
@@ -73,13 +73,13 @@ public class EtapeNode implements Etape {
     }
 
     @Override
-    public String getNom() {
-    	return nom;
+    public String getName() {
+    	return name;
     }
 
     @Override
-    public void setNom(String nom) {
-    	this.nom = nom;
+    public void setName(String name) {
+    	this.name = name;
     }
 
 	@Override

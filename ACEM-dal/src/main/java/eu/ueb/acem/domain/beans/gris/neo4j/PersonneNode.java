@@ -39,7 +39,7 @@ public abstract class PersonneNode implements Personne {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-personne") private String nom;
+	@Indexed(indexName = "indexPersonne") private String name;
 	
 	@RelatedTo(elementClass = OrganisationNode.class, type = "travaillePour", direction = OUTGOING)
 	private OrganisationNode organisation;
@@ -63,13 +63,13 @@ public abstract class PersonneNode implements Personne {
 	}
 	
 	@Override
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
 	@Override
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	@Override

@@ -46,7 +46,7 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "rechercher-gestionnaire") private String nom;
+	@Indexed(indexName = "indexGestionnaire") private String name;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "redigeBesoin", direction = OUTGOING)
 	private Set<Besoin> besoins;
@@ -60,8 +60,8 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 	public GestionnaireNode() {
 	}
 
-	public GestionnaireNode(String nom) {
-		this.nom = nom;
+	public GestionnaireNode(String name) {
+		this.name = name;
 	}
 	
 	@Override

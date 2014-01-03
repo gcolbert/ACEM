@@ -29,9 +29,9 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface Organisation extends Serializable {
 
-	public String getNom();
+	public String getName();
 
-	public void setNom(String nom);
+	public void setName(String name);
 
 	public Set<Ressource> getRessourcesPossedees();
 

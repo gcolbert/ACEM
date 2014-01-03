@@ -32,9 +32,9 @@ public interface Personne extends Serializable {
 	
 	public Organisation getOrganisation();
 	
-	public String getNom();
+	public String getName();
 
-	public void setNom(String nom);
+	public void setName(String name);
 
 	public String getLogin();
 	
