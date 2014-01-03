@@ -1,63 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>ACEM</artifactId>
-        <groupId>eu.ueb</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-    <artifactId>ACEM-web-jsf-servlet</artifactId>
-    <packaging>war</packaging>
-    <description>couche présentation</description>
-    <properties>
-		<org.springframework-version>3.1.4.RELEASE</org.springframework-version>    
-        <javax.servlet.version>2.5</javax.servlet.version>
-        <javax.validation-version>1.1.0.Final</javax.validation-version>
-        <junit-version>4.11</junit-version>
+<!-- 
+ *     Copyright Grégoire COLBERT 2013
+ * 
+ *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
+ * 
+ *     ACEM is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     ACEM is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>ACEM</artifactId>
+		<groupId>eu.ueb</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>ACEM-web-jsf-servlet</artifactId>
+	<packaging>war</packaging>
+	<description>couche présentation</description>
+	<properties>
+		<org.springframework-version>3.1.4.RELEASE</org.springframework-version>
+		<javax.servlet.version>2.5</javax.servlet.version>
+		<javax.validation-version>1.1.0.Final</javax.validation-version>
+		<junit-version>4.11</junit-version>
 		<cglib-version>2.2.2</cglib-version>
-        <cas.url>https://sso-cas.univ-rennes1.fr</cas.url>
-        <tomcat.host>localhost</tomcat.host>
-        <tomcat.port.string>:8080</tomcat.port.string>
-        <log.level>INFO</log.level>
-        <log.output>stdout</log.output>
-        <log.file>/tmp/${project.parent.artifactId}.log</log.file>
-        <cache.path>/tmp/${project.parent.artifactId}/cache</cache.path>
-    </properties>
-    <repositories>
-        <repository>
-            <id>prime-repo</id>
-            <name>Prime Technology Maven Repository</name>
-            <url>http://repository.primefaces.org</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>
-    <dependencies>
+		<cas.url>https://sso-cas.univ-rennes1.fr</cas.url>
+		<tomcat.host>localhost</tomcat.host>
+		<tomcat.port.string>:8080</tomcat.port.string>
+		<log.level>INFO</log.level>
+		<log.output>stdout</log.output>
+		<log.file>/tmp/${project.parent.artifactId}.log</log.file>
+		<cache.path>/tmp/${project.parent.artifactId}/cache</cache.path>
+	</properties>
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>Prime Technology Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+	<dependencies>
 		<dependency>
 			<groupId>org.tuckey</groupId>
 			<artifactId>urlrewritefilter</artifactId>
 			<version>4.0.3</version>
 		</dependency>
-        <dependency>
-            <groupId>eu.ueb</groupId>
-            <artifactId>ACEM-domain-services</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${javax.servlet.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.primefaces</groupId>
-            <artifactId>primefaces</artifactId>
-            <version>4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.esupportail</groupId>
-            <artifactId>esup-commons2-jsf2-exception</artifactId>
-            <version>${esupcommons.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-domain-services</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${javax.servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.esupportail</groupId>
+			<artifactId>esup-commons2-jsf2-exception</artifactId>
+			<version>${esupcommons.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -74,24 +93,8 @@
 			<artifactId>validation-api</artifactId>
 			<version>${javax.validation-version}</version>
 		</dependency>
-		
+
 		<!-- Test -->
-		<!-- 
-		<dependency>
-			<groupId>eu.ueb</groupId>
-			<artifactId>ACEM-domain-services</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>eu.ueb</groupId>
-			<artifactId>ACEM-dal</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
-		 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -104,23 +107,23 @@
 			<version>${junit-version}</version>
 			<scope>test</scope>
 		</dependency>
-    </dependencies>
-    <build>
-        <defaultGoal>install</defaultGoal>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-        <plugins>
-	    	<plugin>
-		        <artifactId>maven-war-plugin</artifactId>
-		        <version>2.1</version>
-		        <configuration>
-		            <warName>${project.parent.artifactId}</warName>
-		        </configuration>
-		    </plugin>
-	    </plugins>
-    </build>
+	</dependencies>
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<warName>${project.parent.artifactId}</warName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
