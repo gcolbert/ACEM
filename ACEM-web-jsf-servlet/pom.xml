@@ -76,6 +76,7 @@
 		</dependency>
 		
 		<!-- Test -->
+		<!-- 
 		<dependency>
 			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-domain-services</artifactId>
@@ -90,6 +91,7 @@
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
