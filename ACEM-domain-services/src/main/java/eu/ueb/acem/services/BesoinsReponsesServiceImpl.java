@@ -50,7 +50,7 @@ public class BesoinsReponsesServiceImpl implements BesoinsReponsesService {
 
 	@Override
 	public Set<Reponse> getReponses(Besoin besoin) {
-		return besoinDAO.retrieveLinkedWith(besoin);
+		return besoinDAO.retrieveAnswersOf(besoin);
 	}
 
 	@Override

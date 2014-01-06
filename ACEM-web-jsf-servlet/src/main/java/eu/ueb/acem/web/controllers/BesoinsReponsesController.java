@@ -145,7 +145,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     	if (selectedNode != null) {
         	if (selectedNode.getChildCount() == 0) {
         		besoinsReponsesService.deleteBesoin(((Menu) selectedNode.getData()).getId());
-		    	selectedNode.getChildren().clear();  
+		    	selectedNode.getChildren().clear();
 		    	selectedNode.getParent().getChildren().remove(selectedNode);  
 		    	selectedNode.setParent(null);
 		    	this.selectedNode = null;
