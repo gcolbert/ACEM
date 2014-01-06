@@ -9,10 +9,11 @@
 		<p:panel header="Besoins et réponses">
 			<h:form>
 				<p:growl id="messages" showDetail="true" />
-				<p:contextMenu for="treeSingle">
+				<p:contextMenu id="contextMenu" for="treeSingle">
 				    <p:menuitem value="Voir informations" update="messages" actionListener="#{besoinsReponsesController.displaySelectedSingle}" icon="ui-icon-search" />
-				    <p:menuitem value="Ajouter un fils" update="treeSingle" actionListener="#{besoinsReponsesController.addChildToSelectedNode}" icon="ui-icon-plus"/>
-				    <p:menuitem value="Supprimer ce noeud et ses fils" update="treeSingle" actionListener="#{besoinsReponsesController.deleteSelectedNode}" icon="ui-icon-minus"/>
+				    <p:menuitem value="Créer un besoin fils" update="treeSingle messages" actionListener="#{besoinsReponsesController.addChildToSelectedNode}" icon="ui-icon-plus"/>
+				    <p:menuitem value="Associer une réponse" update="treeSingle messages" actionListener="#{besoinsReponsesController.addAnswerToSelectedNode}" icon="ui-icon-plus"/>
+				    <p:menuitem value="Supprimer ce noeud" update="treeSingle messages" actionListener="#{besoinsReponsesController.deleteSelectedNode}" icon="ui-icon-minus"/>
 				</p:contextMenu>
 				<p:tree id="treeSingle" orientation="vertical" dynamic="true" cache="true"
 						value="#{besoinsReponsesController.treeRoot}" var="node" 

@@ -50,17 +50,6 @@
 	    <filter-name>UrlRewriteFilter</filter-name>
 	    <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
 	</filter>
-	<!-- Only for PrimeFaces 2.2 -->
-<!-- 
-	<servlet>
-		<servlet-name>Resource Servlet</servlet-name>
-		<servlet-class>org.primefaces.resource.ResourceServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Resource Servlet</servlet-name>
-		<url-pattern>/primefaces_resource/*</url-pattern>
-	</servlet-mapping>
- -->	
 	<servlet>
 		<description> The main servlet of the application. This class inherits
 			from the MyFaces implementation and handles exceptions thrown for

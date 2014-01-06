@@ -13,14 +13,43 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 						http://www.springframework.org/schema/context 
 						http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<import resource="classpath*:META-INF/ACEM-domain-services-context.xml"/>
+	<import resource="classpath*:domain-services-test-context.xml"/>
 
 	<context:annotation-config/>
 
  	<context:component-scan base-package="eu.ueb.acem.web"/>
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:/properties/defaults.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="app_context" class="org.esupportail.commons.context.ApplicationContextHolder"/>
+	
+	<import resource="classpath*:exceptionHandling/exceptionHandling.xml" />
+	<import resource="classpath*:cache/cache.xml"/>
+	<import resource="classpath*:smtp/smtp.xml" />
+	<import resource="classpath*:tags/tags.xml" />
+	<import resource="classpath*:web/controllers.xml" />
+	<import resource="classpath*:web/converters.xml" />
+	<import resource="classpath*:web/beans.xml" />
+	
+	<!-- Enables the @Scope("view") for Spring's components and controllers -->
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+	    <property name="scopes">
+	        <map>
+	            <entry key="view">
+	                <bean class="eu.ueb.acem.spring.extensions.ViewScope" />
+	            </entry>
+	        </map>
+	    </property>
+	</bean>
 
 </beans>

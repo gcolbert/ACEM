@@ -1,0 +1,7 @@
+*~
+target/
+.settings/
+.classpath
+.project
+/esup-blank-web-jsf-mixed/esup-blank.log
+ACEM-web-jsf-servlet/src/main/resources/properties/config.properties

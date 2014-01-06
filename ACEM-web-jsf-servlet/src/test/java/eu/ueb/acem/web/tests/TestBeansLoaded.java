@@ -13,8 +13,7 @@ import org.esupportail.commons.exceptions.ConfigException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/properties/applicationContext.xml", "/web-test-context.xml"})
-//@ContextConfiguration(locations = {"/web-test-context.xml"})
+@ContextConfiguration(locations = {"classpath*:web-test-context.xml"})
 public class TestBeansLoaded extends TestCase {
 
 	@After

@@ -1,12 +1,12 @@
 package eu.ueb.acem.web.controllers;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -48,7 +48,6 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		Set<Besoin> besoins = besoinsReponsesService.getBesoinsLies(null);
 		logger.info("[BesoinsReponsesController.initTree] Récupération de {} besoins à la racine de l'arbre.", besoins.size());
 		for (Besoin besoin : besoins) {
-			//TreeNode treeNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoot(), besoin.getId(), besoin.getName());
 	    	createTree(besoin, editableTreeBean.getVisibleRoot());
 		}
     }
@@ -116,6 +115,11 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		logger.info("------");
     }
 
+    public void addAnswerToSelectedNode() {
+    	logger.info("entering addAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
+    	
+    }
+    
 	public void saveSelectedNode() {
 		logger.info("entering saveSelectedNode, selectedNode={}", selectedNode.getData().toString());
 		// Si selectedNode est un Besoin
@@ -147,6 +151,9 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		    	this.selectedNode = null;
 	    	}
 	    	else {
+        		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible", "The selected node has children, cannot delete!");
+        		RequestContext.getCurrentInstance().update("messages");
+        		FacesContext.getCurrentInstance().addMessage(null, message);
 	    		logger.info("The selected node has children, cannot delete!");
 	    	}
     	}

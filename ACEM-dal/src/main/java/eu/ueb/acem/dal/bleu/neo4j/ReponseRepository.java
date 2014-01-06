@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  */
 public interface ReponseRepository extends GraphRepository<ReponseNode>, RelationshipOperationsRepository<ReponseNode> {
 
-	@Query(value = "start reponse=node:indexReponse(nom={nom}) match (besoin)-[:aPourReponse]->(reponse) return besoin")
-	Set<BesoinNode> findNeedsOf(@Param("nom") String nom);
+	@Query(value = "start reponse=node:indexReponse(name={name}) match (besoin)-[:aPourReponse]->(reponse) return besoin")
+	Set<BesoinNode> findNeedsOf(@Param("nom") String name);
 
 }
