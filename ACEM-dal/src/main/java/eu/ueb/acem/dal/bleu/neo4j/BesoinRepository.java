@@ -35,13 +35,13 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  */
 public interface BesoinRepository extends GraphRepository<BesoinNode>, RelationshipOperationsRepository<BesoinNode>, NamedIndexRepository<BesoinNode> {
 
-	@Query(value = "start n=node(*) where has(n.__type__) and not ()-[:aPourBesoinEnfant]->(n) return n")
+	@Query(value = "start n=node(*) where has(n.__type__) and not (n)-[:aPourBesoinParent]->() return n")
 	Set<BesoinNode> findRoots();
 
 	//@Query(value = "start besoin=node({0}) match (besoin)-[:aPourBesoinEnfant]->(n) return n")
 	//Set<BesoinNode> findChildrenOf(Long id);
 
-	@Query(value = "start besoin=node:indexBesoin(name={name}) match (besoin)-[:aPourBesoinEnfant]->(n) return n")
+	@Query(value = "start besoin=node:indexBesoin(name={name}) match (n)-[:aPourBesoinParent]->(besoin) return n")
 	Set<BesoinNode> findChildrenOf(@Param("name") String name);
 
 	@Query(value = "start besoin=node:indexBesoin(name={name}) match (besoin)-[:aPourReponse]->(n) return n")

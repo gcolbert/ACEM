@@ -62,12 +62,13 @@ public class BesoinsReponsesServiceImpl implements BesoinsReponsesService {
 			// TODO : ne pas appeler BesoinNode, passer par une factory (?)
 			Besoin newBesoin = besoinDAO.create(new BesoinNode(name));
 			if (idParent != null) {
-				logger.info("createOrUpdateBesoin, idParent == {}", idParent);
+				logger.info("idParent is not null, idParent == {}", idParent);
 				Besoin parent = besoinDAO.retrieveById(idParent);
-				//newBesoin.addParent(parent);
-				parent.addChild(newBesoin);
-				besoinDAO.update(newBesoin);
-				besoinDAO.update(parent);
+				if (parent != null) {
+					parent.addChild(newBesoin);
+					besoinDAO.update(newBesoin);
+					besoinDAO.update(parent);
+				}
 			}
 			return newBesoin;
 		}

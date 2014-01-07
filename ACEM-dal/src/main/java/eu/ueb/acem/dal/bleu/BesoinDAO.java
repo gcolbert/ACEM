@@ -55,7 +55,7 @@ public class BesoinDAO implements DAO<Besoin> {
 
 	@Override
 	public Besoin create(Besoin besoin) {
-		logger.debug("Persisting Besoin with nom '{}'", besoin.getName());
+		logger.debug("Persisting Besoin with name '{}'", besoin.getName());
 		return repository.save((BesoinNode) besoin);
 	}
 

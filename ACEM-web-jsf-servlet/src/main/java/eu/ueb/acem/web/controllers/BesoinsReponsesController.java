@@ -8,6 +8,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
@@ -48,6 +49,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		Set<Besoin> besoins = besoinsReponsesService.getBesoinsLies(null);
 		logger.info("[BesoinsReponsesController.initTree] Récupération de {} besoins à la racine de l'arbre.", besoins.size());
 		for (Besoin besoin : besoins) {
+			logger.info("besoin = {}", besoin.getName());
 	    	createTree(besoin, editableTreeBean.getVisibleRoot());
 		}
     }
@@ -159,6 +161,15 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     	}
 		logger.info("leaving deleteSelectedNode");
 		logger.info("------");
+    }
+    
+    public void onDragDrop(TreeDragDropEvent event) {  
+        TreeNode dragNode = event.getDragNode();  
+        TreeNode dropNode = event.getDropNode();  
+        int dropIndex = event.getDropIndex();
+        
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);  
+        FacesContext.getCurrentInstance().addMessage(null, message);  
     }
 
 }

@@ -7,20 +7,22 @@
 	template="../templates/template.xhtml">
 	<ui:define name="content">
 		<p:panel header="Besoins et réponses">
-			<h:form>
+			<h:form id="form">
 				<p:growl id="messages" showDetail="true" />
 				<p:contextMenu id="contextMenu" for="treeSingle">
-				    <p:menuitem value="Voir informations" update="messages" actionListener="#{besoinsReponsesController.displaySelectedSingle}" icon="ui-icon-search" />
-				    <p:menuitem value="Créer un besoin fils" update="treeSingle messages" actionListener="#{besoinsReponsesController.addChildToSelectedNode}" icon="ui-icon-plus"/>
-				    <p:menuitem value="Associer une réponse" update="treeSingle messages" actionListener="#{besoinsReponsesController.addAnswerToSelectedNode}" icon="ui-icon-plus"/>
-				    <p:menuitem value="Supprimer ce noeud" update="treeSingle messages" actionListener="#{besoinsReponsesController.deleteSelectedNode}" icon="ui-icon-minus"/>
+				    <p:menuitem value="Voir informations" update="treeSingle :form:messages" actionListener="#{besoinsReponsesController.displaySelectedSingle}" icon="ui-icon-search" />
+				    <p:menuitem value="Créer un besoin fils" update="treeSingle :form:messages" actionListener="#{besoinsReponsesController.addChildToSelectedNode}" icon="ui-icon-plus"/>
+				    <p:menuitem value="Associer une réponse" update="treeSingle :form:messages" actionListener="#{besoinsReponsesController.addAnswerToSelectedNode}" icon="ui-icon-plus"/>
+				    <p:menuitem value="Supprimer ce noeud" update="treeSingle :form:messages" actionListener="#{besoinsReponsesController.deleteSelectedNode}" icon="ui-icon-minus"/>
 				</p:contextMenu>
 				<p:tree id="treeSingle" orientation="vertical" dynamic="true" cache="true"
 						value="#{besoinsReponsesController.treeRoot}" var="node" 
-						selectionMode="single" selection="#{besoinsReponsesController.selectedNode}">
+						selectionMode="single" selection="#{besoinsReponsesController.selectedNode}"
+						draggable="true" droppable="true">
 						<!-- 
 					<p:ajax event="select" update="treeSingle" listener="#{besoinsReponsesController.onNodeSelect}" />
 					 -->
+					<p:ajax event="dragdrop" listener="#{besoinsReponsesController.onDragDrop}" update="treeSingle :form:messages" />
 				    <p:treeNode>
 				    	<span onclick="this.parentNode.parentNode.firstChild.click();">
 	                        <p:inplace editor="true" event="dblclick">
@@ -32,40 +34,6 @@
 				</p:tree>
 			</h:form>
 		</p:panel>
-<!-- 
-		<p:panel header="Besoins et réponses">
-			<h:form>
-	   			<p:tree value="#{besoinsReponsesController.treeRoot}" var="node" id="tree" orientation="horizontal">
-        			<p:treeNode id="treeNode">
-            			<h:outputText value="#{node}" id="labelNode"/>
-        			</p:treeNode>
-    			</p:tree>
-			</h:form>
-		</p:panel>
-        <h:form id="form">
-            <p:panel id="menuPanel" header="Besoins et réponses pédagogiques" style="width: 600px;" >
-                <p:treeTable value="#{besoinsReponsesController.treeRoot}" var="menu"> 
-                    <p:column>
-                    	<f:facet name="header">Nom</f:facet>
-                        <p:inplace editor="true">
-                            <p:inputText value="#{menu.menuName}"/>
-                        </p:inplace>
-                    </p:column>
-					<p:column>
-						<f:facet name="header">Supprimer</f:facet>
-						<p:commandLink update=":form:documentPanel" oncomplete="PF('documentDialog').show()" title="View Detail" styleClass="ui-icon ui-icon-search">  
-							<f:setPropertyActionListener value="#{document}" target="#{documentsController.selectedDocument}" />  
-						</p:commandLink>
-					</p:column>
-				</p:treeTable>
-
-                <br/>
-                <p:commandButton action="#{editableTreeBean.addSibling}" value="Ajouter un noeud" disabled="true"/>
-                <p:commandButton action="#{editableTreeBean.saveTree}" value="Enregistrer"/>
-
-            </p:panel>
-        </h:form>
-  -->
 		<p:panel header="Exemples de scénarios pédagogiques">
 		</p:panel>
 

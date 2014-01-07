@@ -130,11 +130,11 @@ public class BesoinNode implements Besoin {
 	public void addParent(Besoin parent) {
 		parents.add(parent);
        	if (! parent.getChildren().contains(this)) {
-       		logger.debug("'{}'.addParent('{}') : parent doesn't already contains this node as a child, we add it", this.getName(), parent.getName());
+       		logger.info("'{}'.addParent('{}') : this node doesn't already have a reference to this parent, we add it", this.getName(), parent.getName());
        		parent.addChild(this);
        	}
        	else {
-       		logger.debug("'{}'.addParent('{}') : parent already contains this node as a child, we don't add it", this.getName(), parent.getName());
+       		logger.info("'{}'.addParent('{}') : this node already has a reference to this parent, we don't add it", this.getName(), parent.getName());
        	}
 	}
     
@@ -143,11 +143,11 @@ public class BesoinNode implements Besoin {
     public void addChild(Besoin besoin) {
        	children.add(besoin);
        	if (! besoin.getParents().contains(this)) {
-       		logger.debug("'{}'.addEnfant('{}') : the child doesn't already have a reference to this, we add it", this.getName(), besoin.getName());
+       		logger.info("'{}'.addChild('{}') : the child doesn't have a reference to this parent, we add it", this.getName(), besoin.getName());
        		besoin.addParent(this);
        	}
        	else {
-       		logger.debug("'{}'.addEnfant('{}') : the child already has a reference to this, we don't add it", this.getName(), besoin.getName());
+       		logger.info("'{}'.addChild('{}') : the child already has a reference to this parent, we don't add it", this.getName(), besoin.getName());
        	}
     }
 
