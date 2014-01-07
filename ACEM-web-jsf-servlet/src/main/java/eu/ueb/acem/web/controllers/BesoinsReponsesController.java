@@ -47,11 +47,12 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     @PostConstruct
     public void initTree() {
 		Set<Besoin> besoins = besoinsReponsesService.getBesoinsLies(null);
-		logger.info("[BesoinsReponsesController.initTree] Récupération de {} besoins à la racine de l'arbre.", besoins.size());
+		logger.info("[BesoinsReponsesController.initTree] Fetched {} pedagogical needs at root of tree.", besoins.size());
 		for (Besoin besoin : besoins) {
-			logger.info("besoin = {}", besoin.getName());
+			logger.info("need = {}", besoin.getName());
 	    	createTree(besoin, editableTreeBean.getVisibleRoot());
 		}
+		editableTreeBean.getVisibleRoot().setExpanded(true);
     }
 
     /**
@@ -95,10 +96,8 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 
     public void onNodeSelect(NodeSelectEvent event) {
     	logger.info("onNodeSelect");
-    	/*
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
         FacesContext.getCurrentInstance().addMessage(null, message);      	
-        */
     }
     
     public void displaySelectedSingle() {  
@@ -164,12 +163,12 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     }
     
     public void onDragDrop(TreeDragDropEvent event) {  
-		logger.info("entering onDragDrop");
+		logger.info("entering onDragDrop, event = {}", event);
         TreeNode dragNode = event.getDragNode();  
         TreeNode dropNode = event.getDropNode();  
         int dropIndex = event.getDropIndex();
         
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);  
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);
         FacesContext.getCurrentInstance().addMessage(null, message);  
 
         besoinsReponsesService.changeParentOfBesoin(((Menu)dragNode.getData()).getId(), ((Menu)dropNode.getData()).getId());

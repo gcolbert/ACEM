@@ -19,8 +19,8 @@
 						value="#{besoinsReponsesController.treeRoot}" var="node" 
 						selectionMode="single" selection="#{besoinsReponsesController.selectedNode}"
 						draggable="true" droppable="true">
-						<!-- 
-					<p:ajax event="select" update="treeSingle" listener="#{besoinsReponsesController.onNodeSelect}" />
+					<!-- 
+					<p:ajax event="select" listener="#{besoinsReponsesController.onNodeSelect}" update="treeSingle :form:messages" />
 					 -->
 					<p:ajax event="dragdrop" listener="#{besoinsReponsesController.onDragDrop}" update="treeSingle :form:messages" />
 				    <p:treeNode>
