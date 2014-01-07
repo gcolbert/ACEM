@@ -19,4 +19,6 @@ public interface BesoinsReponsesService {
 	public Besoin createOrUpdateBesoin(Long id, String name, Long idParent);
 
 	public void deleteBesoin(Long id);
+
+	public void changeParentOfBesoin(Long id, Long idNewParent);
 }

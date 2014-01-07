@@ -91,22 +91,41 @@ public class BesoinNode implements Besoin {
     	this.name = nom;
     }
 
-    @Override
+	@Override
 	public Set<Besoin> getParents() {
 		return parents;
 	}
-    
+
 	@Override
 	@Transactional
 	public void setParents(Set<Besoin> parents) {
 		this.parents = parents;
 	}
-    
-    @Override
+
+	@Override
+	@Transactional
+	public void addParent(Besoin parent) {
+		parents.add(parent);
+	   	if (! parent.getChildren().contains(this)) {
+	   		logger.info("'{}'.addParent('{}') : this node doesn't already have a reference to this parent, we add it", this.getName(), parent.getName());
+	   		parent.addChild(this);
+	   	}
+	   	else {
+	   		logger.info("'{}'.addParent('{}') : this node already has a reference to this parent, we don't add it", this.getName(), parent.getName());
+	   	}
+	}
+
+	@Override
+	@Transactional
+	public void removeParent(Besoin besoin) {
+		parents.remove(besoin);
+		besoin.removeChild(this);
+	}
+
+	@Override
     public Set<Besoin> getChildren() {
     	return children;
     }
-
 
 	@Override
 	@Transactional
@@ -115,6 +134,26 @@ public class BesoinNode implements Besoin {
 	}
 
     @Override
+	@Transactional
+	public void addChild(Besoin besoin) {
+	   	children.add(besoin);
+	   	if (! besoin.getParents().contains(this)) {
+	   		logger.info("'{}'.addChild('{}') : the child doesn't have a reference to this parent, we add it", this.getName(), besoin.getName());
+	   		besoin.addParent(this);
+	   	}
+	   	else {
+	   		logger.info("'{}'.addChild('{}') : the child already has a reference to this parent, we don't add it", this.getName(), besoin.getName());
+	   	}
+	}
+
+	@Override
+	@Transactional
+	public void removeChild(Besoin besoin) {
+		children.remove(besoin);
+		besoin.removeParent(this);
+	}
+
+	@Override
     public Set<Reponse> getReponses() {
     	return reponses;
     }
@@ -127,54 +166,16 @@ public class BesoinNode implements Besoin {
     
 	@Override
 	@Transactional
-	public void addParent(Besoin parent) {
-		parents.add(parent);
-       	if (! parent.getChildren().contains(this)) {
-       		logger.info("'{}'.addParent('{}') : this node doesn't already have a reference to this parent, we add it", this.getName(), parent.getName());
-       		parent.addChild(this);
-       	}
-       	else {
-       		logger.info("'{}'.addParent('{}') : this node already has a reference to this parent, we don't add it", this.getName(), parent.getName());
-       	}
+	public void addReponse(Reponse reponse) {
+		reponses.add(reponse);
+		reponse.addBesoin(this);
 	}
-    
-    @Override
-    @Transactional
-    public void addChild(Besoin besoin) {
-       	children.add(besoin);
-       	if (! besoin.getParents().contains(this)) {
-       		logger.info("'{}'.addChild('{}') : the child doesn't have a reference to this parent, we add it", this.getName(), besoin.getName());
-       		besoin.addParent(this);
-       	}
-       	else {
-       		logger.info("'{}'.addChild('{}') : the child already has a reference to this parent, we don't add it", this.getName(), besoin.getName());
-       	}
-    }
-
-    @Override
-    @Transactional
-    public void removeChild(Besoin besoin) {
-    	children.remove(besoin);
-    }
-
-    @Override
-    @Transactional
-    public void addReponse(Reponse reponse) {
-   		reponses.add(reponse);
-   		reponse.addBesoin(this);
-    }
 
 	@Override
 	@Transactional
-	public void removeParent(Besoin besoin) {
-		parents.remove(besoin);
+	public void removeReponse(Reponse reponse) {
+	   	reponses.remove(reponse);
 	}
-
-    @Override
-    @Transactional
-    public void removeReponse(Reponse reponse) {
-       	reponses.remove(reponse);
-    }
 
 	@Override
 	public int hashCode() {

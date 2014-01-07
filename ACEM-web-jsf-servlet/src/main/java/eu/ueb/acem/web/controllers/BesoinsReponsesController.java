@@ -144,7 +144,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 
     public void deleteSelectedNode() {
 		logger.info("entering deleteSelectedNode, selectedNode={}", selectedNode.getData().toString());
-    	if (selectedNode != null) {
+		if (selectedNode != null) {
         	if (selectedNode.getChildCount() == 0) {
         		besoinsReponsesService.deleteBesoin(((Menu) selectedNode.getData()).getId());
 		    	selectedNode.getChildren().clear();
@@ -164,12 +164,17 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     }
     
     public void onDragDrop(TreeDragDropEvent event) {  
+		logger.info("entering onDragDrop");
         TreeNode dragNode = event.getDragNode();  
         TreeNode dropNode = event.getDropNode();  
         int dropIndex = event.getDropIndex();
         
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);  
         FacesContext.getCurrentInstance().addMessage(null, message);  
+
+        besoinsReponsesService.changeParentOfBesoin(((Menu)dragNode.getData()).getId(), ((Menu)dropNode.getData()).getId());
+		logger.info("leaving onDragDrop");
+		logger.info("------");
     }
 
 }

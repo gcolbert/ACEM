@@ -89,4 +89,19 @@ public class BesoinsReponsesServiceImpl implements BesoinsReponsesService {
 			logger.info("Service deleteBesoin, cannot find besoin with id={}", id);
 		}
 	}
+
+	@Override
+	@Transactional
+	public void changeParentOfBesoin(Long id, Long idNewParent) {
+		Besoin besoin = besoinDAO.retrieveById(id);
+		while (besoin.getParents().iterator().hasNext()) {
+			besoin.getParents().iterator().remove();
+		}
+		
+		Besoin newParent = besoinDAO.retrieveById(idNewParent);
+		logger.info("Service changeParentOfBesoin, newParent={}", newParent);
+		if (newParent != null) {
+			newParent.addChild(besoin);
+		}
+	}
 }

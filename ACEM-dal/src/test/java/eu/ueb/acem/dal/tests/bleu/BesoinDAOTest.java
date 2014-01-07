@@ -153,6 +153,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@SuppressWarnings("unused")
 	public final void t05_TestBesoinDAORetrieveAll() {
 		Besoin besoin1 = besoinDAO.create(new BesoinNode("t05 besoin 1"));
 		Besoin besoin11 = besoinDAO.create(new BesoinNode("t05 besoin 1.1"));
@@ -219,6 +220,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@SuppressWarnings("unused")
 	public final void t07_TestBesoinDAORetrieveBesoinsRacines() {
 		Besoin besoin1 = besoinDAO.create(new BesoinNode("t07 besoin 1"));
 
