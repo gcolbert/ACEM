@@ -207,31 +207,14 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     }
     
     public void onDragDrop(TreeDragDropEvent event) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "test", "test");  
+		TreeNode dragNode = event.getDragNode();
+		TreeNode dropNode = event.getDropNode();
+		int dropIndex = event.getDropIndex();
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);  
         FacesContext.getCurrentInstance().addMessage(null, message);  
         besoinsReponsesService.changeParentOfBesoin(((Menu)event.getDragNode().getData()).getId(),
         		                                    ((Menu)event.getDropNode().getData()).getId());
 
-    	/*
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);  
-        FacesContext.getCurrentInstance().addMessage(null, message);  
-        */
     }  
-    
-//    public void onDragDrop(TreeDragDropEvent event) {  
-		//logger.info("entering onDragDrop");
-		/*
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + event.getDragNode().getData(), "Dropped on " + event.getDropNode().getData() + " at " + event.getDropIndex());
-        FacesContext.getCurrentInstance().addMessage(null, message);  
-        */
-		/*
-		TreeNode dragNode = event.getDragNode();
-		TreeNode dropNode = event.getDropNode();
-		logger.info("dragNode={}, dropNode={}",dragNode, dropNode);
-		*/
-        //besoinsReponsesService.changeParentOfBesoin(((Menu)event.getDragNode().getData()).getId(), ((Menu)event.getDropNode().getData()).getId());
-		//logger.info("leaving onDragDrop");
-		//logger.info("------");
-//    }
 
 }
