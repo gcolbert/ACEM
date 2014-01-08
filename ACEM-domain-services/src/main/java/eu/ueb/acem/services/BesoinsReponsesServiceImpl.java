@@ -1,5 +1,6 @@
 package eu.ueb.acem.services;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -93,15 +94,40 @@ public class BesoinsReponsesServiceImpl implements BesoinsReponsesService {
 	@Override
 	@Transactional
 	public void changeParentOfBesoin(Long id, Long idNewParent) {
-		Besoin besoin = besoinDAO.retrieveById(id);
-		while (besoin.getParents().iterator().hasNext()) {
-			besoin.getParents().iterator().remove();
+		logger.info("entering changeParentOfBesoin({}, {})", id, idNewParent);
+		// The "visible root node" has id=null, and we must not allow the user to move it
+		if (id != null) {
+			Besoin besoin = besoinDAO.retrieveById(id);
+			logger.info("besoin is retrieved");
+			if (besoin != null) {
+				logger.info("besoin is not null");
+				Set<Besoin> parents = besoin.getParents();
+				if (parents != null) {
+					logger.info("besoin.getParents() is not null");
+					Iterator<Besoin> iterator = parents.iterator();
+					if (iterator != null) {
+						while (iterator.hasNext()) {
+							iterator.next();
+							iterator.remove();
+							logger.info("besoin has parent removed");
+						}
+						besoin = besoinDAO.update(besoin);
+						logger.info("besoin is updated");
+					}
+				}
+				else {
+					logger.info("besoin.getParents() is null");
+				}
+			}
+			if (idNewParent != null) {
+				Besoin newParent = besoinDAO.retrieveById(idNewParent);
+				logger.info("Service changeParentOfBesoin, newParent={}", newParent);
+				if (newParent != null) {
+					newParent.addChild(besoin);
+					newParent = besoinDAO.update(newParent);
+				}
+			}
 		}
-		
-		Besoin newParent = besoinDAO.retrieveById(idNewParent);
-		logger.info("Service changeParentOfBesoin, newParent={}", newParent);
-		if (newParent != null) {
-			newParent.addChild(besoin);
-		}
+		logger.info("leaving changeParentOfBesoin({}, {})", id, idNewParent);
 	}
 }

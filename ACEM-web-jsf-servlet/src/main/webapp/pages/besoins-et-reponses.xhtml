@@ -6,6 +6,7 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
+		<ui:debug hotkey="1" />
 		<p:panel header="Besoins et réponses">
 			<h:form id="form">
 				<p:growl id="messages" showDetail="true" />
@@ -15,14 +16,14 @@
 				    <p:menuitem value="Associer une réponse" update="treeSingle :form:messages" actionListener="#{besoinsReponsesController.addAnswerToSelectedNode}" icon="ui-icon-plus"/>
 				    <p:menuitem value="Supprimer ce noeud" update="treeSingle :form:messages" actionListener="#{besoinsReponsesController.deleteSelectedNode}" icon="ui-icon-minus"/>
 				</p:contextMenu>
-				<p:tree id="treeSingle" orientation="vertical" dynamic="true" cache="true"
+				<p:tree id="treeSingle" orientation="vertical" dynamic="false" cache="false"
 						value="#{besoinsReponsesController.treeRoot}" var="node" 
 						selectionMode="single" selection="#{besoinsReponsesController.selectedNode}"
-						draggable="true" droppable="true">
+						draggable="true" droppable="true" dragdropScope="demo">
+					<p:ajax event="dragdrop" listener="#{besoinsReponsesController.onDragDrop}" update="treeSingle :form:messages" />
 					<!-- 
 					<p:ajax event="select" listener="#{besoinsReponsesController.onNodeSelect}" update="treeSingle :form:messages" />
 					 -->
-					<p:ajax event="dragdrop" listener="#{besoinsReponsesController.onDragDrop}" update="treeSingle :form:messages" />
 				    <p:treeNode>
 				    	<span onclick="this.parentNode.parentNode.firstChild.click();">
 	                        <p:inplace editor="true" event="dblclick">
@@ -36,6 +37,5 @@
 		</p:panel>
 		<p:panel header="Exemples de scénarios pédagogiques">
 		</p:panel>
-
 	</ui:define>
 </ui:composition>

@@ -49,7 +49,7 @@ public class EditableTreeBean implements Serializable {
 
     public EditableTreeBean() {
     	// For some reason, the root of the tree is not visible
-        root = new DefaultTreeNode();
+        root = new DefaultTreeNode(new Menu(null, "Root"), null);
 		// Therefore, we add a visible root so that it is possible to right click and add children nodes
         visibleRoot = new DefaultTreeNode(new Menu(null, "Besoins"), root);
     }
@@ -103,7 +103,7 @@ public class EditableTreeBean implements Serializable {
         
         @Override
         public String toString() {
-        	return "Menu{ id=" + id + ", menuName=" + menuName + " }";
+        	return "Menu{ id=" + id + ", menuName=" + menuName + "}";
         }
     }
 

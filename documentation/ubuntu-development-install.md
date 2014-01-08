@@ -1,6 +1,12 @@
 ACEM development with Ubuntu
 ============================
 
+Install Neo4j
+-------------
+- Download it at http://www.neo4j.org/download
+- Launch Neo4j
+- You should be able to access http://localhost:7474
+
 Install OpenJDK 7
 -----------------
 - sudo apt-get install openjdk-7-jdk

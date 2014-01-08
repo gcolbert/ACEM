@@ -181,10 +181,8 @@ public class BesoinNode implements Besoin {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((children == null) ? 0 : children.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		//result = prime * result + ((parents == null) ? 0 : parents.hashCode()); // avoids a stack overflow
-		//result = prime * result + ((reponses == null) ? 0 : reponses.hashCode());
 		return result;
 	}
 
@@ -197,27 +195,17 @@ public class BesoinNode implements Besoin {
 		if (getClass() != obj.getClass())
 			return false;
 		BesoinNode other = (BesoinNode) obj;
-		if (children == null) {
-			if (other.children != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!children.equals(other.children))
+		} else if (!id.equals(other.id))
 			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (parents == null) {
-			if (other.parents != null)
-				return false;
-		} else if (!parents.equals(other.parents))
-			return false;
-		if (reponses == null) {
-			if (other.reponses != null)
-				return false;
-		} else if (!reponses.equals(other.reponses))
-			return false;
 		return true;
 	}
-
+	
 }
