@@ -199,7 +199,9 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		    	this.selectedNode = null;
 	    	}
 	    	else {
-        		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Impossible", "The selected node has children, cannot delete!");
+        		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+        				getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE"),
+        				getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS"));
         		RequestContext.getCurrentInstance().update("messages");
         		FacesContext.getCurrentInstance().addMessage(null, message);
 	    		logger.info("The selected node has children, cannot delete!");
@@ -212,11 +214,20 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     public void onDragDrop(TreeDragDropEvent event) {
 		TreeNode dragNode = event.getDragNode();
 		TreeNode dropNode = event.getDropNode();
+		String dropNodeData = null;
+		if (dropNode != null) {
+			dropNodeData = dropNode.getData().toString();
+		}
 		int dropIndex = event.getDropIndex();
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);  
-        FacesContext.getCurrentInstance().addMessage(null, message);  
-        besoinsReponsesService.changeParentOfBesoin(((Menu)event.getDragNode().getData()).getId(),
-        		                                    ((Menu)event.getDropNode().getData()).getId());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNodeData + " at " + dropIndex);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        if (dropNode != null) {
+        	besoinsReponsesService.changeParentOfBesoin(((Menu)event.getDragNode().getData()).getId(),
+        		                                    	((Menu)event.getDropNode().getData()).getId());
+        }
+        else {
+        	//besoinsReponsesService.changePositionOfBesoin(((Menu)event.getDragNode().getData()).getId(),null);
+        }
     }  
 
 }
