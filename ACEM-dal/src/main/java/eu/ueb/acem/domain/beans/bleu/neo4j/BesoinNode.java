@@ -19,6 +19,7 @@
 package eu.ueb.acem.domain.beans.bleu.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class BesoinNode implements Besoin {
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinParent", direction = OUTGOING)
 	private Set<Besoin> parents;
 	
-	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinEnfant", direction = OUTGOING)
+	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinParent", direction = INCOMING)
 	private Set<Besoin> children;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "aPourReponse", direction = OUTGOING)
