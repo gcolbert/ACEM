@@ -25,7 +25,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -77,6 +76,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		}
 		editableTreeBean.getVisibleRoot().setExpanded(true);
     	logger.info("leaving initTree");
+		logger.info("------");
     }
 
     /**
@@ -138,7 +138,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     private void collapseChildrenOf(TreeNode node) {
     	for (TreeNode child : node.getChildren()) {
     		child.setExpanded(false);
-    		if (child.getChildCount() > 0) {
+    		if (! child.isLeaf()) {
     			collapseChildrenOf(child);
     		}
     	}
@@ -171,12 +171,12 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		Besoin savedBesoin;
 		if ((selectedNode.getParent() != null) && (selectedNode.getParent().getData() != null)) {
 			savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
-										((Menu) selectedNode.getData()).getMenuName(),
+										((Menu) selectedNode.getData()).getName(),
 										((Menu) selectedNode.getParent().getData()).getId());
 		}
 		else {
 			savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
-										((Menu)selectedNode.getData()).getMenuName(),
+										((Menu)selectedNode.getData()).getName(),
 										null);
 		}
 		((Menu)selectedNode.getData()).setId(savedBesoin.getId());
@@ -214,7 +214,6 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
         FacesContext.getCurrentInstance().addMessage(null, message);  
         besoinsReponsesService.changeParentOfBesoin(((Menu)event.getDragNode().getData()).getId(),
         		                                    ((Menu)event.getDropNode().getData()).getId());
-
     }  
 
 }

@@ -78,19 +78,11 @@ public class EditableTreeBean implements Serializable {
 
 		private Long id = null;
 
-        private String menuName;
+        private String label;
 
-        public Menu(Long id, String menuName) {
+        public Menu(Long id, String label) {
         	this.id = id;
-            this.menuName = menuName;
-        }
-
-        public String getMenuName() {
-            return menuName;
-        }
-
-        public void setMenuName(String menuName) {
-            this.menuName = menuName;
+            this.label = label;
         }
 
         public Long getId() {
@@ -101,9 +93,17 @@ public class EditableTreeBean implements Serializable {
         	this.id = id;
         }
         
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
         @Override
         public String toString() {
-        	return "Menu{ id=" + id + ", menuName=" + menuName + "}";
+        	return "Menu{ id=" + id + ", label=" + label + " }";
         }
     }
 
