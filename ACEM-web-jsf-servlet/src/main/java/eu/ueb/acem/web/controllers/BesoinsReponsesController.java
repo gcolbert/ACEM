@@ -136,12 +136,15 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     }
 
     private void collapseChildrenOf(TreeNode node) {
+    	logger.info("entering collapseChildrenOf, node={}", node.getData().toString());
     	for (TreeNode child : node.getChildren()) {
     		child.setExpanded(false);
     		if (! child.isLeaf()) {
     			collapseChildrenOf(child);
     		}
     	}
+    	logger.info("leaving collapseChildrenOf, node={}", node.getData().toString());
+		logger.info("------");
     }
 
     public void addChildToSelectedNode() {
@@ -159,7 +162,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
     	logger.info("leaving addAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
 		logger.info("------");
     }
-    
+
 	public void saveSelectedNode() {
 		if (selectedNode != null) {
 			logger.info("entering saveSelectedNode, selectedNode={}", selectedNode.getData().toString());
@@ -171,12 +174,12 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		Besoin savedBesoin;
 		if ((selectedNode.getParent() != null) && (selectedNode.getParent().getData() != null)) {
 			savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
-										((Menu) selectedNode.getData()).getName(),
+										((Menu) selectedNode.getData()).getLabel(),
 										((Menu) selectedNode.getParent().getData()).getId());
 		}
 		else {
 			savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
-										((Menu)selectedNode.getData()).getName(),
+										((Menu)selectedNode.getData()).getLabel(),
 										null);
 		}
 		((Menu)selectedNode.getData()).setId(savedBesoin.getId());
