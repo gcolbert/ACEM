@@ -159,6 +159,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 
     public void addAnswerToSelectedNode() {
     	logger.info("entering addAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
+    	
     	logger.info("leaving addAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
 		logger.info("------");
     }
@@ -166,24 +167,24 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 	public void saveSelectedNode() {
 		if (selectedNode != null) {
 			logger.info("entering saveSelectedNode, selectedNode={}", selectedNode.getData().toString());
+			// Si selectedNode est un Besoin
+			Besoin savedBesoin;
+			if ((selectedNode.getParent() != null) && (selectedNode.getParent().getData() != null)) {
+				savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
+											((Menu) selectedNode.getData()).getLabel(),
+											((Menu) selectedNode.getParent().getData()).getId());
+			}
+			else {
+				savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
+											((Menu) selectedNode.getData()).getLabel(),
+											null);
+			}
+			((Menu)selectedNode.getData()).setId(savedBesoin.getId());
+			// TODO sinon si selectedNode est une Reponse
 		}
 		else {
-			logger.info("entering saveSelectedNode, selectedNode=null");
+			logger.info("entering saveSelectedNode, selectedNode=null, we do nothing.");
 		}
-		// Si selectedNode est un Besoin
-		Besoin savedBesoin;
-		if ((selectedNode.getParent() != null) && (selectedNode.getParent().getData() != null)) {
-			savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
-										((Menu) selectedNode.getData()).getLabel(),
-										((Menu) selectedNode.getParent().getData()).getId());
-		}
-		else {
-			savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
-										((Menu)selectedNode.getData()).getLabel(),
-										null);
-		}
-		((Menu)selectedNode.getData()).setId(savedBesoin.getId());
-		// TODO sinon si selectedNode est une Reponse
 		logger.info("leaving saveSelectedNode");
 		logger.info("------");
 	}

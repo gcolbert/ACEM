@@ -50,8 +50,13 @@
 	</rule>
 
 	<rule>
-	    <from>^/scenarios$</from>
-	    <to>/pages/scenarios.xhtml</to>
+	    <from>^/mes-scenarios$</from>
+	    <to>/pages/mes-scenarios.xhtml</to>
+	</rule>
+
+	<rule>
+	    <from>^/bibliotheque-de-scenarios$</from>
+	    <to>/pages/bibliotheque-de-scenarios.xhtml</to>
 	</rule>
 
 	<rule>
