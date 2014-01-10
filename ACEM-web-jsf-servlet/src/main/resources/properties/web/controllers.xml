@@ -45,11 +45,11 @@
 		<description>A bean to manage exception reports.</description>
 	</bean>
 
-	<bean id="besoinsReponsesController"
+	<bean id="needsAndAnswersTreeController"
 		parent="abstractContextAwareController"
-		class="eu.ueb.acem.web.controllers.BesoinsReponsesController"
+		class="eu.ueb.acem.web.controllers.NeedsAndAnswersTreeController"
 		scope="session">
-		<description>A bean for the "besoins-reponses" page.</description>
+		<description>A controller for the tree on the "Needs and answers" page.</description>
 	</bean>
 
 </beans>

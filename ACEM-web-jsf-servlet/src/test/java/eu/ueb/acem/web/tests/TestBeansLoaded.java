@@ -23,34 +23,39 @@ public class TestBeansLoaded extends TestCase {
 	@Before
 	public void before() {
 		if (ApplicationContextHolder.getContext() == null) {
-			throw new ConfigException("vous devez ajouter le bean ApplicationContextHolder dans votre fichier applicationContext.xml");
+			throw new ConfigException("You must add the ApplicationContextHolder bean in your applicationContext.xml");
 		}
 	}
 
 	@Test
 	public void testEditableTreeBean() {
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Le composant editableTreeBean n'est pas chargé", context.containsBean("editableTreeBean"));
+		assertTrue("Component editableTreeBean is not loaded", context.containsBean("editableTreeBean"));
 	}
 
 	@Test
-	public void testBeanInexistant() {
+	public void testNonexistentBean() {
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertFalse(context.containsBean("inexistantBean"));
+		assertFalse(context.containsBean("testNonexistentBean"));
 	}
 
 	@Test
-	public void testBesoinsReponsesController() {
+	public void testNeedsAndAnswersTreeController() {
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Le composant besoinsReponsesController n'est pas chargé", context.containsBean("besoinsReponsesController"));
+		assertTrue("Controller needsAndAnswersTreeController is not loaded", context.containsBean("needsAndAnswersTreeController"));
+	}
+
+	@Test
+	public void testNeedsAndAnswersTableController() {
+		ApplicationContext context = ApplicationContextHolder.getContext();
+		assertTrue("Controller needsAndAnswersTableController is not loaded", context.containsBean("needsAndAnswersTableController"));
 	}
 	
 	@Test
-	public void testBesoinsReponsesService() {
+	public void testNeedsAndAnswersService() {
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Le composant besoinsReponsesService n'est pas chargé", context.containsBean("besoinsReponsesService"));
+		assertTrue("Service needsAndAnswersService is not loaded", context.containsBean("needsAndAnswersService"));
 	}
-
 	
 /*
     @Test

@@ -75,8 +75,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="9" language="java" name="eu.ueb.acem.services.BesoinsReponsesService" project="ACEM-domain-services" 
-    file="/ACEM-domain-services/src/main/java/eu/ueb/acem/services/BesoinsReponsesService.java" binary="false" 
+  <interface id="9" language="java" name="eu.ueb.acem.services.NeedsAndAnswersService" project="ACEM-domain-services" 
+    file="/ACEM-domain-services/src/main/java/eu/ueb/acem/services/NeedsAndAnswersService.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="134" y="127"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -85,8 +85,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="10" language="java" name="eu.ueb.acem.services.BesoinsReponsesServiceImpl" project="ACEM-domain-services" 
-    file="/ACEM-domain-services/src/main/java/eu/ueb/acem/services/BesoinsReponsesServiceImpl.java" binary="false" 
+  <class id="10" language="java" name="eu.ueb.acem.services.NeedsAndAnswersServiceImpl" project="ACEM-domain-services" 
+    file="/ACEM-domain-services/src/main/java/eu/ueb/acem/services/NeedsAndAnswersServiceImpl.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-112" y="127"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 

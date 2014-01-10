@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.services.BesoinsReponsesService;
+import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.Menu;
 
@@ -43,36 +43,36 @@ import eu.ueb.acem.web.viewbeans.EditableTreeBean.Menu;
  * @author gcolbert @since 2013-11-20
  *
  */
-@Controller("besoinsReponsesController")
+@Controller("needsAndAnswersTreeController")
 @Scope("view")
-public class BesoinsReponsesController extends AbstractContextAwareController {
+public class NeedsAndAnswersTreeController extends AbstractContextAwareController {
 
 	private static final long serialVersionUID = 3305497053688875560L;
-
-	@Autowired
-	private BesoinsReponsesService besoinsReponsesService;
-
-	@Autowired
-	private EditableTreeBean editableTreeBean;
 
 	/**
 	 * For Logging.
 	 */
-	private final static Logger logger = LoggerFactory.getLogger(BesoinsReponsesController.class);
+	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeController.class);
+
+	@Autowired
+	private NeedsAndAnswersService needsAndAnswersService;
+
+	@Autowired
+	private EditableTreeBean editableTreeBean;
 
 	private TreeNode selectedNode;
 	
-	public BesoinsReponsesController() {
+	public NeedsAndAnswersTreeController() {
 	}
 
     @PostConstruct
     public void initTree() {
     	logger.info("entering initTree");
-		Set<Besoin> besoins = besoinsReponsesService.getBesoinsLies(null);
-		logger.info("[BesoinsReponsesController.initTree] Fetched {} pedagogical needs at root of tree.", besoins.size());
-		for (Besoin besoin : besoins) {
-			logger.info("need = {}", besoin.getName());
-	    	createTree(besoin, editableTreeBean.getVisibleRoot());
+		Set<Besoin> needs = needsAndAnswersService.getNeedsWithParent(null);
+		logger.info("[NeedsAndAnswersTreeController.initTree] Fetched {} pedagogical needs at root of tree.", needs.size());
+		for (Besoin need : needs) {
+			logger.info("need = {}", need.getName());
+	    	createTree(need, editableTreeBean.getVisibleRoot());
 		}
 		editableTreeBean.getVisibleRoot().setExpanded(true);
     	logger.info("leaving initTree");
@@ -84,7 +84,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
      */
     public void createTree(Besoin besoin, TreeNode rootNode) {
         TreeNode newNode = new DefaultTreeNode(new Menu(besoin.getId(), besoin.getName()), rootNode);
-        Set<Besoin> childrenNodes = besoinsReponsesService.getBesoinsLies(besoin);
+        Set<Besoin> childrenNodes = needsAndAnswersService.getNeedsWithParent(besoin);
         for (Besoin besoinChild : childrenNodes) {
             createTree(besoinChild, newNode);
         }
@@ -170,12 +170,12 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 			// Si selectedNode est un Besoin
 			Besoin savedBesoin;
 			if ((selectedNode.getParent() != null) && (selectedNode.getParent().getData() != null)) {
-				savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
+				savedBesoin = needsAndAnswersService.createOrUpdateNeed(((Menu)selectedNode.getData()).getId(),
 											((Menu) selectedNode.getData()).getLabel(),
 											((Menu) selectedNode.getParent().getData()).getId());
 			}
 			else {
-				savedBesoin = besoinsReponsesService.createOrUpdateBesoin(((Menu)selectedNode.getData()).getId(),
+				savedBesoin = needsAndAnswersService.createOrUpdateNeed(((Menu)selectedNode.getData()).getId(),
 											((Menu) selectedNode.getData()).getLabel(),
 											null);
 			}
@@ -193,7 +193,7 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
 		logger.info("entering deleteSelectedNode, selectedNode={}", selectedNode.getData().toString());
 		if (selectedNode != null) {
         	if (selectedNode.getChildCount() == 0) {
-        		besoinsReponsesService.deleteBesoin(((Menu) selectedNode.getData()).getId());
+        		needsAndAnswersService.deleteNeed(((Menu) selectedNode.getData()).getId());
 		    	selectedNode.getChildren().clear();
 		    	selectedNode.getParent().getChildren().remove(selectedNode);  
 		    	selectedNode.setParent(null);
@@ -223,11 +223,11 @@ public class BesoinsReponsesController extends AbstractContextAwareController {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNodeData + " at " + dropIndex);
         FacesContext.getCurrentInstance().addMessage(null, message);
         if (dropNode != null) {
-        	besoinsReponsesService.changeParentOfBesoin(((Menu)event.getDragNode().getData()).getId(),
-        		                                    	((Menu)event.getDropNode().getData()).getId());
+        	needsAndAnswersService.changeParentOfNeed(((Menu)event.getDragNode().getData()).getId(),
+        		                                      ((Menu)event.getDropNode().getData()).getId());
         }
         else {
-        	//besoinsReponsesService.changePositionOfBesoin(((Menu)event.getDragNode().getData()).getId(),null);
+        	//besoinsReponsesService.changePositionOfNeed(((Menu)event.getDragNode().getData()).getId(),null);
         }
     }  
 
