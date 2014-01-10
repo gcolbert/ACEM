@@ -51,7 +51,7 @@ public class EditableTreeBean implements Serializable {
     	// For some reason, the root of the tree is not visible
         root = new DefaultTreeNode(new Menu(null, "Root"), null);
 		// Therefore, we add a visible root so that it is possible to right click and add children nodes
-        visibleRoot = new DefaultTreeNode(new Menu(null, "Besoins"), root);
+        visibleRoot = new DefaultTreeNode(new Menu(null, "Default visible root"), root);
     }
 
     public TreeNode getRoot() {
@@ -60,6 +60,10 @@ public class EditableTreeBean implements Serializable {
 
     public TreeNode getVisibleRoot() {
     	return visibleRoot;
+    }
+    
+    public void setVisibleRootLabel(String label) {
+    	((Menu)visibleRoot.getData()).setLabel(label);
     }
     
 	public void setRoot(TreeNode root) {

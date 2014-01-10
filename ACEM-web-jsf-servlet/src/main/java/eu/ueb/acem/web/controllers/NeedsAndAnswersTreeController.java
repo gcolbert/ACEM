@@ -68,6 +68,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
     @PostConstruct
     public void initTree() {
     	logger.info("entering initTree");
+    	editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
 		Set<Besoin> needs = needsAndAnswersService.getNeedsWithParent(null);
 		logger.info("[NeedsAndAnswersTreeController.initTree] Fetched {} pedagogical needs at root of tree.", needs.size());
 		for (Besoin need : needs) {
