@@ -68,7 +68,8 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
     @PostConstruct
     public void initTree() {
     	logger.info("entering initTree");
-    	editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
+    	//editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
+    	editableTreeBean.setVisibleRootLabel("Besoins");
 		Set<Besoin> needs = needsAndAnswersService.getNeedsWithParent(null);
 		logger.info("[NeedsAndAnswersTreeController.initTree] Fetched {} pedagogical needs at root of tree.", needs.size());
 		for (Besoin need : needs) {
@@ -214,22 +215,45 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
     }
     
     public void onDragDrop(TreeDragDropEvent event) {
-		TreeNode dragNode = event.getDragNode();
-		TreeNode dropNode = event.getDropNode();
-		String dropNodeData = null;
-		if (dropNode != null) {
-			dropNodeData = dropNode.getData().toString();
-		}
-		int dropIndex = event.getDropIndex();
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNodeData + " at " + dropIndex);
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        TreeNode dragNode = event.getDragNode();  
+        TreeNode dropNode = event.getDropNode();  
+        int dropIndex = event.getDropIndex();  
+
         if (dropNode != null) {
-        	needsAndAnswersService.changeParentOfNeed(((Menu)event.getDragNode().getData()).getId(),
-        		                                      ((Menu)event.getDropNode().getData()).getId());
+        	needsAndAnswersService.changeParentOfNeed(((Menu)dragNode.getData()).getId(),((Menu)dropNode.getData()).getId());
         }
         else {
         	//besoinsReponsesService.changePositionOfNeed(((Menu)event.getDragNode().getData()).getId(),null);
         }
+        
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);  
+        FacesContext.getCurrentInstance().addMessage(null, message);  
+
+    	/*
+		TreeNode dragNode = event.getDragNode();
+		Menu dragNodeData = null;
+		if ((dragNode != null) && (dragNode.getData()!=null)) {
+			dragNodeData = (Menu)dragNode.getData();
+		}
+		else {
+		}
+		TreeNode dropNode = event.getDropNode();
+		Menu dropNodeData = null;
+		if ((dropNode != null) && (dropNode.getData()!=null)) {
+			dropNodeData = (Menu)dropNode.getData();
+		}
+		else {
+		}
+		int dropIndex = event.getDropIndex();
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNodeData, "Dropped on " + dropNodeData + " at " + dropIndex);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        if (dropNode != null) {
+        	needsAndAnswersService.changeParentOfNeed(dragNodeData.getId(),dropNodeData.getId());
+        }
+        else {
+        	//besoinsReponsesService.changePositionOfNeed(((Menu)event.getDragNode().getData()).getId(),null);
+        }
+        */
     }  
 
 }

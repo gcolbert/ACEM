@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
  * @author Yves Deschamps (Universite de Lille 1) - 2010
  * 
  */
-public class AuthenticatorImpl implements Serializable, InitializingBean, Authenticator {
+public class AuthenticatorServiceImpl implements Serializable, InitializingBean, AuthenticatorService {
 
 	/**
 	 * The serialization id.
@@ -37,17 +37,17 @@ public class AuthenticatorImpl implements Serializable, InitializingBean, Authen
 	/**
 	 * The session attribute to store the auth info.
 	 */
-	private static final String AUTH_INFO_ATTRIBUTE = AuthenticatorImpl.class.getName() + ".authInfo";
+	private static final String AUTH_INFO_ATTRIBUTE = AuthenticatorServiceImpl.class.getName() + ".authInfo";
 
 	/**
 	 * The session attribute to store the user.
 	 */
-	private static final String USER_ATTRIBUTE = AuthenticatorImpl.class.getName() + ".user";
+	private static final String USER_ATTRIBUTE = AuthenticatorServiceImpl.class.getName() + ".user";
 
 	/**
 	 * For logging
 	 */
-	private final static Logger logger = LoggerFactory.getLogger(AuthenticatorImpl.class);
+	private final static Logger logger = LoggerFactory.getLogger(AuthenticatorServiceImpl.class);
 
 	/**
 	 * The external authenticator.
@@ -65,7 +65,7 @@ public class AuthenticatorImpl implements Serializable, InitializingBean, Authen
 	/**
 	 * Bean constructor.
 	 */
-	public AuthenticatorImpl() {
+	public AuthenticatorServiceImpl() {
 		super();
 	}
 

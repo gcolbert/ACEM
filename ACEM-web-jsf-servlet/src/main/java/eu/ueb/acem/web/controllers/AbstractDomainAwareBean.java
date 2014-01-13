@@ -10,6 +10,8 @@ import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.Assert;
 import org.esupportail.commons.web.controllers.Resettable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * An abstract class inherited by all the beans for them to get:
@@ -17,6 +19,7 @@ import org.esupportail.commons.web.controllers.Resettable;
  * - the application service (applicationService).
  * - the i18n service (i18nService).
  */
+@Component("abstractDomainAwareBean")
 public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBean implements Resettable {
 
 	/**
@@ -32,6 +35,7 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 	/**
 	 * see {@link DomainService}.
 	 */
+	@Autowired
 	private DomainService domainService;
 	
 	/**

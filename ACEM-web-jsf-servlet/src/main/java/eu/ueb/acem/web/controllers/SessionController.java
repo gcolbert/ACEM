@@ -7,7 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.services.auth.Authenticator;
+import eu.ueb.acem.services.auth.AuthenticatorService;
 
 import org.esupportail.commons.utils.Assert;
 import org.esupportail.commons.utils.ContextUtils;
@@ -35,7 +35,7 @@ public class SessionController extends AbstractDomainAwareBean {
 	/**
 	 * The authenticator.
 	 */
-	private Authenticator authenticator;
+	private AuthenticatorService authenticatorService;
 	
 	/**
 	 * The CAS logout URL.
@@ -59,7 +59,7 @@ public class SessionController extends AbstractDomainAwareBean {
 	@Override
 	public void afterPropertiesSetInternal() {
 		Assert.notNull(this.exceptionController, "property exceptionController of class " + this.getClass().getName() + " can not be null");
-		Assert.notNull(this.authenticator, "property authenticator of class " + this.getClass().getName() + " can not be null");
+		Assert.notNull(this.authenticatorService, "property authenticator of class " + this.getClass().getName() + " can not be null");
 	}
 
 	
@@ -76,7 +76,7 @@ public class SessionController extends AbstractDomainAwareBean {
 	 */
 	@Override
 	public Personne getCurrentUser() throws Exception {
-		return authenticator.getUser();
+		return authenticatorService.getUser();
 	}
 
 	/**
@@ -139,10 +139,10 @@ public class SessionController extends AbstractDomainAwareBean {
 	}
 
 	/**
-	 * @param authenticator the authenticator to set
+	 * @param authenticatorService the authenticator to set
 	 */
-	public void setAuthenticator(final Authenticator authenticator) {
-		this.authenticator = authenticator;
+	public void setAuthenticatorService(final AuthenticatorService authenticatorService) {
+		this.authenticatorService = authenticatorService;
 	}
 	
 	/**

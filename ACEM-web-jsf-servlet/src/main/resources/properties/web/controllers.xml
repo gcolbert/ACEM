@@ -9,8 +9,6 @@
 		used by the web interface. It should not be modified but by the developers. 
 		This file is referenced by /properties/applicationContext.xml. -->
 
-	
-
 	<bean id="sessionController"
 		class="eu.ueb.acem.web.controllers.SessionController"
 		parent="abstractDomainAwareBean" scope="session">
@@ -23,7 +21,7 @@
 		<property name="casLogoutUrl" value="${cas.url}/logout?service=%s">
 			<description>The CAS logout URL.</description>
 		</property>
-		<property name="authenticator" ref="authenticator">
+		<property name="authenticatorService" ref="authenticatorService">
 			<description>The authenticator service.</description>
 		</property>
 	</bean>
@@ -46,9 +44,8 @@
 	</bean>
 
 	<bean id="needsAndAnswersTreeController"
-		parent="abstractContextAwareController"
 		class="eu.ueb.acem.web.controllers.NeedsAndAnswersTreeController"
-		scope="session">
+		parent="abstractContextAwareController">
 		<description>A controller for the tree on the "Needs and answers" page.</description>
 	</bean>
 

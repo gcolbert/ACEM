@@ -1,6 +1,8 @@
 package eu.ueb.acem.web.controllers;
 
 import org.esupportail.commons.utils.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
 
@@ -11,6 +13,7 @@ import eu.ueb.acem.domain.beans.gris.Personne;
  * - the application service (applicationService).
  * - the i18n service (i18nService).
  */
+@Component
 public abstract class AbstractContextAwareController extends AbstractDomainAwareBean {
 
 	/*

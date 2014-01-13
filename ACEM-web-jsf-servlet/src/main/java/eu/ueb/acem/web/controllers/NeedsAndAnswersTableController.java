@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +48,6 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 	@Autowired
 	private TableBean tableBean;
 
-	private TreeNode selectedNode;
-	
 	public NeedsAndAnswersTableController() {
 	}
 

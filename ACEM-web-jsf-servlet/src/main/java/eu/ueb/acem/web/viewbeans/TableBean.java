@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("tableBean")
 @Scope("view")
-public class TableBean<T> implements Serializable {
+public class TableBean  implements Serializable {
 	
 	/**
 	 * For Logging.
@@ -44,10 +44,11 @@ public class TableBean<T> implements Serializable {
 	
 	private static final long serialVersionUID = -3164178023755035995L;
 	
-	private List<T> data;
+	private List<Object> columns;
+	private List<Object> data;
 	
 	public TableBean() {
-		data = new ArrayList<T>();
+		data = new ArrayList<Object>();
 	}
 	
 }

@@ -3,13 +3,16 @@
  */
 package eu.ueb.acem.services.auth;
 
+import org.springframework.stereotype.Service;
+
 import eu.ueb.acem.domain.beans.gris.Personne;
 
 /**
  * @author Grégoire Colbert @since 2013-11-25
  * @author Yves Deschamps (Universite de Lille 1) - 2010
  */
-public interface Authenticator {
+@Service("authenticatorService")
+public interface AuthenticatorService {
 
 	/**
 	 * @return the authenticated user.

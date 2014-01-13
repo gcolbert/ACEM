@@ -52,10 +52,18 @@
 	</navigation-rule>
 
 	<navigation-rule>
-		<description>Scénarios</description>
+		<description>Mes scénarios</description>
 		<navigation-case>
-			<from-outcome>scenarios</from-outcome>
-			<to-view-id>/pages/scenarios.xhtml</to-view-id>
+			<from-outcome>mes-scenarios</from-outcome>
+			<to-view-id>/pages/mes-scenarios.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<description>Bibliothèque de scénarios</description>
+		<navigation-case>
+			<from-outcome>bibliotheque-de-scenarios</from-outcome>
+			<to-view-id>/pages/bibliotheque-de-scenarios.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 

@@ -9,14 +9,14 @@
 
 -->
 <urlrewrite>
-
+<!-- 
 	<outbound-rule encodefirst="true">
 		<name>Strip URL Session ID's</name>
 		<note>This rule removes the ";jsessionid=xyz" from the URLs that are generated when there is no JSESSIONID cookie</note>
 		<from>^(.*?)(?:\;jsessionid=[^\?#]*)?(\?[^#]*)?(#.*)?$</from>
 		<to>$1$2$3</to>
 	</outbound-rule>
-
+ -->
     <rule>
         <note>
             The rule means that requests to /test/status/ will be redirected to /rewrite-status
@@ -40,8 +40,8 @@
     </outbound-rule>
 
 	<rule>
-	    <from>^/besoins-et-reponses$</from>
-	    <to>/pages/besoins-et-reponses.xhtml</to>
+	    <from>^/besoins-et-reponses(?:\;jsessionid=[^\?#]*)?(\?[^#]*)?(#.*)?$</from>
+	    <to>/pages/besoins-et-reponses.xhtml$1$2$3</to>
 	</rule>
 
 	<rule>
