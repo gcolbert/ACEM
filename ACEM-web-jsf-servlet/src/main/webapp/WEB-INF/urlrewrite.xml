@@ -40,8 +40,8 @@
     </outbound-rule>
 
 	<rule>
-	    <from>^/besoins-et-reponses(?:\;jsessionid=[^\?#]*)?(\?[^#]*)?(#.*)?$</from>
-	    <to>/pages/besoins-et-reponses.xhtml$1$2$3</to>
+	    <from>^/besoins-et-reponses(.*)?$</from>
+	    <to>/pages/besoins-et-reponses.xhtml$1</to>
 	</rule>
 
 	<rule>
