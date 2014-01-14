@@ -25,6 +25,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -103,32 +104,46 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
     public TreeNode getSelectedNode() {  
         return selectedNode;  
     }
-  
+
     public void setSelectedNode(TreeNode selectedNode) {
     	logger.info("entering setSelectedNode({})", selectedNode);
-    	if (this.selectedNode != null) {
-	        if (this.selectedNode.isSelected()) {
-	        	this.selectedNode.setSelected(false);
+    	if ((this.selectedNode != null)
+    			&& (this.selectedNode != selectedNode)
+    			&& (! selectedNode.getChildren().contains(this.selectedNode))
+    			&& (! this.selectedNode.getChildren().contains(selectedNode))) {
+        	this.selectedNode.setExpanded(false);
+        	this.selectedNode.setSelected(false);
+    	}
+    	/*
+    	if (selectedNode != null) {
+        	selectedNode.setSelected(true);
+        	if (selectedNode.isExpanded()) {
+        		selectedNode.setExpanded(false);
+        	}
+        	else {
+        		selectedNode.setExpanded(true);	        		
 	        }
     	}
+    	*/
         this.selectedNode = selectedNode;
-    	if (this.selectedNode != null) {
-	        if (! this.selectedNode.isSelected()) {
-	        	this.selectedNode.setSelected(true);
-	        }
-    	}
+    	this.selectedNode.setExpanded(true);
     	logger.info("leaving setSelectedNode({})", selectedNode);
 		logger.info("------");
     }
 
-    /*
     public void onNodeSelect(NodeSelectEvent event) {
     	logger.info("onNodeSelect");
+    	FacesMessage message = null;
+    	if (selectedNode != null) {
+    		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Was selected", selectedNode.toString());
+            FacesContext.getCurrentInstance().addMessage(null, message);      	
+    	}
     	setSelectedNode(event.getTreeNode());
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", selectedNode.toString());
-        FacesContext.getCurrentInstance().addMessage(null, message);      	
+    	if (selectedNode != null) {
+    		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Is now selected", selectedNode.toString());
+            FacesContext.getCurrentInstance().addMessage(null, message);      	
+    	}
     }
-    */
     
     public void displaySelectedSingle() {  
     	if(selectedNode != null) {  
@@ -159,10 +174,10 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		logger.info("------");
     }
 
-    public void addAnswerToSelectedNode() {
-    	logger.info("entering addAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
+    public void associateAnswerToSelectedNode() {
+    	logger.info("entering associateAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
     	
-    	logger.info("leaving addAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
+    	logger.info("leaving associateAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
 		logger.info("------");
     }
 
@@ -219,41 +234,10 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
         TreeNode dropNode = event.getDropNode();  
         int dropIndex = event.getDropIndex();  
 
-        if (dropNode != null) {
-        	needsAndAnswersService.changeParentOfNeed(((Menu)dragNode.getData()).getId(),((Menu)dropNode.getData()).getId());
-        }
-        else {
-        	//besoinsReponsesService.changePositionOfNeed(((Menu)event.getDragNode().getData()).getId(),null);
-        }
+    	needsAndAnswersService.changeParentOfNeed(((Menu)dragNode.getData()).getId(),((Menu)dropNode.getData()).getId());
         
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);  
         FacesContext.getCurrentInstance().addMessage(null, message);  
-
-    	/*
-		TreeNode dragNode = event.getDragNode();
-		Menu dragNodeData = null;
-		if ((dragNode != null) && (dragNode.getData()!=null)) {
-			dragNodeData = (Menu)dragNode.getData();
-		}
-		else {
-		}
-		TreeNode dropNode = event.getDropNode();
-		Menu dropNodeData = null;
-		if ((dropNode != null) && (dropNode.getData()!=null)) {
-			dropNodeData = (Menu)dropNode.getData();
-		}
-		else {
-		}
-		int dropIndex = event.getDropIndex();
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNodeData, "Dropped on " + dropNodeData + " at " + dropIndex);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        if (dropNode != null) {
-        	needsAndAnswersService.changeParentOfNeed(dragNodeData.getId(),dropNodeData.getId());
-        }
-        else {
-        	//besoinsReponsesService.changePositionOfNeed(((Menu)event.getDragNode().getData()).getId(),null);
-        }
-        */
     }  
 
 }

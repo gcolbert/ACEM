@@ -33,8 +33,10 @@
 		<!-- 
 		<org.springframework-version>4.0.0.RELEASE</org.springframework-version>
 		-->
-		<javax.servlet.version>2.5</javax.servlet.version>
+		<javax.servlet.version>3.0.1</javax.servlet.version>
 		<javax.validation-version>1.1.0.Final</javax.validation-version>
+		<primefaces.version>4.0</primefaces.version>
+		<urlrewritefilter.version>4.0.3</urlrewritefilter.version>
 		<junit-version>4.11</junit-version>
 		<cglib-version>2.2.2</cglib-version>
 		<cas.url>https://sso-cas.univ-rennes1.fr</cas.url>
@@ -47,6 +49,15 @@
 	</properties>
 	<repositories>
 		<repository>
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<layout>default</layout>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
 			<id>prime-repo</id>
 			<name>Prime Technology Maven Repository</name>
 			<url>http://repository.primefaces.org</url>
@@ -57,7 +68,7 @@
 		<dependency>
 			<groupId>org.tuckey</groupId>
 			<artifactId>urlrewritefilter</artifactId>
-			<version>4.0.3</version>
+			<version>${urlrewritefilter.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>eu.ueb</groupId>
@@ -66,14 +77,14 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 			<version>${javax.servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>4.0</version>
+			<version>${primefaces.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.esupportail</groupId>

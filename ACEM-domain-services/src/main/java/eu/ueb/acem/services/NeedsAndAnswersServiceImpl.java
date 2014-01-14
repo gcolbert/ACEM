@@ -147,6 +147,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 				if (newParent != null) {
 					newParent.addChild(need);
 					newParent = besoinDAO.update(newParent);
+					need = besoinDAO.update(need);
 				}
 			}
 		}

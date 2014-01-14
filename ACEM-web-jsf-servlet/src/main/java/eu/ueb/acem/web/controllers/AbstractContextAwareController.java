@@ -1,7 +1,6 @@
 package eu.ueb.acem.web.controllers;
 
 import org.esupportail.commons.utils.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
