@@ -27,9 +27,13 @@
 						update="treeSingle :formTree:messages"
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
 						icon="ui-icon-minus" />
+					<p:menuitem value="Toggle inplace"
+						update="treeSingle :formTree:messages"
+						onclick="inplace.toggle()"/>
+					<p:menuitem onclick="inplace.show()" value="Show" />
 				</p:contextMenu>
 				<p:tree id="treeSingle" orientation="vertical" dynamic="true"
-					cache="false" value="#{needsAndAnswersTreeController.treeRoot}"
+					cache="true" value="#{needsAndAnswersTreeController.treeRoot}"
 					var="node" selectionMode="single"
 					draggable="true" droppable="true" dragdropScope="demo">
 					<!-- selection="#{needsAndAnswersTreeController.selectedNode}"-->
@@ -40,16 +44,14 @@
 						listener="#{needsAndAnswersTreeController.onNodeSelect}"
 						update="treeSingle :formTree:messages" />
 					<p:treeNode>
-						<span onclick="this.parentNode.parentNode.firstChild.click();">
-							<p:inplace editor="true" event="dblclick" disabled="false">
-								<p:ajax event="save"
-									listener="#{needsAndAnswersTreeController.saveSelectedNode}"
-									update="treeSingle"
-									emptyLabel="#{msgs['NEEDS_AND_ANSWERS.TREE.EMPTY_LABEL']}" />
-								<p:ajax event="cancel" update="treeSingle"/>
-								<p:inputText value="#{node.label}" />
-							</p:inplace>
-						</span>
+						<p:inplace editor="true" event="dblclick" disabled="false">
+							<p:ajax event="save"
+								listener="#{needsAndAnswersTreeController.saveSelectedNode}"
+								update="treeSingle"
+								emptyLabel="#{msgs['NEEDS_AND_ANSWERS.TREE.EMPTY_LABEL']}" />
+							<p:ajax event="cancel" update="treeSingle"/>
+							<p:inputText value="#{node.label}" />
+						</p:inplace>
 					</p:treeNode>
 				</p:tree>
 			</h:form>
