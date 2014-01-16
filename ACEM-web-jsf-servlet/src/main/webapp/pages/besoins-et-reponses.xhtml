@@ -6,7 +6,7 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
-		<ui:debug hotkey="1" />
+		<ui:debug hotkey="1" rendered="#{facesContext.application.projectStage == 'Development'}" />
 		<p:panel header="#{msgs['NEEDS_AND_ANSWERS.TREE.HEADER']}">
 			<h:form id="formTree">
 				<p:growl id="messages" showDetail="true" />
@@ -29,27 +29,26 @@
 						icon="ui-icon-minus" />
 				</p:contextMenu>
 				<p:tree id="treeSingle" orientation="vertical" dynamic="true"
-					cache="false" value="#{needsAndAnswersTreeController.treeRoot}"
+					cache="true" value="#{needsAndAnswersTreeController.treeRoot}"
 					var="node" selectionMode="single"
+					selection="#{needsAndAnswersTreeController.selectedNode}"
 					draggable="true" droppable="true" dragdropScope="demo">
-					<!-- selection="#{needsAndAnswersTreeController.selectedNode}"-->
 					<p:ajax event="dragdrop"
 						listener="#{needsAndAnswersTreeController.onDragDrop}"
 						update="treeSingle :formTree:messages" />
+					<!-- 
 					<p:ajax event="select"
 						listener="#{needsAndAnswersTreeController.onNodeSelect}"
 						update="treeSingle :formTree:messages" />
+					 -->
 					<p:treeNode>
-						<span onclick="this.parentNode.parentNode.firstChild.click();">
-							<p:inplace editor="true" event="dblclick" disabled="false">
-								<p:ajax event="save"
-									listener="#{needsAndAnswersTreeController.saveSelectedNode}"
-									update="treeSingle"
-									emptyLabel="#{msgs['NEEDS_AND_ANSWERS.TREE.EMPTY_LABEL']}" />
-								<p:ajax event="cancel" update="treeSingle"/>
-								<p:inputText value="#{node.label}" />
-							</p:inplace>
-						</span>
+						<p:inplace editor="true" event="dblclick" disabled="false">
+							<p:ajax event="save"
+								listener="#{needsAndAnswersTreeController.saveSelectedNode}"
+								update="treeSingle"
+								emptyLabel="#{msgs['NEEDS_AND_ANSWERS.TREE.EMPTY_LABEL']}" />
+							<p:inputText value="#{node.label}" />
+						</p:inplace>
 					</p:treeNode>
 				</p:tree>
 			</h:form>

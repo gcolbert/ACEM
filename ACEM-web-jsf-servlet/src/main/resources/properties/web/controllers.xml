@@ -49,4 +49,10 @@
 		<description>A controller for the tree on the "Needs and answers" page.</description>
 	</bean>
 
+	<bean id="needsAndAnswersTableController"
+		class="eu.ueb.acem.web.controllers.NeedsAndAnswersTableController"
+		parent="abstractContextAwareController">
+		<description>A controller for the table on the "Needs and answers" page.</description>
+	</bean>
+
 </beans>

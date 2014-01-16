@@ -77,7 +77,7 @@ public class BesoinDAO implements DAO<Besoin> {
 	public Set<Besoin> retrieveChildrenOf(Besoin besoin) {
 		Set<BesoinNode> nodes;
 		if (besoin != null) {
-			nodes = repository.findChildrenOf(besoin.getName());
+			nodes = repository.findChildrenOf(besoin.getId());
 		}
 		else {
 			nodes = repository.findRoots();
@@ -91,7 +91,7 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 
 	public Set<Reponse> retrieveAnswersOf(Besoin besoin) {
-		Set<ReponseNode> nodes = repository.findAnswersOf(besoin.getName());
+		Set<ReponseNode> nodes = repository.findAnswersOf(besoin.getId());
 		Set<Reponse> reponses = new HashSet<Reponse>();
 		for (ReponseNode node : nodes) {
 			reponses.add(node);

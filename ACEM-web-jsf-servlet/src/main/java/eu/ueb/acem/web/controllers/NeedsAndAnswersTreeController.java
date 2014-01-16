@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -107,26 +108,48 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 
     public void setSelectedNode(TreeNode selectedNode) {
     	logger.info("entering setSelectedNode({})", selectedNode);
-    	if ((this.selectedNode != null)
-    			&& (this.selectedNode != selectedNode)
-    			&& (! selectedNode.getChildren().contains(this.selectedNode))
-    			&& (! this.selectedNode.getChildren().contains(selectedNode))) {
-        	this.selectedNode.setExpanded(false);
-        	this.selectedNode.setSelected(false);
+    	if (this.selectedNode != null) {
+    		if (this.selectedNode != selectedNode) {
+    			if (this.selectedNode.isSelected()) {
+    				this.selectedNode.setSelected(false);
+    			}
+    			if (! this.selectedNode.getChildren().contains(selectedNode)) {
+		    		// We recursively collapse the children of this.selectedNode
+		        	collapseChildrenOf(this.selectedNode);
+		        	// We collapse the currently selected node itself
+		        	this.selectedNode.setExpanded(false);
+		        	// We collect in a Set the parents of the newly selected node
+		        	Set<TreeNode> selectedNodeParents = new HashSet<TreeNode>();
+		        	TreeNode selectedNodeParent = selectedNode.getParent();
+		        	while (selectedNodeParent != null) {
+		        		selectedNodeParents.add(selectedNodeParent);
+		        		selectedNodeParent = selectedNodeParent.getParent();
+		        	}
+		        	// We collapse all of this.selectedNode parents, until we find the grand-parent
+		        	// that has the currently selected node and the newly selected node as grand-children
+		    		TreeNode currentParent = this.selectedNode.getParent();
+		    		while ((currentParent != null)
+		    				&& (! selectedNodeParents.contains(currentParent))) {
+		    			currentParent.setExpanded(false);
+		    			currentParent = currentParent.getParent();
+		    		}
+    			}
+    		}
     	}
-    	/*
     	if (selectedNode != null) {
-        	selectedNode.setSelected(true);
-        	if (selectedNode.isExpanded()) {
-        		selectedNode.setExpanded(false);
-        	}
-        	else {
-        		selectedNode.setExpanded(true);	        		
-	        }
+			if (this.selectedNode == selectedNode) {
+				if (this.selectedNode.getChildCount() > 0) {
+					this.selectedNode.setExpanded(! this.selectedNode.isExpanded());
+				}
+			}
+			else {
+				if (! selectedNode.isSelected()) {
+					selectedNode.setSelected(true);
+					selectedNode.setExpanded(true);
+				}
+		        this.selectedNode = selectedNode;
+			}
     	}
-    	*/
-        this.selectedNode = selectedNode;
-    	this.selectedNode.setExpanded(true);
     	logger.info("leaving setSelectedNode({})", selectedNode);
 		logger.info("------");
     }
@@ -161,7 +184,6 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
     		}
     	}
     	logger.info("leaving collapseChildrenOf, node={}", node.getData().toString());
-		logger.info("------");
     }
 
     public void addChildToSelectedNode() {
@@ -207,8 +229,8 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	}
 
     public void deleteSelectedNode() {
-		logger.info("entering deleteSelectedNode, selectedNode={}", selectedNode.getData().toString());
 		if (selectedNode != null) {
+			logger.info("entering deleteSelectedNode, selectedNode={}", selectedNode.getData().toString());
         	if (selectedNode.getChildCount() == 0) {
         		needsAndAnswersService.deleteNeed(((Menu) selectedNode.getData()).getId());
 		    	selectedNode.getChildren().clear();
@@ -225,6 +247,9 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	    		logger.info("The selected node has children, cannot delete!");
 	    	}
     	}
+		else {
+			logger.info("entering deleteSelectedNode, selectedNode=null");
+		}
 		logger.info("leaving deleteSelectedNode");
 		logger.info("------");
     }
