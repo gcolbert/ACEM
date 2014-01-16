@@ -67,11 +67,11 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	public NeedsAndAnswersTreeController() {
 	}
 
-    @PostConstruct
-    public void initTree() {
-    	logger.info("entering initTree");
-    	//editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
-    	editableTreeBean.setVisibleRootLabel("Besoins");
+  @PostConstruct
+  public void initTree() {
+		logger.info("entering initTree");
+   	//editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
+		editableTreeBean.setVisibleRootLabel("Besoins");
 		Set<Besoin> needs = needsAndAnswersService.getNeedsWithParent(null);
 		logger.info("[NeedsAndAnswersTreeController.initTree] Fetched {} pedagogical needs at root of tree.", needs.size());
 		for (Besoin need : needs) {
@@ -103,7 +103,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	}
 
     public TreeNode getSelectedNode() {  
-        return selectedNode;  
+			return selectedNode;  
     }
 
     public void setSelectedNode(TreeNode selectedNode) {
@@ -136,20 +136,20 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
     			}
     		}
     	}
-		if (this.selectedNode == selectedNode) {
-			if (this.selectedNode.getChildCount() > 0) {
-				this.selectedNode.setExpanded(! this.selectedNode.isExpanded());
+			if (this.selectedNode == selectedNode) {
+				if (this.selectedNode.getChildCount() > 0) {
+					this.selectedNode.setExpanded(! this.selectedNode.isExpanded());
+				}
 			}
-		}
-		else {
-			if (! selectedNode.isSelected()) {
-				selectedNode.setSelected(true);
-				selectedNode.setExpanded(true);
+			else {
+				if (! selectedNode.isSelected()) {
+					selectedNode.setSelected(true);
+					selectedNode.setExpanded(true);
+				}
+        this.selectedNode = selectedNode;
 			}
-	        this.selectedNode = selectedNode;
-		}
-    	logger.info("leaving setSelectedNode({})", selectedNode);
-		logger.info("------");
+			logger.info("leaving setSelectedNode({})", selectedNode);
+			logger.info("------");
     }
 
     public void onNodeSelect(NodeSelectEvent event) {
