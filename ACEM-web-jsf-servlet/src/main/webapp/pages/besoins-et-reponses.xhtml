@@ -35,14 +35,22 @@
 				<p:tree id="treeSingle" orientation="vertical" dynamic="true"
 					cache="true" value="#{needsAndAnswersTreeController.treeRoot}"
 					var="node" selectionMode="single"
+					selection="#{needsAndAnswersTreeController.selectedNode}"
 					draggable="true" droppable="true" dragdropScope="demo">
-					<!-- selection="#{needsAndAnswersTreeController.selectedNode}"-->
 					<p:ajax event="dragdrop"
 						listener="#{needsAndAnswersTreeController.onDragDrop}"
 						update="treeSingle :formTree:messages" />
-					<p:ajax event="select"
-						listener="#{needsAndAnswersTreeController.onNodeSelect}"
+					<p:ajax event="expand"
+						listener="#{needsAndAnswersTreeController.onNodeExpand}"
 						update="treeSingle :formTree:messages" />
+					<p:ajax event="collapse"
+						listener="#{needsAndAnswersTreeController.onNodeCollapse}"
+						update="treeSingle :formTree:messages" />
+					<!-- 
+					<p:ajax event="dblclick"
+						listener="#{needsAndAnswersTreeController.onNodeDoubleClick}"
+						update="treeSingle :formTree:messages" />
+					 -->
 					<p:treeNode>
 						<p:inplace editor="true" event="dblclick" disabled="false">
 							<p:ajax event="save"
