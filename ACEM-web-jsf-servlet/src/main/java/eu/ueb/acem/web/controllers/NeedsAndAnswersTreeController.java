@@ -172,11 +172,12 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 			if (this.selectedNode.getChildCount() > 0) {
 				this.selectedNode.setExpanded(! this.selectedNode.isExpanded());
 			}
-		}
-		else {
-			if (! selectedNode.isSelected()) {
-				selectedNode.setSelected(true);
-				selectedNode.setExpanded(true);
+			else {
+				if (! selectedNode.isSelected()) {
+					selectedNode.setSelected(true);
+					selectedNode.setExpanded(true);
+				}
+		        this.selectedNode = selectedNode;
 			}
 			this.selectedNode = selectedNode;
 		}

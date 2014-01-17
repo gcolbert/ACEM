@@ -118,4 +118,8 @@
 	<welcome-file-list>
 		<welcome-file>pages/accueil.xhtml</welcome-file>
 	</welcome-file-list>
+	<error-page>  
+		<error-code>404</error-code>  
+		<location>/pages/page-not-found.xhtml</location>  
+	</error-page>  	
 </web-app>

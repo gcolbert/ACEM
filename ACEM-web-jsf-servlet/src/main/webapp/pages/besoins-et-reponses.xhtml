@@ -6,7 +6,7 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
-		<ui:debug hotkey="1" />
+		<ui:debug hotkey="1" rendered="#{facesContext.application.projectStage == 'Development'}" />
 		<p:panel header="#{msgs['NEEDS_AND_ANSWERS.TREE.HEADER']}">
 			<h:form id="formTree">
 				<p:growl id="messages" showDetail="true" />
@@ -47,8 +47,8 @@
 						listener="#{needsAndAnswersTreeController.onNodeCollapse}"
 						update="treeSingle :formTree:messages" />
 					<!-- 
-					<p:ajax event="dblclick"
-						listener="#{needsAndAnswersTreeController.onNodeDoubleClick}"
+					<p:ajax event="select"
+						listener="#{needsAndAnswersTreeController.onNodeSelect}"
 						update="treeSingle :formTree:messages" />
 					 -->
 					<p:treeNode>
@@ -81,14 +81,5 @@
 				 -->
 			</h:form>
 		</p:panel>
-		
-<!-- 
-		<p:panel header="Compteur">
-			<h:form>
-				<p:commandButton value="Incrémenter le compteur" action="#{counterBean.increment}" update="out"/>
-				<h:outputText id="out" value="#{counterBean.count}" />
-			</h:form>
-		</p:panel>
- -->
 	</ui:define>
 </ui:composition>
