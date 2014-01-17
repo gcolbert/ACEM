@@ -29,19 +29,21 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
  *
  */
 public interface NeedsAndAnswersService {
-	
-	public Set<Besoin> getNeedsWithParent(Besoin besoin);
-
-	public Set<Reponse> getReponses(Besoin besoin);
 
 	public DAO<Besoin> getBesoinDAO();
 
 	public DAO<Reponse> getReponseDAO();
+	
+	public Set<Besoin> getChildrenNeedsOf(Besoin besoin);
 
 	public Besoin createOrUpdateNeed(Long id, String name, Long idParent);
 
 	public void deleteNeed(Long id);
 
 	public void changeParentOfNeed(Long id, Long idNewParent);
+
+	public Set<Reponse> getAnswers(Besoin besoin);
+
+	public Reponse createOrUpdateAnswer(Long id, String name, Long idNeed);
 
 }

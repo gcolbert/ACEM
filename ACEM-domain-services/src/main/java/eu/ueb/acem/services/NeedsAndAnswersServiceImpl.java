@@ -33,6 +33,7 @@ import eu.ueb.acem.dal.bleu.ReponseDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
  * @author gcolbert @since 2013-11-20
@@ -67,38 +68,33 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public Set<Besoin> getNeedsWithParent(Besoin need) {
+	public Set<Besoin> getChildrenNeedsOf(Besoin need) {
 		return besoinDAO.retrieveChildrenOf(need);
 	}
 
 	@Override
-	public Set<Reponse> getReponses(Besoin need) {
+	public Set<Reponse> getAnswers(Besoin need) {
 		return besoinDAO.retrieveAnswersOf(need);
 	}
 
 	@Override
 	@Transactional
 	public Besoin createOrUpdateNeed(Long id, String name, Long idParent) {
-		Besoin existingNeed = besoinDAO.retrieveById(id);
-		logger.info("createOrUpdateNeed, existingNeed == {}", existingNeed);
-		if (existingNeed == null) {
-			// TODO : ne pas appeler BesoinNode, passer par une factory (?)
-			Besoin newNeed = besoinDAO.create(new BesoinNode(name));
-			if (idParent != null) {
-				logger.info("idParent is not null, idParent == {}", idParent);
-				Besoin parent = besoinDAO.retrieveById(idParent);
-				if (parent != null) {
-					parent.addChild(newNeed);
-					besoinDAO.update(newNeed);
-					besoinDAO.update(parent);
-				}
-			}
-			return newNeed;
+		Besoin need = null;
+		if (besoinDAO.exists(id)) {
+			need = besoinDAO.retrieveById(id);
+			need.setName(name);
 		}
 		else {
-			existingNeed.setName(name);
-			return besoinDAO.update(existingNeed);
+			need = besoinDAO.create(new BesoinNode(name));
 		}
+		if (besoinDAO.exists(idParent)) {
+			Besoin parent = besoinDAO.retrieveById(idParent);
+			need.addParent(parent);
+			need = besoinDAO.update(need);
+			parent = besoinDAO.update(parent);
+		}
+		return need;
 	}
 
 	@Override
@@ -152,5 +148,26 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 			}
 		}
 		logger.info("leaving changeParentOfNeed({}, {})", id, idNewParent);
+	}
+
+	@Override
+	@Transactional
+	public Reponse createOrUpdateAnswer(Long id, String name, Long idNeed) {
+		Reponse answer = null;
+		if (reponseDAO.exists(id)) {
+			answer = reponseDAO.retrieveById(id);
+			answer.setName(name);
+			answer = reponseDAO.update(answer);
+		}
+		else {
+			answer = reponseDAO.create(new ReponseNode(name));
+		}
+		if (besoinDAO.exists(idNeed)) {
+			Besoin need = besoinDAO.retrieveById(idNeed);
+			need.addAnswer(answer);
+			besoinDAO.update(need);
+			reponseDAO.update(answer);
+		}
+		return answer;
 	}
 }

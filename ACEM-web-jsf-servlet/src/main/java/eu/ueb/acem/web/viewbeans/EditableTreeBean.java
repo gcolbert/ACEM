@@ -49,9 +49,9 @@ public class EditableTreeBean implements Serializable {
 
     public EditableTreeBean() {
     	// For some reason, the root of the tree is not visible
-        root = new DefaultTreeNode(new Menu(null, "Root"), null);
+        root = new DefaultTreeNode(new Menu(null, "Root", null), null);
 		// Therefore, we add a visible root so that it is possible to right click and add children nodes
-        visibleRoot = new DefaultTreeNode(new Menu(null, "Default visible root"), root);
+        visibleRoot = new DefaultTreeNode(new Menu(null, "Default visible root", null), root);
     }
 
     public TreeNode getRoot() {
@@ -70,8 +70,8 @@ public class EditableTreeBean implements Serializable {
 		this.root = root;
 	}
 
-	public TreeNode addChild(TreeNode parent, Long id, String label) {
-    	TreeNode child = new DefaultTreeNode(new Menu(id, label), parent);
+	public TreeNode addChild(TreeNode parent, Long id, String label, String concept) {
+    	TreeNode child = new DefaultTreeNode(new Menu(id, label, concept), parent);
     	parent.setExpanded(true);
     	return child;
     }
@@ -83,10 +83,13 @@ public class EditableTreeBean implements Serializable {
 		private Long id = null;
 
         private String label;
+        
+        private String concept;
 
-        public Menu(Long id, String label) {
+        public Menu(Long id, String label, String concept) {
         	this.id = id;
             this.label = label;
+            this.concept = concept;
         }
 
         public Long getId() {
@@ -105,10 +108,19 @@ public class EditableTreeBean implements Serializable {
             this.label = label;
         }
 
+		public String getConcept() {
+			return concept;
+		}
+		
+		public void setConcept(String concept) {
+			this.concept = concept;
+		}
+        
         @Override
         public String toString() {
-        	return "Menu{ id=" + id + ", label=" + label + " }";
+        	return "Menu{ id=" + id + ", label=" + label + ", concept=" + concept + " }";
         }
+
     }
 
 }

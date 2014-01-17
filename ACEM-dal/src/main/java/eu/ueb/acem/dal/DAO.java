@@ -25,11 +25,13 @@ import java.util.Set;
  *
  */
 public interface DAO<E> {
+
+	public Boolean exists(Long id);
 	
 	public E create(E entity);
-	
+
 	public E retrieveById(Long id);
-	
+
 	public E retrieveByName(String name);
 
 	public Set<E> retrieveAll();

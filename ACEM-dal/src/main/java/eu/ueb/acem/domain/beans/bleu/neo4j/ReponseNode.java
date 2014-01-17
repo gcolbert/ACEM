@@ -49,14 +49,14 @@ public class ReponseNode implements Reponse {
 	@Indexed(indexName = "indexReponse") private String name;
 	
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourReponse", direction = INCOMING)
-	private Set<Besoin> besoins;
+	private Set<Besoin> needs;
 	
 	@RelatedTo(elementClass = RessourceNode.class, type = "referenceRessource", direction = OUTGOING)
-	private Set<Ressource> ressources;
+	private Set<Ressource> resources;
 
     public ReponseNode()  {
-    	besoins = new HashSet<Besoin>();
-    	ressources = new HashSet<Ressource>();
+    	needs = new HashSet<Besoin>();
+    	resources = new HashSet<Ressource>();
     }
 
     public ReponseNode(String name) {
@@ -84,33 +84,33 @@ public class ReponseNode implements Reponse {
 	}
 
     @Override
-	public Collection<Besoin> getBesoins() {
-		return besoins;
+	public Collection<Besoin> getNeeds() {
+		return needs;
 	}
     
     @Override
-	public Collection<Ressource> getRessources() {
-		return ressources;
+	public Collection<Ressource> getResources() {
+		return resources;
 	}
 
     @Override
-    public void addBesoin(Besoin besoin) {
-    	besoins.add(besoin);
+    public void addNeed(Besoin need) {
+    	needs.add(need);
     }
 
     @Override
-    public void removeBesoin(Besoin besoin) {
-    	besoins.remove(besoin);
+    public void removeNeed(Besoin need) {
+    	needs.remove(need);
     }
     
 	@Override
-	public void addRessource(Ressource ressource) {
-		ressources.add(ressource);
+	public void addResource(Ressource resource) {
+		resources.add(resource);
 	}
 
     @Override
-    public void removeRessource(Ressource ressource) {
-    	besoins.remove(ressource);
+    public void removeResource(Ressource resource) {
+    	needs.remove(resource);
     }
 	
 }

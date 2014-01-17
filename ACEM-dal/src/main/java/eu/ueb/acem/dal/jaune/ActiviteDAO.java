@@ -51,6 +51,11 @@ public class ActiviteDAO implements DAO<Activite> {
 	public ActiviteDAO() {
 		
 	}
+
+	@Override
+	public Boolean exists(Long id) {
+		return repository.exists(id);
+	}
 	
 	@Override
 	public Activite create(Activite activite) {

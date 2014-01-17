@@ -53,6 +53,11 @@ public class ReponseDAO implements DAO<Reponse> {
 	public ReponseDAO() {
 		
 	}
+
+	@Override
+	public Boolean exists(Long id) {
+		return repository.exists(id);
+	}
 	
 	@Override
 	public Reponse create(Reponse reponse) {
@@ -81,9 +86,9 @@ public class ReponseDAO implements DAO<Reponse> {
 		}
 		return set;
 	}
-	
-	public Set<Besoin> retrieveNeedsOf(Reponse reponse) {
-		Set<BesoinNode> nodes = repository.findNeedsOf(reponse.getName());
+
+	public Set<Besoin> retrieveNeedsFor(Reponse reponse) {
+		Set<BesoinNode> nodes = repository.findNeedsFor(reponse.getId());
 		Set<Besoin> needs = new HashSet<Besoin>();
 		for (BesoinNode node : nodes) {
 			needs.add(node);

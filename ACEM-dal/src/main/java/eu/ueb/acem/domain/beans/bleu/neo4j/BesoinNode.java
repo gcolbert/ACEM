@@ -51,7 +51,7 @@ public class BesoinNode implements Besoin {
 
 	@GraphId private Long id;
 	
-	@Indexed(indexName = "indexBesoin") private String name;
+	@Indexed(indexName = "indexOfNeeds") private String name;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinParent", direction = OUTGOING)
 	private Set<Besoin> parents;
@@ -60,17 +60,17 @@ public class BesoinNode implements Besoin {
 	private Set<Besoin> children;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "aPourReponse", direction = OUTGOING)
-	private Set<Reponse> reponses;
+	private Set<Reponse> answers;
 
     public BesoinNode() {
     	parents = new HashSet<Besoin>();
     	children = new HashSet<Besoin>();
-    	reponses = new HashSet<Reponse>();
+    	answers = new HashSet<Reponse>();
     }
 
-    public BesoinNode(String nom) {
+    public BesoinNode(String name) {
     	this();
-    	setName(nom);
+    	setName(name);
     }
 
     @Override
@@ -88,8 +88,8 @@ public class BesoinNode implements Besoin {
     }
 
     @Override
-    public void setName(String nom) {
-    	this.name = nom;
+    public void setName(String name) {
+    	this.name = name;
     }
 
 	@Override
@@ -106,21 +106,21 @@ public class BesoinNode implements Besoin {
 	@Override
 	@Transactional
 	public void addParent(Besoin parent) {
-		parents.add(parent);
-	   	if (! parent.getChildren().contains(this)) {
-	   		logger.info("'{}'.addParent('{}') : this node doesn't already have a reference to this parent, we add it", this.getName(), parent.getName());
-	   		parent.addChild(this);
-	   	}
-	   	else {
-	   		logger.info("'{}'.addParent('{}') : this node already has a reference to this parent, we don't add it", this.getName(), parent.getName());
-	   	}
+		if (parent != null) {
+			if (! parents.contains(parent)) {
+				parents.add(parent);
+			}
+		   	if (! parent.getChildren().contains(this)) {
+		   		parent.addChild(this);
+		   	}
+		}
 	}
 
 	@Override
 	@Transactional
-	public void removeParent(Besoin besoin) {
-		parents.remove(besoin);
-		besoin.removeChild(this);
+	public void removeParent(Besoin need) {
+		parents.remove(need);
+		need.removeChild(this);
 	}
 
 	@Override
@@ -136,46 +136,55 @@ public class BesoinNode implements Besoin {
 
     @Override
 	@Transactional
-	public void addChild(Besoin besoin) {
-	   	children.add(besoin);
-	   	if (! besoin.getParents().contains(this)) {
-	   		logger.info("'{}'.addChild('{}') : the child doesn't have a reference to this parent, we add it", this.getName(), besoin.getName());
-	   		besoin.addParent(this);
-	   	}
-	   	else {
-	   		logger.info("'{}'.addChild('{}') : the child already has a reference to this parent, we don't add it", this.getName(), besoin.getName());
+	public void addChild(Besoin need) {
+	   	if (need != null) {
+	   		if (! children.contains(need)) {
+			   	children.add(need);
+	   		}
+		   	if (! need.getParents().contains(this)) {
+		   		need.addParent(this);
+		   	}
 	   	}
 	}
 
 	@Override
 	@Transactional
-	public void removeChild(Besoin besoin) {
-		children.remove(besoin);
-		besoin.removeParent(this);
+	public void removeChild(Besoin need) {
+		children.remove(need);
+		need.removeParent(this);
 	}
 
 	@Override
-    public Set<Reponse> getReponses() {
-    	return reponses;
+    public Set<Reponse> getAnswers() {
+    	return answers;
     }
 
 	@Override
 	@Transactional
-	public void setReponses(Set<Reponse> reponses) {
-		this.reponses = reponses;
+	public void setAnswers(Set<Reponse> answers) {
+		this.answers = answers;
 	}
     
 	@Override
 	@Transactional
-	public void addReponse(Reponse reponse) {
-		reponses.add(reponse);
-		reponse.addBesoin(this);
+	public void addAnswer(Reponse answer) {
+		if (answer != null) {
+			if (! answers.contains(answer)) {
+				answers.add(answer);
+			}
+		   	if (! answer.getNeeds().contains(this)) {
+				answer.addNeed(this);
+		   	}
+		}
 	}
 
 	@Override
 	@Transactional
-	public void removeReponse(Reponse reponse) {
-	   	reponses.remove(reponse);
+	public void removeAnswer(Reponse answer) {
+		if (answer != null) {
+			answers.remove(answer);
+			answer.removeNeed(this);
+		}
 	}
 
 	@Override

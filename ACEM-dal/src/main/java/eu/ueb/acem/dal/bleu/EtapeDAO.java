@@ -51,6 +51,11 @@ public class EtapeDAO implements DAO<Etape>{
 	public EtapeDAO() {
 		
 	}
+
+	@Override
+	public Boolean exists(Long id) {
+		return repository.exists(id);
+	}
 	
 	@Override
 	public Etape create(Etape etape) {

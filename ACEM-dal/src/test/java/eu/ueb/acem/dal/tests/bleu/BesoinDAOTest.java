@@ -156,10 +156,10 @@ public class BesoinDAOTest extends TestCase {
 	@SuppressWarnings("unused")
 	public final void t05_TestBesoinDAORetrieveAll() {
 		Besoin need1 = besoinDAO.create(new BesoinNode("t05 need 1"));
-		Besoin besoin11 = besoinDAO.create(new BesoinNode("t05 need 1.1"));
-		need1.addChild(besoin11);
+		Besoin need11 = besoinDAO.create(new BesoinNode("t05 need 1.1"));
+		need1.addChild(need11);
 		need1 = besoinDAO.update(need1);
-		besoin11 = besoinDAO.update(besoin11);
+		need11 = besoinDAO.update(need11);
 		
 		Besoin need12 = besoinDAO.create(new BesoinNode("t05 need 1.2"));
 		need1.addChild(need12);

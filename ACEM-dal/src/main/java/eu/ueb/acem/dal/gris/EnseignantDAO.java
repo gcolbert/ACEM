@@ -51,6 +51,11 @@ public class EnseignantDAO implements DAO<Enseignant> {
 	public EnseignantDAO() {
 		
 	}
+
+	@Override
+	public Boolean exists(Long id) {
+		return repository.exists(id);
+	}
 	
 	@Override
 	public Enseignant create(Enseignant enseignant) {

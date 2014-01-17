@@ -51,6 +51,11 @@ public class ScenarioDAO implements DAO<Scenario>{
 	public ScenarioDAO() {
 		
 	}
+
+	@Override
+	public Boolean exists(Long id) {
+		return repository.exists(id);
+	}
 	
 	@Override
 	public Scenario create(Scenario scenario) {

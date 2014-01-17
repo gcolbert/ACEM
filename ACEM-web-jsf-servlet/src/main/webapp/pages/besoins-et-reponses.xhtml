@@ -21,16 +21,12 @@
 						icon="ui-icon-plus" />
 					<p:menuitem value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
 						update="treeSingle :formTree:messages"
-						action="#{needsAndAnswersTreeController.associateAnswerToSelectedNode}"
+						action="#{needsAndAnswersTreeController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
 						update="treeSingle :formTree:messages"
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
 						icon="ui-icon-minus" />
-					<p:menuitem value="Toggle inplace"
-						update="treeSingle :formTree:messages"
-						onclick="inplace.toggle()"/>
-					<p:menuitem onclick="inplace.show()" value="Show" />
 				</p:contextMenu>
 				<p:tree id="treeSingle" orientation="vertical" dynamic="true"
 					cache="true" value="#{needsAndAnswersTreeController.treeRoot}"
@@ -40,12 +36,14 @@
 					<p:ajax event="dragdrop"
 						listener="#{needsAndAnswersTreeController.onDragDrop}"
 						update="treeSingle :formTree:messages" />
+					<!-- 
 					<p:ajax event="expand"
 						listener="#{needsAndAnswersTreeController.onNodeExpand}"
 						update="treeSingle :formTree:messages" />
 					<p:ajax event="collapse"
 						listener="#{needsAndAnswersTreeController.onNodeCollapse}"
 						update="treeSingle :formTree:messages" />
+					 -->
 					<!-- 
 					<p:ajax event="select"
 						listener="#{needsAndAnswersTreeController.onNodeSelect}"

@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -39,24 +38,27 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.bleu.Besoin;
+import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.Menu;
 
 /**
  * @author gcolbert @since 2013-11-20
- *
+ * 
  */
 @Controller("needsAndAnswersTreeController")
 @Scope("view")
-public class NeedsAndAnswersTreeController extends AbstractContextAwareController {
+public class NeedsAndAnswersTreeController extends
+		AbstractContextAwareController {
 
 	private static final long serialVersionUID = 3305497053688875560L;
 
 	/**
 	 * For Logging.
 	 */
-	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeController.class);
+	private final static Logger logger = LoggerFactory
+			.getLogger(NeedsAndAnswersTreeController.class);
 
 	@Autowired
 	private NeedsAndAnswersService needsAndAnswersService;
@@ -65,8 +67,6 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	private EditableTreeBean editableTreeBean;
 
 	private TreeNode selectedNode;
-	
-	private TreeNode expandedNode;
 
 	public NeedsAndAnswersTreeController() {
 	}
@@ -74,10 +74,10 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	@PostConstruct
 	public void initTree() {
 		logger.info("entering initTree");
-		//editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
+		// editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
 		editableTreeBean.setVisibleRootLabel("Besoins");
-		Set<Besoin> needs = needsAndAnswersService.getNeedsWithParent(null);
-		logger.info("[NeedsAndAnswersTreeController.initTree] Fetched {} pedagogical needs at root of tree.", needs.size());
+		Set<Besoin> needs = needsAndAnswersService.getChildrenNeedsOf(null);
+		logger.info("Found {} needs at root of tree.", needs.size());
 		for (Besoin need : needs) {
 			logger.info("need = {}", need.getName());
 			createTree(need, editableTreeBean.getVisibleRoot());
@@ -90,54 +90,59 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	/**
 	 * Recursive function to construct Tree
 	 */
-	public void createTree(Besoin besoin, TreeNode rootNode) {
-		TreeNode newNode = new DefaultTreeNode(new Menu(besoin.getId(), besoin.getName()), rootNode);
-		Set<Besoin> childrenNodes = needsAndAnswersService.getNeedsWithParent(besoin);
-		for (Besoin besoinChild : childrenNodes) {
-			createTree(besoinChild, newNode);
+	private void createTree(Besoin need, TreeNode rootNode) {
+		// We create the root node
+		TreeNode newNode = new DefaultTreeNode(new Menu(need.getId(), need.getName(), "Need"), rootNode);
+		// We look for children and recursively create them too
+		Set<Besoin> childrenNodes = needsAndAnswersService.getChildrenNeedsOf(need);
+		if (childrenNodes.size() > 0) {
+			for (Besoin besoinChild : childrenNodes) {
+				createTree(besoinChild, newNode);
+			}
 		}
-	}
-
-	public EditableTreeBean getTreeBean() {
-		return editableTreeBean;
+		// We look for answers only if "need" doesn't have any child
+		// NOTE : this is a business-level constraint, technically there should
+		// no problem with displaying Needs and Answers for the same need.
+		else {
+			Set<Reponse> answers = needsAndAnswersService.getAnswers(need);
+			need.setAnswers(answers);
+			for (Reponse answer : answers) {
+				new DefaultTreeNode(new Menu(answer.getId(), answer.getName(), "Answer"), newNode);
+			}
+		}
 	}
 
 	public TreeNode getTreeRoot() {
 		return editableTreeBean.getRoot();
 	}
 
-	public TreeNode getSelectedNode() {  
-		return selectedNode;  
+	public TreeNode getSelectedNode() {
+		return selectedNode;
 	}
 
 	public void setSelectedNode(TreeNode selectedNode) {
 		this.selectedNode = selectedNode;
 	}
 
-	public void setExpandedNode(TreeNode expandedNode) {
-		logger.info("entering setExpandedNode({})", expandedNode);
-		/*
-		if (this.expandedNode != null) {
-			this.expandedNode.setExpanded(! this.expandedNode.isExpanded());
-			if (this.expandedNode != expandedNode) {
-				if (! this.expandedNode.getChildren().contains(expandedNode)) {
-					// We recursively collapse the children of this.expandedNode
-					collapseChildrenOf(this.expandedNode);
-					// We collapse the currently selected node itself
-					this.expandedNode.setExpanded(false);
-				}
-			}
-			else {
-				this.expandedNode.setExpanded(! this.expandedNode.isExpanded());
-			}
+	/*-
+	public void onNodeSelect(NodeSelectEvent event) {
+		logger.info("onNodeSelect");
+		FacesMessage message = null;
+		if (selectedNode != null) {
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Was selected", selectedNode.toString());
+			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
-		*/
-		this.expandedNode = expandedNode;
-		logger.info("leaving setExpandedNode({})", expandedNode);
-		logger.info("------");
+		setSelectedNode(event.getTreeNode());
+		if (selectedNode != null) {
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Is now selected", selectedNode.toString());
+			FacesContext.getCurrentInstance().addMessage(null, message);
+		}
 	}
+	*/
 
-	/*
+	/*-
 	public void setSelectedNode(TreeNode selectedNode) {
 		logger.info("entering setSelectedNode({})", selectedNode);
 		if (this.selectedNode != null) {
@@ -184,91 +189,109 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		logger.info("leaving setSelectedNode({})", selectedNode);
 		logger.info("------");
 	}
-	*/
-
-	public void onNodeSelect(NodeSelectEvent event) {
-		logger.info("onNodeSelect");
-		FacesMessage message = null;
-		if (selectedNode != null) {
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Was selected", selectedNode.toString());
-			FacesContext.getCurrentInstance().addMessage(null, message);      	
-		}
-		setSelectedNode(event.getTreeNode());
-		if (selectedNode != null) {
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Is now selected", selectedNode.toString());
-			FacesContext.getCurrentInstance().addMessage(null, message);      	
-		}
-	}
-
-	public void onNodeExpand(NodeExpandEvent event) {
-		logger.info("onNodeExpand");
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Expanded",
-				((Menu) event.getTreeNode().getData()).toString());
+	 */
+	
+	public void onDragDrop(TreeDragDropEvent event) {
+		TreeNode dragNode = event.getDragNode();
+		TreeNode dropNode = event.getDropNode();
+		int dropIndex = event.getDropIndex();
+	
+		needsAndAnswersService.changeParentOfNeed(
+				((Menu) dragNode.getData()).getId(),
+				((Menu) dropNode.getData()).getId());
+	
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				"Dragged " + dragNode.getData(), "Dropped on "
+						+ dropNode.getData() + " at " + dropIndex);
 		FacesContext.getCurrentInstance().addMessage(null, message);
-		// TODO : replace this "true" with "if user is not admin"
-		if (true) {
-			setExpandedNode(event.getTreeNode());
+	}
+
+	private void collapseChildrenOf(TreeNode node) {
+		logger.info("entering collapseChildrenOf, node={}", (Menu)node.getData());
+		for (TreeNode child : node.getChildren()) {
+			child.setExpanded(false);
+			if (!child.isLeaf()) {
+				collapseChildrenOf(child);
+			}
 		}
+		logger.info("leaving collapseChildrenOf, node={}", (Menu)node.getData());
 	}
 
-	public void onNodeCollapse(NodeCollapseEvent event) {
-		logger.info("onNodeCollapse");
-	}
-
-	public void displaySelectedSingle() {  
-		if(selectedNode != null) {  
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", selectedNode.getData().toString());
+	public void displaySelectedSingle() {
+		if (selectedNode != null) {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Selected", selectedNode.getData().toString());
 			FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 	}
 
-	private void collapseChildrenOf(TreeNode node) {
-		logger.info("entering collapseChildrenOf, node={}", node.getData().toString());
-		for (TreeNode child : node.getChildren()) {
-			child.setExpanded(false);
-			if (! child.isLeaf()) {
-				collapseChildrenOf(child);
-			}
-		}
-		logger.info("leaving collapseChildrenOf, node={}", node.getData().toString());
-	}
-
-	public void addChildToSelectedNode() {
-		logger.info("entering addChildToSelectedNode, selectedNode={}", selectedNode.getData().toString());
+	public void associateNeedWithSelectedNode() {
+		logger.info("entering addChildToSelectedNode, selectedNode={}",
+				(Menu)selectedNode.getData());
 		collapseChildrenOf(selectedNode);
-		TreeNode newNode = editableTreeBean.addChild(selectedNode, null, getString("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL"));
+		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
+				getString("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL"),
+				"Need");
 		setSelectedNode(newNode);
 		saveSelectedNode();
-		logger.info("leaving addChildToSelectedNode, selectedNode={}", selectedNode.getData().toString());
+		logger.info("leaving addChildToSelectedNode, selectedNode={}",
+				 (Menu)selectedNode.getData());
 		logger.info("------");
 	}
 
-	public void associateAnswerToSelectedNode() {
-		logger.info("entering associateAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
-
-		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}", selectedNode.getData().toString());
+	public void associateAnswerWithSelectedNode() {
+		logger.info("entering associateAnswerToSelectedNode, selectedNode={}",
+				(Menu)selectedNode.getData());
+		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
+				getString("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL"),
+				"Answer");
+		setSelectedNode(newNode);
+		saveSelectedNode();
+		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}",
+				(Menu)selectedNode.getData());
 		logger.info("------");
 	}
 
 	public void saveSelectedNode() {
 		if (selectedNode != null) {
-			logger.info("entering saveSelectedNode, selectedNode={}", selectedNode.getData().toString());
-			// Si selectedNode est un Besoin
-			Besoin savedBesoin;
-			if ((selectedNode.getParent() != null) && (selectedNode.getParent().getData() != null)) {
-				savedBesoin = needsAndAnswersService.createOrUpdateNeed(((Menu)selectedNode.getData()).getId(),
-						((Menu) selectedNode.getData()).getLabel(),
-						((Menu) selectedNode.getParent().getData()).getId());
+			logger.info("entering saveSelectedNode, selectedNode={}",
+					(Menu)selectedNode.getData());
+			switch (((Menu) selectedNode.getData()).getConcept()) {
+				case "Need" :
+					Besoin savedNeed;
+					if ((selectedNode.getParent() != null)
+							&& (selectedNode.getParent().getData() != null)) {
+						savedNeed = needsAndAnswersService.createOrUpdateNeed(
+								((Menu) selectedNode.getData()).getId(),
+								((Menu) selectedNode.getData()).getLabel(),
+								((Menu) selectedNode.getParent().getData()).getId());
+					}
+					else {
+						savedNeed = needsAndAnswersService.createOrUpdateNeed(
+								((Menu) selectedNode.getData()).getId(),
+								((Menu) selectedNode.getData()).getLabel(), null);
+					}
+					((Menu) selectedNode.getData()).setId(savedNeed.getId());
+				break;
+				case "Answer" :
+					Reponse savedAnswer;
+					if (((Menu) selectedNode.getParent().getData()).getConcept() == "Need") {
+						savedAnswer = needsAndAnswersService.createOrUpdateAnswer(
+								((Menu) selectedNode.getData()).getId(),
+								((Menu) selectedNode.getData()).getLabel(),
+								((Menu) selectedNode.getParent().getData()).getId());
+						((Menu) selectedNode.getData()).setId(savedAnswer.getId());
+					}
+					else {
+						logger.info("Cannot save selectedNode as Answer : parent node is not a Need");
+					}
+				break;
+				default:
+					logger.info("selectedNode has an unknown concept value: {}",
+							((Menu) selectedNode.getData()).getConcept());
+				break;
 			}
-			else {
-				savedBesoin = needsAndAnswersService.createOrUpdateNeed(((Menu)selectedNode.getData()).getId(),
-						((Menu) selectedNode.getData()).getLabel(),
-						null);
-			}
-			((Menu)selectedNode.getData()).setId(savedBesoin.getId());
-			// TODO sinon si selectedNode est une Reponse
-		}
-		else {
+		} else {
 			logger.info("entering saveSelectedNode, selectedNode=null, we do nothing.");
 		}
 		logger.info("leaving saveSelectedNode");
@@ -276,17 +299,19 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	}
 
 	public void deleteSelectedNode() {
-		logger.info("entering deleteSelectedNode, selectedNode={}", selectedNode.getData().toString());
+		logger.info("entering deleteSelectedNode, selectedNode={}",
+				(Menu)selectedNode.getData());
 		if (selectedNode != null) {
 			if (selectedNode.getChildCount() == 0) {
-				needsAndAnswersService.deleteNeed(((Menu) selectedNode.getData()).getId());
+				needsAndAnswersService.deleteNeed(((Menu) selectedNode
+						.getData()).getId());
 				selectedNode.getChildren().clear();
-				selectedNode.getParent().getChildren().remove(selectedNode);  
+				selectedNode.getParent().getChildren().remove(selectedNode);
 				selectedNode.setParent(null);
 				this.selectedNode = null;
-			}
-			else {
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+			} else {
+				FacesMessage message = new FacesMessage(
+						FacesMessage.SEVERITY_ERROR,
 						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE"),
 						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS"));
 				RequestContext.getCurrentInstance().update("messages");
@@ -297,16 +322,5 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		logger.info("leaving deleteSelectedNode");
 		logger.info("------");
 	}
-
-	public void onDragDrop(TreeDragDropEvent event) {
-		TreeNode dragNode = event.getDragNode();  
-		TreeNode dropNode = event.getDropNode();  
-		int dropIndex = event.getDropIndex();  
-
-		needsAndAnswersService.changeParentOfNeed(((Menu)dragNode.getData()).getId(),((Menu)dropNode.getData()).getId());
-
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Dragged " + dragNode.getData(), "Dropped on " + dropNode.getData() + " at " + dropIndex);  
-		FacesContext.getCurrentInstance().addMessage(null, message);  
-	}  
 
 }

@@ -39,10 +39,10 @@ public interface BesoinRepository extends GraphRepository<BesoinNode>, Relations
 	Set<BesoinNode> findRoots();
 
 	/*
-	@Query(value = "start need=node:indexBesoin(name={name}) match (n)-[:aPourBesoinParent]->(need) return n")
+	@Query(value = "start need=node:indexOfNeeds(name={name}) match (n)-[:aPourBesoinParent]->(need) return n")
 	Set<BesoinNode> findChildrenOf(@Param("name") String name);
 	
-	@Query(value = "start need=node:indexBesoin(name={name}) match (need)-[:aPourReponse]->(n) return n")
+	@Query(value = "start need=node:indexOfNeeds(name={name}) match (need)-[:aPourReponse]->(n) return n")
 	Set<ReponseNode> findAnswersOf(@Param("name") String name);
 	*/
 

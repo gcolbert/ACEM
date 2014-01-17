@@ -41,20 +41,20 @@ public interface Besoin extends Serializable {
 
     public void setChildren(Set<Besoin> children);
     
-    public Set<Reponse> getReponses();
+    public Set<Reponse> getAnswers();
 
-    public void setReponses(Set<Reponse> reponses);
+    public void setAnswers(Set<Reponse> reponses);
     
 	public void addParent(Besoin parent);
 
 	public void addChild(Besoin besoin);
     
-    public void addReponse(Reponse reponse);
+    public void addAnswer(Reponse reponse);
 
     public void removeParent(Besoin besoin);
     
 	public void removeChild(Besoin besoin);
 
-	public void removeReponse(Reponse reponse);
+	public void removeAnswer(Reponse reponse);
 
 }

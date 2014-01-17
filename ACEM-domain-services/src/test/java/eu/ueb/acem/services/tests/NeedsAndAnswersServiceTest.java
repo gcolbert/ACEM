@@ -77,7 +77,7 @@ public class NeedsAndAnswersServiceTest {
 		needsAndAnswersService.getBesoinDAO().create(need2);
 		needsAndAnswersService.getBesoinDAO().create(need3);
 
-		Set<Besoin> rootNeeds = needsAndAnswersService.getNeedsWithParent(null);
+		Set<Besoin> rootNeeds = needsAndAnswersService.getChildrenNeedsOf(null);
 		assertEquals(3, rootNeeds.size());
 	}
 
@@ -101,10 +101,10 @@ public class NeedsAndAnswersServiceTest {
 		needsAndAnswersService.getBesoinDAO().update(need11);
 		needsAndAnswersService.getBesoinDAO().update(need111);
 
-		Set<Besoin> childrenOfNeed1 = needsAndAnswersService.getNeedsWithParent(need1);
+		Set<Besoin> childrenOfNeed1 = needsAndAnswersService.getChildrenNeedsOf(need1);
 		assertEquals(new Long(1), new Long(childrenOfNeed1.size()));
 
-		Set<Besoin> childrenOfNeed11 = needsAndAnswersService.getNeedsWithParent(need11);
+		Set<Besoin> childrenOfNeed11 = needsAndAnswersService.getChildrenNeedsOf(need11);
 		assertEquals(new Long(1), new Long(childrenOfNeed11.size()));
 
 		Besoin need12 = new BesoinNode("t02 need 1.2");

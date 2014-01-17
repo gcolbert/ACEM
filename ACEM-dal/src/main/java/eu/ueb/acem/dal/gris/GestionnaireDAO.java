@@ -51,6 +51,11 @@ public class GestionnaireDAO implements DAO<Gestionnaire> {
 	public GestionnaireDAO() {
 		
 	}
+
+	@Override
+	public Boolean exists(Long id) {
+		return repository.exists(id);
+	}
 	
 	@Override
 	public Gestionnaire create(Gestionnaire gestionnaire) {
