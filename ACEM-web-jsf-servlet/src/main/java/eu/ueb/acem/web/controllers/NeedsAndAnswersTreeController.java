@@ -25,9 +25,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.NodeCollapseEvent;
-import org.primefaces.event.NodeExpandEvent;
-import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;

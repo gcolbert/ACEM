@@ -67,14 +67,22 @@ Configuring Eclipse
 Building the project using Maven
 --------------------------------
 
+* From the shell :
+
 - cd ~/ACEM-project/workspace-ACEM/ACEM
 
 - mvn clean install
 
 Note : you can skip tests with "mvn clean install -DskipTests"
 
-Running the server using Maven
-------------------------------
+* From Eclipse :
+
+- Right-click on ACEM project and do Run As / Maven install
+
+Running the server using Maven and Jetty
+----------------------------------------
+
+* From the shell :
 
 - cd ACEM-web-jsf-servlet
 
@@ -83,3 +91,22 @@ Running the server using Maven
 Wait for "[INFO] Started Jetty Server"
 
 - Point your browser to http://localhost:8080
+
+Running the server using Eclipse and Tomcat
+-------------------------------------------
+
+- Download and install latest Tomcat from http://tomcat.apache.org
+
+- Go to Eclipse, click the Servers tab, and click the link to add a new server
+
+- Choose the directory where you extracted Tomcat's distribution archive
+
+- Once the server is installed, double-click on it and choose :
+"Use Tomcat installation (takes control of Tomcat installation"
+in the "Server Locations" panel. Change the deploy-path from "wtpwebapps"
+to "webapps". Save the file.
+
+- Now right-click on the server add choose "Add and remove".
+Add the ACEM-web-jsf-servlet project to Tomcat.
+
+- Make sure that Neo4j is running or the application won't start. Click the start icon.
