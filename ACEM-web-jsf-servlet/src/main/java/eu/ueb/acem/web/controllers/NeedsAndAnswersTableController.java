@@ -40,6 +40,7 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 	/**
 	 * For Logging.
 	 */
+	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTableController.class);
 
 	@Autowired
