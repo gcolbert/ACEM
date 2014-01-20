@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -89,7 +90,7 @@ public class NeedsAndAnswersTreeController extends
 	 */
 	private void createTree(Besoin need, TreeNode rootNode) {
 		// We create the root node
-		TreeNode newNode = new DefaultTreeNode(new Menu(need.getId(), need.getName(), "Need"), rootNode);
+		TreeNode newNode = new DefaultTreeNode("Need", new Menu(need.getId(), need.getName(), "Need"), rootNode);
 		// We look for children and recursively create them too
 		Set<Besoin> childrenNodes = needsAndAnswersService.getChildrenNeedsOf(need);
 		if (childrenNodes.size() > 0) {
@@ -104,7 +105,7 @@ public class NeedsAndAnswersTreeController extends
 			Set<Reponse> answers = needsAndAnswersService.getAnswers(need);
 			need.setAnswers(answers);
 			for (Reponse answer : answers) {
-				new DefaultTreeNode(new Menu(answer.getId(), answer.getName(), "Answer"), newNode);
+				new DefaultTreeNode("Answer", new Menu(answer.getId(), answer.getName(), "Answer"), newNode);
 			}
 		}
 	}
@@ -187,7 +188,7 @@ public class NeedsAndAnswersTreeController extends
 							((Menu) selectedNode.getData()).getLabel(),
 							((Menu) selectedNode.getParent().getData()).getId());
 					((Menu) selectedNode.getData()).setId(savedNeed.getId());
-					expandOnlyOneNode(selectedNode);
+					setSelectedNode(selectedNode);
 				break;
 				case "Answer" :
 					Reponse savedAnswer;
@@ -197,7 +198,7 @@ public class NeedsAndAnswersTreeController extends
 								((Menu) selectedNode.getData()).getLabel(),
 								((Menu) selectedNode.getParent().getData()).getId());
 						((Menu) selectedNode.getData()).setId(savedAnswer.getId());
-						expandOnlyOneNode(selectedNode);
+						setSelectedNode(selectedNode);
 					}
 					else {
 						logger.info("Cannot save selectedNode as Answer : parent node is not a Need");
@@ -240,6 +241,45 @@ public class NeedsAndAnswersTreeController extends
 		logger.info("------");
 	}
 
+	public Boolean getRenderAssociateNeedEntry() {
+		Boolean render = false;
+		/*
+		if (selectedNode.getChildCount() == 0) {
+			render = true;
+		}
+		else {
+			// If the first child is a Need, then all children must be Needs, too,
+			// so we allow the rendering of the "Associate Need" menu entry
+			if (((Menu) selectedNode.getChildren().get(0).getData()).getConcept() == "Need") {
+				render = true;
+			}
+		}
+		*/
+		return render;
+	}
+
+	public Boolean getRenderAssociateAnswerEntry() {
+		Boolean render = false;
+		/*
+		if (((Menu) selectedNode.getData()).getConcept() == "Need") {
+			if (selectedNode.getChildCount() == 0) {
+				render = true;
+			}
+			else {
+				// If there is already a child and it is a need, then we don't render the "Associate Answer" menu entry
+				if (((Menu) selectedNode.getChildren().get(0).getData()).getConcept() == "Need") {
+					render = false;
+				}
+				// The child is not a Need, we render the "Associate Answer" menu entry
+				else {
+					render = true;
+				}
+			}
+		}
+		*/
+		return render;
+	}
+	
 	private void expandParentsOf(TreeNode node) {
 		TreeNode parent = node.getParent();
 		while (parent != null) {

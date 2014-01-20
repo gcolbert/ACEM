@@ -115,7 +115,11 @@ public class EditableTreeBean implements Serializable {
 		public void setConcept(String concept) {
 			this.concept = concept;
 		}
-        
+
+		public String getStyleClass() {
+			return getConcept();
+		}
+		
         @Override
         public String toString() {
         	return "Menu{ id=" + id + ", label=" + label + ", concept=" + concept + " }";

@@ -10,19 +10,31 @@
 		<p:panel header="#{msgs['NEEDS_AND_ANSWERS.TREE.HEADER']}">
 			<h:form id="formTree">
 				<p:growl id="messages" showDetail="true" />
-				<p:contextMenu id="contextMenu" for="treeSingle">
+				<p:contextMenu id="contextMenuForNeeds" for="treeSingle" nodeType="Need">
 					<p:menuitem value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update="treeSingle :formTree:messages"
 						action="#{needsAndAnswersTreeController.displaySelectedSingle}"
 						icon="ui-icon-search" />
-					<p:menuitem value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ADD_CHILD']}"
+					<p:menuitem value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 						update="treeSingle :formTree:messages"
 						action="#{needsAndAnswersTreeController.associateNeedWithSelectedNode}"
-						icon="ui-icon-plus" />
+						icon="ui-icon-plus"
+						rendered="#{needsAndAnswersTreeController.renderAssociateNeedEntry}" />
 					<p:menuitem value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
 						update="treeSingle :formTree:messages"
 						action="#{needsAndAnswersTreeController.associateAnswerWithSelectedNode}"
-						icon="ui-icon-plus" />
+						icon="ui-icon-plus"
+						rendered="#{needsAndAnswersTreeController.renderAssociateAnswerEntry}" />
+					<p:menuitem value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
+						update="treeSingle :formTree:messages"
+						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
+						icon="ui-icon-minus" />
+				</p:contextMenu>
+				<p:contextMenu id="contextMenuForAnswers" for="treeSingle" nodeType="Answer">
+					<p:menuitem value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
+						update="treeSingle :formTree:messages"
+						action="#{needsAndAnswersTreeController.displaySelectedSingle}"
+						icon="ui-icon-search" />
 					<p:menuitem value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
 						update="treeSingle :formTree:messages"
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
@@ -49,7 +61,27 @@
 						listener="#{needsAndAnswersTreeController.onNodeSelect}"
 						update="treeSingle :formTree:messages" />
 					 -->
-					<p:treeNode>
+					<p:treeNode styleClass="#{node.styleClass}" type="Need">
+						<p:inplace editor="true" event="dblclick" disabled="false">
+							<p:ajax event="save"
+								listener="#{needsAndAnswersTreeController.saveSelectedNode}"
+								update="treeSingle"
+								emptyLabel="#{msgs['NEEDS_AND_ANSWERS.TREE.EMPTY_LABEL']}" />
+							<p:ajax event="cancel" update="treeSingle"/>
+							<p:inputText value="#{node.label}" />
+						</p:inplace>
+					</p:treeNode>
+					<p:treeNode styleClass="#{node.styleClass}" type="Answer">
+						<p:inplace editor="true" event="dblclick" disabled="false">
+							<p:ajax event="save"
+								listener="#{needsAndAnswersTreeController.saveSelectedNode}"
+								update="treeSingle"
+								emptyLabel="#{msgs['NEEDS_AND_ANSWERS.TREE.EMPTY_LABEL']}" />
+							<p:ajax event="cancel" update="treeSingle"/>
+							<p:inputText value="#{node.label}" />
+						</p:inplace>
+					</p:treeNode>
+					<p:treeNode styleClass="#{node.styleClass}" type="default">
 						<p:inplace editor="true" event="dblclick" disabled="false">
 							<p:ajax event="save"
 								listener="#{needsAndAnswersTreeController.saveSelectedNode}"
