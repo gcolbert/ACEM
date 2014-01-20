@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -40,6 +41,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
  *
  */
 @NodeEntity
+@TypeAlias("Pedagogical_answer")
 public class ReponseNode implements Reponse {
 	
 	private static final long serialVersionUID = 3066979121350858816L;

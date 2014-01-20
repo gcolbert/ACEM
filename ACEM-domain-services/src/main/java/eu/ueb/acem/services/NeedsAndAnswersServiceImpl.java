@@ -83,16 +83,21 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		Besoin need = null;
 		if (besoinDAO.exists(id)) {
 			need = besoinDAO.retrieveById(id);
-			need.setName(name);
+			if (need.getName() != name) {
+				need.setName(name);
+				need = besoinDAO.update(need);
+			}
 		}
 		else {
 			need = besoinDAO.create(new BesoinNode(name));
 		}
 		if (besoinDAO.exists(idParent)) {
 			Besoin parent = besoinDAO.retrieveById(idParent);
-			need.addParent(parent);
-			need = besoinDAO.update(need);
-			parent = besoinDAO.update(parent);
+			if (! parent.getChildren().contains(need)) {
+				need.addParent(parent);
+				need = besoinDAO.update(need);
+				parent = besoinDAO.update(parent);
+			}
 		}
 		return need;
 	}

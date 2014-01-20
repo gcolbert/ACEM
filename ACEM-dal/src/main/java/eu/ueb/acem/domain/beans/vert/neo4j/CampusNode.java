@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.domain.beans.vert.neo4j;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -29,6 +30,7 @@ import eu.ueb.acem.domain.beans.vert.Campus;
  *
  */
 @NodeEntity
+@TypeAlias("Campus")
 public class CampusNode extends EspacePhysiqueNode implements Campus {
 
 	private static final long serialVersionUID = -7525107899854074242L;

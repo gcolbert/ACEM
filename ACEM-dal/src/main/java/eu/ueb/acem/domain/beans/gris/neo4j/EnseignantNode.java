@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.Collection;
 import java.util.Set;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -39,6 +40,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
  *
  */
 @NodeEntity
+@TypeAlias("Teacher")
 public class EnseignantNode extends PersonneNode implements Enseignant {
 
 	private static final long serialVersionUID = -3193454107919543890L;

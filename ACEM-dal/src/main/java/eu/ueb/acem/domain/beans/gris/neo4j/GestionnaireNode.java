@@ -22,6 +22,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Set;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -40,6 +41,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
  *
  */
 @NodeEntity
+@TypeAlias("Administrator")
 public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 
 	private static final long serialVersionUID = -3193454107919543890L;

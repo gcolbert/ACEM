@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -40,6 +41,7 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
  *
  */
 @NodeEntity
+@TypeAlias("Pedagogical_need")
 public class BesoinNode implements Besoin {
 	
 	private static final long serialVersionUID = -774562771501521566L;

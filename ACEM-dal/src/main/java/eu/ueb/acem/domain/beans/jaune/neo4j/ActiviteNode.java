@@ -19,6 +19,7 @@
 
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -30,6 +31,7 @@ import eu.ueb.acem.domain.beans.jaune.Activite;
  *
  */
 @NodeEntity
+@TypeAlias("Activity")
 public class ActiviteNode extends RessourceNode implements Activite {
 
 	private static final long serialVersionUID = 1012212357185877701L;

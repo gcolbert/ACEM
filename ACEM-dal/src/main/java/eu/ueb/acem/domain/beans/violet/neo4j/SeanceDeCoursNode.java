@@ -20,6 +20,7 @@ package eu.ueb.acem.domain.beans.violet.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -34,6 +35,7 @@ import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
  *
  */
 @NodeEntity
+@TypeAlias("Course")
 public class SeanceDeCoursNode implements SeanceDeCours {
 
 	private static final long serialVersionUID = -3903886807338724952L;

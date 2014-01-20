@@ -35,7 +35,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  */
 public interface BesoinRepository extends GraphRepository<BesoinNode>, RelationshipOperationsRepository<BesoinNode>, NamedIndexRepository<BesoinNode> {
 
-	@Query(value = "start n=node(*) where has(n.__type__) and not (n)-[:aPourBesoinParent]->() return n")
+	@Query(value = "start n=node(*) where has(n.__type__) and n.__type__ = 'Pedagogical_need' and not (n)-[:aPourBesoinParent]->() return n")
 	Set<BesoinNode> findRoots();
 
 	/*

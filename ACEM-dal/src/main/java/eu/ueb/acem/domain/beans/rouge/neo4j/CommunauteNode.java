@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.domain.beans.rouge.neo4j;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -29,6 +30,7 @@ import eu.ueb.acem.domain.beans.rouge.Communaute;
  *
  */
 @NodeEntity
+@TypeAlias("Community")
 public class CommunauteNode extends OrganisationNode implements Communaute {
 
 	private static final long serialVersionUID = 1861762804925897713L;

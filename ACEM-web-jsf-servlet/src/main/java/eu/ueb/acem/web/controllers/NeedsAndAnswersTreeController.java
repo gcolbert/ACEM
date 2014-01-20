@@ -118,6 +118,9 @@ public class NeedsAndAnswersTreeController extends
 	}
 
 	public void setSelectedNode(TreeNode selectedNode) {
+		if (this.selectedNode != null) {
+			this.selectedNode.setSelected(false);
+		}
 		this.selectedNode = selectedNode;
 	}
 
@@ -255,19 +258,10 @@ public class NeedsAndAnswersTreeController extends
 					(Menu)selectedNode.getData());
 			switch (((Menu) selectedNode.getData()).getConcept()) {
 				case "Need" :
-					Besoin savedNeed;
-					if ((selectedNode.getParent() != null)
-							&& (selectedNode.getParent().getData() != null)) {
-						savedNeed = needsAndAnswersService.createOrUpdateNeed(
-								((Menu) selectedNode.getData()).getId(),
-								((Menu) selectedNode.getData()).getLabel(),
-								((Menu) selectedNode.getParent().getData()).getId());
-					}
-					else {
-						savedNeed = needsAndAnswersService.createOrUpdateNeed(
-								((Menu) selectedNode.getData()).getId(),
-								((Menu) selectedNode.getData()).getLabel(), null);
-					}
+					Besoin savedNeed = needsAndAnswersService.createOrUpdateNeed(
+							((Menu) selectedNode.getData()).getId(),
+							((Menu) selectedNode.getData()).getLabel(),
+							((Menu) selectedNode.getParent().getData()).getId());
 					((Menu) selectedNode.getData()).setId(savedNeed.getId());
 				break;
 				case "Answer" :

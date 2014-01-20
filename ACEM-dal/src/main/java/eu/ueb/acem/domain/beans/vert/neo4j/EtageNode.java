@@ -20,6 +20,7 @@ package eu.ueb.acem.domain.beans.vert.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -33,6 +34,7 @@ import eu.ueb.acem.domain.beans.vert.Etage;
  *
  */
 @NodeEntity
+@TypeAlias("Floor")
 public class EtageNode extends EspacePhysiqueNode implements Etage {
 
 	private static final long serialVersionUID = -7525107899854074242L;

@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.domain.beans.violet.neo4j;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -29,6 +30,7 @@ import eu.ueb.acem.domain.beans.violet.Diplome;
  *
  */
 @NodeEntity
+@TypeAlias("Diploma")
 public class DiplomeNode implements Diplome {
 
 	private static final long serialVersionUID = 3007792198756655816L;

@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -29,6 +30,7 @@ import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
  *
  */
 @NodeEntity
+@TypeAlias("Use_terms")
 public class ModaliteUtilisationNode implements ModaliteUtilisation {
 
 	private static final long serialVersionUID = 465146117417875133L;

@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.Collection;
 import java.util.Set;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -37,6 +38,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
  *
  */
 @NodeEntity
+@TypeAlias("Scenario")
 public class ScenarioNode implements Scenario {
 
 	private static final long serialVersionUID = -5248471016348742765L;

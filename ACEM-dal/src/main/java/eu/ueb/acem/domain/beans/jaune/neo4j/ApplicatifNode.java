@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -29,6 +30,7 @@ import eu.ueb.acem.domain.beans.jaune.Applicatif;
  *
  */
 @NodeEntity
+@TypeAlias("Software")
 public class ApplicatifNode extends RessourceNode implements Applicatif {
 
 	private static final long serialVersionUID = 7058882707584224446L;
