@@ -120,77 +120,11 @@ public class NeedsAndAnswersTreeController extends
 	public void setSelectedNode(TreeNode selectedNode) {
 		if (this.selectedNode != null) {
 			this.selectedNode.setSelected(false);
+			expandOnlyOneNode(selectedNode);
 		}
 		this.selectedNode = selectedNode;
 	}
 
-	/*-
-	public void onNodeSelect(NodeSelectEvent event) {
-		logger.info("onNodeSelect");
-		FacesMessage message = null;
-		if (selectedNode != null) {
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-					"Was selected", selectedNode.toString());
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-		setSelectedNode(event.getTreeNode());
-		if (selectedNode != null) {
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-					"Is now selected", selectedNode.toString());
-			FacesContext.getCurrentInstance().addMessage(null, message);
-		}
-	}
-	*/
-
-	/*-
-	public void setSelectedNode(TreeNode selectedNode) {
-		logger.info("entering setSelectedNode({})", selectedNode);
-		if (this.selectedNode != null) {
-			if (this.selectedNode != selectedNode) {
-				if (this.selectedNode.isSelected()) {
-					this.selectedNode.setSelected(false);
-				}
-				if (! this.selectedNode.getChildren().contains(selectedNode)) {
-					// We recursively collapse the children of this.selectedNode
-					collapseChildrenOf(this.selectedNode);
-					// We collapse the currently selected node itself
-					this.selectedNode.setExpanded(false);
-					// We collect in a Set the parents of the newly selected node
-					Set<TreeNode> selectedNodeParents = new HashSet<TreeNode>();
-					TreeNode selectedNodeParent = selectedNode.getParent();
-					while (selectedNodeParent != null) {
-						selectedNodeParents.add(selectedNodeParent);
-						selectedNodeParent = selectedNodeParent.getParent();
-					}
-					// We collapse all of this.selectedNode parents, until we find the grand-parent
-					// that has the currently selected node and the newly selected node as grand-children
-					TreeNode currentParent = this.selectedNode.getParent();
-					while ((currentParent != null)
-							&& (! selectedNodeParents.contains(currentParent))) {
-						currentParent.setExpanded(false);
-						currentParent = currentParent.getParent();
-					}
-				}
-			}
-		}
-		if (this.selectedNode == selectedNode) {
-			if (this.selectedNode.getChildCount() > 0) {
-				this.selectedNode.setExpanded(! this.selectedNode.isExpanded());
-			}
-			else {
-				if (! selectedNode.isSelected()) {
-					selectedNode.setSelected(true);
-					selectedNode.setExpanded(true);
-				}
-		        this.selectedNode = selectedNode;
-			}
-			this.selectedNode = selectedNode;
-		}
-		logger.info("leaving setSelectedNode({})", selectedNode);
-		logger.info("------");
-	}
-	 */
-	
 	public void onDragDrop(TreeDragDropEvent event) {
 		TreeNode dragNode = event.getDragNode();
 		TreeNode dropNode = event.getDropNode();
@@ -206,17 +140,6 @@ public class NeedsAndAnswersTreeController extends
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
-	private void collapseChildrenOf(TreeNode node) {
-		logger.info("entering collapseChildrenOf, node={}", (Menu)node.getData());
-		for (TreeNode child : node.getChildren()) {
-			child.setExpanded(false);
-			if (!child.isLeaf()) {
-				collapseChildrenOf(child);
-			}
-		}
-		logger.info("leaving collapseChildrenOf, node={}", (Menu)node.getData());
-	}
-
 	public void displaySelectedSingle() {
 		if (selectedNode != null) {
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -228,12 +151,12 @@ public class NeedsAndAnswersTreeController extends
 	public void associateNeedWithSelectedNode() {
 		logger.info("entering addChildToSelectedNode, selectedNode={}",
 				(Menu)selectedNode.getData());
-		collapseChildrenOf(selectedNode);
 		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
 				getString("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL"),
 				"Need");
 		setSelectedNode(newNode);
 		saveSelectedNode();
+		expandOnlyOneNode(newNode);
 		logger.info("leaving addChildToSelectedNode, selectedNode={}",
 				 (Menu)selectedNode.getData());
 		logger.info("------");
@@ -247,6 +170,7 @@ public class NeedsAndAnswersTreeController extends
 				"Answer");
 		setSelectedNode(newNode);
 		saveSelectedNode();
+		expandOnlyOneNode(newNode);
 		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}",
 				(Menu)selectedNode.getData());
 		logger.info("------");
@@ -263,6 +187,7 @@ public class NeedsAndAnswersTreeController extends
 							((Menu) selectedNode.getData()).getLabel(),
 							((Menu) selectedNode.getParent().getData()).getId());
 					((Menu) selectedNode.getData()).setId(savedNeed.getId());
+					expandOnlyOneNode(selectedNode);
 				break;
 				case "Answer" :
 					Reponse savedAnswer;
@@ -272,6 +197,7 @@ public class NeedsAndAnswersTreeController extends
 								((Menu) selectedNode.getData()).getLabel(),
 								((Menu) selectedNode.getParent().getData()).getId());
 						((Menu) selectedNode.getData()).setId(savedAnswer.getId());
+						expandOnlyOneNode(selectedNode);
 					}
 					else {
 						logger.info("Cannot save selectedNode as Answer : parent node is not a Need");
@@ -312,6 +238,35 @@ public class NeedsAndAnswersTreeController extends
 		}
 		logger.info("leaving deleteSelectedNode");
 		logger.info("------");
+	}
+
+	private void expandParentsOf(TreeNode node) {
+		TreeNode parent = node.getParent();
+		while (parent != null) {
+			parent.setExpanded(true);
+			parent = parent.getParent();
+		}
+	}
+
+	private void collapseChildrenOf(TreeNode node) {
+		for (TreeNode child : node.getChildren()) {
+			child.setExpanded(false);
+			if (!child.isLeaf()) {
+				collapseChildrenOf(child);
+			}
+		}
+	}
+
+	private void collapseTree() {
+		editableTreeBean.getVisibleRoot().setExpanded(false);
+		collapseChildrenOf(editableTreeBean.getVisibleRoot());
+	}
+
+	private void expandOnlyOneNode(TreeNode node) {
+		if (node != null) {
+			collapseTree();
+			expandParentsOf(node);
+		}
 	}
 
 }
