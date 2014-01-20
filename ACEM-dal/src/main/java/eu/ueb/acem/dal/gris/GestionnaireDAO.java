@@ -54,7 +54,7 @@ public class GestionnaireDAO implements DAO<Gestionnaire> {
 
 	@Override
 	public Boolean exists(Long id) {
-		return repository.exists(id);
+		return (id != null) ? repository.exists(id) : false;
 	}
 	
 	@Override
@@ -69,7 +69,7 @@ public class GestionnaireDAO implements DAO<Gestionnaire> {
 
 	@Override
 	public Gestionnaire retrieveById(Long id) {
-		return repository.findOne(id);
+		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override

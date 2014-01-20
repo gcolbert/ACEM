@@ -55,7 +55,7 @@ public class BesoinDAO implements DAO<Besoin> {
 
 	@Override
 	public Boolean exists(Long id) {
-		return repository.exists(id);
+		return (id != null) ? repository.exists(id) : false;
 	}
 
 	@Override
@@ -66,12 +66,7 @@ public class BesoinDAO implements DAO<Besoin> {
 
 	@Override
 	public Besoin retrieveById(Long id) {
-		if (id != null) {
-			return repository.findOne(id);
-		}
-		else {
-			return null;
-		}
+		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override

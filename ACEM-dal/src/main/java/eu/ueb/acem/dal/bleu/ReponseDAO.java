@@ -56,7 +56,7 @@ public class ReponseDAO implements DAO<Reponse> {
 
 	@Override
 	public Boolean exists(Long id) {
-		return repository.exists(id);
+		return (id != null) ? repository.exists(id) : false;
 	}
 	
 	@Override
@@ -66,7 +66,7 @@ public class ReponseDAO implements DAO<Reponse> {
 
 	@Override
 	public Reponse retrieveById(Long id) {
-		return repository.findOne(id);
+		return (id != null) ? repository.findOne(id) : null;
 	}
 	
 	@Override

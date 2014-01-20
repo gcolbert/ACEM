@@ -54,7 +54,7 @@ public class ActiviteDAO implements DAO<Activite> {
 
 	@Override
 	public Boolean exists(Long id) {
-		return repository.exists(id);
+		return (id != null) ? repository.exists(id) : false;
 	}
 	
 	@Override
@@ -64,7 +64,7 @@ public class ActiviteDAO implements DAO<Activite> {
 
 	@Override
 	public Activite retrieveById(Long id) {
-		return repository.findOne(id);
+		return (id != null) ? repository.findOne(id) : null;
 	}
 	
 	@Override
