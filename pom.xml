@@ -9,7 +9,7 @@
     <properties>
     	<!-- TODO 1 Pick the version of jetty you want. -->
         <jetty.version>9.1.0.v20131115</jetty.version>
-        <esupcommons.version>0.3.2</esupcommons.version>
+        <esupcommons.version>0.3.4</esupcommons.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <repositories>
@@ -73,7 +73,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.1</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
