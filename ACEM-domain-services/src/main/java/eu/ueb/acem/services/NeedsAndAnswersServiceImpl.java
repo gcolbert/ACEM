@@ -68,13 +68,13 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public Set<Besoin> getChildrenNeedsOf(Besoin need) {
-		return besoinDAO.retrieveChildrenOf(need);
+	public Set<Besoin> getAssociatedNeedsOf(Besoin need) {
+		return besoinDAO.retrieveAssociatedNeedsOf(need);
 	}
 
 	@Override
-	public Set<Reponse> getAnswers(Besoin need) {
-		return besoinDAO.retrieveAnswersOf(need);
+	public Set<Reponse> getAssociatedAnswersOf(Besoin need) {
+		return besoinDAO.retrieveAssociatedAnswersOf(need);
 	}
 
 	@Override
@@ -104,14 +104,11 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	@Transactional
-	public void deleteNeed(Long id) {
-		Besoin need = besoinDAO.retrieveById(id);
-		if (need != null) {
-			besoinDAO.delete(need);
+	public Boolean deleteNeed(Long id) {
+		if (besoinDAO.exists(id)) {
+			besoinDAO.delete(besoinDAO.retrieveById(id));
 		}
-		else {
-			logger.info("Service deleteBesoin, cannot find Need with id={}", id);
-		}
+		return (! besoinDAO.exists(id));
 	}
 
 	@Override
@@ -157,7 +154,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	@Transactional
-	public Reponse createOrUpdateAnswer(Long id, String name, Long idNeed) {
+	public Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed) {
 		Reponse answer = null;
 		if (reponseDAO.exists(id)) {
 			answer = reponseDAO.retrieveById(id);
@@ -167,10 +164,10 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		else {
 			answer = reponseDAO.create(new ReponseNode(name));
 		}
-		if (besoinDAO.exists(idNeed)) {
-			Besoin need = besoinDAO.retrieveById(idNeed);
-			need.addAnswer(answer);
-			besoinDAO.update(need);
+		if (besoinDAO.exists(idAssociatedNeed)) {
+			Besoin associatedNeed = besoinDAO.retrieveById(idAssociatedNeed);
+			associatedNeed.addAnswer(answer);
+			besoinDAO.update(associatedNeed);
 			reponseDAO.update(answer);
 		}
 		return answer;

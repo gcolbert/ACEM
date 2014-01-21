@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -74,7 +73,7 @@ public class NeedsAndAnswersTreeController extends
 		logger.info("entering initTree");
 		// editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
 		editableTreeBean.setVisibleRootLabel("Besoins");
-		Set<Besoin> needs = needsAndAnswersService.getChildrenNeedsOf(null);
+		Set<Besoin> needs = needsAndAnswersService.getAssociatedNeedsOf(null);
 		logger.info("Found {} needs at root of tree.", needs.size());
 		for (Besoin need : needs) {
 			logger.info("need = {}", need.getName());
@@ -92,9 +91,10 @@ public class NeedsAndAnswersTreeController extends
 		// We create the root node
 		TreeNode newNode = new DefaultTreeNode("Need", new Menu(need.getId(), need.getName(), "Need"), rootNode);
 		// We look for children and recursively create them too
-		Set<Besoin> childrenNodes = needsAndAnswersService.getChildrenNeedsOf(need);
-		if (childrenNodes.size() > 0) {
-			for (Besoin besoinChild : childrenNodes) {
+		Set<Besoin> associatedNeeds = needsAndAnswersService.getAssociatedNeedsOf(need);
+		if (associatedNeeds.size() > 0) {
+			((DefaultTreeNode)newNode).setType("NeedWithAssociatedNeeds");
+			for (Besoin besoinChild : associatedNeeds) {
 				createTree(besoinChild, newNode);
 			}
 		}
@@ -102,10 +102,13 @@ public class NeedsAndAnswersTreeController extends
 		// NOTE : this is a business-level constraint, technically there should
 		// no problem with displaying Needs and Answers for the same need.
 		else {
-			Set<Reponse> answers = needsAndAnswersService.getAnswers(need);
-			need.setAnswers(answers);
-			for (Reponse answer : answers) {
-				new DefaultTreeNode("Answer", new Menu(answer.getId(), answer.getName(), "Answer"), newNode);
+			Set<Reponse> answers = needsAndAnswersService.getAssociatedAnswersOf(need);
+			if (answers.size() > 0) {
+				((DefaultTreeNode)newNode).setType("NeedWithAssociatedAnswers");
+				need.setAnswers(answers);
+				for (Reponse answer : answers) {
+					new DefaultTreeNode("Answer", new Menu(answer.getId(), answer.getName(), "Answer"), newNode);
+				}
 			}
 		}
 	}
@@ -155,6 +158,7 @@ public class NeedsAndAnswersTreeController extends
 		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
 				getString("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL"),
 				"Need");
+		((DefaultTreeNode)selectedNode).setType("NeedWithAssociatedNeeds");
 		setSelectedNode(newNode);
 		saveSelectedNode();
 		expandOnlyOneNode(newNode);
@@ -169,6 +173,7 @@ public class NeedsAndAnswersTreeController extends
 		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
 				getString("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL"),
 				"Answer");
+		((DefaultTreeNode)selectedNode).setType("NeedWithAssociatedAnswers");
 		setSelectedNode(newNode);
 		saveSelectedNode();
 		expandOnlyOneNode(newNode);
@@ -191,18 +196,12 @@ public class NeedsAndAnswersTreeController extends
 					setSelectedNode(selectedNode);
 				break;
 				case "Answer" :
-					Reponse savedAnswer;
-					if (((Menu) selectedNode.getParent().getData()).getConcept() == "Need") {
-						savedAnswer = needsAndAnswersService.createOrUpdateAnswer(
-								((Menu) selectedNode.getData()).getId(),
-								((Menu) selectedNode.getData()).getLabel(),
-								((Menu) selectedNode.getParent().getData()).getId());
-						((Menu) selectedNode.getData()).setId(savedAnswer.getId());
-						setSelectedNode(selectedNode);
-					}
-					else {
-						logger.info("Cannot save selectedNode as Answer : parent node is not a Need");
-					}
+					Reponse savedAnswer = needsAndAnswersService.createOrUpdateAnswer(
+							((Menu) selectedNode.getData()).getId(),
+							((Menu) selectedNode.getData()).getLabel(),
+							((Menu) selectedNode.getParent().getData()).getId());
+					((Menu) selectedNode.getData()).setId(savedAnswer.getId());
+					setSelectedNode(selectedNode);
 				break;
 				default:
 					logger.info("selectedNode has an unknown concept value: {}",
@@ -220,13 +219,29 @@ public class NeedsAndAnswersTreeController extends
 		logger.info("entering deleteSelectedNode, selectedNode={}",
 				(Menu)selectedNode.getData());
 		if (selectedNode != null) {
+			// Business-level constraint : we don't make possible to recursively delete nodes
 			if (selectedNode.getChildCount() == 0) {
-				needsAndAnswersService.deleteNeed(((Menu) selectedNode
-						.getData()).getId());
-				selectedNode.getChildren().clear();
-				selectedNode.getParent().getChildren().remove(selectedNode);
-				selectedNode.setParent(null);
-				this.selectedNode = null;
+				if (needsAndAnswersService.deleteNeed(((Menu) selectedNode.getData()).getId())) {
+					// If the selectedNode was the only child, we must change back the parent's type
+					// to "Need", so that the good ContextMenu will be displayed
+					if (selectedNode.getParent().getChildCount() == 1) {
+						if ((selectedNode.getParent().getType().equals("NeedWithAssociatedNeeds"))
+							|| (selectedNode.getParent().getType().equals("NeedWithAssociatedAnswers"))) {
+							((DefaultTreeNode)selectedNode.getParent()).setType("Need");
+						}
+					}
+					selectedNode.getParent().getChildren().remove(selectedNode);
+					selectedNode.setParent(null);
+					this.selectedNode = null;
+				}
+				else {
+					FacesMessage message = new FacesMessage(
+							FacesMessage.SEVERITY_ERROR,
+							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE"),
+							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS"));
+					RequestContext.getCurrentInstance().update("messages");
+					FacesContext.getCurrentInstance().addMessage(null, message);
+				}
 			} else {
 				FacesMessage message = new FacesMessage(
 						FacesMessage.SEVERITY_ERROR,
@@ -240,46 +255,54 @@ public class NeedsAndAnswersTreeController extends
 		logger.info("leaving deleteSelectedNode");
 		logger.info("------");
 	}
-
+/*
 	public Boolean getRenderAssociateNeedEntry() {
 		Boolean render = false;
-		/*
-		if (selectedNode.getChildCount() == 0) {
-			render = true;
-		}
-		else {
-			// If the first child is a Need, then all children must be Needs, too,
-			// so we allow the rendering of the "Associate Need" menu entry
-			if (((Menu) selectedNode.getChildren().get(0).getData()).getConcept() == "Need") {
+		if (selectedNode != null) {
+			if (selectedNode.isLeaf()) {
 				render = true;
 			}
+			else {
+				// If the first child is a Need, then all children must be Needs, too,
+				// so we allow the rendering of the "Associate Need" menu entry
+				if (((Menu) selectedNode.getChildren().get(0).getData()).getConcept().equals("Need")) {
+					render = true;
+				}
+			}
 		}
-		*/
+		else {
+			logger.info("selectedNode is null");
+		}
 		return render;
 	}
 
 	public Boolean getRenderAssociateAnswerEntry() {
 		Boolean render = false;
-		/*
-		if (((Menu) selectedNode.getData()).getConcept() == "Need") {
-			if (selectedNode.getChildCount() == 0) {
-				render = true;
-			}
-			else {
-				// If there is already a child and it is a need, then we don't render the "Associate Answer" menu entry
-				if (((Menu) selectedNode.getChildren().get(0).getData()).getConcept() == "Need") {
-					render = false;
-				}
-				// The child is not a Need, we render the "Associate Answer" menu entry
-				else {
+		if (selectedNode != null) {
+			if (((Menu) selectedNode.getData()).getConcept().equals("Need")) {
+				if (selectedNode.isLeaf()) {
 					render = true;
+				}
+				else {
+					// If there is already a child and it is a Need,
+					// then we don't render the "Associate Answer" menu entry
+					if (((Menu) selectedNode.getChildren().get(0).getData()).getConcept().equals("Need")) {
+						render = false;
+					}
+					else {
+						// The child node is not a Need,
+						// we render the "Associate Answer" menu entry
+						render = true;
+					}
 				}
 			}
 		}
-		*/
+		else {
+			logger.info("selectedNode is null");
+		}
 		return render;
 	}
-	
+*/
 	private void expandParentsOf(TreeNode node) {
 		TreeNode parent = node.getParent();
 		while (parent != null) {

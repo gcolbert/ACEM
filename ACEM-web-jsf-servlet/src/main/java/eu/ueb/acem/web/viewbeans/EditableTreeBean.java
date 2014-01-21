@@ -71,7 +71,7 @@ public class EditableTreeBean implements Serializable {
 	}
 
 	public TreeNode addChild(TreeNode parent, Long id, String label, String concept) {
-    	TreeNode child = new DefaultTreeNode(new Menu(id, label, concept), parent);
+    	TreeNode child = new DefaultTreeNode(concept, new Menu(id, label, concept), parent);
     	parent.setExpanded(true);
     	return child;
     }

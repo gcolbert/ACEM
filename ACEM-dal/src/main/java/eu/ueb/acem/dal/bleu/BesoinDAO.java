@@ -59,9 +59,9 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 
 	@Override
-	public Besoin create(Besoin besoin) {
-		logger.debug("Persisting Besoin with name '{}'", besoin.getName());
-		return repository.save((BesoinNode) besoin);
+	public Besoin create(Besoin need) {
+		logger.debug("Persisting Besoin with name '{}'", need.getName());
+		return repository.save((BesoinNode) need);
 	}
 
 	@Override
@@ -74,10 +74,10 @@ public class BesoinDAO implements DAO<Besoin> {
 		return repository.findByPropertyValue("name", name);
 	}
 
-	public Set<Besoin> retrieveChildrenOf(Besoin besoin) {
+	public Set<Besoin> retrieveAssociatedNeedsOf(Besoin need) {
 		Set<BesoinNode> nodes;
-		if (besoin != null) {
-			nodes = repository.findChildrenOf(besoin.getId());
+		if (need != null) {
+			nodes = repository.findAssociatedNeedsOf(need.getId());
 		}
 		else {
 			nodes = repository.findRoots();
@@ -90,8 +90,8 @@ public class BesoinDAO implements DAO<Besoin> {
 		return children;
 	}
 
-	public Set<Reponse> retrieveAnswersOf(Besoin besoin) {
-		Set<ReponseNode> nodes = repository.findAnswersOf(besoin.getId());
+	public Set<Reponse> retrieveAssociatedAnswersOf(Besoin need) {
+		Set<ReponseNode> nodes = repository.findAssociatedAnswersOf(need.getId());
 		Set<Reponse> reponses = new HashSet<Reponse>();
 		for (ReponseNode node : nodes) {
 			reponses.add(node);
@@ -113,13 +113,13 @@ public class BesoinDAO implements DAO<Besoin> {
 	}
 	
 	@Override
-	public Besoin update(Besoin besoin) {
-		return repository.save((BesoinNode) besoin);
+	public Besoin update(Besoin need) {
+		return repository.save((BesoinNode) need);
 	}
 
 	@Override
-	public void delete(Besoin besoin) {
-		repository.delete((BesoinNode) besoin);
+	public void delete(Besoin need) {
+		repository.delete((BesoinNode) need);
 	}
 
 	@Override

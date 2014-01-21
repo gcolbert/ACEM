@@ -39,7 +39,7 @@ public interface DAO<E> {
 	public E update(E entity);
 	
 	public void delete(E entity);
-	
+
 	public void deleteAll();
 
 	public Long count();

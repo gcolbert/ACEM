@@ -34,16 +34,16 @@ public interface NeedsAndAnswersService {
 
 	public DAO<Reponse> getReponseDAO();
 	
-	public Set<Besoin> getChildrenNeedsOf(Besoin besoin);
+	public Set<Besoin> getAssociatedNeedsOf(Besoin need);
 
 	public Besoin createOrUpdateNeed(Long id, String name, Long idParent);
 
-	public void deleteNeed(Long id);
+	public Boolean deleteNeed(Long id);
 
 	public void changeParentOfNeed(Long id, Long idNewParent);
 
-	public Set<Reponse> getAnswers(Besoin besoin);
+	public Set<Reponse> getAssociatedAnswersOf(Besoin need);
 
-	public Reponse createOrUpdateAnswer(Long id, String name, Long idNeed);
+	public Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
 
 }

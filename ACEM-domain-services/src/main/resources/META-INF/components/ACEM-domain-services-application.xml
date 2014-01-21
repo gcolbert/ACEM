@@ -44,12 +44,12 @@
 	    		The update of the application (3 for version 1.2.3).
 	    	</description>
     	</property>
-    	<property name="copyright" value="Copyright © 2013 Gr\u00E9goire Colbert - Universit\u00E9 europ\u00E9enne de Bretagne - R\u00E9gion Bretagne - Minist\u00E8re de l'Enseignement Sup\u00E9rieur et de la Recherche" >
+    	<property name="copyright" value="Copyright © 2013 Gregoire Colbert - Universite europeenne de Bretagne - Region Bretagne - Ministere de l'Enseignement Superieur et de la Recherche" >
 	    	<description>
 	    		The copyright.
 	    	</description>
     	</property>
-    	<property name="vendor" value="Gr\u00E9goire Colbert" >
+    	<property name="vendor" value="Gregoire Colbert" >
 	    	<description>
 	    		The vendor.
 	    	</description>
