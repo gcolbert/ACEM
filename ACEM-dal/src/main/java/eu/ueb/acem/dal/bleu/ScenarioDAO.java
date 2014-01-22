@@ -33,7 +33,7 @@ import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 
 /**
- * @author gcolbert @since 2013-12-11
+ * @author Grégoire Colbert @since 2013-12-11
  *
  */
 @Repository("scenarioDAO")

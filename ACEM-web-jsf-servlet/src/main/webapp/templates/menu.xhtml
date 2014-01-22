@@ -6,14 +6,28 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<p:menubar>
-		<p:menuitem value="#{msgs['MENU.HOME']}" url="/" />
-		<p:menuitem value="#{msgs['MENU.MY_TEACHINGS']}" url="/mes-enseignements" />
-		<p:menuitem value="#{msgs['MENU.MY_SCENARIOS']}" url="/mes-scenarios" />
-		<p:menuitem value="#{msgs['MENU.SCENARIOS_LIBRARY']}" url="/bibliotheque-de-scenarios" />
-		<p:menuitem value="#{msgs['MENU.NEEDS_AND_ANSWERS']}" url="/besoins-et-reponses" />
-		<p:menuitem value="#{msgs['MENU.RESOURCES']}" url="/ressources" />
-		<p:menuitem value="#{msgs['MENU.SERVICES']}" url="/services-supports" />
+	<p:menubar id="viewList">
+		<p:menuitem value="#{msgs['MENU.HOME']}" url="/accueil"
+			styleClass="#{navigationController.getMenuitemStyleClass('accueil')}"
+			onclick="selectMenuitemLink(this)" ajax="false"/>
+		<p:menuitem value="#{msgs['MENU.MY_TEACHINGS']}" url="/mes-enseignements"
+			styleClass="#{navigationController.getMenuitemStyleClass('mes-enseignements')}"
+			onclick="selectMenuitemLink(this)" ajax="false"/>
+		<p:menuitem value="#{msgs['MENU.MY_SCENARIOS']}" url="/mes-scenarios"
+			styleClass="#{navigationController.getMenuitemStyleClass('mes-scenarios')}"
+			onclick="selectMenuitemLink(this)" ajax="false"/>
+		<p:menuitem value="#{msgs['MENU.SCENARIOS_LIBRARY']}" url="/bibliotheque-de-scenarios"
+			styleClass="#{navigationController.getMenuitemStyleClass('bibliotheque-de-scenarios')}"
+			onclick="selectMenuitemLink(this)" ajax="false"/>
+		<p:menuitem value="#{msgs['MENU.NEEDS_AND_ANSWERS']}" url="/besoins-et-reponses"
+			styleClass="#{navigationController.getMenuitemStyleClass('besoins-et-reponses')}"
+			onclick="selectMenuitemLink(this)" ajax="false"/>
+		<p:menuitem value="#{msgs['MENU.RESOURCES']}" url="/ressources"
+			styleClass="#{navigationController.getMenuitemStyleClass('ressources')}"
+			onclick="selectMenuitemLink(this)" ajax="false"/>
+		<p:menuitem value="#{msgs['MENU.SERVICES']}" url="/services-supports"
+			styleClass="#{navigationController.getMenuitemStyleClass('services-supports')}"
+			onclick="selectMenuitemLink(this)" ajax="false"/>
 	</p:menubar>
 
 </ui:composition>

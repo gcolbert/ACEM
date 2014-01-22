@@ -30,7 +30,7 @@ import eu.ueb.acem.domain.beans.vert.Batiment;
 import eu.ueb.acem.domain.beans.vert.Campus;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  *
  */
 @NodeEntity

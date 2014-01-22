@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  *
  */
 public interface Besoin extends Serializable {

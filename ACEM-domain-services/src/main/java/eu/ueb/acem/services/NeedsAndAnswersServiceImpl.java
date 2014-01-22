@@ -36,7 +36,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  *
  */
 @Service("needsAndAnswersService")
@@ -171,5 +171,23 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 			reponseDAO.update(answer);
 		}
 		return answer;
+	}
+
+	@Override
+	public void saveNeedName(Long id, String newName) {
+		if (besoinDAO.exists(id)) {
+			Besoin need = besoinDAO.retrieveById(id);
+			need.setName(newName);
+			need = besoinDAO.update(need);
+		}
+	}
+
+	@Override
+	public void saveAnswerName(Long id, String newName) {
+		if (reponseDAO.exists(id)) {
+			Reponse answer = reponseDAO.retrieveById(id);
+			answer.setName(newName);
+			answer = reponseDAO.update(answer);
+		}
 	}
 }

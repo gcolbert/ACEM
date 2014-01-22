@@ -23,7 +23,6 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -41,7 +40,7 @@ import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.Menu;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  * 
  */
 @Controller("needsAndAnswersTreeController")
@@ -56,7 +55,12 @@ public class NeedsAndAnswersTreeController extends
 	 */
 	private final static Logger logger = LoggerFactory
 			.getLogger(NeedsAndAnswersTreeController.class);
-
+	
+	private static final String TREE_NODE_TYPE_NEED_LEAF = "Need";
+	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS = "NeedWithAssociatedNeeds";
+	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS = "NeedWithAssociatedAnswers";
+	private static final String TREE_NODE_TYPE_ANSWER_LEAF = "Answer";
+	
 	@Autowired
 	private NeedsAndAnswersService needsAndAnswersService;
 
@@ -89,11 +93,11 @@ public class NeedsAndAnswersTreeController extends
 	 */
 	private void createTree(Besoin need, TreeNode rootNode) {
 		// We create the root node
-		TreeNode newNode = new DefaultTreeNode("Need", new Menu(need.getId(), need.getName(), "Need"), rootNode);
+		TreeNode newNode = new DefaultTreeNode(TREE_NODE_TYPE_NEED_LEAF, new Menu(need.getId(), need.getName(), "Need"), rootNode);
 		// We look for children and recursively create them too
 		Set<Besoin> associatedNeeds = needsAndAnswersService.getAssociatedNeedsOf(need);
 		if (associatedNeeds.size() > 0) {
-			((DefaultTreeNode)newNode).setType("NeedWithAssociatedNeeds");
+			((DefaultTreeNode)newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS);
 			for (Besoin besoinChild : associatedNeeds) {
 				createTree(besoinChild, newNode);
 			}
@@ -104,10 +108,10 @@ public class NeedsAndAnswersTreeController extends
 		else {
 			Set<Reponse> answers = needsAndAnswersService.getAssociatedAnswersOf(need);
 			if (answers.size() > 0) {
-				((DefaultTreeNode)newNode).setType("NeedWithAssociatedAnswers");
+				((DefaultTreeNode)newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
 				need.setAnswers(answers);
 				for (Reponse answer : answers) {
-					new DefaultTreeNode("Answer", new Menu(answer.getId(), answer.getName(), "Answer"), newNode);
+					new DefaultTreeNode(TREE_NODE_TYPE_ANSWER_LEAF, new Menu(answer.getId(), answer.getName(), "Answer"), newNode);
 				}
 			}
 		}
@@ -144,6 +148,14 @@ public class NeedsAndAnswersTreeController extends
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
+	public void onNeedLabelSave(Long id, String newName) {
+		needsAndAnswersService.saveNeedName(id, newName);
+	}
+	
+	public void onAnswerLabelSave(Long id, String newName) {
+		needsAndAnswersService.saveAnswerName(id, newName);
+	}
+
 	public void displaySelectedSingle() {
 		if (selectedNode != null) {
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -173,7 +185,7 @@ public class NeedsAndAnswersTreeController extends
 		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
 				getString("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL"),
 				"Answer");
-		((DefaultTreeNode)selectedNode).setType("NeedWithAssociatedAnswers");
+		((DefaultTreeNode)selectedNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
 		setSelectedNode(newNode);
 		saveSelectedNode();
 		expandOnlyOneNode(newNode);
@@ -225,8 +237,8 @@ public class NeedsAndAnswersTreeController extends
 					// If the selectedNode was the only child, we must change back the parent's type
 					// to "Need", so that the good ContextMenu will be displayed
 					if (selectedNode.getParent().getChildCount() == 1) {
-						if ((selectedNode.getParent().getType().equals("NeedWithAssociatedNeeds"))
-							|| (selectedNode.getParent().getType().equals("NeedWithAssociatedAnswers"))) {
+						if ((selectedNode.getParent().getType().equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS))
+							|| (selectedNode.getParent().getType().equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS))) {
 							((DefaultTreeNode)selectedNode.getParent()).setType("Need");
 						}
 					}
@@ -255,54 +267,7 @@ public class NeedsAndAnswersTreeController extends
 		logger.info("leaving deleteSelectedNode");
 		logger.info("------");
 	}
-/*
-	public Boolean getRenderAssociateNeedEntry() {
-		Boolean render = false;
-		if (selectedNode != null) {
-			if (selectedNode.isLeaf()) {
-				render = true;
-			}
-			else {
-				// If the first child is a Need, then all children must be Needs, too,
-				// so we allow the rendering of the "Associate Need" menu entry
-				if (((Menu) selectedNode.getChildren().get(0).getData()).getConcept().equals("Need")) {
-					render = true;
-				}
-			}
-		}
-		else {
-			logger.info("selectedNode is null");
-		}
-		return render;
-	}
-
-	public Boolean getRenderAssociateAnswerEntry() {
-		Boolean render = false;
-		if (selectedNode != null) {
-			if (((Menu) selectedNode.getData()).getConcept().equals("Need")) {
-				if (selectedNode.isLeaf()) {
-					render = true;
-				}
-				else {
-					// If there is already a child and it is a Need,
-					// then we don't render the "Associate Answer" menu entry
-					if (((Menu) selectedNode.getChildren().get(0).getData()).getConcept().equals("Need")) {
-						render = false;
-					}
-					else {
-						// The child node is not a Need,
-						// we render the "Associate Answer" menu entry
-						render = true;
-					}
-				}
-			}
-		}
-		else {
-			logger.info("selectedNode is null");
-		}
-		return render;
-	}
-*/
+	
 	private void expandParentsOf(TreeNode node) {
 		TreeNode parent = node.getParent();
 		while (parent != null) {
@@ -332,4 +297,20 @@ public class NeedsAndAnswersTreeController extends
 		}
 	}
 
+	public String getTreeNodeType_NEED_LEAF() {
+		return TREE_NODE_TYPE_NEED_LEAF;
+	}
+
+	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
+		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS;
+	}
+
+	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
+		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS;
+	}
+
+	public String getTreeNodeType_ANSWER_LEAF() {
+		return TREE_NODE_TYPE_ANSWER_LEAF;
+	}
+	
 }

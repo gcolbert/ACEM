@@ -33,7 +33,7 @@ import eu.ueb.acem.domain.beans.bleu.Etape;
 import eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  *
  */
 @Repository("etapeDAO")

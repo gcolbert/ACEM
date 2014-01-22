@@ -50,19 +50,17 @@ public class TestBeansLoaded extends TestCase {
 		ApplicationContext context = ApplicationContextHolder.getContext();
 		assertTrue("Controller needsAndAnswersTableController is not loaded", context.containsBean("needsAndAnswersTableController"));
 	}
-	
+
 	@Test
 	public void testNeedsAndAnswersService() {
 		ApplicationContext context = ApplicationContextHolder.getContext();
 		assertTrue("Service needsAndAnswersService is not loaded", context.containsBean("needsAndAnswersService"));
 	}
-	
-/*
-    @Test
-    public void testSpringBeans() {
-        ClassPathXmlApplicationContext unused = new ClassPathXmlApplicationContext("properties/applicationContext.xml");
-        ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue(context.containsBean("treeBean"));
-    }
-*/
+
+	@Test
+	public void testNavigationController() {
+		ApplicationContext context = ApplicationContextHolder.getContext();
+		assertTrue("Controller navigationController is not loaded", context.containsBean("navigationController"));
+	}
+
 }

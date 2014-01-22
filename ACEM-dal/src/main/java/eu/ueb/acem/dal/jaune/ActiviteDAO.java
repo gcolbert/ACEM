@@ -33,7 +33,7 @@ import eu.ueb.acem.domain.beans.jaune.Activite;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ActiviteNode;
 
 /**
- * @author gcolbert @since 2013-12-11
+ * @author Grégoire Colbert @since 2013-12-11
  *
  */
 @Repository("activiteDAO")

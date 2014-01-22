@@ -21,7 +21,7 @@ package eu.ueb.acem.dal;
 import java.util.Set;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  *
  */
 public interface DAO<E> {

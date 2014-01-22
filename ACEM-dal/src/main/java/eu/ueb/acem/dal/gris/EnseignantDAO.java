@@ -33,7 +33,7 @@ import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
- * @author gcolbert @since 2013-12-11
+ * @author Grégoire Colbert @since 2013-12-11
  *
  */
 @Repository("enseignantDAO")

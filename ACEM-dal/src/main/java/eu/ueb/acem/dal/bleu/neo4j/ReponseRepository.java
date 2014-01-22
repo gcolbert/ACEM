@@ -29,7 +29,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  *
  */
 public interface ReponseRepository extends GraphRepository<ReponseNode>, RelationshipOperationsRepository<ReponseNode> {

@@ -25,7 +25,7 @@ import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  *
  */
 public interface NeedsAndAnswersService {
@@ -46,4 +46,8 @@ public interface NeedsAndAnswersService {
 
 	public Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
 
+	public void saveNeedName(Long id, String newName);
+
+	public void saveAnswerName(Long id, String newName);
+	
 }

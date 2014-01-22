@@ -40,6 +40,16 @@
     </outbound-rule>
 
 	<rule>
+	    <from>^/$</from>
+	    <to>/accueil</to>
+	</rule>
+
+	<rule>
+	    <from>^/accueil$</from>
+	    <to>/pages/accueil.xhtml</to>
+	</rule>
+
+	<rule>
 	    <from>^/besoins-et-reponses(.*)?$</from>
 	    <to>/pages/besoins-et-reponses.xhtml$1</to>
 	</rule>

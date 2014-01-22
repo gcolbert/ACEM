@@ -24,7 +24,7 @@ import org.springframework.data.neo4j.repository.RelationshipOperationsRepositor
 import eu.ueb.acem.domain.beans.violet.neo4j.DiplomeNode;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  *
  */
 public interface DiplomeRepository extends GraphRepository<DiplomeNode>, RelationshipOperationsRepository<DiplomeNode> {

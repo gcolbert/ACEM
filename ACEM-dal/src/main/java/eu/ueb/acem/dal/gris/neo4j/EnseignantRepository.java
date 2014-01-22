@@ -16,7 +16,7 @@ import org.springframework.data.neo4j.repository.RelationshipOperationsRepositor
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
- * @author gcolbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-11-20
  *
  */
 public interface EnseignantRepository extends GraphRepository<EnseignantNode>, RelationshipOperationsRepository<EnseignantNode> {

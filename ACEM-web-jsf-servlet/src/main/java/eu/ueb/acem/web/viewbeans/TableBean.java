@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * @author gcolbert @since 2014-01-10
+ * @author Grégoire Colbert @since 2014-01-10
  * @param <T>
  *
  */

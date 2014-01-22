@@ -18,39 +18,52 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.io.Serializable;
+
+import javax.faces.context.FacesContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.services.NeedsAndAnswersService;
-import eu.ueb.acem.web.viewbeans.TableBean;
+import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 
 /**
- * @author Grégoire Colbert @since 2014-01-10
- *
+ * @author Grégoire Colbert @since 2014-01-22
+ * 
  */
-@Controller("needsAndAnswersTableController")
-@Scope("view")
-public class NeedsAndAnswersTableController extends AbstractContextAwareController {
+@Controller("navigationController")
+@Scope("session")
+public class NavigationController implements Serializable {
 
-	private static final long serialVersionUID = -4992617416637974921L;
+	private static final long serialVersionUID = -7218568142478270516L;
 
 	/**
 	 * For Logging.
 	 */
-	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTableController.class);
-
-	@Autowired
-	private NeedsAndAnswersService needsAndAnswersService;
-
-	@Autowired
-	private TableBean tableBean;
-
-	public NeedsAndAnswersTableController() {
+	private final static Logger logger = LoggerFactory.getLogger(NavigationController.class);
+	
+	public String getMenuitemStyleClass(String page) {
+		String styleClass = "";
+		String viewId = getViewId();
+		if ((viewId != null) && (viewId.equals(page))) {
+			styleClass = "ui-state-active";
+		}
+		return styleClass;
 	}
 
+	private String getViewId() {
+		FacesContext fc = FacesContext.getCurrentInstance();
+		String viewId = fc.getViewRoot().getViewId();
+		String selectedComponent;
+		if (viewId != null) {
+			selectedComponent = viewId.substring(viewId.lastIndexOf("/") + 1,
+					viewId.lastIndexOf("."));
+		} else {
+			selectedComponent = null;
+		}
+		return selectedComponent;
+	}
 
 }

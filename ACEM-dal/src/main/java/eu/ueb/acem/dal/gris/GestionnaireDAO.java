@@ -33,7 +33,7 @@ import eu.ueb.acem.domain.beans.gris.Gestionnaire;
 import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
 
 /**
- * @author gcolbert @since 2013-12-11
+ * @author Grégoire Colbert @since 2013-12-11
  *
  */
 @Repository("gestionnaireDAO")
