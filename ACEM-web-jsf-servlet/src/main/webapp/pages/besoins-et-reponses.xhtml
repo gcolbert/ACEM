@@ -112,7 +112,7 @@
 								styleClass="#{node.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
-								listener="#{needsAndAnswersTreeController.onNeedLabelSave(node.id, node.label)}"
+								listener="#{needsAndAnswersTreeController.onLabelSave(node)}"
 								update="@this" />
 							<p:inputText value="#{node.label}" />
 						</p:inplace>
@@ -121,7 +121,7 @@
 								styleClass="#{node.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
-								listener="#{needsAndAnswersTreeController.onNeedLabelSave(node.id, node.label)}"
+								listener="#{needsAndAnswersTreeController.onLabelSave(node)}"
 								update="@this" />
 							<p:inputText value="#{node.label}" />
 						</p:inplace>
@@ -130,7 +130,7 @@
 								styleClass="#{node.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
-								listener="#{needsAndAnswersTreeController.onNeedLabelSave(node.id, node.label)}"
+								listener="#{needsAndAnswersTreeController.onLabelSave(node)}"
 								update="@this" />
 							<p:inputText value="#{node.label}" />
 						</p:inplace>
@@ -139,7 +139,7 @@
 								styleClass="#{node.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
-								listener="#{needsAndAnswersTreeController.onAnswerLabelSave(node.id, node.label)}"
+								listener="#{needsAndAnswersTreeController.onLabelSave(node)}"
 								update="@this" />
 							<p:inputText value="#{node.label}" />
 						</p:inplace>

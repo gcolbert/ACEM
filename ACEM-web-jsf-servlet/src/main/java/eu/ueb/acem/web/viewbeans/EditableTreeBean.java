@@ -49,9 +49,9 @@ public class EditableTreeBean implements Serializable {
 
     public EditableTreeBean() {
     	// For some reason, the root of the tree is not visible
-        root = new DefaultTreeNode(new Menu(null, "Root", null), null);
+        root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
 		// Therefore, we add a visible root so that it is possible to right click and add children nodes
-        visibleRoot = new DefaultTreeNode(new Menu(null, "Default visible root", null), root);
+        visibleRoot = new DefaultTreeNode(new TreeNodeData(null, "Default visible root", null), root);
     }
 
     public TreeNode getRoot() {
@@ -63,7 +63,7 @@ public class EditableTreeBean implements Serializable {
     }
     
     public void setVisibleRootLabel(String label) {
-    	((Menu)visibleRoot.getData()).setLabel(label);
+    	((TreeNodeData)visibleRoot.getData()).setLabel(label);
     }
     
 	public void setRoot(TreeNode root) {
@@ -71,12 +71,12 @@ public class EditableTreeBean implements Serializable {
 	}
 
 	public TreeNode addChild(TreeNode parent, Long id, String label, String concept) {
-    	TreeNode child = new DefaultTreeNode(concept, new Menu(id, label, concept), parent);
+    	TreeNode child = new DefaultTreeNode(concept, new TreeNodeData(id, label, concept), parent);
     	parent.setExpanded(true);
     	return child;
     }
     
-    public static class Menu implements Serializable {
+    public static class TreeNodeData implements Serializable {
 
 		private static final long serialVersionUID = -5623188924862380160L;
 
@@ -86,7 +86,7 @@ public class EditableTreeBean implements Serializable {
         
         private String concept;
 
-        public Menu(Long id, String label, String concept) {
+        public TreeNodeData(Long id, String label, String concept) {
         	this.id = id;
             this.label = label;
             this.concept = concept;
