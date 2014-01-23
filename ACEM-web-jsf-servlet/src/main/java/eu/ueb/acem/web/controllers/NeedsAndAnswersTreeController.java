@@ -141,33 +141,6 @@ AbstractContextAwareController {
 		this.selectedNode = selectedNode;
 	}
 
-	public void onDragDrop(TreeDragDropEvent event) {
-		TreeNode dragNode = event.getDragNode();
-		TreeNode dropNode = event.getDropNode();
-		int dropIndex = event.getDropIndex();
-		TreeNodeData dragNodeData = (TreeNodeData) dragNode.getData();
-		TreeNodeData dropNodeData = (TreeNodeData) dropNode.getData();
-
-		needsAndAnswersService.changeParentOfNeed(dragNodeData.getId(),
-				dropNodeData.getId());
-
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				"Dragged " + dragNodeData, "Dropped on " + dropNodeData
-				+ " at " + dropIndex);
-		FacesContext.getCurrentInstance().addMessage(null, message);
-	}
-
-	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
-		if (treeNodeData.getConcept().equals("Answer")) {
-			needsAndAnswersService.saveAnswerName(treeNodeData.getId(),
-					treeNodeData.getLabel());
-		}
-		else if (treeNodeData.getConcept().equals("Need")) {
-			needsAndAnswersService.saveNeedName(treeNodeData.getId(),
-					treeNodeData.getLabel());
-		}
-	}
-
 	public void displaySelectedSingle() {
 		if (selectedNode != null) {
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -202,39 +175,6 @@ AbstractContextAwareController {
 		expandOnlyOneNode(newNode);
 		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}",
 				(TreeNodeData) selectedNode.getData());
-		logger.info("------");
-	}
-
-	private void saveTreeNode(TreeNode treeNode) {
-		if (treeNode != null) {
-			TreeNodeData treeNodeData = (TreeNodeData) treeNode.getData();
-			logger.info("entering saveTreeNode({})", treeNodeData);
-			TreeNodeData parentNodeData = (TreeNodeData) treeNode.getParent()
-					.getData();
-			switch (treeNodeData.getConcept()) {
-			case "Need":
-				Besoin savedNeed = needsAndAnswersService.createOrUpdateNeed(
-						treeNodeData.getId(), treeNodeData.getLabel(),
-						parentNodeData.getId());
-				treeNodeData.setId(savedNeed.getId());
-				setSelectedNode(treeNode);
-				break;
-			case "Answer":
-				Reponse savedAnswer = needsAndAnswersService
-				.createOrUpdateAnswer(treeNodeData.getId(),
-						treeNodeData.getLabel(), parentNodeData.getId());
-				treeNodeData.setId(savedAnswer.getId());
-				setSelectedNode(treeNode);
-				break;
-			default:
-				logger.info("treeNode has an unknown concept value: {}",
-						treeNodeData.getConcept());
-				break;
-			}
-		} else {
-			logger.info("entering saveTreeNode with null parameter, we do nothing.");
-		}
-		logger.info("leaving saveTreeNode");
 		logger.info("------");
 	}
 
@@ -281,6 +221,66 @@ AbstractContextAwareController {
 			}
 		}
 		logger.info("leaving deleteSelectedNode");
+		logger.info("------");
+	}
+
+	public void onDragDrop(TreeDragDropEvent event) {
+		TreeNode dragNode = event.getDragNode();
+		TreeNode dropNode = event.getDropNode();
+		int dropIndex = event.getDropIndex();
+		TreeNodeData dragNodeData = (TreeNodeData) dragNode.getData();
+		TreeNodeData dropNodeData = (TreeNodeData) dropNode.getData();
+
+		needsAndAnswersService.changeParentOfNeed(dragNodeData.getId(),
+				dropNodeData.getId());
+
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				"Dragged " + dragNodeData, "Dropped on " + dropNodeData
+				+ " at " + dropIndex);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+
+	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
+		if (treeNodeData.getConcept().equals("Answer")) {
+			needsAndAnswersService.saveAnswerName(treeNodeData.getId(),
+					treeNodeData.getLabel());
+		}
+		else if (treeNodeData.getConcept().equals("Need")) {
+			needsAndAnswersService.saveNeedName(treeNodeData.getId(),
+					treeNodeData.getLabel());
+		}
+	}
+
+	private void saveTreeNode(TreeNode treeNode) {
+		if (treeNode != null) {
+			TreeNodeData treeNodeData = (TreeNodeData) treeNode.getData();
+			logger.info("entering saveTreeNode({})", treeNodeData);
+			TreeNodeData parentNodeData = (TreeNodeData) treeNode.getParent()
+					.getData();
+			switch (treeNodeData.getConcept()) {
+			case "Need":
+				Besoin savedNeed = needsAndAnswersService.createOrUpdateNeed(
+						treeNodeData.getId(), treeNodeData.getLabel(),
+						parentNodeData.getId());
+				treeNodeData.setId(savedNeed.getId());
+				setSelectedNode(treeNode);
+				break;
+			case "Answer":
+				Reponse savedAnswer = needsAndAnswersService
+				.createOrUpdateAnswer(treeNodeData.getId(),
+						treeNodeData.getLabel(), parentNodeData.getId());
+				treeNodeData.setId(savedAnswer.getId());
+				setSelectedNode(treeNode);
+				break;
+			default:
+				logger.info("treeNode has an unknown concept value: {}",
+						treeNodeData.getConcept());
+				break;
+			}
+		} else {
+			logger.info("entering saveTreeNode with null parameter, we do nothing.");
+		}
+		logger.info("leaving saveTreeNode");
 		logger.info("------");
 	}
 

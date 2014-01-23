@@ -10,22 +10,17 @@
 			rendered="#{facesContext.application.projectStage == 'Development'}" />
 		<p:panel header="#{msgs['NEEDS_AND_ANSWERS.TREE.HEADER']}">
 			<h:form id="formTree">
+
 				<p:growl id="messages" showDetail="true" />
-				<!-- 
-				<p:overlayPanel id="answerActions" hideEffect="fade">
-					<h:outputText value="Hello" />
-				</p:overlayPanel>
-				-->
-				<p:contextMenu id="contextMenuForDefaultNodes" for="treeSingle"
-					nodeType="default">
+
+				<p:contextMenu for="treeSingle"	nodeType="default">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 						update="treeSingle :formTree:messages"
 						action="#{needsAndAnswersTreeController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 				</p:contextMenu>
-				<p:contextMenu id="contextMenuForNeeds" for="treeSingle"
-					nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_LEAF}">
+				<p:contextMenu for="treeSingle"	nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_LEAF}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update="treeSingle :formTree:messages"
@@ -47,8 +42,7 @@
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
 						icon="ui-icon-minus" />
 				</p:contextMenu>
-				<p:contextMenu id="contextMenuForNeedsWithNeedsAsChildren" for="treeSingle"
-					nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
+				<p:contextMenu for="treeSingle" nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update="treeSingle :formTree:messages"
@@ -60,8 +54,7 @@
 						action="#{needsAndAnswersTreeController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 				</p:contextMenu>
-				<p:contextMenu id="contextMenuForNeedsWithAnswersAsChildren" for="treeSingle"
-					nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
+				<p:contextMenu for="treeSingle" nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update="treeSingle :formTree:messages"
@@ -73,8 +66,7 @@
 						action="#{needsAndAnswersTreeController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 				</p:contextMenu>
-				<p:contextMenu id="contextMenuForAnswers" for="treeSingle"
-					nodeType="#{needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF}">
+				<p:contextMenu for="treeSingle" nodeType="#{needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update="treeSingle :formTree:messages"
@@ -86,8 +78,9 @@
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
 						icon="ui-icon-minus" />
 				</p:contextMenu>
+
 				<p:tree id="treeSingle" dynamic="true"
-					value="#{needsAndAnswersTreeController.treeRoot}" var="node"
+					value="#{needsAndAnswersTreeController.treeRoot}" var="treeNodeData"
 					selectionMode="single"
 					selection="#{needsAndAnswersTreeController.selectedNode}"
 					draggable="true" droppable="true" dragdropScope="demo"
@@ -108,52 +101,58 @@
 						listener="#{needsAndAnswersTreeController.onNodeSelect}"
 						update="treeSingle :formTree:messages" />
 					 -->
+					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
+						<h:outputText value="#{treeNodeData.label}" />
+					</p:treeNode>
 					<p:treeNode type="#{needsAndAnswersTreeController.treeNodeType_NEED_LEAF}"
-								styleClass="#{node.styleClass}">
+								styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
-								listener="#{needsAndAnswersTreeController.onLabelSave(node)}"
+								listener="#{needsAndAnswersTreeController.onLabelSave(treeNodeData)}"
 								update="@this" />
-							<p:inputText value="#{node.label}" />
+							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
 					</p:treeNode>
 					<p:treeNode	type="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}"
-								styleClass="#{node.styleClass}">
+								styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
-								listener="#{needsAndAnswersTreeController.onLabelSave(node)}"
+								listener="#{needsAndAnswersTreeController.onLabelSave(treeNodeData)}"
 								update="@this" />
-							<p:inputText value="#{node.label}" />
+							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
 					</p:treeNode>
 					<p:treeNode type="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}"
-								styleClass="#{node.styleClass}">
+								styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
-								listener="#{needsAndAnswersTreeController.onLabelSave(node)}"
+								listener="#{needsAndAnswersTreeController.onLabelSave(treeNodeData)}"
 								update="@this" />
-							<p:inputText value="#{node.label}" />
+							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
 					</p:treeNode>
 					<p:treeNode type="#{needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF}"
-								styleClass="#{node.styleClass}">
+								styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
-								listener="#{needsAndAnswersTreeController.onLabelSave(node)}"
+								listener="#{needsAndAnswersTreeController.onLabelSave(treeNodeData)}"
 								update="@this" />
-							<p:inputText value="#{node.label}" />
+							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
-					</p:treeNode>
-					<p:treeNode type="default"
-								styleClass="#{node.styleClass}">
-						<h:outputText value="#{node.label}" />
+						<!-- 
+						<p:commandLink id="ajax" update="formExamplesOfScenarios">
+							<h:outputText value="Go below!" />
+						</p:commandLink>
+						 -->
 					</p:treeNode>
 				</p:tree>
+
 			</h:form>
 		</p:panel>
 		<p:panel
 			header="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']}">
 			<h:form id="formExamplesOfScenarios">
+				<h:outputText id="selectedAnswerLabel"/>
 				<!-- 
 				<p:datatable var="scenario" value="#{needsAndAnswersTableController.scenariosExamples}">
 					<p:column headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
