@@ -172,7 +172,7 @@ public class NeedsAndAnswersTreeController extends
 				"Need");
 		((DefaultTreeNode)selectedNode).setType("NeedWithAssociatedNeeds");
 		setSelectedNode(newNode);
-		saveSelectedNode();
+		saveTreeNode(newNode);
 		expandOnlyOneNode(newNode);
 		logger.info("leaving addChildToSelectedNode, selectedNode={}",
 				 (Menu)selectedNode.getData());
@@ -187,43 +187,42 @@ public class NeedsAndAnswersTreeController extends
 				"Answer");
 		((DefaultTreeNode)selectedNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
 		setSelectedNode(newNode);
-		saveSelectedNode();
+		saveTreeNode(newNode);
 		expandOnlyOneNode(newNode);
 		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}",
 				(Menu)selectedNode.getData());
 		logger.info("------");
 	}
 
-	public void saveSelectedNode() {
-		if (selectedNode != null) {
-			logger.info("entering saveSelectedNode, selectedNode={}",
-					(Menu)selectedNode.getData());
-			switch (((Menu) selectedNode.getData()).getConcept()) {
+	private void saveTreeNode(TreeNode treeNode) {
+		if (treeNode != null) {
+			logger.info("entering saveTreeNode({})", (Menu)treeNode.getData());
+			switch (((Menu) treeNode.getData()).getConcept()) {
 				case "Need" :
 					Besoin savedNeed = needsAndAnswersService.createOrUpdateNeed(
-							((Menu) selectedNode.getData()).getId(),
-							((Menu) selectedNode.getData()).getLabel(),
-							((Menu) selectedNode.getParent().getData()).getId());
-					((Menu) selectedNode.getData()).setId(savedNeed.getId());
-					setSelectedNode(selectedNode);
+							((Menu) treeNode.getData()).getId(),
+							((Menu) treeNode.getData()).getLabel(),
+							((Menu) treeNode.getParent().getData()).getId());
+					((Menu) treeNode.getData()).setId(savedNeed.getId());
+					setSelectedNode(treeNode);
 				break;
 				case "Answer" :
 					Reponse savedAnswer = needsAndAnswersService.createOrUpdateAnswer(
-							((Menu) selectedNode.getData()).getId(),
-							((Menu) selectedNode.getData()).getLabel(),
-							((Menu) selectedNode.getParent().getData()).getId());
-					((Menu) selectedNode.getData()).setId(savedAnswer.getId());
-					setSelectedNode(selectedNode);
+							((Menu) treeNode.getData()).getId(),
+							((Menu) treeNode.getData()).getLabel(),
+							((Menu) treeNode.getParent().getData()).getId());
+					((Menu) treeNode.getData()).setId(savedAnswer.getId());
+					setSelectedNode(treeNode);
 				break;
 				default:
-					logger.info("selectedNode has an unknown concept value: {}",
-							((Menu) selectedNode.getData()).getConcept());
+					logger.info("treeNode has an unknown concept value: {}",
+							((Menu) treeNode.getData()).getConcept());
 				break;
 			}
 		} else {
-			logger.info("entering saveSelectedNode, selectedNode=null, we do nothing.");
+			logger.info("entering saveTreeNode with null parameter, we do nothing.");
 		}
-		logger.info("leaving saveSelectedNode");
+		logger.info("leaving saveTreeNode");
 		logger.info("------");
 	}
 

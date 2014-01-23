@@ -27,8 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.web.viewbeans.EditableTreeBean;
-
 /**
  * @author Grégoire Colbert @since 2014-01-22
  * 
@@ -42,6 +40,7 @@ public class NavigationController implements Serializable {
 	/**
 	 * For Logging.
 	 */
+	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(NavigationController.class);
 	
 	public String getMenuitemStyleClass(String page) {
