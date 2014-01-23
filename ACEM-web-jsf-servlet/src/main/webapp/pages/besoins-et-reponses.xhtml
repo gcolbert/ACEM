@@ -23,8 +23,8 @@
 				<p:contextMenu for="treeSingle"	nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_LEAF}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
-						update="treeSingle :formTree:messages"
-						action="#{needsAndAnswersTreeController.displaySelectedSingle}"
+						update=":formTree:messages"
+						action="#{needsAndAnswersTreeController.displaySelectedNodeInfo}"
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
@@ -45,8 +45,8 @@
 				<p:contextMenu for="treeSingle" nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
-						update="treeSingle :formTree:messages"
-						action="#{needsAndAnswersTreeController.displaySelectedSingle}"
+						update=":formTree:messages"
+						action="#{needsAndAnswersTreeController.displaySelectedNodeInfo}"
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
@@ -57,8 +57,8 @@
 				<p:contextMenu for="treeSingle" nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
-						update="treeSingle :formTree:messages"
-						action="#{needsAndAnswersTreeController.displaySelectedSingle}"
+						update=":formTree:messages"
+						action="#{needsAndAnswersTreeController.displaySelectedNodeInfo}"
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
@@ -69,8 +69,8 @@
 				<p:contextMenu for="treeSingle" nodeType="#{needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
-						update="treeSingle :formTree:messages"
-						action="#{needsAndAnswersTreeController.displaySelectedSingle}"
+						update=":formTree:messages"
+						action="#{needsAndAnswersTreeController.displaySelectedNodeInfo}"
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"

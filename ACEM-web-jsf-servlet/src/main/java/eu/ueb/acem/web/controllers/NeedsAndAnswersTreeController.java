@@ -22,8 +22,9 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
+
 import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -93,15 +94,11 @@ AbstractContextAwareController {
 	 */
 	private void createTree(Besoin need, TreeNode rootNode) {
 		// We create the root node
-		TreeNode newNode = new DefaultTreeNode(TREE_NODE_TYPE_NEED_LEAF,
-				new TreeNodeData(need.getId(), need.getName(), "Need"),
-				rootNode);
+		TreeNode newNode = new DefaultTreeNode(TREE_NODE_TYPE_NEED_LEAF, new TreeNodeData(need.getId(), need.getName(), "Need"), rootNode);
 		// We look for children and recursively create them too
-		Set<Besoin> associatedNeeds = needsAndAnswersService
-				.getAssociatedNeedsOf(need);
+		Set<Besoin> associatedNeeds = needsAndAnswersService.getAssociatedNeedsOf(need);
 		if (associatedNeeds.size() > 0) {
-			((DefaultTreeNode) newNode)
-			.setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS);
+			((DefaultTreeNode) newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS);
 			for (Besoin besoinChild : associatedNeeds) {
 				createTree(besoinChild, newNode);
 			}
@@ -110,16 +107,12 @@ AbstractContextAwareController {
 		// NOTE : this is a business-level constraint, technically we could
 		// display Needs and Answers as children of a Need node.
 		else {
-			Set<Reponse> answers = needsAndAnswersService
-					.getAssociatedAnswersOf(need);
+			Set<Reponse> answers = needsAndAnswersService.getAssociatedAnswersOf(need);
 			if (answers.size() > 0) {
-				((DefaultTreeNode) newNode)
-				.setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
+				((DefaultTreeNode) newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
 				need.setAnswers(answers);
 				for (Reponse answer : answers) {
-					new DefaultTreeNode(TREE_NODE_TYPE_ANSWER_LEAF,
-							new TreeNodeData(answer.getId(), answer.getName(),
-									"Answer"), newNode);
+					new DefaultTreeNode(TREE_NODE_TYPE_ANSWER_LEAF, new TreeNodeData(answer.getId(), answer.getName(), "Answer"), newNode);
 				}
 			}
 		}
@@ -141,40 +134,36 @@ AbstractContextAwareController {
 		this.selectedNode = selectedNode;
 	}
 
-	public void displaySelectedSingle() {
+	public void displaySelectedNodeInfo() {
 		if (selectedNode != null) {
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-					"Selected", selectedNode.getData().toString());
-			FacesContext.getCurrentInstance().addMessage(null, message);
+			showMessageToUser(FacesMessage.SEVERITY_INFO, "Selected", selectedNode.getData().toString());
 		}
 	}
 
+	private void showMessageToUser(Severity severity, String summary, String details) {
+		FacesMessage facesMessage = new FacesMessage(severity, summary, details);
+		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	}
+	
 	public void associateNeedWithSelectedNode() {
-		logger.info("entering addChildToSelectedNode, selectedNode={}",
-				(TreeNodeData) selectedNode.getData());
-		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
-				getString("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL"), "Need");
+		logger.info("entering addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
+		TreeNode newNode = editableTreeBean.addChild(selectedNode, null, getString("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL"), "Need");
 		((DefaultTreeNode) selectedNode).setType("NeedWithAssociatedNeeds");
 		setSelectedNode(newNode);
 		saveTreeNode(newNode);
 		expandOnlyOneNode(newNode);
-		logger.info("leaving addChildToSelectedNode, selectedNode={}",
-				(TreeNodeData) selectedNode.getData());
+		logger.info("leaving addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.info("------");
 	}
 
 	public void associateAnswerWithSelectedNode() {
-		logger.info("entering associateAnswerToSelectedNode, selectedNode={}",
-				(TreeNodeData) selectedNode.getData());
-		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
-				getString("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL"), "Answer");
-		((DefaultTreeNode) selectedNode)
-		.setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
+		logger.info("entering associateAnswerToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
+		TreeNode newNode = editableTreeBean.addChild(selectedNode, null, getString("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL"), "Answer");
+		((DefaultTreeNode) selectedNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
 		setSelectedNode(newNode);
 		saveTreeNode(newNode);
 		expandOnlyOneNode(newNode);
-		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}",
-				(TreeNodeData) selectedNode.getData());
+		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.info("------");
 	}
 
@@ -182,41 +171,34 @@ AbstractContextAwareController {
 		logger.info("entering deleteSelectedNode, selectedNode={}",
 				(TreeNodeData) selectedNode.getData());
 		if (selectedNode != null) {
-			// Business-level constraint : we don't make possible to recursively
-			// delete nodes
-			if (selectedNode.getChildCount() == 0) {
-				if (needsAndAnswersService
-						.deleteNeed(((TreeNodeData) selectedNode.getData())
-								.getId())) {
+			// Business-level constraint : we don't make possible to recursively delete nodes
+			if (selectedNode.isLeaf()) {
+				if (needsAndAnswersService.deleteNeed(((TreeNodeData) selectedNode.getData()).getId())) {
 					// If the selectedNode was the only child, we must change
 					// back the parent's type to "Need", so that the good 
 					// ContextMenu will be displayed
 					if (selectedNode.getParent().getChildCount() == 1) {
-						if ((selectedNode.getParent().getType()
-								.equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS))
-								|| (selectedNode.getParent().getType()
-										.equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS))) {
+						if ((selectedNode.getParent().getType().equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS))
+							||
+							(selectedNode.getParent().getType().equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS))) {
 							((DefaultTreeNode) selectedNode.getParent()).setType("Need");
 						}
 					}
 					selectedNode.getParent().getChildren().remove(selectedNode);
 					selectedNode.setParent(null);
 					this.selectedNode = null;
-				} else {
-					FacesMessage message = new FacesMessage(
-							FacesMessage.SEVERITY_ERROR,
+				}
+				else {
+					showMessageToUser(FacesMessage.SEVERITY_ERROR,
 							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE"),
 							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS"));
-					RequestContext.getCurrentInstance().update("messages");
-					FacesContext.getCurrentInstance().addMessage(null, message);
+					logger.info("The service failed to delete the node.");
 				}
-			} else {
-				FacesMessage message = new FacesMessage(
-						FacesMessage.SEVERITY_ERROR,
+			}
+			else {
+				showMessageToUser(FacesMessage.SEVERITY_ERROR,
 						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE"),
 						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS"));
-				RequestContext.getCurrentInstance().update("messages");
-				FacesContext.getCurrentInstance().addMessage(null, message);
 				logger.info("The selected node has children, cannot delete!");
 			}
 		}
@@ -228,56 +210,46 @@ AbstractContextAwareController {
 		TreeNode dragNode = event.getDragNode();
 		TreeNode dropNode = event.getDropNode();
 		int dropIndex = event.getDropIndex();
+
 		TreeNodeData dragNodeData = (TreeNodeData) dragNode.getData();
 		TreeNodeData dropNodeData = (TreeNodeData) dropNode.getData();
 
-		needsAndAnswersService.changeParentOfNeed(dragNodeData.getId(),
-				dropNodeData.getId());
+		needsAndAnswersService.changeParentOfNeed(dragNodeData.getId(), dropNodeData.getId());
 
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				"Dragged " + dragNodeData, "Dropped on " + dropNodeData
-				+ " at " + dropIndex);
-		FacesContext.getCurrentInstance().addMessage(null, message);
+		showMessageToUser(FacesMessage.SEVERITY_INFO, "Dragged "+dragNodeData, "Dropped on "+dropNodeData+" at "+dropIndex);
 	}
 
 	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
 		if (treeNodeData.getConcept().equals("Answer")) {
-			needsAndAnswersService.saveAnswerName(treeNodeData.getId(),
-					treeNodeData.getLabel());
+			needsAndAnswersService.saveAnswerName(treeNodeData.getId(), treeNodeData.getLabel());
 		}
 		else if (treeNodeData.getConcept().equals("Need")) {
-			needsAndAnswersService.saveNeedName(treeNodeData.getId(),
-					treeNodeData.getLabel());
+			needsAndAnswersService.saveNeedName(treeNodeData.getId(), treeNodeData.getLabel());
 		}
 	}
 
-	private void saveTreeNode(TreeNode treeNode) {
-		if (treeNode != null) {
-			TreeNodeData treeNodeData = (TreeNodeData) treeNode.getData();
+	private void saveTreeNode(TreeNode treeNodeToSave) {
+		if (treeNodeToSave != null) {
+			TreeNodeData treeNodeData = (TreeNodeData) treeNodeToSave.getData();
 			logger.info("entering saveTreeNode({})", treeNodeData);
-			TreeNodeData parentNodeData = (TreeNodeData) treeNode.getParent()
-					.getData();
+			TreeNodeData parentNodeData = (TreeNodeData) treeNodeToSave.getParent().getData();
 			switch (treeNodeData.getConcept()) {
 			case "Need":
-				Besoin savedNeed = needsAndAnswersService.createOrUpdateNeed(
-						treeNodeData.getId(), treeNodeData.getLabel(),
-						parentNodeData.getId());
+				Besoin savedNeed = needsAndAnswersService.createOrUpdateNeed(treeNodeData.getId(), treeNodeData.getLabel(), parentNodeData.getId());
 				treeNodeData.setId(savedNeed.getId());
-				setSelectedNode(treeNode);
+				setSelectedNode(treeNodeToSave);
 				break;
 			case "Answer":
-				Reponse savedAnswer = needsAndAnswersService
-				.createOrUpdateAnswer(treeNodeData.getId(),
-						treeNodeData.getLabel(), parentNodeData.getId());
+				Reponse savedAnswer = needsAndAnswersService.createOrUpdateAnswer(treeNodeData.getId(), treeNodeData.getLabel(), parentNodeData.getId());
 				treeNodeData.setId(savedAnswer.getId());
-				setSelectedNode(treeNode);
+				setSelectedNode(treeNodeToSave);
 				break;
 			default:
-				logger.info("treeNode has an unknown concept value: {}",
-						treeNodeData.getConcept());
+				logger.info("treeNode has an unknown concept value: {}", treeNodeData.getConcept());
 				break;
 			}
-		} else {
+		}
+		else {
 			logger.info("entering saveTreeNode with null parameter, we do nothing.");
 		}
 		logger.info("leaving saveTreeNode");
