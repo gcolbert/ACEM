@@ -54,8 +54,7 @@ AbstractContextAwareController {
 	/**
 	 * For Logging.
 	 */
-	private final static Logger logger = LoggerFactory
-			.getLogger(NeedsAndAnswersTreeController.class);
+	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeController.class);
 
 	private static final String TREE_NODE_TYPE_NEED_LEAF = "Need";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS = "NeedWithAssociatedNeeds";

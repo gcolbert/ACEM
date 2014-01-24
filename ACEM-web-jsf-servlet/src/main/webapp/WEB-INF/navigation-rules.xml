@@ -10,7 +10,7 @@
 -->
 
 <faces-config>
-
+<!-- 
 	<navigation-rule>
 		<description>Accueil</description>
 		<navigation-case>
@@ -84,5 +84,5 @@
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
- 
+  -->
 </faces-config>

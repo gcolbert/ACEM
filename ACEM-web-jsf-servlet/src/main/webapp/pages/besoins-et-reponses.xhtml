@@ -8,19 +8,21 @@
 	<ui:define name="content">
 		<ui:debug hotkey="1"
 			rendered="#{facesContext.application.projectStage == 'Development'}" />
-		<p:panel header="#{msgs['NEEDS_AND_ANSWERS.TREE.HEADER']}">
-			<h:form id="formTree">
+		<p:tooltip />
+		<h:form id="formTree">
+			<p:panel header="#{msgs['NEEDS_AND_ANSWERS.TREE.HEADER']}">
 
 				<p:growl id="messages" showDetail="true" />
 
-				<p:contextMenu for="treeSingle"	nodeType="default">
+				<p:contextMenu for="needsAndAnswersTree" nodeType="default">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-						update="treeSingle :formTree:messages"
+						update="needsAndAnswersTree :formTree:messages"
 						action="#{needsAndAnswersTreeController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 				</p:contextMenu>
-				<p:contextMenu for="treeSingle"	nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_LEAF}">
+				<p:contextMenu for="needsAndAnswersTree"
+					nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_LEAF}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update=":formTree:messages"
@@ -28,21 +30,22 @@
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-						update="treeSingle :formTree:messages"
+						update="needsAndAnswersTree :formTree:messages"
 						action="#{needsAndAnswersTreeController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
-						update="treeSingle :formTree:messages"
+						update="needsAndAnswersTree :formTree:messages"
 						action="#{needsAndAnswersTreeController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
-						update="treeSingle :formTree:messages"
+						update="needsAndAnswersTree :formTree:messages"
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
-						icon="ui-icon-minus" />
+						icon="ui-icon-close" />
 				</p:contextMenu>
-				<p:contextMenu for="treeSingle" nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
+				<p:contextMenu for="needsAndAnswersTree"
+					nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update=":formTree:messages"
@@ -50,11 +53,12 @@
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-						update="treeSingle :formTree:messages"
+						update="needsAndAnswersTree :formTree:messages"
 						action="#{needsAndAnswersTreeController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 				</p:contextMenu>
-				<p:contextMenu for="treeSingle" nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
+				<p:contextMenu for="needsAndAnswersTree"
+					nodeType="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update=":formTree:messages"
@@ -62,11 +66,12 @@
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
-						update="treeSingle :formTree:messages"
+						update="needsAndAnswersTree :formTree:messages"
 						action="#{needsAndAnswersTreeController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 				</p:contextMenu>
-				<p:contextMenu for="treeSingle" nodeType="#{needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF}">
+				<p:contextMenu for="needsAndAnswersTree"
+					nodeType="#{needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF}">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update=":formTree:messages"
@@ -74,38 +79,26 @@
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
-						update="treeSingle :formTree:messages"
+						update="needsAndAnswersTree :formTree:messages"
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
-						icon="ui-icon-minus" />
+						icon="ui-icon-trash" />
 				</p:contextMenu>
 
-				<p:tree id="treeSingle" dynamic="true"
-					value="#{needsAndAnswersTreeController.treeRoot}" var="treeNodeData"
-					selectionMode="single"
+				<p:tree id="needsAndAnswersTree" dynamic="true"
+					value="#{needsAndAnswersTreeController.treeRoot}"
+					var="treeNodeData" selectionMode="single"
 					selection="#{needsAndAnswersTreeController.selectedNode}"
 					draggable="true" droppable="true" dragdropScope="demo"
 					update="contextMenuForNeeds">
 					<p:ajax event="dragdrop"
 						listener="#{needsAndAnswersTreeController.onDragDrop}"
-						update="treeSingle :formTree:messages" />
-					<!-- 
-					<p:ajax event="expand"
-						listener="#{needsAndAnswersTreeController.onNodeExpand}"
-						update="treeSingle :formTree:messages" />
-					<p:ajax event="collapse"
-						listener="#{needsAndAnswersTreeController.onNodeCollapse}"
-						update="treeSingle :formTree:messages" />
-					 -->
-					<!-- 
-					<p:ajax event="select"
-						listener="#{needsAndAnswersTreeController.onNodeSelect}"
-						update="treeSingle :formTree:messages" />
-					 -->
+						update="needsAndAnswersTree :formTree:messages" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
-					<p:treeNode type="#{needsAndAnswersTreeController.treeNodeType_NEED_LEAF}"
-								styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode
+						type="#{needsAndAnswersTreeController.treeNodeType_NEED_LEAF}"
+						styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
 								listener="#{needsAndAnswersTreeController.onLabelSave(treeNodeData)}"
@@ -113,8 +106,9 @@
 							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
 					</p:treeNode>
-					<p:treeNode	type="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}"
-								styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode
+						type="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}"
+						styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
 								listener="#{needsAndAnswersTreeController.onLabelSave(treeNodeData)}"
@@ -122,8 +116,9 @@
 							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
 					</p:treeNode>
-					<p:treeNode type="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}"
-								styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode
+						type="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}"
+						styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
 								listener="#{needsAndAnswersTreeController.onLabelSave(treeNodeData)}"
@@ -131,42 +126,62 @@
 							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
 					</p:treeNode>
-					<p:treeNode type="#{needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF}"
-								styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode
+						type="#{needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF}"
+						styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
 								listener="#{needsAndAnswersTreeController.onLabelSave(treeNodeData)}"
 								update="@this" />
 							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
-						<!-- 
-						<p:commandLink id="ajax" update="formExamplesOfScenarios">
-							<h:outputText value="Go below!" />
+						<p:commandLink
+							oncomplete="PrimeFaces.scrollTo('formTable')"
+							action="#{needsAndAnswersTableController.setSelectedAnswer(treeNodeData.id)}"
+							update=":formTable">
+							<h:outputText
+								id="viewScenariosBtn"
+								styleClass="ui-icon ui-icon-lightbulb"
+								style="display:inline-block; vertical-align:middle;" />
+							<p:tooltip value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.VIEW_SCENARIOS_EXAMPLES']}" for="viewScenariosBtn"/>
 						</p:commandLink>
-						 -->
+						<h:link outcome="ressources">
+							<f:param name="resourceId" value="#{treeNodeData.id}" />
+							<h:outputText id="goToResourceBtn"
+								styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+								style="display:inline-block; vertical-align:middle;" />
+							<p:tooltip value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_RESOURCE']}" for="goToResourceBtn"/>
+						</h:link>
+						<h:link value="Go to next page" outcome="ressources" />
 					</p:treeNode>
 				</p:tree>
 
-			</h:form>
-		</p:panel>
-		<p:panel
-			header="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']}">
-			<h:form id="formExamplesOfScenarios">
-				<h:outputText id="selectedAnswerLabel"/>
-				<!-- 
-				<p:datatable var="scenario" value="#{needsAndAnswersTableController.scenariosExamples}">
-					<p:column headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
-						<h:outputText value="#{scenario.title}" />
-					</p:column>
-					<p:column headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.AUTHOR']}">
-						<h:outputText value="#{scenario.author}" />
-					</p:column>
-					<p:column headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.RESOURCES']}">
-						<h:outputText value="#{scenario.resources}" />
-					</p:column>
-				</p:datatable>
-				 -->
-			</h:form>
-		</p:panel>
+			</p:panel>
+		</h:form>
+
+		<h:form id="formTable">
+			<p:outputPanel id="examplesOfScenariosPanel">
+				<p:panel header="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']} «#{needsAndAnswersTableController.selectedAnswer.name}»"
+						rendered="#{needsAndAnswersTableController.selectedAnswer != null}">
+					<p:dataTable
+						id="examplesOfScenariosTable"
+						value="#{needsAndAnswersTableController.scenariosRelatedToSelectedAnswer}"
+						var="tableEntry">
+						<p:column
+							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
+							<h:outputText value="#{tableEntry.title}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.AUTHOR']}">
+							<h:outputText value="#{tableEntry.author}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.RESOURCES']}">
+							<h:outputText value="#{tableEntry.resources}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</p:outputPanel>
+		</h:form>
 	</ui:define>
 </ui:composition>

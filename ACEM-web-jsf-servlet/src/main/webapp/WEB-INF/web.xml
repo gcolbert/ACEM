@@ -45,16 +45,6 @@
 		<param-value>/WEB-INF/esup-commons.taglib.xml 
 		</param-value>
 	</context-param>
-	<filter>
-		<filter-name>UrlRewriteFilter</filter-name>
-		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>UrlRewriteFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-	</filter-mapping>
 	<servlet>
 		<description> The main servlet of the application. This class inherits
 			from the MyFaces implementation and handles exceptions thrown for
@@ -118,8 +108,8 @@
 	<welcome-file-list>
 		<welcome-file>pages/accueil.xhtml</welcome-file>
 	</welcome-file-list>
-	<error-page>  
-		<error-code>404</error-code>  
-		<location>/pages/page-not-found.xhtml</location>  
-	</error-page>  	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/pages/page-not-found.xhtml</location>
+	</error-page>
 </web-app>

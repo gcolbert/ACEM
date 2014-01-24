@@ -18,12 +18,15 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.web.viewbeans.TableBean;
 
@@ -40,7 +43,6 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 	/**
 	 * For Logging.
 	 */
-	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTableController.class);
 
 	@Autowired
@@ -49,8 +51,35 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 	@Autowired
 	private TableBean tableBean;
 
+	private Reponse selectedAnswer;
+
 	public NeedsAndAnswersTableController() {
+		tableBean = new TableBean();
+		selectedAnswer = null;
 	}
 
+	public List<TableBean.TableEntry> getScenariosRelatedToSelectedAnswer() {
+		logger.info("entering getScenariosRelatedToSelectedAnswer");
+		/*
+		Set<Besoin> needs = needsAndAnswersService.getScenariosRelatedToAnswer(answerId);
+		logger.info("Found {} needs at root of tree.", needs.size());
+		for (Besoin need : needs) {
+			logger.info("need = {}", need.getName());
+			createTree(need, editableTreeBean.getVisibleRoot());
+		}
+		*/
+		logger.info("leaving getScenariosRelatedToSelectedAnswer");
+		logger.info("------");
+		return tableBean.getTableEntries();
+	}
+
+	public void setSelectedAnswer(Long id) {
+		selectedAnswer = needsAndAnswersService.getReponseDAO().retrieveById(id);
+		logger.info("setSelectedAnswer({})", selectedAnswer.getName());
+	}
+
+	public Reponse getSelectedAnswer() {
+		return selectedAnswer;
+	}
 
 }

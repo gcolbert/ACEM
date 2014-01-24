@@ -1,0 +1,46 @@
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+	<url-mapping id="accueil">
+		<pattern value="/accueil" />
+		<view-id value="/pages/accueil.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="besoins-et-reponses">
+		<pattern value="/besoins-et-reponses" />
+		<view-id value="/pages/besoins-et-reponses.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="ressources">
+		<pattern value="/ressources" />
+		<view-id value="/pages/ressources.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="ressources-param">
+		<pattern value="/ressources/{ressourceId}" />
+		<view-id value="/pages/ressources.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="services-supports">
+		<pattern value="/services-supports" />
+		<view-id value="/pages/services-supports.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="mes-scenarios">
+		<pattern value="/mes-scenarios" />
+		<view-id value="/pages/mes-scenarios.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="mes-enseignements">
+		<pattern value="/mes-enseignements" />
+		<view-id value="/pages/mes-enseignements.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="bibliotheque-de-scenarios">
+		<pattern value="/bibliotheque-de-scenarios" />
+		<view-id value="/pages/bibliotheque-de-scenarios.xhtml" />
+	</url-mapping>
+
+</pretty-config>

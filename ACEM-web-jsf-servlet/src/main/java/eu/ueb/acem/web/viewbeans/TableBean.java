@@ -29,26 +29,84 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author Grégoire Colbert @since 2014-01-10
- * @param <T>
  *
  */
 @Component("tableBean")
 @Scope("view")
 public class TableBean  implements Serializable {
-	
+
 	/**
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(TableBean.class);
-	
+
 	private static final long serialVersionUID = -3164178023755035995L;
-	
-	private List<Object> columns;
-	private List<Object> data;
-	
+
+	private List<TableEntry> tableEntries;
+
 	public TableBean() {
-		data = new ArrayList<Object>();
+		tableEntries = new ArrayList<TableEntry>();
+
+		List<String> scenario1resources = new ArrayList<String>();
+		scenario1resources.add("Tableau blanc interactif");
+		TableEntry scenario1 = new TableEntry("Scénario de test n°1", "Grégoire Colbert", scenario1resources);
+		tableEntries.add(scenario1);
+
+		List<String> scenario2resources = new ArrayList<String>();
+		scenario2resources.add("Tableau blanc interactif");
+		scenario2resources.add("Boitiers de vote");
+		TableEntry scenario2 = new TableEntry("Scénario de test n°2", "Grégoire Colbert", scenario2resources);
+		tableEntries.add(scenario2);
+	}
+
+	public List<TableEntry> getTableEntries() {
+		return tableEntries;
+	}
+
+	public void setTableEntries(List<TableEntry> tableEntries) {
+		this.tableEntries = tableEntries;
 	}
 	
+	public static class TableEntry implements Serializable {
+
+		private static final long serialVersionUID = 5305081640505801043L;
+
+		private String title;
+
+		private String author;
+
+		private List<String> resources;
+
+		public TableEntry(String title, String author, List<String> resources) {
+			this.title = title;
+			this.author = author;
+			this.resources = resources;
+		}
+		
+		public String getTitle() {
+			return title;
+		}
+
+		public void setTitle(String title) {
+			this.title = title;
+		}
+
+		public String getAuthor() {
+			return author;
+		}
+
+		public void setAuthor(String author) {
+			this.author = author;
+		}
+
+		public List<String> getResources() {
+			return resources;
+		}
+
+		public void setResources(List<String> resources) {
+			this.resources = resources;
+		}
+	}
+
 }

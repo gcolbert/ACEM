@@ -81,7 +81,7 @@ public class EditableTreeBean implements Serializable {
 		private static final long serialVersionUID = -5623188924862380160L;
 
 		private Long id = null;
-
+		
         private String label;
         
         private String concept;
