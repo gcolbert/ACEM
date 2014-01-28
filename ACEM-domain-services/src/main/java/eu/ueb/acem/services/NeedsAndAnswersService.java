@@ -20,7 +20,6 @@ package eu.ueb.acem.services;
 
 import java.util.Set;
 
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 
@@ -30,15 +29,31 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
  */
 public interface NeedsAndAnswersService {
 
-	public DAO<Long, Besoin> getBesoinDAO();
+	public Long countNeeds();
 
-	public DAO<Long, Reponse> getReponseDAO();
+	public Besoin createNeed(String name);
 	
+	public Besoin retrieveNeed(Long id);
+
+	public Besoin updateNeed(Besoin need);
+
+	public Boolean deleteNeed(Long id);
+
+	public void deleteAllNeeds();
+	
+	public Long countAnswers();
+
+	public Reponse createAnswer(String name);
+
+	public Reponse retrieveAnswer(Long id);
+	
+	public Reponse updateAnswer(Reponse answer);
+
+	public void deleteAllAnswers();
+
 	public Set<Besoin> getAssociatedNeedsOf(Besoin need);
 
 	public Besoin createOrUpdateNeed(Long id, String name, Long idParent);
-
-	public Boolean deleteNeed(Long id);
 
 	public void changeParentOfNeed(Long id, Long idNewParent);
 

@@ -74,7 +74,7 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 	}
 
 	public void setSelectedAnswer(Long id) {
-		selectedAnswer = needsAndAnswersService.getReponseDAO().retrieveById(id);
+		selectedAnswer = needsAndAnswersService.retrieveAnswer(id);
 		logger.info("setSelectedAnswer({})", selectedAnswer.getName());
 	}
 

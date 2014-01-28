@@ -6,10 +6,12 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+//@Repository("genericDAO")
 public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<Long, E> {
 
-	@Autowired
+	//@Autowired
 	protected GenericRepository<N> repository;
 
 	@Override

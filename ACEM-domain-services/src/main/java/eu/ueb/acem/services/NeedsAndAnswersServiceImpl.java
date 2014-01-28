@@ -27,9 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.BesoinDAO;
-import eu.ueb.acem.dal.bleu.BesoinDAOv2;
 import eu.ueb.acem.dal.bleu.ReponseDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
@@ -59,15 +57,57 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public DAO<Long, Besoin> getBesoinDAO() {
-		return besoinDAO;
+	public Besoin createNeed(String name) {
+		return besoinDAO.create(new BesoinNode(name));
 	}
 
 	@Override
-	public DAO<Long, Reponse> getReponseDAO() {
-		return reponseDAO;
+	public Besoin retrieveNeed(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
+	@Override
+	public Besoin updateNeed(Besoin need) {
+		return besoinDAO.update(need);
+	}
+
+	@Override
+	public void deleteAllNeeds() {
+		besoinDAO.deleteAll();
+	}
+
+	@Override
+	public Long countNeeds() {
+		return besoinDAO.count();
+	}
+
+	@Override
+	public Reponse createAnswer(String name) {
+		return reponseDAO.create(new ReponseNode(name));
+	}
+	
+	@Override
+	public Reponse retrieveAnswer(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Reponse updateAnswer(Reponse answer) {
+		return reponseDAO.update(answer);
+	}
+
+	@Override
+	public void deleteAllAnswers() {
+		reponseDAO.deleteAll();
+	}
+
+	@Override
+	public Long countAnswers() {
+		return reponseDAO.count();
+	}
+	
 	@Override
 	public Set<Besoin> getAssociatedNeedsOf(Besoin need) {
 		return besoinDAO.retrieveAssociatedNeedsOf(need);

@@ -42,7 +42,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  * @author Grégoire Colbert @since 2013-11-20
  *
  */
-//@Repository("besoinDAOv2")
+@Repository("besoinDAOv2")
 public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements DAO<Long, Besoin> {
 
 	/**
@@ -51,7 +51,7 @@ public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements
 	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(BesoinDAOv2.class);
 
-	//@Autowired
+	@Autowired
 	private BesoinRepository repository;
 
 	public BesoinDAOv2() {
