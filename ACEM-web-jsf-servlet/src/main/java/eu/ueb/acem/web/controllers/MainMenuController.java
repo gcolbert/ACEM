@@ -31,9 +31,9 @@ import org.springframework.stereotype.Controller;
  * @author Grégoire Colbert @since 2014-01-22
  * 
  */
-@Controller("navigationController")
+@Controller("mainMenuController")
 @Scope("session")
-public class NavigationController implements Serializable {
+public class MainMenuController implements Serializable {
 
 	private static final long serialVersionUID = -7218568142478270516L;
 
@@ -41,7 +41,7 @@ public class NavigationController implements Serializable {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(NavigationController.class);
+	private final static Logger logger = LoggerFactory.getLogger(MainMenuController.class);
 
 	public String getMenuitemStyleClass(String page) {
 		String styleClass = "";

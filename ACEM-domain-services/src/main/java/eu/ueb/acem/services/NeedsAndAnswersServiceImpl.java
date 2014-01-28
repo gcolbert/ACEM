@@ -48,10 +48,10 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
 
 	@Autowired
-	BesoinDAO besoinDAO;
+	BesoinDAO needDAO;
 
 	@Autowired
-	ReponseDAO reponseDAO;
+	ReponseDAO answerDAO;
 
 	public NeedsAndAnswersServiceImpl() {
 
@@ -59,109 +59,108 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	public Long countNeeds() {
-		return besoinDAO.count();
+		return needDAO.count();
 	}
 
 	@Override
 	public Besoin createNeed(String name) {
-		return besoinDAO.create(new BesoinNode(name));
+		return needDAO.create(new BesoinNode(name));
 	}
 
 	@Override
 	public Besoin retrieveNeed(Long id) {
-		return besoinDAO.retrieveById(id);
+		return needDAO.retrieveById(id);
 	}
 
 	@Override
 	public Besoin updateNeed(Besoin need) {
-		return besoinDAO.update(need);
+		return needDAO.update(need);
 	}
 
 	@Override
 	@Transactional
 	public Boolean deleteNeed(Long id) {
-		if (besoinDAO.exists(id)) {
-			besoinDAO.delete(besoinDAO.retrieveById(id));
+		if (needDAO.exists(id)) {
+			needDAO.delete(needDAO.retrieveById(id));
 		}
-		return (!besoinDAO.exists(id));
+		return (!needDAO.exists(id));
 	}
 
 	@Override
 	public void deleteAllNeeds() {
-		besoinDAO.deleteAll();
+		needDAO.deleteAll();
 	}
 
 	@Override
 	public Long countAnswers() {
-		return reponseDAO.count();
+		return answerDAO.count();
 	}
 
 	@Override
 	public Reponse createAnswer(String name) {
-		return reponseDAO.create(new ReponseNode(name));
+		return answerDAO.create(new ReponseNode(name));
 	}
 
 	@Override
 	public Reponse retrieveAnswer(Long id) {
-		return reponseDAO.retrieveById(id);
+		return answerDAO.retrieveById(id);
 	}
 
 	@Override
 	public Reponse updateAnswer(Reponse answer) {
-		return reponseDAO.update(answer);
+		return answerDAO.update(answer);
 	}
 
 	@Override
 	@Transactional
 	public Boolean deleteAnswer(Long id) {
-		if (reponseDAO.exists(id)) {
-			reponseDAO.delete(reponseDAO.retrieveById(id));
+		if (answerDAO.exists(id)) {
+			answerDAO.delete(answerDAO.retrieveById(id));
 		}
-		return (!reponseDAO.exists(id));
+		return (!answerDAO.exists(id));
 	}
 
 	@Override
 	public void deleteAllAnswers() {
-		reponseDAO.deleteAll();
+		answerDAO.deleteAll();
 	}
 
 	@Override
 	public Collection<Besoin> getAssociatedNeedsOf(Besoin need) {
-		return besoinDAO.retrieveAssociatedNeedsOf(need);
-	}
-
-	@Override
-	public Collection<Reponse> getAssociatedAnswersOf(Besoin need) {
-		return besoinDAO.retrieveAssociatedAnswersOf(need);
-	}
-
-	@Override
-	public Collection<Scenario> getScenariosRelatedToAnswer(Long id) {
-		return reponseDAO.retrieveScenariosRelatedToAnswer(id);
+		return needDAO.retrieveAssociatedNeedsOf(need);
 	}
 
 	@Override
 	@Transactional
 	public Besoin createOrUpdateNeed(Long id, String name, Long idParent) {
 		Besoin need = null;
-		if (besoinDAO.exists(id)) {
-			need = besoinDAO.retrieveById(id);
+		if (needDAO.exists(id)) {
+			need = needDAO.retrieveById(id);
 			if (need.getName() != name) {
 				need.setName(name);
-				need = besoinDAO.update(need);
+				need = needDAO.update(need);
 			}
 		} else {
-			need = besoinDAO.create(new BesoinNode(name));
+			need = needDAO.create(new BesoinNode(name));
 		}
-		if (besoinDAO.exists(idParent)) {
-			Besoin parent = besoinDAO.retrieveById(idParent);
+		if (needDAO.exists(idParent)) {
+			Besoin parent = needDAO.retrieveById(idParent);
 			if (!parent.getChildren().contains(need)) {
 				need.addParent(parent);
-				need = besoinDAO.update(need);
-				parent = besoinDAO.update(parent);
+				need = needDAO.update(need);
+				parent = needDAO.update(parent);
 			}
 		}
 		return need;
+	}
+
+	@Override
+	public void saveNeedName(Long id, String newName) {
+		if (needDAO.exists(id)) {
+			Besoin need = needDAO.retrieveById(id);
+			need.setName(newName);
+			need = needDAO.update(need);
+		}
 	}
 
 	@Override
@@ -171,7 +170,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		// The "visible root node" has id=null, and we must not allow the user
 		// to move it
 		if (id != null) {
-			Besoin need = besoinDAO.retrieveById(id);
+			Besoin need = needDAO.retrieveById(id);
 			logger.info("Need is retrieved");
 			if (need != null) {
 				logger.info("Need is not null");
@@ -185,7 +184,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 							iterator.remove();
 							logger.info("Need has parent removed");
 						}
-						need = besoinDAO.update(need);
+						need = needDAO.update(need);
 						logger.info("Need is updated");
 					}
 				} else {
@@ -193,12 +192,12 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 				}
 			}
 			if (idNewParent != null) {
-				Besoin newParent = besoinDAO.retrieveById(idNewParent);
+				Besoin newParent = needDAO.retrieveById(idNewParent);
 				logger.info("Service changeParentOfNeed, newParent={}", newParent);
 				if (newParent != null) {
 					newParent.addChild(need);
-					newParent = besoinDAO.update(newParent);
-					need = besoinDAO.update(need);
+					newParent = needDAO.update(newParent);
+					need = needDAO.update(need);
 				}
 			}
 		}
@@ -206,40 +205,41 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
+	public Collection<Reponse> getAssociatedAnswersOf(Besoin need) {
+		return needDAO.retrieveAssociatedAnswersOf(need);
+	}
+
+	@Override
 	@Transactional
 	public Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed) {
 		Reponse answer = null;
-		if (reponseDAO.exists(id)) {
-			answer = reponseDAO.retrieveById(id);
+		if (answerDAO.exists(id)) {
+			answer = answerDAO.retrieveById(id);
 			answer.setName(name);
-			answer = reponseDAO.update(answer);
+			answer = answerDAO.update(answer);
 		} else {
-			answer = reponseDAO.create(new ReponseNode(name));
+			answer = answerDAO.create(new ReponseNode(name));
 		}
-		if (besoinDAO.exists(idAssociatedNeed)) {
-			Besoin associatedNeed = besoinDAO.retrieveById(idAssociatedNeed);
+		if (needDAO.exists(idAssociatedNeed)) {
+			Besoin associatedNeed = needDAO.retrieveById(idAssociatedNeed);
 			associatedNeed.addAnswer(answer);
-			besoinDAO.update(associatedNeed);
-			reponseDAO.update(answer);
+			needDAO.update(associatedNeed);
+			answerDAO.update(answer);
 		}
 		return answer;
 	}
 
 	@Override
-	public void saveNeedName(Long id, String newName) {
-		if (besoinDAO.exists(id)) {
-			Besoin need = besoinDAO.retrieveById(id);
-			need.setName(newName);
-			need = besoinDAO.update(need);
+	public void saveAnswerName(Long id, String newName) {
+		if (answerDAO.exists(id)) {
+			Reponse answer = answerDAO.retrieveById(id);
+			answer.setName(newName);
+			answer = answerDAO.update(answer);
 		}
 	}
 
 	@Override
-	public void saveAnswerName(Long id, String newName) {
-		if (reponseDAO.exists(id)) {
-			Reponse answer = reponseDAO.retrieveById(id);
-			answer.setName(newName);
-			answer = reponseDAO.update(answer);
-		}
+	public Collection<Scenario> getScenariosRelatedToAnswer(Long id) {
+		return answerDAO.retrieveScenariosRelatedToAnswer(id);
 	}
 }

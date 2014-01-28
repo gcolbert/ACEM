@@ -70,18 +70,13 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 		for (Scenario scenario : scenarios) {
 			logger.info("scenario = {}", scenario.getName());
 			Collection<Etape> steps = scenario.getSteps();
-			if (steps != null) {
-				Collection<Ressource> resources = new HashSet<Ressource>();
-				for (Etape step : steps) {
-					for (Ressource resource : step.getResources()) {
-						resources.add(resource);
-					}
+			Collection<Ressource> resources = new HashSet<Ressource>();
+			for (Etape step : steps) {
+				for (Ressource resource : step.getResources()) {
+					resources.add(resource);
 				}
-				tableEntries.add(new TableEntry(scenario.getName(), scenario.getAuthor(), resources));
 			}
-			else {
-				tableEntries.add(new TableEntry(scenario.getName(), scenario.getAuthor(), null));
-			}
+			tableEntries.add(new TableEntry(scenario.getName(), scenario.getAuthor(), resources));
 		}
 		logger.info("leaving getScenariosRelatedToSelectedAnswer");
 		logger.info("------");

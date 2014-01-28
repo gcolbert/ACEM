@@ -59,9 +59,9 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 	 * DAO for user
 	 */
 	@Autowired
-	private DAO<Enseignant, Long> enseignantDAO;
+	private DAO<Long, Enseignant> enseignantDAO;
 	@Autowired
-	private DAO<Gestionnaire, Long> gestionnaireDAO;
+	private DAO<Long, Gestionnaire> gestionnaireDAO;
 
 	/**
 	 * Bean constructor.
@@ -110,6 +110,7 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 					logger.debug("CAS authentication");
 				}
 				Personne user = new EnseignantNode(authInfo.getId());
+				user.setLogin(authInfo.getId());
 				storeToSession(authInfo, user);
 				return user;
 			}

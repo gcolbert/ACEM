@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
  * @author Grégoire Colbert @since 2013-11-26
  * 
  */
-@Repository("reponseDAO")
+@Repository("answerDAO")
 public class ReponseDAO implements DAO<Long, Reponse> {
 
 	/**

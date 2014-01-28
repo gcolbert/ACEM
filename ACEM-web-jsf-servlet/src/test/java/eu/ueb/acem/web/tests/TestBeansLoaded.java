@@ -34,6 +34,12 @@ public class TestBeansLoaded extends TestCase {
 	}
 
 	@Test
+	public void testTableBean() {
+		ApplicationContext context = ApplicationContextHolder.getContext();
+		assertTrue("Component tableBean is not loaded", context.containsBean("tableBean"));
+	}
+	
+	@Test
 	public void testNonexistentBean() {
 		ApplicationContext context = ApplicationContextHolder.getContext();
 		assertFalse(context.containsBean("testNonexistentBean"));
@@ -58,9 +64,21 @@ public class TestBeansLoaded extends TestCase {
 	}
 
 	@Test
-	public void testNavigationController() {
+	public void testMainMenuController() {
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Controller navigationController is not loaded", context.containsBean("navigationController"));
+		assertTrue("Controller mainMenuController is not loaded", context.containsBean("mainMenuController"));
 	}
 
+	@Test
+	public void testMyScenariosController() {
+		ApplicationContext context = ApplicationContextHolder.getContext();
+		assertTrue("Controller myScenariosController is not loaded", context.containsBean("myScenariosController"));
+	}
+	
+	@Test
+	public void testScenariosService() {
+		ApplicationContext context = ApplicationContextHolder.getContext();
+		assertTrue("Controller scenariosService is not loaded", context.containsBean("scenariosService"));
+	}
+	
 }

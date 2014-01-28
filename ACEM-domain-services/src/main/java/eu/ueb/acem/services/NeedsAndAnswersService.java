@@ -57,13 +57,13 @@ public interface NeedsAndAnswersService {
 
 	public Besoin createOrUpdateNeed(Long id, String name, Long idParent);
 
+	public void saveNeedName(Long id, String newName);
+	
 	public void changeParentOfNeed(Long id, Long idNewParent);
 
 	public Collection<Reponse> getAssociatedAnswersOf(Besoin need);
 
 	public Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
-
-	public void saveNeedName(Long id, String newName);
 
 	public void saveAnswerName(Long id, String newName);
 

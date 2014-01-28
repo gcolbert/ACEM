@@ -105,4 +105,16 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 		return repository.count();
 	}
 
+	public Collection<Scenario> retrieveScenariosForUser(String login) {
+		Iterable<ScenarioNode> endResults = repository.findScenariosForUser(login);
+		Collection<Scenario> collection = new HashSet<Scenario>();
+		if (endResults.iterator() != null) {
+			Iterator<ScenarioNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
+	}
+
 }

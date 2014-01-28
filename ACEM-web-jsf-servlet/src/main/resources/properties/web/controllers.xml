@@ -55,4 +55,11 @@
 		<description>A controller for the table on the "Needs and answers" page.</description>
 	</bean>
 
+
+	<bean id="myScenariosController"
+		class="eu.ueb.acem.web.controllers.MyScenariosController"
+		parent="abstractContextAwareController">
+		<description>A controller for the "My scenarios" page.</description>
+	</bean>
+
 </beans>
