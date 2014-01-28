@@ -41,6 +41,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 @Repository("besoinDAO")
 public class BesoinDAO implements DAO<Long, Besoin> {
 
+	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(BesoinDAO.class);
 
 	@Autowired
@@ -57,7 +58,6 @@ public class BesoinDAO implements DAO<Long, Besoin> {
 
 	@Override
 	public Besoin create(Besoin need) {
-		logger.debug("Persisting Besoin with name '{}'", need.getName());
 		return repository.save((BesoinNode) need);
 	}
 

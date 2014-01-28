@@ -57,6 +57,11 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
+	public Long countNeeds() {
+		return besoinDAO.count();
+	}
+
+	@Override
 	public Besoin createNeed(String name) {
 		return besoinDAO.create(new BesoinNode(name));
 	}
@@ -72,13 +77,22 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
+	@Transactional
+	public Boolean deleteNeed(Long id) {
+		if (besoinDAO.exists(id)) {
+			besoinDAO.delete(besoinDAO.retrieveById(id));
+		}
+		return (! besoinDAO.exists(id));
+	}
+
+	@Override
 	public void deleteAllNeeds() {
 		besoinDAO.deleteAll();
 	}
 
 	@Override
-	public Long countNeeds() {
-		return besoinDAO.count();
+	public Long countAnswers() {
+		return reponseDAO.count();
 	}
 
 	@Override
@@ -97,15 +111,19 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
+	@Transactional
+	public Boolean deleteAnswer(Long id) {
+		if (reponseDAO.exists(id)) {
+			reponseDAO.delete(reponseDAO.retrieveById(id));
+		}
+		return (! reponseDAO.exists(id));
+	}
+	
+	@Override
 	public void deleteAllAnswers() {
 		reponseDAO.deleteAll();
 	}
 
-	@Override
-	public Long countAnswers() {
-		return reponseDAO.count();
-	}
-	
 	@Override
 	public Set<Besoin> getAssociatedNeedsOf(Besoin need) {
 		return besoinDAO.retrieveAssociatedNeedsOf(need);
@@ -139,15 +157,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 			}
 		}
 		return need;
-	}
-
-	@Override
-	@Transactional
-	public Boolean deleteNeed(Long id) {
-		if (besoinDAO.exists(id)) {
-			besoinDAO.delete(besoinDAO.retrieveById(id));
-		}
-		return (! besoinDAO.exists(id));
 	}
 
 	@Override

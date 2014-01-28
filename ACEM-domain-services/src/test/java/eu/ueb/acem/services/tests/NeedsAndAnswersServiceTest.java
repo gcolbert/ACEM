@@ -104,7 +104,6 @@ public class NeedsAndAnswersServiceTest {
 		need1 = needsAndAnswersService.updateNeed(need1);
 		need12 = needsAndAnswersService.updateNeed(need12);
 
-		// We add children to need12
 		Besoin need121 = needsAndAnswersService.createNeed("t02 need 1.2.1");
 		need12.addChild(need121);
 		need121 = needsAndAnswersService.updateNeed(need121);

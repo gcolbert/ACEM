@@ -49,6 +49,8 @@ public interface NeedsAndAnswersService {
 	
 	public Reponse updateAnswer(Reponse answer);
 
+	public Boolean deleteAnswer(Long id);
+	
 	public void deleteAllAnswers();
 
 	public Set<Besoin> getAssociatedNeedsOf(Besoin need);
