@@ -25,12 +25,12 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Reponse extends Serializable {
 
 	public Long getId();
-	
+
 	public String getName();
 
 	public void setName(String name);
@@ -42,7 +42,7 @@ public interface Reponse extends Serializable {
 	public void addNeed(Besoin besoin);
 
 	public void removeNeed(Besoin besoin);
-	
+
 	public void addResource(Ressource ressource);
 
 	public void removeResource(Ressource ressource);

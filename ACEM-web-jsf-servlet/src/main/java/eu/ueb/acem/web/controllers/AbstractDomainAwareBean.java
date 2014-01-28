@@ -14,10 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * An abstract class inherited by all the beans for them to get:
- * - the domain service (domainService).
- * - the application service (applicationService).
- * - the i18n service (i18nService).
+ * An abstract class inherited by all the beans for them to get: - the domain
+ * service (domainService). - the application service (applicationService). -
+ * the i18n service (i18nService).
  */
 @Component("abstractDomainAwareBean")
 public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBean implements Resettable {
@@ -31,13 +30,13 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 	 * A logger.
 	 */
 	private final Logger logger = new LoggerImpl(this.getClass());
-	
+
 	/**
 	 * see {@link DomainService}.
 	 */
 	@Autowired
 	private DomainService domainService;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -50,25 +49,27 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 	 */
 	@Override
 	public final void afterPropertiesSet() {
-		super.afterPropertiesSet(); 
-		Assert.notNull(this.domainService, "property domainService of class " + this.getClass().getName() + " can not be null");
+		super.afterPropertiesSet();
+		Assert.notNull(this.domainService, "property domainService of class " + this.getClass().getName()
+				+ " can not be null");
 		afterPropertiesSetInternal();
 		reset();
 	}
 
 	/**
-	 * This method is run once the object has been initialized, just before reset().
+	 * This method is run once the object has been initialized, just before
+	 * reset().
 	 */
 	protected void afterPropertiesSetInternal() {
 		// override this method
 	}
-	
+
 	/**
 	 * @see org.esupportail.commons.web.controllers.Resettable#reset()
 	 */
 	public void reset() {
 		// nothing to reset
-		
+
 	}
 
 	/**
@@ -103,8 +104,7 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 		String lang = currentUser.getLanguage();
 		if (lang == null) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("language not set for user '" + currentUser.getLogin() 
-						+ "', return null");
+				logger.debug("language not set for user '" + currentUser.getLogin() + "', return null");
 			}
 			return null;
 		}
@@ -114,9 +114,10 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 		}
 		return locale;
 	}
-	
+
 	/**
-	 * @param domainService the domainService to set
+	 * @param domainService
+	 *            the domainService to set
 	 */
 	public void setDomainService(final DomainService domainService) {
 		this.domainService = domainService;

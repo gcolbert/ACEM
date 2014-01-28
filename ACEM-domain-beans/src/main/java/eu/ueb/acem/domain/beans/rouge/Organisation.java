@@ -19,13 +19,12 @@
 package eu.ueb.acem.domain.beans.rouge;
 
 import java.io.Serializable;
-import java.util.Set;
-
+import java.util.Collection;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Organisation extends Serializable {
 
@@ -33,8 +32,8 @@ public interface Organisation extends Serializable {
 
 	public void setName(String name);
 
-	public Set<Ressource> getRessourcesPossedees();
+	public Collection<Ressource> getRessourcesPossedees();
 
-	public Set<Ressource> getRessourcesVues();
+	public Collection<Ressource> getRessourcesVues();
 
 }

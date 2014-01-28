@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Pedagogical_and_documentation_resources")
@@ -35,17 +35,19 @@ public class RessourcePedagogiqueEtDocumentaireNode extends RessourceNode implem
 
 	private static final long serialVersionUID = 795694384595044050L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexRessourcePedagogiqueEtDocumentaire") private String name;
+	@GraphId
+	private Long id;
+
+	@Indexed(indexName = "indexRessourcePedagogiqueEtDocumentaire")
+	private String name;
 
 	public RessourcePedagogiqueEtDocumentaireNode() {
 	}
-	
+
 	public RessourcePedagogiqueEtDocumentaireNode(String name) {
 		this.setName(name);
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;
@@ -55,5 +57,5 @@ public class RessourcePedagogiqueEtDocumentaireNode extends RessourceNode implem
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

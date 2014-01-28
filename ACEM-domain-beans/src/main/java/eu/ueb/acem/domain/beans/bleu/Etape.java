@@ -25,30 +25,30 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Etape extends Serializable {
 
 	public Long getId();
 
-    public String getName();
+	public String getName();
 
-    public void setName(String name);
-	
+	public void setName(String name);
+
 	public Scenario getScenario();
 
-	public String getObjectif();
+	public String getObjective();
 
-	public void setObjectif(String objectif);
+	public void setObjective(String objectif);
 
-	public String getDescriptif();
+	public String getDescription();
 
-	public void setDescriptif(String descriptif);
+	public void setDescription(String descriptif);
 
-	public String getDuree();
+	public String getDuration();
 
-	public void setDuree(String duree);
+	public void setDuration(String duree);
 
-	public Collection<Ressource> getRessources();
-	
+	public Collection<Ressource> getResources();
+
 }

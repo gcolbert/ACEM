@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.violet.Diplome;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Diploma")
@@ -35,13 +35,15 @@ public class DiplomeNode implements Diplome {
 
 	private static final long serialVersionUID = 3007792198756655816L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexDiplome") private String name;
-	
+	@GraphId
+	private Long id;
+
+	@Indexed(indexName = "indexDiplome")
+	private String name;
+
 	public DiplomeNode() {
 	}
-	
+
 	public DiplomeNode(String name) {
 		this.name = name;
 	}
@@ -53,5 +55,5 @@ public class DiplomeNode implements Diplome {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

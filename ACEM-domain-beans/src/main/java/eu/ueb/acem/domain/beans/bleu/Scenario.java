@@ -20,29 +20,30 @@ package eu.ueb.acem.domain.beans.bleu;
 
 import java.io.Serializable;
 import java.util.Collection;
-
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Scenario extends Serializable {
 
 	public Long getId();
-		
-    public String getName();
 
-    public void setName(String name);
+	public String getName();
 
-	public String getTitre();
-	
-	public void setTitre(String titre);
-	
-	public String getObjectif();
-	
-	public void setObjectif(String objectif);
-	
+	public void setName(String name);
+
+	public String getObjective();
+
+	public void setObjective(String objective);
+
 	public Collection<SeanceDeCours> getSeancesDeCours();
+
+	public String getAuthor();
+
+	public Boolean isPublished();
 	
+	public Collection<Etape> getSteps();
+
 }

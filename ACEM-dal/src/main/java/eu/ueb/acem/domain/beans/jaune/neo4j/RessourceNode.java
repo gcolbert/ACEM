@@ -21,7 +21,6 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -33,28 +32,30 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 public abstract class RessourceNode implements Ressource {
 
 	private static final long serialVersionUID = -7922906613944705977L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexRessource") private String name;
+	@Indexed(indexName = "indexRessource")
+	private String name;
 
 	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "reference", direction = OUTGOING)
-	private Set<ModaliteUtilisation> modalitesUtilisation;
+	private Collection<ModaliteUtilisation> modalitesUtilisation;
 
-    public RessourceNode()  {
-    }
+	public RessourceNode() {
+	}
 
 	public RessourceNode(String name) {
-    	this.setName(name);
-    }
+		this.setName(name);
+	}
 
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
 

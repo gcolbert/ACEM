@@ -18,21 +18,25 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.util.List;
-
+import java.util.Collection;
+import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.bleu.Etape;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.web.viewbeans.TableBean;
+import eu.ueb.acem.web.viewbeans.TableBean.TableEntry;
 
 /**
  * @author Grégoire Colbert @since 2014-01-10
- *
+ * 
  */
 @Controller("needsAndAnswersTableController")
 @Scope("view")
@@ -58,19 +62,30 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 		selectedAnswer = null;
 	}
 
-	public List<TableBean.TableEntry> getScenariosRelatedToSelectedAnswer() {
+	public Collection<TableBean.TableEntry> getScenariosRelatedToSelectedAnswer() {
 		logger.info("entering getScenariosRelatedToSelectedAnswer");
-		/*
-		Set<Besoin> needs = needsAndAnswersService.getScenariosRelatedToAnswer(answerId);
-		logger.info("Found {} needs at root of tree.", needs.size());
-		for (Besoin need : needs) {
-			logger.info("need = {}", need.getName());
-			createTree(need, editableTreeBean.getVisibleRoot());
+		Collection<Scenario> scenarios = needsAndAnswersService.getScenariosRelatedToAnswer(selectedAnswer.getId());
+		logger.info("Found {} scenarios related to answer {}.", scenarios.size(), selectedAnswer.getName());
+		Collection<TableEntry> tableEntries = new HashSet<TableEntry>();
+		for (Scenario scenario : scenarios) {
+			logger.info("scenario = {}", scenario.getName());
+			Collection<Etape> steps = scenario.getSteps();
+			if (steps != null) {
+				Collection<Ressource> resources = new HashSet<Ressource>();
+				for (Etape step : steps) {
+					for (Ressource resource : step.getResources()) {
+						resources.add(resource);
+					}
+				}
+				tableEntries.add(new TableEntry(scenario.getName(), scenario.getAuthor(), resources));
+			}
+			else {
+				tableEntries.add(new TableEntry(scenario.getName(), scenario.getAuthor(), null));
+			}
 		}
-		*/
 		logger.info("leaving getScenariosRelatedToSelectedAnswer");
 		logger.info("------");
-		return tableBean.getTableEntries();
+		return tableEntries;
 	}
 
 	public void setSelectedAnswer(Long id) {

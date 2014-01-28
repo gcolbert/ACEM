@@ -23,7 +23,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -38,81 +37,83 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Pedagogical_answer")
 public class ReponseNode implements Reponse {
-	
+
 	private static final long serialVersionUID = 3066979121350858816L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexReponse") private String name;
-	
+	@GraphId
+	private Long id;
+
+	@Indexed(indexName = "indexOfAnswers")
+	private String name;
+
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourReponse", direction = INCOMING)
-	private Set<Besoin> needs;
-	
+	private Collection<Besoin> needs;
+
 	@RelatedTo(elementClass = RessourceNode.class, type = "referenceRessource", direction = OUTGOING)
-	private Set<Ressource> resources;
+	private Collection<Ressource> resources;
 
-    public ReponseNode()  {
-    	needs = new HashSet<Besoin>();
-    	resources = new HashSet<Ressource>();
-    }
+	public ReponseNode() {
+		needs = new HashSet<Besoin>();
+		resources = new HashSet<Ressource>();
+	}
 
-    public ReponseNode(String name) {
-    	this();
-       	setName(name);
-    }
+	public ReponseNode(String name) {
+		this();
+		setName(name);
+	}
 
-    @Override
+	@Override
 	public Long getId() {
-    	return id;
-    }
+		return id;
+	}
 
-    public void setId(Long id) {
-    	this.id = id;
-    }
-    
-    @Override
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Override
 	public String getName() {
 		return name;
 	}
 
-    @Override
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
-    @Override
+	@Override
 	public Collection<Besoin> getNeeds() {
 		return needs;
 	}
-    
-    @Override
+
+	@Override
 	public Collection<Ressource> getResources() {
 		return resources;
 	}
 
-    @Override
-    public void addNeed(Besoin need) {
-    	needs.add(need);
-    }
+	@Override
+	public void addNeed(Besoin need) {
+		needs.add(need);
+	}
 
-    @Override
-    public void removeNeed(Besoin need) {
-    	needs.remove(need);
-    }
-    
+	@Override
+	public void removeNeed(Besoin need) {
+		needs.remove(need);
+	}
+
 	@Override
 	public void addResource(Ressource resource) {
 		resources.add(resource);
 	}
 
-    @Override
-    public void removeResource(Ressource resource) {
-    	needs.remove(resource);
-    }
-	
+	@Override
+	public void removeResource(Ressource resource) {
+		needs.remove(resource);
+	}
+
 }

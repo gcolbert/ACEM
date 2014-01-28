@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.jaune.Applicatif;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Software")
@@ -35,9 +35,11 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 
 	private static final long serialVersionUID = 7058882707584224446L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexApplicatif") private String name;
+	@Indexed(indexName = "indexApplicatif")
+	private String name;
 
 	public ApplicatifNode() {
 	}
@@ -45,7 +47,7 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 	public ApplicatifNode(String name) {
 		this.setName(name);
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;
@@ -55,5 +57,5 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

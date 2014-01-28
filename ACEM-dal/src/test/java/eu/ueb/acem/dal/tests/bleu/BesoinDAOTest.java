@@ -18,7 +18,7 @@
  */
 package eu.ueb.acem.dal.tests.bleu;
 
-import java.util.Set;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
@@ -169,7 +169,7 @@ public class BesoinDAOTest extends TestCase {
 		Besoin need2 = besoinDAO.create(new BesoinNode("t05 need 2"));
 		
 		// We retrieve all objects
-		Set<Besoin> allNeeds = besoinDAO.retrieveAll();
+		Collection<Besoin> allNeeds = besoinDAO.retrieveAll();
 		
 		// We check that there are 4 objects in the Set
 		assertEquals(new Long(4), new Long(allNeeds.size()));
@@ -204,7 +204,7 @@ public class BesoinDAOTest extends TestCase {
 
 		// We retrieve the entities and we check that entities have parents and children
 		Besoin need1ter = besoinDAO.retrieveById(need1.getId());
-		Set<Besoin> children = besoinDAO.retrieveAssociatedNeedsOf(need1ter);
+		Collection<Besoin> children = besoinDAO.retrieveAssociatedNeedsOf(need1ter);
 		need1ter.setChildren(children);
 		Besoin need12bis = besoinDAO.retrieveById(need12.getId());
 		assertEquals(new Long(0), new Long(need1ter.getParents().size()));
@@ -244,7 +244,7 @@ public class BesoinDAOTest extends TestCase {
 		need32 = besoinDAO.update(need32);
 
 		logger.info("t07_TestBesoinDAORetrieveRootNeeds calling besoinDAO.retrieveChildrenOf(null)");
-		Set<Besoin> rootNeeds = besoinDAO.retrieveAssociatedNeedsOf(null);
+		Collection<Besoin> rootNeeds = besoinDAO.retrieveAssociatedNeedsOf(null);
 		assertEquals(new Long(3), new Long(rootNeeds.size()));
 	}
 	
@@ -260,7 +260,7 @@ public class BesoinDAOTest extends TestCase {
 		besoinDAO.update(need1);
 		besoinDAO.update(need11);
 		// We check that the node with name "t08 need 1" has one child
-		Set<Besoin> childrenOfNeed1 = besoinDAO.retrieveAssociatedNeedsOf(need1);
+		Collection<Besoin> childrenOfNeed1 = besoinDAO.retrieveAssociatedNeedsOf(need1);
 		assertEquals(new Long(1), new Long(childrenOfNeed1.size()));
 		
 		Besoin need111 = besoinDAO.create(new BesoinNode("t08 need 1.1.1"));
@@ -268,7 +268,7 @@ public class BesoinDAOTest extends TestCase {
 		besoinDAO.update(need11);
 		besoinDAO.update(need111);
 		// We check that the node with name "t08 need 1.1" has one child
-		Set<Besoin> childrenOfNeed11 = besoinDAO.retrieveAssociatedNeedsOf(need11);
+		Collection<Besoin> childrenOfNeed11 = besoinDAO.retrieveAssociatedNeedsOf(need11);
 		assertEquals(new Long(1), new Long(childrenOfNeed11.size()));
 
 		Besoin need12 = besoinDAO.create(new BesoinNode("t08 need 1.2"));
@@ -284,7 +284,7 @@ public class BesoinDAOTest extends TestCase {
 		need12.addChild(need123);
 		besoinDAO.update(need12);
 		// We check that the node with name "t08 need 1.2" has 3 children
-		Set<Besoin> childrenOfNeed12 = besoinDAO.retrieveAssociatedNeedsOf(need12);
+		Collection<Besoin> childrenOfNeed12 = besoinDAO.retrieveAssociatedNeedsOf(need12);
 		assertEquals(new Long(3), new Long(childrenOfNeed12.size()));
 	}
 

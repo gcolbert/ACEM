@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.rouge.Service;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Administrative_department")
@@ -39,19 +39,21 @@ public class ServiceNode extends OrganisationNode implements Service {
 
 	private static final long serialVersionUID = -5662533287772515643L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexService") private String name;
+	@Indexed(indexName = "indexService")
+	private String name;
 
 	@RelatedTo(elementClass = Etablissement.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Etablissement etablissement;
 
-    public ServiceNode()  {
-    }
+	public ServiceNode() {
+	}
 
-    public ServiceNode(String name) {
-    	this.setName(name);
-    }
+	public ServiceNode(String name) {
+		this.setName(name);
+	}
 
 	@Override
 	public Etablissement getEtablissement() {

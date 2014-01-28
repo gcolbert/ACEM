@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.violet.UniteEnseignement;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Class")
@@ -39,18 +39,20 @@ public class CoursNode implements Cours {
 
 	private static final long serialVersionUID = -4467389921550574916L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexCours") private String name;
+	@GraphId
+	private Long id;
+
+	@Indexed(indexName = "indexCours")
+	private String name;
 
 	private String duree;
-	
+
 	@RelatedTo(elementClass = UniteEnseignement.class, type = "estUnePartieDe", direction = OUTGOING)
 	private UniteEnseignement ue;
-	
+
 	public CoursNode() {
 	}
-	
+
 	public CoursNode(String name) {
 		this.name = name;
 	}

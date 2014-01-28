@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface UniteEnseignement extends Serializable {
 

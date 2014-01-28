@@ -20,7 +20,7 @@ package eu.ueb.acem.domain.beans.vert;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Salle extends EspacePhysique {
 
@@ -31,7 +31,7 @@ public interface Salle extends EspacePhysique {
 	public Integer getCapaciteAccueil();
 
 	public void setCapaciteAccueil(Integer capaciteAccueil);
-	
+
 	public Boolean getAccesWifi();
 
 	public void setAccesWifi(Boolean accesWifi);

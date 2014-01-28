@@ -24,20 +24,20 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Personne extends Serializable {
 
 	public Long getId();
-	
+
 	public Organisation getOrganisation();
-	
+
 	public String getName();
 
 	public void setName(String name);
 
 	public String getLogin();
-	
+
 	public void setLogin(String login);
 
 	public String getLanguage();

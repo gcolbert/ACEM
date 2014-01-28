@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Software_documentation")
@@ -39,9 +39,11 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 
 	private static final long serialVersionUID = -2471928076966986715L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexDocumentationApplicatif") private String name;
+	@Indexed(indexName = "indexDocumentationApplicatif")
+	private String name;
 
 	@RelatedTo(elementClass = Applicatif.class, type = "reference", direction = OUTGOING)
 	private Applicatif applicatif;
@@ -52,7 +54,7 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	public DocumentationApplicatifNode(String name) {
 		this.setName(name);
 	}
-	
+
 	public Applicatif getApplicatif() {
 		return applicatif;
 	}
@@ -66,5 +68,5 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

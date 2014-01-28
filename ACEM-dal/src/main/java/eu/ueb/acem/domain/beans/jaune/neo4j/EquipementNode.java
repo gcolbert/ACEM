@@ -31,16 +31,18 @@ import eu.ueb.acem.domain.beans.vert.neo4j.EspacePhysiqueNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 public abstract class EquipementNode extends RessourceNode implements Equipement {
 
 	private static final long serialVersionUID = 795694384595044050L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexEquipement") private String name;
+	@Indexed(indexName = "indexEquipement")
+	private String name;
 
 	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "estContenuDans", direction = OUTGOING)
 	private EspacePhysique estContenuDans;

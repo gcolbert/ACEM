@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.vert.Salle;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Room")
@@ -35,9 +35,11 @@ public class SalleNode extends EspacePhysiqueNode implements Salle {
 
 	private static final long serialVersionUID = -7525107899854074242L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexSalle") private String numero;
+	@Indexed(indexName = "indexSalle")
+	private String numero;
 	private Boolean accesWifi;
 	private Integer capaciteAccueil;
 
@@ -48,8 +50,8 @@ public class SalleNode extends EspacePhysiqueNode implements Salle {
 		this.numero = numero;
 		this.capaciteAccueil = capaciteAccueil;
 		this.accesWifi = accesWifi;
-	}	
-	
+	}
+
 	public String getNumero() {
 		return numero;
 	}
@@ -65,7 +67,7 @@ public class SalleNode extends EspacePhysiqueNode implements Salle {
 	public void setCapaciteAccueil(Integer capaciteAccueil) {
 		this.capaciteAccueil = capaciteAccueil;
 	}
-	
+
 	public Boolean getAccesWifi() {
 		return accesWifi;
 	}

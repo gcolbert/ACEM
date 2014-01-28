@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Use_terms")
@@ -35,22 +35,24 @@ public class ModaliteUtilisationNode implements ModaliteUtilisation {
 
 	private static final long serialVersionUID = 465146117417875133L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexModaliteUtilisation") private String name;
-	
+	@Indexed(indexName = "indexModaliteUtilisation")
+	private String name;
+
 	/**
 	 * La catégorie permet de classer les modalités d'utilisation
 	 */
 	private String categorie;
-	
+
 	public ModaliteUtilisationNode() {
 	}
-	
+
 	public ModaliteUtilisationNode(String name) {
 		this.setName(name);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -58,13 +60,13 @@ public class ModaliteUtilisationNode implements ModaliteUtilisation {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getCategorie() {
 		return categorie;
 	}
-	
+
 	public void setCategorie(String categorie) {
 		this.categorie = categorie;
 	}
-	
+
 }

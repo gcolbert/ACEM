@@ -32,7 +32,7 @@ import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Course")
@@ -40,24 +40,25 @@ public class SeanceDeCoursNode implements SeanceDeCours {
 
 	private static final long serialVersionUID = -3903886807338724952L;
 
-	@GraphId private Long id;
-	
-	@RelatedTo(elementClass = CoursNode.class, type="estUnePartieDe", direction = OUTGOING)
+	@GraphId
+	private Long id;
+
+	@RelatedTo(elementClass = CoursNode.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Cours cours;
 
-	@RelatedTo(elementClass = EspacePhysiqueNode.class, type="aLieuDans", direction = OUTGOING)
+	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "aLieuDans", direction = OUTGOING)
 	private EspacePhysique lieu;
-	
+
 	private String date;
 	private String heure;
 	private String duree;
 	private String modalite;
 	private Integer nbApprenants;
-	
+
 	public SeanceDeCoursNode() {
-		
+
 	}
-	
+
 	public String getDate() {
 		return date;
 	}
@@ -65,7 +66,7 @@ public class SeanceDeCoursNode implements SeanceDeCours {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
+
 	public String getHeure() {
 		return heure;
 	}

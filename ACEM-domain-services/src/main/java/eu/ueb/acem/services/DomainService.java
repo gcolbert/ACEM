@@ -28,7 +28,7 @@ import eu.ueb.acem.domain.beans.gris.Personne;
  * 
  */
 public interface DomainService extends Serializable {
-	
+
 	/**
 	 * @param uid
 	 * @return a user.

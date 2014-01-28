@@ -30,22 +30,24 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 public abstract class PersonneNode implements Personne {
 
 	private static final long serialVersionUID = -5697929702791942609L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexPersonne") private String name;
-	
+	@GraphId
+	private Long id;
+
+	@Indexed(indexName = "indexPersonne")
+	private String name;
+
 	@RelatedTo(elementClass = OrganisationNode.class, type = "travaillePour", direction = OUTGOING)
 	private OrganisationNode organisation;
-	
+
 	private String login;
-	
+
 	private String language = "fr";
 
 	@Override
@@ -53,15 +55,15 @@ public abstract class PersonneNode implements Personne {
 		return id;
 	}
 
-    public void setId(Long id) {
-    	this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	@Override
 	public OrganisationNode getOrganisation() {
 		return organisation;
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;
@@ -71,7 +73,7 @@ public abstract class PersonneNode implements Personne {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public String getLogin() {
 		return login;
@@ -81,12 +83,12 @@ public abstract class PersonneNode implements Personne {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	
+
 	@Override
 	public String getLanguage() {
 		return language;
 	}
-	
+
 	@Override
 	public void setLanguage(String language) {
 		this.language = language;

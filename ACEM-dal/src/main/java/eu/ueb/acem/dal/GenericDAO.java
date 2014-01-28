@@ -3,7 +3,7 @@ package eu.ueb.acem.dal;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 //@Repository("genericDAO")
 public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<Long, E> {
 
-	//@Autowired
+	// @Autowired
 	protected GenericRepository<N> repository;
 
 	@Override
@@ -21,35 +21,35 @@ public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<
 
 	@Override
 	public E create(E entity) {
-		return (E)repository.save((N)entity);
+		return (E) repository.save((N) entity);
 	}
 
 	@Override
 	public E retrieveById(Long id) {
-		return (id != null) ? (E)repository.findOne(id) : null;
+		return (id != null) ? (E) repository.findOne(id) : null;
 	}
 
 	@Override
 	public E retrieveByName(String name) {
-		return (E)repository.findByPropertyValue("name", name);
+		return (E) repository.findByPropertyValue("name", name);
 	}
 
 	@Override
-	public Set<E> retrieveAll() {
+	public Collection<E> retrieveAll() {
 		Iterable<N> endResults = repository.findAll();
-		Set<E> set = new HashSet<E>();
+		Collection<E> collection = new HashSet<E>();
 		if (endResults.iterator() != null) {
 			Iterator<N> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				set.add(iterator.next());
+				collection.add(iterator.next());
 			}
 		}
-		return set;
+		return collection;
 	}
-	
+
 	@Override
 	public E update(E entity) {
-		return (E)repository.save((N) entity);
+		return (E) repository.save((N) entity);
 	}
 
 	@Override
@@ -65,6 +65,6 @@ public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<
 	@Override
 	public Long count() {
 		return repository.count();
-	}	
-	
+	}
+
 }

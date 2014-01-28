@@ -20,7 +20,7 @@ package eu.ueb.acem.dal.bleu;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +34,10 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 
 /**
  * @author Grégoire Colbert @since 2013-12-11
- *
+ * 
  */
 @Repository("scenarioDAO")
-public class ScenarioDAO implements DAO<Long, Scenario>{
+public class ScenarioDAO implements DAO<Long, Scenario> {
 
 	/**
 	 * For Logging.
@@ -47,16 +47,16 @@ public class ScenarioDAO implements DAO<Long, Scenario>{
 
 	@Autowired
 	private ScenarioRepository repository;
-	
+
 	public ScenarioDAO() {
-		
+
 	}
 
 	@Override
 	public Boolean exists(Long id) {
 		return (id != null) ? repository.exists(id) : false;
 	}
-	
+
 	@Override
 	public Scenario create(Scenario scenario) {
 		return repository.save((ScenarioNode) scenario);
@@ -73,28 +73,28 @@ public class ScenarioDAO implements DAO<Long, Scenario>{
 	}
 
 	@Override
-	public Set<Scenario> retrieveAll() {
+	public Collection<Scenario> retrieveAll() {
 		Iterable<ScenarioNode> endResults = repository.findAll();
-		Set<Scenario> set = new HashSet<Scenario>();
+		Collection<Scenario> collection = new HashSet<Scenario>();
 		if (endResults.iterator() != null) {
 			Iterator<ScenarioNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				set.add(iterator.next());
+				collection.add(iterator.next());
 			}
 		}
-		return set;
+		return collection;
 	}
-	
+
 	@Override
 	public Scenario update(Scenario scenario) {
 		return repository.save((ScenarioNode) scenario);
 	}
-	
+
 	@Override
 	public void delete(Scenario scenario) {
 		repository.delete((ScenarioNode) scenario);
 	}
-	
+
 	@Override
 	public void deleteAll() {
 		repository.deleteAll();
@@ -104,5 +104,5 @@ public class ScenarioDAO implements DAO<Long, Scenario>{
 	public Long count() {
 		return repository.count();
 	}
-	
+
 }

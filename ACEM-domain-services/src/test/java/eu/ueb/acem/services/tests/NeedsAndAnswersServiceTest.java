@@ -2,8 +2,7 @@ package eu.ueb.acem.services.tests;
 
 import static org.junit.Assert.*;
 
-import java.util.Set;
-
+import java.util.Collection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,7 +70,7 @@ public class NeedsAndAnswersServiceTest {
 		Besoin need2 = needsAndAnswersService.createNeed("t01 need 2");
 		Besoin need3 = needsAndAnswersService.createNeed("t01 need 3");
 
-		Set<Besoin> rootNeeds = needsAndAnswersService.getAssociatedNeedsOf(null);
+		Collection<Besoin> rootNeeds = needsAndAnswersService.getAssociatedNeedsOf(null);
 		assertEquals(3, rootNeeds.size());
 	}
 
@@ -93,10 +92,10 @@ public class NeedsAndAnswersServiceTest {
 		need11 = needsAndAnswersService.updateNeed(need11);
 		need111 = needsAndAnswersService.updateNeed(need111);
 
-		Set<Besoin> childrenOfNeed1 = needsAndAnswersService.getAssociatedNeedsOf(need1);
+		Collection<Besoin> childrenOfNeed1 = needsAndAnswersService.getAssociatedNeedsOf(need1);
 		assertEquals(new Long(1), new Long(childrenOfNeed1.size()));
 
-		Set<Besoin> childrenOfNeed11 = needsAndAnswersService.getAssociatedNeedsOf(need11);
+		Collection<Besoin> childrenOfNeed11 = needsAndAnswersService.getAssociatedNeedsOf(need11);
 		assertEquals(new Long(1), new Long(childrenOfNeed11.size()));
 
 		Besoin need12 = needsAndAnswersService.createNeed("t02 need 1.2");
@@ -115,7 +114,7 @@ public class NeedsAndAnswersServiceTest {
 		need123 = needsAndAnswersService.updateNeed(need123);
 		need12 = needsAndAnswersService.updateNeed(need12);
 
-		Set<Besoin> childrenOfNeed12 = needsAndAnswersService.getAssociatedNeedsOf(need12);
+		Collection<Besoin> childrenOfNeed12 = needsAndAnswersService.getAssociatedNeedsOf(need12);
 		assertEquals(new Long(3), new Long(childrenOfNeed12.size()));		
 	}
 

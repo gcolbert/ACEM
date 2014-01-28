@@ -18,8 +18,8 @@
  */
 package eu.ueb.acem.services;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +31,13 @@ import eu.ueb.acem.dal.bleu.BesoinDAO;
 import eu.ueb.acem.dal.bleu.ReponseDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @Service("needsAndAnswersService")
 public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
@@ -45,7 +46,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	 * For Logging.
 	 */
 	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
-	
+
 	@Autowired
 	BesoinDAO besoinDAO;
 
@@ -53,7 +54,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	ReponseDAO reponseDAO;
 
 	public NeedsAndAnswersServiceImpl() {
-		
+
 	}
 
 	@Override
@@ -82,7 +83,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		if (besoinDAO.exists(id)) {
 			besoinDAO.delete(besoinDAO.retrieveById(id));
 		}
-		return (! besoinDAO.exists(id));
+		return (!besoinDAO.exists(id));
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	public Reponse createAnswer(String name) {
 		return reponseDAO.create(new ReponseNode(name));
 	}
-	
+
 	@Override
 	public Reponse retrieveAnswer(Long id) {
 		return reponseDAO.retrieveById(id);
@@ -116,22 +117,27 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		if (reponseDAO.exists(id)) {
 			reponseDAO.delete(reponseDAO.retrieveById(id));
 		}
-		return (! reponseDAO.exists(id));
+		return (!reponseDAO.exists(id));
 	}
-	
+
 	@Override
 	public void deleteAllAnswers() {
 		reponseDAO.deleteAll();
 	}
 
 	@Override
-	public Set<Besoin> getAssociatedNeedsOf(Besoin need) {
+	public Collection<Besoin> getAssociatedNeedsOf(Besoin need) {
 		return besoinDAO.retrieveAssociatedNeedsOf(need);
 	}
 
 	@Override
-	public Set<Reponse> getAssociatedAnswersOf(Besoin need) {
+	public Collection<Reponse> getAssociatedAnswersOf(Besoin need) {
 		return besoinDAO.retrieveAssociatedAnswersOf(need);
+	}
+
+	@Override
+	public Collection<Scenario> getScenariosRelatedToAnswer(Long id) {
+		return reponseDAO.retrieveScenariosRelatedToAnswer(id);
 	}
 
 	@Override
@@ -144,13 +150,12 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 				need.setName(name);
 				need = besoinDAO.update(need);
 			}
-		}
-		else {
+		} else {
 			need = besoinDAO.create(new BesoinNode(name));
 		}
 		if (besoinDAO.exists(idParent)) {
 			Besoin parent = besoinDAO.retrieveById(idParent);
-			if (! parent.getChildren().contains(need)) {
+			if (!parent.getChildren().contains(need)) {
 				need.addParent(parent);
 				need = besoinDAO.update(need);
 				parent = besoinDAO.update(parent);
@@ -163,13 +168,14 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	@Transactional
 	public void changeParentOfNeed(Long id, Long idNewParent) {
 		logger.info("entering changeParentOfNeed({}, {})", id, idNewParent);
-		// The "visible root node" has id=null, and we must not allow the user to move it
+		// The "visible root node" has id=null, and we must not allow the user
+		// to move it
 		if (id != null) {
 			Besoin need = besoinDAO.retrieveById(id);
 			logger.info("Need is retrieved");
 			if (need != null) {
 				logger.info("Need is not null");
-				Set<Besoin> parents = need.getParents();
+				Collection<Besoin> parents = need.getParents();
 				if (parents != null) {
 					logger.info("Need.getParents() is not null");
 					Iterator<Besoin> iterator = parents.iterator();
@@ -182,8 +188,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 						need = besoinDAO.update(need);
 						logger.info("Need is updated");
 					}
-				}
-				else {
+				} else {
 					logger.info("need.getParents() is null");
 				}
 			}
@@ -208,8 +213,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 			answer = reponseDAO.retrieveById(id);
 			answer.setName(name);
 			answer = reponseDAO.update(answer);
-		}
-		else {
+		} else {
 			answer = reponseDAO.create(new ReponseNode(name));
 		}
 		if (besoinDAO.exists(idAssociatedNeed)) {

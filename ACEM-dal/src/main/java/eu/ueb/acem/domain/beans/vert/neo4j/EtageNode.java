@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.vert.Etage;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Floor")
@@ -39,10 +39,12 @@ public class EtageNode extends EspacePhysiqueNode implements Etage {
 
 	private static final long serialVersionUID = -7525107899854074242L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexEtage") private Integer numero;
-	
+	@Indexed(indexName = "indexEtage")
+	private Integer numero;
+
 	@RelatedTo(elementClass = Batiment.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Batiment batiment;
 

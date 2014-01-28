@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.vert.Campus;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Building")
@@ -39,16 +39,18 @@ public class BatimentNode extends EspacePhysiqueNode implements Batiment {
 
 	private static final long serialVersionUID = 7469182359332815932L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexBatiment") private String name;
+	@Indexed(indexName = "indexBatiment")
+	private String name;
 
 	@RelatedTo(elementClass = Campus.class, type = "estContenuDans", direction = OUTGOING)
 	private Campus campus;
 
 	private Double latitude;
 	private Double longitude;
-	
+
 	public BatimentNode(String name) {
 		this.name = name;
 	}

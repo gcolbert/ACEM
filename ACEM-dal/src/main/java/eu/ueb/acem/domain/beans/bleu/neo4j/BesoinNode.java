@@ -21,8 +21,8 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +38,12 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Pedagogical_need")
 public class BesoinNode implements Besoin {
-	
+
 	private static final long serialVersionUID = -774562771501521566L;
 
 	/**
@@ -52,57 +52,59 @@ public class BesoinNode implements Besoin {
 	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(BesoinNode.class);
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexOfNeeds") private String name;
+	@GraphId
+	private Long id;
+
+	@Indexed(indexName = "indexOfNeeds")
+	private String name;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinParent", direction = OUTGOING)
-	private Set<Besoin> parents;
-	
+	private Collection<Besoin> parents;
+
 	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinParent", direction = INCOMING)
-	private Set<Besoin> children;
+	private Collection<Besoin> children;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "aPourReponse", direction = OUTGOING)
-	private Set<Reponse> answers;
+	private Collection<Reponse> answers;
 
-    public BesoinNode() {
-    	parents = new HashSet<Besoin>();
-    	children = new HashSet<Besoin>();
-    	answers = new HashSet<Reponse>();
-    }
+	public BesoinNode() {
+		parents = new HashSet<Besoin>();
+		children = new HashSet<Besoin>();
+		answers = new HashSet<Reponse>();
+	}
 
-    public BesoinNode(String name) {
-    	this();
-    	setName(name);
-    }
-
-    @Override
-    public Long getId() {
-    	return id;
-    }
-
-    public void setId(Long id) {
-    	this.id = id;
-    }
-
-    @Override
-    public String getName() {
-    	return name;
-    }
-
-    @Override
-    public void setName(String name) {
-    	this.name = name;
-    }
+	public BesoinNode(String name) {
+		this();
+		setName(name);
+	}
 
 	@Override
-	public Set<Besoin> getParents() {
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public Collection<Besoin> getParents() {
 		return parents;
 	}
 
 	@Override
 	@Transactional
-	public void setParents(Set<Besoin> parents) {
+	public void setParents(Collection<Besoin> parents) {
 		this.parents = parents;
 	}
 
@@ -110,12 +112,12 @@ public class BesoinNode implements Besoin {
 	@Transactional
 	public void addParent(Besoin parent) {
 		if (parent != null) {
-			if (! parents.contains(parent)) {
+			if (!parents.contains(parent)) {
 				parents.add(parent);
 			}
-		   	if (! parent.getChildren().contains(this)) {
-		   		parent.addChild(this);
-		   	}
+			if (!parent.getChildren().contains(this)) {
+				parent.addChild(this);
+			}
 		}
 	}
 
@@ -127,27 +129,27 @@ public class BesoinNode implements Besoin {
 	}
 
 	@Override
-    public Set<Besoin> getChildren() {
-    	return children;
-    }
+	public Collection<Besoin> getChildren() {
+		return children;
+	}
 
 	@Override
 	@Transactional
-	public void setChildren(Set<Besoin> children) {
+	public void setChildren(Collection<Besoin> children) {
 		this.children = children;
 	}
 
-    @Override
+	@Override
 	@Transactional
 	public void addChild(Besoin need) {
-	   	if (need != null) {
-	   		if (! children.contains(need)) {
-			   	children.add(need);
-	   		}
-		   	if (! need.getParents().contains(this)) {
-		   		need.addParent(this);
-		   	}
-	   	}
+		if (need != null) {
+			if (!children.contains(need)) {
+				children.add(need);
+			}
+			if (!need.getParents().contains(this)) {
+				need.addParent(this);
+			}
+		}
 	}
 
 	@Override
@@ -158,26 +160,26 @@ public class BesoinNode implements Besoin {
 	}
 
 	@Override
-    public Set<Reponse> getAnswers() {
-    	return answers;
-    }
+	public Collection<Reponse> getAnswers() {
+		return answers;
+	}
 
 	@Override
 	@Transactional
-	public void setAnswers(Set<Reponse> answers) {
+	public void setAnswers(Collection<Reponse> answers) {
 		this.answers = answers;
 	}
-    
+
 	@Override
 	@Transactional
 	public void addAnswer(Reponse answer) {
 		if (answer != null) {
-			if (! answers.contains(answer)) {
+			if (!answers.contains(answer)) {
 				answers.add(answer);
 			}
-		   	if (! answer.getNeeds().contains(this)) {
+			if (!answer.getNeeds().contains(this)) {
 				answer.addNeed(this);
-		   	}
+			}
 		}
 	}
 
@@ -220,5 +222,5 @@ public class BesoinNode implements Besoin {
 			return false;
 		return true;
 	}
-	
+
 }

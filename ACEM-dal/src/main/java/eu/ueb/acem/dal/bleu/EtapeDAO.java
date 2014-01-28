@@ -20,7 +20,7 @@ package eu.ueb.acem.dal.bleu;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +34,10 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @Repository("etapeDAO")
-public class EtapeDAO implements DAO<Long, Etape>{
+public class EtapeDAO implements DAO<Long, Etape> {
 
 	/**
 	 * For Logging.
@@ -47,16 +47,16 @@ public class EtapeDAO implements DAO<Long, Etape>{
 
 	@Autowired
 	private EtapeRepository repository;
-	
+
 	public EtapeDAO() {
-		
+
 	}
 
 	@Override
 	public Boolean exists(Long id) {
 		return (id != null) ? repository.exists(id) : false;
 	}
-	
+
 	@Override
 	public Etape create(Etape etape) {
 		return repository.save((EtapeNode) etape);
@@ -73,28 +73,28 @@ public class EtapeDAO implements DAO<Long, Etape>{
 	}
 
 	@Override
-	public Set<Etape> retrieveAll() {
+	public Collection<Etape> retrieveAll() {
 		Iterable<EtapeNode> endResults = repository.findAll();
-		Set<Etape> set = new HashSet<Etape>();
+		Collection<Etape> collection = new HashSet<Etape>();
 		if (endResults.iterator() != null) {
 			Iterator<EtapeNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				set.add(iterator.next());
+				collection.add(iterator.next());
 			}
 		}
-		return set;
+		return collection;
 	}
-	
+
 	@Override
 	public Etape update(Etape etape) {
 		return repository.save((EtapeNode) etape);
 	}
-	
+
 	@Override
 	public void delete(Etape etape) {
 		repository.delete((EtapeNode) etape);
 	}
-	
+
 	@Override
 	public void deleteAll() {
 		repository.deleteAll();

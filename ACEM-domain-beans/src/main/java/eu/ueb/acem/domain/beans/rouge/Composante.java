@@ -20,10 +20,10 @@ package eu.ueb.acem.domain.beans.rouge;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Composante extends Organisation {
 
-    public Etablissement getEtablissement();
+	public Etablissement getEtablissement();
 
 }

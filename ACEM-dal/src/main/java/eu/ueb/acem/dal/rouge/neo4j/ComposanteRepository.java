@@ -23,7 +23,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface ComposanteRepository extends GenericRepository<ComposanteNode> {
 

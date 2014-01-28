@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @Component("editableTreeBean")
 @Scope("view")
@@ -40,78 +40,79 @@ public class EditableTreeBean implements Serializable {
 	 */
 	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(EditableTreeBean.class);
-	
+
 	private static final long serialVersionUID = -7640100553743316532L;
 
 	private TreeNode root;
-	
+
 	private TreeNode visibleRoot;
 
-    public EditableTreeBean() {
-    	// For some reason, the root of the tree is not visible
-        root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
-		// Therefore, we add a visible root so that it is possible to right click and add children nodes
-        visibleRoot = new DefaultTreeNode(new TreeNodeData(null, "Default visible root", null), root);
-    }
+	public EditableTreeBean() {
+		// For some reason, the root of the tree is not visible
+		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
+		// Therefore, we add a visible root so that it is possible to right
+		// click and add children nodes
+		visibleRoot = new DefaultTreeNode(new TreeNodeData(null, "Default visible root", null), root);
+	}
 
-    public TreeNode getRoot() {
-        return root;
-    }
+	public TreeNode getRoot() {
+		return root;
+	}
 
-    public TreeNode getVisibleRoot() {
-    	return visibleRoot;
-    }
-    
-    public void setVisibleRootLabel(String label) {
-    	((TreeNodeData)visibleRoot.getData()).setLabel(label);
-    }
-    
+	public TreeNode getVisibleRoot() {
+		return visibleRoot;
+	}
+
+	public void setVisibleRootLabel(String label) {
+		((TreeNodeData) visibleRoot.getData()).setLabel(label);
+	}
+
 	public void setRoot(TreeNode root) {
 		this.root = root;
 	}
 
 	public TreeNode addChild(TreeNode parent, Long id, String label, String concept) {
-    	TreeNode child = new DefaultTreeNode(concept, new TreeNodeData(id, label, concept), parent);
-    	parent.setExpanded(true);
-    	return child;
-    }
-    
-    public static class TreeNodeData implements Serializable {
+		TreeNode child = new DefaultTreeNode(concept, new TreeNodeData(id, label, concept), parent);
+		parent.setExpanded(true);
+		return child;
+	}
+
+	public static class TreeNodeData implements Serializable {
 
 		private static final long serialVersionUID = -5623188924862380160L;
 
 		private Long id = null;
-		
-        private String label;
-        
-        private String concept;
 
-        public TreeNodeData(Long id, String label, String concept) {
-        	this.id = id;
-            this.label = label;
-            this.concept = concept;
-        }
+		private String label;
 
-        public Long getId() {
-        	return id;
-        }
-        
-        public void setId(Long id) {
-        	this.id = id;
-        }
-        
-        public String getLabel() {
-            return label;
-        }
+		private String concept;
 
-        public void setLabel(String label) {
-            this.label = label;
-        }
+		public TreeNodeData(Long id, String label, String concept) {
+			this.id = id;
+			this.label = label;
+			this.concept = concept;
+		}
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public String getLabel() {
+			return label;
+		}
+
+		public void setLabel(String label) {
+			this.label = label;
+		}
 
 		public String getConcept() {
 			return concept;
 		}
-		
+
 		public void setConcept(String concept) {
 			this.concept = concept;
 		}
@@ -119,12 +120,12 @@ public class EditableTreeBean implements Serializable {
 		public String getStyleClass() {
 			return getConcept();
 		}
-		
-        @Override
-        public String toString() {
-        	return "Menu{ id=" + id + ", label=" + label + ", concept=" + concept + " }";
-        }
 
-    }
+		@Override
+		public String toString() {
+			return "Menu{ id=" + id + ", label=" + label + ", concept=" + concept + " }";
+		}
+
+	}
 
 }

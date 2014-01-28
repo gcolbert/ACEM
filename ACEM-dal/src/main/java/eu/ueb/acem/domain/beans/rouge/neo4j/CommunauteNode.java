@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.rouge.Communaute;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Community")
@@ -35,15 +35,17 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 
 	private static final long serialVersionUID = 1861762804925897713L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexCommunaute") private String name;
-	
-    public CommunauteNode()  {
-    }
+	@GraphId
+	private Long id;
 
-    public CommunauteNode(String name) {
-    	this.setName(name);
-    }
-	
+	@Indexed(indexName = "indexCommunaute")
+	private String name;
+
+	public CommunauteNode() {
+	}
+
+	public CommunauteNode(String name) {
+		this.setName(name);
+	}
+
 }

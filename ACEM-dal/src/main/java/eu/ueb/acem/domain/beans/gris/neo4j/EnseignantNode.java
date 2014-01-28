@@ -21,7 +21,6 @@ package eu.ueb.acem.domain.beans.gris.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -37,7 +36,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Teacher")
@@ -45,23 +44,25 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexEnseignant") private String name;
-	
+	@GraphId
+	private Long id;
+
+	@Indexed(indexName = "indexEnseignant")
+	private String name;
+
 	@RelatedTo(elementClass = RessourceNode.class, type = "aPourFavori", direction = OUTGOING)
-	private Set<Ressource> ressourcesFavorites;
-	
+	private Collection<Ressource> ressourcesFavorites;
+
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "anime", direction = OUTGOING)
-	private Set<SeanceDeCours> seancesDeCours;
-	
+	private Collection<SeanceDeCours> seancesDeCours;
+
 	public EnseignantNode() {
 	}
 
 	public EnseignantNode(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public Collection<Ressource> getRessourcesFavorites() {
 		return ressourcesFavorites;
@@ -71,5 +72,5 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 	public Collection<SeanceDeCours> getSeancesDeCours() {
 		return seancesDeCours;
 	}
-	
+
 }

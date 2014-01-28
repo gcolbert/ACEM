@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.vert.EspacePhysique;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Physical_space")
@@ -35,11 +35,13 @@ public abstract class EspacePhysiqueNode implements EspacePhysique {
 
 	private static final long serialVersionUID = -1689641655515811666L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexEspacePhysique") private String name;
+	@Indexed(indexName = "indexEspacePhysique")
+	private String name;
 
 	public EspacePhysiqueNode() {
 	}
-	
+
 }

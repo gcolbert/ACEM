@@ -25,12 +25,12 @@ import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Enseignant extends Personne {
 
 	public Collection<Ressource> getRessourcesFavorites();
 
 	public Collection<SeanceDeCours> getSeancesDeCours();
-	
+
 }

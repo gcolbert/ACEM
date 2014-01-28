@@ -18,9 +18,9 @@
  */
 package eu.ueb.acem.dal.gris;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
  * @author Grégoire Colbert @since 2013-12-11
- *
+ * 
  */
 @Repository("enseignantDAO")
 public class EnseignantDAO implements DAO<Long, Enseignant> {
@@ -44,19 +44,19 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	 */
 	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(EnseignantDAO.class);
-	
+
 	@Autowired
 	private EnseignantRepository repository;
-	
+
 	public EnseignantDAO() {
-		
+
 	}
 
 	@Override
 	public Boolean exists(Long id) {
 		return (id != null) ? repository.exists(id) : false;
 	}
-	
+
 	@Override
 	public Enseignant create(Enseignant enseignant) {
 		return repository.save((EnseignantNode) enseignant);
@@ -71,30 +71,30 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	public Enseignant retrieveByName(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}
-	
+
 	@Override
-	public Set<Enseignant> retrieveAll() {
+	public Collection<Enseignant> retrieveAll() {
 		Iterable<EnseignantNode> endResults = repository.findAll();
-		Set<Enseignant> set = new HashSet<Enseignant>();
+		Collection<Enseignant> collection = new HashSet<Enseignant>();
 		if (endResults.iterator() != null) {
 			Iterator<EnseignantNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				set.add(iterator.next());
+				collection.add(iterator.next());
 			}
 		}
-		return set;
+		return collection;
 	}
-	
+
 	@Override
 	public Enseignant update(Enseignant enseignant) {
 		return repository.save((EnseignantNode) enseignant);
 	}
-	
+
 	@Override
 	public void delete(Enseignant enseignant) {
 		repository.delete((EnseignantNode) enseignant);
 	}
-	
+
 	@Override
 	public void deleteAll() {
 		repository.deleteAll();

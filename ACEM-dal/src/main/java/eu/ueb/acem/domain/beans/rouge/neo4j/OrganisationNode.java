@@ -20,7 +20,7 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -33,31 +33,33 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 public abstract class OrganisationNode implements Organisation {
 
 	private static final long serialVersionUID = -4961037643458063514L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexOrganisation") private String name;
+	@Indexed(indexName = "indexOrganisation")
+	private String name;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "possede", direction = OUTGOING)
-	private Set<Ressource> ressourcesPossedees;
+	private Collection<Ressource> ressourcesPossedees;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "voit", direction = OUTGOING)
-	private Set<Ressource> ressourcesVues;
+	private Collection<Ressource> ressourcesVues;
 
-    public OrganisationNode()  {
-    }
+	public OrganisationNode() {
+	}
 
-    public OrganisationNode(String name) {
-    	this.setName(name);
-    }
+	public OrganisationNode(String name) {
+		this.setName(name);
+	}
 
-    public Long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -76,12 +78,12 @@ public abstract class OrganisationNode implements Organisation {
 	}
 
 	@Override
-	public Set<Ressource> getRessourcesPossedees() {
+	public Collection<Ressource> getRessourcesPossedees() {
 		return ressourcesPossedees;
 	}
 
 	@Override
-	public Set<Ressource> getRessourcesVues() {
+	public Collection<Ressource> getRessourcesVues() {
 		return ressourcesVues;
 	}
 

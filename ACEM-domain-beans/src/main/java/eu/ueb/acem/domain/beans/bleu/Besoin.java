@@ -19,40 +19,40 @@
 package eu.ueb.acem.domain.beans.bleu;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Besoin extends Serializable {
 
 	public Long getId();
-	
-    public String getName();
 
-    public void setName(String name);
+	public String getName();
 
-    public Set<Besoin> getParents();
-    
-    public void setParents(Set<Besoin> parents);
+	public void setName(String name);
 
-    public Set<Besoin> getChildren();
+	public Collection<Besoin> getParents();
 
-    public void setChildren(Set<Besoin> children);
-    
-    public Set<Reponse> getAnswers();
+	public void setParents(Collection<Besoin> parents);
 
-    public void setAnswers(Set<Reponse> reponses);
-    
+	public Collection<Besoin> getChildren();
+
+	public void setChildren(Collection<Besoin> children);
+
+	public Collection<Reponse> getAnswers();
+
+	public void setAnswers(Collection<Reponse> reponses);
+
 	public void addParent(Besoin parent);
 
 	public void addChild(Besoin besoin);
-    
-    public void addAnswer(Reponse reponse);
 
-    public void removeParent(Besoin besoin);
-    
+	public void addAnswer(Reponse reponse);
+
+	public void removeParent(Besoin besoin);
+
 	public void removeChild(Besoin besoin);
 
 	public void removeAnswer(Reponse reponse);

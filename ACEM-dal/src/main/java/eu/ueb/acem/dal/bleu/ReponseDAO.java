@@ -20,7 +20,7 @@ package eu.ueb.acem.dal.bleu;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +31,14 @@ import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.ReponseRepository;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-26
- *
+ * 
  */
 @Repository("reponseDAO")
 public class ReponseDAO implements DAO<Long, Reponse> {
@@ -49,16 +51,16 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 
 	@Autowired
 	private ReponseRepository repository;
-	
+
 	public ReponseDAO() {
-		
+
 	}
 
 	@Override
 	public Boolean exists(Long id) {
 		return (id != null) ? repository.exists(id) : false;
 	}
-	
+
 	@Override
 	public Reponse create(Reponse reponse) {
 		return repository.save((ReponseNode) reponse);
@@ -68,44 +70,35 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	public Reponse retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
-	
+
 	@Override
 	public Reponse retrieveByName(String name) {
 		return repository.findByPropertyValue("name", name);
 	}
 
 	@Override
-	public Set<Reponse> retrieveAll() {
+	public Collection<Reponse> retrieveAll() {
 		Iterable<ReponseNode> endResults = repository.findAll();
-		Set<Reponse> set = new HashSet<Reponse>();
+		Collection<Reponse> collection = new HashSet<Reponse>();
 		if (endResults.iterator() != null) {
 			Iterator<ReponseNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				set.add(iterator.next());
+				collection.add(iterator.next());
 			}
 		}
-		return set;
-	}
-
-	public Set<Besoin> retrieveNeedsFor(Reponse reponse) {
-		Set<BesoinNode> nodes = repository.findNeedsFor(reponse.getId());
-		Set<Besoin> needs = new HashSet<Besoin>();
-		for (BesoinNode node : nodes) {
-			needs.add(node);
-		}
-		return needs;
+		return collection;
 	}
 
 	@Override
 	public Reponse update(Reponse reponse) {
 		return repository.save((ReponseNode) reponse);
 	}
-	
+
 	@Override
 	public void delete(Reponse reponse) {
 		repository.delete((ReponseNode) reponse);
 	}
-	
+
 	@Override
 	public void deleteAll() {
 		repository.deleteAll();
@@ -114,6 +107,24 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	@Override
 	public Long count() {
 		return repository.count();
+	}
+
+	public Collection<Besoin> retrieveNeedsFor(Reponse reponse) {
+		Collection<BesoinNode> nodes = repository.findNeedsFor(reponse.getId());
+		Collection<Besoin> needs = new HashSet<Besoin>();
+		for (BesoinNode node : nodes) {
+			needs.add(node);
+		}
+		return needs;
+	}
+
+	public Collection<Scenario> retrieveScenariosRelatedToAnswer(Long id) {
+		Collection<ScenarioNode> nodes = repository.findScenariosRelatedTo(id);
+		Collection<Scenario> scenarios = new HashSet<Scenario>();
+		for (ScenarioNode node : nodes) {
+			scenarios.add(node);
+		}
+		return scenarios;
 	}
 
 }

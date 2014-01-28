@@ -20,8 +20,9 @@ import org.esupportail.commons.web.controllers.ExceptionController;
 public class SessionController extends AbstractDomainAwareBean {
 
 	/*
-	 ******************* PROPERTIES ******************** */
-	
+	 * ****************** PROPERTIES ********************
+	 */
+
 	/**
 	 * The serialization id.
 	 */
@@ -31,21 +32,21 @@ public class SessionController extends AbstractDomainAwareBean {
 	 * The exception controller (called when logging in/out).
 	 */
 	private ExceptionController exceptionController;
-	
+
 	/**
 	 * The authenticator.
 	 */
 	private AuthenticatorService authenticatorService;
-	
+
 	/**
 	 * The CAS logout URL.
 	 */
 	private String casLogoutUrl;
-	
-	
+
 	/*
-	 ******************* INIT ******************** */
-	
+	 * ****************** INIT ********************
+	 */
+
 	/**
 	 * Constructor.
 	 */
@@ -58,21 +59,23 @@ public class SessionController extends AbstractDomainAwareBean {
 	 */
 	@Override
 	public void afterPropertiesSetInternal() {
-		Assert.notNull(this.exceptionController, "property exceptionController of class " + this.getClass().getName() + " can not be null");
-		Assert.notNull(this.authenticatorService, "property authenticator of class " + this.getClass().getName() + " can not be null");
+		Assert.notNull(this.exceptionController, "property exceptionController of class " + this.getClass().getName()
+				+ " can not be null");
+		Assert.notNull(this.authenticatorService, "property authenticator of class " + this.getClass().getName()
+				+ " can not be null");
 	}
 
-	
 	/*
-	 ******************* CALLBACK ******************** */
-	
-	
+	 * ****************** CALLBACK ********************
+	 */
+
 	/*
-	 ******************* METHODS ******************** */
-	
+	 * ****************** METHODS ********************
+	 */
+
 	/**
 	 * @return the current user, or null if guest.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Override
 	public Personne getCurrentUser() throws Exception {
@@ -87,12 +90,11 @@ public class SessionController extends AbstractDomainAwareBean {
 		return getClass().getName() + "#" + hashCode();
 	}
 
-	
-
 	/**
 	 * JSF callback.
+	 * 
 	 * @return a String.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public String logout() throws IOException {
 		if (ContextUtils.isPortlet()) {
@@ -103,11 +105,9 @@ public class SessionController extends AbstractDomainAwareBean {
 		HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
 		String returnUrl = request.getRequestURL().toString().replaceFirst("/stylesheets/[^/]*$", "");
 		String forwardUrl;
-		Assert.hasText(
-				casLogoutUrl, 
-				"property casLogoutUrl of class " + getClass().getName() + " is null");
+		Assert.hasText(casLogoutUrl, "property casLogoutUrl of class " + getClass().getName() + " is null");
 		forwardUrl = String.format(casLogoutUrl, StringUtils.utf8UrlEncode(returnUrl));
-		// note: the session beans will be kept even when invalidating 
+		// note: the session beans will be kept even when invalidating
 		// the session so they have to be reset (by the exception controller).
 		// We invalidate the session however for the other attributes.
 		request.getSession().invalidate();
@@ -119,32 +119,26 @@ public class SessionController extends AbstractDomainAwareBean {
 		return null;
 	}
 
-	
-	
-	
-	
-	
-	
 	/*
-	 ******************* ACCESSORS ******************** */
-	
-	
-	
-	
+	 * ****************** ACCESSORS ********************
+	 */
+
 	/**
-	 * @param exceptionController the exceptionController to set
+	 * @param exceptionController
+	 *            the exceptionController to set
 	 */
 	public void setExceptionController(final ExceptionController exceptionController) {
 		this.exceptionController = exceptionController;
 	}
 
 	/**
-	 * @param authenticatorService the authenticator to set
+	 * @param authenticatorService
+	 *            the authenticator to set
 	 */
 	public void setAuthenticatorService(final AuthenticatorService authenticatorService) {
 		this.authenticatorService = authenticatorService;
 	}
-	
+
 	/**
 	 * @return the casLogoutUrl
 	 */
@@ -153,10 +147,11 @@ public class SessionController extends AbstractDomainAwareBean {
 	}
 
 	/**
-	 * @param casLogoutUrl the casLogoutUrl to set
+	 * @param casLogoutUrl
+	 *            the casLogoutUrl to set
 	 */
 	public void setCasLogoutUrl(final String casLogoutUrl) {
 		this.casLogoutUrl = StringUtils.nullIfEmpty(casLogoutUrl);
 	}
-	
+
 }

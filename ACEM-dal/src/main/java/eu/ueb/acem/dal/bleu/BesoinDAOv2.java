@@ -18,10 +18,10 @@
  */
 package eu.ueb.acem.dal.bleu;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,6 @@ import org.springframework.data.neo4j.conversion.EndResult;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.GenericDAO;
-import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.BesoinRepository;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
@@ -40,9 +39,9 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
-@Repository("besoinDAOv2")
+//@Repository("besoinDAOv2")
 public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements DAO<Long, Besoin> {
 
 	/**
@@ -51,38 +50,41 @@ public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements
 	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(BesoinDAOv2.class);
 
-	@Autowired
+	//@Autowired
 	private BesoinRepository repository;
 
 	public BesoinDAOv2() {
 	}
-	
-	public Set<Besoin> retrieveAssociatedNeedsOf(Besoin need) {
+
+	public Collection<Besoin> retrieveAssociatedNeedsOf(Besoin need) {
 		EndResult<BesoinNode> nodes;
-		Map<String,Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
 		if (need != null) {
 			params.put("id", need.getId());
 			nodes = repository.query("start need=node({id}) match (n)-[:aPourBesoinParent]->(need) return n", params);
-			//nodes = repository.findAssociatedNeedsOf(need.getId());
-		}
-		else {
-			nodes = repository.query("start n=node(*) where has(n.__type__) and n.__type__ = 'Pedagogical_need' and not (n)-[:aPourBesoinParent]->() return n", params);
-			//nodes = repository.findRoots();
+			// nodes = repository.findAssociatedNeedsOf(need.getId());
+		} else {
+			nodes = repository
+					.query("start n=node(*) where has(n.__type__) and n.__type__ = 'Pedagogical_need' and not (n)-[:aPourBesoinParent]->() return n",
+							params);
+			// nodes = repository.findRoots();
 		}
 
-		Set<Besoin> children = new HashSet<Besoin>();
+		Collection<Besoin> children = new HashSet<Besoin>();
 		for (BesoinNode childNode : nodes) {
 			children.add(childNode);
 		}
 		return children;
 	}
 
-	public Set<Reponse> retrieveAssociatedAnswersOf(Besoin need) {
-		Map<String,Object> params = new HashMap<String, Object>();
+	public Collection<Reponse> retrieveAssociatedAnswersOf(Besoin need) {
+		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", need.getId());
-		Set<ReponseNode> nodes = repository.findAssociatedAnswersOf(need.getId());
-		//EndResult<ReponseNode> nodes = repository.query("start need=node({id}) match (need)-[:aPourReponse]->(n) return n", params);
-		Set<Reponse> reponses = new HashSet<Reponse>();
+		Collection<ReponseNode> nodes = repository.findAssociatedAnswersOf(need.getId());
+		// EndResult<ReponseNode> nodes =
+		// repository.query("start need=node({id}) match (need)-[:aPourReponse]->(n) return n",
+		// params);
+		Collection<Reponse> reponses = new HashSet<Reponse>();
 		for (ReponseNode node : nodes) {
 			reponses.add(node);
 		}

@@ -23,7 +23,8 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
- * @author Grégoire Colbert (Université européenne de Bretagne) @since 2013-11-25
+ * @author Grégoire Colbert (Université européenne de Bretagne) @since
+ *         2013-11-25
  * @author Yves Deschamps (Universite de Lille 1) - 2010
  * 
  */
@@ -61,7 +62,7 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 	private DAO<Enseignant, Long> enseignantDAO;
 	@Autowired
 	private DAO<Gestionnaire, Long> gestionnaireDAO;
-	
+
 	/**
 	 * Bean constructor.
 	 */
@@ -71,7 +72,8 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(authenticationService, "property authenticationService of class " + this.getClass().getName() + " can not be null");
+		Assert.notNull(authenticationService, "property authenticationService of class " + this.getClass().getName()
+				+ " can not be null");
 	}
 
 	@Override
@@ -113,7 +115,8 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 			}
 		} catch (Exception e) {
 			String[] args = { e.getMessage() };
-			throw new Exception(I18nUtils.createI18nService().getString("AUTHENTICATION_EXCEPTION.TITLE", (Object[]) args));
+			throw new Exception(I18nUtils.createI18nService().getString("AUTHENTICATION_EXCEPTION.TITLE",
+					(Object[]) args));
 		}
 		return null;
 	}
@@ -136,8 +139,7 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 	 * @param authenticationService
 	 *            the authenticationService to set
 	 */
-	public void setAuthenticationService(
-			final AuthenticationService authenticationService) {
+	public void setAuthenticationService(final AuthenticationService authenticationService) {
 		this.authenticationService = authenticationService;
 	}
 

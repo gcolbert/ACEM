@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.jaune.Personnel;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Staff")
@@ -35,17 +35,19 @@ public class PersonnelNode extends RessourceNode implements Personnel {
 
 	private static final long serialVersionUID = -8978418065522460440L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexPersonnel") private String name;
-	
+	@Indexed(indexName = "indexPersonnel")
+	private String name;
+
 	public PersonnelNode() {
 	}
-	
+
 	public PersonnelNode(String name) {
 		this.setName(name);
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;

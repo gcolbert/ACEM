@@ -28,7 +28,7 @@ import eu.ueb.acem.domain.beans.jaune.Activite;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Activity")
@@ -36,9 +36,11 @@ public class ActiviteNode extends RessourceNode implements Activite {
 
 	private static final long serialVersionUID = 1012212357185877701L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexActivite") private String name;
+	@Indexed(indexName = "indexActivite")
+	private String name;
 
 	public ActiviteNode() {
 	}
@@ -46,7 +48,7 @@ public class ActiviteNode extends RessourceNode implements Activite {
 	public ActiviteNode(String name) {
 		this.setName(name);
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;

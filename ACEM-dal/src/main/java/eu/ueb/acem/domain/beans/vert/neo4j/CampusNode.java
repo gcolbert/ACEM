@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.vert.Campus;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Campus")
@@ -35,13 +35,15 @@ public class CampusNode extends EspacePhysiqueNode implements Campus {
 
 	private static final long serialVersionUID = -7525107899854074242L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexCampus") private String name;
+	@Indexed(indexName = "indexCampus")
+	private String name;
 
 	private Double latitude;
 	private Double longitude;
-	
+
 	public CampusNode(String name) {
 		this.name = name;
 	}

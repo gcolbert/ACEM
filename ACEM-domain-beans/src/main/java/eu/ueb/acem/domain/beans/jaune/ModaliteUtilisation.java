@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface ModaliteUtilisation extends Serializable {
 
@@ -30,7 +30,7 @@ public interface ModaliteUtilisation extends Serializable {
 	 * La catégorie permet de classer les modalités d'utilisation
 	 */
 	public String getCategorie();
-	
+
 	public void setCategorie(String categorie);
-	
+
 }

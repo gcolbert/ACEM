@@ -18,7 +18,7 @@
  */
 package eu.ueb.acem.dal.bleu.neo4j;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,24 +29,26 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
-public interface BesoinRepository extends GenericRepository<BesoinNode>{
+public interface BesoinRepository extends GenericRepository<BesoinNode> {
 
 	@Query(value = "start n=node(*) where has(n.__type__) and n.__type__ = 'Pedagogical_need' and not (n)-[:aPourBesoinParent]->() return n")
-	Set<BesoinNode> findRoots();
+	Collection<BesoinNode> findRoots();
 
 	/*
-	@Query(value = "start need=node:indexOfNeeds(name={name}) match (n)-[:aPourBesoinParent]->(need) return n")
-	Set<BesoinNode> findChildrenOf(@Param("name") String name);
-	
-	@Query(value = "start need=node:indexOfNeeds(name={name}) match (need)-[:aPourReponse]->(n) return n")
-	Set<ReponseNode> findAnswersOf(@Param("name") String name);
-	*/
+	 * @Query(value =
+	 * "start need=node:indexOfNeeds(name={name}) match (n)-[:aPourBesoinParent]->(need) return n"
+	 * ) Collection<BesoinNode> findChildrenOf(@Param("name") String name);
+	 * 
+	 * @Query(value =
+	 * "start need=node:indexOfNeeds(name={name}) match (need)-[:aPourReponse]->(n) return n"
+	 * ) Collection<ReponseNode> findAnswersOf(@Param("name") String name);
+	 */
 
 	@Query(value = "start need=node({id}) match (n)-[:aPourBesoinParent]->(need) return n")
-	Set<BesoinNode> findAssociatedNeedsOf(@Param("id") Long id);
-	
+	Collection<BesoinNode> findAssociatedNeedsOf(@Param("id") Long id);
+
 	@Query(value = "start need=node({id}) match (need)-[:aPourReponse]->(n) return n")
-	Set<ReponseNode> findAssociatedAnswersOf(@Param("id") Long id);
+	Collection<ReponseNode> findAssociatedAnswersOf(@Param("id") Long id);
 }

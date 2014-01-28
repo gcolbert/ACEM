@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.jaune.EquipementMobile;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Mobile_equipment")
@@ -35,10 +35,12 @@ public class EquipementMobileNode extends EquipementNode implements EquipementMo
 
 	private static final long serialVersionUID = 122683505932503559L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexEquipementMobile") private String name;
-	
+	@Indexed(indexName = "indexEquipementMobile")
+	private String name;
+
 	private Integer quantite;
 
 	public EquipementMobileNode() {
@@ -47,7 +49,7 @@ public class EquipementMobileNode extends EquipementNode implements EquipementMo
 	public EquipementMobileNode(String name) {
 		this.setName(name);
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;
@@ -57,7 +59,7 @@ public class EquipementMobileNode extends EquipementNode implements EquipementMo
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public Integer getQuantite() {
 		return quantite;
 	}

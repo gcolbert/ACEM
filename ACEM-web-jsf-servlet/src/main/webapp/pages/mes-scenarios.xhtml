@@ -6,6 +6,15 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
-
+		<p:panelGrid columns="1">
+			<f:facet name="header">
+				 #{msgs['MY_SCENARIOS.HEADER']}
+			</f:facet>
+			<p:commandButton value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}" icon="ui-icon-plusthick"/>
+			<p:dataTable value="#{myScenariosController.scenarios}" var="tableEntry">
+				<h:outputText value="#{tableEntry.name}" />
+			</p:dataTable>
+			<p:commandButton value="#{msgs['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}" icon="ui-icon-trash"/>
+		</p:panelGrid>
 	</ui:define>
 </ui:composition>

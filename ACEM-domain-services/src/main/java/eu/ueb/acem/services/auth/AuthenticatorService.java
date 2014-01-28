@@ -16,7 +16,7 @@ public interface AuthenticatorService {
 
 	/**
 	 * @return the authenticated user.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	Personne getUser() throws Exception;
 

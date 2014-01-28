@@ -18,10 +18,9 @@
  */
 package eu.ueb.acem.dal.bleu;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @Repository("besoinDAO")
 public class BesoinDAO implements DAO<Long, Besoin> {
@@ -48,7 +47,7 @@ public class BesoinDAO implements DAO<Long, Besoin> {
 	private BesoinRepository repository;
 
 	public BesoinDAO() {
-		
+
 	}
 
 	@Override
@@ -71,25 +70,24 @@ public class BesoinDAO implements DAO<Long, Besoin> {
 		return repository.findByPropertyValue("name", name);
 	}
 
-	public Set<Besoin> retrieveAssociatedNeedsOf(Besoin need) {
-		Set<BesoinNode> nodes;
+	public Collection<Besoin> retrieveAssociatedNeedsOf(Besoin need) {
+		Collection<BesoinNode> nodes;
 		if (need != null) {
 			nodes = repository.findAssociatedNeedsOf(need.getId());
-		}
-		else {
+		} else {
 			nodes = repository.findRoots();
 		}
 
-		Set<Besoin> children = new HashSet<Besoin>();
+		Collection<Besoin> children = new HashSet<Besoin>();
 		for (BesoinNode childNode : nodes) {
 			children.add(childNode);
 		}
 		return children;
 	}
 
-	public Set<Reponse> retrieveAssociatedAnswersOf(Besoin need) {
-		Set<ReponseNode> nodes = repository.findAssociatedAnswersOf(need.getId());
-		Set<Reponse> reponses = new HashSet<Reponse>();
+	public Collection<Reponse> retrieveAssociatedAnswersOf(Besoin need) {
+		Collection<ReponseNode> nodes = repository.findAssociatedAnswersOf(need.getId());
+		Collection<Reponse> reponses = new HashSet<Reponse>();
 		for (ReponseNode node : nodes) {
 			reponses.add(node);
 		}
@@ -97,18 +95,18 @@ public class BesoinDAO implements DAO<Long, Besoin> {
 	}
 
 	@Override
-	public Set<Besoin> retrieveAll() {
+	public Collection<Besoin> retrieveAll() {
 		Iterable<BesoinNode> endResults = repository.findAll();
-		Set<Besoin> set = new HashSet<Besoin>();
+		Collection<Besoin> collection = new HashSet<Besoin>();
 		if (endResults.iterator() != null) {
 			Iterator<BesoinNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				set.add(iterator.next());
+				collection.add(iterator.next());
 			}
 		}
-		return set;
+		return collection;
 	}
-	
+
 	@Override
 	public Besoin update(Besoin need) {
 		return repository.save((BesoinNode) need);

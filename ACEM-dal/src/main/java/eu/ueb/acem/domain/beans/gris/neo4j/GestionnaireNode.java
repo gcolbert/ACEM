@@ -20,7 +20,7 @@ package eu.ueb.acem.domain.beans.gris.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -38,7 +38,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Administrator")
@@ -46,38 +46,40 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexGestionnaire") private String name;
+	@GraphId
+	private Long id;
+
+	@Indexed(indexName = "indexGestionnaire")
+	private String name;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "redigeBesoin", direction = OUTGOING)
-	private Set<Besoin> besoins;
+	private Collection<Besoin> besoins;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "redigeReponse", direction = OUTGOING)
-	private Set<Reponse> reponses;
-	
+	private Collection<Reponse> reponses;
+
 	@RelatedTo(elementClass = RessourceNode.class, type = "redigeRessource", direction = OUTGOING)
-	private Set<Ressource> ressources;
-	
+	private Collection<Ressource> ressources;
+
 	public GestionnaireNode() {
 	}
 
 	public GestionnaireNode(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
-	public Set<Besoin> getBesoins() {
+	public Collection<Besoin> getBesoins() {
 		return besoins;
 	}
 
 	@Override
-	public Set<Reponse> getReponses() {
+	public Collection<Reponse> getReponses() {
 		return reponses;
 	}
 
 	@Override
-	public Set<Ressource> getRessources() {
+	public Collection<Ressource> getRessources() {
 		return ressources;
 	}
 

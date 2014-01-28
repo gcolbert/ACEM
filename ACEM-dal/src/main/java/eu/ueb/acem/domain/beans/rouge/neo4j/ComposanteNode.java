@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.rouge.Etablissement;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Teaching_department")
@@ -39,22 +39,24 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 
 	private static final long serialVersionUID = -5662533287772515643L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexComposante") private String name;
+	@Indexed(indexName = "indexComposante")
+	private String name;
 
 	@RelatedTo(elementClass = Etablissement.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Etablissement etablissement;
 
-	public ComposanteNode()  {
-    }
-	
-    public ComposanteNode(String name) {
-    	this.setName(name);
-    }
+	public ComposanteNode() {
+	}
+
+	public ComposanteNode(String name) {
+		this.setName(name);
+	}
 
 	@Override
-    public Etablissement getEtablissement() {
+	public Etablissement getEtablissement() {
 		return etablissement;
 	}
 

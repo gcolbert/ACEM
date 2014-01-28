@@ -42,7 +42,7 @@ public class NavigationController implements Serializable {
 	 */
 	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(NavigationController.class);
-	
+
 	public String getMenuitemStyleClass(String page) {
 		String styleClass = "";
 		String viewId = getViewId();
@@ -57,8 +57,7 @@ public class NavigationController implements Serializable {
 		String viewId = fc.getViewRoot().getViewId();
 		String selectedComponent;
 		if (viewId != null) {
-			selectedComponent = viewId.substring(viewId.lastIndexOf("/") + 1,
-					viewId.lastIndexOf("."));
+			selectedComponent = viewId.substring(viewId.lastIndexOf("/") + 1, viewId.lastIndexOf("."));
 		} else {
 			selectedComponent = null;
 		}

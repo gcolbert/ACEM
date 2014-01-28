@@ -20,20 +20,21 @@ package eu.ueb.acem.web.viewbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import eu.ueb.acem.domain.beans.jaune.Ressource;
+
 /**
  * @author Grégoire Colbert @since 2014-01-10
- *
+ * 
  */
 @Component("tableBean")
 @Scope("view")
-public class TableBean  implements Serializable {
+public class TableBean implements Serializable {
 
 	/**
 	 * For Logging.
@@ -43,31 +44,20 @@ public class TableBean  implements Serializable {
 
 	private static final long serialVersionUID = -3164178023755035995L;
 
-	private List<TableEntry> tableEntries;
+	private Collection<TableEntry> tableEntries;
 
 	public TableBean() {
 		tableEntries = new ArrayList<TableEntry>();
-
-		List<String> scenario1resources = new ArrayList<String>();
-		scenario1resources.add("Tableau blanc interactif");
-		TableEntry scenario1 = new TableEntry("Scénario de test n°1", "Grégoire Colbert", scenario1resources);
-		tableEntries.add(scenario1);
-
-		List<String> scenario2resources = new ArrayList<String>();
-		scenario2resources.add("Tableau blanc interactif");
-		scenario2resources.add("Boitiers de vote");
-		TableEntry scenario2 = new TableEntry("Scénario de test n°2", "Grégoire Colbert", scenario2resources);
-		tableEntries.add(scenario2);
 	}
 
-	public List<TableEntry> getTableEntries() {
+	public Collection<TableEntry> getTableEntries() {
 		return tableEntries;
 	}
 
-	public void setTableEntries(List<TableEntry> tableEntries) {
+	public void setTableEntries(Collection<TableEntry> tableEntries) {
 		this.tableEntries = tableEntries;
 	}
-	
+
 	public static class TableEntry implements Serializable {
 
 		private static final long serialVersionUID = 5305081640505801043L;
@@ -76,14 +66,14 @@ public class TableBean  implements Serializable {
 
 		private String author;
 
-		private List<String> resources;
+		private Collection<Ressource> resources;
 
-		public TableEntry(String title, String author, List<String> resources) {
+		public TableEntry(String title, String author, Collection<Ressource> resources) {
 			this.title = title;
 			this.author = author;
 			this.resources = resources;
 		}
-		
+
 		public String getTitle() {
 			return title;
 		}
@@ -100,11 +90,11 @@ public class TableBean  implements Serializable {
 			this.author = author;
 		}
 
-		public List<String> getResources() {
+		public Collection<Ressource> getResources() {
 			return resources;
 		}
 
-		public void setResources(List<String> resources) {
+		public void setResources(Collection<Ressource> resources) {
 			this.resources = resources;
 		}
 	}

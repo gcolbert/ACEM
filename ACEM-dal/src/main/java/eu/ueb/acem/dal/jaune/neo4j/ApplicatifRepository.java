@@ -23,7 +23,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface ApplicatifRepository extends GenericRepository<ApplicatifNode> {
 

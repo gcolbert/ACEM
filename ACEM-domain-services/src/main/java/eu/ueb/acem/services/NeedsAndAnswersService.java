@@ -18,21 +18,21 @@
  */
 package eu.ueb.acem.services;
 
-import java.util.Set;
-
+import java.util.Collection;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.Scenario;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface NeedsAndAnswersService {
 
 	public Long countNeeds();
 
 	public Besoin createNeed(String name);
-	
+
 	public Besoin retrieveNeed(Long id);
 
 	public Besoin updateNeed(Besoin need);
@@ -40,31 +40,33 @@ public interface NeedsAndAnswersService {
 	public Boolean deleteNeed(Long id);
 
 	public void deleteAllNeeds();
-	
+
 	public Long countAnswers();
 
 	public Reponse createAnswer(String name);
 
 	public Reponse retrieveAnswer(Long id);
-	
+
 	public Reponse updateAnswer(Reponse answer);
 
 	public Boolean deleteAnswer(Long id);
-	
+
 	public void deleteAllAnswers();
 
-	public Set<Besoin> getAssociatedNeedsOf(Besoin need);
+	public Collection<Besoin> getAssociatedNeedsOf(Besoin need);
 
 	public Besoin createOrUpdateNeed(Long id, String name, Long idParent);
 
 	public void changeParentOfNeed(Long id, Long idNewParent);
 
-	public Set<Reponse> getAssociatedAnswersOf(Besoin need);
+	public Collection<Reponse> getAssociatedAnswersOf(Besoin need);
 
 	public Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
 
 	public void saveNeedName(Long id, String newName);
 
 	public void saveAnswerName(Long id, String newName);
-	
+
+	public Collection<Scenario> getScenariosRelatedToAnswer(Long id);
+
 }

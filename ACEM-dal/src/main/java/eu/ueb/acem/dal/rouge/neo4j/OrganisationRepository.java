@@ -23,7 +23,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface OrganisationRepository extends GenericRepository<OrganisationNode> {
 

@@ -66,10 +66,10 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 		Personne user = enseignantDAO.retrieveByName(uid);
 		if (user == null) {
 			// TODO : on récupère l'utilisateur par le service CAS
-			//user.setLogin(uid);
-			//user.setNom(uid);
-			//user.setLanguage("fr");
-			//users.add(user);
+			// user.setLogin(uid);
+			// user.setNom(uid);
+			// user.setLanguage("fr");
+			// users.add(user);
 		}
 		return user;
 	}

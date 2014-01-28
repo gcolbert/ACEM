@@ -21,8 +21,7 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Collection;
-import java.util.Set;
-
+import java.util.HashSet;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -36,7 +35,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Scenario_step")
@@ -44,84 +43,87 @@ public class EtapeNode implements Etape {
 
 	private static final long serialVersionUID = -5248471016348742765L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexEtape") private String name;
+	@GraphId
+	private Long id;
+
+	@Indexed(indexName = "indexOfSteps")
+	private String name;
 
 	@RelatedTo(elementClass = ScenarioNode.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Scenario scenario;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "reference", direction = OUTGOING)
-	private Set<Ressource> ressources;
-	
-	private String objectif;
-	private String descriptif;
-	private String duree;
-	
+	@RelatedTo(elementClass = RessourceNode.class, type = "requiresResource", direction = OUTGOING)
+	private Collection<Ressource> resources;
+
+	private String objective;
+	private String description;
+	private String duration;
+
 	public EtapeNode() {
+		resources = new HashSet<Ressource>();
 	}
 
 	public EtapeNode(String name) {
 		setName(name);
 	}
-	
-    @Override
-    public Long getId() {
-    	return id;
-    }
 
-    public void setId(Long id) {
-    	this.id = id;
-    }
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-    @Override
-    public String getName() {
-    	return name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    @Override
-    public void setName(String name) {
-    	this.name = name;
-    }
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	@Override
 	public Scenario getScenario() {
 		return scenario;
 	}
-	
+
 	@Override
-	public String getObjectif() {
-		return objectif;
+	public String getObjective() {
+		return objective;
 	}
 
 	@Override
-	public void setObjectif(String objectif) {
-		this.objectif = objectif;
+	public void setObjective(String objective) {
+		this.objective = objective;
 	}
 
 	@Override
-	public String getDescriptif() {
-		return descriptif;
+	public String getDescription() {
+		return description;
 	}
 
 	@Override
-	public void setDescriptif(String descriptif) {
-		this.descriptif = descriptif;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
-	public String getDuree() {
-		return duree;
+	public String getDuration() {
+		return duration;
 	}
 
 	@Override
-	public void setDuree(String duree) {
-		this.duree = duree;
+	public void setDuration(String duration) {
+		this.duration = duration;
 	}
-	
+
 	@Override
-	public Collection<Ressource> getRessources() {
-		return ressources;
+	public Collection<Ressource> getResources() {
+		return resources;
 	}
 
 }

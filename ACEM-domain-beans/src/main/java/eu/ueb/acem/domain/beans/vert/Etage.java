@@ -20,14 +20,14 @@ package eu.ueb.acem.domain.beans.vert;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 public interface Etage extends EspacePhysique {
 
 	public Batiment getBatiment();
-	
+
 	public Integer getNumero();
 
 	public void setNumero(Integer numero);
-	
+
 }

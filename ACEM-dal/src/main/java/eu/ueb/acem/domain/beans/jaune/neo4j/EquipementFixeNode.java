@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.jaune.EquipementFixe;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Fixed_equipment")
@@ -35,17 +35,19 @@ public class EquipementFixeNode extends EquipementNode implements EquipementFixe
 
 	private static final long serialVersionUID = 7746525608906065863L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexEquipementFixe") private String name;
-	
+	@Indexed(indexName = "indexEquipementFixe")
+	private String name;
+
 	public EquipementFixeNode() {
 	}
 
 	public EquipementFixeNode(String name) {
 		this.setName(name);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -53,5 +55,5 @@ public class EquipementFixeNode extends EquipementNode implements EquipementFixe
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

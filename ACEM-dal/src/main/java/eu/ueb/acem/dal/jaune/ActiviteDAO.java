@@ -18,9 +18,9 @@
  */
 package eu.ueb.acem.dal.jaune;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ActiviteNode;
 
 /**
  * @author Grégoire Colbert @since 2013-12-11
- *
+ * 
  */
 @Repository("activiteDAO")
 public class ActiviteDAO implements DAO<Long, Activite> {
@@ -47,16 +47,16 @@ public class ActiviteDAO implements DAO<Long, Activite> {
 
 	@Autowired
 	private ActiviteRepository repository;
-	
+
 	public ActiviteDAO() {
-		
+
 	}
 
 	@Override
 	public Boolean exists(Long id) {
 		return (id != null) ? repository.exists(id) : false;
 	}
-	
+
 	@Override
 	public Activite create(Activite activite) {
 		return repository.save((ActiviteNode) activite);
@@ -66,35 +66,35 @@ public class ActiviteDAO implements DAO<Long, Activite> {
 	public Activite retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
-	
+
 	@Override
 	public Activite retrieveByName(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}
 
 	@Override
-	public Set<Activite> retrieveAll() {
+	public Collection<Activite> retrieveAll() {
 		Iterable<ActiviteNode> endResults = repository.findAll();
-		Set<Activite> set = new HashSet<Activite>();
+		Collection<Activite> collection = new HashSet<Activite>();
 		if (endResults.iterator() != null) {
 			Iterator<ActiviteNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				set.add(iterator.next());
+				collection.add(iterator.next());
 			}
 		}
-		return set;
+		return collection;
 	}
-	
+
 	@Override
 	public Activite update(Activite activite) {
 		return repository.save((ActiviteNode) activite);
 	}
-	
+
 	@Override
 	public void delete(Activite activite) {
 		repository.delete((ActiviteNode) activite);
 	}
-	
+
 	@Override
 	public void deleteAll() {
 		repository.deleteAll();
@@ -104,5 +104,5 @@ public class ActiviteDAO implements DAO<Long, Activite> {
 	public Long count() {
 		return repository.count();
 	}
-	
+
 }

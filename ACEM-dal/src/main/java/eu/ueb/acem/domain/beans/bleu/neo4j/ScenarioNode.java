@@ -19,9 +19,9 @@
 package eu.ueb.acem.domain.beans.bleu.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.Collection;
-import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -29,13 +29,14 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.Etape;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Scenario")
@@ -43,65 +44,77 @@ public class ScenarioNode implements Scenario {
 
 	private static final long serialVersionUID = -5248471016348742765L;
 
-	@GraphId private Long id;
-	
-	@Indexed(indexName = "indexScenario") private String name;
+	@GraphId
+	private Long id;
 
-	private String titre;
-	private String objectif;
-	
+	@Indexed(indexName = "indexOfScenarios")
+	private String name;
+
+	private String objective;
+	private String author;
+	private Boolean published;
+
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "reference", direction = OUTGOING)
-	private Set<SeanceDeCours> seancesDeCours;
-	
+	private Collection<SeanceDeCours> seancesDeCours;
+
+	@RelatedTo(elementClass = EtapeNode.class, type = "isPartOfScenario", direction = INCOMING)
+	private Collection<Etape> steps;
+
 	public ScenarioNode() {
+		published = false;
 	}
 
 	public ScenarioNode(String name) {
 		setName(name);
 	}
-	
-	@Override
-    public Long getId() {
-    	return id;
-    }
 
-    public void setId(Long id) {
-    	this.id = id;
-    }
-    
-    @Override
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Override
 	public String getName() {
 		return name;
 	}
 
-    @Override
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
-    
+
 	@Override
-	public String getObjectif() {
-		return objectif;
+	public String getObjective() {
+		return objective;
 	}
 
 	@Override
-	public void setObjectif(String objectif) {
-		this.objectif = objectif;
+	public void setObjective(String objective) {
+		this.objective = objective;
 	}
 
-	@Override
-	public String getTitre() {
-		return titre;
-	}
-
-	@Override
-	public void setTitre(String titre) {
-		this.titre = titre;
-	}
-	
 	@Override
 	public Collection<SeanceDeCours> getSeancesDeCours() {
 		return seancesDeCours;
 	}
-	
+
+	@Override
+	public String getAuthor() {
+		return author;
+	}
+
+	@Override
+	public Boolean isPublished() {
+		return published;
+	}
+
+	@Override
+	public Collection<Etape> getSteps() {
+		return steps;
+	}
+
 }

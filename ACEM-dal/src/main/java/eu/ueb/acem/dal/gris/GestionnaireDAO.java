@@ -18,9 +18,9 @@
  */
 package eu.ueb.acem.dal.gris;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
 
 /**
  * @author Grégoire Colbert @since 2013-12-11
- *
+ * 
  */
 @Repository("gestionnaireDAO")
 public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
@@ -47,21 +47,21 @@ public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
 
 	@Autowired
 	private GestionnaireRepository repository;
-	
+
 	public GestionnaireDAO() {
-		
+
 	}
 
 	@Override
 	public Boolean exists(Long id) {
 		return (id != null) ? repository.exists(id) : false;
 	}
-	
+
 	@Override
 	public Gestionnaire create(Gestionnaire gestionnaire) {
 		return repository.save((GestionnaireNode) gestionnaire);
 	}
-	
+
 	@Override
 	public Gestionnaire retrieveByName(String nom) {
 		return repository.findByPropertyValue("nom", nom);
@@ -73,30 +73,30 @@ public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
 	}
 
 	@Override
-	public Set<Gestionnaire> retrieveAll() {
+	public Collection<Gestionnaire> retrieveAll() {
 		Iterable<GestionnaireNode> endResults = repository.findAll();
-		Set<Gestionnaire> set = new HashSet<Gestionnaire>();
+		Collection<Gestionnaire> collection = new HashSet<Gestionnaire>();
 		if (endResults.iterator() != null) {
 			Iterator<GestionnaireNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				set.add(iterator.next());
+				collection.add(iterator.next());
 			}
 		}
-		return set;
+		return collection;
 	}
-	
+
 	@Override
 	public Gestionnaire update(Gestionnaire gestionnaire) {
 		GestionnaireNode GestionnaireNode = (GestionnaireNode) gestionnaire;
 		return repository.save(GestionnaireNode);
 	}
-	
+
 	@Override
 	public void delete(Gestionnaire gestionnaire) {
 		GestionnaireNode gestionnaireNode = (GestionnaireNode) gestionnaire;
 		repository.delete(gestionnaireNode);
 	}
-	
+
 	@Override
 	public void deleteAll() {
 		repository.deleteAll();

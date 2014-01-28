@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.rouge.Etablissement;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
- *
+ * 
  */
 @NodeEntity
 @TypeAlias("Teaching_institution")
@@ -39,22 +39,24 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 
 	private static final long serialVersionUID = 4218521116992739925L;
 
-	@GraphId private Long id;
+	@GraphId
+	private Long id;
 
-	@Indexed(indexName = "indexEtablissement") private String name;
+	@Indexed(indexName = "indexEtablissement")
+	private String name;
 
 	@RelatedTo(elementClass = Communaute.class, type = "estMembreDe", direction = OUTGOING)
 	Communaute communaute;
 
-    public EtablissementNode()  {
-    }
+	public EtablissementNode() {
+	}
 
-    public EtablissementNode(String name) {
-    	this();
-    	this.setName(name);
-    }
+	public EtablissementNode(String name) {
+		this();
+		this.setName(name);
+	}
 
-    @Override
+	@Override
 	public Communaute getCommunaute() {
 		return communaute;
 	}
