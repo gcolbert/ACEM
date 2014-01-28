@@ -6,16 +6,33 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
-		<p:panel header="#{msgs['RESOURCES.TREE.HEADER']}">
-		<!-- 
-			<h:form>  
-    			<p:tree value="#{treeBean.root}" var="node" id="tree">
-        			<p:treeNode>
-            			<h:outputText value="#{node}"/>  
-        			</p:treeNode>  
-    			</p:tree>  
-			</h:form>
-			 -->  
-		</p:panel>
+		<h:form id="formTree">
+			<p:panel header="#{msgs['RESOURCES.TREE.HEADER']}">
+
+				<p:growl id="messages" showDetail="true" />
+
+				<p:tree id="resourcesTree" dynamic="true"
+					value="#{resourcesTreeController.treeRoot}"
+					var="treeNodeData" selectionMode="single"
+					selection="#{resourcesTreeController.selectedNode}"
+					draggable="true" droppable="true" dragdropScope="demo">
+					<p:ajax event="dragdrop"
+						listener="#{resourcesTreeController.onDragDrop}"
+						update="resourcesTree :formTree:messages" />
+					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
+						<h:outputText value="#{treeNodeData.label}" />
+					</p:treeNode>
+					<p:treeNode
+						styleClass="#{treeNodeData.styleClass}">
+						<p:inplace editor="true" event="dblclick">
+							<p:ajax event="save"
+								listener="#{resourcesTreeController.onLabelSave(treeNodeData)}"
+								update="@this" />
+							<p:inputText value="#{treeNodeData.label}" />
+						</p:inplace>
+					</p:treeNode>
+				</p:tree>
+			</p:panel>
+		</h:form>
 	</ui:define>
 </ui:composition>

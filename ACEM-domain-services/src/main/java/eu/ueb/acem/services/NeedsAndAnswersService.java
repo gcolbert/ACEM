@@ -30,9 +30,9 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
  */
 public interface NeedsAndAnswersService {
 
-	public DAO<Besoin> getBesoinDAO();
+	public DAO<Long, Besoin> getBesoinDAO();
 
-	public DAO<Reponse> getReponseDAO();
+	public DAO<Long, Reponse> getReponseDAO();
 	
 	public Set<Besoin> getAssociatedNeedsOf(Besoin need);
 

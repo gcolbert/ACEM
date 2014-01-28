@@ -48,7 +48,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	private final static Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
 
 	@Autowired
-	private DAO<Enseignant> enseignantDAO;
+	private DAO<Long, Enseignant> enseignantDAO;
 
 	/**
 	 * Constructor.

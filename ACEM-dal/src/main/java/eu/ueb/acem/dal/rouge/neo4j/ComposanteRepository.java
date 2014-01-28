@@ -18,15 +18,13 @@
  */
 package eu.ueb.acem.dal.rouge.neo4j;
 
-import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
-
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  *
  */
-public interface ComposanteRepository extends GraphRepository<ComposanteNode>, RelationshipOperationsRepository<ComposanteNode> {
+public interface ComposanteRepository extends GenericRepository<ComposanteNode> {
 
 }

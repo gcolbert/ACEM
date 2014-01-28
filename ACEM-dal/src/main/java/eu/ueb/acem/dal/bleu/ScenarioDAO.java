@@ -37,7 +37,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
  *
  */
 @Repository("scenarioDAO")
-public class ScenarioDAO implements DAO<Scenario>{
+public class ScenarioDAO implements DAO<Long, Scenario>{
 
 	/**
 	 * For Logging.

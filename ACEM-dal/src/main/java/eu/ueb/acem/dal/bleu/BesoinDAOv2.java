@@ -18,15 +18,19 @@
  */
 package eu.ueb.acem.dal.bleu;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.neo4j.conversion.EndResult;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.GenericDAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.BesoinRepository;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
@@ -38,46 +42,32 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  * @author Grégoire Colbert @since 2013-11-20
  *
  */
-@Repository("besoinDAO")
-public class BesoinDAO implements DAO<Long, Besoin> {
+//@Repository("besoinDAOv2")
+public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements DAO<Long, Besoin> {
 
-	private final static Logger logger = LoggerFactory.getLogger(BesoinDAO.class);
+	/**
+	 * For Logging.
+	 */
+	@SuppressWarnings("unused")
+	private final static Logger logger = LoggerFactory.getLogger(BesoinDAOv2.class);
 
-	@Autowired
+	//@Autowired
 	private BesoinRepository repository;
 
-	public BesoinDAO() {
-		
+	public BesoinDAOv2() {
 	}
-
-	@Override
-	public Boolean exists(Long id) {
-		return (id != null) ? repository.exists(id) : false;
-	}
-
-	@Override
-	public Besoin create(Besoin need) {
-		logger.debug("Persisting Besoin with name '{}'", need.getName());
-		return repository.save((BesoinNode) need);
-	}
-
-	@Override
-	public Besoin retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
-	public Besoin retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
-	}
-
+	
 	public Set<Besoin> retrieveAssociatedNeedsOf(Besoin need) {
-		Set<BesoinNode> nodes;
+		EndResult<BesoinNode> nodes;
+		Map<String,Object> params = new HashMap<String, Object>();
 		if (need != null) {
-			nodes = repository.findAssociatedNeedsOf(need.getId());
+			params.put("id", need.getId());
+			nodes = repository.query("start need=node({id}) match (n)-[:aPourBesoinParent]->(need) return n", params);
+			//nodes = repository.findAssociatedNeedsOf(need.getId());
 		}
 		else {
-			nodes = repository.findRoots();
+			nodes = repository.query("start n=node(*) where has(n.__type__) and n.__type__ = 'Pedagogical_need' and not (n)-[:aPourBesoinParent]->() return n", params);
+			//nodes = repository.findRoots();
 		}
 
 		Set<Besoin> children = new HashSet<Besoin>();
@@ -88,45 +78,15 @@ public class BesoinDAO implements DAO<Long, Besoin> {
 	}
 
 	public Set<Reponse> retrieveAssociatedAnswersOf(Besoin need) {
+		Map<String,Object> params = new HashMap<String, Object>();
+		params.put("id", need.getId());
 		Set<ReponseNode> nodes = repository.findAssociatedAnswersOf(need.getId());
+		//EndResult<ReponseNode> nodes = repository.query("start need=node({id}) match (need)-[:aPourReponse]->(n) return n", params);
 		Set<Reponse> reponses = new HashSet<Reponse>();
 		for (ReponseNode node : nodes) {
 			reponses.add(node);
 		}
 		return reponses;
-	}
-
-	@Override
-	public Set<Besoin> retrieveAll() {
-		Iterable<BesoinNode> endResults = repository.findAll();
-		Set<Besoin> set = new HashSet<Besoin>();
-		if (endResults.iterator() != null) {
-			Iterator<BesoinNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				set.add(iterator.next());
-			}
-		}
-		return set;
-	}
-	
-	@Override
-	public Besoin update(Besoin need) {
-		return repository.save((BesoinNode) need);
-	}
-
-	@Override
-	public void delete(Besoin need) {
-		repository.delete((BesoinNode) need);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

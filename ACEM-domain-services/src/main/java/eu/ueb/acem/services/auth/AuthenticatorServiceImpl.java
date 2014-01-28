@@ -58,9 +58,9 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 	 * DAO for user
 	 */
 	@Autowired
-	private DAO<Enseignant> enseignantDAO;
+	private DAO<Enseignant, Long> enseignantDAO;
 	@Autowired
-	private DAO<Gestionnaire> gestionnaireDAO;
+	private DAO<Gestionnaire, Long> gestionnaireDAO;
 	
 	/**
 	 * Bean constructor.

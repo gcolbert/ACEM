@@ -18,15 +18,13 @@
  */
 package eu.ueb.acem.dal.bleu.neo4j;
 
-import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
-
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  *
  */
-public interface EtapeRepository extends GraphRepository<EtapeNode>, RelationshipOperationsRepository<EtapeNode> {
+public interface EtapeRepository extends GenericRepository<EtapeNode> {
 
 }

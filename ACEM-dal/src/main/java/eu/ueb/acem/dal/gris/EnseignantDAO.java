@@ -37,7 +37,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
  *
  */
 @Repository("enseignantDAO")
-public class EnseignantDAO implements DAO<Enseignant> {
+public class EnseignantDAO implements DAO<Long, Enseignant> {
 
 	/**
 	 * For Logging.

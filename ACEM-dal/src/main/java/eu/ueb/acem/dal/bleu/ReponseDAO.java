@@ -39,7 +39,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  *
  */
 @Repository("reponseDAO")
-public class ReponseDAO implements DAO<Reponse> {
+public class ReponseDAO implements DAO<Long, Reponse> {
 
 	/**
 	 * For Logging.

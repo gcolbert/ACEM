@@ -21,11 +21,9 @@ package eu.ueb.acem.dal.bleu.neo4j;
 import java.util.Set;
 
 import org.springframework.data.neo4j.annotation.Query;
-import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.data.neo4j.repository.NamedIndexRepository;
-import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
 import org.springframework.data.repository.query.Param;
 
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
@@ -33,7 +31,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  * @author Grégoire Colbert @since 2013-11-20
  *
  */
-public interface BesoinRepository extends GraphRepository<BesoinNode>, RelationshipOperationsRepository<BesoinNode>, NamedIndexRepository<BesoinNode> {
+public interface BesoinRepository extends GenericRepository<BesoinNode>{
 
 	@Query(value = "start n=node(*) where has(n.__type__) and n.__type__ = 'Pedagogical_need' and not (n)-[:aPourBesoinParent]->() return n")
 	Set<BesoinNode> findRoots();

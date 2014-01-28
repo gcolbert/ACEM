@@ -193,8 +193,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="21" language="java" name="eu.ueb.acem.dal.bleu.BesoinDAO" project="ACEM-dal" 
-    file="/ACEM-dal/src/main/java/eu/ueb/acem/dal/bleu/BesoinDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="21" language="java" name="eu.ueb.acem.dal.bleu.BesoinDAOv2" project="ACEM-dal" 
+    file="/ACEM-dal/src/main/java/eu/ueb/acem/dal/bleu/BesoinDAOv2.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="215" y="1214"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      

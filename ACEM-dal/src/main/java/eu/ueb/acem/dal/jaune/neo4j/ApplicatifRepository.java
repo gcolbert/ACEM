@@ -18,15 +18,13 @@
  */
 package eu.ueb.acem.dal.jaune.neo4j;
 
-import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
-
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  *
  */
-public interface ApplicatifRepository extends GraphRepository<ApplicatifNode>, RelationshipOperationsRepository<ApplicatifNode> {
+public interface ApplicatifRepository extends GenericRepository<ApplicatifNode> {
 
 }

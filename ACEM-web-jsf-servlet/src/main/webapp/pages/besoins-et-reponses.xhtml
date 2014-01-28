@@ -82,6 +82,13 @@
 						update="needsAndAnswersTree :formTree:messages"
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
 						icon="ui-icon-trash" />
+					<p:menuitem
+						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_RESOURCE']}"
+						update="needsAndAnswersTree"
+						icon="ui-icon-link"
+						onclick="PF('dialogAssociateResource').show()"
+						type="button"
+					/>
 				</p:contextMenu>
 
 				<p:tree id="needsAndAnswersTree" dynamic="true"
@@ -135,36 +142,43 @@
 								update="@this" />
 							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
-						<p:commandLink
-							oncomplete="PrimeFaces.scrollTo('formTable')"
+						<p:commandLink oncomplete="PrimeFaces.scrollTo('formTable')"
 							action="#{needsAndAnswersTableController.setSelectedAnswer(treeNodeData.id)}"
 							update=":formTable">
-							<h:outputText
-								id="viewScenariosBtn"
+							<h:outputText id="viewScenariosBtn"
 								styleClass="ui-icon ui-icon-lightbulb"
 								style="display:inline-block; vertical-align:middle;" />
-							<p:tooltip value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.VIEW_SCENARIOS_EXAMPLES']}" for="viewScenariosBtn"/>
+							<p:tooltip
+								value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.VIEW_SCENARIOS_EXAMPLES']}"
+								for="viewScenariosBtn" />
 						</p:commandLink>
 						<h:link outcome="ressources">
 							<f:param name="resourceId" value="#{treeNodeData.id}" />
 							<h:outputText id="goToResourceBtn"
 								styleClass="ui-icon ui-icon-arrowthickstop-1-e"
 								style="display:inline-block; vertical-align:middle;" />
-							<p:tooltip value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_RESOURCE']}" for="goToResourceBtn"/>
+							<p:tooltip
+								value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_RESOURCE']}"
+								for="goToResourceBtn" />
 						</h:link>
-						<h:link value="Go to next page" outcome="ressources" />
 					</p:treeNode>
 				</p:tree>
-
 			</p:panel>
+		</h:form>
+
+		<h:form id="formAssociateResource">
+			<p:dialog id="modalDialog" header="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_DIALOG.HEADER']}" widgetVar="dialogAssociateResource"
+				modal="true" height="100">
+				<h:outputText value="This is a Modal Dialog." />
+			</p:dialog>
 		</h:form>
 
 		<h:form id="formTable">
 			<p:outputPanel id="examplesOfScenariosPanel">
-				<p:panel header="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']} «#{needsAndAnswersTableController.selectedAnswer.name}»"
-						rendered="#{needsAndAnswersTableController.selectedAnswer != null}">
-					<p:dataTable
-						id="examplesOfScenariosTable"
+				<p:panel
+					header="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']} «#{needsAndAnswersTableController.selectedAnswer.name}»"
+					rendered="#{needsAndAnswersTableController.selectedAnswer != null}">
+					<p:dataTable id="examplesOfScenariosTable"
 						value="#{needsAndAnswersTableController.scenariosRelatedToSelectedAnswer}"
 						var="tableEntry">
 						<p:column

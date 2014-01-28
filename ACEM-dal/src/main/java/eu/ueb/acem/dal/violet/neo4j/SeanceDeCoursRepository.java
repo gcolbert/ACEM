@@ -18,15 +18,13 @@
  */
 package eu.ueb.acem.dal.violet.neo4j;
 
-import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
-
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  *
  */
-public interface SeanceDeCoursRepository extends GraphRepository<SeanceDeCoursNode>, RelationshipOperationsRepository<SeanceDeCoursNode> {
+public interface SeanceDeCoursRepository extends GenericRepository<SeanceDeCoursNode> {
 
 }

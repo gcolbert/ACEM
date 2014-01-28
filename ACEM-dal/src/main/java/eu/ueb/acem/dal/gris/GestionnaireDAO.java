@@ -37,7 +37,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
  *
  */
 @Repository("gestionnaireDAO")
-public class GestionnaireDAO implements DAO<Gestionnaire> {
+public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
 
 	/**
 	 * For Logging.

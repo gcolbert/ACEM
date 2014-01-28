@@ -37,7 +37,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ActiviteNode;
  *
  */
 @Repository("activiteDAO")
-public class ActiviteDAO implements DAO<Activite> {
+public class ActiviteDAO implements DAO<Long, Activite> {
 
 	/**
 	 * For Logging.

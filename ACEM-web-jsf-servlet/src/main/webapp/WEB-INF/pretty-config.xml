@@ -19,7 +19,7 @@
 	</url-mapping>
 
 	<url-mapping id="ressources-param">
-		<pattern value="/ressources/{ressourceId}" />
+		<pattern value="/ressources/{resourceId}" />
 		<view-id value="/pages/ressources.xhtml" />
 	</url-mapping>
 

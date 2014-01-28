@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.BesoinDAO;
+import eu.ueb.acem.dal.bleu.BesoinDAOv2;
 import eu.ueb.acem.dal.bleu.ReponseDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
@@ -58,12 +59,12 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public DAO<Besoin> getBesoinDAO() {
+	public DAO<Long, Besoin> getBesoinDAO() {
 		return besoinDAO;
 	}
 
 	@Override
-	public DAO<Reponse> getReponseDAO() {
+	public DAO<Long, Reponse> getReponseDAO() {
 		return reponseDAO;
 	}
 

@@ -37,7 +37,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode;
  *
  */
 @Repository("etapeDAO")
-public class EtapeDAO implements DAO<Etape>{
+public class EtapeDAO implements DAO<Long, Etape>{
 
 	/**
 	 * For Logging.

@@ -2,11 +2,15 @@
 	width: 100%;
 }
 
+.ui-menu {
+	min-width:14em;
+}
+
 .Need {
 }
 
 .Answer {
-	color:blue;
+	color:#2779AA;
 }
 
 .Resource {

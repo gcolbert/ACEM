@@ -33,8 +33,8 @@
     			URLs are prefixed by property portletMediaPath or servletMediaPath.
     		</description>
     		<list>
-    			<value>/ACEM-web-jsf-servlet/js/functions.js</value>
-    			<value>/ACEM-web-jsf-servlet/js/navigation.js</value>
+    			<value>/ACEM-web-jsf-servlet/media/js/functions.js</value>
+    			<value>/ACEM-web-jsf-servlet/media/js/navigation.js</value>
     		</list>
     	</property>
     	<property name="stylesheets" >

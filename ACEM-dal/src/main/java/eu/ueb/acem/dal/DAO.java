@@ -18,20 +18,21 @@
  */
 package eu.ueb.acem.dal;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  *
  */
-public interface DAO<E> {
+public interface DAO<ID extends Serializable, E> {
 
-	public Boolean exists(Long id);
-	
+	public Boolean exists(ID id);
+
 	public E create(E entity);
 
-	public E retrieveById(Long id);
-
+	public E retrieveById(ID id);
+	
 	public E retrieveByName(String name);
 
 	public Set<E> retrieveAll();

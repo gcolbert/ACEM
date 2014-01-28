@@ -67,6 +67,11 @@
 			<version>${primefaces.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>all-themes</artifactId>
+			<version>1.0.10</version>
+		</dependency>
+		<dependency>
 			<groupId>org.esupportail</groupId>
 			<artifactId>esup-commons2-jsf2-exception</artifactId>
 			<version>${esupcommons.version}</version>

@@ -18,15 +18,13 @@
  */
 package eu.ueb.acem.dal.gris.neo4j;
 
-import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
-
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  *
  */
-public interface GestionnaireRepository extends GraphRepository<GestionnaireNode>, RelationshipOperationsRepository<GestionnaireNode> {
+public interface GestionnaireRepository extends GenericRepository<GestionnaireNode> {
 
 }
