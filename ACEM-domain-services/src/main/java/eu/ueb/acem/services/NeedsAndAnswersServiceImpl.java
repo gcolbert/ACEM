@@ -63,8 +63,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	public Besoin retrieveNeed(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return besoinDAO.retrieveById(id);
 	}
 
 	@Override
@@ -89,8 +88,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	
 	@Override
 	public Reponse retrieveAnswer(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return reponseDAO.retrieveById(id);
 	}
 
 	@Override
