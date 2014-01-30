@@ -7,3 +7,5 @@ target/
 .metadata
 ACEM-web-jsf-servlet/src/main/resources/properties/config.properties
 .checkstyle
+.idea
+*.iml
