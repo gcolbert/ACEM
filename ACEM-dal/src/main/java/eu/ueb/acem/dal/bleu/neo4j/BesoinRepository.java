@@ -33,22 +33,22 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  */
 public interface BesoinRepository extends GenericRepository<BesoinNode> {
 
-	@Query(value = "start n=node(*) where has(n.__type__) and n.__type__ = 'Pedagogical_need' and not (n)-[:aPourBesoinParent]->() return n")
+	@Query(value = "start n=node(*) where has(n.__type__) and n.__type__ = 'Pedagogical_need' and not (n)-[:hasParentNeed]->() return n")
 	Collection<BesoinNode> findRoots();
 
 	/*
 	 * @Query(value =
-	 * "start need=node:indexOfNeeds(name={name}) match (n)-[:aPourBesoinParent]->(need) return n"
+	 * "start need=node:indexOfNeeds(name={name}) match (n)-[:hasParentNeed]->(need) return n"
 	 * ) Collection<BesoinNode> findChildrenOf(@Param("name") String name);
 	 * 
 	 * @Query(value =
-	 * "start need=node:indexOfNeeds(name={name}) match (need)-[:aPourReponse]->(n) return n"
+	 * "start need=node:indexOfNeeds(name={name}) match (need)-[:needAnsweredBy]->(n) return n"
 	 * ) Collection<ReponseNode> findAnswersOf(@Param("name") String name);
 	 */
 
-	@Query(value = "start need=node({id}) match (n)-[:aPourBesoinParent]->(need) return n")
+	@Query(value = "start need=node({id}) match (n)-[:hasParentNeed]->(need) return n")
 	Collection<BesoinNode> findAssociatedNeedsOf(@Param("id") Long id);
 
-	@Query(value = "start need=node({id}) match (need)-[:aPourReponse]->(n) return n")
+	@Query(value = "start need=node({id}) match (need)-[:needAnsweredBy]->(n) return n")
 	Collection<ReponseNode> findAssociatedAnswersOf(@Param("id") Long id);
 }

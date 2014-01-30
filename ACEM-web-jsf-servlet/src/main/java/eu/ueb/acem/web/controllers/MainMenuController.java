@@ -37,9 +37,6 @@ public class MainMenuController implements Serializable {
 
 	private static final long serialVersionUID = -7218568142478270516L;
 
-	/**
-	 * For Logging.
-	 */
 	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(MainMenuController.class);
 

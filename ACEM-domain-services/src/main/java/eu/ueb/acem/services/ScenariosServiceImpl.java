@@ -11,28 +11,29 @@ import eu.ueb.acem.domain.beans.bleu.Etape;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
+import eu.ueb.acem.domain.beans.gris.Personne;
 
 @Service("scenariosService")
 public class ScenariosServiceImpl implements ScenariosService {
 
 	@Autowired
 	ScenarioDAO scenarioDAO;
-	
+
 	@Autowired
 	EtapeDAO stepDAO;
-	
+
 	public ScenariosServiceImpl() {
-		
+
 	}
-	
+
 	@Override
 	public Long countScenarios() {
 		return scenarioDAO.count();
 	}
 
 	@Override
-	public Scenario createScenario(String name) {
-		return scenarioDAO.create(new ScenarioNode(name));
+	public Scenario createScenario(String name, Personne author, String objective) {
+		return scenarioDAO.create(new ScenarioNode(name, author, objective));
 	}
 
 	@Override
@@ -92,8 +93,8 @@ public class ScenariosServiceImpl implements ScenariosService {
 	}
 
 	@Override
-	public Collection<Scenario> retrieveScenariosForUser(String login) {
-		return scenarioDAO.retrieveScenariosForUser(login);
+	public Collection<Scenario> retrieveScenariosWithAuthor(Personne author) {
+		return scenarioDAO.retrieveScenariosWithAuthor(author);
 	}
-	
+
 }

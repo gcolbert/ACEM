@@ -51,10 +51,10 @@ public class ReponseNode implements Reponse {
 	@Indexed(indexName = "indexOfAnswers")
 	private String name;
 
-	@RelatedTo(elementClass = BesoinNode.class, type = "aPourReponse", direction = INCOMING)
+	@RelatedTo(elementClass = BesoinNode.class, type = "needAnsweredBy", direction = INCOMING)
 	private Collection<Besoin> needs;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "referenceRessource", direction = OUTGOING)
+	@RelatedTo(elementClass = RessourceNode.class, type = "answeredUsingRessource", direction = OUTGOING)
 	private Collection<Ressource> resources;
 
 	public ReponseNode() {

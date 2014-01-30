@@ -3,6 +3,10 @@ package eu.ueb.acem.web.controllers;
 import java.util.Collection;
 import java.util.HashSet;
 
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.ScenariosService;
+import eu.ueb.acem.web.controllers.MainMenuController;
 
 @Controller("myScenariosController")
 @Scope("view")
@@ -17,7 +22,12 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	private static final long serialVersionUID = 2943632466935430900L;
 
+	@SuppressWarnings("unused")
+	private final static Logger logger = LoggerFactory.getLogger(MyScenariosController.class);
+	
 	private Collection<Scenario> scenarios;
+
+	private Personne currentUser;
 
 	@Autowired
 	ScenariosService scenariosService;
@@ -26,15 +36,23 @@ public class MyScenariosController extends AbstractContextAwareController {
 		scenarios = new HashSet<Scenario>();
 	}
 
-	public Collection<Scenario> getScenarios() {
+	@PostConstruct
+	public void initScenariosController() {
 		try {
-			Personne personne = getCurrentUser();
-			return scenariosService.retrieveScenariosForUser(personne.getLogin());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new HashSet<Scenario>();
+			currentUser = getCurrentUser();
+			logger.info("initScenariosController, currentUser={}", currentUser);
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void createScenario() {
+		scenarios.add(scenariosService.createScenario("Nouveau scénario", currentUser, "Objectif du scénario"));
+	}
+
+	public Collection<Scenario> getScenarios() {
+		return scenariosService.retrieveScenariosWithAuthor(currentUser);
 	}
 
 	public void setScenarios(Collection<Scenario> scenarios) {

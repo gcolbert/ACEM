@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:e="http://commons.esup-portail.org"
+	template="../templates/template.xhtml">
+	<ui:define name="content">
+
+		<h:form id="formUsers">
+			<p:panel header="#{msgs['ADMINISTRATION.USERS.HEADER']}">
+				<p:dataTable var="user" value="#{adminUsersController.users}">
+					<h:outputText value="#{user.id}"/>
+					<h:outputText value="#{user.name}"/>
+					<h:outputText value="#{user.login}"/>
+					<!-- 
+					<p:selectBooleanCheckbox value="#{usersController.adminUsersBean.admin}" />
+					<p:selectBooleanCheckbox value="#{usersController.adminUsersBean.teacher}" />
+					 -->
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

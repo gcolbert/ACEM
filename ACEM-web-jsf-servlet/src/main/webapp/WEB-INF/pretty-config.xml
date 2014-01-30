@@ -43,4 +43,9 @@
 		<view-id value="/pages/bibliotheque-de-scenarios.xhtml" />
 	</url-mapping>
 
+	<url-mapping id="administration">
+		<pattern value="/administration" />
+		<view-id value="/pages/administration.xhtml" />
+	</url-mapping>
+
 </pretty-config>

@@ -28,10 +28,10 @@ public interface UniteEnseignement extends Serializable {
 
 	public String getName();
 
-	public void setName(String intitule);
+	public void setName(String name);
 
-	public String getDuree();
+	public String getDuration();
 
-	public void setDuree(String duree);
+	public void setDuration(String duration);
 
 }

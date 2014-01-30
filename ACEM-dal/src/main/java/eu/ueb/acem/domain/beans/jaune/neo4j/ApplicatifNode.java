@@ -38,7 +38,7 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexApplicatif")
+	@Indexed(indexName = "indexOfSoftwares")
 	private String name;
 
 	public ApplicatifNode() {

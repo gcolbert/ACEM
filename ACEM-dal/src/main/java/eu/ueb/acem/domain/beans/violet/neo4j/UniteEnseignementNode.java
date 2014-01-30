@@ -20,6 +20,8 @@ package eu.ueb.acem.domain.beans.violet.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.Collection;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -42,13 +44,13 @@ public class UniteEnseignementNode implements UniteEnseignement {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexUniteEnseignement")
+	@Indexed(indexName = "indexOfCredits")
 	private String name;
 
 	private String duree;
 
-	@RelatedTo(elementClass = Diplome.class, type = "estUnePartieDe", direction = OUTGOING)
-	private Diplome estUnePartieDe;
+	@RelatedTo(elementClass = DiplomeNode.class, type = "isPartOfDiploma", direction = OUTGOING)
+	private Collection<Diplome> diplomas;
 
 	public UniteEnseignementNode() {
 	}
@@ -65,12 +67,20 @@ public class UniteEnseignementNode implements UniteEnseignement {
 		this.name = name;
 	}
 
-	public String getDuree() {
+	public String getDuration() {
 		return duree;
 	}
 
-	public void setDuree(String duree) {
-		this.duree = duree;
+	public void setDuration(String duration) {
+		this.duree = duration;
+	}
+
+	public Collection<Diplome> getDiplomas() {
+		return diplomas;
+	}
+
+	public void setDiplomas(Collection<Diplome> diplomas) {
+		this.diplomas = diplomas;
 	}
 
 }

@@ -110,7 +110,7 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	}
 
 	public Collection<Besoin> retrieveNeedsFor(Reponse reponse) {
-		Collection<BesoinNode> nodes = repository.findNeedsFor(reponse.getId());
+		Collection<BesoinNode> nodes = repository.findNeedsForAnswer(reponse.getId());
 		Collection<Besoin> needs = new HashSet<Besoin>();
 		for (BesoinNode node : nodes) {
 			needs.add(node);
@@ -119,7 +119,7 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	}
 
 	public Collection<Scenario> retrieveScenariosRelatedToAnswer(Long id) {
-		Collection<ScenarioNode> nodes = repository.findScenariosRelatedTo(id);
+		Collection<ScenarioNode> nodes = repository.findScenariosRelatedToAnswer(id);
 		Collection<Scenario> scenarios = new HashSet<Scenario>();
 		for (ScenarioNode node : nodes) {
 			scenarios.add(node);

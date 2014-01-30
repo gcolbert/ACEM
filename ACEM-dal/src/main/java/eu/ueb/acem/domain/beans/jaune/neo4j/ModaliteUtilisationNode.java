@@ -38,7 +38,7 @@ public class ModaliteUtilisationNode implements ModaliteUtilisation {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexModaliteUtilisation")
+	@Indexed(indexName = "indexOfUseModes")
 	private String name;
 
 	/**

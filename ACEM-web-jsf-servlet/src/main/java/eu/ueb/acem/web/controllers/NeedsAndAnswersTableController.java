@@ -76,7 +76,7 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 					resources.add(resource);
 				}
 			}
-			tableEntries.add(new TableEntry(scenario.getName(), scenario.getAuthor(), resources));
+			tableEntries.add(new TableEntry(scenario.getName(), scenario.getAuthor().getName(), resources));
 		}
 		logger.info("leaving getScenariosRelatedToSelectedAnswer");
 		logger.info("------");

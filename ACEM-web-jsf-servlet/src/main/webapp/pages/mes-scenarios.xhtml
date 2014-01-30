@@ -6,20 +6,30 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
-		<p:panelGrid columns="1">
-			<f:facet name="header">
-				 #{msgs['MY_SCENARIOS.HEADER']}
-			</f:facet>
-			<p:commandButton
-				value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
-				icon="ui-icon-plusthick" />
-			<p:dataTable value="#{myScenariosController.scenarios}"
-				var="tableEntry">
-				<h:outputText value="#{tableEntry.name}" />
-			</p:dataTable>
-			<p:commandButton
-				value="#{msgs['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
-				icon="ui-icon-trash" />
-		</p:panelGrid>
+		<p:panel header="#{msgs['MY_SCENARIOS.HEADER']}">
+			<p:panelGrid columns="1">
+				<p:commandButton
+					value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
+					icon="ui-icon-plusthick" />
+				<p:scrollPanel style="width:250px;height:200px" mode="native">
+					<p:dataTable value="#{myScenariosController.scenarios}"
+						var="tableEntry">
+						<h:outputText value="#{tableEntry.name}" />
+					</p:dataTable>
+				</p:scrollPanel>
+				<p:commandButton
+					value="#{msgs['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
+					icon="ui-icon-trash" />
+			</p:panelGrid>
+		</p:panel>
+		<!-- 
+		<p:layout id="layout">
+			<p:layoutUnit position="west" resizable="true">
+			</p:layoutUnit>
+			<p:layoutUnit position="center">
+			Hello
+			</p:layoutUnit>
+		</p:layout>
+ -->
 	</ui:define>
 </ui:composition>

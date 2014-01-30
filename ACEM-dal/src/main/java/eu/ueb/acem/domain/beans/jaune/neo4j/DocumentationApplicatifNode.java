@@ -42,7 +42,7 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexDocumentationApplicatif")
+	@Indexed(indexName = "indexOfSoftwareDocumentations")
 	private String name;
 
 	@RelatedTo(elementClass = Applicatif.class, type = "reference", direction = OUTGOING)

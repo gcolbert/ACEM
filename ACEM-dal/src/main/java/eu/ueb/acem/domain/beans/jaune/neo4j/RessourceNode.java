@@ -19,6 +19,7 @@
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.Collection;
 
@@ -27,6 +28,8 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
@@ -42,11 +45,14 @@ public abstract class RessourceNode implements Ressource {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexRessource")
+	@Indexed(indexName = "indexOfResources")
 	private String name;
 
-	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "reference", direction = OUTGOING)
-	private Collection<ModaliteUtilisation> modalitesUtilisation;
+	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "resourceHasUseMode", direction = OUTGOING)
+	private Collection<ModaliteUtilisation> useModes;
+	
+	@RelatedTo(elementClass = ReponseNode.class, type="answeredUsingResource", direction = INCOMING)
+	private Collection<Reponse> answers;
 
 	public RessourceNode() {
 	}
@@ -72,7 +78,11 @@ public abstract class RessourceNode implements Ressource {
 	}
 
 	public Collection<ModaliteUtilisation> getModalitesUtilisation() {
-		return modalitesUtilisation;
+		return useModes;
+	}
+
+	public Collection<Reponse> getAnswers() {
+		return answers;
 	}
 
 }

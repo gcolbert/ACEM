@@ -38,7 +38,7 @@ public class EquipementMobileNode extends EquipementNode implements EquipementMo
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexEquipementMobile")
+	@Indexed(indexName = "indexOfMobileEquipments")
 	private String name;
 
 	private Integer quantite;

@@ -42,13 +42,13 @@ public class CoursNode implements Cours {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexCours")
+	@Indexed(indexName = "indexOfCourses")
 	private String name;
 
 	private String duree;
 
-	@RelatedTo(elementClass = UniteEnseignement.class, type = "estUnePartieDe", direction = OUTGOING)
-	private UniteEnseignement ue;
+	@RelatedTo(elementClass = UniteEnseignementNode.class, type = "isPartOfCredit", direction = OUTGOING)
+	private UniteEnseignement credit;
 
 	public CoursNode() {
 	}
@@ -65,16 +65,16 @@ public class CoursNode implements Cours {
 		this.name = name;
 	}
 
-	public String getDuree() {
+	public String getDuration() {
 		return duree;
 	}
 
-	public void setDuree(String duree) {
-		this.duree = duree;
+	public void setDuration(String duration) {
+		this.duree = duration;
 	}
 
-	public UniteEnseignement getUe() {
-		return ue;
+	public UniteEnseignement getCredit() {
+		return credit;
 	}
 
 }

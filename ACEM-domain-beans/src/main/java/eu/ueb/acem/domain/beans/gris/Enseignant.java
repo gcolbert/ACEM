@@ -29,8 +29,8 @@ import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
  */
 public interface Enseignant extends Personne {
 
-	public Collection<Ressource> getRessourcesFavorites();
+	public Collection<Ressource> getFavoriteResources();
 
-	public Collection<SeanceDeCours> getSeancesDeCours();
+	public Collection<SeanceDeCours> getTeachingClasses();
 
 }

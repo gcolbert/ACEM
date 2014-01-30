@@ -38,7 +38,7 @@ public class EquipementFixeNode extends EquipementNode implements EquipementFixe
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexEquipementFixe")
+	@Indexed(indexName = "indexOfFixedEquipments")
 	private String name;
 
 	public EquipementFixeNode() {

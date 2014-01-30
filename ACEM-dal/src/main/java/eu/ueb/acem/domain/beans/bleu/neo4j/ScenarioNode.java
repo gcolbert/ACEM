@@ -22,6 +22,8 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.Collection;
+import java.util.HashSet;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -30,6 +32,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.Etape;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
 
@@ -50,10 +53,10 @@ public class ScenarioNode implements Scenario {
 	private String name;
 
 	private String objective;
-	private String author;
+	private Personne author;
 	private Boolean published;
 
-	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "reference", direction = OUTGOING)
+	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "usedForClass", direction = OUTGOING)
 	private Collection<SeanceDeCours> seancesDeCours;
 
 	@RelatedTo(elementClass = EtapeNode.class, type = "isPartOfScenario", direction = INCOMING)
@@ -61,10 +64,15 @@ public class ScenarioNode implements Scenario {
 
 	public ScenarioNode() {
 		published = false;
+		steps = new HashSet<Etape>();
+		seancesDeCours = new HashSet<SeanceDeCours>();
 	}
 
-	public ScenarioNode(String name) {
-		setName(name);
+	public ScenarioNode(String name, Personne author, String objective) {
+		this();
+		this.name = name;
+		this.author = author;
+		this.objective = objective;
 	}
 
 	@Override
@@ -102,7 +110,12 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
-	public String getAuthor() {
+	public Collection<Etape> getSteps() {
+		return steps;
+	}
+
+	@Override
+	public Personne getAuthor() {
 		return author;
 	}
 
@@ -112,8 +125,8 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
-	public Collection<Etape> getSteps() {
-		return steps;
+	public void setPublished(Boolean published) {
+		this.published = published;
 	}
 
 }

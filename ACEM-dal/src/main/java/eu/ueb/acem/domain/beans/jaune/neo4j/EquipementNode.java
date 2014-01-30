@@ -41,7 +41,7 @@ public abstract class EquipementNode extends RessourceNode implements Equipement
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexEquipement")
+	@Indexed(indexName = "indexOfEquipments")
 	private String name;
 
 	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "estContenuDans", direction = OUTGOING)

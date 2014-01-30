@@ -19,12 +19,17 @@
 package eu.ueb.acem.domain.beans.violet.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
+
+import java.util.Collection;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 import eu.ueb.acem.domain.beans.vert.EspacePhysique;
 import eu.ueb.acem.domain.beans.vert.neo4j.EspacePhysiqueNode;
 import eu.ueb.acem.domain.beans.violet.Cours;
@@ -43,17 +48,20 @@ public class SeanceDeCoursNode implements SeanceDeCours {
 	@GraphId
 	private Long id;
 
-	@RelatedTo(elementClass = CoursNode.class, type = "estUnePartieDe", direction = OUTGOING)
-	private Cours cours;
+	@RelatedTo(elementClass = CoursNode.class, type = "isPartOfCourse", direction = OUTGOING)
+	private Cours course;
 
-	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "aLieuDans", direction = OUTGOING)
-	private EspacePhysique lieu;
+	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "classHappensInLocation", direction = OUTGOING)
+	private EspacePhysique location;
 
+	@RelatedTo(elementClass = ScenarioNode.class, type = "scenarioUsedForClass", direction = INCOMING)
+	private Collection<Scenario> scenarios;
+	
 	private String date;
-	private String heure;
-	private String duree;
-	private String modalite;
-	private Integer nbApprenants;
+	private String time;
+	private String duration;
+	private String mode;
+	private Integer numberOfLearners;
 
 	public SeanceDeCoursNode() {
 
@@ -67,44 +75,44 @@ public class SeanceDeCoursNode implements SeanceDeCours {
 		this.date = date;
 	}
 
-	public String getHeure() {
-		return heure;
+	public String getTime() {
+		return time;
 	}
 
-	public void setHeure(String heure) {
-		this.heure = heure;
+	public void setTime(String heure) {
+		this.time = heure;
 	}
 
-	public String getDuree() {
-		return duree;
+	public String getDuration() {
+		return duration;
 	}
 
-	public void setDuree(String duree) {
-		this.duree = duree;
+	public void setDuration(String duree) {
+		this.duration = duree;
 	}
 
-	public String getModalite() {
-		return modalite;
+	public String getTeachingMode() {
+		return mode;
 	}
 
-	public void setModalite(String modalite) {
-		this.modalite = modalite;
+	public void setTeachingMode(String modalite) {
+		this.mode = modalite;
 	}
 
-	public Integer getNbApprenants() {
-		return nbApprenants;
+	public Integer getNumberOfLearners() {
+		return numberOfLearners;
 	}
 
-	public void setNbApprenants(Integer nbApprenants) {
-		this.nbApprenants = nbApprenants;
+	public void setNumberOfLearners(Integer nbApprenants) {
+		this.numberOfLearners = nbApprenants;
 	}
 
-	public Cours getCours() {
-		return cours;
+	public Cours getCourse() {
+		return course;
 	}
 
-	public EspacePhysique getLieu() {
-		return lieu;
+	public EspacePhysique getLocation() {
+		return location;
 	}
 
 }

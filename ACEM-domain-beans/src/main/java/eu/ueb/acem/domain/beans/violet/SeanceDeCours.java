@@ -32,24 +32,24 @@ public interface SeanceDeCours extends Serializable {
 
 	public void setDate(String date);
 
-	public String getHeure();
+	public String getTime();
 
-	public void setHeure(String heure);
+	public void setTime(String time);
 
-	public String getDuree();
+	public String getDuration();
 
-	public void setDuree(String duree);
+	public void setDuration(String duration);
 
-	public String getModalite();
+	public String getTeachingMode();
 
-	public void setModalite(String modalite);
+	public void setTeachingMode(String teachingMode);
 
-	public Integer getNbApprenants();
+	public Integer getNumberOfLearners();
 
-	public void setNbApprenants(Integer nbApprenants);
+	public void setNumberOfLearners(Integer numberOfLearners);
 
-	public Cours getCours();
+	public Cours getCourse();
 
-	public EspacePhysique getLieu();
+	public EspacePhysique getLocation();
 
 }

@@ -58,13 +58,13 @@ public class BesoinNode implements Besoin {
 	@Indexed(indexName = "indexOfNeeds")
 	private String name;
 
-	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinParent", direction = OUTGOING)
+	@RelatedTo(elementClass = BesoinNode.class, type = "hasParentNeed", direction = OUTGOING)
 	private Collection<Besoin> parents;
 
-	@RelatedTo(elementClass = BesoinNode.class, type = "aPourBesoinParent", direction = INCOMING)
+	@RelatedTo(elementClass = BesoinNode.class, type = "hasParentNeed", direction = INCOMING)
 	private Collection<Besoin> children;
 
-	@RelatedTo(elementClass = ReponseNode.class, type = "aPourReponse", direction = OUTGOING)
+	@RelatedTo(elementClass = ReponseNode.class, type = "needAnsweredBy", direction = OUTGOING)
 	private Collection<Reponse> answers;
 
 	public BesoinNode() {

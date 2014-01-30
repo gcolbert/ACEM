@@ -9,8 +9,7 @@
 		used by the web interface. It should not be modified but by the developers. 
 		This file is referenced by /properties/applicationContext.xml. -->
 
-	<bean id="sessionController"
-		class="eu.ueb.acem.web.controllers.SessionController"
+	<bean id="sessionController" class="eu.ueb.acem.web.controllers.SessionController"
 		parent="abstractDomainAwareBean" scope="session">
 		<description>
 			A bean to store the context of the application.
@@ -56,10 +55,19 @@
 	</bean>
 
 
-	<bean id="myScenariosController"
-		class="eu.ueb.acem.web.controllers.MyScenariosController"
+	<bean id="myScenariosController" class="eu.ueb.acem.web.controllers.MyScenariosController"
 		parent="abstractContextAwareController">
 		<description>A controller for the "My scenarios" page.</description>
+	</bean>
+
+	<bean id="resourcesTreeController" class="eu.ueb.acem.web.controllers.ResourcesTreeController"
+		parent="abstractContextAwareController">
+		<description>A controller for the "My scenarios" page.</description>
+	</bean>
+
+	<bean id="usersController" class="eu.ueb.acem.web.controllers.UsersController"
+		parent="abstractContextAwareController">
+		<description>A controller for administering the users from the "admin" page.</description>
 	</bean>
 
 </beans>

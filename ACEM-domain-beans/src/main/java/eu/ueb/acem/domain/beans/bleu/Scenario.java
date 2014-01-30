@@ -20,6 +20,8 @@ package eu.ueb.acem.domain.beans.bleu;
 
 import java.io.Serializable;
 import java.util.Collection;
+
+import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
 /**
@@ -40,10 +42,12 @@ public interface Scenario extends Serializable {
 
 	public Collection<SeanceDeCours> getSeancesDeCours();
 
-	public String getAuthor();
+	public Personne getAuthor();
 
 	public Boolean isPublished();
 	
 	public Collection<Etape> getSteps();
+
+	public void setPublished(Boolean published);
 
 }

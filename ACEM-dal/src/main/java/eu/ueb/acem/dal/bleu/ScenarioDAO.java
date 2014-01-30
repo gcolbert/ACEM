@@ -31,6 +31,7 @@ import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.ScenarioRepository;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
+import eu.ueb.acem.domain.beans.gris.Personne;
 
 /**
  * @author Grégoire Colbert @since 2013-12-11
@@ -105,8 +106,8 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 		return repository.count();
 	}
 
-	public Collection<Scenario> retrieveScenariosForUser(String login) {
-		Iterable<ScenarioNode> endResults = repository.findScenariosForUser(login);
+	public Collection<Scenario> retrieveScenariosWithAuthor(Personne author) {
+		Iterable<ScenarioNode> endResults = repository.findScenariosWithAuthor(author.getId());
 		Collection<Scenario> collection = new HashSet<Scenario>();
 		if (endResults.iterator() != null) {
 			Iterator<ScenarioNode> iterator = endResults.iterator();

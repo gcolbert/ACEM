@@ -23,7 +23,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.Collection;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -33,7 +32,9 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 import eu.ueb.acem.domain.beans.gris.Gestionnaire;
+import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ModaliteUtilisationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
 
 /**
@@ -46,21 +47,22 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed(indexName = "indexGestionnaire")
+	@Indexed(indexName = "indexOfAdministrators")
 	private String name;
 
-	@RelatedTo(elementClass = BesoinNode.class, type = "redigeBesoin", direction = OUTGOING)
-	private Collection<Besoin> besoins;
+	@RelatedTo(elementClass = BesoinNode.class, type = "authorsNeed", direction = OUTGOING)
+	private Collection<Besoin> needs;
 
-	@RelatedTo(elementClass = ReponseNode.class, type = "redigeReponse", direction = OUTGOING)
-	private Collection<Reponse> reponses;
+	@RelatedTo(elementClass = ReponseNode.class, type = "authorsAnswer", direction = OUTGOING)
+	private Collection<Reponse> answers;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "redigeRessource", direction = OUTGOING)
-	private Collection<Ressource> ressources;
+	@RelatedTo(elementClass = RessourceNode.class, type = "authorsResource", direction = OUTGOING)
+	private Collection<Ressource> resources;
 
+	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "authorsResourceMode", direction = OUTGOING)
+	private Collection<ModaliteUtilisation> resourceModes;
+
+	
 	public GestionnaireNode() {
 	}
 
@@ -69,18 +71,18 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 	}
 
 	@Override
-	public Collection<Besoin> getBesoins() {
-		return besoins;
+	public Collection<Besoin> getNeeds() {
+		return needs;
 	}
 
 	@Override
-	public Collection<Reponse> getReponses() {
-		return reponses;
+	public Collection<Reponse> getAnswers() {
+		return answers;
 	}
 
 	@Override
-	public Collection<Ressource> getRessources() {
-		return ressources;
+	public Collection<Ressource> getResources() {
+		return resources;
 	}
 
 }

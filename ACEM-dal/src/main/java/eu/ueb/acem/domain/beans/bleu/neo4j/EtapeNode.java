@@ -52,7 +52,7 @@ public class EtapeNode implements Etape {
 	@RelatedTo(elementClass = ScenarioNode.class, type = "estUnePartieDe", direction = OUTGOING)
 	private Scenario scenario;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "requiresResource", direction = OUTGOING)
+	@RelatedTo(elementClass = RessourceNode.class, type = "stepRequiringResource", direction = OUTGOING)
 	private Collection<Ressource> resources;
 
 	private String objective;

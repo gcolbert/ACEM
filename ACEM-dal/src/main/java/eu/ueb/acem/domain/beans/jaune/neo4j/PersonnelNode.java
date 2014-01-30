@@ -38,7 +38,7 @@ public class PersonnelNode extends RessourceNode implements Personnel {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexPersonnel")
+	@Indexed(indexName = "indexOfStaff")
 	private String name;
 
 	public PersonnelNode() {

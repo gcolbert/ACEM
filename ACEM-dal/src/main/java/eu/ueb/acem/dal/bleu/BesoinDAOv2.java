@@ -40,6 +40,11 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 /**
  * @author Grégoire Colbert @since 2013-11-20
  * 
+ * TODO : this class is not used for now, because Spring 3 doesn't allow the autowiring of generics.
+ * 	It is solved in Spring 4 :
+ * 	 - http://www.jayway.com/2013/11/03/spring-and-autowiring-of-generic-types/
+ *   - https://spring.io/blog/2013/12/03/spring-framework-4-0-and-java-generics
+ *   but for now, we cannot use Spring 4 because Spring Data Neo4j isn't yet compatible.
  */
 //@Repository("besoinDAOv2")
 public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements DAO<Long, Besoin> {

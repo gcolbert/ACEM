@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.bleu.neo4j;
 
+import java.util.Collection;
+
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -30,7 +32,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
  */
 public interface ScenarioRepository extends GenericRepository<ScenarioNode> {
 
-	@Query(value = "start n=node(*) where has(n.__type__) and n.__type__ = 'Scenario' and n.author={userId} return n")
-	Iterable<ScenarioNode> findScenariosForUser(@Param("userId") String login);
+	@Query(value = "start n=node({personId})  match (n)-[:authorsScenario]->(scenario) return scenario")
+	Collection<ScenarioNode> findScenariosWithAuthor(@Param("personId") Long id);
 
 }

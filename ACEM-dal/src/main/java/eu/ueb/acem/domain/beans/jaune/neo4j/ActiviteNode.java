@@ -39,7 +39,7 @@ public class ActiviteNode extends RessourceNode implements Activite {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexActivite")
+	@Indexed(indexName = "indexOfActivities")
 	private String name;
 
 	public ActiviteNode() {

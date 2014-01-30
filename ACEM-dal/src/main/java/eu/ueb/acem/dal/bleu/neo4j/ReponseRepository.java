@@ -35,9 +35,9 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 public interface ReponseRepository extends GenericRepository<ReponseNode> {
 
 	@Query(value = "start answer=node({id}) match (need)-[:aPourReponse]->(answer) return need")
-	Collection<BesoinNode> findNeedsFor(@Param("id") Long id);
+	Collection<BesoinNode> findNeedsForAnswer(@Param("id") Long id);
 
-	@Query(value = "start answer=node({id}) match (answer)-[:referenceRessource]->()<-[:linkedWithResource]-scenario return scenario")
-	Collection<ScenarioNode> findScenariosRelatedTo(@Param("id") Long id);
+	@Query(value = "start answer=node({answerId}) match (answer)-[:answeredUsingRessource]->(resource)<-[:stepRequiringResource]-(scenarioStep)-[:isPartOfScenario]->scenario return scenario")
+	Collection<ScenarioNode> findScenariosRelatedToAnswer(@Param("answerId") Long id);
 
 }
