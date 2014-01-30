@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.ScenariosService;
-import eu.ueb.acem.web.controllers.MainMenuController;
+import eu.ueb.acem.services.DomainService;
 
 @Controller("myScenariosController")
 @Scope("view")
@@ -24,6 +24,9 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	@SuppressWarnings("unused")
 	private final static Logger logger = LoggerFactory.getLogger(MyScenariosController.class);
+	
+	@Autowired
+	DomainService domainService;
 	
 	private Collection<Scenario> scenarios;
 

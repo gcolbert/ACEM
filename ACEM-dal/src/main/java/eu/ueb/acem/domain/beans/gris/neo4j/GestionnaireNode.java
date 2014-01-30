@@ -59,7 +59,7 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 	@RelatedTo(elementClass = RessourceNode.class, type = "authorsResource", direction = OUTGOING)
 	private Collection<Ressource> resources;
 
-	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "authorsResourceMode", direction = OUTGOING)
+	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "authorsUseMode", direction = OUTGOING)
 	private Collection<ModaliteUtilisation> resourceModes;
 
 	
@@ -85,4 +85,15 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 		return resources;
 	}
 
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }

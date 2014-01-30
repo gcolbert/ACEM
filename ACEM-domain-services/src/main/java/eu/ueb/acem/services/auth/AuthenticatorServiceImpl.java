@@ -97,20 +97,24 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 				}
 				return null;
 			}
-			if (AuthUtils.SHIBBOLETH.equals(authInfo.getType())) {
+			if ((AuthUtils.SHIBBOLETH.equals(authInfo.getType())) || (AuthUtils.CAS.equals(authInfo.getType()))) {
 				if (logger.isDebugEnabled()) {
-					logger.debug("Shibboleth authentication");
+					if (AuthUtils.SHIBBOLETH.equals(authInfo.getType())) {
+						logger.debug("Shibboleth authentication");
+					}
+					else if (AuthUtils.CAS.equals(authInfo.getType())) {
+						logger.debug("CAS authentication");
+					}
 				}
-				Personne user = new EnseignantNode(authInfo.getId());
-				storeToSession(authInfo, user);
-				return user;
-			}
-			if (AuthUtils.CAS.equals(authInfo.getType())) {
-				if (logger.isDebugEnabled()) {
-					logger.debug("CAS authentication");
+				Personne user;
+				logger.info("authInfo.getId = {}", authInfo.getId());
+				user = gestionnaireDAO.retrieveByName(authInfo.getId());
+				if (user == null) {
+					user = enseignantDAO.retrieveByName(authInfo.getId());
+					if (user == null) {
+						user = enseignantDAO.create(new EnseignantNode(authInfo.getId()));
+					}
 				}
-				Personne user = new EnseignantNode(authInfo.getId());
-				user.setLogin(authInfo.getId());
 				storeToSession(authInfo, user);
 				return user;
 			}

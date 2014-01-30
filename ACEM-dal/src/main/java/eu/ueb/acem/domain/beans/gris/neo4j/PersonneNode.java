@@ -40,8 +40,8 @@ public abstract class PersonneNode implements Personne {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexPersonne")
-	private String name;
+	@Indexed(indexName = "indexOfPersons")
+	protected String name;
 
 	@RelatedTo(elementClass = OrganisationNode.class, type = "travaillePour", direction = OUTGOING)
 	private OrganisationNode organisation;

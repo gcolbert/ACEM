@@ -43,13 +43,13 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@Indexed(indexName = "indexEnseignant")
+	@Indexed(indexName = "indexOfTeachers")
 	private String name;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "aPourFavori", direction = OUTGOING)
+	@RelatedTo(elementClass = RessourceNode.class, type = "hasFavorite", direction = OUTGOING)
 	private Collection<Ressource> ressourcesFavorites;
 
-	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "anime", direction = OUTGOING)
+	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "leadsClass", direction = OUTGOING)
 	private Collection<SeanceDeCours> seancesDeCours;
 
 	public EnseignantNode() {
@@ -67,6 +67,16 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 	@Override
 	public Collection<SeanceDeCours> getTeachingClasses() {
 		return seancesDeCours;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

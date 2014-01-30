@@ -63,8 +63,8 @@ public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
 	}
 
 	@Override
-	public Gestionnaire retrieveByName(String nom) {
-		return repository.findByPropertyValue("nom", nom);
+	public Gestionnaire retrieveByName(String name) {
+		return repository.findByPropertyValue("name", name);
 	}
 
 	@Override
