@@ -68,8 +68,8 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	}
 
 	@Override
-	public Enseignant retrieveByName(String nom) {
-		return repository.findByPropertyValue("nom", nom);
+	public Enseignant retrieveByName(String name) {
+		return repository.findByPropertyValue("name", name);
 	}
 
 	@Override

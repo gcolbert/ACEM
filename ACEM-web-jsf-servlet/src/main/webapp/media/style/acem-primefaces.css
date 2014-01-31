@@ -1,18 +1,50 @@
+.ui-panel {
+}
+
+/* p:tree */
 .ui-tree {
 	width: 100%;
 }
 
+/* p:contextMenu */
 .ui-menu {
-	min-width:14em;
+	min-width: 14em;
 }
 
+/* NEEDS AND ANSWERS */
 .Need {
+	
 }
-
 .Answer {
-	color:#2779AA;
+	color: #2779AA;
 }
-
 .Resource {
+	
 }
 
+/* MY SCENARIOS */
+.ui-layout-unit {
+}
+.ui-layout-unit .ui-layout-unit-content {
+	padding:0;
+}
+.ui-layout-west {
+	min-width:250px;
+	width:100%;
+}
+.ui-layout-west .ui-panel {
+	border: 0;
+	padding:0;
+}
+.ui-layout-west .ui-button {
+	width:100%;
+}
+.ui-panelgrid {
+	width:100%;
+}
+.ui-scrollpanel {
+	width:100%;
+}
+.ui-layout-center {
+	width:100%;
+}

@@ -6,30 +6,38 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
-		<p:panel header="#{msgs['MY_SCENARIOS.HEADER']}">
-			<p:panelGrid columns="1">
-				<p:commandButton
-					value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
-					icon="ui-icon-plusthick" />
-				<p:scrollPanel style="width:250px;height:200px" mode="native">
-					<p:dataTable value="#{myScenariosController.scenarios}"
-						var="tableEntry">
-						<h:outputText value="#{tableEntry.name}" />
-					</p:dataTable>
-				</p:scrollPanel>
-				<p:commandButton
-					value="#{msgs['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
-					icon="ui-icon-trash" />
-			</p:panelGrid>
-		</p:panel>
-		<!-- 
-		<p:layout id="layout">
-			<p:layoutUnit position="west" resizable="true">
-			</p:layoutUnit>
-			<p:layoutUnit position="center">
-			Hello
-			</p:layoutUnit>
-		</p:layout>
- -->
+		<h:form id="formScenarios">
+			<p:layout id="layout">
+				<p:layoutUnit position="west" resizable="true">
+					<p:panel header="#{msgs['MY_SCENARIOS.HEADER']}">
+						<p:panelGrid columns="1">
+							<p:commandButton
+								value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
+								icon="ui-icon-plusthick"
+								action="#{myScenariosController.createScenario}"
+								update="formScenarios" />
+							<p:scrollPanel style="width:100%; height:200px" mode="native">
+								<p:dataTable value="#{myScenariosController.scenarios}"
+									var="scenario"
+									selection="#{myScenariosController.selectedScenario}" selectionMode="single"
+									rowKey="#{scenario.id}"
+									style="width:100%">
+									<h:outputText value="#{scenario.name}" />
+								</p:dataTable>
+							</p:scrollPanel>
+							<p:commandButton
+								value="#{msgs['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
+								icon="ui-icon-trash"
+								disabled="#{myScenariosController.selectedScenario == null}"/>
+						</p:panelGrid>
+					</p:panel>
+				</p:layoutUnit>
+				<p:layoutUnit position="center">
+					<p:panel header="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}" rendered="#{myScenariosController.selectedScenario != null}">
+						
+					</p:panel>
+				</p:layoutUnit>
+			</p:layout>
+		</h:form>
 	</ui:define>
 </ui:composition>

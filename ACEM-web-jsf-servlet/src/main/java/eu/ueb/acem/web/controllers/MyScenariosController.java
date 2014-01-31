@@ -1,7 +1,8 @@
 package eu.ueb.acem.web.controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -28,7 +29,9 @@ public class MyScenariosController extends AbstractContextAwareController {
 	@Autowired
 	DomainService domainService;
 	
-	private Collection<Scenario> scenarios;
+	private List<Scenario> scenarios;
+	
+	private Scenario selectedScenario;
 
 	private Personne currentUser;
 
@@ -36,7 +39,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	ScenariosService scenariosService;
 
 	public MyScenariosController() {
-		scenarios = new HashSet<Scenario>();
+		scenarios = new ArrayList<Scenario>();
 	}
 
 	@PostConstruct
@@ -54,12 +57,25 @@ public class MyScenariosController extends AbstractContextAwareController {
 		scenarios.add(scenariosService.createScenario("Nouveau scénario", currentUser, "Objectif du scénario"));
 	}
 
-	public Collection<Scenario> getScenarios() {
-		return scenariosService.retrieveScenariosWithAuthor(currentUser);
+	public List<Scenario> getScenarios() {
+		List<Scenario> list = new ArrayList<Scenario>();
+		Collection<Scenario> scenarios = scenariosService.retrieveScenariosWithAuthor(currentUser);
+		for (Scenario scenario : scenarios) {
+			list.add(scenario);
+		}
+		return list;
 	}
 
-	public void setScenarios(Collection<Scenario> scenarios) {
+	public void setScenarios(List<Scenario> scenarios) {
 		this.scenarios = scenarios;
+	}
+
+	public Scenario getSelectedScenario() {
+		return selectedScenario;
+	}
+
+	public void setSelectedScenario(Scenario selectedScenario) {
+		this.selectedScenario = selectedScenario;
 	}
 
 }

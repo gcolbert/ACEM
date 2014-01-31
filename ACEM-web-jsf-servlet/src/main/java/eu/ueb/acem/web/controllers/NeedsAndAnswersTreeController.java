@@ -49,9 +49,6 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 
 	private static final long serialVersionUID = 3305497053688875560L;
 
-	/**
-	 * For Logging.
-	 */
 	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeController.class);
 
 	private static final String TREE_NODE_TYPE_NEED_LEAF = "Need";
