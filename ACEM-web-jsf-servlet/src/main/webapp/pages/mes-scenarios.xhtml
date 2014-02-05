@@ -11,6 +11,15 @@
 
 		<h:form id="formScenarios">
 			<p:growl id="messagesDisplayer" showDetail="true" />
+
+			<p:confirmDialog global="true" showEffect="fade">
+				<p:commandButton value="#{msgs['CONFIRM_DIALOG.YES_LABEL']}"
+					type="button" styleClass="ui-confirmdialog-yes"
+					icon="ui-icon-check" />
+				<p:commandButton value="#{msgs['CONFIRM_DIALOG.NO_LABEL']}"
+					type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
 			<p:layout id="layout">
 
 				<p:layoutUnit position="west" resizable="true">
@@ -43,7 +52,12 @@
 								icon="ui-icon-trash"
 								action="#{myScenariosController.deleteSelectedScenario}"
 								disabled="#{myScenariosController.selectedScenario == null}"
-								update="@form" />
+								update="@form">
+								<p:confirm
+									header="#{msgs['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_HEADER']}"
+									message="#{msgs['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_QUESTION']}"
+									icon="ui-icon-alert" />
+							</p:commandButton>
 						</p:panelGrid>
 					</p:panel>
 				</p:layoutUnit>

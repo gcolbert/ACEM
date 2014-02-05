@@ -11,6 +11,11 @@
 	min-width: 14em;
 }
 
+/* p:confirmDialog */
+.ui-dialog-buttonpane {
+	text-align:right !important;
+}
+
 /* NEEDS AND ANSWERS */
 .Need {
 	

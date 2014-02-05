@@ -80,6 +80,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 		Scenario scenario = scenariosService.createScenario(currentUser, name, objective);
 		if (scenario != null) {
 			scenarios.add(scenario);
+			setSelectedScenario(scenario);
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
 					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
 					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS"));
