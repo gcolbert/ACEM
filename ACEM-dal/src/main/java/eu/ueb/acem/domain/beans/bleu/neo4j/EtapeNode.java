@@ -49,7 +49,7 @@ public class EtapeNode implements Etape {
 	@Indexed(indexName = "indexOfSteps")
 	private String name;
 
-	@RelatedTo(elementClass = ScenarioNode.class, type = "estUnePartieDe", direction = OUTGOING)
+	@RelatedTo(elementClass = ScenarioNode.class, type = "isPartOfScenario", direction = OUTGOING)
 	private Scenario scenario;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "stepRequiringResource", direction = OUTGOING)
@@ -64,7 +64,8 @@ public class EtapeNode implements Etape {
 	}
 
 	public EtapeNode(String name) {
-		setName(name);
+		this();
+		this.name = name;
 	}
 
 	@Override

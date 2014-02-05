@@ -44,7 +44,7 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(ScenarioDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(ScenarioDAO.class);
 
 	@Autowired
 	private ScenarioRepository repository;

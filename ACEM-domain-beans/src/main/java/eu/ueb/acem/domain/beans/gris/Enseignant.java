@@ -20,6 +20,7 @@ package eu.ueb.acem.domain.beans.gris;
 
 import java.util.Collection;
 
+import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
@@ -32,5 +33,7 @@ public interface Enseignant extends Personne {
 	public Collection<Ressource> getFavoriteResources();
 
 	public Collection<SeanceDeCours> getTeachingClasses();
+
+	public Collection<Scenario> getScenarios();
 
 }

@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 public class BesoinDAO implements DAO<Long, Besoin> {
 
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(BesoinDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(BesoinDAO.class);
 
 	@Autowired
 	private BesoinRepository repository;

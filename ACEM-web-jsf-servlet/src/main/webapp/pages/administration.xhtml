@@ -6,6 +6,8 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
+		<ui:debug hotkey="1"
+			rendered="#{facesContext.application.projectStage == 'Development'}" />
 
 		<h:form id="formUsers">
 			<p:panel header="#{msgs['ADMINISTRATION.USERS.HEADER']}">
@@ -17,6 +19,15 @@
 					<p:selectBooleanCheckbox value="#{usersController.adminUsersBean.admin}" />
 					<p:selectBooleanCheckbox value="#{usersController.adminUsersBean.teacher}" />
 					 -->
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+
+		<h:form id="formOrganisations">
+			<p:panel header="#{msgs['ADMINISTRATION.ORGANISATIONS.HEADER']}">
+				<p:dataTable var="user" value="#{adminOrganisationsController.organisations}">
+					<h:outputText value="#{organisation.id}"/>
+					<h:outputText value="#{organisation.name}"/>
 				</p:dataTable>
 			</p:panel>
 		</h:form>

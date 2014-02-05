@@ -22,6 +22,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Collection;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -36,6 +37,7 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * 
  */
 @NodeEntity
+@TypeAlias("Organisation")
 public abstract class OrganisationNode implements Organisation {
 
 	private static final long serialVersionUID = -4961037643458063514L;

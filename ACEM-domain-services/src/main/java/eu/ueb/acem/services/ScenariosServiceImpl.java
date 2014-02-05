@@ -32,8 +32,8 @@ public class ScenariosServiceImpl implements ScenariosService {
 	}
 
 	@Override
-	public Scenario createScenario(String name, Personne author, String objective) {
-		return scenarioDAO.create(new ScenarioNode(name, author, objective));
+	public Scenario createScenario(Personne author, String name, String objective) {
+		return scenarioDAO.create(new ScenarioNode(author, name, objective));
 	}
 
 	@Override

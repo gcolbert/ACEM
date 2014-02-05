@@ -38,7 +38,7 @@ public class MainMenuController implements Serializable {
 	private static final long serialVersionUID = -7218568142478270516L;
 
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(MainMenuController.class);
+	private static final Logger logger = LoggerFactory.getLogger(MainMenuController.class);
 
 	public String getMenuitemStyleClass(String page) {
 		String styleClass = "";

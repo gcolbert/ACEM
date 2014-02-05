@@ -43,7 +43,7 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(EnseignantDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(EnseignantDAO.class);
 
 	@Autowired
 	private EnseignantRepository repository;

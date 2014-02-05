@@ -45,7 +45,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
 
 	@Autowired
 	private DAO<Long, Enseignant> enseignantDAO;

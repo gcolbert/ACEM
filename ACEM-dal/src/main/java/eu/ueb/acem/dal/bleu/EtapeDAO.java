@@ -43,7 +43,7 @@ public class EtapeDAO implements DAO<Long, Etape> {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(EtapeDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(EtapeDAO.class);
 
 	@Autowired
 	private EtapeRepository repository;

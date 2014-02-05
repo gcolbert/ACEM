@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.rouge.Service;
  * 
  */
 @NodeEntity
-@TypeAlias("Administrative_department")
+@TypeAlias("Organisation:Administrative_department")
 public class ServiceNode extends OrganisationNode implements Service {
 
 	private static final long serialVersionUID = -5662533287772515643L;

@@ -39,7 +39,7 @@ public class EditableTreeBean implements Serializable {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(EditableTreeBean.class);
+	private static final Logger logger = LoggerFactory.getLogger(EditableTreeBean.class);
 
 	private static final long serialVersionUID = -7640100553743316532L;
 

@@ -50,7 +50,7 @@ public class BesoinNode implements Besoin {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(BesoinNode.class);
+	private static final Logger logger = LoggerFactory.getLogger(BesoinNode.class);
 
 	@GraphId
 	private Long id;

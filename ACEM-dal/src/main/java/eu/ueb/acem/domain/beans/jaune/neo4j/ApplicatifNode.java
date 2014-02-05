@@ -30,7 +30,7 @@ import eu.ueb.acem.domain.beans.jaune.Applicatif;
  * 
  */
 @NodeEntity
-@TypeAlias("Software")
+@TypeAlias("Resource:Software")
 public class ApplicatifNode extends RessourceNode implements Applicatif {
 
 	private static final long serialVersionUID = 7058882707584224446L;

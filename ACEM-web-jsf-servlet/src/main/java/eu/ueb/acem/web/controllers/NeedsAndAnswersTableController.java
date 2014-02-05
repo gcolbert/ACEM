@@ -18,8 +18,10 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,7 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 	/**
 	 * For Logging.
 	 */
-	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTableController.class);
+	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTableController.class);
 
 	@Autowired
 	private NeedsAndAnswersService needsAndAnswersService;
@@ -66,7 +68,7 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 		logger.info("entering getScenariosRelatedToSelectedAnswer");
 		Collection<Scenario> scenarios = needsAndAnswersService.getScenariosRelatedToAnswer(selectedAnswer.getId());
 		logger.info("Found {} scenarios related to answer {}.", scenarios.size(), selectedAnswer.getName());
-		Collection<TableEntry> tableEntries = new HashSet<TableEntry>();
+		Collection<TableEntry> tableEntries = new ArrayList<TableEntry>();
 		for (Scenario scenario : scenarios) {
 			logger.info("scenario = {}", scenario.getName());
 			Collection<Etape> steps = scenario.getSteps();

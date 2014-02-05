@@ -30,7 +30,7 @@ import eu.ueb.acem.domain.beans.jaune.Personnel;
  * 
  */
 @NodeEntity
-@TypeAlias("Staff")
+@TypeAlias("Resource:Staff")
 public class PersonnelNode extends RessourceNode implements Personnel {
 
 	private static final long serialVersionUID = -8978418065522460440L;

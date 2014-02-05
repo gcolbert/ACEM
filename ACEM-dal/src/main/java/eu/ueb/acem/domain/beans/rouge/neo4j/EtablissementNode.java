@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.rouge.Etablissement;
  * 
  */
 @NodeEntity
-@TypeAlias("Teaching_institution")
+@TypeAlias("Organisation:Teaching_institution")
 public class EtablissementNode extends OrganisationNode implements Etablissement {
 
 	private static final long serialVersionUID = 4218521116992739925L;

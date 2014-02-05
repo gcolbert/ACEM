@@ -43,7 +43,7 @@ public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(GestionnaireDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(GestionnaireDAO.class);
 
 	@Autowired
 	private GestionnaireRepository repository;

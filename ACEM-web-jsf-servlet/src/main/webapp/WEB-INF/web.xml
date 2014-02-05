@@ -45,10 +45,14 @@
 		<param-value>/WEB-INF/esup-commons.taglib.xml 
 		</param-value>
 	</context-param>
-    <context-param>  
-        <param-name>primefaces.THEME</param-name>  
-        <param-value>cupertino</param-value>  
-    </context-param>  	
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>cupertino</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
+		<param-value>true</param-value>
+	</context-param>
 	<servlet>
 		<description> The main servlet of the application. This class inherits
 			from the MyFaces implementation and handles exceptions thrown for

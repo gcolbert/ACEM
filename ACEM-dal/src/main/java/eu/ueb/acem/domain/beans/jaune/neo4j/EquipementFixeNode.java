@@ -30,7 +30,7 @@ import eu.ueb.acem.domain.beans.jaune.EquipementFixe;
  * 
  */
 @NodeEntity
-@TypeAlias("Fixed_equipment")
+@TypeAlias("Resource:Equipment:Fixed_equipment")
 public class EquipementFixeNode extends EquipementNode implements EquipementFixe {
 
 	private static final long serialVersionUID = 7746525608906065863L;

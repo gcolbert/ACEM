@@ -45,7 +45,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	/**
 	 * For Logging.
 	 */
-	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
 
 	@Autowired
 	BesoinDAO needDAO;

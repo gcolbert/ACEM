@@ -23,20 +23,18 @@
 }
 
 /* MY SCENARIOS */
-.ui-layout-unit {
-}
-.ui-layout-unit .ui-layout-unit-content {
+.ui-layout-unit-content {
 	padding:0;
 }
-.ui-layout-west {
+.ui-layout-pane {
 	min-width:250px;
 	width:100%;
 }
-.ui-layout-west .ui-panel {
+.ui-layout-pane .ui-panel {
 	border: 0;
 	padding:0;
 }
-.ui-layout-west .ui-button {
+.ui-layout-pane .ui-button {
 	width:100%;
 }
 .ui-panelgrid {
@@ -47,4 +45,12 @@
 }
 .ui-layout-center {
 	width:100%;
+}
+
+.ui-scrollpanel {
+	width:100%;
+	height:300px;
+}
+.ui-dialog-content .ui-button {
+	float:right;
 }

@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
  * 
  */
 @NodeEntity
-@TypeAlias("Software_documentation")
+@TypeAlias("Resource:Software_documentation")
 public class DocumentationApplicatifNode extends RessourceNode implements DocumentationApplicatif {
 
 	private static final long serialVersionUID = -2471928076966986715L;

@@ -10,7 +10,7 @@ public interface ScenariosService {
 
 	public Long countScenarios();
 
-	public Scenario createScenario(String name, Personne author, String objective);
+	public Scenario createScenario(Personne author, String name, String objective);
 
 	public Scenario retrieveScenario(Long id);
 	

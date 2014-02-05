@@ -50,4 +50,6 @@ public interface Scenario extends Serializable {
 
 	public void setPublished(Boolean published);
 
+	public void setAuthor(Personne author);
+
 }

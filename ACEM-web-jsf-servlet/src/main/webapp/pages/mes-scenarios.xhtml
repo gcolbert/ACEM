@@ -6,38 +6,101 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
+		<ui:debug hotkey="1"
+			rendered="#{facesContext.application.projectStage == 'Development'}" />
+
 		<h:form id="formScenarios">
+			<p:growl id="messagesDisplayer" showDetail="true" />
 			<p:layout id="layout">
+
 				<p:layoutUnit position="west" resizable="true">
 					<p:panel header="#{msgs['MY_SCENARIOS.HEADER']}">
 						<p:panelGrid columns="1">
 							<p:commandButton
 								value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
 								icon="ui-icon-plusthick"
-								action="#{myScenariosController.createScenario}"
-								update="formScenarios" />
-							<p:scrollPanel style="width:100%; height:200px" mode="native">
-								<p:dataTable value="#{myScenariosController.scenarios}"
-									var="scenario"
-									selection="#{myScenariosController.selectedScenario}" selectionMode="single"
-									rowKey="#{scenario.id}"
-									style="width:100%">
-									<h:outputText value="#{scenario.name}" />
+								onclick="PF('dialogCreateScenario').show()" />
+							<p:scrollPanel mode="native">
+								<p:dataTable id="scenariosDataTable"
+									emptyMessage="#{msgs['MY_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
+									value="#{myScenariosController.scenarios}" var="scenario"
+									selection="#{myScenariosController.selectedScenario}"
+									selectionMode="single" rowKey="#{scenario.id}">
+									<p:ajax event="rowSelect"
+										listener="#{myScenariosController.onScenarioRowSelect}"
+										update="@form" />
+									<p:ajax event="rowUnselect"
+										listener="#{myScenariosController.onRowUnselect}"
+										update="@form" />
+									<p:column
+										headerText="#{msgs['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
+									    #{scenario.name}
+									</p:column>
 								</p:dataTable>
 							</p:scrollPanel>
-							<p:commandButton
+							<p:commandButton id="deleteScenarioButton"
 								value="#{msgs['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
 								icon="ui-icon-trash"
-								disabled="#{myScenariosController.selectedScenario == null}"/>
+								action="#{myScenariosController.deleteSelectedScenario}"
+								disabled="#{myScenariosController.selectedScenario == null}"
+								update="@form" />
 						</p:panelGrid>
 					</p:panel>
 				</p:layoutUnit>
+
 				<p:layoutUnit position="center">
-					<p:panel header="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}" rendered="#{myScenariosController.selectedScenario != null}">
-						
+					<p:panel header="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}"
+						rendered="#{myScenariosController.selectedScenario != null}">
+
+						<h:panelGrid columns="2">
+							<h:outputLabel for="selectedScenarioName"
+								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.NAME_LABEL']}" />
+							<h:outputText id="selectedScenarioName"
+								value="#{myScenariosController.selectedScenario.name}" />
+							<h:outputLabel for="selectedScenarioObjective"
+								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.OBJECTIVE_LABEL']}" />
+							<h:outputText id="selectedScenarioObjective"
+								value="#{myScenariosController.selectedScenario.objective}" />
+						</h:panelGrid>
+
+						<p:dataTable id="selectedScenarioDataTable"
+							value="#{myScenariosController.selectedScenario.steps}"
+							var="step" selection="#{myScenariosController.selectedStep}"
+							selectionMode="single" rowKey="#{step}">
+						</p:dataTable>
 					</p:panel>
 				</p:layoutUnit>
 			</p:layout>
 		</h:form>
+
+		<p:dialog
+			header="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.HEADER']}"
+			widgetVar="dialogCreateScenario" modal="true" height="auto">
+			<h:form id="formCreateScenario">
+				<h:panelGrid columns="3">
+					<h:outputLabel for="newScenarioName"
+						value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.NAME_LABEL']}" />
+					<p:inputText id="newScenarioName" required="true"
+						requiredMessage="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.REQUIRED_FIELD']}"
+						size="50" binding="#{input1}" />
+					<p:message for="newScenarioName" display="text" />
+
+					<h:outputLabel for="newScenarioObjective"
+						value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.OBJECTIVE_LABEL']}" />
+					<p:inputText id="newScenarioObjective" required="true"
+						requiredMessage="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.REQUIRED_FIELD']}"
+						size="50" binding="#{input2}" />
+					<p:message for="newScenarioObjective" display="text" />
+				</h:panelGrid>
+
+				<p:commandButton
+					value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{myScenariosController.createScenario(input1.value, input2.value)}"
+					update="@form :formScenarios"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateScenario.hide(); }" />
+			</h:form>
+		</p:dialog>
+
 	</ui:define>
 </ui:composition>

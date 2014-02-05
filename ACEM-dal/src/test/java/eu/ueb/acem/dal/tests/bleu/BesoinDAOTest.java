@@ -48,7 +48,7 @@ public class BesoinDAOTest extends TestCase {
 	/**
 	 * For Logging.
 	 */
-	private final static Logger logger = LoggerFactory.getLogger(BesoinDAOTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(BesoinDAOTest.class);
 	
 	@Autowired
 	private BesoinDAO needDAO;

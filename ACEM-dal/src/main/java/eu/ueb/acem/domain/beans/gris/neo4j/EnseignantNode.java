@@ -27,6 +27,8 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
@@ -52,6 +54,9 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "leadsClass", direction = OUTGOING)
 	private Collection<SeanceDeCours> seancesDeCours;
 
+	@RelatedTo(elementClass = ScenarioNode.class, type="authorsScenario", direction = OUTGOING)
+	private Collection<Scenario> scenarios;
+
 	public EnseignantNode() {
 	}
 
@@ -67,6 +72,11 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 	@Override
 	public Collection<SeanceDeCours> getTeachingClasses() {
 		return seancesDeCours;
+	}
+
+	@Override
+	public Collection<Scenario> getScenarios() {
+		return scenarios;
 	}
 
 	@Override

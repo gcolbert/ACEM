@@ -40,7 +40,7 @@ public class TableBean implements Serializable {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(TableBean.class);
+	private static final Logger logger = LoggerFactory.getLogger(TableBean.class);
 
 	private static final long serialVersionUID = -3164178023755035995L;
 

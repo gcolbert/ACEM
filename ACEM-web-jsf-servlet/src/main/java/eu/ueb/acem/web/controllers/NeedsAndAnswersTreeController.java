@@ -19,10 +19,8 @@
 package eu.ueb.acem.web.controllers;
 
 import java.util.Collection;
+
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.context.FacesContext;
 
 import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -36,6 +34,7 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.services.NeedsAndAnswersService;
+import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 
@@ -49,7 +48,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 
 	private static final long serialVersionUID = 3305497053688875560L;
 
-	private final static Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeController.class);
 
 	private static final String TREE_NODE_TYPE_NEED_LEAF = "Need";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS = "NeedWithAssociatedNeeds";
@@ -132,13 +131,8 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 
 	public void displaySelectedNodeInfo() {
 		if (selectedNode != null) {
-			showMessageToUser(FacesMessage.SEVERITY_INFO, "Selected", selectedNode.getData().toString());
+			MessageDisplayer.showMessageToUserWithSeverityInfo("Selected", selectedNode.getData().toString());
 		}
-	}
-
-	private void showMessageToUser(Severity severity, String summary, String details) {
-		FacesMessage facesMessage = new FacesMessage(severity, summary, details);
-		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	}
 
 	public void associateNeedWithSelectedNode() {
@@ -186,13 +180,13 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 					selectedNode.setParent(null);
 					this.selectedNode = null;
 				} else {
-					showMessageToUser(FacesMessage.SEVERITY_ERROR,
+					MessageDisplayer.showMessageToUserWithSeverityError(
 							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE"),
 							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS"));
 					logger.info("The service failed to delete the node.");
 				}
 			} else {
-				showMessageToUser(FacesMessage.SEVERITY_ERROR,
+				MessageDisplayer.showMessageToUserWithSeverityError(
 						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE"),
 						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS"));
 				logger.info("The selected node has children, cannot delete!");
@@ -212,7 +206,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 
 		needsAndAnswersService.changeParentOfNeed(dragNodeData.getId(), dropNodeData.getId());
 
-		showMessageToUser(FacesMessage.SEVERITY_INFO, "Dragged " + dragNodeData, "Dropped on " + dropNodeData + " at "
+		MessageDisplayer.showMessageToUserWithSeverityInfo("Dragged " + dragNodeData, "Dropped on " + dropNodeData + " at "
 				+ dropIndex);
 	}
 

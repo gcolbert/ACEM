@@ -33,6 +33,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import eu.ueb.acem.domain.beans.bleu.Etape;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
 
@@ -53,7 +54,6 @@ public class ScenarioNode implements Scenario {
 	private String name;
 
 	private String objective;
-	private Personne author;
 	private Boolean published;
 
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "usedForClass", direction = OUTGOING)
@@ -62,13 +62,16 @@ public class ScenarioNode implements Scenario {
 	@RelatedTo(elementClass = EtapeNode.class, type = "isPartOfScenario", direction = INCOMING)
 	private Collection<Etape> steps;
 
+	@RelatedTo(elementClass = EnseignantNode.class, type="authorsScenario", direction = INCOMING)
+	private Personne author;
+
 	public ScenarioNode() {
 		published = false;
 		steps = new HashSet<Etape>();
 		seancesDeCours = new HashSet<SeanceDeCours>();
 	}
 
-	public ScenarioNode(String name, Personne author, String objective) {
+	public ScenarioNode(Personne author, String name, String objective) {
 		this();
 		this.name = name;
 		this.author = author;
@@ -119,6 +122,11 @@ public class ScenarioNode implements Scenario {
 		return author;
 	}
 
+	@Override
+	public void setAuthor(Personne author) {
+		this.author = author;
+	}
+	
 	@Override
 	public Boolean isPublished() {
 		return published;

@@ -6,24 +6,30 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
+		<ui:debug hotkey="1"
+			rendered="#{facesContext.application.projectStage == 'Development'}" />
+
 		<h:form id="formTree">
 			<p:panel header="#{msgs['RESOURCES.TREE.HEADER']}">
 
 				<p:growl id="messages" showDetail="true" />
 
+				<p:contextMenu for="resourcesTree" nodeType="default">
+					<p:menuitem
+						value="#{msgs['RESOURCES.TREE.CONTEXT_MENU.CREATE_RESOURCE']}"
+						update="resourcesTree :formTree:messages"
+						action="#{resourcesTreeController.createResource}"
+						icon="ui-icon-plus" />
+				</p:contextMenu>
+
 				<p:tree id="resourcesTree" dynamic="true"
 					value="#{resourcesTreeController.treeRoot}"
 					var="treeNodeData" selectionMode="single"
-					selection="#{resourcesTreeController.selectedNode}"
-					draggable="true" droppable="true" dragdropScope="demo">
-					<p:ajax event="dragdrop"
-						listener="#{resourcesTreeController.onDragDrop}"
-						update="resourcesTree :formTree:messages" />
+					selection="#{resourcesTreeController.selectedNode}">
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
-					<p:treeNode
-						styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode type="" styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
 								listener="#{resourcesTreeController.onLabelSave(treeNodeData)}"

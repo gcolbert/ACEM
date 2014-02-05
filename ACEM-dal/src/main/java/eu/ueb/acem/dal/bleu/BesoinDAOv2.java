@@ -53,7 +53,7 @@ public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(BesoinDAOv2.class);
+	private static final Logger logger = LoggerFactory.getLogger(BesoinDAOv2.class);
 
 	//@Autowired
 	private BesoinRepository repository;

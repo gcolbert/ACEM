@@ -47,7 +47,7 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private final static Logger logger = LoggerFactory.getLogger(ReponseDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(ReponseDAO.class);
 
 	@Autowired
 	private ReponseRepository repository;

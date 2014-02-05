@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.rouge.Etablissement;
  * 
  */
 @NodeEntity
-@TypeAlias("Teaching_department")
+@TypeAlias("Organisation:Teaching_department")
 public class ComposanteNode extends OrganisationNode implements Composante {
 
 	private static final long serialVersionUID = -5662533287772515643L;

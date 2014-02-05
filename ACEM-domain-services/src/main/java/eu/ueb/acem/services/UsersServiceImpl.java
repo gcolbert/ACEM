@@ -3,8 +3,6 @@ package eu.ueb.acem.services;
 import java.util.Collection;
 import java.util.HashSet;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,10 +31,5 @@ public class UsersServiceImpl implements UsersService {
 		users.addAll(gestionnaireDAO.retrieveAll());
 		return users;
 	}
-
-	/*
-	 * @Override public Personne createUser(String uid, String name, Boolean
-	 * isAdmin, Boolean isTeacher) { }
-	 */
 
 }

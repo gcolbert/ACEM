@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.jaune.Activite;
  * 
  */
 @NodeEntity
-@TypeAlias("Activity")
+@TypeAlias("Resource:Activity")
 public class ActiviteNode extends RessourceNode implements Activite {
 
 	private static final long serialVersionUID = 1012212357185877701L;

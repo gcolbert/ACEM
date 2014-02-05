@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.Collection;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -38,6 +39,7 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  * 
  */
 @NodeEntity
+@TypeAlias("Resource")
 public abstract class RessourceNode implements Ressource {
 
 	private static final long serialVersionUID = -7922906613944705977L;
