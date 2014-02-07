@@ -29,15 +29,15 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.ActiviteRepository;
-import eu.ueb.acem.domain.beans.jaune.Activite;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ActiviteNode;
+import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
 
 /**
  * @author Grégoire Colbert @since 2013-12-11
  * 
  */
 @Repository("activiteDAO")
-public class ActiviteDAO implements DAO<Long, Activite> {
+public class ActiviteDAO implements DAO<Long, FormationProfessionnelle> {
 
 	/**
 	 * For Logging.
@@ -58,26 +58,26 @@ public class ActiviteDAO implements DAO<Long, Activite> {
 	}
 
 	@Override
-	public Activite create(Activite activite) {
-		return repository.save((ActiviteNode) activite);
+	public FormationProfessionnelle create(FormationProfessionnelle activite) {
+		return repository.save((FormationProfessionnelleNode) activite);
 	}
 
 	@Override
-	public Activite retrieveById(Long id) {
+	public FormationProfessionnelle retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Activite retrieveByName(String nom) {
+	public FormationProfessionnelle retrieveByName(String nom) {
 		return repository.findByPropertyValue("nom", nom);
 	}
 
 	@Override
-	public Collection<Activite> retrieveAll() {
-		Iterable<ActiviteNode> endResults = repository.findAll();
-		Collection<Activite> collection = new HashSet<Activite>();
+	public Collection<FormationProfessionnelle> retrieveAll() {
+		Iterable<FormationProfessionnelleNode> endResults = repository.findAll();
+		Collection<FormationProfessionnelle> collection = new HashSet<FormationProfessionnelle>();
 		if (endResults.iterator() != null) {
-			Iterator<ActiviteNode> iterator = endResults.iterator();
+			Iterator<FormationProfessionnelleNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -86,13 +86,13 @@ public class ActiviteDAO implements DAO<Long, Activite> {
 	}
 
 	@Override
-	public Activite update(Activite activite) {
-		return repository.save((ActiviteNode) activite);
+	public FormationProfessionnelle update(FormationProfessionnelle activite) {
+		return repository.save((FormationProfessionnelleNode) activite);
 	}
 
 	@Override
-	public void delete(Activite activite) {
-		repository.delete((ActiviteNode) activite);
+	public void delete(FormationProfessionnelle activite) {
+		repository.delete((FormationProfessionnelleNode) activite);
 	}
 
 	@Override

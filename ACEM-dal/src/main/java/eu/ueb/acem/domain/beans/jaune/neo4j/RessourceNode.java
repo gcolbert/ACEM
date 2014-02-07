@@ -29,7 +29,9 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
@@ -56,6 +58,9 @@ public abstract class RessourceNode implements Ressource {
 	@RelatedTo(elementClass = ReponseNode.class, type="answeredUsingResource", direction = INCOMING)
 	private Collection<Reponse> answers;
 
+	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type="activityRequiringResource", direction = INCOMING)
+	private Collection<ActivitePedagogique> pedagogicalActivities;
+	
 	public RessourceNode() {
 	}
 

@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.bleu.Etape;
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.ScenariosService;
@@ -48,7 +48,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	private Scenario selectedScenario;
 
-	private Etape selectedStep;
+	private ActivitePedagogique selectedActivity;
 
 	private Personne currentUser;
 
@@ -126,12 +126,12 @@ public class MyScenariosController extends AbstractContextAwareController {
 		this.selectedScenario = selectedScenario;
 	}
 
-	public Etape getSelectedStep() {
-		return selectedStep;
+	public ActivitePedagogique getSelectedActivity() {
+		return selectedActivity;
 	}
 
-	public void setSelectedStep(Etape selectedStep) {
-		this.selectedStep = selectedStep;
+	public void setSelectedStep(ActivitePedagogique selectedActivity) {
+		this.selectedActivity = selectedActivity;
 	}
 
 	public void onScenarioRowSelect(org.primefaces.event.SelectEvent event) {
@@ -141,7 +141,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	public void onStepRowSelect(org.primefaces.event.SelectEvent event) {
 		logger.info("onStepRowSelect");
-		setSelectedStep((Etape) event.getObject());
+		setSelectedStep((ActivitePedagogique) event.getObject());
 	}
 
 }

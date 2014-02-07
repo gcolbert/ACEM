@@ -22,13 +22,14 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Collection;
 import java.util.HashSet;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.bleu.Etape;
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
@@ -38,32 +39,33 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
  * 
  */
 @NodeEntity
-@TypeAlias("Scenario_step")
-public class EtapeNode implements Etape {
+@TypeAlias("Pedagogical_activity")
+public class ActivitePedagogiqueNode implements ActivitePedagogique {
 
 	private static final long serialVersionUID = -5248471016348742765L;
 
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfSteps")
+	@Indexed(indexName = "indexOfPedagogicalActivities")
 	private String name;
 
-	@RelatedTo(elementClass = ScenarioNode.class, type = "isPartOfScenario", direction = OUTGOING)
-	private Scenario scenario;
+	@RelatedTo(elementClass = ScenarioNode.class, type = "activityForScenario", direction = OUTGOING)
+	private Collection<Scenario> scenarios;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "stepRequiringResource", direction = OUTGOING)
+	@RelatedTo(elementClass = RessourceNode.class, type = "activityRequiringResource", direction = OUTGOING)
 	private Collection<Ressource> resources;
 
+	private Long positionInScenario;
 	private String objective;
 	private String description;
 	private String duration;
 
-	public EtapeNode() {
+	public ActivitePedagogiqueNode() {
 		resources = new HashSet<Ressource>();
 	}
 
-	public EtapeNode(String name) {
+	public ActivitePedagogiqueNode(String name) {
 		this();
 		this.name = name;
 	}
@@ -78,6 +80,21 @@ public class EtapeNode implements Etape {
 	}
 
 	@Override
+	public Collection<Scenario> getScenarios() {
+		return scenarios;
+	}
+
+	@Override
+	public Long getPositionInScenario() {
+		return positionInScenario;
+	}
+
+	@Override
+	public void setPositionInScenario(Long positionInScenario) {
+		this.positionInScenario = positionInScenario;
+	}
+
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -85,11 +102,6 @@ public class EtapeNode implements Etape {
 	@Override
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Override
-	public Scenario getScenario() {
-		return scenario;
 	}
 
 	@Override
@@ -127,4 +139,9 @@ public class EtapeNode implements Etape {
 		return resources;
 	}
 
+	@Override
+	public void setResources(Collection<Ressource> resources) {
+		this.resources = resources;
+	}
+	
 }

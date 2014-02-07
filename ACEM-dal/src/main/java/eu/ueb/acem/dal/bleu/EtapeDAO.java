@@ -29,15 +29,15 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.EtapeRepository;
-import eu.ueb.acem.domain.beans.bleu.Etape;
-import eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode;
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
 @Repository("stepDAO")
-public class EtapeDAO implements DAO<Long, Etape> {
+public class EtapeDAO implements DAO<Long, ActivitePedagogique> {
 
 	/**
 	 * For Logging.
@@ -58,26 +58,26 @@ public class EtapeDAO implements DAO<Long, Etape> {
 	}
 
 	@Override
-	public Etape create(Etape etape) {
-		return repository.save((EtapeNode) etape);
+	public ActivitePedagogique create(ActivitePedagogique etape) {
+		return repository.save((ActivitePedagogiqueNode) etape);
 	}
 
 	@Override
-	public Etape retrieveById(Long id) {
+	public ActivitePedagogique retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Etape retrieveByName(String name) {
+	public ActivitePedagogique retrieveByName(String name) {
 		return repository.findByPropertyValue("name", name);
 	}
 
 	@Override
-	public Collection<Etape> retrieveAll() {
-		Iterable<EtapeNode> endResults = repository.findAll();
-		Collection<Etape> collection = new HashSet<Etape>();
+	public Collection<ActivitePedagogique> retrieveAll() {
+		Iterable<ActivitePedagogiqueNode> endResults = repository.findAll();
+		Collection<ActivitePedagogique> collection = new HashSet<ActivitePedagogique>();
 		if (endResults.iterator() != null) {
-			Iterator<EtapeNode> iterator = endResults.iterator();
+			Iterator<ActivitePedagogiqueNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -86,13 +86,13 @@ public class EtapeDAO implements DAO<Long, Etape> {
 	}
 
 	@Override
-	public Etape update(Etape etape) {
-		return repository.save((EtapeNode) etape);
+	public ActivitePedagogique update(ActivitePedagogique etape) {
+		return repository.save((ActivitePedagogiqueNode) etape);
 	}
 
 	@Override
-	public void delete(Etape etape) {
-		repository.delete((EtapeNode) etape);
+	public void delete(ActivitePedagogique etape) {
+		repository.delete((ActivitePedagogiqueNode) etape);
 	}
 
 	@Override

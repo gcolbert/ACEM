@@ -20,6 +20,8 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.Collection;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -45,8 +47,8 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	@Indexed(indexName = "indexOfSoftwareDocumentations")
 	private String name;
 
-	@RelatedTo(elementClass = Applicatif.class, type = "reference", direction = OUTGOING)
-	private Applicatif applicatif;
+	@RelatedTo(elementClass = Applicatif.class, type = "documentsSoftware", direction = OUTGOING)
+	private Collection<Applicatif> applicatifs;
 
 	public DocumentationApplicatifNode() {
 	}
@@ -55,8 +57,8 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 		this.setName(name);
 	}
 
-	public Applicatif getApplicatif() {
-		return applicatif;
+	public Collection<Applicatif> getApplicatifs() {
+		return applicatifs;
 	}
 
 	@Override

@@ -16,12 +16,45 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.jaune;
+package eu.ueb.acem.domain.beans.bleu;
+
+import java.io.Serializable;
+import java.util.Collection;
+
+import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-public interface Activite extends Ressource {
+public interface ActivitePedagogique extends Serializable {
 
+	public Long getId();
+
+	public Long getPositionInScenario();
+	
+	public void setPositionInScenario(Long stepNumber);
+	
+	public String getName();
+
+	public void setName(String name);
+
+	public String getObjective();
+
+	public void setObjective(String objectif);
+
+	public String getDescription();
+
+	public void setDescription(String descriptif);
+
+	public String getDuration();
+
+	public void setDuration(String duree);
+
+	public Collection<Scenario> getScenarios();
+	
+	public Collection<Ressource> getResources();
+
+	public void setResources(Collection<Ressource> resources);
+	
 }

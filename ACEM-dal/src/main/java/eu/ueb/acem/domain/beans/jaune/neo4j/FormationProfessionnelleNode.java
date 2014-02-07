@@ -24,28 +24,28 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
-import eu.ueb.acem.domain.beans.jaune.Activite;
+import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2014-02-06
  * 
  */
 @NodeEntity
-@TypeAlias("Resource:Activity")
-public class ActiviteNode extends RessourceNode implements Activite {
+@TypeAlias("Resource:ProfessionalTraining")
+public class FormationProfessionnelleNode extends RessourceNode implements FormationProfessionnelle {
 
 	private static final long serialVersionUID = 1012212357185877701L;
 
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfActivities")
+	@Indexed(indexName = "indexOfProfessionalTrainings")
 	private String name;
 
-	public ActiviteNode() {
+	public FormationProfessionnelleNode() {
 	}
 
-	public ActiviteNode(String name) {
+	public FormationProfessionnelleNode(String name) {
 		this.setName(name);
 	}
 

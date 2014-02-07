@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.bleu.Etape;
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
@@ -71,9 +71,9 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 		Collection<TableEntry> tableEntries = new ArrayList<TableEntry>();
 		for (Scenario scenario : scenarios) {
 			logger.info("scenario = {}", scenario.getName());
-			Collection<Etape> steps = scenario.getSteps();
+			Collection<ActivitePedagogique> steps = scenario.getPedagogicalActivities();
 			Collection<Ressource> resources = new HashSet<Ressource>();
-			for (Etape step : steps) {
+			for (ActivitePedagogique step : steps) {
 				for (Ressource resource : step.getResources()) {
 					resources.add(resource);
 				}

@@ -21,8 +21,10 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -30,7 +32,7 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.bleu.Etape;
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
@@ -56,19 +58,19 @@ public class ScenarioNode implements Scenario {
 	private String objective;
 	private Boolean published;
 
-	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "usedForClass", direction = OUTGOING)
-	private Collection<SeanceDeCours> seancesDeCours;
+	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "scenarioUsedForClass", direction = OUTGOING)
+	private Collection<SeanceDeCours> teachingClasses;
 
-	@RelatedTo(elementClass = EtapeNode.class, type = "isPartOfScenario", direction = INCOMING)
-	private Collection<Etape> steps;
+	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type = "activityForScenario", direction = INCOMING)
+	private List<ActivitePedagogique> pedagogicalActivities;
 
 	@RelatedTo(elementClass = EnseignantNode.class, type="authorsScenario", direction = INCOMING)
 	private Personne author;
 
 	public ScenarioNode() {
 		published = false;
-		steps = new HashSet<Etape>();
-		seancesDeCours = new HashSet<SeanceDeCours>();
+		pedagogicalActivities = new ArrayList<ActivitePedagogique>();
+		teachingClasses = new HashSet<SeanceDeCours>();
 	}
 
 	public ScenarioNode(Personne author, String name, String objective) {
@@ -108,13 +110,13 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
-	public Collection<SeanceDeCours> getSeancesDeCours() {
-		return seancesDeCours;
+	public Collection<SeanceDeCours> getTeachingClasses() {
+		return teachingClasses;
 	}
 
 	@Override
-	public Collection<Etape> getSteps() {
-		return steps;
+	public List<ActivitePedagogique> getPedagogicalActivities() {
+		return pedagogicalActivities;
 	}
 
 	@Override

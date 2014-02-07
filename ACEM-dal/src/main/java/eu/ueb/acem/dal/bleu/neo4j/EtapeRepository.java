@@ -19,12 +19,12 @@
 package eu.ueb.acem.dal.bleu.neo4j;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-public interface EtapeRepository extends GenericRepository<EtapeNode> {
+public interface EtapeRepository extends GenericRepository<ActivitePedagogiqueNode> {
 
 }

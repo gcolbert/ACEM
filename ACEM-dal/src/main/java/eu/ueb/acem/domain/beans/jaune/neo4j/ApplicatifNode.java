@@ -18,12 +18,18 @@
  */
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
+import static org.neo4j.graphdb.Direction.INCOMING;
+
+import java.util.Collection;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
+import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
@@ -41,6 +47,9 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 	@Indexed(indexName = "indexOfSoftwares")
 	private String name;
 
+	@RelatedTo(elementClass = DocumentationApplicatifNode.class, type = "documentsSoftware", direction = INCOMING)
+	private Collection<DocumentationApplicatif> documentations;
+	
 	public ApplicatifNode() {
 	}
 

@@ -78,9 +78,28 @@
 						</h:panelGrid>
 
 						<p:dataTable id="selectedScenarioDataTable"
-							value="#{myScenariosController.selectedScenario.steps}"
-							var="step" selection="#{myScenariosController.selectedStep}"
-							selectionMode="single" rowKey="#{step}">
+							emptyMessage="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
+							value="#{myScenariosController.selectedScenario.pedagogicalActivities}"
+							var="activity" selection="#{myScenariosController.selectedActivity}"
+							selectionMode="single" rowKey="#{activity}">
+							<p:column headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_POSITION_IN_SCENARIO']}">
+							    #{activity.positionInScenario}
+							</p:column>
+							<p:column headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_NAME']}">
+							    #{activity.name}
+							</p:column>
+							<p:column headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_OBJECTIVE']}">
+							    #{activity.objective}
+							</p:column>
+							<p:column headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DESCRIPTION']}">
+							    #{activity.description}
+							</p:column>
+							<p:column headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DURATION']}">
+							    #{activity.duration}
+							</p:column>
+							<p:column headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_RESOURCES']}">
+							    #{activity.resources}
+							</p:column>
 						</p:dataTable>
 					</p:panel>
 				</p:layoutUnit>

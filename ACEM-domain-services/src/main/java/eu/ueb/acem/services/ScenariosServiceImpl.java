@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.bleu.EtapeDAO;
 import eu.ueb.acem.dal.bleu.ScenarioDAO;
-import eu.ueb.acem.domain.beans.bleu.Etape;
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Personne;
 
@@ -65,17 +65,17 @@ public class ScenariosServiceImpl implements ScenariosService {
 	}
 
 	@Override
-	public Etape createStep(String name) {
-		return stepDAO.create(new EtapeNode(name));
+	public ActivitePedagogique createStep(String name) {
+		return stepDAO.create(new ActivitePedagogiqueNode(name));
 	}
 
 	@Override
-	public Etape retrieveStep(Long id) {
+	public ActivitePedagogique retrieveStep(Long id) {
 		return stepDAO.retrieveById(id);
 	}
 
 	@Override
-	public Etape updateStep(Etape step) {
+	public ActivitePedagogique updateStep(ActivitePedagogique step) {
 		return stepDAO.update(step);
 	}
 

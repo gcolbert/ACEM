@@ -95,8 +95,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="11" language="java" name="eu.ueb.acem.domain.beans.bleu.Etape" project="ACEM-domain-beans" 
-    file="/ACEM-domain-beans/src/main/java/eu/ueb/acem/domain/beans/bleu/Etape.java" binary="false" 
+  <interface id="11" language="java" name="eu.ueb.acem.domain.beans.bleu.ActivitePedagogique" 
+    project="ACEM-domain-beans" 
+    file="/ACEM-domain-beans/src/main/java/eu/ueb/acem/domain/beans/bleu/ActivitePedagogique.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="934" y="-109"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -135,8 +136,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="15" language="java" name="eu.ueb.acem.domain.beans.bleu.neo4j.EtapeNode" project="ACEM-dal" 
-    file="/ACEM-dal/src/main/java/eu/ueb/acem/domain/beans/bleu/neo4j/EtapeNode.java" binary="false" 
+  <class id="15" language="java" name="eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode" project="ACEM-dal" 
+    file="/ACEM-dal/src/main/java/eu/ueb/acem/domain/beans/bleu/neo4j/ActivitePedagogiqueNode.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1198" y="-108"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 

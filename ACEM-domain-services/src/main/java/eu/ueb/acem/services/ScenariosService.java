@@ -2,7 +2,7 @@ package eu.ueb.acem.services;
 
 import java.util.Collection;
 
-import eu.ueb.acem.domain.beans.bleu.Etape;
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Personne;
 
@@ -22,11 +22,11 @@ public interface ScenariosService {
 
 	public Long countSteps();
 
-	public Etape createStep(String name);
+	public ActivitePedagogique createStep(String name);
 
-	public Etape retrieveStep(Long id);
+	public ActivitePedagogique retrieveStep(Long id);
 
-	public Etape updateStep(Etape step);
+	public ActivitePedagogique updateStep(ActivitePedagogique step);
 
 	public Boolean deleteStep(Long id);
 

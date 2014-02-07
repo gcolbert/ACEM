@@ -19,12 +19,12 @@
 package eu.ueb.acem.dal.jaune.neo4j;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ActiviteNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-public interface ActiviteRepository extends GenericRepository<ActiviteNode> {
+public interface ActiviteRepository extends GenericRepository<FormationProfessionnelleNode> {
 
 }
