@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.bleu.EtapeDAO;
+import eu.ueb.acem.dal.bleu.ActivitePedagogiqueDAO;
 import eu.ueb.acem.dal.bleu.ScenarioDAO;
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
@@ -20,7 +20,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 	ScenarioDAO scenarioDAO;
 
 	@Autowired
-	EtapeDAO stepDAO;
+	ActivitePedagogiqueDAO pedagogicalActivityDAO;
 
 	public ScenariosServiceImpl() {
 
@@ -60,36 +60,36 @@ public class ScenariosServiceImpl implements ScenariosService {
 	}
 
 	@Override
-	public Long countSteps() {
-		return stepDAO.count();
+	public Long countPedagogicalActivities() {
+		return pedagogicalActivityDAO.count();
 	}
 
 	@Override
-	public ActivitePedagogique createStep(String name) {
-		return stepDAO.create(new ActivitePedagogiqueNode(name));
+	public ActivitePedagogique createPedagogicalActivity(String name) {
+		return pedagogicalActivityDAO.create(new ActivitePedagogiqueNode(name));
 	}
 
 	@Override
-	public ActivitePedagogique retrieveStep(Long id) {
-		return stepDAO.retrieveById(id);
+	public ActivitePedagogique retrievePedagogicalActivity(Long id) {
+		return pedagogicalActivityDAO.retrieveById(id);
 	}
 
 	@Override
-	public ActivitePedagogique updateStep(ActivitePedagogique step) {
-		return stepDAO.update(step);
+	public ActivitePedagogique updatePedagogicalActivity(ActivitePedagogique pedagogicalActivity) {
+		return pedagogicalActivityDAO.update(pedagogicalActivity);
 	}
 
 	@Override
-	public Boolean deleteStep(Long id) {
-		if (stepDAO.exists(id)) {
-			stepDAO.delete(stepDAO.retrieveById(id));
+	public Boolean deletePedagogicalActivity(Long id) {
+		if (pedagogicalActivityDAO.exists(id)) {
+			pedagogicalActivityDAO.delete(pedagogicalActivityDAO.retrieveById(id));
 		}
-		return (!stepDAO.exists(id));
+		return (!pedagogicalActivityDAO.exists(id));
 	}
 
 	@Override
-	public void deleteAllSteps() {
-		stepDAO.deleteAll();
+	public void deleteAllPedagogicalActivities() {
+		pedagogicalActivityDAO.deleteAll();
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class UsersController extends AbstractContextAwareController {
 
 	@PostConstruct
 	public void initUsers() {
-		users = usersService.getUsers();
+		users = usersService.getPersons();
 	}
 
 	public Collection<Personne> getUsers() {

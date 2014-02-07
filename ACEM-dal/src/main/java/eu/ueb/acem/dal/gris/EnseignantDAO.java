@@ -58,8 +58,8 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	}
 
 	@Override
-	public Enseignant create(Enseignant enseignant) {
-		return repository.save((EnseignantNode) enseignant);
+	public Enseignant create(Enseignant entity) {
+		return repository.save((EnseignantNode) entity);
 	}
 
 	@Override
@@ -86,13 +86,13 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	}
 
 	@Override
-	public Enseignant update(Enseignant enseignant) {
-		return repository.save((EnseignantNode) enseignant);
+	public Enseignant update(Enseignant entity) {
+		return repository.save((EnseignantNode) entity);
 	}
 
 	@Override
-	public void delete(Enseignant enseignant) {
-		repository.delete((EnseignantNode) enseignant);
+	public void delete(Enseignant entity) {
+		repository.delete((EnseignantNode) entity);
 	}
 
 	@Override

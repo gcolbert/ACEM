@@ -45,14 +45,14 @@ public abstract class OrganisationNode implements Organisation {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOrganisation")
+	@Indexed(indexName = "indexOfOrganisations")
 	private String name;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "possede", direction = OUTGOING)
-	private Collection<Ressource> ressourcesPossedees;
+	@RelatedTo(elementClass = RessourceNode.class, type = "possessesResource", direction = OUTGOING)
+	private Collection<Ressource> possessedResources;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "voit", direction = OUTGOING)
-	private Collection<Ressource> ressourcesVues;
+	@RelatedTo(elementClass = RessourceNode.class, type = "viewsResource", direction = OUTGOING)
+	private Collection<Ressource> viewedResources;
 
 	public OrganisationNode() {
 	}
@@ -80,13 +80,13 @@ public abstract class OrganisationNode implements Organisation {
 	}
 
 	@Override
-	public Collection<Ressource> getRessourcesPossedees() {
-		return ressourcesPossedees;
+	public Collection<Ressource> getPossessedResources() {
+		return possessedResources;
 	}
 
 	@Override
-	public Collection<Ressource> getRessourcesVues() {
-		return ressourcesVues;
+	public Collection<Ressource> getViewedResources() {
+		return viewedResources;
 	}
 
 }

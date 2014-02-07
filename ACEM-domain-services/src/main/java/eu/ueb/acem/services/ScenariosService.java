@@ -20,17 +20,17 @@ public interface ScenariosService {
 
 	public void deleteAllScenarios();
 
-	public Long countSteps();
+	public Long countPedagogicalActivities();
 
-	public ActivitePedagogique createStep(String name);
+	public ActivitePedagogique createPedagogicalActivity(String name);
 
-	public ActivitePedagogique retrieveStep(Long id);
+	public ActivitePedagogique retrievePedagogicalActivity(Long id);
 
-	public ActivitePedagogique updateStep(ActivitePedagogique step);
+	public ActivitePedagogique updatePedagogicalActivity(ActivitePedagogique step);
 
-	public Boolean deleteStep(Long id);
+	public Boolean deletePedagogicalActivity(Long id);
 
-	public void deleteAllSteps();
+	public void deleteAllPedagogicalActivities();
 
 	public Collection<Scenario> retrieveScenariosWithAuthor(Personne author);
 	

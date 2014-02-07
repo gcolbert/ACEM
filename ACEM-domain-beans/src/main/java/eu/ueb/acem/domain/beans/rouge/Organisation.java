@@ -32,8 +32,8 @@ public interface Organisation extends Serializable {
 
 	public void setName(String name);
 
-	public Collection<Ressource> getRessourcesPossedees();
+	public Collection<Ressource> getPossessedResources();
 
-	public Collection<Ressource> getRessourcesVues();
+	public Collection<Ressource> getViewedResources();
 
 }

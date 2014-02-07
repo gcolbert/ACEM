@@ -24,7 +24,6 @@ import static org.neo4j.graphdb.Direction.INCOMING;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -62,7 +61,7 @@ public class ScenarioNode implements Scenario {
 	private Collection<SeanceDeCours> teachingClasses;
 
 	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type = "activityForScenario", direction = INCOMING)
-	private List<ActivitePedagogique> pedagogicalActivities;
+	private Collection<ActivitePedagogique> pedagogicalActivities;
 
 	@RelatedTo(elementClass = EnseignantNode.class, type="authorsScenario", direction = INCOMING)
 	private Personne author;
@@ -115,7 +114,7 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
-	public List<ActivitePedagogique> getPedagogicalActivities() {
+	public Collection<ActivitePedagogique> getPedagogicalActivities() {
 		return pedagogicalActivities;
 	}
 

@@ -58,8 +58,8 @@ public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
 	}
 
 	@Override
-	public Gestionnaire create(Gestionnaire gestionnaire) {
-		return repository.save((GestionnaireNode) gestionnaire);
+	public Gestionnaire create(Gestionnaire entity) {
+		return repository.save((GestionnaireNode) entity);
 	}
 
 	@Override
@@ -86,14 +86,14 @@ public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
 	}
 
 	@Override
-	public Gestionnaire update(Gestionnaire gestionnaire) {
-		GestionnaireNode GestionnaireNode = (GestionnaireNode) gestionnaire;
+	public Gestionnaire update(Gestionnaire entity) {
+		GestionnaireNode GestionnaireNode = (GestionnaireNode) entity;
 		return repository.save(GestionnaireNode);
 	}
 
 	@Override
-	public void delete(Gestionnaire gestionnaire) {
-		GestionnaireNode gestionnaireNode = (GestionnaireNode) gestionnaire;
+	public void delete(Gestionnaire entity) {
+		GestionnaireNode gestionnaireNode = (GestionnaireNode) entity;
 		repository.delete(gestionnaireNode);
 	}
 

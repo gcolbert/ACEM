@@ -16,39 +16,35 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.bleu;
+package eu.ueb.acem.dal.rouge;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Collection;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.bleu.neo4j.ActivitePedagogiqueRepository;
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
+import eu.ueb.acem.dal.rouge.neo4j.ComposanteRepository;
+import eu.ueb.acem.domain.beans.rouge.Composante;
+import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2014-02-07
  * 
  */
-@Repository("stepDAO")
-public class ActivitePedagogiqueDAO implements DAO<Long, ActivitePedagogique> {
+@Repository("teachingDepartmentDAO")
+public class ComposanteDAO implements DAO<Long, Composante> {
 
-	/**
-	 * For Logging.
-	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ActivitePedagogiqueDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(ComposanteDAO.class);
 
 	@Autowired
-	private ActivitePedagogiqueRepository repository;
+	private ComposanteRepository repository;
 
-	public ActivitePedagogiqueDAO() {
+	public ComposanteDAO() {
 
 	}
 
@@ -58,26 +54,26 @@ public class ActivitePedagogiqueDAO implements DAO<Long, ActivitePedagogique> {
 	}
 
 	@Override
-	public ActivitePedagogique create(ActivitePedagogique entity) {
-		return repository.save((ActivitePedagogiqueNode) entity);
+	public Composante create(Composante entity) {
+		return repository.save((ComposanteNode) entity);
 	}
 
 	@Override
-	public ActivitePedagogique retrieveById(Long id) {
+	public Composante retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public ActivitePedagogique retrieveByName(String name) {
+	public Composante retrieveByName(String name) {
 		return repository.findByPropertyValue("name", name);
 	}
 
 	@Override
-	public Collection<ActivitePedagogique> retrieveAll() {
-		Iterable<ActivitePedagogiqueNode> endResults = repository.findAll();
-		Collection<ActivitePedagogique> collection = new HashSet<ActivitePedagogique>();
+	public Collection<Composante> retrieveAll() {
+		Iterable<ComposanteNode> endResults = repository.findAll();
+		Collection<Composante> collection = new HashSet<Composante>();
 		if (endResults.iterator() != null) {
-			Iterator<ActivitePedagogiqueNode> iterator = endResults.iterator();
+			Iterator<ComposanteNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -86,13 +82,13 @@ public class ActivitePedagogiqueDAO implements DAO<Long, ActivitePedagogique> {
 	}
 
 	@Override
-	public ActivitePedagogique update(ActivitePedagogique entity) {
-		return repository.save((ActivitePedagogiqueNode) entity);
+	public Composante update(Composante entity) {
+		return repository.save((ComposanteNode) entity);
 	}
 
 	@Override
-	public void delete(ActivitePedagogique entity) {
-		repository.delete((ActivitePedagogiqueNode) entity);
+	public void delete(Composante entity) {
+		repository.delete((ComposanteNode) entity);
 	}
 
 	@Override

@@ -58,8 +58,8 @@ public class FormationProfessionnelleDAO implements DAO<Long, FormationProfessio
 	}
 
 	@Override
-	public FormationProfessionnelle create(FormationProfessionnelle activite) {
-		return repository.save((FormationProfessionnelleNode) activite);
+	public FormationProfessionnelle create(FormationProfessionnelle entity) {
+		return repository.save((FormationProfessionnelleNode) entity);
 	}
 
 	@Override
@@ -86,13 +86,13 @@ public class FormationProfessionnelleDAO implements DAO<Long, FormationProfessio
 	}
 
 	@Override
-	public FormationProfessionnelle update(FormationProfessionnelle activite) {
-		return repository.save((FormationProfessionnelleNode) activite);
+	public FormationProfessionnelle update(FormationProfessionnelle entity) {
+		return repository.save((FormationProfessionnelleNode) entity);
 	}
 
 	@Override
-	public void delete(FormationProfessionnelle activite) {
-		repository.delete((FormationProfessionnelleNode) activite);
+	public void delete(FormationProfessionnelle entity) {
+		repository.delete((FormationProfessionnelleNode) entity);
 	}
 
 	@Override
