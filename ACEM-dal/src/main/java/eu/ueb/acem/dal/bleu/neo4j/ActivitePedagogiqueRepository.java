@@ -16,15 +16,15 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune.neo4j;
+package eu.ueb.acem.dal.bleu.neo4j;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-public interface ActiviteRepository extends GenericRepository<FormationProfessionnelleNode> {
+public interface ActivitePedagogiqueRepository extends GenericRepository<ActivitePedagogiqueNode> {
 
 }

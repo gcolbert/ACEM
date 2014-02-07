@@ -16,11 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune;
+package eu.ueb.acem.dal.bleu;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,27 +28,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.jaune.neo4j.ActiviteRepository;
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
-import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
+import eu.ueb.acem.dal.bleu.neo4j.ActivitePedagogiqueRepository;
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 
 /**
- * @author Grégoire Colbert @since 2013-12-11
+ * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-@Repository("activiteDAO")
-public class ActiviteDAO implements DAO<Long, FormationProfessionnelle> {
+@Repository("stepDAO")
+public class ActivitePedagogiqueDAO implements DAO<Long, ActivitePedagogique> {
 
 	/**
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ActiviteDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(ActivitePedagogiqueDAO.class);
 
 	@Autowired
-	private ActiviteRepository repository;
+	private ActivitePedagogiqueRepository repository;
 
-	public ActiviteDAO() {
+	public ActivitePedagogiqueDAO() {
 
 	}
 
@@ -58,26 +58,26 @@ public class ActiviteDAO implements DAO<Long, FormationProfessionnelle> {
 	}
 
 	@Override
-	public FormationProfessionnelle create(FormationProfessionnelle activite) {
-		return repository.save((FormationProfessionnelleNode) activite);
+	public ActivitePedagogique create(ActivitePedagogique etape) {
+		return repository.save((ActivitePedagogiqueNode) etape);
 	}
 
 	@Override
-	public FormationProfessionnelle retrieveById(Long id) {
+	public ActivitePedagogique retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public FormationProfessionnelle retrieveByName(String nom) {
-		return repository.findByPropertyValue("nom", nom);
+	public ActivitePedagogique retrieveByName(String name) {
+		return repository.findByPropertyValue("name", name);
 	}
 
 	@Override
-	public Collection<FormationProfessionnelle> retrieveAll() {
-		Iterable<FormationProfessionnelleNode> endResults = repository.findAll();
-		Collection<FormationProfessionnelle> collection = new HashSet<FormationProfessionnelle>();
+	public Collection<ActivitePedagogique> retrieveAll() {
+		Iterable<ActivitePedagogiqueNode> endResults = repository.findAll();
+		Collection<ActivitePedagogique> collection = new HashSet<ActivitePedagogique>();
 		if (endResults.iterator() != null) {
-			Iterator<FormationProfessionnelleNode> iterator = endResults.iterator();
+			Iterator<ActivitePedagogiqueNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -86,13 +86,13 @@ public class ActiviteDAO implements DAO<Long, FormationProfessionnelle> {
 	}
 
 	@Override
-	public FormationProfessionnelle update(FormationProfessionnelle activite) {
-		return repository.save((FormationProfessionnelleNode) activite);
+	public ActivitePedagogique update(ActivitePedagogique etape) {
+		return repository.save((ActivitePedagogiqueNode) etape);
 	}
 
 	@Override
-	public void delete(FormationProfessionnelle activite) {
-		repository.delete((FormationProfessionnelleNode) activite);
+	public void delete(ActivitePedagogique etape) {
+		repository.delete((ActivitePedagogiqueNode) etape);
 	}
 
 	@Override

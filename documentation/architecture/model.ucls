@@ -68,7 +68,7 @@
   </interface>  
   <interface id="8" language="java" name="eu.ueb.acem.dal.bleu.neo4j.BesoinRepository" project="ACEM-dal" 
     file="/ACEM-dal/src/main/java/eu/ueb/acem/dal/bleu/neo4j/BesoinRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="216" y="1323"/>    
+    <position height="-1" width="-1" x="234" y="1452"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -88,7 +88,7 @@
   <class id="10" language="java" name="eu.ueb.acem.services.NeedsAndAnswersServiceImpl" project="ACEM-domain-services" 
     file="/ACEM-domain-services/src/main/java/eu/ueb/acem/services/NeedsAndAnswersServiceImpl.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="-112" y="127"/>    
+    <position height="-1" width="-1" x="-70" y="8"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -99,7 +99,7 @@
     project="ACEM-domain-beans" 
     file="/ACEM-domain-beans/src/main/java/eu/ueb/acem/domain/beans/bleu/ActivitePedagogique.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="934" y="-109"/>    
+    <position height="-1" width="-1" x="941" y="-165"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -139,7 +139,7 @@
   <class id="15" language="java" name="eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode" project="ACEM-dal" 
     file="/ACEM-dal/src/main/java/eu/ueb/acem/domain/beans/bleu/neo4j/ActivitePedagogiqueNode.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1198" y="-108"/>    
+    <position height="-1" width="-1" x="1205" y="-143"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -284,21 +284,21 @@
     </display>  
   </class>  
   <realization id="30">    
-    <end type="SOURCE" refId="27"/>    
-    <end type="TARGET" refId="26"/>  
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="14"/>  
   </realization>  
-  <association id="31">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="32" name="repository"/>      
-      <multiplicity id="33" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="34">    
-    <end type="SOURCE" refId="6"/>    
+  <realization id="31">    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="1"/>  
   </realization>  
+  <association id="32">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="33" name="repository"/>      
+      <multiplicity id="34" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <association id="35">    
     <end type="SOURCE" refId="4" navigable="false">      
       <attribute id="36" name="repository"/>      
@@ -307,142 +307,103 @@
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="38">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="39" name="reponses"/>      
-      <multiplicity id="40" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <generalization id="38">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <generalization id="39">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <realization id="40">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
   <realization id="41">    
     <end type="SOURCE" refId="15"/>    
     <end type="TARGET" refId="11"/>  
   </realization>  
-  <association id="42">    
-    <end type="SOURCE" refId="29" navigable="false">      
-      <attribute id="43" name="besoins"/>      
-      <multiplicity id="44" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <realization id="42">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <realization id="43">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="26"/>  
+  </realization>  
+  <realization id="44">    
+    <bendpoint x="1098" y="334"/>    
+    <null/>    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="12"/>  
+  </realization>  
   <association id="45">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="46" name="besoins"/>      
-      <multiplicity id="47" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="46" name="repository"/>      
+      <multiplicity id="47" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="48">    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="49" name="repository"/>      
-      <multiplicity id="50" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="23" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="51">    
+  <realization id="48">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <realization id="49">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="25"/>  
+  </realization>  
+  <generalization id="50">    
     <end type="SOURCE" refId="28"/>    
-    <end type="TARGET" refId="24"/>  
+    <end type="TARGET" refId="27"/>  
+  </generalization>  
+  <realization id="51">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="13"/>  
   </realization>  
   <generalization id="52">    
     <end type="SOURCE" refId="25"/>    
     <end type="TARGET" refId="26"/>  
   </generalization>  
   <association id="53">    
-    <end type="SOURCE" refId="29" navigable="false">      
-      <attribute id="54" name="reponses"/>      
-      <multiplicity id="55" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="54" name="repository"/>      
+      <multiplicity id="55" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="23" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="56">    
-    <end type="SOURCE" refId="24"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <realization id="57">    
-    <end type="SOURCE" refId="29"/>    
-    <end type="TARGET" refId="25"/>  
+  <realization id="56">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="1"/>  
   </realization>  
-  <realization id="58">    
+  <association id="57">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="58" name="repository"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="60">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="1"/>  
   </realization>  
-  <association id="59">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="60" name="repository"/>      
-      <multiplicity id="61" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <realization id="61">    
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="24"/>  
+  </realization>  
   <association id="62">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="63" name="scenario"/>      
-      <multiplicity id="64" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="65">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="66" name="repository"/>      
-      <multiplicity id="67" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="68">    
     <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="69" name="repository"/>      
-      <multiplicity id="70" minimum="0" maximum="1"/>    
+      <attribute id="63" name="repository"/>      
+      <multiplicity id="64" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="22" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="71">    
-    <bendpoint x="1098" y="334"/>    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="12"/>  
-  </realization>  
-  <realization id="72">    
-    <end type="SOURCE" refId="21"/>    
+  <realization id="65">    
+    <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="1"/>  
-  </realization>  
-  <generalization id="73">    
-    <end type="SOURCE" refId="29"/>    
-    <end type="TARGET" refId="27"/>  
-  </generalization>  
-  <realization id="74">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <generalization id="75">    
-    <end type="SOURCE" refId="28"/>    
-    <end type="TARGET" refId="27"/>  
-  </generalization>  
-  <realization id="76">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <realization id="77">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="14"/>  
-  </realization>  
-  <realization id="78">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="13"/>  
-  </realization>  
-  <realization id="79">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <realization id="80">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="9"/>  
   </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    

@@ -33,7 +33,7 @@ public interface ActivitePedagogique extends Serializable {
 
 	public Long getPositionInScenario();
 	
-	public void setPositionInScenario(Long stepNumber);
+	public void setPositionInScenario(Long positionInScenario);
 	
 	public String getName();
 
