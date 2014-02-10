@@ -143,5 +143,10 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	public void setResources(Collection<Ressource> resources) {
 		this.resources = resources;
 	}
-	
+
+	@Override
+	public int compareTo(ActivitePedagogique o) {
+		return (int) (positionInScenario - o.getPositionInScenario());
+	}
+
 }

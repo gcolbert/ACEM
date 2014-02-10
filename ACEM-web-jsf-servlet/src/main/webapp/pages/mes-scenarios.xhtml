@@ -71,6 +71,7 @@
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.NAME_LABEL']}" />
 							<h:outputText id="selectedScenarioName"
 								value="#{myScenariosController.selectedScenario.name}" />
+								
 							<h:outputLabel for="selectedScenarioObjective"
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.OBJECTIVE_LABEL']}" />
 							<h:outputText id="selectedScenarioObjective"
@@ -80,8 +81,7 @@
 						<p:dataTable id="selectedScenarioDataTable"
 							emptyMessage="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
 							value="#{myScenariosController.selectedScenario.pedagogicalActivities}"
-							var="activity" selection="#{myScenariosController.selectedActivity}"
-							selectionMode="single" rowKey="#{activity}">
+							var="activity">
 							<p:column headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_POSITION_IN_SCENARIO']}">
 							    #{activity.positionInScenario}
 							</p:column>

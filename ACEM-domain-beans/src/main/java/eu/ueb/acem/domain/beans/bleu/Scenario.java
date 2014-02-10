@@ -39,16 +39,18 @@ public interface Scenario extends Serializable {
 
 	public void setObjective(String objective);
 
-	public Collection<SeanceDeCours> getTeachingClasses();
-
 	public Personne getAuthor();
+
+	public void setAuthor(Personne author);
 
 	public Boolean isPublished();
 	
-	public Collection<ActivitePedagogique> getPedagogicalActivities();
-
 	public void setPublished(Boolean published);
 
-	public void setAuthor(Personne author);
+	public Collection<ActivitePedagogique> getPedagogicalActivities();
+
+	public void setPedagogicalActivities(Collection<ActivitePedagogique> pedagogicalActivities);
+
+	public Collection<SeanceDeCours> getTeachingClasses();
 
 }

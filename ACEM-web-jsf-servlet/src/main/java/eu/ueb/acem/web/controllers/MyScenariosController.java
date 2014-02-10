@@ -20,6 +20,7 @@ package eu.ueb.acem.web.controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -35,6 +36,7 @@ import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
+import eu.ueb.acem.web.viewbeans.TableBean;
 
 @Controller("myScenariosController")
 @Scope("view")
@@ -44,10 +46,8 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MyScenariosController.class);
 
-	private List<Scenario> scenarios;
-
 	private Scenario selectedScenario;
-
+	
 	private ActivitePedagogique selectedActivity;
 
 	private Personne currentUser;
@@ -55,8 +55,10 @@ public class MyScenariosController extends AbstractContextAwareController {
 	@Autowired
 	ScenariosService scenariosService;
 
+	@Autowired
+	TableBean<Scenario> tableBean;
+
 	public MyScenariosController() {
-		scenarios = new ArrayList<Scenario>();
 	}
 
 	@PostConstruct
@@ -68,18 +70,20 @@ public class MyScenariosController extends AbstractContextAwareController {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		Collection<Scenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(currentUser);
 		logger.info("found {} scenarios for author {}", scenariosOfCurrentUser.size(), currentUser.getName());
+		tableBean.getTableEntries().clear();
 		for (Scenario scenario : scenariosOfCurrentUser) {
 			logger.info("scenario = {}", scenario.getName());
-			scenarios.add(scenario);
+			tableBean.getTableEntries().add(scenario);
 		}
 	}
 
 	public void createScenario(String name, String objective) {
 		Scenario scenario = scenariosService.createScenario(currentUser, name, objective);
 		if (scenario != null) {
-			scenarios.add(scenario);
+			tableBean.getTableEntries().add(scenario);
 			setSelectedScenario(scenario);
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
 					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
@@ -96,7 +100,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 		if (selectedScenario != null) {
 			logger.info("deleteSelectedScenario, id={}", selectedScenario.getId());
 			if (scenariosService.deleteScenario(selectedScenario.getId())) {
-				scenarios.remove(selectedScenario);
+				tableBean.getTableEntries().remove(selectedScenario);
 				MessageDisplayer.showMessageToUserWithSeverityInfo(
 						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE"),
 						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS"));
@@ -111,11 +115,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 
 	public List<Scenario> getScenarios() {
-		return scenarios;
-	}
-
-	public void setScenarios(List<Scenario> scenarios) {
-		this.scenarios = scenarios;
+		return tableBean.getTableEntries();
 	}
 
 	public Scenario getSelectedScenario() {
@@ -124,13 +124,16 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	public void setSelectedScenario(Scenario selectedScenario) {
 		this.selectedScenario = selectedScenario;
+		List<ActivitePedagogique> orderedActivities = new ArrayList<ActivitePedagogique>(selectedScenario.getPedagogicalActivities());
+		Collections.sort(orderedActivities);
+		this.selectedScenario.setPedagogicalActivities(orderedActivities);
 	}
 
 	public ActivitePedagogique getSelectedActivity() {
 		return selectedActivity;
 	}
 
-	public void setSelectedStep(ActivitePedagogique selectedActivity) {
+	public void setSelectedActivity(ActivitePedagogique selectedActivity) {
 		this.selectedActivity = selectedActivity;
 	}
 
@@ -141,7 +144,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	public void onStepRowSelect(org.primefaces.event.SelectEvent event) {
 		logger.info("onStepRowSelect");
-		setSelectedStep((ActivitePedagogique) event.getObject());
+		setSelectedActivity((ActivitePedagogique) event.getObject());
 	}
 
 }

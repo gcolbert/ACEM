@@ -181,19 +181,25 @@
 					rendered="#{needsAndAnswersTableController.selectedAnswer != null}">
 					<p:dataTable id="examplesOfScenariosTable"
 						value="#{needsAndAnswersTableController.scenariosRelatedToSelectedAnswer}"
-						var="tableEntry">
+						var="scenario">
 						<p:column
 							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
-							<h:outputText value="#{tableEntry.title}" />
+							<h:outputText value="#{scenario.name}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.OBJECTIVE']}">
+							<h:outputText value="#{scenario.objective}" />
 						</p:column>
 						<p:column
 							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.AUTHOR']}">
-							<h:outputText value="#{tableEntry.author}" />
+							<h:outputText value="#{scenario.author}" />
 						</p:column>
+						<!-- 
 						<p:column
 							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.RESOURCES']}">
-							<h:outputText value="#{tableEntry.resources}" />
+							<h:outputText value="#{scenario.resources}" />
 						</p:column>
+						 -->
 					</p:dataTable>
 				</p:panel>
 			</p:outputPanel>

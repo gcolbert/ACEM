@@ -109,13 +109,13 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
-	public Collection<SeanceDeCours> getTeachingClasses() {
-		return teachingClasses;
+	public Collection<ActivitePedagogique> getPedagogicalActivities() {
+		return pedagogicalActivities;
 	}
 
 	@Override
-	public Collection<ActivitePedagogique> getPedagogicalActivities() {
-		return pedagogicalActivities;
+	public void setPedagogicalActivities(Collection<ActivitePedagogique> pedagogicalActivities) {
+		this.pedagogicalActivities = pedagogicalActivities;
 	}
 
 	@Override
@@ -136,6 +136,11 @@ public class ScenarioNode implements Scenario {
 	@Override
 	public void setPublished(Boolean published) {
 		this.published = published;
+	}
+
+	@Override
+	public Collection<SeanceDeCours> getTeachingClasses() {
+		return teachingClasses;
 	}
 
 }

@@ -21,20 +21,21 @@ package eu.ueb.acem.web.viewbeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-
 /**
  * @author Grégoire Colbert @since 2014-01-10
+ * @param <E>
  * 
  */
 @Component("tableBean")
 @Scope("view")
-public class TableBean implements Serializable {
+public class TableBean<E> implements Serializable {
 
 	/**
 	 * For Logging.
@@ -44,59 +45,22 @@ public class TableBean implements Serializable {
 
 	private static final long serialVersionUID = -3164178023755035995L;
 
-	private Collection<TableEntry> tableEntries;
+	private List<E> tableEntries;
 
 	public TableBean() {
-		tableEntries = new ArrayList<TableEntry>();
+		tableEntries = new ArrayList<E>();
 	}
 
-	public Collection<TableEntry> getTableEntries() {
+	public List<E> getTableEntries() {
 		return tableEntries;
 	}
 
-	public void setTableEntries(Collection<TableEntry> tableEntries) {
-		this.tableEntries = tableEntries;
-	}
-
-	public static class TableEntry implements Serializable {
-
-		private static final long serialVersionUID = 5305081640505801043L;
-
-		private String title;
-
-		private String author;
-
-		private Collection<Ressource> resources;
-
-		public TableEntry(String title, String author, Collection<Ressource> resources) {
-			this.title = title;
-			this.author = author;
-			this.resources = resources;
+	public List<E> setTableEntries(Collection<E> collectionEntities) {
+		tableEntries.clear();
+		for (E entity : collectionEntities) {
+			tableEntries.add(entity);
 		}
-
-		public String getTitle() {
-			return title;
-		}
-
-		public void setTitle(String title) {
-			this.title = title;
-		}
-
-		public String getAuthor() {
-			return author;
-		}
-
-		public void setAuthor(String author) {
-			this.author = author;
-		}
-
-		public Collection<Ressource> getResources() {
-			return resources;
-		}
-
-		public void setResources(Collection<Ressource> resources) {
-			this.resources = resources;
-		}
+		return tableEntries;
 	}
 
 }

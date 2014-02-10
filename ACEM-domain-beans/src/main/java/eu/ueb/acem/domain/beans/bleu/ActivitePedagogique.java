@@ -27,7 +27,7 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-public interface ActivitePedagogique extends Serializable {
+public interface ActivitePedagogique extends Serializable, Comparable<ActivitePedagogique> {
 
 	public Long getId();
 
@@ -56,5 +56,7 @@ public interface ActivitePedagogique extends Serializable {
 	public Collection<Ressource> getResources();
 
 	public void setResources(Collection<Ressource> resources);
+	
+	public int compareTo(ActivitePedagogique o);
 	
 }
