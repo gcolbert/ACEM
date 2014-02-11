@@ -1,4 +1,5 @@
-.ui-panel {
+.label {
+	text-decoration:underline;
 }
 
 /* p:tree */
@@ -39,7 +40,7 @@
 	border: 0;
 	padding:0;
 }
-.ui-layout-pane .ui-button {
+td[role=gridcell] .ui-button {
 	width:100%;
 }
 .ui-panelgrid {
@@ -58,4 +59,8 @@
 }
 .ui-dialog-content .ui-button {
 	float:right;
+}
+
+.ui-inplace-content input {
+	width:500px;
 }

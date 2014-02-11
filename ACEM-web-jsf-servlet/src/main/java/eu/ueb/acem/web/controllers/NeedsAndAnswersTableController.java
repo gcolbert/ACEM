@@ -19,8 +19,6 @@
 package eu.ueb.acem.web.controllers;
 
 import java.util.Collection;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +71,7 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 		}
 	}
 
-	public List<Scenario> getScenariosRelatedToSelectedAnswer() {
+	public Collection<Scenario> getScenariosRelatedToSelectedAnswer() {
 		return tableBean.getTableEntries();
 	}
 

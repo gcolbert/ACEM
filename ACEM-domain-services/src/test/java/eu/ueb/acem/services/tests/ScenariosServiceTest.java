@@ -2,8 +2,6 @@ package eu.ueb.acem.services.tests;
 
 import static org.junit.Assert.*;
 
-import java.util.Collection;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +11,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.services.UsersService;

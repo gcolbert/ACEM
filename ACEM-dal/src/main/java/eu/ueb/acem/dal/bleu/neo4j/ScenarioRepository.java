@@ -34,5 +34,5 @@ public interface ScenarioRepository extends GenericRepository<ScenarioNode> {
 
 	@Query(value = "start n=node({personId})  match (n)-[:authorsScenario]->(scenario) return scenario")
 	Collection<ScenarioNode> findScenariosWithAuthor(@Param("personId") Long id);
-
+	
 }

@@ -21,10 +21,8 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-
+import java.util.LinkedHashSet;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -68,8 +66,8 @@ public class ScenarioNode implements Scenario {
 
 	public ScenarioNode() {
 		published = false;
-		pedagogicalActivities = new ArrayList<ActivitePedagogique>();
-		teachingClasses = new HashSet<SeanceDeCours>();
+		pedagogicalActivities = new LinkedHashSet<ActivitePedagogique>();
+		teachingClasses = new LinkedHashSet<SeanceDeCours>();
 	}
 
 	public ScenarioNode(Personne author, String name, String objective) {

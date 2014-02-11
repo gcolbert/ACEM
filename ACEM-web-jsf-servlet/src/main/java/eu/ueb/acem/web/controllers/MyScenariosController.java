@@ -21,10 +21,12 @@ package eu.ueb.acem.web.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.primefaces.event.RowEditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,7 +116,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 		}
 	}
 
-	public List<Scenario> getScenarios() {
+	public Collection<Scenario> getScenarios() {
 		return tableBean.getTableEntries();
 	}
 
@@ -147,4 +149,25 @@ public class MyScenariosController extends AbstractContextAwareController {
 		setSelectedActivity((ActivitePedagogique) event.getObject());
 	}
 
+    public void onEdit(RowEditEvent event) {  
+		MessageDisplayer.showMessageToUserWithSeverityInfo(
+				getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
+				((ActivitePedagogique) event.getObject()).getName());
+    }  
+      
+    public void onCancel(RowEditEvent event) {
+		MessageDisplayer.showMessageToUserWithSeverityInfo(
+				getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
+				((ActivitePedagogique) event.getObject()).getName());
+    }  
+
+    public void onSave() {
+    	this.selectedScenario.setPedagogicalActivities(new LinkedHashSet<ActivitePedagogique>(this.selectedScenario.getPedagogicalActivities()));
+    	this.selectedScenario = scenariosService.updateScenario(selectedScenario);
+    	this.selectedScenario.setPedagogicalActivities(new ArrayList<ActivitePedagogique>(this.selectedScenario.getPedagogicalActivities()));
+		MessageDisplayer.showMessageToUserWithSeverityInfo(
+				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE"),
+				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS"));
+    }
+    
 }
