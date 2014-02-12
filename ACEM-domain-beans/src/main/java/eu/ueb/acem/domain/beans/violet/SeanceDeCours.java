@@ -28,28 +28,28 @@ import eu.ueb.acem.domain.beans.vert.EspacePhysique;
  */
 public interface SeanceDeCours extends Serializable {
 
-	public String getDate();
+	String getDate();
 
-	public void setDate(String date);
+	void setDate(String date);
 
-	public String getTime();
+	String getTime();
 
-	public void setTime(String time);
+	void setTime(String time);
 
-	public String getDuration();
+	String getDuration();
 
-	public void setDuration(String duration);
+	void setDuration(String duration);
 
-	public String getTeachingMode();
+	String getTeachingMode();
 
-	public void setTeachingMode(String teachingMode);
+	void setTeachingMode(String teachingMode);
 
-	public Integer getNumberOfLearners();
+	Integer getNumberOfLearners();
 
-	public void setNumberOfLearners(Integer numberOfLearners);
+	void setNumberOfLearners(Integer numberOfLearners);
 
-	public Cours getCourse();
+	Cours getCourse();
 
-	public EspacePhysique getLocation();
+	EspacePhysique getLocation();
 
 }

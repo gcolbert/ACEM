@@ -24,16 +24,16 @@ package eu.ueb.acem.domain.beans.vert;
  */
 public interface Salle extends EspacePhysique {
 
-	public String getNumero();
+	String getNumero();
 
-	public void setNumero(String numero);
+	void setNumero(String numero);
 
-	public Integer getCapaciteAccueil();
+	Integer getCapaciteAccueil();
 
-	public void setCapaciteAccueil(Integer capaciteAccueil);
+	void setCapaciteAccueil(Integer capaciteAccueil);
 
-	public Boolean getAccesWifi();
+	Boolean getAccesWifi();
 
-	public void setAccesWifi(Boolean accesWifi);
+	void setAccesWifi(Boolean accesWifi);
 
 }

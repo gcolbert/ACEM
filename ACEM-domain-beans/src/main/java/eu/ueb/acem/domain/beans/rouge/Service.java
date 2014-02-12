@@ -24,6 +24,6 @@ package eu.ueb.acem.domain.beans.rouge;
  */
 public interface Service extends Organisation {
 
-	public Etablissement getEtablissement();
+	Etablissement getEtablissement();
 
 }

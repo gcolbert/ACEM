@@ -26,12 +26,12 @@ import java.io.Serializable;
  */
 public interface UniteEnseignement extends Serializable {
 
-	public String getName();
+	String getName();
 
-	public void setName(String name);
+	void setName(String name);
 
-	public String getDuration();
+	String getDuration();
 
-	public void setDuration(String duration);
+	void setDuration(String duration);
 
 }

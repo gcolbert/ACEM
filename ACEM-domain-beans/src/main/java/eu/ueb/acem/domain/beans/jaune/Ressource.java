@@ -27,10 +27,10 @@ import java.util.Collection;
  */
 public interface Ressource extends Serializable {
 
-	public String getName();
+	String getName();
 
-	public void setName(String name);
+	void setName(String name);
 
-	public Collection<ModaliteUtilisation> getModalitesUtilisation();
+	Collection<ModaliteUtilisation> getModalitesUtilisation();
 
 }

@@ -28,20 +28,20 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  */
 public interface Personne extends Serializable {
 
-	public Long getId();
+	Long getId();
 
-	public Organisation getOrganisation();
+	Organisation getOrganisation();
 
-	public String getName();
+	String getName();
 
-	public void setName(String name);
+	void setName(String name);
 
-	public String getLogin();
+	String getLogin();
 
-	public void setLogin(String login);
+	void setLogin(String login);
 
-	public String getLanguage();
+	String getLanguage();
 
-	public void setLanguage(String language);
+	void setLanguage(String language);
 
 }

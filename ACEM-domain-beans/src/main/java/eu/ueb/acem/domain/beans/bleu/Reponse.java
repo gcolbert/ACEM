@@ -29,22 +29,22 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface Reponse extends Serializable {
 
-	public Long getId();
+	Long getId();
 
-	public String getName();
+	String getName();
 
-	public void setName(String name);
+	void setName(String name);
 
-	public Collection<Besoin> getNeeds();
+	Collection<Besoin> getNeeds();
 
-	public Collection<Ressource> getResources();
+	Collection<Ressource> getResources();
 
-	public void addNeed(Besoin besoin);
+	void addNeed(Besoin besoin);
 
-	public void removeNeed(Besoin besoin);
+	void removeNeed(Besoin besoin);
 
-	public void addResource(Ressource ressource);
+	void addResource(Ressource ressource);
 
-	public void removeResource(Ressource ressource);
+	void removeResource(Ressource ressource);
 
 }

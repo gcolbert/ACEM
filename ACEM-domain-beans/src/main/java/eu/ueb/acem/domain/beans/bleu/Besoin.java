@@ -27,34 +27,34 @@ import java.util.Collection;
  */
 public interface Besoin extends Serializable {
 
-	public Long getId();
+	Long getId();
 
-	public String getName();
+	String getName();
 
-	public void setName(String name);
+	void setName(String name);
 
-	public Collection<Besoin> getParents();
+	Collection<Besoin> getParents();
 
-	public void setParents(Collection<Besoin> parents);
+	void setParents(Collection<Besoin> parents);
 
-	public Collection<Besoin> getChildren();
+	Collection<Besoin> getChildren();
 
-	public void setChildren(Collection<Besoin> children);
+	void setChildren(Collection<Besoin> children);
 
-	public Collection<Reponse> getAnswers();
+	Collection<Reponse> getAnswers();
 
-	public void setAnswers(Collection<Reponse> reponses);
+	void setAnswers(Collection<Reponse> reponses);
 
-	public void addParent(Besoin parent);
+	void addParent(Besoin parent);
 
-	public void addChild(Besoin besoin);
+	void addChild(Besoin besoin);
 
-	public void addAnswer(Reponse reponse);
+	void addAnswer(Reponse reponse);
 
-	public void removeParent(Besoin besoin);
+	void removeParent(Besoin besoin);
 
-	public void removeChild(Besoin besoin);
+	void removeChild(Besoin besoin);
 
-	public void removeAnswer(Reponse reponse);
+	void removeAnswer(Reponse reponse);
 
 }

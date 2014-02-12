@@ -26,6 +26,6 @@ import eu.ueb.acem.domain.beans.vert.EspacePhysique;
  */
 public interface Equipement extends Ressource {
 
-	public EspacePhysique getPhysicalSpace();
+	EspacePhysique getPhysicalSpace();
 
 }

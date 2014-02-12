@@ -24,8 +24,8 @@ package eu.ueb.acem.domain.beans.jaune;
  */
 public interface EquipementMobile extends Equipement {
 
-	public Integer getQuantite();
+	Integer getQuantite();
 
-	public void setQuantite(Integer quantite);
+	void setQuantite(Integer quantite);
 
 }

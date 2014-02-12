@@ -26,8 +26,8 @@ import java.io.Serializable;
  */
 public interface Diplome extends Serializable {
 
-	public String getName();
+	String getName();
 
-	public void setName(String intitule);
+	void setName(String intitule);
 
 }

@@ -29,8 +29,8 @@ public interface ModaliteUtilisation extends Serializable {
 	/**
 	 * La catégorie permet de classer les modalités d'utilisation
 	 */
-	public String getCategorie();
+	String getCategorie();
 
-	public void setCategorie(String categorie);
+	void setCategorie(String categorie);
 
 }

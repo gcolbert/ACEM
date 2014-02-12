@@ -29,10 +29,10 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface Gestionnaire extends Personne {
 
-	public Collection<Besoin> getNeeds();
+	Collection<Besoin> getNeeds();
 
-	public Collection<Reponse> getAnswers();
+	Collection<Reponse> getAnswers();
 
-	public Collection<Ressource> getResources();
+	Collection<Ressource> getResources();
 
 }

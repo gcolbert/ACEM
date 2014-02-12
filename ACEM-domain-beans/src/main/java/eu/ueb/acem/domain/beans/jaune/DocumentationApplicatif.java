@@ -26,6 +26,6 @@ import java.util.Collection;
  */
 public interface DocumentationApplicatif extends Ressource {
 
-	public Collection<Applicatif> getApplicatifs();
+	Collection<Applicatif> getApplicatifs();
 
 }

@@ -27,30 +27,34 @@ import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-public interface Scenario extends Serializable {
+public interface Scenario extends Serializable, Comparable<Scenario> {
 
-	public Long getId();
+	Long getId();
 
-	public String getName();
+	String getName();
 
-	public void setName(String name);
+	void setName(String name);
 
-	public String getObjective();
+	String getObjective();
 
-	public void setObjective(String objective);
+	void setObjective(String objective);
 
-	public Personne getAuthor();
+	Personne getAuthor();
 
-	public void setAuthor(Personne author);
+	void setAuthor(Personne author);
 
-	public Boolean isPublished();
+	Boolean isPublished();
 	
-	public void setPublished(Boolean published);
+	void setPublished(Boolean published);
 
-	public Collection<ActivitePedagogique> getPedagogicalActivities();
+	Collection<ActivitePedagogique> getPedagogicalActivities();
 
-	public void setPedagogicalActivities(Collection<ActivitePedagogique> pedagogicalActivities);
+	void setPedagogicalActivities(Collection<ActivitePedagogique> pedagogicalActivities);
 
-	public Collection<SeanceDeCours> getTeachingClasses();
+	Collection<SeanceDeCours> getTeachingClasses();
+
+	void addPedagogicalActivity(ActivitePedagogique pedagogicalActivity);
+
+	void removePedagogicalActivity(ActivitePedagogique pedagogicalActivity);
 
 }

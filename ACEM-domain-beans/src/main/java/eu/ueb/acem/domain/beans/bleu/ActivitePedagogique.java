@@ -29,34 +29,38 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface ActivitePedagogique extends Serializable, Comparable<ActivitePedagogique> {
 
-	public Long getId();
+	Long getId();
 
-	public Long getPositionInScenario();
+	Long getPositionInScenario();
 	
-	public void setPositionInScenario(Long positionInScenario);
+	void setPositionInScenario(Long positionInScenario);
 	
-	public String getName();
+	String getName();
 
-	public void setName(String name);
+	void setName(String name);
 
-	public String getObjective();
+	String getObjective();
 
-	public void setObjective(String objectif);
+	void setObjective(String objectif);
 
-	public String getDescription();
+	String getDescription();
 
-	public void setDescription(String descriptif);
+	void setDescription(String descriptif);
 
-	public String getDuration();
+	String getDuration();
 
-	public void setDuration(String duree);
+	void setDuration(String duree);
 
-	public Collection<Scenario> getScenarios();
+	Collection<Scenario> getScenarios();
+
+	void addScenario(Scenario scenario);
 	
-	public Collection<Ressource> getResources();
+	void removeScenario(Scenario scenario);
 
-	public void setResources(Collection<Ressource> resources);
+	Collection<Ressource> getResources();
+
+	void setResources(Collection<Ressource> resources);
 	
-	public int compareTo(ActivitePedagogique o);
+	int compareTo(ActivitePedagogique o);
 	
 }
