@@ -7,22 +7,22 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 public interface UsersService {
 
-	public Long countTeachers();
+	Long countTeachers();
 	
-	public Long countAdministrators();
+	Long countAdministrators();
 	
-	public Long countUsers();
+	Long countUsers();
 
-	public Personne createPerson(String string, Organisation organisation);
+	Personne createPerson(String string, Organisation organisation);
 	
-	public Personne retrievePerson(Long id);
+	Personne retrievePerson(Long id);
 	
-	public Personne updatePerson(Personne person);
+	Personne updatePerson(Personne person);
 
-	public Boolean deletePerson(Long id);
+	Boolean deletePerson(Long id);
 
-	public void deleteAllPersons();
+	void deleteAllPersons();
 	
-	public Collection<Personne> getPersons();
+	Collection<Personne> getPersons();
 
 }

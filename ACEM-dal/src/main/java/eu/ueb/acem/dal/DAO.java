@@ -27,22 +27,22 @@ import java.util.Collection;
  */
 public interface DAO<ID extends Serializable, E> {
 
-	public Boolean exists(ID id);
+	Boolean exists(ID id);
 	
-	public E create(E entity);
+	E create(E entity);
 
-	public E retrieveById(ID id);
+	E retrieveById(ID id);
 
-	public E retrieveByName(String name);
+	E retrieveByName(String name);
 
-	public Collection<E> retrieveAll();
+	Collection<E> retrieveAll();
 
-	public E update(E entity);
+	E update(E entity);
 
-	public void delete(E entity);
+	void delete(E entity);
 
-	public void deleteAll();
+	void deleteAll();
 
-	public Long count();
+	Long count();
 
 }

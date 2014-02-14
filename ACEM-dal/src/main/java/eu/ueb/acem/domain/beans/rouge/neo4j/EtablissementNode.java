@@ -39,13 +39,10 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 
 	private static final long serialVersionUID = 4218521116992739925L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed(indexName = "indexEtablissement")
+	@Indexed(indexName = "indexOfInstitutions")
 	private String name;
 
-	@RelatedTo(elementClass = Communaute.class, type = "estMembreDe", direction = OUTGOING)
+	@RelatedTo(elementClass = CommunauteNode.class, type = "institutionMemberOfCommunity", direction = OUTGOING)
 	Communaute communaute;
 
 	public EtablissementNode() {

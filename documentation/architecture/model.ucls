@@ -29,8 +29,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="eu.ueb.acem.dal.bleu.EtapeDAO" project="ACEM-dal" 
-    file="/ACEM-dal/src/main/java/eu/ueb/acem/dal/bleu/EtapeDAO.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="eu.ueb.acem.dal.bleu.ActivitePedagogiqueDAO" project="ACEM-dal" 
+    file="/ACEM-dal/src/main/java/eu/ueb/acem/dal/bleu/ActivitePedagogiqueDAO.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="638" y="1213"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -38,8 +38,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="5" language="java" name="eu.ueb.acem.dal.bleu.neo4j.EtapeRepository" project="ACEM-dal" 
-    file="/ACEM-dal/src/main/java/eu/ueb/acem/dal/bleu/neo4j/EtapeRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="5" language="java" name="eu.ueb.acem.dal.bleu.neo4j.ActivitePedagogiqueRepository" project="ACEM-dal" 
+    file="/ACEM-dal/src/main/java/eu/ueb/acem/dal/bleu/neo4j/ActivitePedagogiqueRepository.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="639" y="1323"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      

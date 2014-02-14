@@ -73,13 +73,12 @@
 							<p:panel>
 								<p:inplace id="selectedScenarioNameInplace" editor="true">
 									<p:ajax event="save"
-										actionListener="#{myScenariosController.onSave}"
+										listener="#{myScenariosController.onSave}"
 										update="@form" />
 									<p:ajax event="cancel" update="@this" />
 									<h:inputText id="selectedScenarioName"
 										value="#{myScenariosController.selectedScenario.name}"
-										required="true"
-										requiredMessage="#{msgs['REQUIRED_FIELD']}"/>
+										required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
 								</p:inplace>
 							</p:panel>
 
@@ -89,13 +88,12 @@
 							<p:panel>
 								<p:inplace id="selectedScenarioObjectiveInplace" editor="true">
 									<p:ajax event="save"
-										actionListener="#{myScenariosController.onSave}"
+										listener="#{myScenariosController.onSave}"
 										update="@form" />
 									<p:ajax event="cancel" update="@this" />
 									<h:inputText id="selectedScenarioObjective"
 										value="#{myScenariosController.selectedScenario.objective}"
-										required="true"
-										requiredMessage="#{msgs['REQUIRED_FIELD']}" />
+										required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
 								</p:inplace>
 							</p:panel>
 						</h:panelGrid>
@@ -103,41 +101,95 @@
 						<p:dataTable id="selectedScenarioActivitiesDataTable"
 							editable="true"
 							emptyMessage="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
-							value="#{myScenariosController.selectedScenario.pedagogicalActivities}"
+							value="#{myScenariosController.selectedScenarioPedagogicalActivities}"
 							var="activity">
 
 							<f:facet name="header">#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.TABLE_HEADER']}</f:facet>
 
-							<p:ajax event="rowEdit" listener="#{myScenariosController.onEdit}"
+							<p:ajax event="rowEdit"
+								listener="#{myScenariosController.onActivityRowEdit}"
 								update=":formScenarios:messagesDisplayer" />
-							<p:ajax event="rowEditCancel" listener="#{myScenariosController.onCancel}"
-								update=":formScenarios:messagesDisplayer" />
+
+							<p:ajax event="rowEditCancel" update="@this" />
 
 							<p:column width="20"
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_POSITION_IN_SCENARIO']}">
-							    #{activity.positionInScenario}
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{activity.positionInScenario}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{activity.positionInScenario}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
 							</p:column>
 							<p:column
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_NAME']}">
-							    #{activity.name}
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{activity.name}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{activity.name}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
 							</p:column>
 							<p:column
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_OBJECTIVE']}">
-							    #{activity.objective}
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{activity.objective}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{activity.objective}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
 							</p:column>
 							<p:column
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DESCRIPTION']}">
-							    #{activity.description}
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{activity.description}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{activity.description}"
+											style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
 							</p:column>
 							<p:column width="20"
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DURATION']}">
-							    #{activity.duration}
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{activity.duration}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{activity.duration}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
 							</p:column>
 							<p:column
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_RESOURCES']}">
-							    #{activity.resources}
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{activity.resources}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{activity.resources}" style="width:100%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column style="width:6%">
+								<p:rowEditor />
 							</p:column>
 						</p:dataTable>
+
+						<p:commandButton
+							value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.ADD_ACTIVITY_LABEL']}"
+							icon="ui-icon-plusthick"
+							action="#{myScenariosController.onCreateActivity}"
+							update="@form" />
 
 					</p:panel>
 				</p:layoutUnit>
@@ -152,15 +204,15 @@
 					<h:outputLabel for="newScenarioName"
 						value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newScenarioName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}"
-						size="50" binding="#{input1}" />
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						binding="#{input1}" />
 					<p:message for="newScenarioName" display="text" />
 
 					<h:outputLabel for="newScenarioObjective"
 						value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.OBJECTIVE_LABEL']}" />
 					<p:inputText id="newScenarioObjective" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}"
-						size="50" binding="#{input2}" />
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						binding="#{input2}" />
 					<p:message for="newScenarioObjective" display="text" />
 				</h:panelGrid>
 

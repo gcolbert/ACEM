@@ -18,12 +18,18 @@
  */
 package eu.ueb.acem.domain.beans.rouge.neo4j;
 
+import static org.neo4j.graphdb.Direction.INCOMING;
+
+import java.util.Collection;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.rouge.Communaute;
+import eu.ueb.acem.domain.beans.rouge.Etablissement;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
@@ -35,12 +41,12 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 
 	private static final long serialVersionUID = 1861762804925897713L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed(indexName = "indexCommunaute")
+	@Indexed(indexName = "indexOfCommunities")
 	private String name;
 
+	@RelatedTo(elementClass = EtablissementNode.class, type = "institutionMemberOfCommunity", direction = INCOMING)
+	Collection<Etablissement> institutions;
+	
 	public CommunauteNode() {
 	}
 

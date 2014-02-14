@@ -21,13 +21,18 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashSet;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
@@ -61,13 +66,13 @@ public class ScenarioNode implements Scenario {
 	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type = "activityForScenario", direction = INCOMING)
 	private Collection<ActivitePedagogique> pedagogicalActivities;
 
-	@RelatedTo(elementClass = EnseignantNode.class, type="authorsScenario", direction = INCOMING)
+	@RelatedTo(elementClass = EnseignantNode.class, type = "authorsScenario", direction = INCOMING)
 	private Personne author;
 
 	public ScenarioNode() {
 		published = false;
-		pedagogicalActivities = new LinkedHashSet<ActivitePedagogique>();
-		teachingClasses = new LinkedHashSet<SeanceDeCours>();
+		pedagogicalActivities = new HashSet<ActivitePedagogique>();
+		teachingClasses = new HashSet<SeanceDeCours>();
 	}
 
 	public ScenarioNode(Personne author, String name, String objective) {
@@ -107,6 +112,27 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
+	@Transactional
+	public void addPedagogicalActivity(ActivitePedagogique pedagogicalActivity) {
+		if (pedagogicalActivity != null) {
+			if (!pedagogicalActivities.contains(pedagogicalActivity)) {
+				pedagogicalActivities.add(pedagogicalActivity);
+				pedagogicalActivity.setPositionInScenario(new Long(this.pedagogicalActivities.size()+1));
+			}
+			if (!pedagogicalActivity.getScenarios().contains(this)) {
+				pedagogicalActivity.addScenario(this);
+			}
+		}
+	}
+	
+	@Override
+	@Transactional
+	public void removePedagogicalActivity(ActivitePedagogique pedagogicalActivity) {
+		pedagogicalActivities.remove(pedagogicalActivity);
+		pedagogicalActivity.removeScenario(this);
+	}
+	
+	@Override
 	public Collection<ActivitePedagogique> getPedagogicalActivities() {
 		return pedagogicalActivities;
 	}
@@ -125,7 +151,7 @@ public class ScenarioNode implements Scenario {
 	public void setAuthor(Personne author) {
 		this.author = author;
 	}
-	
+
 	@Override
 	public Boolean isPublished() {
 		return published;
@@ -139,6 +165,11 @@ public class ScenarioNode implements Scenario {
 	@Override
 	public Collection<SeanceDeCours> getTeachingClasses() {
 		return teachingClasses;
+	}
+
+	@Override
+	public int compareTo(Scenario o) {
+		return name.compareTo(o.getName());
 	}
 
 }

@@ -20,13 +20,13 @@ package eu.ueb.acem.web.controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	private static final Logger logger = LoggerFactory.getLogger(MyScenariosController.class);
 
 	private Scenario selectedScenario;
-	
+
 	private ActivitePedagogique selectedActivity;
 
 	private Personne currentUser;
@@ -126,9 +126,20 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	public void setSelectedScenario(Scenario selectedScenario) {
 		this.selectedScenario = selectedScenario;
-		List<ActivitePedagogique> orderedActivities = new ArrayList<ActivitePedagogique>(selectedScenario.getPedagogicalActivities());
-		Collections.sort(orderedActivities);
-		this.selectedScenario.setPedagogicalActivities(orderedActivities);
+	}
+
+	public List<ActivitePedagogique> getSelectedScenarioPedagogicalActivities() {
+		if (selectedScenario != null) {
+			if (selectedScenario.getPedagogicalActivities() instanceof Set) {
+				return new ArrayList<ActivitePedagogique>(selectedScenario.getPedagogicalActivities());
+			}
+			else {
+				return (List<ActivitePedagogique>)selectedScenario.getPedagogicalActivities();
+			}
+		}
+		else {
+			return null;
+		}
 	}
 
 	public ActivitePedagogique getSelectedActivity() {
@@ -139,35 +150,51 @@ public class MyScenariosController extends AbstractContextAwareController {
 		this.selectedActivity = selectedActivity;
 	}
 
-	public void onScenarioRowSelect(org.primefaces.event.SelectEvent event) {
+	public void onScenarioRowSelect(SelectEvent event) {
 		logger.info("onScenarioRowSelect");
 		setSelectedScenario((Scenario) event.getObject());
 	}
 
-	public void onStepRowSelect(org.primefaces.event.SelectEvent event) {
+	public void onStepRowSelect(SelectEvent event) {
 		logger.info("onStepRowSelect");
 		setSelectedActivity((ActivitePedagogique) event.getObject());
 	}
 
-    public void onEdit(RowEditEvent event) {  
+	public void onActivityRowEdit(RowEditEvent event) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
-				getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
+				getString("MY_SCENARIOS.SELECTED_SCENARIO.LIST.ACTIVITY_EDIT.TITLE"),
 				((ActivitePedagogique) event.getObject()).getName());
-    }  
-      
-    public void onCancel(RowEditEvent event) {
-		MessageDisplayer.showMessageToUserWithSeverityInfo(
-				getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
-				((ActivitePedagogique) event.getObject()).getName());
-    }  
+		scenariosService.updatePedagogicalActivity((ActivitePedagogique) event.getObject());
+	}
 
-    public void onSave() {
-    	this.selectedScenario.setPedagogicalActivities(new LinkedHashSet<ActivitePedagogique>(this.selectedScenario.getPedagogicalActivities()));
-    	this.selectedScenario = scenariosService.updateScenario(selectedScenario);
-    	this.selectedScenario.setPedagogicalActivities(new ArrayList<ActivitePedagogique>(this.selectedScenario.getPedagogicalActivities()));
+	public void onSave() {
+		/*-
+		this.selectedScenario.setPedagogicalActivities(new LinkedHashSet<ActivitePedagogique>(this.selectedScenario
+				.getPedagogicalActivities()));
+		this.selectedScenario = scenariosService.updateScenario(selectedScenario);
+		this.selectedScenario.setPedagogicalActivities(new ArrayList<ActivitePedagogique>(this.selectedScenario
+				.getPedagogicalActivities()));
+		 */
+		selectedScenario = scenariosService.updateScenario(selectedScenario);
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE"),
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS"));
-    }
-    
+	}
+
+	public void onCreateActivity() {
+		ActivitePedagogique pedagogicalActivity = scenariosService.createPedagogicalActivity(
+				getString("MY_SCENARIOS.SELECTED_SCENARIO.NEW_ACTIVITY_DEFAULT_NAME"));
+		selectedScenario.addPedagogicalActivity(pedagogicalActivity);
+
+		/*-
+		this.selectedScenario.setPedagogicalActivities(new LinkedHashSet<ActivitePedagogique>(this.selectedScenario
+				.getPedagogicalActivities()));
+		this.selectedScenario = scenariosService.updateScenario(selectedScenario);
+		this.selectedScenario.setPedagogicalActivities(new ArrayList<ActivitePedagogique>(this.selectedScenario
+				.getPedagogicalActivities()));
+		sortPedagogicalActivities();
+		 */
+		selectedScenario = scenariosService.updateScenario(selectedScenario);
+	}
+
 }

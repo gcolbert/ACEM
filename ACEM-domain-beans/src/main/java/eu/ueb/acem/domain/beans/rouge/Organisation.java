@@ -28,6 +28,8 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface Organisation extends Serializable {
 
+	Long getId();
+	
 	String getName();
 
 	void setName(String name);

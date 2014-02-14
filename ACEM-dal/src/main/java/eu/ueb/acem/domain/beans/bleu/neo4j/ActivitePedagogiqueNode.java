@@ -28,6 +28,7 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
@@ -82,6 +83,26 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	@Override
 	public Collection<Scenario> getScenarios() {
 		return scenarios;
+	}
+
+	@Override
+	@Transactional
+	public void addScenario(Scenario scenario) {
+		if (scenario != null) {
+			if (!scenarios.contains(scenario)) {
+				scenarios.add(scenario);
+			}
+			if (!scenario.getPedagogicalActivities().contains(this)) {
+				scenario.addPedagogicalActivity(this);
+			}
+		}
+	}
+
+	@Override
+	@Transactional
+	public void removeScenario(Scenario scenario) {
+		scenarios.remove(scenario);
+		scenario.removePedagogicalActivity(this);
 	}
 
 	@Override

@@ -29,44 +29,44 @@ import eu.ueb.acem.domain.beans.bleu.Scenario;
  */
 public interface NeedsAndAnswersService {
 
-	public Long countNeeds();
+	Long countNeeds();
 
-	public Besoin createNeed(String name);
+	Besoin createNeed(String name);
 
-	public Besoin retrieveNeed(Long id);
+	Besoin retrieveNeed(Long id);
 
-	public Besoin updateNeed(Besoin need);
+	Besoin updateNeed(Besoin need);
 
-	public Boolean deleteNeed(Long id);
+	Boolean deleteNeed(Long id);
 
-	public void deleteAllNeeds();
+	void deleteAllNeeds();
 
-	public Long countAnswers();
+	Long countAnswers();
 
-	public Reponse createAnswer(String name);
+	Reponse createAnswer(String name);
 
-	public Reponse retrieveAnswer(Long id);
+	Reponse retrieveAnswer(Long id);
 
-	public Reponse updateAnswer(Reponse answer);
+	Reponse updateAnswer(Reponse answer);
 
-	public Boolean deleteAnswer(Long id);
+	Boolean deleteAnswer(Long id);
 
-	public void deleteAllAnswers();
+	void deleteAllAnswers();
 
-	public Collection<Besoin> getAssociatedNeedsOf(Besoin need);
+	Collection<Besoin> getAssociatedNeedsOf(Besoin need);
 
-	public Besoin createOrUpdateNeed(Long id, String name, Long idParent);
+	Besoin createOrUpdateNeed(Long id, String name, Long idParent);
 
-	public void saveNeedName(Long id, String newName);
+	void saveNeedName(Long id, String newName);
 	
-	public void changeParentOfNeed(Long id, Long idNewParent);
+	void changeParentOfNeed(Long id, Long idNewParent);
 
-	public Collection<Reponse> getAssociatedAnswersOf(Besoin need);
+	Collection<Reponse> getAssociatedAnswersOf(Besoin need);
 
-	public Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
+	Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
 
-	public void saveAnswerName(Long id, String newName);
+	void saveAnswerName(Long id, String newName);
 
-	public Collection<Scenario> getScenariosRelatedToAnswer(Long id);
+	Collection<Scenario> getScenariosRelatedToAnswer(Long id);
 
 }

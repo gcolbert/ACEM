@@ -61,6 +61,7 @@ public abstract class OrganisationNode implements Organisation {
 		this.setName(name);
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}

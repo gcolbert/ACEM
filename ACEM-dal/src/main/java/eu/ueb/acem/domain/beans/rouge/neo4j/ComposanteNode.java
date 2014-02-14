@@ -39,9 +39,6 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 
 	private static final long serialVersionUID = -5662533287772515643L;
 
-	@GraphId
-	private Long id;
-
 	@Indexed(indexName = "indexComposante")
 	private String name;
 

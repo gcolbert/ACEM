@@ -39,9 +39,6 @@ public class ServiceNode extends OrganisationNode implements Service {
 
 	private static final long serialVersionUID = -5662533287772515643L;
 
-	@GraphId
-	private Long id;
-
 	@Indexed(indexName = "indexService")
 	private String name;
 

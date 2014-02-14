@@ -8,30 +8,30 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 
 public interface ScenariosService {
 
-	public Long countScenarios();
+	Long countScenarios();
 
-	public Scenario createScenario(Personne author, String name, String objective);
+	Scenario createScenario(Personne author, String name, String objective);
 
-	public Scenario retrieveScenario(Long id);
+	Scenario retrieveScenario(Long id);
 	
-	public Scenario updateScenario(Scenario scenario);
+	Scenario updateScenario(Scenario scenario);
 
-	public Boolean deleteScenario(Long id);
+	Boolean deleteScenario(Long id);
 
-	public void deleteAllScenarios();
+	void deleteAllScenarios();
 
-	public Long countPedagogicalActivities();
+	Long countPedagogicalActivities();
 
-	public ActivitePedagogique createPedagogicalActivity(String name);
+	ActivitePedagogique createPedagogicalActivity(String name);
 
-	public ActivitePedagogique retrievePedagogicalActivity(Long id);
+	ActivitePedagogique retrievePedagogicalActivity(Long id);
 
-	public ActivitePedagogique updatePedagogicalActivity(ActivitePedagogique step);
+	ActivitePedagogique updatePedagogicalActivity(ActivitePedagogique pedagogicalActivity);
 
-	public Boolean deletePedagogicalActivity(Long id);
+	Boolean deletePedagogicalActivity(Long id);
 
-	public void deleteAllPedagogicalActivities();
+	void deleteAllPedagogicalActivities();
 
-	public Collection<Scenario> retrieveScenariosWithAuthor(Personne author);
+	Collection<Scenario> retrieveScenariosWithAuthor(Personne author);
 	
 }

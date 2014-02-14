@@ -27,6 +27,7 @@ import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -99,7 +100,7 @@ public class BesoinNode implements Besoin {
 
 	@Override
 	public Collection<Besoin> getParents() {
-		return parents;
+		return (Collection<Besoin>) parents;
 	}
 
 	@Override
