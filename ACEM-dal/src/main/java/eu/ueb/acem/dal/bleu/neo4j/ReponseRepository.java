@@ -18,13 +18,12 @@
  */
 package eu.ueb.acem.dal.bleu.neo4j;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 
@@ -34,10 +33,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
  */
 public interface ReponseRepository extends GenericRepository<ReponseNode> {
 
-	@Query(value = "start answer=node({id}) match (need)-[:aPourReponse]->(answer) return need")
-	Collection<BesoinNode> findNeedsForAnswer(@Param("id") Long id);
-
 	@Query(value = "start answer=node({answerId}) match (answer)-[:answeredUsingRessource]->(resource)<-[:stepRequiringResource]-(scenarioStep)-[:isPartOfScenario]->scenario return scenario")
-	Collection<ScenarioNode> findScenariosRelatedToAnswer(@Param("answerId") Long id);
+	Set<ScenarioNode> findScenariosRelatedToAnswer(@Param("answerId") Long id);
 
 }

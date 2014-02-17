@@ -21,8 +21,7 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,18 +59,18 @@ public class BesoinNode implements Besoin {
 	private String name;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "hasParentNeed", direction = OUTGOING)
-	private Collection<Besoin> parents;
+	@Fetch
+	private Set<BesoinNode> parents;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "hasParentNeed", direction = INCOMING)
-	private Collection<Besoin> children;
+	@Fetch
+	private Set<BesoinNode> children;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "needAnsweredBy", direction = OUTGOING)
-	private Collection<Reponse> answers;
+	@Fetch
+	private Set<ReponseNode> answers;
 
 	public BesoinNode() {
-		parents = new HashSet<Besoin>();
-		children = new HashSet<Besoin>();
-		answers = new HashSet<Reponse>();
 	}
 
 	public BesoinNode(String name) {
@@ -99,14 +98,14 @@ public class BesoinNode implements Besoin {
 	}
 
 	@Override
-	public Collection<Besoin> getParents() {
-		return (Collection<Besoin>) parents;
+	public Set<? extends Besoin> getParents() {
+		return parents;
 	}
 
 	@Override
 	@Transactional
-	public void setParents(Collection<Besoin> parents) {
-		this.parents = parents;
+	public void setParents(Set<? extends Besoin> parents) {
+		this.parents = (Set<BesoinNode>)parents;
 	}
 
 	@Override
@@ -114,7 +113,7 @@ public class BesoinNode implements Besoin {
 	public void addParent(Besoin parent) {
 		if (parent != null) {
 			if (!parents.contains(parent)) {
-				parents.add(parent);
+				parents.add((BesoinNode)parent);
 			}
 			if (!parent.getChildren().contains(this)) {
 				parent.addChild(this);
@@ -130,14 +129,14 @@ public class BesoinNode implements Besoin {
 	}
 
 	@Override
-	public Collection<Besoin> getChildren() {
+	public Set<? extends Besoin> getChildren() {
 		return children;
 	}
 
 	@Override
 	@Transactional
-	public void setChildren(Collection<Besoin> children) {
-		this.children = children;
+	public void setChildren(Set<? extends Besoin> children) {
+		this.children = (Set<BesoinNode>)children;
 	}
 
 	@Override
@@ -145,7 +144,7 @@ public class BesoinNode implements Besoin {
 	public void addChild(Besoin need) {
 		if (need != null) {
 			if (!children.contains(need)) {
-				children.add(need);
+				children.add((BesoinNode)need);
 			}
 			if (!need.getParents().contains(this)) {
 				need.addParent(this);
@@ -161,14 +160,14 @@ public class BesoinNode implements Besoin {
 	}
 
 	@Override
-	public Collection<Reponse> getAnswers() {
+	public Set<? extends Reponse> getAnswers() {
 		return answers;
 	}
 
 	@Override
 	@Transactional
-	public void setAnswers(Collection<Reponse> answers) {
-		this.answers = answers;
+	public void setAnswers(Set<? extends Reponse> answers) {
+		this.answers = (Set<ReponseNode>)answers;
 	}
 
 	@Override
@@ -176,7 +175,7 @@ public class BesoinNode implements Besoin {
 	public void addAnswer(Reponse answer) {
 		if (answer != null) {
 			if (!answers.contains(answer)) {
-				answers.add(answer);
+				answers.add((ReponseNode) answer);
 			}
 			if (!answer.getNeeds().contains(this)) {
 				answer.addNeed(this);

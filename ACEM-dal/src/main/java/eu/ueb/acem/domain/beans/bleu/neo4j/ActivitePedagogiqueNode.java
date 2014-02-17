@@ -20,10 +20,10 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -52,10 +52,12 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	private String name;
 
 	@RelatedTo(elementClass = ScenarioNode.class, type = "activityForScenario", direction = OUTGOING)
-	private Collection<Scenario> scenarios;
+	@Fetch
+	private Set<ScenarioNode> scenarios;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "activityRequiringResource", direction = OUTGOING)
-	private Collection<Ressource> resources;
+	@Fetch
+	private Set<RessourceNode> resources;
 
 	private Long positionInScenario;
 	private String objective;
@@ -63,7 +65,6 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	private String duration;
 
 	public ActivitePedagogiqueNode() {
-		resources = new HashSet<Ressource>();
 	}
 
 	public ActivitePedagogiqueNode(String name) {
@@ -81,7 +82,7 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	}
 
 	@Override
-	public Collection<Scenario> getScenarios() {
+	public Set<? extends Scenario> getScenarios() {
 		return scenarios;
 	}
 
@@ -90,7 +91,7 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	public void addScenario(Scenario scenario) {
 		if (scenario != null) {
 			if (!scenarios.contains(scenario)) {
-				scenarios.add(scenario);
+				scenarios.add((ScenarioNode)scenario);
 			}
 			if (!scenario.getPedagogicalActivities().contains(this)) {
 				scenario.addPedagogicalActivity(this);
@@ -156,13 +157,13 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	}
 
 	@Override
-	public Collection<Ressource> getResources() {
+	public Set<? extends Ressource> getResources() {
 		return resources;
 	}
 
 	@Override
-	public void setResources(Collection<Ressource> resources) {
-		this.resources = resources;
+	public void setResources(Set<? extends Ressource> resources) {
+		this.resources = (Set<RessourceNode>)resources;
 	}
 
 	@Override

@@ -19,7 +19,8 @@
 package eu.ueb.acem.domain.beans.bleu;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
+
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
@@ -47,11 +48,11 @@ public interface Scenario extends Serializable, Comparable<Scenario> {
 	
 	void setPublished(Boolean published);
 
-	Collection<ActivitePedagogique> getPedagogicalActivities();
+	Set<? extends ActivitePedagogique> getPedagogicalActivities();
 
-	void setPedagogicalActivities(Collection<ActivitePedagogique> pedagogicalActivities);
+	void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities);
 
-	Collection<SeanceDeCours> getTeachingClasses();
+	Set<? extends SeanceDeCours> getTeachingClasses();
 
 	void addPedagogicalActivity(ActivitePedagogique pedagogicalActivity);
 

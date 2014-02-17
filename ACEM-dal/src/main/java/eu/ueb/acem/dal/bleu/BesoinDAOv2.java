@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,11 +86,12 @@ public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements
 	public Collection<Reponse> retrieveAssociatedAnswersOf(Besoin need) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", need.getId());
-		Collection<ReponseNode> nodes = repository.findAssociatedAnswersOf(need.getId());
+		Set<ReponseNode> nodes = (Set<ReponseNode>)need.getAnswers();
+		//Collection<ReponseNode> nodes = repository.findAssociatedAnswersOf(need.getId());
 		// EndResult<ReponseNode> nodes =
 		// repository.query("start need=node({id}) match (need)-[:aPourReponse]->(n) return n",
 		// params);
-		Collection<Reponse> reponses = new HashSet<Reponse>();
+		Set<Reponse> reponses = new HashSet<Reponse>();
 		for (ReponseNode node : nodes) {
 			reponses.add(node);
 		}

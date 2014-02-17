@@ -20,7 +20,7 @@ package eu.ueb.acem.dal.bleu;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Collection;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +29,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.ReponseRepository;
-import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 
@@ -77,9 +75,9 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	}
 
 	@Override
-	public Collection<Reponse> retrieveAll() {
+	public Set<Reponse> retrieveAll() {
 		Iterable<ReponseNode> endResults = repository.findAll();
-		Collection<Reponse> collection = new HashSet<Reponse>();
+		Set<Reponse> collection = new HashSet<Reponse>();
 		if (endResults.iterator() != null) {
 			Iterator<ReponseNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
@@ -109,18 +107,9 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 		return repository.count();
 	}
 
-	public Collection<Besoin> retrieveNeedsFor(Reponse reponse) {
-		Collection<BesoinNode> nodes = repository.findNeedsForAnswer(reponse.getId());
-		Collection<Besoin> needs = new HashSet<Besoin>();
-		for (BesoinNode node : nodes) {
-			needs.add(node);
-		}
-		return needs;
-	}
-
-	public Collection<Scenario> retrieveScenariosRelatedToAnswer(Long id) {
-		Collection<ScenarioNode> nodes = repository.findScenariosRelatedToAnswer(id);
-		Collection<Scenario> scenarios = new HashSet<Scenario>();
+	public Set<Scenario> retrieveScenariosRelatedToAnswer(Long id) {
+		Set<ScenarioNode> nodes = repository.findScenariosRelatedToAnswer(id);
+		Set<Scenario> scenarios = new HashSet<Scenario>();
 		for (ScenarioNode node : nodes) {
 			scenarios.add(node);
 		}

@@ -19,6 +19,7 @@
 package eu.ueb.acem.services;
 
 import java.util.Collection;
+
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
@@ -32,6 +33,8 @@ public interface NeedsAndAnswersService {
 	Long countNeeds();
 
 	Besoin createNeed(String name);
+
+	Collection<Besoin> retrieveNeedsAtRoot();
 
 	Besoin retrieveNeed(Long id);
 

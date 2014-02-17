@@ -19,7 +19,7 @@
 package eu.ueb.acem.domain.beans.bleu;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
@@ -51,15 +51,15 @@ public interface ActivitePedagogique extends Serializable, Comparable<ActivitePe
 
 	void setDuration(String duree);
 
-	Collection<Scenario> getScenarios();
+	Set<? extends Scenario> getScenarios();
 
 	void addScenario(Scenario scenario);
 	
 	void removeScenario(Scenario scenario);
 
-	Collection<Ressource> getResources();
+	Set<? extends Ressource> getResources();
 
-	void setResources(Collection<Ressource> resources);
+	void setResources(Set<? extends Ressource> resources);
 	
 	int compareTo(ActivitePedagogique o);
 	

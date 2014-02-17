@@ -19,6 +19,7 @@
 package eu.ueb.acem.web.controllers;
 
 import java.util.Collection;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -71,7 +72,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		logger.info("entering initTree");
 		// editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
 		editableTreeBean.setVisibleRootLabel("Besoins");
-		Collection<Besoin> needs = needsAndAnswersService.getAssociatedNeedsOf(null);
+		Collection<Besoin> needs = needsAndAnswersService.retrieveNeedsAtRoot();
 		logger.info("Found {} needs at root of tree.", needs.size());
 		for (Besoin need : needs) {
 			logger.info("need = {}", need.getName());
@@ -104,7 +105,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 			Collection<Reponse> answers = needsAndAnswersService.getAssociatedAnswersOf(need);
 			if (answers.size() > 0) {
 				((DefaultTreeNode) newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
-				need.setAnswers(answers);
+				need.setAnswers((Set<Reponse>)answers);
 				for (Reponse answer : answers) {
 					new DefaultTreeNode(TREE_NODE_TYPE_ANSWER_LEAF, new TreeNodeData(answer.getId(), answer.getName(),
 							"Answer"), newNode);

@@ -21,10 +21,10 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -52,14 +52,14 @@ public class ReponseNode implements Reponse {
 	private String name;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "needAnsweredBy", direction = INCOMING)
-	private Collection<Besoin> needs;
+	@Fetch
+	private Set<BesoinNode> needs;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "answeredUsingRessource", direction = OUTGOING)
-	private Collection<Ressource> resources;
+	@Fetch
+	private Set<RessourceNode> resources;
 
 	public ReponseNode() {
-		needs = new HashSet<Besoin>();
-		resources = new HashSet<Ressource>();
 	}
 
 	public ReponseNode(String name) {
@@ -87,18 +87,18 @@ public class ReponseNode implements Reponse {
 	}
 
 	@Override
-	public Collection<Besoin> getNeeds() {
+	public Set<? extends Besoin> getNeeds() {
 		return needs;
 	}
 
 	@Override
-	public Collection<Ressource> getResources() {
+	public Set<? extends Ressource> getResources() {
 		return resources;
 	}
 
 	@Override
 	public void addNeed(Besoin need) {
-		needs.add(need);
+		needs.add((BesoinNode)need);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class ReponseNode implements Reponse {
 
 	@Override
 	public void addResource(Ressource resource) {
-		resources.add(resource);
+		resources.add((RessourceNode)resource);
 	}
 
 	@Override

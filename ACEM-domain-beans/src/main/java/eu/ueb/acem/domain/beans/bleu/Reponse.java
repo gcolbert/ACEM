@@ -19,7 +19,7 @@
 package eu.ueb.acem.domain.beans.bleu;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
@@ -35,9 +35,9 @@ public interface Reponse extends Serializable {
 
 	void setName(String name);
 
-	Collection<Besoin> getNeeds();
+	Set<? extends Besoin> getNeeds();
 
-	Collection<Ressource> getResources();
+	Set<? extends Ressource> getResources();
 
 	void addNeed(Besoin besoin);
 

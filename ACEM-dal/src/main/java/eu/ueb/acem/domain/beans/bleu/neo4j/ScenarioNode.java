@@ -21,13 +21,10 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -61,18 +58,18 @@ public class ScenarioNode implements Scenario {
 	private Boolean published;
 
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "scenarioUsedForClass", direction = OUTGOING)
-	private Collection<SeanceDeCours> teachingClasses;
+	@Fetch
+	private Set<SeanceDeCoursNode> teachingClasses;
 
 	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type = "activityForScenario", direction = INCOMING)
-	private Collection<ActivitePedagogique> pedagogicalActivities;
+	@Fetch
+	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
 
 	@RelatedTo(elementClass = EnseignantNode.class, type = "authorsScenario", direction = INCOMING)
 	private Personne author;
 
 	public ScenarioNode() {
 		published = false;
-		pedagogicalActivities = new HashSet<ActivitePedagogique>();
-		teachingClasses = new HashSet<SeanceDeCours>();
 	}
 
 	public ScenarioNode(Personne author, String name, String objective) {
@@ -116,7 +113,7 @@ public class ScenarioNode implements Scenario {
 	public void addPedagogicalActivity(ActivitePedagogique pedagogicalActivity) {
 		if (pedagogicalActivity != null) {
 			if (!pedagogicalActivities.contains(pedagogicalActivity)) {
-				pedagogicalActivities.add(pedagogicalActivity);
+				pedagogicalActivities.add((ActivitePedagogiqueNode) pedagogicalActivity);
 				pedagogicalActivity.setPositionInScenario(new Long(this.pedagogicalActivities.size()+1));
 			}
 			if (!pedagogicalActivity.getScenarios().contains(this)) {
@@ -133,13 +130,13 @@ public class ScenarioNode implements Scenario {
 	}
 	
 	@Override
-	public Collection<ActivitePedagogique> getPedagogicalActivities() {
+	public Set<? extends ActivitePedagogique> getPedagogicalActivities() {
 		return pedagogicalActivities;
 	}
 
 	@Override
-	public void setPedagogicalActivities(Collection<ActivitePedagogique> pedagogicalActivities) {
-		this.pedagogicalActivities = pedagogicalActivities;
+	public void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities) {
+		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>)pedagogicalActivities;
 	}
 
 	@Override
@@ -163,7 +160,7 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
-	public Collection<SeanceDeCours> getTeachingClasses() {
+	public Set<? extends SeanceDeCours> getTeachingClasses() {
 		return teachingClasses;
 	}
 

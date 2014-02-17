@@ -3,7 +3,6 @@ package eu.ueb.acem.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -53,11 +52,12 @@ public class ScenariosServiceImpl implements ScenariosService {
 	@Override
 	public Collection<Scenario> retrieveScenariosWithAuthor(Personne author) {
 		Collection<Scenario> scenarios = scenarioDAO.retrieveScenariosWithAuthor(author);
+		/*
 		if (! (scenarios instanceof List)) {
 			scenarios = new ArrayList<Scenario>(scenarios);
 			Collections.sort((List<Scenario>)scenarios);
 			for (Scenario scenario : scenarios) {
-				Collection<ActivitePedagogique> activities = scenario.getPedagogicalActivities();
+				Set<ActivitePedagogique> activities = (Set<ActivitePedagogique>) scenario.getPedagogicalActivities();
 				Iterator<ActivitePedagogique> iterator = activities.iterator();
 				while (iterator.hasNext()) {
 					// TODO : affecter le retour de retrieveById dans activities (ou refaire toute l'architecture?)
@@ -65,6 +65,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 				}
 			}
 		}
+		*/
 			/*
 			Collection<ActivitePedagogique> activitiesSet = scenario.getPedagogicalActivities();
 			Iterator<ActivitePedagogique> iterator = activitiesSet.iterator();
@@ -80,7 +81,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 
 	@Override
 	public Scenario updateScenario(Scenario scenario) {
-		Iterator<ActivitePedagogique> iterator = scenario.getPedagogicalActivities().iterator();
+		Iterator<ActivitePedagogique> iterator = (Iterator<ActivitePedagogique>)scenario.getPedagogicalActivities().iterator();
 		int i = 1;
 		while (iterator.hasNext()) {
 			ActivitePedagogique pedagogicalActivity = iterator.next();

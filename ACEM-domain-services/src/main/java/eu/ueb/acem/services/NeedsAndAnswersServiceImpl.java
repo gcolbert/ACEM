@@ -68,6 +68,11 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
+	public Collection<Besoin> retrieveNeedsAtRoot() {
+		return needDAO.retrieveNeedsAtRoot();
+	}
+
+	@Override
 	public Besoin retrieveNeed(Long id) {
 		return needDAO.retrieveById(id);
 	}
@@ -127,7 +132,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	public Collection<Besoin> getAssociatedNeedsOf(Besoin need) {
-		return needDAO.retrieveAssociatedNeedsOf(need);
+		return (Collection<Besoin>) need.getChildren();
 	}
 
 	@Override
@@ -174,7 +179,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 			logger.info("Need is retrieved");
 			if (need != null) {
 				logger.info("Need is not null");
-				Collection<Besoin> parents = need.getParents();
+				Collection<Besoin> parents = (Collection<Besoin>)need.getParents();
 				if (parents != null) {
 					logger.info("Need.getParents() is not null");
 					Iterator<Besoin> iterator = parents.iterator();
@@ -206,7 +211,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	public Collection<Reponse> getAssociatedAnswersOf(Besoin need) {
-		return needDAO.retrieveAssociatedAnswersOf(need);
+		return (Collection<Reponse>) need.getAnswers();
 	}
 
 	@Override

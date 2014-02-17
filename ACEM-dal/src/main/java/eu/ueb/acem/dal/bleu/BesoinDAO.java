@@ -18,9 +18,10 @@
  */
 package eu.ueb.acem.dal.bleu;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.BesoinRepository;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
@@ -70,34 +69,10 @@ public class BesoinDAO implements DAO<Long, Besoin> {
 		return repository.findByPropertyValue("name", name);
 	}
 
-	public Collection<Besoin> retrieveAssociatedNeedsOf(Besoin need) {
-		Collection<BesoinNode> nodes;
-		if (need != null) {
-			nodes = repository.findAssociatedNeedsOf(need.getId());
-		} else {
-			nodes = repository.findRoots();
-		}
-
-		Collection<Besoin> children = new HashSet<Besoin>();
-		for (BesoinNode childNode : nodes) {
-			children.add(childNode);
-		}
-		return children;
-	}
-
-	public Collection<Reponse> retrieveAssociatedAnswersOf(Besoin need) {
-		Collection<ReponseNode> nodes = repository.findAssociatedAnswersOf(need.getId());
-		Collection<Reponse> reponses = new HashSet<Reponse>();
-		for (ReponseNode node : nodes) {
-			reponses.add(node);
-		}
-		return reponses;
-	}
-
 	@Override
-	public Collection<Besoin> retrieveAll() {
+	public Set<Besoin> retrieveAll() {
 		Iterable<BesoinNode> endResults = repository.findAll();
-		Collection<Besoin> collection = new HashSet<Besoin>();
+		Set<Besoin> collection = new HashSet<Besoin>();
 		if (endResults.iterator() != null) {
 			Iterator<BesoinNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
@@ -125,6 +100,15 @@ public class BesoinDAO implements DAO<Long, Besoin> {
 	@Override
 	public Long count() {
 		return repository.count();
+	}
+
+	public Set<Besoin> retrieveNeedsAtRoot() {
+		Set<BesoinNode> nodes = repository.findRoots();
+		Set<Besoin> needs = new HashSet<Besoin>();
+		for (BesoinNode need : nodes) {
+			needs.add(need);
+		}
+		return needs;
 	}
 
 }

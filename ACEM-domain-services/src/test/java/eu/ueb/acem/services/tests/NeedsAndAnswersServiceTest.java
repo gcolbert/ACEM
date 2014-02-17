@@ -57,12 +57,13 @@ public class NeedsAndAnswersServiceTest {
 		Besoin need1 = needsAndAnswersService.createNeed("t01 need 1");
 		Besoin need11 = needsAndAnswersService.createNeed("t01 need 1.1");
 		need1.addChild(need11);
-		
+
 		Besoin need111 = needsAndAnswersService.createNeed("t01 need 1.1.1");
 		need11.addChild(need111);
 		Besoin need112 = needsAndAnswersService.createNeed("t01 need 1.1.2");
 		need11.addChild(need112);
-		
+		need11 = needsAndAnswersService.updateNeed(need11);
+
 		Besoin need12 = needsAndAnswersService.createNeed("t01 need 1.2");
 		need1.addChild(need12);
 		Besoin need13 = needsAndAnswersService.createNeed("t01 need 1.3");
@@ -70,7 +71,9 @@ public class NeedsAndAnswersServiceTest {
 		Besoin need2 = needsAndAnswersService.createNeed("t01 need 2");
 		Besoin need3 = needsAndAnswersService.createNeed("t01 need 3");
 
-		Collection<Besoin> rootNeeds = needsAndAnswersService.getAssociatedNeedsOf(null);
+		need1 = needsAndAnswersService.updateNeed(need1);
+
+		Collection<Besoin> rootNeeds = needsAndAnswersService.retrieveNeedsAtRoot();
 		assertEquals(3, rootNeeds.size());
 	}
 
