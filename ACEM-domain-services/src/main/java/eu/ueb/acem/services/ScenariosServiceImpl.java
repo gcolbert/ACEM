@@ -2,11 +2,8 @@ package eu.ueb.acem.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,52 +48,12 @@ public class ScenariosServiceImpl implements ScenariosService {
 
 	@Override
 	public Collection<Scenario> retrieveScenariosWithAuthor(Personne author) {
-		Collection<Scenario> scenarios = scenarioDAO.retrieveScenariosWithAuthor(author);
-		/*
-		if (! (scenarios instanceof List)) {
-			scenarios = new ArrayList<Scenario>(scenarios);
-			Collections.sort((List<Scenario>)scenarios);
-			for (Scenario scenario : scenarios) {
-				Set<ActivitePedagogique> activities = (Set<ActivitePedagogique>) scenario.getPedagogicalActivities();
-				Iterator<ActivitePedagogique> iterator = activities.iterator();
-				while (iterator.hasNext()) {
-					// TODO : affecter le retour de retrieveById dans activities (ou refaire toute l'architecture?)
-					//pedagogicalActivityDAO.retrieveById(iterator.next().getId());
-				}
-			}
-		}
-		*/
-			/*
-			Collection<ActivitePedagogique> activitiesSet = scenario.getPedagogicalActivities();
-			Iterator<ActivitePedagogique> iterator = activitiesSet.iterator();
-			List<ActivitePedagogique> activitiesList = new ArrayList<ActivitePedagogique>();
-			while (iterator.hasNext()) {
-				activitiesList.add(pedagogicalActivityDAO.retrieveById(iterator.next().getId()));
-			}
-			Collections.sort(activitiesList);
-			scenario.setPedagogicalActivities(activitiesList);
-			*/
-		return scenarios;
+		return scenarioDAO.retrieveScenariosWithAuthor(author);
 	}
 
 	@Override
 	public Scenario updateScenario(Scenario scenario) {
-		Iterator<ActivitePedagogique> iterator = (Iterator<ActivitePedagogique>)scenario.getPedagogicalActivities().iterator();
-		int i = 1;
-		while (iterator.hasNext()) {
-			ActivitePedagogique pedagogicalActivity = iterator.next();
-			pedagogicalActivity.setPositionInScenario(new Long(i));
-			pedagogicalActivity = updatePedagogicalActivity(pedagogicalActivity);
-			i++;
-		}
-		// TODO comment passer d'une List à un Set sans casser le pointeur nommé "selectedScenario.pedagogicalActivities"
-		scenario = scenarioDAO.update(scenario);
-		/*
-		scenario.setPedagogicalActivities(new HashSet<ActivitePedagogique>(scenario.getPedagogicalActivities()));
-		scenario = scenarioDAO.update(scenario);
-		scenario.setPedagogicalActivities(new ArrayList<ActivitePedagogique>(scenario.getPedagogicalActivities()));
-		*/
-		return scenario;
+		return scenarioDAO.update(scenario);
 	}
 
 	@Override
@@ -119,8 +76,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 
 	@Override
 	public ActivitePedagogique createPedagogicalActivity(String name) {
-		ActivitePedagogique activity = new ActivitePedagogiqueNode(name);
-		return pedagogicalActivityDAO.create(activity);
+		return pedagogicalActivityDAO.create(new ActivitePedagogiqueNode(name));
 	}
 
 	@Override
@@ -145,5 +101,5 @@ public class ScenariosServiceImpl implements ScenariosService {
 	public void deleteAllPedagogicalActivities() {
 		pedagogicalActivityDAO.deleteAll();
 	}
-
+	
 }

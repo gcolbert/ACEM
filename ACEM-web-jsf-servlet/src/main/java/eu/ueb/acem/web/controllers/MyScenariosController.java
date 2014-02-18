@@ -18,10 +18,9 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -39,6 +38,8 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.TableBean;
+import eu.ueb.acem.web.viewbeans.bleu.PedagogicalActivityViewBean;
+import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
 
 @Controller("myScenariosController")
 @Scope("view")
@@ -48,9 +49,9 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MyScenariosController.class);
 
-	private Scenario selectedScenario;
+	private ScenarioViewBean selectedScenarioViewBean = null;
 
-	private ActivitePedagogique selectedActivity;
+	private PedagogicalActivityViewBean selectedPedagogicalActivityViewBean = null;
 
 	private Personne currentUser;
 
@@ -58,7 +59,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	ScenariosService scenariosService;
 
 	@Autowired
-	TableBean<Scenario> tableBean;
+	TableBean<ScenarioViewBean> tableBean;
 
 	public MyScenariosController() {
 	}
@@ -68,25 +69,26 @@ public class MyScenariosController extends AbstractContextAwareController {
 		try {
 			currentUser = getCurrentUser();
 			logger.info("initScenariosController, currentUser={}", currentUser);
+
+			Collection<Scenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(currentUser);
+			logger.info("found {} scenarios for author {}", scenariosOfCurrentUser.size(), currentUser.getName());
+			tableBean.getTableEntries().clear();
+			for (Scenario scenario : scenariosOfCurrentUser) {
+				logger.info("scenario = {}", scenario.getName());
+				tableBean.getTableEntries().add(new ScenarioViewBean(scenario));
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-		}
-
-		Collection<Scenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(currentUser);
-		logger.info("found {} scenarios for author {}", scenariosOfCurrentUser.size(), currentUser.getName());
-		tableBean.getTableEntries().clear();
-		for (Scenario scenario : scenariosOfCurrentUser) {
-			logger.info("scenario = {}", scenario.getName());
-			tableBean.getTableEntries().add(scenario);
 		}
 	}
 
 	public void createScenario(String name, String objective) {
 		Scenario scenario = scenariosService.createScenario(currentUser, name, objective);
 		if (scenario != null) {
-			tableBean.getTableEntries().add(scenario);
-			setSelectedScenario(scenario);
+			ScenarioViewBean scenarioViewBean = new ScenarioViewBean(scenario);
+			tableBean.getTableEntries().add(scenarioViewBean);
+			setSelectedScenarioViewBean(scenarioViewBean);
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
 					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
 					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS"));
@@ -99,10 +101,10 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 
 	public void deleteSelectedScenario() {
-		if (selectedScenario != null) {
-			logger.info("deleteSelectedScenario, id={}", selectedScenario.getId());
-			if (scenariosService.deleteScenario(selectedScenario.getId())) {
-				tableBean.getTableEntries().remove(selectedScenario);
+		if (selectedScenarioViewBean != null) {
+			logger.info("deleteSelectedScenario, id={}", selectedScenarioViewBean.getId());
+			if (scenariosService.deleteScenario(selectedScenarioViewBean.getId())) {
+				tableBean.getTableEntries().remove(selectedScenarioViewBean);
 				MessageDisplayer.showMessageToUserWithSeverityInfo(
 						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE"),
 						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS"));
@@ -112,89 +114,61 @@ public class MyScenariosController extends AbstractContextAwareController {
 						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.TITLE"),
 						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.DETAILS"));
 			}
-			selectedScenario = null;
+			selectedScenarioViewBean = null;
 		}
 	}
 
-	public Collection<Scenario> getScenarios() {
+	public List<ScenarioViewBean> getScenarioViewBeans() {
 		return tableBean.getTableEntries();
 	}
 
-	public Scenario getSelectedScenario() {
-		return selectedScenario;
+	public ScenarioViewBean getSelectedScenarioViewBean() {
+		return selectedScenarioViewBean;
 	}
 
-	public void setSelectedScenario(Scenario selectedScenario) {
-		this.selectedScenario = selectedScenario;
+	public void setSelectedScenarioViewBean(ScenarioViewBean selectedScenarioViewBean) {
+		this.selectedScenarioViewBean = selectedScenarioViewBean;
 	}
 
-	public List<ActivitePedagogique> getSelectedScenarioPedagogicalActivities() {
-		if (selectedScenario != null) {
-			if (selectedScenario.getPedagogicalActivities() instanceof Set) {
-				return new ArrayList<ActivitePedagogique>(selectedScenario.getPedagogicalActivities());
-			}
-			else {
-				return (List<ActivitePedagogique>)selectedScenario.getPedagogicalActivities();
-			}
-		}
-		else {
-			return null;
-		}
+	public PedagogicalActivityViewBean getSelectedActivityViewBean() {
+		return selectedPedagogicalActivityViewBean;
 	}
 
-	public ActivitePedagogique getSelectedActivity() {
-		return selectedActivity;
-	}
-
-	public void setSelectedActivity(ActivitePedagogique selectedActivity) {
-		this.selectedActivity = selectedActivity;
+	public void setSelectedActivityViewBean(PedagogicalActivityViewBean selectedActivityViewBean) {
+		this.selectedPedagogicalActivityViewBean = selectedActivityViewBean;
 	}
 
 	public void onScenarioRowSelect(SelectEvent event) {
 		logger.info("onScenarioRowSelect");
-		setSelectedScenario((Scenario) event.getObject());
+		setSelectedScenarioViewBean((ScenarioViewBean) event.getObject());
 	}
 
 	public void onStepRowSelect(SelectEvent event) {
 		logger.info("onStepRowSelect");
-		setSelectedActivity((ActivitePedagogique) event.getObject());
+		setSelectedActivityViewBean((PedagogicalActivityViewBean) event.getObject());
 	}
 
 	public void onActivityRowEdit(RowEditEvent event) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.LIST.ACTIVITY_EDIT.TITLE"),
-				((ActivitePedagogique) event.getObject()).getName());
-		scenariosService.updatePedagogicalActivity((ActivitePedagogique) event.getObject());
+				((PedagogicalActivityViewBean) event.getObject()).getName());
+		scenariosService.updatePedagogicalActivity(((PedagogicalActivityViewBean) event.getObject()).getPedagogicalActivity());
 	}
 
 	public void onSave() {
-		/*-
-		this.selectedScenario.setPedagogicalActivities(new LinkedHashSet<ActivitePedagogique>(this.selectedScenario
-				.getPedagogicalActivities()));
-		this.selectedScenario = scenariosService.updateScenario(selectedScenario);
-		this.selectedScenario.setPedagogicalActivities(new ArrayList<ActivitePedagogique>(this.selectedScenario
-				.getPedagogicalActivities()));
-		 */
-		selectedScenario = scenariosService.updateScenario(selectedScenario);
+		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE"),
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS"));
 	}
 
 	public void onCreateActivity() {
-		ActivitePedagogique pedagogicalActivity = scenariosService.createPedagogicalActivity(
-				getString("MY_SCENARIOS.SELECTED_SCENARIO.NEW_ACTIVITY_DEFAULT_NAME"));
-		selectedScenario.addPedagogicalActivity(pedagogicalActivity);
-
-		/*-
-		this.selectedScenario.setPedagogicalActivities(new LinkedHashSet<ActivitePedagogique>(this.selectedScenario
-				.getPedagogicalActivities()));
-		this.selectedScenario = scenariosService.updateScenario(selectedScenario);
-		this.selectedScenario.setPedagogicalActivities(new ArrayList<ActivitePedagogique>(this.selectedScenario
-				.getPedagogicalActivities()));
-		sortPedagogicalActivities();
-		 */
-		selectedScenario = scenariosService.updateScenario(selectedScenario);
+		ActivitePedagogique pedagogicalActivity = scenariosService
+				.createPedagogicalActivity(getString("MY_SCENARIOS.SELECTED_SCENARIO.NEW_ACTIVITY_DEFAULT_NAME"));
+		selectedScenarioViewBean.getScenario().addPedagogicalActivity(pedagogicalActivity);
+		pedagogicalActivity = scenariosService.updatePedagogicalActivity(pedagogicalActivity);
+		Collections.sort(selectedScenarioViewBean.getPedagogicalActivityViewBeans());
+		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
 	}
 
 }

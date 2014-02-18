@@ -75,7 +75,7 @@ public class BesoinNode implements Besoin {
 
 	public BesoinNode(String name) {
 		this();
-		setName(name);
+		this.name = name;
 	}
 
 	@Override

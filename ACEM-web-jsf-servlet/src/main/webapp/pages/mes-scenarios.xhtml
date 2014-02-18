@@ -32,18 +32,21 @@
 							<p:scrollPanel mode="native">
 								<p:dataTable id="scenariosDataTable"
 									emptyMessage="#{msgs['MY_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
-									value="#{myScenariosController.scenarios}" var="scenario"
-									selection="#{myScenariosController.selectedScenario}"
-									selectionMode="single" rowKey="#{scenario.id}">
+									value="#{myScenariosController.scenarioViewBeans}"
+									var="scenarioViewBean" rowKey="#{scenarioViewBean.id}"
+									selection="#{myScenariosController.selectedScenarioViewBean}"
+									selectionMode="single">
 									<p:ajax event="rowSelect"
 										listener="#{myScenariosController.onScenarioRowSelect}"
 										update="@form" />
+									<!-- 
 									<p:ajax event="rowUnselect"
 										listener="#{myScenariosController.onRowUnselect}"
 										update="@form" />
+										 -->
 									<p:column
 										headerText="#{msgs['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
-									    #{scenario.name}
+										<h:outputText value="#{scenarioViewBean.name}" />
 									</p:column>
 								</p:dataTable>
 							</p:scrollPanel>
@@ -51,7 +54,7 @@
 								value="#{msgs['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
 								icon="ui-icon-trash"
 								action="#{myScenariosController.deleteSelectedScenario}"
-								disabled="#{myScenariosController.selectedScenario == null}"
+								disabled="#{myScenariosController.selectedScenarioViewBean == null}"
 								update="@form">
 								<p:confirm
 									header="#{msgs['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_HEADER']}"
@@ -64,7 +67,7 @@
 
 				<p:layoutUnit position="center">
 					<p:panel header="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}"
-						rendered="#{myScenariosController.selectedScenario != null}">
+						rendered="#{myScenariosController.selectedScenarioViewBean != null}">
 
 						<h:panelGrid columns="2">
 							<h:outputLabel for="selectedScenarioName"
@@ -72,12 +75,11 @@
 								styleClass="label" />
 							<p:panel>
 								<p:inplace id="selectedScenarioNameInplace" editor="true">
-									<p:ajax event="save"
-										listener="#{myScenariosController.onSave}"
+									<p:ajax event="save" listener="#{myScenariosController.onSave}"
 										update="@form" />
 									<p:ajax event="cancel" update="@this" />
 									<h:inputText id="selectedScenarioName"
-										value="#{myScenariosController.selectedScenario.name}"
+										value="#{myScenariosController.selectedScenarioViewBean.name}"
 										required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
 								</p:inplace>
 							</p:panel>
@@ -87,12 +89,11 @@
 								styleClass="label" />
 							<p:panel>
 								<p:inplace id="selectedScenarioObjectiveInplace" editor="true">
-									<p:ajax event="save"
-										listener="#{myScenariosController.onSave}"
+									<p:ajax event="save" listener="#{myScenariosController.onSave}"
 										update="@form" />
 									<p:ajax event="cancel" update="@this" />
 									<h:inputText id="selectedScenarioObjective"
-										value="#{myScenariosController.selectedScenario.objective}"
+										value="#{myScenariosController.selectedScenarioViewBean.objective}"
 										required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
 								</p:inplace>
 							</p:panel>
@@ -101,8 +102,9 @@
 						<p:dataTable id="selectedScenarioActivitiesDataTable"
 							editable="true"
 							emptyMessage="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
-							value="#{myScenariosController.selectedScenarioPedagogicalActivities}"
-							var="activity">
+							value="#{myScenariosController.selectedScenarioViewBean.pedagogicalActivityViewBeans}"
+							var="pedagogicalActivityViewBean"
+							rowKey="pedagogicalActivityViewBean.id">
 
 							<f:facet name="header">#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.TABLE_HEADER']}</f:facet>
 
@@ -114,24 +116,18 @@
 
 							<p:column width="20"
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_POSITION_IN_SCENARIO']}">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{activity.positionInScenario}" />
-									</f:facet>
-									<f:facet name="input">
-										<h:inputText value="#{activity.positionInScenario}"
-											style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
+								<h:outputText
+									value="#{pedagogicalActivityViewBean.positionInScenario}" />
 							</p:column>
 							<p:column
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_NAME']}">
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{activity.name}" />
+										<h:outputText value="#{pedagogicalActivityViewBean.name}" />
 									</f:facet>
 									<f:facet name="input">
-										<h:inputText value="#{activity.name}" style="width:100%" />
+										<h:inputText value="#{pedagogicalActivityViewBean.name}"
+											style="width:100%" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -139,10 +135,11 @@
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_OBJECTIVE']}">
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{activity.objective}" />
+										<h:outputText value="#{pedagogicalActivityViewBean.objective}" />
 									</f:facet>
 									<f:facet name="input">
-										<h:inputText value="#{activity.objective}" style="width:100%" />
+										<h:inputText value="#{pedagogicalActivityViewBean.objective}"
+											style="width:100%" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -150,10 +147,12 @@
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DESCRIPTION']}">
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{activity.description}" />
+										<h:outputText
+											value="#{pedagogicalActivityViewBean.description}" />
 									</f:facet>
 									<f:facet name="input">
-										<h:inputText value="#{activity.description}"
+										<h:inputText
+											value="#{pedagogicalActivityViewBean.description}"
 											style="width:100%" />
 									</f:facet>
 								</p:cellEditor>
@@ -162,10 +161,11 @@
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DURATION']}">
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{activity.duration}" />
+										<h:outputText value="#{pedagogicalActivityViewBean.duration}" />
 									</f:facet>
 									<f:facet name="input">
-										<h:inputText value="#{activity.duration}" style="width:100%" />
+										<h:inputText value="#{pedagogicalActivityViewBean.duration}"
+											style="width:100%" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -173,10 +173,11 @@
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_RESOURCES']}">
 								<p:cellEditor>
 									<f:facet name="output">
-										<h:outputText value="#{activity.resources}" />
+										<h:outputText value="#{pedagogicalActivityViewBean.resources}" />
 									</f:facet>
 									<f:facet name="input">
-										<h:inputText value="#{activity.resources}" style="width:100%" />
+										<h:inputText value="#{pedagogicalActivityViewBean.resources}"
+											style="width:100%" />
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -188,8 +189,7 @@
 						<p:commandButton
 							value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.ADD_ACTIVITY_LABEL']}"
 							icon="ui-icon-plusthick"
-							action="#{myScenariosController.onCreateActivity}"
-							update="@form" />
+							action="#{myScenariosController.onCreateActivity}" update="@form" />
 
 					</p:panel>
 				</p:layoutUnit>

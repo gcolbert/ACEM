@@ -21,6 +21,9 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -114,21 +117,33 @@ public class ScenarioNode implements Scenario {
 		if (pedagogicalActivity != null) {
 			if (!pedagogicalActivities.contains(pedagogicalActivity)) {
 				pedagogicalActivities.add((ActivitePedagogiqueNode) pedagogicalActivity);
-				pedagogicalActivity.setPositionInScenario(new Long(this.pedagogicalActivities.size()+1));
+				pedagogicalActivity.setPositionInScenario(new Long(this.pedagogicalActivities.size() + 1));
 			}
 			if (!pedagogicalActivity.getScenarios().contains(this)) {
 				pedagogicalActivity.addScenario(this);
 			}
+			renumberPedagogicalActivities();
 		}
 	}
-	
+
 	@Override
 	@Transactional
 	public void removePedagogicalActivity(ActivitePedagogique pedagogicalActivity) {
 		pedagogicalActivities.remove(pedagogicalActivity);
 		pedagogicalActivity.removeScenario(this);
+		renumberPedagogicalActivities();
 	}
-	
+
+	private void renumberPedagogicalActivities() {
+		Long i = new Long(1);
+		List<ActivitePedagogiqueNode> list = new ArrayList<ActivitePedagogiqueNode>(pedagogicalActivities);
+		Collections.sort(list);
+		for (ActivitePedagogiqueNode pedagogicalActivity : list) {
+			pedagogicalActivity.setPositionInScenario(i);
+			i++;
+		}
+	}
+
 	@Override
 	public Set<? extends ActivitePedagogique> getPedagogicalActivities() {
 		return pedagogicalActivities;
@@ -136,7 +151,7 @@ public class ScenarioNode implements Scenario {
 
 	@Override
 	public void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities) {
-		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>)pedagogicalActivities;
+		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>) pedagogicalActivities;
 	}
 
 	@Override

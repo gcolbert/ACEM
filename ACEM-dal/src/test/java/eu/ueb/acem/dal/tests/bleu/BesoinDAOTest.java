@@ -210,7 +210,6 @@ public class BesoinDAOTest extends TestCase {
 		// We retrieve the entities and we check that entities have parents and
 		// children
 		Besoin need1ter = needDAO.retrieveById(need1.getId());
-		//Set<Besoin> children = needDAO.retrieveAssociatedNeedsOf(need1ter);
 		Set<Besoin> children = (Set<Besoin>) need1ter.getChildren();
 		need1ter.setChildren(children);
 		Besoin need12bis = needDAO.retrieveById(need12.getId());
@@ -251,7 +250,7 @@ public class BesoinDAOTest extends TestCase {
 		need3 = needDAO.update(need3);
 		need32 = needDAO.update(need32);
 
-		logger.info("t07_TestBesoinDAORetrieveRootNeeds calling besoinDAO.retrieveChildrenOf(null)");
+		logger.info("t07_TestBesoinDAORetrieveRootNeeds calling besoinDAO.retrieveNeedsAtRoot()");
 		Set<Besoin> rootNeeds = needDAO.retrieveNeedsAtRoot();
 		assertEquals(new Long(3), new Long(rootNeeds.size()));
 	}
