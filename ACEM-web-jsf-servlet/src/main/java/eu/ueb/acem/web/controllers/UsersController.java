@@ -18,7 +18,9 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.UsersService;
+import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 @Controller("usersController")
 @Scope("session")
@@ -35,26 +38,29 @@ public class UsersController extends AbstractContextAwareController {
 
 	private static final long serialVersionUID = -977386846045010683L;
 
-	Collection<Personne> users;
+	List<PersonViewBean> personViewBeans;
 
 	@Autowired
 	private UsersService usersService;
 
 	public UsersController() {
-		
+		personViewBeans = new ArrayList<PersonViewBean>();
 	}
 
 	@PostConstruct
-	public void initUsers() {
-		users = usersService.getPersons();
+	public void initUsersController() {
+		Collection<Personne> persons = usersService.getPersons();
+		for (Personne person : persons) {
+			personViewBeans.add(new PersonViewBean(person));
+		}
 	}
 
-	public Collection<Personne> getUsers() {
-		return users;
+	public List<PersonViewBean> getPersonViewBeans() {
+		return personViewBeans;
 	}
 
-	public void setUsers(Collection<Personne> users) {
-		this.users = users;
+	public void setPersonViewBeans(List<PersonViewBean> personViewBeans) {
+		this.personViewBeans = personViewBeans;
 	}
 
 }

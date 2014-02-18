@@ -49,6 +49,10 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 	@Autowired
 	private ScenarioRepository repository;
 
+	private Long tick() {
+		return System.currentTimeMillis() / 1000;
+	}
+
 	public ScenarioDAO() {
 
 	}
@@ -118,10 +122,6 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 			}
 		}
 		return collection;
-	}
-
-	private Long tick() {
-		return System.currentTimeMillis() / 1000;
 	}
 
 }

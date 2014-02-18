@@ -93,4 +93,9 @@ public abstract class PersonneNode implements Personne {
 	public void setLanguage(String language) {
 		this.language = language;
 	}
+
+	@Override
+	public int compareTo(Personne person) {
+		return getName().compareToIgnoreCase(person.getName());
+	}
 }

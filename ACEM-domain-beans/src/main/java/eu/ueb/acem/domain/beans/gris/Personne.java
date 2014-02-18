@@ -26,7 +26,7 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-public interface Personne extends Serializable {
+public interface Personne extends Serializable, Comparable<Personne> {
 
 	Long getId();
 
@@ -43,5 +43,7 @@ public interface Personne extends Serializable {
 	String getLanguage();
 
 	void setLanguage(String language);
+
+	int compareTo(Personne person);
 
 }
