@@ -21,10 +21,10 @@
 						headerText="#{msgs['ADMINISTRATION.USERS.LIST.LOGIN.COLUMN_HEADER']}">
 						<h:outputText value="#{personViewBean.login}" />
 					</p:column>
-					<!-- 
-					<p:selectBooleanCheckbox value="#{usersController.adminUsersBean.admin}" />
-					<p:selectBooleanCheckbox value="#{usersController.adminUsersBean.teacher}" />
-					 -->
+					<p:column
+						headerText="#{msgs['ADMINISTRATION.USERS.LIST.IS_ADMIN.COLUMN_HEADER']}">
+						<p:selectBooleanCheckbox value="#{personViewBean.administrator}" />
+					</p:column>
 				</p:dataTable>
 			</p:panel>
 		</h:form>

@@ -19,6 +19,8 @@ public class PersonViewBean implements Serializable, Comparable<PersonViewBean> 
 	
 	private String language;
 	
+	private Boolean administrator;
+	
 	public PersonViewBean() {
 	}
 	
@@ -36,6 +38,7 @@ public class PersonViewBean implements Serializable, Comparable<PersonViewBean> 
 		setName(person.getName());
 		setLogin(person.getLogin());
 		setLanguage(person.getLanguage());
+		setAdministrator(person.isAdministrator());
 	}
 
 	public OrganisationViewBean getOrganisation() {
@@ -68,6 +71,14 @@ public class PersonViewBean implements Serializable, Comparable<PersonViewBean> 
 
 	public void setLanguage(String language) {
 		this.language = language;
+	}
+
+	public Boolean getAdministrator() {
+		return administrator;
+	}
+
+	public void setAdministrator(Boolean administrator) {
+		this.administrator = administrator;
 	}
 
 	@Override

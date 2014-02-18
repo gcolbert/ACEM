@@ -23,7 +23,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.Collection;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -47,9 +46,6 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@Indexed(indexName = "indexOfAdministrators")
-	private String name;
-
 	@RelatedTo(elementClass = BesoinNode.class, type = "authorsNeed", direction = OUTGOING)
 	private Collection<Besoin> needs;
 
@@ -64,10 +60,14 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 
 	
 	public GestionnaireNode() {
+		setLanguage("fr");
+		setAdministrator(true);
 	}
 
 	public GestionnaireNode(String name) {
-		this.name = name;
+		this();
+		setName(name);
+		setLogin(name);
 	}
 
 	@Override
@@ -83,17 +83,6 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 	@Override
 	public Collection<Ressource> getResources() {
 		return resources;
-	}
-
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 }

@@ -23,7 +23,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.Collection;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -45,9 +44,6 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@Indexed(indexName = "indexOfTeachers")
-	private String name;
-
 	@RelatedTo(elementClass = RessourceNode.class, type = "hasFavorite", direction = OUTGOING)
 	private Collection<Ressource> ressourcesFavorites;
 
@@ -58,10 +54,14 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 	private Collection<Scenario> scenarios;
 
 	public EnseignantNode() {
+		setLanguage("fr");
+		setAdministrator(false);
 	}
 
 	public EnseignantNode(String name) {
-		this.name = name;
+		this();
+		setName(name);
+		setLogin(name);
 	}
 
 	@Override
@@ -77,16 +77,6 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 	@Override
 	public Collection<Scenario> getScenarios() {
 		return scenarios;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 
 }

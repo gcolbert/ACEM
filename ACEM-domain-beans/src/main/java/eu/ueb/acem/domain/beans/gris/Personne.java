@@ -44,6 +44,10 @@ public interface Personne extends Serializable, Comparable<Personne> {
 
 	void setLanguage(String language);
 
+	Boolean isAdministrator();
+	
+	void setAdministrator(Boolean isAdministrator);
+
 	int compareTo(Personne person);
 
 }

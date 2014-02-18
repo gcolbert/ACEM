@@ -48,7 +48,9 @@ public abstract class PersonneNode implements Personne {
 
 	private String login;
 
-	private String language = "fr";
+	private String language;
+	
+	private Boolean administrator;
 
 	@Override
 	public Long getId() {
@@ -94,6 +96,16 @@ public abstract class PersonneNode implements Personne {
 		this.language = language;
 	}
 
+	@Override
+	public Boolean isAdministrator() {
+		return administrator;
+	}
+	
+	@Override
+	public void setAdministrator(Boolean isAdministrator) {
+		this.administrator = isAdministrator;
+	}
+	
 	@Override
 	public int compareTo(Personne person) {
 		return getName().compareToIgnoreCase(person.getName());
