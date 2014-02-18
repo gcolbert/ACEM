@@ -35,6 +35,14 @@ public interface Scenario extends Serializable, Comparable<Scenario> {
 	String getName();
 
 	void setName(String name);
+	
+	Long getCreationDate();
+	
+	void setCreationDate(Long date);
+	
+	Long getModificationDate();
+	
+	void setModificationDate(Long date);
 
 	String getObjective();
 

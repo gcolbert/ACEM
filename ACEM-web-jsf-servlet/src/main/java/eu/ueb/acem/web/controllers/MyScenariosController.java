@@ -49,9 +49,9 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MyScenariosController.class);
 
-	private ScenarioViewBean selectedScenarioViewBean = null;
+	private ScenarioViewBean selectedScenarioViewBean;
 
-	private PedagogicalActivityViewBean selectedPedagogicalActivityViewBean = null;
+	private PedagogicalActivityViewBean selectedPedagogicalActivityViewBean;
 
 	private Personne currentUser;
 
@@ -77,6 +77,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 				logger.info("scenario = {}", scenario.getName());
 				tableBean.getTableEntries().add(new ScenarioViewBean(scenario));
 			}
+			tableBean.sortReverseOrder();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -88,6 +89,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 		if (scenario != null) {
 			ScenarioViewBean scenarioViewBean = new ScenarioViewBean(scenario);
 			tableBean.getTableEntries().add(scenarioViewBean);
+			tableBean.sortReverseOrder();
 			setSelectedScenarioViewBean(scenarioViewBean);
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
 					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
@@ -157,6 +159,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	public void onSave() {
 		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
+		tableBean.sortReverseOrder();
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE"),
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS"));

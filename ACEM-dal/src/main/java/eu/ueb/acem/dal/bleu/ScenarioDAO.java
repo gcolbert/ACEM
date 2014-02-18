@@ -60,6 +60,7 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 
 	@Override
 	public Scenario create(Scenario scenario) {
+		scenario.setCreationDate(tick());
 		return repository.save((ScenarioNode) scenario);
 	}
 
@@ -88,6 +89,7 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 
 	@Override
 	public Scenario update(Scenario scenario) {
+		scenario.setModificationDate(tick());
 		return repository.save((ScenarioNode) scenario);
 	}
 
@@ -116,6 +118,10 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 			}
 		}
 		return collection;
+	}
+
+	private Long tick() {
+		return System.currentTimeMillis() / 1000;
 	}
 
 }

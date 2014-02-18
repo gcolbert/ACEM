@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -49,10 +51,16 @@ import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
 @TypeAlias("Scenario")
 public class ScenarioNode implements Scenario {
 
+	private static final Logger logger = LoggerFactory.getLogger(ScenarioNode.class);
+
 	private static final long serialVersionUID = -5248471016348742765L;
 
 	@GraphId
 	private Long id;
+
+	private Long creationDate;
+
+	private Long modificationDate;
 
 	@Indexed(indexName = "indexOfScenarios")
 	private String name;
@@ -92,6 +100,26 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
+	public Long getCreationDate() {
+		return creationDate;
+	}
+
+	@Override
+	public void setCreationDate(Long date) {
+		this.creationDate = date;
+	}
+
+	@Override
+	public Long getModificationDate() {
+		return modificationDate;
+	}
+
+	@Override
+	public void setModificationDate(Long date) {
+		this.modificationDate = date;
+	}
+
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -114,16 +142,14 @@ public class ScenarioNode implements Scenario {
 	@Override
 	@Transactional
 	public void addPedagogicalActivity(ActivitePedagogique pedagogicalActivity) {
-		if (pedagogicalActivity != null) {
-			if (!pedagogicalActivities.contains(pedagogicalActivity)) {
-				pedagogicalActivities.add((ActivitePedagogiqueNode) pedagogicalActivity);
-				pedagogicalActivity.setPositionInScenario(new Long(this.pedagogicalActivities.size() + 1));
-			}
-			if (!pedagogicalActivity.getScenarios().contains(this)) {
-				pedagogicalActivity.addScenario(this);
-			}
-			renumberPedagogicalActivities();
+		if (!pedagogicalActivities.contains(pedagogicalActivity)) {
+			pedagogicalActivities.add((ActivitePedagogiqueNode) pedagogicalActivity);
+			pedagogicalActivity.setPositionInScenario(new Long(this.pedagogicalActivities.size() + 1));
 		}
+		if (!pedagogicalActivity.getScenarios().contains(this)) {
+			pedagogicalActivity.addScenario(this);
+		}
+		renumberPedagogicalActivities();
 	}
 
 	@Override
@@ -181,7 +207,24 @@ public class ScenarioNode implements Scenario {
 
 	@Override
 	public int compareTo(Scenario o) {
-		return name.compareTo(o.getName());
+		int returnValue;
+		if ((getModificationDate() != null) && (o.getModificationDate() != null)) {
+			returnValue = getModificationDate().compareTo(o.getModificationDate());
+		}
+		else {
+			if (getModificationDate() != null) {
+				returnValue = getModificationDate().compareTo(o.getCreationDate());
+			}
+			else {
+				if (o.getModificationDate() != null) {
+					returnValue = getCreationDate().compareTo(o.getModificationDate());
+				}
+				else {
+					returnValue = getCreationDate().compareTo(o.getCreationDate());
+				}
+			}
+		}
+		return returnValue;
 	}
 
 }

@@ -21,7 +21,9 @@ package eu.ueb.acem.web.viewbeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -34,7 +36,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("tableBean")
 @Scope("view")
-public class TableBean<E> implements Serializable {
+public class TableBean<E extends Comparable<E>> implements Serializable {
 
 	/**
 	 * For Logging.
@@ -59,7 +61,16 @@ public class TableBean<E> implements Serializable {
 		for (E entity : collectionEntities) {
 			tableEntries.add(entity);
 		}
+		sortReverseOrder();
 		return tableEntries;
 	}
+	
+	public void sort() {
+		Collections.sort(tableEntries);
+	}
 
+	public void sortReverseOrder() {
+		Collections.sort(tableEntries, Collections.reverseOrder());
+	}
+	
 }

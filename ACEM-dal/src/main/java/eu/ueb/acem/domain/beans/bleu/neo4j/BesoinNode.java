@@ -105,7 +105,7 @@ public class BesoinNode implements Besoin {
 	@Override
 	@Transactional
 	public void setParents(Set<? extends Besoin> parents) {
-		this.parents = (Set<BesoinNode>)parents;
+		this.parents = (Set<BesoinNode>) parents;
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class BesoinNode implements Besoin {
 	public void addParent(Besoin parent) {
 		if (parent != null) {
 			if (!parents.contains(parent)) {
-				parents.add((BesoinNode)parent);
+				parents.add((BesoinNode) parent);
 			}
 			if (!parent.getChildren().contains(this)) {
 				parent.addChild(this);
@@ -136,7 +136,7 @@ public class BesoinNode implements Besoin {
 	@Override
 	@Transactional
 	public void setChildren(Set<? extends Besoin> children) {
-		this.children = (Set<BesoinNode>)children;
+		this.children = (Set<BesoinNode>) children;
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class BesoinNode implements Besoin {
 	public void addChild(Besoin need) {
 		if (need != null) {
 			if (!children.contains(need)) {
-				children.add((BesoinNode)need);
+				children.add((BesoinNode) need);
 			}
 			if (!need.getParents().contains(this)) {
 				need.addParent(this);
@@ -167,7 +167,7 @@ public class BesoinNode implements Besoin {
 	@Override
 	@Transactional
 	public void setAnswers(Set<? extends Reponse> answers) {
-		this.answers = (Set<ReponseNode>)answers;
+		this.answers = (Set<ReponseNode>) answers;
 	}
 
 	@Override
@@ -213,13 +213,17 @@ public class BesoinNode implements Besoin {
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
-			return false;
+		}
+		else
+			if (!id.equals(other.id))
+				return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
-			return false;
+		}
+		else
+			if (!name.equals(other.name))
+				return false;
 		return true;
 	}
 

@@ -1,9 +1,6 @@
 package eu.ueb.acem.services;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +56,11 @@ public class ScenariosServiceImpl implements ScenariosService {
 	@Override
 	public Boolean deleteScenario(Long id) {
 		if (scenarioDAO.exists(id)) {
-			scenarioDAO.delete(scenarioDAO.retrieveById(id));
+			Scenario scenario = scenarioDAO.retrieveById(id);
+			for (ActivitePedagogique pedagogicalActivity : scenario.getPedagogicalActivities()) {
+				pedagogicalActivityDAO.delete(pedagogicalActivity);
+			}
+			scenarioDAO.delete(scenario);
 		}
 		return (!scenarioDAO.exists(id));
 	}

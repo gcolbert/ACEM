@@ -26,8 +26,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
@@ -37,7 +35,7 @@ import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
  * 
  */
 @Scope("view")
-public class ScenarioViewBean implements Serializable {
+public class ScenarioViewBean implements Serializable, Comparable<ScenarioViewBean> {
 
 	/**
 	 * For Logging.
@@ -132,6 +130,11 @@ public class ScenarioViewBean implements Serializable {
 	public void setPublished(Boolean published) {
 		this.published = published;
 		scenario.setPublished(published);
+	}
+
+	@Override
+	public int compareTo(ScenarioViewBean o) {
+		return scenario.compareTo(o.getScenario());
 	}
 
 }
