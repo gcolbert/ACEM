@@ -33,12 +33,12 @@ import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 @Controller("usersController")
-@Scope("session")
+@Scope("view")
 public class UsersController extends AbstractContextAwareController {
 
 	private static final long serialVersionUID = -977386846045010683L;
 
-	List<PersonViewBean> personViewBeans;
+	private List<PersonViewBean> personViewBeans;
 
 	@Autowired
 	private UsersService usersService;
@@ -49,6 +49,7 @@ public class UsersController extends AbstractContextAwareController {
 
 	@PostConstruct
 	public void initUsersController() {
+		personViewBeans.clear();
 		Collection<Personne> persons = usersService.getPersons();
 		for (Personne person : persons) {
 			personViewBeans.add(new PersonViewBean(person));

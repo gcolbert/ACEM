@@ -18,12 +18,24 @@
  */
 package eu.ueb.acem.domain.beans.rouge;
 
+import java.util.Set;
+
 /**
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
 public interface Etablissement extends Organisation {
 
-	Communaute getCommunaute();
+	Set<? extends Communaute> getCommunities();
+	
+	void setCommunities(Set<? extends Communaute> communities);
+	
+	Set<? extends Composante> getTeachingDepartments();
+	
+	void setTeachingDepartments(Set<? extends Composante> teachingDepartments);
+
+	Set<? extends Service> getAdministrativeDepartments();
+
+	void setAdministrativeDepartments(Set<? extends Service> administrativeDepartments);
 
 }

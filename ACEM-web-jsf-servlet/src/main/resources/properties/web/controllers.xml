@@ -67,7 +67,12 @@
 
 	<bean id="usersController" class="eu.ueb.acem.web.controllers.UsersController"
 		parent="abstractContextAwareController">
-		<description>A controller for administering the users from the "admin" page.</description>
+		<description>A controller for administering the users from the "administration" page.</description>
+	</bean>
+
+	<bean id="organisationsController" class="eu.ueb.acem.web.controllers.OrganisationsController"
+		parent="abstractContextAwareController">
+		<description>A controller for administering the organisations from the "administration" page.</description>
 	</bean>
 
 </beans>

@@ -103,7 +103,6 @@ public class BesoinNode implements Besoin {
 	}
 
 	@Override
-	@Transactional
 	public void setParents(Set<? extends Besoin> parents) {
 		this.parents = (Set<BesoinNode>) parents;
 	}
@@ -134,7 +133,6 @@ public class BesoinNode implements Besoin {
 	}
 
 	@Override
-	@Transactional
 	public void setChildren(Set<? extends Besoin> children) {
 		this.children = (Set<BesoinNode>) children;
 	}
@@ -165,7 +163,6 @@ public class BesoinNode implements Besoin {
 	}
 
 	@Override
-	@Transactional
 	public void setAnswers(Set<? extends Reponse> answers) {
 		this.answers = (Set<ReponseNode>) answers;
 	}

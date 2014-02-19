@@ -10,8 +10,11 @@
 			rendered="#{facesContext.application.projectStage == 'Development'}" />
 
 		<h:form id="formUsers">
+			<p:growl id="messagesDisplayerFormUsers" showDetail="true" />
+
 			<p:panel header="#{msgs['ADMINISTRATION.USERS.HEADER']}">
 				<p:dataTable var="personViewBean"
+					emptyMessage="#{msgs['ADMINISTRATION.USERS.LIST.NO_RECORDS_FOUND']}"
 					value="#{usersController.personViewBeans}">
 					<p:column
 						headerText="#{msgs['ADMINISTRATION.USERS.LIST.NAME.COLUMN_HEADER']}">
@@ -30,14 +33,155 @@
 		</h:form>
 
 		<h:form id="formOrganisations">
+			<p:growl id="messagesDisplayerFormOrganisations" showDetail="true" />
+
 			<p:panel header="#{msgs['ADMINISTRATION.ORGANISATIONS.HEADER']}">
-				<p:dataTable var="user"
-					value="#{adminOrganisationsController.organisationViewBeans}">
-					<h:outputText value="#{organisation.id}" />
-					<h:outputText value="#{organisation.name}" />
-				</p:dataTable>
+				<p:tabView id="tabViewOrganisations" dynamic="true">
+					<p:tab
+						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_COMMUNITIES_TITLE']}">
+						<p:dataTable var="communityViewBean"
+							emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
+							value="#{adminOrganisationsController.communityViewBeans}">
+							<h:outputText value="#{communityViewBean.id}" />
+							<h:outputText value="#{communityViewBean.name}" />
+						</p:dataTable>
+						<p:commandButton
+							value="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_LABEL']}"
+							icon="ui-icon-plusthick"
+							onclick="PF('dialogCreateCommunity').show()" />
+					</p:tab>
+					<p:tab
+						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_INSTITUTIONS_TITLE']}">
+						<p:dataTable var="institutionViewBean"
+							emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
+							value="#{adminOrganisationsController.institutionViewBeans}">
+							<h:outputText value="#{institutionViewBean.id}" />
+							<h:outputText value="#{institutionViewBean.name}" />
+						</p:dataTable>
+						<p:commandButton
+							value="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_LABEL']}"
+							icon="ui-icon-plusthick"
+							onclick="PF('dialogCreateInstitution').show()" />
+					</p:tab>
+					<p:tab
+						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_ADMINISTRATIVE_DEPARTMENTS_TITLE']}">
+						<p:dataTable var="administrativeDepartmentViewBean"
+							emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
+							value="#{adminOrganisationsController.administrativeDepartmentViewBeans}">
+							<h:outputText value="#{administrativeDepartmentViewBean.id}" />
+							<h:outputText value="#{administrativeDepartmentViewBean.name}" />
+						</p:dataTable>
+						<p:commandButton
+							value="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
+							icon="ui-icon-plusthick"
+							onclick="PF('dialogCreateAdministrativeDepartment').show()" />
+					</p:tab>
+					<p:tab
+						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_TEACHING_DEPARTMENTS_TITLE']}">
+						<p:dataTable var="teachingDepartmentViewBean"
+							emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
+							value="#{adminOrganisationsController.teachingDepartmentViewBeans}">
+							<h:outputText value="#{teachingDepartmentViewBeans.id}" />
+							<h:outputText value="#{teachingDepartmentViewBeans.name}" />
+						</p:dataTable>
+						<p:commandButton
+							value="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_LABEL']}"
+							icon="ui-icon-plusthick"
+							onclick="PF('dialogCreateTeachingDepartment').show()" />
+					</p:tab>
+				</p:tabView>
 			</p:panel>
 		</h:form>
+
+		<p:dialog
+			header="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
+			widgetVar="dialogCreateCommunity" modal="true" height="auto">
+			<h:form id="formCreateCommunity">
+				<h:panelGrid columns="3">
+					<h:outputLabel for="newCommunityName"
+						value="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_MODAL_WINDOW.NAME_LABEL']}" />
+					<p:inputText id="newCommunityName" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						binding="#{input1}" />
+					<p:message for="newCommunityName" display="text" />
+				</h:panelGrid>
+				<p:fileUpload
+					fileUploadListener="#{organisationsController.handleNewCommunityIconUpload}"
+					mode="advanced" dragDropSupport="false" sizeLimit="100000"
+					fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					update=":formOrganisations:messagesDisplayerFormOrganisations" />
+				<p:commandButton
+					value="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{organisationsController.onCreateCommunity(input1.value)}"
+					update="@form :formOrganisations"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateCommunity.hide(); }" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog
+			header="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
+			widgetVar="dialogCreateInstitution" modal="true" height="auto">
+			<h:form id="formCreateInstitution">
+				<h:panelGrid columns="3">
+					<h:outputLabel for="newInstitutionName"
+						value="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_MODAL_WINDOW.NAME_LABEL']}" />
+					<p:inputText id="newInstitutionName" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						binding="#{input2}" />
+					<p:message for="newInstitutionName" display="text" />
+				</h:panelGrid>
+				<p:commandButton
+					value="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{organisationsController.onCreateInstitution(input2.value)}"
+					update="@form :formOrganisations"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog
+			header="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+			widgetVar="dialogCreateAdministrativeDepartment" modal="true"
+			height="auto">
+			<h:form id="formCreateAdministrativeDepartment">
+				<h:panelGrid columns="3">
+					<h:outputLabel for="newAdministrativeDepartmentName"
+						value="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
+					<p:inputText id="newAdministrativeDepartmentName" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						binding="#{input3}" />
+					<p:message for="newAdministrativeDepartmentName" display="text" />
+				</h:panelGrid>
+				<p:commandButton
+					value="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{organisationsController.onCreateAdministrativeDepartment(input3.value)}"
+					update="@form :formOrganisations"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateAdministrativeDepartment.hide(); }" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog
+			header="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+			widgetVar="dialogCreateTeachingDepartment" modal="true" height="auto">
+			<h:form id="formCreateTeachingDepartment">
+				<h:panelGrid columns="3">
+					<h:outputLabel for="newTeachingDepartmentName"
+						value="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
+					<p:inputText id="newTeachingDepartmentName" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						binding="#{input4}" />
+					<p:message for="newTeachingDepartmentName" display="text" />
+				</h:panelGrid>
+				<p:commandButton
+					value="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{organisationsController.onCreateTeachingDepartment(input4.value)}"
+					update="@form :formOrganisations"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
+			</h:form>
+		</p:dialog>
 
 	</ui:define>
 </ui:composition>

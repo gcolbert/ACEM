@@ -64,3 +64,7 @@ td[role=gridcell] .ui-button {
 .ui-inplace-content input {
 	width:500px;
 }
+
+.ui-fileupload-buttonbar .ui-button {
+	float:none;
+}

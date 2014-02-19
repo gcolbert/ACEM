@@ -20,7 +20,10 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.Set;
+
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -38,12 +41,13 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 
 	private static final long serialVersionUID = -5662533287772515643L;
 
-	@Indexed(indexName = "indexComposante")
+	@Indexed(indexName = "indexOfTeachingDepartments")
 	private String name;
 
-	@RelatedTo(elementClass = Etablissement.class, type = "estUnePartieDe", direction = OUTGOING)
-	private Etablissement etablissement;
-
+	@RelatedTo(elementClass = EtablissementNode.class, type = "teachingDepartmentPartOfInstitution", direction = OUTGOING)
+	@Fetch
+	private Set<EtablissementNode> institutions;
+	
 	public ComposanteNode() {
 	}
 
@@ -52,8 +56,13 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 	}
 
 	@Override
-	public Etablissement getEtablissement() {
-		return etablissement;
+	public Set<? extends Etablissement> getInstitutions() {
+		return institutions;
+	}
+
+	@Override
+	public void setInstitutions(Set<? extends Etablissement> institutions) {
+		this.institutions  = (Set<EtablissementNode>) institutions;
 	}
 
 }

@@ -30,6 +30,10 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 
+/**
+ * @author Grégoire Colbert @since 2014-02-19
+ * 
+ */
 @Controller("resourcesTreeController")
 @Scope("view")
 public class ResourcesTreeController extends AbstractContextAwareController {

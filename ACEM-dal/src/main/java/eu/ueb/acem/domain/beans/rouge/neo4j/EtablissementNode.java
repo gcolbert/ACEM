@@ -19,14 +19,20 @@
 package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
+
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.rouge.Communaute;
+import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Service;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
@@ -42,7 +48,16 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 	private String name;
 
 	@RelatedTo(elementClass = CommunauteNode.class, type = "institutionMemberOfCommunity", direction = OUTGOING)
-	Communaute communaute;
+	@Fetch
+	private Set<CommunauteNode> communities;
+
+	@RelatedTo(elementClass = ComposanteNode.class, type = "teachingDepartmentPartOfInstitution", direction = INCOMING)
+	@Fetch
+	private Set<ComposanteNode> teachingDepartments;
+
+	@RelatedTo(elementClass = ServiceNode.class, type = "administrativeDepartmentPartOfInstitution", direction = INCOMING)
+	@Fetch
+	private Set<ServiceNode> administrativeDepartments;
 
 	public EtablissementNode() {
 	}
@@ -53,8 +68,33 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 	}
 
 	@Override
-	public Communaute getCommunaute() {
-		return communaute;
+	public Set<? extends Communaute> getCommunities() {
+		return communities;
+	}
+
+	@Override
+	public void setCommunities(Set<? extends Communaute> communities) {
+		this.communities = (Set<CommunauteNode>) communities;
+	}
+
+	@Override
+	public Set<? extends Composante> getTeachingDepartments() {
+		return teachingDepartments;
+	}
+
+	@Override
+	public void setTeachingDepartments(Set<? extends Composante> teachingDepartments) {
+		this.teachingDepartments = (Set<ComposanteNode>) teachingDepartments;
+	}
+
+	@Override
+	public Set<? extends Service> getAdministrativeDepartments() {
+		return administrativeDepartments;
+	}
+
+	@Override
+	public void setAdministrativeDepartments(Set<? extends Service> administrativeDepartments) {
+		this.administrativeDepartments = (Set<ServiceNode>) administrativeDepartments;
 	}
 
 }

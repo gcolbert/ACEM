@@ -41,6 +41,10 @@ import eu.ueb.acem.web.viewbeans.TableBean;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalActivityViewBean;
 import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
 
+/**
+ * @author Grégoire Colbert @since 2014-02-19
+ * 
+ */
 @Controller("myScenariosController")
 @Scope("view")
 public class MyScenariosController extends AbstractContextAwareController {
