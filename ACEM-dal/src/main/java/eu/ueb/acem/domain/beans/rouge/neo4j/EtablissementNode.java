@@ -62,9 +62,10 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 	public EtablissementNode() {
 	}
 
-	public EtablissementNode(String name) {
+	public EtablissementNode(String name, String shortname) {
 		this();
 		this.setName(name);
+		this.setShortname(shortname);
 	}
 
 	@Override

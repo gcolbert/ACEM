@@ -21,6 +21,8 @@ package eu.ueb.acem.services;
 import java.util.Collection;
 import java.util.HashSet;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,12 +48,16 @@ public class UsersServiceImpl implements UsersService {
 	public UsersServiceImpl() {
 		persons = new HashSet<Personne>();
 	}
-
-	@Override
-	public Collection<Personne> getPersons() {
+	
+	@PostConstruct
+	public void initUsersService() {
 		persons.clear();
 		persons.addAll(teacherDAO.retrieveAll());
 		persons.addAll(administratorDAO.retrieveAll());
+	}
+
+	@Override
+	public Collection<Personne> getPersons() {
 		return persons;
 	}
 

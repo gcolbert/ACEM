@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.Collection;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -46,6 +47,9 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
+	@Indexed(indexName = "indexOfAdministrators")
+	protected String name;
+	
 	@RelatedTo(elementClass = BesoinNode.class, type = "authorsNeed", direction = OUTGOING)
 	private Collection<Besoin> needs;
 

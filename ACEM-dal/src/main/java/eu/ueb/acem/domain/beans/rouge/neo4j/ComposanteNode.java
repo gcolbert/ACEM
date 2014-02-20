@@ -51,8 +51,9 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 	public ComposanteNode() {
 	}
 
-	public ComposanteNode(String name) {
+	public ComposanteNode(String name, String shortname) {
 		this.setName(name);
+		this.setShortname(shortname);
 	}
 
 	@Override

@@ -75,7 +75,7 @@ public class ScenariosServiceTest {
 	@Transactional
 	@Test
 	public final void t01_TestGetScenariosWithAuthor() {
-		Etablissement institution = organisationsService.createInstitution("University of Music");
+		Etablissement institution = organisationsService.createInstitution("University of Music", "UoM");
 		
 		Personne user = usersService.createPerson("Grégoire COLBERT", institution);
 

@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.services;
 
+import java.util.Collection;
+
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
@@ -33,15 +35,15 @@ public interface OrganisationsService {
 
 	Long countTeachingDepartments();
 
-	Communaute createCommunity(String name);
+	Communaute createCommunity(String name, String shortname);
 
-	Etablissement createInstitution(String name);
+	Etablissement createInstitution(String name, String shortname);
 
-	Service createAdministrativeDepartment(String name);
+	Service createAdministrativeDepartment(String name, String shortname);
 
-	Composante createTeachingDepartment(String name);
+	Composante createTeachingDepartment(String name, String shortname);
 
-	Communaute retrieveCommunity(String name);
+	Communaute retrieveCommunity(Long id);
 
 	Etablissement retrieveInstitution(Long id);
 
@@ -49,6 +51,14 @@ public interface OrganisationsService {
 
 	Composante retrieveTeachingDepartment(Long id);
 
+	Collection<Communaute> retrieveAllCommunities();
+	
+	Collection<Etablissement> retrieveAllInstitutions();
+	
+	Collection<Service> retrieveAllAdministrativeDepartments();
+	
+	Collection<Composante> retrieveAllTeachingDepartments();
+	
 	Communaute updateCommunity(Communaute community);
 
 	Etablissement updateInstitution(Etablissement institution);

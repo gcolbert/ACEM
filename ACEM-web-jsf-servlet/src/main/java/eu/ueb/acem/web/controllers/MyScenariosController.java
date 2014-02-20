@@ -34,7 +34,6 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.TableBean;
@@ -57,8 +56,6 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	private PedagogicalActivityViewBean selectedPedagogicalActivityViewBean;
 
-	private Personne currentUser;
-
 	@Autowired
 	ScenariosService scenariosService;
 
@@ -71,11 +68,10 @@ public class MyScenariosController extends AbstractContextAwareController {
 	@PostConstruct
 	public void initScenariosController() {
 		try {
-			currentUser = getCurrentUser();
-			logger.info("initScenariosController, currentUser={}", currentUser);
+			logger.info("initScenariosController, currentUser={}", getCurrentUser());
 
-			Collection<Scenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(currentUser);
-			logger.info("found {} scenarios for author {}", scenariosOfCurrentUser.size(), currentUser.getName());
+			Collection<Scenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(getCurrentUser());
+			logger.info("found {} scenarios for author {}", scenariosOfCurrentUser.size(), getCurrentUser().getName());
 			tableBean.getTableEntries().clear();
 			for (Scenario scenario : scenariosOfCurrentUser) {
 				logger.info("scenario = {}", scenario.getName());
@@ -89,20 +85,26 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 
 	public void createScenario(String name, String objective) {
-		Scenario scenario = scenariosService.createScenario(currentUser, name, objective);
-		if (scenario != null) {
-			ScenarioViewBean scenarioViewBean = new ScenarioViewBean(scenario);
-			tableBean.getTableEntries().add(scenarioViewBean);
-			tableBean.sortReverseOrder();
-			setSelectedScenarioViewBean(scenarioViewBean);
-			MessageDisplayer.showMessageToUserWithSeverityInfo(
-					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
-					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS"));
+		Scenario scenario;
+		try {
+			scenario = scenariosService.createScenario(getCurrentUser(), name, objective);
+			if (scenario != null) {
+				ScenarioViewBean scenarioViewBean = new ScenarioViewBean(scenario);
+				tableBean.getTableEntries().add(scenarioViewBean);
+				tableBean.sortReverseOrder();
+				setSelectedScenarioViewBean(scenarioViewBean);
+				MessageDisplayer.showMessageToUserWithSeverityInfo(
+						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
+						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS"));
+			}
+			else {
+				MessageDisplayer.showMessageToUserWithSeverityError(
+						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.TITLE"),
+						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.DETAILS"));
+			}
 		}
-		else {
-			MessageDisplayer.showMessageToUserWithSeverityError(
-					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.TITLE"),
-					getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.DETAILS"));
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

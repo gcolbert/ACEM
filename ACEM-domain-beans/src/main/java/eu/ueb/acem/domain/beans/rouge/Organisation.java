@@ -20,6 +20,7 @@ package eu.ueb.acem.domain.beans.rouge;
 
 import java.io.Serializable;
 import java.util.Collection;
+
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
@@ -33,6 +34,10 @@ public interface Organisation extends Serializable {
 	String getName();
 
 	void setName(String name);
+
+	String getShortname();
+
+	void setShortname(String shortname);
 
 	Collection<Ressource> getPossessedResources();
 

@@ -49,8 +49,10 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 	public CommunauteNode() {
 	}
 
-	public CommunauteNode(String name) {
+	public CommunauteNode(String name, String shortname) {
+		this();
 		this.setName(name);
+		this.setShortname(shortname);
 	}
 
 }

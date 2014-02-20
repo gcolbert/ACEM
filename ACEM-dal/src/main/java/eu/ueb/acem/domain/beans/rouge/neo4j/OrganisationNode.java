@@ -47,6 +47,8 @@ public abstract class OrganisationNode implements Organisation {
 
 	@Indexed(indexName = "indexOfOrganisations")
 	private String name;
+	
+	private String shortname;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "possessesResource", direction = OUTGOING)
 	private Collection<Ressource> possessedResources;
@@ -78,6 +80,16 @@ public abstract class OrganisationNode implements Organisation {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String getShortname() {
+		return shortname;
+	}
+
+	@Override
+	public void setShortname(String shortname) {
+		this.shortname = shortname;
 	}
 
 	@Override

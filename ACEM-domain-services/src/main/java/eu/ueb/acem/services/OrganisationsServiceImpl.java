@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.services;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.ueb.acem.dal.rouge.CommunauteDAO;
@@ -69,28 +71,28 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
-	public Communaute createCommunity(String name) {
-		return communityDAO.create(new CommunauteNode(name));
+	public Communaute createCommunity(String name, String shortname) {
+		return communityDAO.create(new CommunauteNode(name, shortname));
 	}
 
 	@Override
-	public Etablissement createInstitution(String name) {
-		return institutionDAO.create(new EtablissementNode(name));
+	public Etablissement createInstitution(String name, String shortname) {
+		return institutionDAO.create(new EtablissementNode(name, shortname));
 	}
 
 	@Override
-	public Service createAdministrativeDepartment(String name) {
-		return administrativeDepartmentDAO.create(new ServiceNode(name));
+	public Service createAdministrativeDepartment(String name, String shortname) {
+		return administrativeDepartmentDAO.create(new ServiceNode(name, shortname));
 	}
 
 	@Override
-	public Composante createTeachingDepartment(String name) {
-		return teachingDepartmentDAO.create(new ComposanteNode(name));
+	public Composante createTeachingDepartment(String name, String shortname) {
+		return teachingDepartmentDAO.create(new ComposanteNode(name, shortname));
 	}
 
 	@Override
-	public Communaute retrieveCommunity(String name) {
-		return communityDAO.create(new CommunauteNode(name));
+	public Communaute retrieveCommunity(Long id) {
+		return communityDAO.retrieveById(id);
 	}
 
 	@Override
@@ -106,6 +108,26 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Composante retrieveTeachingDepartment(Long id) {
 		return teachingDepartmentDAO.retrieveById(id);
+	}
+
+	@Override
+	public Collection<Communaute> retrieveAllCommunities() {
+		return communityDAO.retrieveAll();
+	}
+
+	@Override
+	public Collection<Etablissement> retrieveAllInstitutions() {
+		return institutionDAO.retrieveAll();
+	}
+
+	@Override
+	public Collection<Service> retrieveAllAdministrativeDepartments() {
+		return administrativeDepartmentDAO.retrieveAll();
+	}
+
+	@Override
+	public Collection<Composante> retrieveAllTeachingDepartments() {
+		return teachingDepartmentDAO.retrieveAll();
 	}
 
 	@Override

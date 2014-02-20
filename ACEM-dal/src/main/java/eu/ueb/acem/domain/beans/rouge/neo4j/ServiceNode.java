@@ -51,8 +51,9 @@ public class ServiceNode extends OrganisationNode implements Service {
 	public ServiceNode() {
 	}
 
-	public ServiceNode(String name) {
+	public ServiceNode(String name, String shortname) {
 		this.setName(name);
+		this.setShortname(shortname);
 	}
 
 	@Override
