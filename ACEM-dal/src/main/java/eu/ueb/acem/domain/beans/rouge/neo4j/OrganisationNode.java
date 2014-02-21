@@ -20,9 +20,10 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -51,10 +52,12 @@ public abstract class OrganisationNode implements Organisation {
 	private String shortname;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "possessesResource", direction = OUTGOING)
-	private Collection<Ressource> possessedResources;
+	@Fetch
+	private Set<RessourceNode> possessedResources;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "viewsResource", direction = OUTGOING)
-	private Collection<Ressource> viewedResources;
+	@Fetch
+	private Set<RessourceNode> viewedResources;
 
 	public OrganisationNode() {
 	}
@@ -93,13 +96,23 @@ public abstract class OrganisationNode implements Organisation {
 	}
 
 	@Override
-	public Collection<Ressource> getPossessedResources() {
+	public Set<? extends Ressource> getPossessedResources() {
 		return possessedResources;
 	}
 
 	@Override
-	public Collection<Ressource> getViewedResources() {
+	public void setPossessedResources(Set<? extends Ressource> possessedResources) {
+		possessedResources = (Set<RessourceNode>) possessedResources;
+	}
+	
+	@Override
+	public Set<? extends Ressource> getViewedResources() {
 		return viewedResources;
+	}
+	
+	@Override
+	public void setViewedResources(Set<? extends Ressource> viewedResources) {
+		viewedResources = (Set<RessourceNode>) viewedResources;
 	}
 
 }

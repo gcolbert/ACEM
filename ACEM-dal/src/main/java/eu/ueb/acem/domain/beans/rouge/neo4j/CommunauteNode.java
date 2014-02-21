@@ -20,9 +20,10 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.INCOMING;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -44,7 +45,8 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 	private String name;
 
 	@RelatedTo(elementClass = EtablissementNode.class, type = "institutionMemberOfCommunity", direction = INCOMING)
-	Collection<Etablissement> institutions;
+	@Fetch
+	private Set<EtablissementNode> institutions;
 	
 	public CommunauteNode() {
 	}
@@ -53,6 +55,16 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 		this();
 		this.setName(name);
 		this.setShortname(shortname);
+	}
+
+	@Override
+	public Set<? extends Etablissement> getInstitutions() {
+		return institutions;
+	}
+	
+	@Override
+	public void setInstitutions(Set<? extends Etablissement> institutions) {
+		institutions = (Set<EtablissementNode>) institutions;
 	}
 
 }

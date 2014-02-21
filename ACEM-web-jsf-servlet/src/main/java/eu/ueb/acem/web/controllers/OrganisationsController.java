@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
+import org.primefaces.event.TransferEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +34,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.rouge.Communaute;
+import eu.ueb.acem.domain.beans.rouge.Composante;
+import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
+import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
@@ -72,12 +77,25 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	private TeachingDepartmentViewBean selectedTeachingDepartmentViewBean;
 
+	private PickListBean<CommunityViewBean> pickListCommunityViewBeans;
+
+	private PickListBean<InstitutionViewBean> pickListInstitutionViewBeans;
+
+	private PickListBean<AdministrativeDepartmentViewBean> pickListAdministrativeDepartmentViewBeans;
+
+	private PickListBean<TeachingDepartmentViewBean> pickListTeachingDepartmentViewBeans;
+
 	public OrganisationsController() {
-		// TODO : replace those instanciation with @Autowired when Spring 4 will be used
+		// TODO : replace those hard-wired instanciations with @Autowired when
+		// Spring 4 will be used
 		communityViewBeans = new TableBean<CommunityViewBean>();
 		institutionViewBeans = new TableBean<InstitutionViewBean>();
 		administrativeDepartmentViewBeans = new TableBean<AdministrativeDepartmentViewBean>();
 		teachingDepartmentViewBeans = new TableBean<TeachingDepartmentViewBean>();
+		pickListCommunityViewBeans = new PickListBean<CommunityViewBean>();
+		pickListInstitutionViewBeans = new PickListBean<InstitutionViewBean>();
+		pickListAdministrativeDepartmentViewBeans = new PickListBean<AdministrativeDepartmentViewBean>();
+		pickListTeachingDepartmentViewBeans = new PickListBean<TeachingDepartmentViewBean>();
 	}
 
 	@PostConstruct
@@ -88,9 +106,46 @@ public class OrganisationsController extends AbstractContextAwareController {
 			communityViewBeans.getTableEntries().clear();
 			for (Communaute community : communities) {
 				logger.info("community = {}", community.getName());
-				communityViewBeans.getTableEntries().add(new CommunityViewBean(community));
+				CommunityViewBean communityViewBean = new CommunityViewBean(community);
+				communityViewBeans.getTableEntries().add(communityViewBean);
+				pickListCommunityViewBeans.addSourceEntity(communityViewBean);
 			}
 			communityViewBeans.sort();
+
+			Collection<Etablissement> institutions = organisationsService.retrieveAllInstitutions();
+			logger.info("found {} institutions", institutions.size());
+			institutionViewBeans.getTableEntries().clear();
+			for (Etablissement institution : institutions) {
+				logger.info("institution = {}", institution.getName());
+				InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
+				institutionViewBeans.getTableEntries().add(institutionViewBean);
+				pickListInstitutionViewBeans.addSourceEntity(institutionViewBean);
+			}
+			institutionViewBeans.sort();
+
+			Collection<Service> administrativeDepartments = organisationsService.retrieveAllAdministrativeDepartments();
+			logger.info("found {} administrative departments", administrativeDepartments.size());
+			administrativeDepartmentViewBeans.getTableEntries().clear();
+			for (Service administrativeDepartment : administrativeDepartments) {
+				logger.info("administrative department = {}", administrativeDepartment.getName());
+				AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
+						administrativeDepartment);
+				administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
+				pickListAdministrativeDepartmentViewBeans.addSourceEntity(administrativeDepartmentViewBean);
+			}
+			administrativeDepartmentViewBeans.sort();
+
+			Collection<Composante> teachingDepartments = organisationsService.retrieveAllTeachingDepartments();
+			logger.info("found {} teaching departments", teachingDepartments.size());
+			teachingDepartmentViewBeans.getTableEntries().clear();
+			for (Composante teachingDepartment : teachingDepartments) {
+				logger.info("teaching department = {}", teachingDepartment.getName());
+				TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(
+						teachingDepartment);
+				teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
+				pickListTeachingDepartmentViewBeans.addSourceEntity(teachingDepartmentViewBean);
+			}
+			teachingDepartmentViewBeans.sort();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -163,11 +218,60 @@ public class OrganisationsController extends AbstractContextAwareController {
 		this.selectedTeachingDepartmentViewBean = selectedTeachingDepartmentViewBean;
 	}
 
-	public void onCommunityTabChange(TabChangeEvent event) {
-		logger.info("onCommunityTabChange");
+	public PickListBean<CommunityViewBean> getPickListCommunityViewBeans() {
+		return pickListCommunityViewBeans;
+	}
+
+	public void setPickListCommunityViewBeans(PickListBean<CommunityViewBean> pickListCommunityViewBeans) {
+		this.pickListCommunityViewBeans = pickListCommunityViewBeans;
+	}
+
+	public PickListBean<InstitutionViewBean> getPickListInstitutionViewBeans() {
+		return pickListInstitutionViewBeans;
+	}
+
+	public void setPickListInstitutionViewBeans(PickListBean<InstitutionViewBean> pickListInstitutionViewBeans) {
+		this.pickListInstitutionViewBeans = pickListInstitutionViewBeans;
+	}
+
+	public PickListBean<AdministrativeDepartmentViewBean> getPickListAdministrativeDepartmentViewBeans() {
+		return pickListAdministrativeDepartmentViewBeans;
+	}
+
+	public void setPickListAdministrativeDepartmentViewBeans(
+			PickListBean<AdministrativeDepartmentViewBean> pickListAdministrativeDepartmentViewBeans) {
+		this.pickListAdministrativeDepartmentViewBeans = pickListAdministrativeDepartmentViewBeans;
+	}
+
+	public PickListBean<TeachingDepartmentViewBean> getPickListTeachingDepartmentViewBeans() {
+		return pickListTeachingDepartmentViewBeans;
+	}
+
+	public void setPickListTeachingDepartmentViewBeans(
+			PickListBean<TeachingDepartmentViewBean> pickListTeachingDepartmentViewBeans) {
+		this.pickListTeachingDepartmentViewBeans = pickListTeachingDepartmentViewBeans;
+	}
+
+	public void onCommunityAccordionPanelTabChange(TabChangeEvent event) {
+		logger.info("onCommunityTabChange, tab={}", event.getTab());
 		setSelectedCommunityViewBean((CommunityViewBean) event.getData());
 	}
-	
+
+	public void onInstitutionAccordionPanelTabChange(TabChangeEvent event) {
+		logger.info("onInstitutionTabChange, tab={}", event.getTab());
+		setSelectedInstitutionViewBean((InstitutionViewBean) event.getData());
+	}
+
+	public void onAdministrativeDepartmentAccordionPanelTabChange(TabChangeEvent event) {
+		logger.info("onAdministrativeDepartmentAccordionPanelTabChange, tab={}", event.getTab());
+		setSelectedAdministrativeDepartmentViewBean((AdministrativeDepartmentViewBean) event.getData());
+	}
+
+	public void onTeachingDepartmentAccordionPanelTabChange(TabChangeEvent event) {
+		logger.info("onTeachingDepartmentAccordionPanelTabChange, tab={}", event.getTab());
+		setSelectedTeachingDepartmentViewBean((TeachingDepartmentViewBean) event.getData());
+	}
+
 	public void onCommunityRowSelect(SelectEvent event) {
 		logger.info("onCommunityRowSelect");
 		setSelectedCommunityViewBean((CommunityViewBean) event.getObject());
@@ -187,7 +291,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 		logger.info("onAdministrativeDepartmentRowSelect");
 		setSelectedAdministrativeDepartmentViewBean((AdministrativeDepartmentViewBean) event.getObject());
 	}
-	
+
 	public void onCreateCommunity(String name, String shortname) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
 		Communaute community = organisationsService.createCommunity(name, shortname);
@@ -196,14 +300,31 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	public void onCreateInstitution(String name, String shortname) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateInstitution", name);
+		Etablissement institution = organisationsService.createInstitution(name, shortname);
+		institutionViewBeans.getTableEntries().add(new InstitutionViewBean(institution));
 	}
 
 	public void onCreateTeachingDepartment(String name, String shortname) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateTeachingDepartment", name);
+		Composante teachingDepartment = organisationsService.createTeachingDepartment(name, shortname);
+		teachingDepartmentViewBeans.getTableEntries().add(new TeachingDepartmentViewBean(teachingDepartment));
 	}
 
 	public void onCreateAdministrativeDepartment(String name, String shortname) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateAdministrativeDepartment", name);
+		Service administrativeDepartment = organisationsService.createAdministrativeDepartment(name, shortname);
+		administrativeDepartmentViewBeans.getTableEntries().add(
+				new AdministrativeDepartmentViewBean(administrativeDepartment));
+	}
+
+	public void onAssociateCommunity(TransferEvent event) {
+		StringBuilder builder = new StringBuilder();
+		for (Object item : event.getItems()) {
+			builder.append(((CommunityViewBean) item).getName()).append("<br />");
+		}
+		MessageDisplayer.showMessageToUserWithSeverityInfo(
+				getString("ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.TRANSFER_SUCCESSFUL.TITLE"),
+				builder.toString());
 	}
 
 	public void handleNewCommunityIconUpload(FileUploadEvent event) {

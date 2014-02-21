@@ -19,7 +19,7 @@
 package eu.ueb.acem.domain.beans.rouge;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
 
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
@@ -30,7 +30,7 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
 public interface Organisation extends Serializable {
 
 	Long getId();
-	
+
 	String getName();
 
 	void setName(String name);
@@ -39,8 +39,12 @@ public interface Organisation extends Serializable {
 
 	void setShortname(String shortname);
 
-	Collection<Ressource> getPossessedResources();
+	Set<? extends Ressource> getPossessedResources();
 
-	Collection<Ressource> getViewedResources();
+	void setPossessedResources(Set<? extends Ressource> possessedResources);
+
+	Set<? extends Ressource> getViewedResources();
+
+	void setViewedResources(Set<? extends Ressource> viewedResources);
 
 }

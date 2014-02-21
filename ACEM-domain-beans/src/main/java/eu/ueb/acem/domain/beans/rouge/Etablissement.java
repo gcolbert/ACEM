@@ -27,11 +27,11 @@ import java.util.Set;
 public interface Etablissement extends Organisation {
 
 	Set<? extends Communaute> getCommunities();
-	
+
 	void setCommunities(Set<? extends Communaute> communities);
-	
+
 	Set<? extends Composante> getTeachingDepartments();
-	
+
 	void setTeachingDepartments(Set<? extends Composante> teachingDepartments);
 
 	Set<? extends Service> getAdministrativeDepartments();

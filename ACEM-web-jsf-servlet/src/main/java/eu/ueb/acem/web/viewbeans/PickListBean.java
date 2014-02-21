@@ -20,12 +20,7 @@ package eu.ueb.acem.web.viewbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.primefaces.model.DualListModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -34,43 +29,41 @@ import org.springframework.stereotype.Component;
  * @param <E>
  * 
  */
-@Component("tableBean")
+@Component("pickListBean")
 @Scope("view")
-public class TableBean<E extends Comparable<E>> implements Serializable {
+public class PickListBean<E extends Comparable<E>> implements Serializable {
 
-	/**
-	 * For Logging.
-	 */
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(TableBean.class);
+	private static final long serialVersionUID = 5863029035918765493L;
 
-	private static final long serialVersionUID = -3164178023755035995L;
+	private DualListModel<E> pickListEntities;
 
-	private List<E> tableEntries;
-
-	public TableBean() {
-		tableEntries = new ArrayList<E>();
+	public PickListBean() {
+		pickListEntities = new DualListModel<E>();
+		pickListEntities.setSource(new ArrayList<E>());
+		pickListEntities.setTarget(new ArrayList<E>());
 	}
 
-	public List<E> getTableEntries() {
-		return tableEntries;
+	public DualListModel<E> getPickListEntities() {
+		return pickListEntities;
 	}
 
-	public List<E> setTableEntries(Collection<E> collectionEntities) {
-		tableEntries.clear();
-		for (E entity : collectionEntities) {
-			tableEntries.add(entity);
-		}
-		sortReverseOrder();
-		return tableEntries;
+	public void setPickListEntities(DualListModel<E> pickListEntities) {
+		this.pickListEntities = pickListEntities;
 	}
 
-	public void sort() {
-		Collections.sort(tableEntries);
+	/*
+	public void setLists(List<E> listSource, List<E> listTarget) {
+		pickListEntities.setSource(listSource);
+		pickListEntities.setTarget(listTarget);
+	}
+	*/
+
+	public void addSourceEntity(E entity) {
+		pickListEntities.getSource().add(entity);
 	}
 
-	public void sortReverseOrder() {
-		Collections.sort(tableEntries, Collections.reverseOrder());
+	public void addTargetEntity(E entity) {
+		pickListEntities.getTarget().add(entity);
 	}
 
 }
