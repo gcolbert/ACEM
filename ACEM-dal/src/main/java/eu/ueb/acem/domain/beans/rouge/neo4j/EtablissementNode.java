@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -60,6 +61,9 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 	private Set<ServiceNode> administrativeDepartments;
 
 	public EtablissementNode() {
+		communities = new HashSet<CommunauteNode>();
+		teachingDepartments = new HashSet<ComposanteNode>();
+		administrativeDepartments = new HashSet<ServiceNode>();
 	}
 
 	public EtablissementNode(String name, String shortname) {
@@ -96,6 +100,26 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 	@Override
 	public void setAdministrativeDepartments(Set<? extends Service> administrativeDepartments) {
 		this.administrativeDepartments = (Set<ServiceNode>) administrativeDepartments;
+	}
+
+	@Override
+	public void addCommunity(Communaute community) {
+		if (! communities.contains(community)) {
+			communities.add((CommunauteNode)community);
+		}
+		if (! community.getInstitutions().contains(this)) {
+			community.addInstitution(this);
+		}
+	}
+
+	@Override
+	public void removeCommunity(Communaute community) {
+		if (communities.contains(community)) {
+			communities.remove((CommunauteNode)community);
+		}
+		if (community.getInstitutions().contains(this)) {
+			community.removeInstitution(this);
+		}
 	}
 
 }

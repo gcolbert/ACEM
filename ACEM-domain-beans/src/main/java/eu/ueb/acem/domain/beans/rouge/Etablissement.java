@@ -38,4 +38,8 @@ public interface Etablissement extends Organisation {
 
 	void setAdministrativeDepartments(Set<? extends Service> administrativeDepartments);
 
+	void addCommunity(Communaute community);
+	
+	void removeCommunity(Communaute community);
+
 }

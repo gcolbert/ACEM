@@ -20,16 +20,26 @@ package eu.ueb.acem.web.viewbeans.gris;
 
 import java.io.Serializable;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.web.viewbeans.ViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
-public class PersonViewBean implements Serializable, Comparable<PersonViewBean> {
+/**
+ * @author Grégoire Colbert @since 2014-02-25
+ * 
+ */
+public class PersonViewBean implements ViewBean, Serializable, Comparable<PersonViewBean> {
 
 	private static final long serialVersionUID = 4401967530594259861L;
 
 	private Personne person;
 	
 	private OrganisationViewBean organisation;
+	
+	private Long id;
 	
 	private String name;
 	
@@ -65,6 +75,16 @@ public class PersonViewBean implements Serializable, Comparable<PersonViewBean> 
 
 	public void setOrganisation(OrganisationViewBean organisation) {
 		this.organisation = organisation;
+	}
+
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {

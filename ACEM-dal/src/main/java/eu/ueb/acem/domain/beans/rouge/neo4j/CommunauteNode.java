@@ -20,8 +20,11 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.INCOMING;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -39,6 +42,8 @@ import eu.ueb.acem.domain.beans.rouge.Etablissement;
 @TypeAlias("Organisation:Community")
 public class CommunauteNode extends OrganisationNode implements Communaute {
 
+	private static final Logger logger = LoggerFactory.getLogger(CommunauteNode.class);
+
 	private static final long serialVersionUID = 1861762804925897713L;
 
 	@Indexed(indexName = "indexOfCommunities")
@@ -47,8 +52,9 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 	@RelatedTo(elementClass = EtablissementNode.class, type = "institutionMemberOfCommunity", direction = INCOMING)
 	@Fetch
 	private Set<EtablissementNode> institutions;
-	
+
 	public CommunauteNode() {
+		institutions = new HashSet<EtablissementNode>();
 	}
 
 	public CommunauteNode(String name, String shortname) {
@@ -61,10 +67,36 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 	public Set<? extends Etablissement> getInstitutions() {
 		return institutions;
 	}
-	
+
 	@Override
 	public void setInstitutions(Set<? extends Etablissement> institutions) {
 		institutions = (Set<EtablissementNode>) institutions;
+	}
+
+	@Override
+	public void addInstitution(Etablissement institution) {
+		logger.info("addInstitution");
+		if (!institutions.contains(institution)) {
+			logger.info("adding institution in institutions");
+			institutions.add((EtablissementNode) institution);
+		}
+		if (!institution.getCommunities().contains(this)) {
+			logger.info("adding this community to institution");
+			institution.addCommunity(this);
+		}
+	}
+
+	@Override
+	public void removeInstitution(Etablissement institution) {
+		logger.info("removeInstitution");
+		if (institutions.contains(institution)) {
+			logger.info("removing institution from institutions");
+			institutions.remove((EtablissementNode)institution);
+		}
+		if (institution.getCommunities().contains(this)) {
+			logger.info("removing this community from institution");
+			institution.removeCommunity(this);
+		}
 	}
 
 }

@@ -19,6 +19,7 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -27,8 +28,13 @@ import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.web.viewbeans.ViewBean;
 
-public class InstitutionViewBean implements Serializable, Comparable<InstitutionViewBean> {
+/**
+ * @author Grégoire Colbert @since 2014-02-25
+ * 
+ */
+public class InstitutionViewBean implements ViewBean, Serializable, Comparable<InstitutionViewBean> {
 
 	private static final long serialVersionUID = 6170498010377898612L;
 
@@ -39,21 +45,24 @@ public class InstitutionViewBean implements Serializable, Comparable<Institution
 	private List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
 
 	private List<TeachingDepartmentViewBean> teachingDepartmentViewBeans;
-	
-	private Long id;
 
-	private String name;
+	private Long id;
 	
+	private String name;
+
 	private String shortname;
 
 	public InstitutionViewBean() {
+		communityViewBeans = new ArrayList<CommunityViewBean>();
+		administrativeDepartmentViewBeans = new ArrayList<AdministrativeDepartmentViewBean>();
+		teachingDepartmentViewBeans = new ArrayList<TeachingDepartmentViewBean>();
 	}
 
 	public InstitutionViewBean(Etablissement institution) {
 		this();
 		setInstitution(institution);
 	}
-	
+
 	@PostConstruct
 	public void initInstitutionViewBean() {
 		for (Communaute community : institution.getCommunities()) {
@@ -78,10 +87,12 @@ public class InstitutionViewBean implements Serializable, Comparable<Institution
 		setShortname(institution.getShortname());
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

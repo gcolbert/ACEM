@@ -57,14 +57,10 @@ td[role=gridcell] .ui-button {
 	width:100%;
 	height:300px;
 }
-.ui-dialog-content .ui-button {
+.dialogValidationButton {
 	float:right;
 }
 
 .ui-inplace-content input {
 	width:500px;
-}
-
-.ui-fileupload-buttonbar .ui-button {
-	float:none;
 }

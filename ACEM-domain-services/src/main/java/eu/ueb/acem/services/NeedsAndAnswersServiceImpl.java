@@ -42,9 +42,6 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 @Service("needsAndAnswersService")
 public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
-	/**
-	 * For Logging.
-	 */
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
 
 	@Autowired

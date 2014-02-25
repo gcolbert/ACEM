@@ -202,4 +202,25 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		teachingDepartmentDAO.deleteAll();
 	}
 
+	@Override
+	public Boolean associateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
+		Communaute community = communityDAO.retrieveById(idCommunity);
+		Etablissement institution = institutionDAO.retrieveById(idInstitution);
+		community.addInstitution(institution);
+		community = communityDAO.update(community);
+		institution = institutionDAO.update(institution);
+		return (community.getInstitutions().contains(institution));
+	}
+
+	@Override
+	public Boolean dissociateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
+		Communaute community = communityDAO.retrieveById(idCommunity);
+		Etablissement institution = institutionDAO.retrieveById(idInstitution);
+		community.removeInstitution(institution);
+		communityDAO.dissociateCommunityAndInstitution(community, institution);
+		community = communityDAO.update(community);
+		institution = institutionDAO.update(institution);
+		return (! community.getInstitutions().contains(institution));
+	}
+
 }

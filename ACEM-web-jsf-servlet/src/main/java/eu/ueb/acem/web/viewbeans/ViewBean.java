@@ -16,16 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.rouge.neo4j;
-
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
+package eu.ueb.acem.web.viewbeans;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public interface CommunauteRepository extends GenericRepository<CommunauteNode> {
+public interface ViewBean {
 
+	public Long getId();
+
+	public void setId(Long id);
+	
 }

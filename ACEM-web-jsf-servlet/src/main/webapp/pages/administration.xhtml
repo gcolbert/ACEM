@@ -42,7 +42,7 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_LABEL']}"
 							icon="ui-icon-plusthick"
-							onclick="PF('dialogCreateCommunity').show()" />
+							onclick="PF('dialogCreateCommunity').show()" process="@this" />
 						<p:accordionPanel
 							value="#{organisationsController.communityViewBeans.tableEntries}"
 							var="viewBean" activeIndex="-1">
@@ -53,10 +53,11 @@
 								<p:commandButton
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 									icon="ui-icon-transferthick-e-w"
-									onclick="PF('dialogAssociateInstitution').show()" />
+									onclick="PF('dialogAssociateInstitution').show()"
+									process="@this" />
 								<p:dataTable var="viewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{viewBean.institutionViewBeans.tableEntries}"
+									value="#{viewBean.institutionViewBeans}"
 									rowKey="#{viewBean.id}"
 									selection="#{organisationsController.selectedInstitutionViewBean}"
 									selectionMode="single">
@@ -71,12 +72,13 @@
 							</p:tab>
 						</p:accordionPanel>
 					</p:tab>
+
 					<p:tab
 						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_INSTITUTIONS_TITLE']}">
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_LABEL']}"
 							icon="ui-icon-plusthick"
-							onclick="PF('dialogCreateInstitution').show()" />
+							onclick="PF('dialogCreateInstitution').show()" process="@this" />
 						<p:accordionPanel
 							value="#{organisationsController.institutionViewBeans.tableEntries}"
 							var="viewBean" activeIndex="-1">
@@ -89,10 +91,11 @@
 										<p:commandButton
 											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
-											onclick="PF('dialogAssociateCommunity').show()" />
+											onclick="PF('dialogAssociateCommunity').show()"
+											process="@this" />
 										<p:dataTable var="viewBean"
 											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
-											value="#{viewBean.communityViewBeans.tableEntries}">
+											value="#{viewBean.communityViewBeans}">
 											<p:ajax event="rowSelect"
 												listener="#{organisationsController.onInstitutionRowSelect}"
 												update="@form" />
@@ -106,10 +109,11 @@
 										<p:commandButton
 											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
-											onclick="PF('dialogAssociateAdministrativeDepartment').show()" />
+											onclick="PF('dialogAssociateAdministrativeDepartment').show()"
+											process="@this" />
 										<p:dataTable var="viewBean"
 											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
-											value="#{viewBean.administrativeDepartmentViewBeans.tableEntries}">
+											value="#{viewBean.administrativeDepartmentViewBeans}">
 											<p:ajax event="rowSelect"
 												listener="#{organisationsController.onAdministrativeDepartmentRowSelect}"
 												update="@form" />
@@ -123,10 +127,11 @@
 										<p:commandButton
 											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
-											onclick="PF('dialogAssociateTeachingDepartment').show()" />
+											onclick="PF('dialogAssociateTeachingDepartment').show()"
+											process="@this" />
 										<p:dataTable var="viewBean"
 											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
-											value="#{viewBean.teachingDepartmentViewBeans.tableEntries}">
+											value="#{viewBean.teachingDepartmentViewBeans}">
 											<p:ajax event="rowSelect"
 												listener="#{organisationsController.onTeachingDepartmentRowSelect}"
 												update="@form" />
@@ -140,12 +145,14 @@
 							</p:tab>
 						</p:accordionPanel>
 					</p:tab>
+
 					<p:tab
 						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_ADMINISTRATIVE_DEPARTMENTS_TITLE']}">
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 							icon="ui-icon-plusthick"
-							onclick="PF('dialogCreateAdministrativeDepartment').show()" />
+							onclick="PF('dialogCreateAdministrativeDepartment').show()"
+							process="@this" />
 						<p:accordionPanel
 							value="#{organisationsController.administrativeDepartmentViewBeans.tableEntries}"
 							var="viewBean" activeIndex="-1">
@@ -157,10 +164,11 @@
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 									icon="ui-icon-transferthick-e-w"
 									onclick="PF('dialogAssociateInstitution').show()"
-									disabled="#{organisationsController.selectedAdministrativeDepartmentViewBean == null}" />
+									disabled="#{organisationsController.selectedAdministrativeDepartmentViewBean == null}"
+									process="@this" />
 								<p:dataTable var="viewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{viewBean.institutionViewBeans.tableEntries}">
+									value="#{viewBean.institutionViewBeans}">
 									<p:ajax event="rowSelect"
 										listener="#{organisationsController.onInstitutionRowSelect}"
 										update="@form" />
@@ -172,12 +180,14 @@
 							</p:tab>
 						</p:accordionPanel>
 					</p:tab>
+
 					<p:tab
 						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_TEACHING_DEPARTMENTS_TITLE']}">
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_LABEL']}"
 							icon="ui-icon-plusthick"
-							onclick="PF('dialogCreateTeachingDepartment').show()" />
+							onclick="PF('dialogCreateTeachingDepartment').show()"
+							process="@this" />
 						<p:accordionPanel
 							value="#{organisationsController.teachingDepartmentViewBeans.tableEntries}"
 							var="viewBean" activeIndex="-1">
@@ -189,10 +199,11 @@
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 									icon="ui-icon-transferthick-e-w"
 									onclick="PF('dialogAssociateInstitution').show()"
-									disabled="#{organisationsController.selectedTeachingDepartmentViewBean == null}" />
+									disabled="#{organisationsController.selectedTeachingDepartmentViewBean == null}"
+									process="@this" />
 								<p:dataTable var="viewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{viewBean.teachingDepartmentViewBeans.tableEntries}">
+									value="#{viewBean.teachingDepartmentViewBeans}">
 									<p:ajax event="rowSelect"
 										listener="#{organisationsController.onTeachingDepartmentRowSelect}"
 										update="@form" />
@@ -206,12 +217,10 @@
 					</p:tab>
 				</p:tabView>
 			</p:panel>
-		</h:form>
 
-		<p:dialog
-			header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogCreateCommunity" modal="true" height="auto">
-			<h:form id="formCreateCommunity">
+			<p:dialog id="idDialogCreateCommunity"
+				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogCreateCommunity" modal="true" height="auto">
 				<h:panelGrid columns="3">
 					<h:outputLabel for="newCommunityName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.NAME_LABEL']}" />
@@ -233,19 +242,18 @@
 					fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 					update=":formOrganisations:messagesDisplayerFormOrganisations" />
 				 -->
-				<p:commandButton
+				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateCommunity(input1.value, input1b.value)}"
-					update="@form :formOrganisations"
+					process="@this idDialogCreateCommunity"
+					update="@form idDialogCreateCommunity"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateCommunity.hide(); }" />
-			</h:form>
-		</p:dialog>
+			</p:dialog>
 
-		<p:dialog
-			header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogCreateInstitution" modal="true" height="auto">
-			<h:form id="formCreateInstitution">
+			<p:dialog id="idDialogCreateInstitution"
+				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogCreateInstitution" modal="true" height="auto">
 				<h:panelGrid columns="3">
 					<h:outputLabel for="newInstitutionName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.NAME_LABEL']}" />
@@ -261,20 +269,18 @@
 						binding="#{input2b}" />
 					<p:message for="newInstitutionShortName" display="text" />
 				</h:panelGrid>
-				<p:commandButton
+				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateInstitution(input2.value, input2b.value)}"
-					update="@form :formOrganisations"
+					process="@this idDialogCreateInstitution" update="@form"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
-			</h:form>
-		</p:dialog>
+			</p:dialog>
 
-		<p:dialog
-			header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogCreateAdministrativeDepartment" modal="true"
-			height="auto">
-			<h:form id="formCreateAdministrativeDepartment">
+			<p:dialog id="idDialogCreateAdministrativeDepartment"
+				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogCreateAdministrativeDepartment" modal="true"
+				height="auto">
 				<h:panelGrid columns="3">
 					<h:outputLabel for="newAdministrativeDepartmentName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
@@ -291,19 +297,19 @@
 					<p:message for="newAdministrativeDepartmentShortName"
 						display="text" />
 				</h:panelGrid>
-				<p:commandButton
+				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateAdministrativeDepartment(input3.value, input3b.value)}"
-					update="@form :formOrganisations"
+					process="@this idDialogCreateAdministrativeDepartment"
+					update="@form"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateAdministrativeDepartment.hide(); }" />
-			</h:form>
-		</p:dialog>
+			</p:dialog>
 
-		<p:dialog
-			header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogCreateTeachingDepartment" modal="true" height="auto">
-			<h:form id="formCreateTeachingDepartment">
+			<p:dialog id="idDialogCreateTeachingDepartment"
+				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogCreateTeachingDepartment" modal="true"
+				height="auto">
 				<h:panelGrid columns="3">
 					<h:outputLabel for="newTeachingDepartmentName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
@@ -319,44 +325,43 @@
 						binding="#{input4b}" />
 					<p:message for="newTeachingDepartmentShortName" display="text" />
 				</h:panelGrid>
-				<p:commandButton
+				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateTeachingDepartment(input4.value, input4b.value)}"
-					update="@form :formOrganisations"
+					process="@this idDialogCreateTeachingDepartment" update="@form"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
-			</h:form>
-		</p:dialog>
+			</p:dialog>
 
-		<p:dialog
-			header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogAssociateCommunity" modal="true" height="auto">
-			<h:form id="formAssociateCommunity">
+			<p:dialog id="idDialogAssociateCommunity"
+				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogAssociateCommunity" modal="true" height="auto">
 				<p:pickList id="dialogAssociateCommunityPickList"
 					value="#{organisationsController.pickListCommunityViewBeans.pickListEntities}"
-					var="communityViewBean" itemLabel="#{communityViewBean.name}"
-					itemValue="#{communityViewBean}" converter="communityViewBean"
-					showSourceControls="true" showTargetControls="true"
+					var="communityViewBean" itemValue="#{communityViewBean}"
+					itemLabel="#{communityViewBean.name}" converter="PickListConverter"
+					showSourceControls="false" showTargetControls="false"
 					showCheckbox="true" showSourceFilter="true" showTargetFilter="true"
 					filterMatchMode="contains">
+					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onAssociateCommunity}"
-						update=":formOrganisations:messagesDisplayerFormOrganisations" />
+						update="@this dialogAssociateCommunityPickList"
+						process="@this" />
 				</p:pickList>
-				<!-- 
 				<p:commandButton
+					styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check"
-					onclick="PF('dialogAssociateCommunity').close()"
-					update="@form :formOrganisations" />
-				 -->
-			</h:form>
-		</p:dialog>
+					onclick="PF('dialogAssociateCommunity').hide()"
+					update="@none"
+					process="@this idDialogAssociateCommunity" />
+			</p:dialog>
 
-		<p:dialog
-			header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogAssociateInstitution" modal="true" height="auto">
-			<h:form id="formAssociateInstitution">
+			<p:dialog id="idDialogAssociateInstitution"
+				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogAssociateInstitution" modal="true" height="auto">
 				<!-- 
 				<h:panelGrid columns="3">
 					<h:outputLabel for="newTeachingDepartmentName"
@@ -373,14 +378,12 @@
 					update="@form :formOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
 			-->
-			</h:form>
-		</p:dialog>
+			</p:dialog>
 
-		<p:dialog
-			header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogAssociateAdministrativeDepartment" modal="true"
-			height="auto">
-			<h:form id="formAssociateAdministrativeDepartment">
+			<p:dialog id="idDialogAssociateAdministrativeDepartment"
+				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogAssociateAdministrativeDepartment" modal="true"
+				height="auto">
 				<!-- 
 				<h:panelGrid columns="3">
 					<h:outputLabel for="newTeachingDepartmentName"
@@ -397,14 +400,12 @@
 					update="@form :formOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
 			-->
-			</h:form>
-		</p:dialog>
+			</p:dialog>
 
-		<p:dialog
-			header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogAssociateTeachingDepartment" modal="true"
-			height="auto">
-			<h:form id="formAssociateTeachingDepartment">
+			<p:dialog id="idDialogAssociateTeachingDepartment"
+				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogAssociateTeachingDepartment" modal="true"
+				height="auto">
 				<!-- 
 				<h:panelGrid columns="3">
 					<h:outputLabel for="newTeachingDepartmentName"
@@ -421,8 +422,9 @@
 					update="@form :formOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
 			-->
-			</h:form>
-		</p:dialog>
+			</p:dialog>
+
+		</h:form>
 
 	</ui:define>
 </ui:composition>

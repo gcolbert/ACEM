@@ -20,6 +20,7 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -49,6 +50,7 @@ public class ServiceNode extends OrganisationNode implements Service {
 	private Set<EtablissementNode> institutions;
 
 	public ServiceNode() {
+		institutions = new HashSet<EtablissementNode>();
 	}
 
 	public ServiceNode(String name, String shortname) {

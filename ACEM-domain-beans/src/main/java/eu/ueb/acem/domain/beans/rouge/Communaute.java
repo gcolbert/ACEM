@@ -30,4 +30,8 @@ public interface Communaute extends Organisation {
 
 	void setInstitutions(Set<? extends Etablissement> institutions);
 
+	void addInstitution(Etablissement institution);
+
+	void removeInstitution(Etablissement institution);
+	
 }

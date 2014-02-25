@@ -20,6 +20,7 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -60,6 +61,8 @@ public abstract class OrganisationNode implements Organisation {
 	private Set<RessourceNode> viewedResources;
 
 	public OrganisationNode() {
+		possessedResources = new HashSet<RessourceNode>();
+		viewedResources = new HashSet<RessourceNode>();
 	}
 
 	public OrganisationNode(String name) {

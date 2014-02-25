@@ -19,26 +19,42 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.services.ScenariosServiceImpl;
+import eu.ueb.acem.web.viewbeans.ViewBean;
 
-public class AdministrativeDepartmentViewBean implements Serializable, Comparable<AdministrativeDepartmentViewBean> {
+/**
+ * @author Grégoire Colbert @since 2014-02-25
+ * 
+ */
+public class AdministrativeDepartmentViewBean implements ViewBean, Serializable,
+		Comparable<AdministrativeDepartmentViewBean> {
 
+	private static final Logger logger = LoggerFactory.getLogger(ScenariosServiceImpl.class);
+	
 	private static final long serialVersionUID = -5647852694643666952L;
 
 	private Service administrativeDepartment;
-	
+
 	private List<InstitutionViewBean> institutionViewBeans;
-	
+
 	private Long id;
 	
 	private String name;
 
 	public AdministrativeDepartmentViewBean() {
+		institutionViewBeans = new ArrayList<InstitutionViewBean>();
 	}
 
 	public AdministrativeDepartmentViewBean(Service service) {
@@ -51,7 +67,7 @@ public class AdministrativeDepartmentViewBean implements Serializable, Comparabl
 			institutionViewBeans.add(new InstitutionViewBean(institution));
 		}
 	}
-	
+
 	public Service getAdministrativeDepartment() {
 		return administrativeDepartment;
 	}
@@ -62,10 +78,12 @@ public class AdministrativeDepartmentViewBean implements Serializable, Comparabl
 		setName(administrativeDepartment.getName());
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

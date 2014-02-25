@@ -20,6 +20,7 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -47,8 +48,9 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 	@RelatedTo(elementClass = EtablissementNode.class, type = "teachingDepartmentPartOfInstitution", direction = OUTGOING)
 	@Fetch
 	private Set<EtablissementNode> institutions;
-	
+
 	public ComposanteNode() {
+		institutions = new HashSet<EtablissementNode>();
 	}
 
 	public ComposanteNode(String name, String shortname) {
@@ -63,7 +65,7 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 
 	@Override
 	public void setInstitutions(Set<? extends Etablissement> institutions) {
-		this.institutions  = (Set<EtablissementNode>) institutions;
+		this.institutions = (Set<EtablissementNode>) institutions;
 	}
 
 }

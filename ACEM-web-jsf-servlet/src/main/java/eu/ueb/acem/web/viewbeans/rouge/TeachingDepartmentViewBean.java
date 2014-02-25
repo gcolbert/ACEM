@@ -19,26 +19,37 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.web.viewbeans.ViewBean;
 
-public class TeachingDepartmentViewBean implements Serializable, Comparable<TeachingDepartmentViewBean> {
+/**
+ * @author Grégoire Colbert @since 2014-02-25
+ * 
+ */
+public class TeachingDepartmentViewBean implements ViewBean, Serializable,
+		Comparable<TeachingDepartmentViewBean> {
 
 	private static final long serialVersionUID = 6787135851384385849L;
 
 	private Composante teachingDepartment;
-	
+
 	private List<InstitutionViewBean> institutionViewBeans;
-	
+
 	private Long id;
 	
 	private String name;
 
 	public TeachingDepartmentViewBean() {
+		institutionViewBeans = new ArrayList<InstitutionViewBean>();
 	}
 
 	public TeachingDepartmentViewBean(Composante teachingDepartment) {
@@ -51,7 +62,7 @@ public class TeachingDepartmentViewBean implements Serializable, Comparable<Teac
 			institutionViewBeans.add(new InstitutionViewBean(institution));
 		}
 	}
-	
+
 	public Composante getTeachingDepartment() {
 		return teachingDepartment;
 	}
@@ -62,10 +73,12 @@ public class TeachingDepartmentViewBean implements Serializable, Comparable<Teac
 		setName(teachingDepartment.getName());
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

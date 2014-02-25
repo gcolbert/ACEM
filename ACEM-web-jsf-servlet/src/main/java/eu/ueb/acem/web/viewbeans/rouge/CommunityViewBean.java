@@ -19,14 +19,23 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.web.viewbeans.ViewBean;
 
-public class CommunityViewBean implements Serializable, Comparable<CommunityViewBean> {
+/**
+ * @author Grégoire Colbert @since 2014-02-25
+ * 
+ */
+public class CommunityViewBean implements ViewBean, Serializable, Comparable<CommunityViewBean> {
 
 	private static final long serialVersionUID = -116654020465612191L;
 
@@ -41,11 +50,16 @@ public class CommunityViewBean implements Serializable, Comparable<CommunityView
 	private String shortname;
 
 	public CommunityViewBean() {
+		institutionViewBeans = new ArrayList<InstitutionViewBean>();
 	}
 
 	public CommunityViewBean(Communaute community) {
 		this();
 		setCommunity(community);
+	}
+
+	public Communaute getCommunity() {
+		return community;
 	}
 
 	public void setCommunity(Communaute community) {
@@ -57,11 +71,13 @@ public class CommunityViewBean implements Serializable, Comparable<CommunityView
 
 	@PostConstruct
 	public void initCommunityViewBean() {
-		for (Etablissement institution : community.getInstitutions()) {
-			institutionViewBeans.add(new InstitutionViewBean(institution));
+		if (community != null) {
+			for (Etablissement institution : community.getInstitutions()) {
+				institutionViewBeans.add(new InstitutionViewBean(institution));
+			}
 		}
 	}
-	
+
 	public List<InstitutionViewBean> getInstitutionViewBeans() {
 		return institutionViewBeans;
 	}
@@ -70,10 +86,12 @@ public class CommunityViewBean implements Serializable, Comparable<CommunityView
 		this.institutionViewBeans = institutionViewBeans;
 	}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

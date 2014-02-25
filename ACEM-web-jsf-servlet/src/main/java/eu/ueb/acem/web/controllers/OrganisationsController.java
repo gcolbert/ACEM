@@ -253,12 +253,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void onCommunityAccordionPanelTabChange(TabChangeEvent event) {
-		logger.info("onCommunityTabChange, tab={}", event.getTab());
+		logger.info("onCommunityAccordionPanelTabChange, tab={}", event.getTab());
 		setSelectedCommunityViewBean((CommunityViewBean) event.getData());
 	}
 
 	public void onInstitutionAccordionPanelTabChange(TabChangeEvent event) {
-		logger.info("onInstitutionTabChange, tab={}", event.getTab());
+		logger.info("onInstitutionAccordionPanelTabChange, tab={}", event.getTab());
 		setSelectedInstitutionViewBean((InstitutionViewBean) event.getData());
 	}
 
@@ -295,36 +295,59 @@ public class OrganisationsController extends AbstractContextAwareController {
 	public void onCreateCommunity(String name, String shortname) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
 		Communaute community = organisationsService.createCommunity(name, shortname);
-		communityViewBeans.getTableEntries().add(new CommunityViewBean(community));
+		CommunityViewBean communityViewBean = new CommunityViewBean(community);
+		pickListCommunityViewBeans.addSourceEntity(communityViewBean);
+		communityViewBeans.getTableEntries().add(communityViewBean);
+		communityViewBeans.sort();
 	}
 
 	public void onCreateInstitution(String name, String shortname) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateInstitution", name);
 		Etablissement institution = organisationsService.createInstitution(name, shortname);
-		institutionViewBeans.getTableEntries().add(new InstitutionViewBean(institution));
+		InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
+		pickListInstitutionViewBeans.addSourceEntity(institutionViewBean);
+		institutionViewBeans.getTableEntries().add(institutionViewBean);
+		institutionViewBeans.sort();
 	}
 
 	public void onCreateTeachingDepartment(String name, String shortname) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateTeachingDepartment", name);
 		Composante teachingDepartment = organisationsService.createTeachingDepartment(name, shortname);
-		teachingDepartmentViewBeans.getTableEntries().add(new TeachingDepartmentViewBean(teachingDepartment));
+		TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
+		pickListTeachingDepartmentViewBeans.addSourceEntity(teachingDepartmentViewBean);
+		teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
+		teachingDepartmentViewBeans.sort();
 	}
 
 	public void onCreateAdministrativeDepartment(String name, String shortname) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateAdministrativeDepartment", name);
 		Service administrativeDepartment = organisationsService.createAdministrativeDepartment(name, shortname);
-		administrativeDepartmentViewBeans.getTableEntries().add(
-				new AdministrativeDepartmentViewBean(administrativeDepartment));
+		AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
+				administrativeDepartment);
+		pickListAdministrativeDepartmentViewBeans.addSourceEntity(administrativeDepartmentViewBean);
+		administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
+		administrativeDepartmentViewBeans.sort();
 	}
 
 	public void onAssociateCommunity(TransferEvent event) {
-		StringBuilder builder = new StringBuilder();
-		for (Object item : event.getItems()) {
-			builder.append(((CommunityViewBean) item).getName()).append("<br />");
+		for (CommunityViewBean communityViewBean : pickListCommunityViewBeans.getPickListEntities().getSource()) {
+			if (selectedInstitutionViewBean.getCommunityViewBeans().contains(communityViewBean)) {
+				logger.info("We should dissociate {} and {}", communityViewBean.getName(), selectedInstitutionViewBean.getName());
+				if (organisationsService.dissociateCommunityAndInstitution(communityViewBean.getCommunity().getId(), selectedInstitutionViewBean.getInstitution().getId())) {
+					logger.info("successfully dissociated, we modify the view beans");
+				}
+				selectedInstitutionViewBean.getCommunityViewBeans().remove(communityViewBean);
+			}
 		}
-		MessageDisplayer.showMessageToUserWithSeverityInfo(
-				getString("ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.TRANSFER_SUCCESSFUL.TITLE"),
-				builder.toString());
+		for (CommunityViewBean communityViewBean : pickListCommunityViewBeans.getPickListEntities().getTarget()) {
+			if (!selectedInstitutionViewBean.getCommunityViewBeans().contains(communityViewBean)) {
+				logger.info("We should associate {} and {}", communityViewBean.getName(), selectedInstitutionViewBean.getName());
+				if (organisationsService.associateCommunityAndInstitution(communityViewBean.getCommunity().getId(), selectedInstitutionViewBean.getInstitution().getId())) {
+					logger.info("successfully associated, we modify the view beans");
+				}
+				selectedInstitutionViewBean.getCommunityViewBeans().add(communityViewBean);
+			}
+		}
 	}
 
 	public void handleNewCommunityIconUpload(FileUploadEvent event) {
