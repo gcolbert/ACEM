@@ -20,7 +20,6 @@ package eu.ueb.acem.dal.rouge.neo4j;
 
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20

@@ -68,33 +68,28 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 		return institutions;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setInstitutions(Set<? extends Etablissement> institutions) {
-		institutions = (Set<EtablissementNode>) institutions;
+		this.institutions = (Set<EtablissementNode>) institutions;
 	}
 
 	@Override
 	public void addInstitution(Etablissement institution) {
-		logger.info("addInstitution");
 		if (!institutions.contains(institution)) {
-			logger.info("adding institution in institutions");
 			institutions.add((EtablissementNode) institution);
 		}
 		if (!institution.getCommunities().contains(this)) {
-			logger.info("adding this community to institution");
 			institution.addCommunity(this);
 		}
 	}
 
 	@Override
 	public void removeInstitution(Etablissement institution) {
-		logger.info("removeInstitution");
-		if (institutions.contains(institution)) {
-			logger.info("removing institution from institutions");
+		if (this.getInstitutions().contains(institution)) {
 			institutions.remove((EtablissementNode)institution);
 		}
 		if (institution.getCommunities().contains(this)) {
-			logger.info("removing this community from institution");
 			institution.removeCommunity(this);
 		}
 	}

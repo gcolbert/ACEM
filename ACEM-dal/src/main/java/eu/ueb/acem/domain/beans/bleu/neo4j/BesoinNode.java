@@ -46,9 +46,6 @@ public class BesoinNode implements Besoin {
 
 	private static final long serialVersionUID = -774562771501521566L;
 
-	/**
-	 * For Logging.
-	 */
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(BesoinNode.class);
 
@@ -102,6 +99,7 @@ public class BesoinNode implements Besoin {
 		return parents;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setParents(Set<? extends Besoin> parents) {
 		this.parents = (Set<BesoinNode>) parents;
@@ -132,6 +130,7 @@ public class BesoinNode implements Besoin {
 		return children;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setChildren(Set<? extends Besoin> children) {
 		this.children = (Set<BesoinNode>) children;
@@ -162,6 +161,7 @@ public class BesoinNode implements Besoin {
 		return answers;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setAnswers(Set<? extends Reponse> answers) {
 		this.answers = (Set<ReponseNode>) answers;

@@ -36,6 +36,7 @@ import org.springframework.stereotype.Repository;
  *   but for now, we cannot use Spring 4 because Spring Data Neo4j isn't yet compatible.
  */
 //@Repository("genericDAO")
+@SuppressWarnings("unused")
 public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<Long, E> {
 
 	// @Autowired
@@ -46,6 +47,7 @@ public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<
 		return (id != null) ? repository.exists(id) : false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public E create(E entity) {
 		return (E) repository.save((N) entity);
@@ -74,11 +76,13 @@ public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<
 		return collection;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public E update(E entity) {
 		return (E) repository.save((N) entity);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void delete(E entity) {
 		repository.delete((N) entity);

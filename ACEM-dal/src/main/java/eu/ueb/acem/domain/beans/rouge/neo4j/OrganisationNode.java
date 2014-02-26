@@ -103,9 +103,10 @@ public abstract class OrganisationNode implements Organisation {
 		return possessedResources;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setPossessedResources(Set<? extends Ressource> possessedResources) {
-		possessedResources = (Set<RessourceNode>) possessedResources;
+		this.possessedResources = (Set<RessourceNode>) possessedResources;
 	}
 	
 	@Override
@@ -113,9 +114,10 @@ public abstract class OrganisationNode implements Organisation {
 		return viewedResources;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setViewedResources(Set<? extends Ressource> viewedResources) {
-		viewedResources = (Set<RessourceNode>) viewedResources;
+		this.viewedResources = (Set<RessourceNode>) viewedResources;
 	}
 
 }

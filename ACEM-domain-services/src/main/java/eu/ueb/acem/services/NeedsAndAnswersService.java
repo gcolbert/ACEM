@@ -56,15 +56,11 @@ public interface NeedsAndAnswersService {
 
 	void deleteAllAnswers();
 
-	Collection<Besoin> getAssociatedNeedsOf(Besoin need);
-
 	Besoin createOrUpdateNeed(Long id, String name, Long idParent);
 
 	void saveNeedName(Long id, String newName);
 	
 	void changeParentOfNeed(Long id, Long idNewParent);
-
-	Collection<Reponse> getAssociatedAnswersOf(Besoin need);
 
 	Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
 

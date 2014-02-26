@@ -22,17 +22,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.web.viewbeans.ViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public class PedagogicalActivityViewBean implements ViewBean, Serializable, Comparable<PedagogicalActivityViewBean> {
+public class PedagogicalActivityViewBean implements Pickable, Serializable, Comparable<PedagogicalActivityViewBean> {
 
 	private static final long serialVersionUID = 8190209757734229700L;
 

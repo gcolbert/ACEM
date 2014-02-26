@@ -22,7 +22,7 @@ package eu.ueb.acem.web.viewbeans;
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public interface ViewBean {
+public interface Pickable {
 
 	public Long getId();
 

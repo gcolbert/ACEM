@@ -19,6 +19,7 @@
 package eu.ueb.acem.services;
 
 import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 @Service("scenariosService")
 public class ScenariosServiceImpl implements ScenariosService {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ScenariosServiceImpl.class);
 
 	@Autowired

@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-25
@@ -65,8 +66,8 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	public Personne getUser(String uid) {
 		Personne user = enseignantDAO.retrieveByName(uid);
 		if (user == null) {
+			user = enseignantDAO.create(new EnseignantNode(uid));
 			user.setLogin(uid);
-			user.setName(uid);
 			user.setLanguage("fr");
 		}
 		return user;

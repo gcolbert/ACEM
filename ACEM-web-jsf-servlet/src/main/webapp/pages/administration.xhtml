@@ -55,6 +55,7 @@
 									icon="ui-icon-transferthick-e-w"
 									onclick="PF('dialogAssociateInstitution').show()"
 									process="@this" />
+									<!-- 
 								<p:dataTable var="viewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 									value="#{viewBean.institutionViewBeans}"
@@ -69,6 +70,7 @@
 										<h:outputText value="#{viewBean.name}" />
 									</p:column>
 								</p:dataTable>
+								 -->
 							</p:tab>
 						</p:accordionPanel>
 					</p:tab>
@@ -88,14 +90,37 @@
 							<p:tab title="#{viewBean.name}">
 								<p:panelGrid columns="3">
 									<p:column>
+										<!-- 
 										<p:commandButton
 											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
+											actionListener="organisationsController.preparePicklistForSelectedInstitution"
 											onclick="PF('dialogAssociateCommunity').show()"
-											process="@this" />
+											process="@this" />	
+											 -->
+										<p:commandButton
+											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_LABEL']}"
+											icon="ui-icon-transferthick-e-w"
+											action="#{organisationsController.preparePicklistCommunityViewBeansForSelectedInstitution()}"
+											oncomplete="PF('dialogAssociateCommunity').show()"
+											update=":formOrganisations:idDialogAssociateCommunity"
+											process="@this"/>
+											<!-- 
 										<p:dataTable var="viewBean"
 											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
 											value="#{viewBean.communityViewBeans}">
+											<p:ajax event="rowSelect"
+												listener="#{organisationsController.onInstitutionRowSelect}"
+												update="@form" />
+											<p:column
+												headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.COLUMN_HEADER.NAME']}">
+												<h:outputText value="#{viewBean.name}" />
+											</p:column>
+										</p:dataTable>
+										 -->
+										<p:dataTable var="viewBean"
+											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
+											value="#{organisationsController.communityViewBeansForSelectedInstitution}">
 											<p:ajax event="rowSelect"
 												listener="#{organisationsController.onInstitutionRowSelect}"
 												update="@form" />
@@ -111,6 +136,7 @@
 											icon="ui-icon-transferthick-e-w"
 											onclick="PF('dialogAssociateAdministrativeDepartment').show()"
 											process="@this" />
+											<!-- 
 										<p:dataTable var="viewBean"
 											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
 											value="#{viewBean.administrativeDepartmentViewBeans}">
@@ -122,6 +148,7 @@
 												<h:outputText value="#{viewBean.name}" />
 											</p:column>
 										</p:dataTable>
+										 -->
 									</p:column>
 									<p:column>
 										<p:commandButton
@@ -129,6 +156,7 @@
 											icon="ui-icon-transferthick-e-w"
 											onclick="PF('dialogAssociateTeachingDepartment').show()"
 											process="@this" />
+											<!-- 
 										<p:dataTable var="viewBean"
 											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
 											value="#{viewBean.teachingDepartmentViewBeans}">
@@ -140,6 +168,7 @@
 												<h:outputText value="#{viewBean.name}" />
 											</p:column>
 										</p:dataTable>
+										 -->
 									</p:column>
 								</p:panelGrid>
 							</p:tab>
@@ -166,6 +195,7 @@
 									onclick="PF('dialogAssociateInstitution').show()"
 									disabled="#{organisationsController.selectedAdministrativeDepartmentViewBean == null}"
 									process="@this" />
+									<!-- 
 								<p:dataTable var="viewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 									value="#{viewBean.institutionViewBeans}">
@@ -177,6 +207,7 @@
 										<h:outputText value="#{viewBean.name}" />
 									</p:column>
 								</p:dataTable>
+								 -->
 							</p:tab>
 						</p:accordionPanel>
 					</p:tab>
@@ -201,17 +232,19 @@
 									onclick="PF('dialogAssociateInstitution').show()"
 									disabled="#{organisationsController.selectedTeachingDepartmentViewBean == null}"
 									process="@this" />
+									<!-- 
 								<p:dataTable var="viewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{viewBean.teachingDepartmentViewBeans}">
+									value="#{viewBean.institutionViewBeans}">
 									<p:ajax event="rowSelect"
-										listener="#{organisationsController.onTeachingDepartmentRowSelect}"
+										listener="#{organisationsController.onInstitutionRowSelect}"
 										update="@form" />
 									<p:column
 										headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
 										<h:outputText value="#{viewBean.name}" />
 									</p:column>
 								</p:dataTable>
+								 -->
 							</p:tab>
 						</p:accordionPanel>
 					</p:tab>
@@ -346,16 +379,13 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{organisationsController.onAssociateCommunity}"
-						update="@this dialogAssociateCommunityPickList"
-						process="@this" />
+						listener="#{organisationsController.onTransferCommunity}"
+						update="@this :formOrganisations:dialogAssociateCommunityPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations" process="@this" />
 				</p:pickList>
-				<p:commandButton
-					styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
-					onclick="PF('dialogAssociateCommunity').hide()"
-					update="@none"
+					onclick="PF('dialogAssociateCommunity').hide()" update="@none"
 					process="@this idDialogAssociateCommunity" />
 			</p:dialog>
 

@@ -30,9 +30,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.rouge.neo4j.CommunauteRepository;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
 
 /**
  * @author Grégoire Colbert @since 2014-02-07
@@ -102,10 +100,6 @@ public class CommunauteDAO implements DAO<Long, Communaute> {
 	@Override
 	public Long count() {
 		return repository.count();
-	}
-
-	public void dissociateCommunityAndInstitution(Communaute community, Etablissement institution) {
-		repository.deleteRelationshipBetween((CommunauteNode) community, (Etablissement)institution, "institutionMemberOfCommunity");
 	}
 	
 }

@@ -24,44 +24,44 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
-import eu.ueb.acem.web.viewbeans.ViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public class TeachingDepartmentViewBean implements ViewBean, Serializable,
+public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickable, Serializable,
 		Comparable<TeachingDepartmentViewBean> {
 
 	private static final long serialVersionUID = 6787135851384385849L;
 
 	private Composante teachingDepartment;
 
-	private List<InstitutionViewBean> institutionViewBeans;
+	//private List<InstitutionViewBean> institutionViewBeans;
 
 	private Long id;
 	
 	private String name;
 
 	public TeachingDepartmentViewBean() {
-		institutionViewBeans = new ArrayList<InstitutionViewBean>();
+		//institutionViewBeans = new ArrayList<InstitutionViewBean>();
 	}
 
 	public TeachingDepartmentViewBean(Composante teachingDepartment) {
+		this();
 		setTeachingDepartment(teachingDepartment);
 	}
 
-	@PostConstruct
+	//@PostConstruct
+	/*
 	public void initTeachingDepartmentViewBean() {
 		for (Etablissement institution : teachingDepartment.getInstitutions()) {
 			institutionViewBeans.add(new InstitutionViewBean(institution));
 		}
 	}
+	*/
 
 	public Composante getTeachingDepartment() {
 		return teachingDepartment;
@@ -71,6 +71,7 @@ public class TeachingDepartmentViewBean implements ViewBean, Serializable,
 		this.teachingDepartment = teachingDepartment;
 		setId(teachingDepartment.getId());
 		setName(teachingDepartment.getName());
+		//initTeachingDepartmentViewBean();
 	}
 
 	@Override
@@ -91,6 +92,7 @@ public class TeachingDepartmentViewBean implements ViewBean, Serializable,
 		this.name = name;
 	}
 
+	/*
 	public List<InstitutionViewBean> getInstitutionViewBeans() {
 		return institutionViewBeans;
 	}
@@ -98,6 +100,7 @@ public class TeachingDepartmentViewBean implements ViewBean, Serializable,
 	public void setInstitutionViewBeans(List<InstitutionViewBean> institutionViewBeans) {
 		this.institutionViewBeans = institutionViewBeans;
 	}
+	*/
 
 	@Override
 	public int compareTo(TeachingDepartmentViewBean o) {

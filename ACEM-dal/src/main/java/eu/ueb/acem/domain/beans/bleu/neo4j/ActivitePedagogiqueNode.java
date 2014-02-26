@@ -161,6 +161,7 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 		return resources;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setResources(Set<? extends Ressource> resources) {
 		this.resources = (Set<RessourceNode>)resources;

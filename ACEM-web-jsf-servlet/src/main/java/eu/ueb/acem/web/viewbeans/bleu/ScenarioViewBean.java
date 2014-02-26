@@ -25,19 +25,16 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.web.viewbeans.ViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
  * @author Grégoire Colbert @since 2014-02-17
  * 
  */
-public class ScenarioViewBean implements ViewBean, Serializable, Comparable<ScenarioViewBean> {
+public class ScenarioViewBean implements Pickable, Serializable, Comparable<ScenarioViewBean> {
 
 	/**
 	 * For Logging.

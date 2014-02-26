@@ -48,12 +48,12 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  *   but for now, we cannot use Spring 4 because Spring Data Neo4j isn't yet compatible.
  */
 //@Repository("besoinDAOv2") // Uncomment to use this class
+@SuppressWarnings("unused")
 public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements DAO<Long, Besoin> {
 
 	/**
 	 * For Logging.
 	 */
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(BesoinDAOv2.class);
 
 	//@Autowired // Uncomment to use this class
@@ -62,6 +62,7 @@ public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements
 	public BesoinDAOv2() {
 	}
 
+	/*
 	public Collection<Besoin> retrieveAssociatedNeedsOf(Besoin need) {
 		EndResult<BesoinNode> nodes;
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -97,5 +98,6 @@ public class BesoinDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements
 		}
 		return reponses;
 	}
+	*/
 
 }

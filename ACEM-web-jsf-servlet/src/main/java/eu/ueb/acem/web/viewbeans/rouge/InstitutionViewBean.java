@@ -24,27 +24,31 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Service;
-import eu.ueb.acem.web.viewbeans.ViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public class InstitutionViewBean implements ViewBean, Serializable, Comparable<InstitutionViewBean> {
+public class InstitutionViewBean implements OrganisationViewBean, Pickable, Serializable, Comparable<InstitutionViewBean> {
 
+	private static final Logger logger = LoggerFactory.getLogger(InstitutionViewBean.class);
+	
 	private static final long serialVersionUID = 6170498010377898612L;
 
 	private Etablissement institution;
 
-	private List<CommunityViewBean> communityViewBeans;
+	//private List<CommunityViewBean> communityViewBeans;
 
-	private List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
+	//private List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
 
-	private List<TeachingDepartmentViewBean> teachingDepartmentViewBeans;
+	//private List<TeachingDepartmentViewBean> teachingDepartmentViewBeans;
 
 	private Long id;
 	
@@ -53,9 +57,11 @@ public class InstitutionViewBean implements ViewBean, Serializable, Comparable<I
 	private String shortname;
 
 	public InstitutionViewBean() {
+		/*
 		communityViewBeans = new ArrayList<CommunityViewBean>();
 		administrativeDepartmentViewBeans = new ArrayList<AdministrativeDepartmentViewBean>();
 		teachingDepartmentViewBeans = new ArrayList<TeachingDepartmentViewBean>();
+		*/
 	}
 
 	public InstitutionViewBean(Etablissement institution) {
@@ -63,8 +69,10 @@ public class InstitutionViewBean implements ViewBean, Serializable, Comparable<I
 		setInstitution(institution);
 	}
 
-	@PostConstruct
+	//@PostConstruct
+	/*
 	public void initInstitutionViewBean() {
+		logger.info("in initInstitutionViewBean");
 		for (Communaute community : institution.getCommunities()) {
 			communityViewBeans.add(new CommunityViewBean(community));
 		}
@@ -75,6 +83,7 @@ public class InstitutionViewBean implements ViewBean, Serializable, Comparable<I
 			teachingDepartmentViewBeans.add(new TeachingDepartmentViewBean(teachingDepartment));
 		}
 	}
+	*/
 
 	public Etablissement getInstitution() {
 		return institution;
@@ -85,6 +94,7 @@ public class InstitutionViewBean implements ViewBean, Serializable, Comparable<I
 		setId(institution.getId());
 		setName(institution.getName());
 		setShortname(institution.getShortname());
+		//initInstitutionViewBean();
 	}
 
 	@Override
@@ -113,6 +123,7 @@ public class InstitutionViewBean implements ViewBean, Serializable, Comparable<I
 		this.shortname = shortname;
 	}
 
+	/*
 	public List<CommunityViewBean> getCommunityViewBeans() {
 		return communityViewBeans;
 	}
@@ -137,6 +148,7 @@ public class InstitutionViewBean implements ViewBean, Serializable, Comparable<I
 	public void setTeachingDepartmentViewBeans(List<TeachingDepartmentViewBean> teachingDepartmentViewBeans) {
 		this.teachingDepartmentViewBeans = teachingDepartmentViewBeans;
 	}
+	*/
 
 	@Override
 	public int compareTo(InstitutionViewBean o) {

@@ -77,6 +77,7 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 		return communities;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setCommunities(Set<? extends Communaute> communities) {
 		this.communities = (Set<CommunauteNode>) communities;
@@ -87,6 +88,7 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 		return teachingDepartments;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setTeachingDepartments(Set<? extends Composante> teachingDepartments) {
 		this.teachingDepartments = (Set<ComposanteNode>) teachingDepartments;
@@ -97,6 +99,7 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 		return administrativeDepartments;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setAdministrativeDepartments(Set<? extends Service> administrativeDepartments) {
 		this.administrativeDepartments = (Set<ServiceNode>) administrativeDepartments;

@@ -18,7 +18,9 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -85,6 +87,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	private PickListBean<TeachingDepartmentViewBean> pickListTeachingDepartmentViewBeans;
 
+	private List<CommunityViewBean> communityViewBeansForSelectedInstitution;
+
 	public OrganisationsController() {
 		// TODO : replace those hard-wired instanciations with @Autowired when
 		// Spring 4 will be used
@@ -92,10 +96,13 @@ public class OrganisationsController extends AbstractContextAwareController {
 		institutionViewBeans = new TableBean<InstitutionViewBean>();
 		administrativeDepartmentViewBeans = new TableBean<AdministrativeDepartmentViewBean>();
 		teachingDepartmentViewBeans = new TableBean<TeachingDepartmentViewBean>();
+		
 		pickListCommunityViewBeans = new PickListBean<CommunityViewBean>();
 		pickListInstitutionViewBeans = new PickListBean<InstitutionViewBean>();
 		pickListAdministrativeDepartmentViewBeans = new PickListBean<AdministrativeDepartmentViewBean>();
 		pickListTeachingDepartmentViewBeans = new PickListBean<TeachingDepartmentViewBean>();
+
+		communityViewBeansForSelectedInstitution = new ArrayList<CommunityViewBean>();
 	}
 
 	@PostConstruct
@@ -199,6 +206,11 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	public void setSelectedInstitutionViewBean(InstitutionViewBean selectedInstitutionViewBean) {
 		this.selectedInstitutionViewBean = selectedInstitutionViewBean;
+		setCommunityViewBeansForSelectedInstitution();
+		preparePicklistCommunityViewBeansForSelectedInstitution();
+		// TODO : create and call
+		// setAdministrativeDepartmentViewBeansForSelectedInstitution and
+		// setTeachingDepartmentViewBeansForSelectedInstitution
 	}
 
 	public AdministrativeDepartmentViewBean getSelectedAdministrativeDepartmentViewBean() {
@@ -226,12 +238,33 @@ public class OrganisationsController extends AbstractContextAwareController {
 		this.pickListCommunityViewBeans = pickListCommunityViewBeans;
 	}
 
+	public void preparePicklistCommunityViewBeansForSelectedInstitution() {
+		logger.info("preparePicklistCommunityViewBeansForSelectedInstitution");
+		if (selectedInstitutionViewBean != null) {
+			pickListCommunityViewBeans.getPickListEntities().getSource().clear();
+			pickListCommunityViewBeans.getPickListEntities().getSource().addAll(communityViewBeans.getTableEntries());
+			pickListCommunityViewBeans.getPickListEntities().getTarget().clear();
+			for (Communaute communityAssociatedWithSelectedInstitution : selectedInstitutionViewBean.getInstitution()
+					.getCommunities()) {
+				for (CommunityViewBean communityViewBean : communityViewBeans.getTableEntries()) {
+					if (communityAssociatedWithSelectedInstitution.getId().equals(communityViewBean.getId())) {
+						pickListCommunityViewBeans.getPickListEntities().getSource().remove(communityViewBean);
+						pickListCommunityViewBeans.getPickListEntities().getTarget().add(communityViewBean);
+					}
+				}
+			}
+		}
+	}
+
 	public PickListBean<InstitutionViewBean> getPickListInstitutionViewBeans() {
 		return pickListInstitutionViewBeans;
 	}
 
 	public void setPickListInstitutionViewBeans(PickListBean<InstitutionViewBean> pickListInstitutionViewBeans) {
 		this.pickListInstitutionViewBeans = pickListInstitutionViewBeans;
+	}
+
+	public void preparePicklistInstitutionViewBeansForSelectedCommunity() {
 	}
 
 	public PickListBean<AdministrativeDepartmentViewBean> getPickListAdministrativeDepartmentViewBeans() {
@@ -329,29 +362,62 @@ public class OrganisationsController extends AbstractContextAwareController {
 		administrativeDepartmentViewBeans.sort();
 	}
 
-	public void onAssociateCommunity(TransferEvent event) {
-		for (CommunityViewBean communityViewBean : pickListCommunityViewBeans.getPickListEntities().getSource()) {
-			if (selectedInstitutionViewBean.getCommunityViewBeans().contains(communityViewBean)) {
-				logger.info("We should dissociate {} and {}", communityViewBean.getName(), selectedInstitutionViewBean.getName());
-				if (organisationsService.dissociateCommunityAndInstitution(communityViewBean.getCommunity().getId(), selectedInstitutionViewBean.getInstitution().getId())) {
-					logger.info("successfully dissociated, we modify the view beans");
-				}
-				selectedInstitutionViewBean.getCommunityViewBeans().remove(communityViewBean);
+	public void onTransferCommunity(TransferEvent event) {
+		logger.info("onTransferCommunity");
+		@SuppressWarnings("unchecked")
+		List<CommunityViewBean> listOfMovedCommunityViewBeans = (List<CommunityViewBean>) event.getItems();
+		if (event.isAdd()) {
+			for (CommunityViewBean movedCommunityViewBean : listOfMovedCommunityViewBeans) {
+				logger.info("We should associate {} and {}", movedCommunityViewBean.getName(),
+						selectedInstitutionViewBean.getName());
+				organisationsService.associateCommunityAndInstitution(movedCommunityViewBean.getCommunity().getId(),
+						selectedInstitutionViewBean.getInstitution().getId());
+				communityViewBeansForSelectedInstitution.add(movedCommunityViewBean);
 			}
 		}
-		for (CommunityViewBean communityViewBean : pickListCommunityViewBeans.getPickListEntities().getTarget()) {
-			if (!selectedInstitutionViewBean.getCommunityViewBeans().contains(communityViewBean)) {
-				logger.info("We should associate {} and {}", communityViewBean.getName(), selectedInstitutionViewBean.getName());
-				if (organisationsService.associateCommunityAndInstitution(communityViewBean.getCommunity().getId(), selectedInstitutionViewBean.getInstitution().getId())) {
-					logger.info("successfully associated, we modify the view beans");
-				}
-				selectedInstitutionViewBean.getCommunityViewBeans().add(communityViewBean);
+		else {
+			for (CommunityViewBean movedCommunityViewBean : listOfMovedCommunityViewBeans) {
+				logger.info("We should dissociate {} and {}", movedCommunityViewBean.getName(),
+						selectedInstitutionViewBean.getName());
+				organisationsService.dissociateCommunityAndInstitution(movedCommunityViewBean.getCommunity().getId(),
+						selectedInstitutionViewBean.getInstitution().getId());
+				communityViewBeansForSelectedInstitution.remove(movedCommunityViewBean);
 			}
 		}
 	}
 
-	public void handleNewCommunityIconUpload(FileUploadEvent event) {
-		UploadedFile file = event.getFile();
-		MessageDisplayer.showMessageToUserWithSeverityInfo("handleNewCommunityIconUpload", file.getFileName());
+	/*
+	 * public void handleNewCommunityIconUpload(FileUploadEvent event) {
+	 * UploadedFile file = event.getFile();
+	 * MessageDisplayer.showMessageToUserWithSeverityInfo
+	 * ("handleNewCommunityIconUpload", file.getFileName()); }
+	 */
+
+	public List<CommunityViewBean> getCommunityViewBeansForSelectedInstitution() {
+		return communityViewBeansForSelectedInstitution;
+	}
+
+	public void setCommunityViewBeansForSelectedInstitution() {
+		logger.info("setCommunityViewBeansForSelectedInstitution");
+		if (selectedInstitutionViewBean != null) {
+			for (Communaute community : selectedInstitutionViewBean.getInstitution().getCommunities()) {
+				int i = 0;
+				Boolean found = false;
+				while ((!found) && (i < communityViewBeans.getTableEntries().size())) {
+					if (communityViewBeans.getTableEntries().get(i).getId().equals(community.getId())) {
+						found = true;
+					}
+					else {
+						i++;
+					}
+				}
+				if (found) {
+					communityViewBeansForSelectedInstitution.add(communityViewBeans.getTableEntries().get(i));
+				}
+				else {
+					communityViewBeansForSelectedInstitution.remove(communityViewBeans.getTableEntries().get(i));
+				}
+			}
+		}
 	}
 }

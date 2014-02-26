@@ -20,6 +20,8 @@ package eu.ueb.acem.services;
 
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.ueb.acem.dal.rouge.CommunauteDAO;
@@ -38,17 +40,19 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 @org.springframework.stereotype.Service("organisationsService")
 public class OrganisationsServiceImpl implements OrganisationsService {
 
+	private static final Logger logger = LoggerFactory.getLogger(OrganisationsServiceImpl.class);
+	
 	@Autowired
-	CommunauteDAO communityDAO;
+	private CommunauteDAO communityDAO;
 
 	@Autowired
-	EtablissementDAO institutionDAO;
+	private EtablissementDAO institutionDAO;
 
 	@Autowired
-	ComposanteDAO teachingDepartmentDAO;
+	private ComposanteDAO teachingDepartmentDAO;
 
 	@Autowired
-	ServiceDAO administrativeDepartmentDAO;
+	private ServiceDAO administrativeDepartmentDAO;
 
 	@Override
 	public Long countCommunities() {
@@ -204,6 +208,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	@Override
 	public Boolean associateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
+		logger.info("in associateCommunityAndInstitution");
 		Communaute community = communityDAO.retrieveById(idCommunity);
 		Etablissement institution = institutionDAO.retrieveById(idInstitution);
 		community.addInstitution(institution);
@@ -214,13 +219,17 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	@Override
 	public Boolean dissociateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
+		logger.info("in dissociateCommunityAndInstitution");
 		Communaute community = communityDAO.retrieveById(idCommunity);
-		Etablissement institution = institutionDAO.retrieveById(idInstitution);
-		community.removeInstitution(institution);
-		communityDAO.dissociateCommunityAndInstitution(community, institution);
-		community = communityDAO.update(community);
-		institution = institutionDAO.update(institution);
-		return (! community.getInstitutions().contains(institution));
+		Boolean returnValue = false;
+		for (Etablissement institution : community.getInstitutions()) {
+			if (institution.getId().equals(idInstitution)) {
+				community.removeInstitution(institution);
+				community = communityDAO.update(community);
+				returnValue = true;
+			}
+		}
+		return returnValue;
 	}
 
 }

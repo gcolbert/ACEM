@@ -28,7 +28,7 @@ import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.web.viewbeans.ViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
@@ -44,11 +44,12 @@ public class PickListConverter implements Converter {
 		Object ret = null;
 		if (component instanceof PickList) {
 			Object dualList = ((PickList) component).getValue();
-			DualListModel dl = (DualListModel) dualList;
+			@SuppressWarnings("unchecked")
+			DualListModel<Pickable> dl = (DualListModel<Pickable>) dualList;
 			for (Object o : dl.getSource()) {
 				String id = "";
-				if (o instanceof ViewBean) {
-					id += ((ViewBean) o).getId();
+				if (o instanceof Pickable) {
+					id += ((Pickable) o).getId();
 				}
 				if (submittedValue.equals(id)) {
 					ret = o;
@@ -58,8 +59,8 @@ public class PickListConverter implements Converter {
 			if (ret == null)
 				for (Object o : dl.getTarget()) {
 					String id = "";
-					if (o instanceof ViewBean) {
-						id += ((ViewBean) o).getId();
+					if (o instanceof Pickable) {
+						id += ((Pickable) o).getId();
 					}
 					if (submittedValue.equals(id)) {
 						ret = o;
@@ -71,7 +72,7 @@ public class PickListConverter implements Converter {
 	}
 
 	public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
-		String returnString = ((ViewBean) value).getId().toString();
+		String returnString = ((Pickable) value).getId().toString();
 		return returnString;
 	}
 

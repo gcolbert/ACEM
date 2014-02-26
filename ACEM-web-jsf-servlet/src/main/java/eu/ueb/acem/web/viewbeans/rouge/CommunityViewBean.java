@@ -24,24 +24,21 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
-import eu.ueb.acem.web.viewbeans.ViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public class CommunityViewBean implements ViewBean, Serializable, Comparable<CommunityViewBean> {
+public class CommunityViewBean implements OrganisationViewBean, Pickable, Serializable, Comparable<CommunityViewBean> {
 
 	private static final long serialVersionUID = -116654020465612191L;
 
 	private Communaute community;
 
-	private List<InstitutionViewBean> institutionViewBeans;
+	//private List<InstitutionViewBean> institutionViewBeans;
 
 	private Long id;
 
@@ -50,13 +47,24 @@ public class CommunityViewBean implements ViewBean, Serializable, Comparable<Com
 	private String shortname;
 
 	public CommunityViewBean() {
-		institutionViewBeans = new ArrayList<InstitutionViewBean>();
+		//institutionViewBeans = new ArrayList<InstitutionViewBean>();
 	}
 
 	public CommunityViewBean(Communaute community) {
 		this();
 		setCommunity(community);
 	}
+
+	//@PostConstruct
+	/*
+	public void initCommunityViewBean() {
+		if (community != null) {
+			for (Etablissement institution : community.getInstitutions()) {
+				institutionViewBeans.add(new InstitutionViewBean(institution));
+			}
+		}
+	}
+	*/
 
 	public Communaute getCommunity() {
 		return community;
@@ -67,17 +75,10 @@ public class CommunityViewBean implements ViewBean, Serializable, Comparable<Com
 		setId(community.getId());
 		setName(community.getName());
 		setShortname(community.getShortname());
+		//initCommunityViewBean();
 	}
 
-	@PostConstruct
-	public void initCommunityViewBean() {
-		if (community != null) {
-			for (Etablissement institution : community.getInstitutions()) {
-				institutionViewBeans.add(new InstitutionViewBean(institution));
-			}
-		}
-	}
-
+	/*
 	public List<InstitutionViewBean> getInstitutionViewBeans() {
 		return institutionViewBeans;
 	}
@@ -85,6 +86,7 @@ public class CommunityViewBean implements ViewBean, Serializable, Comparable<Com
 	public void setInstitutions(List<InstitutionViewBean> institutionViewBeans) {
 		this.institutionViewBeans = institutionViewBeans;
 	}
+	*/
 
 	@Override
 	public Long getId() {
@@ -112,10 +114,24 @@ public class CommunityViewBean implements ViewBean, Serializable, Comparable<Com
 		this.shortname = shortname;
 	}
 
+	/*
 	public void setInstitutionViewBeans(List<InstitutionViewBean> institutionViewBeans) {
 		this.institutionViewBeans = institutionViewBeans;
 	}
+	
+	public void addInstitutionViewBean(InstitutionViewBean institutionViewBean) {
+		if (! institutionViewBeans.contains(institutionViewBean)) {
+			institutionViewBeans.add(institutionViewBean);
+		}
+	}
 
+	public void removeInstitutionViewBean(InstitutionViewBean institutionViewBean) {
+		if (institutionViewBeans.contains(institutionViewBean)) {
+			institutionViewBeans.remove(institutionViewBean);
+		}
+	}
+	*/
+	
 	@Override
 	public int compareTo(CommunityViewBean o) {
 		return name.compareTo(o.getName());

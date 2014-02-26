@@ -40,11 +40,7 @@ public class NeedsAndAnswersServiceTest {
 
 	@After
 	public void after() {
-		needsAndAnswersService.deleteAllNeeds();
-		assertEquals(new Long(0), needsAndAnswersService.countNeeds());
-
-		needsAndAnswersService.deleteAllAnswers();
-		assertEquals(new Long(0), needsAndAnswersService.countAnswers());
+		before();
 	}
 
 	/**
@@ -95,11 +91,9 @@ public class NeedsAndAnswersServiceTest {
 		need11 = needsAndAnswersService.updateNeed(need11);
 		need111 = needsAndAnswersService.updateNeed(need111);
 
-		Collection<Besoin> childrenOfNeed1 = needsAndAnswersService.getAssociatedNeedsOf(need1);
-		assertEquals(new Long(1), new Long(childrenOfNeed1.size()));
+		assertEquals(new Long(1), new Long(need1.getChildren().size()));
 
-		Collection<Besoin> childrenOfNeed11 = needsAndAnswersService.getAssociatedNeedsOf(need11);
-		assertEquals(new Long(1), new Long(childrenOfNeed11.size()));
+		assertEquals(new Long(1), new Long(need11.getChildren().size()));
 
 		Besoin need12 = needsAndAnswersService.createNeed("t02 need 1.2");
 		need1.addChild(need12);
@@ -117,8 +111,9 @@ public class NeedsAndAnswersServiceTest {
 		need123 = needsAndAnswersService.updateNeed(need123);
 		need12 = needsAndAnswersService.updateNeed(need12);
 
-		Collection<Besoin> childrenOfNeed12 = needsAndAnswersService.getAssociatedNeedsOf(need12);
-		assertEquals(new Long(3), new Long(childrenOfNeed12.size()));		
+		Besoin need12bis = needsAndAnswersService.retrieveNeed(need12.getId());
+		assertEquals(3, need12bis.getChildren().size());
+		assertTrue(need12bis.getChildren().contains(need123));
 	}
 
 }

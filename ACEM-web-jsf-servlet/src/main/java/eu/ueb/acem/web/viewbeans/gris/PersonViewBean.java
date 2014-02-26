@@ -20,18 +20,15 @@ package eu.ueb.acem.web.viewbeans.gris;
 
 import java.io.Serializable;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.web.viewbeans.ViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public class PersonViewBean implements ViewBean, Serializable, Comparable<PersonViewBean> {
+public class PersonViewBean implements Pickable, Serializable, Comparable<PersonViewBean> {
 
 	private static final long serialVersionUID = 4401967530594259861L;
 

@@ -64,8 +64,7 @@ public class BesoinDAOTest extends TestCase {
 
 	@After
 	public void after() {
-		needDAO.deleteAll();
-		assertEquals(new Long(0), needDAO.count());
+		before();
 	}
 
 	/**
@@ -210,6 +209,7 @@ public class BesoinDAOTest extends TestCase {
 		// We retrieve the entities and we check that entities have parents and
 		// children
 		Besoin need1ter = needDAO.retrieveById(need1.getId());
+		@SuppressWarnings("unchecked")
 		Set<Besoin> children = (Set<Besoin>) need1ter.getChildren();
 		need1ter.setChildren(children);
 		Besoin need12bis = needDAO.retrieveById(need12.getId());

@@ -91,7 +91,8 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		TreeNode newNode = new DefaultTreeNode(TREE_NODE_TYPE_NEED_LEAF, new TreeNodeData(need.getId(), need.getName(),
 				"Need"), rootNode);
 		// We look for children and recursively create them too
-		Collection<Besoin> associatedNeeds = needsAndAnswersService.getAssociatedNeedsOf(need);
+		@SuppressWarnings("unchecked")
+		Collection<Besoin> associatedNeeds = (Collection<Besoin>) need.getChildren();
 		if (associatedNeeds.size() > 0) {
 			((DefaultTreeNode) newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS);
 			for (Besoin besoinChild : associatedNeeds) {
@@ -102,7 +103,8 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		// NOTE : this is a business-level constraint, technically we could
 		// display Needs and Answers as children of a Need node.
 		else {
-			Collection<Reponse> answers = needsAndAnswersService.getAssociatedAnswersOf(need);
+			@SuppressWarnings("unchecked")
+			Collection<Reponse> answers = (Collection<Reponse>) need.getAnswers();
 			if (answers.size() > 0) {
 				((DefaultTreeNode) newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
 				need.setAnswers((Set<Reponse>)answers);

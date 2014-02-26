@@ -54,6 +54,7 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 	}
 
 	public ComposanteNode(String name, String shortname) {
+		this();
 		this.setName(name);
 		this.setShortname(shortname);
 	}
@@ -63,6 +64,7 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 		return institutions;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setInstitutions(Set<? extends Etablissement> institutions) {
 		this.institutions = (Set<EtablissementNode>) institutions;

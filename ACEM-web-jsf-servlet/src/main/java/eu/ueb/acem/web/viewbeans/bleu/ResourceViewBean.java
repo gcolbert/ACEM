@@ -18,16 +18,13 @@
  */
 package eu.ueb.acem.web.viewbeans.bleu;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import eu.ueb.acem.web.viewbeans.ViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public class ResourceViewBean implements ViewBean {
+public class ResourceViewBean implements Pickable {
 
 	private Long id;
 	

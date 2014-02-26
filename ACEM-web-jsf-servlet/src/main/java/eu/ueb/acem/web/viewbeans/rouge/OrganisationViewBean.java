@@ -18,28 +18,10 @@
  */
 package eu.ueb.acem.web.viewbeans.rouge;
 
-import java.io.Serializable;
-
-import eu.ueb.acem.web.viewbeans.ViewBean;
-
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public class OrganisationViewBean implements ViewBean, Serializable {
-
-	private static final long serialVersionUID = 3219349209697713437L;
-
-	private Long id;
-	
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+public interface OrganisationViewBean {
 
 }

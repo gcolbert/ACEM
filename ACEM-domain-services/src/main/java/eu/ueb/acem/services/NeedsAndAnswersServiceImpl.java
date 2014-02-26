@@ -128,11 +128,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public Collection<Besoin> getAssociatedNeedsOf(Besoin need) {
-		return (Collection<Besoin>) need.getChildren();
-	}
-
-	@Override
 	@Transactional
 	public Besoin createOrUpdateNeed(Long id, String name, Long idParent) {
 		Besoin need = null;
@@ -176,6 +171,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 			logger.info("Need is retrieved");
 			if (need != null) {
 				logger.info("Need is not null");
+				@SuppressWarnings("unchecked")
 				Collection<Besoin> parents = (Collection<Besoin>)need.getParents();
 				if (parents != null) {
 					logger.info("Need.getParents() is not null");
@@ -204,11 +200,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 			}
 		}
 		logger.info("leaving changeParentOfNeed({}, {})", id, idNewParent);
-	}
-
-	@Override
-	public Collection<Reponse> getAssociatedAnswersOf(Besoin need) {
-		return (Collection<Reponse>) need.getAnswers();
 	}
 
 	@Override

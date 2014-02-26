@@ -26,47 +26,48 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.ScenariosServiceImpl;
-import eu.ueb.acem.web.viewbeans.ViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public class AdministrativeDepartmentViewBean implements ViewBean, Serializable,
+public class AdministrativeDepartmentViewBean implements OrganisationViewBean, Pickable, Serializable,
 		Comparable<AdministrativeDepartmentViewBean> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ScenariosServiceImpl.class);
 	
 	private static final long serialVersionUID = -5647852694643666952L;
 
 	private Service administrativeDepartment;
 
-	private List<InstitutionViewBean> institutionViewBeans;
+	//private List<InstitutionViewBean> institutionViewBeans;
 
 	private Long id;
 	
 	private String name;
 
 	public AdministrativeDepartmentViewBean() {
-		institutionViewBeans = new ArrayList<InstitutionViewBean>();
+		//institutionViewBeans = new ArrayList<InstitutionViewBean>();
 	}
 
 	public AdministrativeDepartmentViewBean(Service service) {
+		this();
 		setAdministrativeDepartment(service);
 	}
 
-	@PostConstruct
+	//@PostConstruct
+	/*
 	public void initAdministrativeDepartmentViewBean() {
 		for (Etablissement institution : administrativeDepartment.getInstitutions()) {
 			institutionViewBeans.add(new InstitutionViewBean(institution));
 		}
 	}
+	*/
 
 	public Service getAdministrativeDepartment() {
 		return administrativeDepartment;
@@ -76,6 +77,7 @@ public class AdministrativeDepartmentViewBean implements ViewBean, Serializable,
 		this.administrativeDepartment = administrativeDepartment;
 		setId(administrativeDepartment.getId());
 		setName(administrativeDepartment.getName());
+		//initAdministrativeDepartmentViewBean();
 	}
 
 	@Override
@@ -96,6 +98,7 @@ public class AdministrativeDepartmentViewBean implements ViewBean, Serializable,
 		this.name = name;
 	}
 
+	/*
 	public List<InstitutionViewBean> getInstitutionViewBeans() {
 		return institutionViewBeans;
 	}
@@ -103,6 +106,7 @@ public class AdministrativeDepartmentViewBean implements ViewBean, Serializable,
 	public void setInstitutionViewBeans(List<InstitutionViewBean> institutionViewBeans) {
 		this.institutionViewBeans = institutionViewBeans;
 	}
+	*/
 
 	@Override
 	public int compareTo(AdministrativeDepartmentViewBean o) {

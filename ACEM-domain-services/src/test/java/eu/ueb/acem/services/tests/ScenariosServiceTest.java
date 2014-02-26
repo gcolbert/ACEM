@@ -56,17 +56,7 @@ public class ScenariosServiceTest {
 
 	@After
 	public void after() {
-		scenariosService.deleteAllScenarios();
-		assertEquals(new Long(0), scenariosService.countScenarios());
-
-		scenariosService.deleteAllPedagogicalActivities();
-		assertEquals(new Long(0), scenariosService.countPedagogicalActivities());
-
-		usersService.deleteAllPersons();
-		assertEquals(new Long(0), usersService.countUsers());
-
-		organisationsService.deleteAllInstitutions();
-		assertEquals(new Long(0), organisationsService.countInstitutions());
+		before();
 	}
 
 	/**

@@ -51,6 +51,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
 @TypeAlias("Scenario")
 public class ScenarioNode implements Scenario {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ScenarioNode.class);
 
 	private static final long serialVersionUID = -5248471016348742765L;
@@ -175,6 +176,7 @@ public class ScenarioNode implements Scenario {
 		return pedagogicalActivities;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities) {
 		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>) pedagogicalActivities;
