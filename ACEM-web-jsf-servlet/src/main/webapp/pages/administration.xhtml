@@ -48,7 +48,7 @@
 							var="viewBean" activeIndex="-1">
 							<p:ajax event="tabChange"
 								listener="#{organisationsController.onCommunityAccordionPanelTabChange}"
-								update=":formOrganisations:tabViewOrganisations" />
+								update="@this" />
 							<p:tab title="#{viewBean.name}">
 								<p:commandButton
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
@@ -75,12 +75,12 @@
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_LABEL']}"
 							icon="ui-icon-plusthick"
 							onclick="PF('dialogCreateInstitution').show()" process="@this" />
-						<p:accordionPanel
+						<p:accordionPanel id="accordionPanelForInstitutions"
 							value="#{organisationsController.institutionViewBeans.tableEntries}"
 							var="viewBean" activeIndex="-1">
 							<p:ajax event="tabChange"
 								listener="#{organisationsController.onInstitutionAccordionPanelTabChange}"
-								update=":formOrganisations:tabViewOrganisations" />
+								update="@this" />
 							<p:tab title="#{viewBean.name}">
 								<p:panelGrid columns="3">
 									<p:column>
@@ -146,7 +146,7 @@
 							icon="ui-icon-plusthick"
 							onclick="PF('dialogCreateAdministrativeDepartment').show()"
 							process="@this" />
-						<p:accordionPanel
+						<p:accordionPanel id="accordionPanelForAdministrativeDepartments"
 							value="#{organisationsController.administrativeDepartmentViewBeans.tableEntries}"
 							var="viewBean" activeIndex="-1">
 							<p:ajax event="tabChange"
@@ -179,7 +179,7 @@
 							icon="ui-icon-plusthick"
 							onclick="PF('dialogCreateTeachingDepartment').show()"
 							process="@this" />
-						<p:accordionPanel
+						<p:accordionPanel id="accordionPanelForTeachingDepartments"
 							value="#{organisationsController.teachingDepartmentViewBeans.tableEntries}"
 							var="viewBean" activeIndex="-1">
 							<p:ajax event="tabChange"

@@ -226,6 +226,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		Etablissement institution = institutionDAO.retrieveById(idInstitution);
 		community.removeInstitution(institution);
 		community = communityDAO.update(community);
+		institution = institutionDAO.update(institution);
 		return (! community.getInstitutions().contains(institution));
 	}
 
@@ -247,6 +248,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		Service administrativeDepartment = administrativeDepartmentDAO.retrieveById(idAdministrativeDepartment);
 		institution.removeAdministrativeDepartment(administrativeDepartment);
 		institution = institutionDAO.update(institution);
+		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
 		return (! institution.getAdministrativeDepartments().contains(administrativeDepartment));
 	}
 
@@ -268,6 +270,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		Composante teachingDepartment = teachingDepartmentDAO.retrieveById(idTeachingDepartment);
 		institution.removeTeachingDepartment(teachingDepartment);
 		institution = institutionDAO.update(institution);
+		teachingDepartment = teachingDepartmentDAO.update(teachingDepartment);
 		return (! institution.getTeachingDepartments().contains(teachingDepartment));
 	}
 

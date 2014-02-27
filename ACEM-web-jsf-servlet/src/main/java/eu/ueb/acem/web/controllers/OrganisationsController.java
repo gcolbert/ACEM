@@ -549,10 +549,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 				logger.info("We should associate {} and {}",
 						communityViewBean.getName(),
 						selectedInstitutionViewBean.getName());
-				organisationsService.associateCommunityAndInstitution(
+				if (organisationsService.associateCommunityAndInstitution(
 						communityViewBean.getCommunity().getId(),
-						selectedInstitutionViewBean.getInstitution().getId());
-				communityViewBeansForSelectedInstitution.add(communityViewBean);
+						selectedInstitutionViewBean.getInstitution().getId())) {
+					communityViewBeansForSelectedInstitution.add(communityViewBean);
+					logger.info("associated");
+				}
 			}
 		}
 		else {
@@ -560,14 +562,17 @@ public class OrganisationsController extends AbstractContextAwareController {
 				logger.info("We should dissociate {} and {}",
 						communityViewBean.getName(),
 						selectedInstitutionViewBean.getName());
-				organisationsService.dissociateCommunityAndInstitution(
+				if (organisationsService.dissociateCommunityAndInstitution(
 						communityViewBean.getCommunity().getId(),
-						selectedInstitutionViewBean.getInstitution().getId());
-				communityViewBeansForSelectedInstitution.remove(communityViewBean);
+						selectedInstitutionViewBean.getInstitution().getId())) {
+					communityViewBeansForSelectedInstitution.remove(communityViewBean);
+					logger.info("dissociated");
+				}
 			}
 		}
 		selectedInstitutionViewBean.setInstitution(
 				organisationsService.retrieveInstitution(selectedInstitutionViewBean.getInstitution().getId()));
+		setInstitutionViewBeansForSelectedCommunity(); // TODO remove this
 	}
 
 	public void onTransferAdministrativeDepartment(TransferEvent event) {
@@ -579,10 +584,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 				logger.info("We should associate {} and {}",
 						administrativeDepartmentViewBean.getName(),
 						selectedInstitutionViewBean.getName());
-				organisationsService.associateInstitutionAndAdministrativeDepartment(
+				if (organisationsService.associateInstitutionAndAdministrativeDepartment(
 						selectedInstitutionViewBean.getInstitution().getId(),
-						administrativeDepartmentViewBean.getAdministrativeDepartment().getId());
-				administrativeDepartmentViewBeansForSelectedInstitution.add(administrativeDepartmentViewBean);
+						administrativeDepartmentViewBean.getAdministrativeDepartment().getId())) {
+					administrativeDepartmentViewBeansForSelectedInstitution.add(administrativeDepartmentViewBean);
+					logger.info("associated");
+				}
 			}
 		}
 		else {
@@ -590,14 +597,17 @@ public class OrganisationsController extends AbstractContextAwareController {
 				logger.info("We should dissociate {} and {}",
 						administrativeDepartmentViewBean.getName(),
 						selectedInstitutionViewBean.getName());
-				organisationsService.dissociateInstitutionAndAdministrativeDepartment(
+				if (organisationsService.dissociateInstitutionAndAdministrativeDepartment(
 						selectedInstitutionViewBean.getInstitution().getId(),
-						administrativeDepartmentViewBean.getAdministrativeDepartment().getId());
-				administrativeDepartmentViewBeansForSelectedInstitution.remove(administrativeDepartmentViewBean);
+						administrativeDepartmentViewBean.getAdministrativeDepartment().getId())) {
+					administrativeDepartmentViewBeansForSelectedInstitution.remove(administrativeDepartmentViewBean);
+					logger.info("dissociated");
+				}
 			}
 		}
 		selectedInstitutionViewBean.setInstitution(
 				organisationsService.retrieveInstitution(selectedInstitutionViewBean.getInstitution().getId()));
+		setAdministrativeDepartmentViewBeansForSelectedInstitution(); // TODO remove this
 	}
 
 	public void onTransferTeachingDepartment(TransferEvent event) {
@@ -609,10 +619,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 				logger.info("We should associate {} and {}",
 						teachingDepartmentViewBean.getName(),
 						selectedInstitutionViewBean.getName());
-				organisationsService.associateInstitutionAndTeachingDepartment(
+				if (organisationsService.associateInstitutionAndTeachingDepartment(
 						selectedInstitutionViewBean.getInstitution().getId(),
-						teachingDepartmentViewBean.getTeachingDepartment().getId());
-				teachingDepartmentViewBeansForSelectedInstitution.add(teachingDepartmentViewBean);
+						teachingDepartmentViewBean.getTeachingDepartment().getId())) {
+					teachingDepartmentViewBeansForSelectedInstitution.add(teachingDepartmentViewBean);
+					logger.info("associated");
+				}
 			}
 		}
 		else {
@@ -620,14 +632,17 @@ public class OrganisationsController extends AbstractContextAwareController {
 				logger.info("We should dissociate {} and {}",
 						teachingDepartmentViewBean.getName(),
 						selectedInstitutionViewBean.getName());
-				organisationsService.dissociateInstitutionAndTeachingDepartment(
+				if (organisationsService.dissociateInstitutionAndTeachingDepartment(
 						selectedInstitutionViewBean.getInstitution().getId(),
-						teachingDepartmentViewBean.getTeachingDepartment().getId());
-				teachingDepartmentViewBeansForSelectedInstitution.remove(teachingDepartmentViewBean);
+						teachingDepartmentViewBean.getTeachingDepartment().getId())) {
+					teachingDepartmentViewBeansForSelectedInstitution.remove(teachingDepartmentViewBean);
+					logger.info("dissociated");
+				}
 			}
 		}
 		selectedInstitutionViewBean.setInstitution(
 				organisationsService.retrieveInstitution(selectedInstitutionViewBean.getInstitution().getId()));
+		setTeachingDepartmentViewBeansForSelectedInstitution(); // TODO remove this
 	}
 	
 	public void onTransferInstitution(TransferEvent event) {
@@ -640,28 +655,37 @@ public class OrganisationsController extends AbstractContextAwareController {
 					logger.info("We should associate {} and {}",
 							institutionViewBean.getName(),
 							selectedCommunityViewBean.getName());
-					organisationsService.associateCommunityAndInstitution(
+					if (organisationsService.associateCommunityAndInstitution(
 							selectedCommunityViewBean.getCommunity().getId(),
-							institutionViewBean.getInstitution().getId());
-					institutionViewBeansForSelectedCommunity.add(institutionViewBean);
+							institutionViewBean.getInstitution().getId())) {
+						institutionViewBeansForSelectedCommunity.add(institutionViewBean);
+						logger.info("associated");
+					}
 				}
 				else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
 					logger.info("We should associate {} and {}",
 							institutionViewBean.getName(),
 							selectedAdministrativeDepartmentViewBean.getName());
-					organisationsService.associateInstitutionAndAdministrativeDepartment(
+					if (organisationsService.associateInstitutionAndAdministrativeDepartment(
 							institutionViewBean.getInstitution().getId(),
-							selectedAdministrativeDepartmentViewBean.getAdministrativeDepartment().getId());
-					institutionViewBeansForSelectedAdministrativeDepartment.add(institutionViewBean);
+							selectedAdministrativeDepartmentViewBean.getAdministrativeDepartment().getId())) {
+						institutionViewBeansForSelectedAdministrativeDepartment.add(institutionViewBean);
+						logger.info("associated");
+					}
 				}
 				else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
 					logger.info("We should associate {} and {}",
 							institutionViewBean.getName(),
 							selectedTeachingDepartmentViewBean.getName());
-					organisationsService.associateInstitutionAndTeachingDepartment(
+					if (organisationsService.associateInstitutionAndTeachingDepartment(
 							institutionViewBean.getInstitution().getId(),
-							selectedTeachingDepartmentViewBean.getTeachingDepartment().getId());
-					institutionViewBeansForSelectedTeachingDepartment.add(institutionViewBean);
+							selectedTeachingDepartmentViewBean.getTeachingDepartment().getId())) {
+						institutionViewBeansForSelectedTeachingDepartment.add(institutionViewBean);
+						logger.info("associated");
+					}
+				}
+				else {
+					logger.info("currentOrganisationViewBean instanceof {}", currentOrganisationViewBean.getClass());
 				}
 			}
 		}
@@ -671,42 +695,54 @@ public class OrganisationsController extends AbstractContextAwareController {
 					logger.info("We should dissociate {} and {}",
 							institutionViewBean.getName(),
 							selectedCommunityViewBean.getName());
-					organisationsService.dissociateCommunityAndInstitution(
+					if (organisationsService.dissociateCommunityAndInstitution(
 							selectedCommunityViewBean.getCommunity().getId(),
-							institutionViewBean.getInstitution().getId());
-					institutionViewBeansForSelectedCommunity.remove(institutionViewBean);
+							institutionViewBean.getInstitution().getId())) {
+						institutionViewBeansForSelectedCommunity.remove(institutionViewBean);
+						logger.info("dissociated");
+					}
 				}
 				else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
 					logger.info("We should dissociate {} and {}",
 							institutionViewBean.getName(),
 							selectedAdministrativeDepartmentViewBean.getName());
-					organisationsService.dissociateInstitutionAndAdministrativeDepartment(
+					if (organisationsService.dissociateInstitutionAndAdministrativeDepartment(
 							institutionViewBean.getInstitution().getId(),
-							selectedAdministrativeDepartmentViewBean.getAdministrativeDepartment().getId());
-					institutionViewBeansForSelectedAdministrativeDepartment.remove(institutionViewBean);
+							selectedAdministrativeDepartmentViewBean.getAdministrativeDepartment().getId())) {
+						institutionViewBeansForSelectedAdministrativeDepartment.remove(institutionViewBean);
+						logger.info("dissociated");
+					}
 				}
 				else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
 					logger.info("We should dissociate {} and {}",
 							institutionViewBean.getName(),
 							selectedTeachingDepartmentViewBean.getName());
-					organisationsService.dissociateInstitutionAndTeachingDepartment(
+					if (organisationsService.dissociateInstitutionAndTeachingDepartment(
 							institutionViewBean.getInstitution().getId(),
-							selectedTeachingDepartmentViewBean.getTeachingDepartment().getId());
-					institutionViewBeansForSelectedTeachingDepartment.remove(institutionViewBean);
+							selectedTeachingDepartmentViewBean.getTeachingDepartment().getId())) {
+						institutionViewBeansForSelectedTeachingDepartment.remove(institutionViewBean);
+						logger.info("dissociated");						
+					}
+				}
+				else {
+					logger.info("currentOrganisationViewBean instanceof {}", currentOrganisationViewBean.getClass());
 				}
 			}
 		}
 		if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
 			selectedCommunityViewBean.setCommunity(
 					organisationsService.retrieveCommunity(selectedCommunityViewBean.getCommunity().getId()));
+			setInstitutionViewBeansForSelectedCommunity(); // TODO remove this
 		}
 		else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
 			selectedAdministrativeDepartmentViewBean.setAdministrativeDepartment(
 					organisationsService.retrieveAdministrativeDepartment(selectedAdministrativeDepartmentViewBean.getAdministrativeDepartment().getId()));
+			setInstitutionViewBeansForSelectedAdministrativeDepartment(); // TODO remove this
 		}
 		else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
 			selectedTeachingDepartmentViewBean.setTeachingDepartment(
 					organisationsService.retrieveTeachingDepartment(selectedTeachingDepartmentViewBean.getTeachingDepartment().getId()));
+			setInstitutionViewBeansForSelectedTeachingDepartment(); // TODO remove this
 		}
 	}
 	
