@@ -19,14 +19,8 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.ScenariosServiceImpl;
 import eu.ueb.acem.web.viewbeans.Pickable;
@@ -45,29 +39,17 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, P
 
 	private Service administrativeDepartment;
 
-	//private List<InstitutionViewBean> institutionViewBeans;
-
 	private Long id;
 	
 	private String name;
 
 	public AdministrativeDepartmentViewBean() {
-		//institutionViewBeans = new ArrayList<InstitutionViewBean>();
 	}
 
 	public AdministrativeDepartmentViewBean(Service service) {
 		this();
 		setAdministrativeDepartment(service);
 	}
-
-	//@PostConstruct
-	/*
-	public void initAdministrativeDepartmentViewBean() {
-		for (Etablissement institution : administrativeDepartment.getInstitutions()) {
-			institutionViewBeans.add(new InstitutionViewBean(institution));
-		}
-	}
-	*/
 
 	public Service getAdministrativeDepartment() {
 		return administrativeDepartment;
@@ -77,7 +59,6 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, P
 		this.administrativeDepartment = administrativeDepartment;
 		setId(administrativeDepartment.getId());
 		setName(administrativeDepartment.getName());
-		//initAdministrativeDepartmentViewBean();
 	}
 
 	@Override
@@ -97,16 +78,6 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, P
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	/*
-	public List<InstitutionViewBean> getInstitutionViewBeans() {
-		return institutionViewBeans;
-	}
-
-	public void setInstitutionViewBeans(List<InstitutionViewBean> institutionViewBeans) {
-		this.institutionViewBeans = institutionViewBeans;
-	}
-	*/
 
 	@Override
 	public int compareTo(AdministrativeDepartmentViewBean o) {

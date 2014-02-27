@@ -29,4 +29,9 @@ public interface Service extends Organisation {
 	Set<? extends Etablissement> getInstitutions();
 
 	void setInstitutions(Set<? extends Etablissement> institutions);
+
+	void addInstitution(Etablissement etablissementNode);
+
+	void removeInstitution(Etablissement etablissementNode);
+	
 }

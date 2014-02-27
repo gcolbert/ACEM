@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
@@ -67,6 +68,7 @@ public class OrganisationsServiceTest {
 	 * DissociateCommunityAndInstitution
 	 */
 	@Test
+	@Transactional
 	public final void t02_TestDissociateCommunityAndInstitution() {
 		Communaute community1 = organisationsService.createCommunity("my community", "mc");
 

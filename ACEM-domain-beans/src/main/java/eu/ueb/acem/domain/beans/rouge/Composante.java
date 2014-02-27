@@ -29,4 +29,9 @@ public interface Composante extends Organisation {
 	Set<? extends Etablissement> getInstitutions();
 
 	void setInstitutions(Set<? extends Etablissement> institutions);
+
+	void addInstitution(Etablissement institution);
+
+	void removeInstitution(Etablissement institution);
+
 }

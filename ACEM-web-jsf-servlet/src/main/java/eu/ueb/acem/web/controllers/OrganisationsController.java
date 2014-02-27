@@ -24,11 +24,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TransferEvent;
-import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +41,7 @@ import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
@@ -64,31 +62,29 @@ public class OrganisationsController extends AbstractContextAwareController {
 	private OrganisationsService organisationsService;
 
 	private TableBean<CommunityViewBean> communityViewBeans;
-
 	private TableBean<InstitutionViewBean> institutionViewBeans;
-
 	private TableBean<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
-
 	private TableBean<TeachingDepartmentViewBean> teachingDepartmentViewBeans;
 
 	private CommunityViewBean selectedCommunityViewBean;
-
 	private InstitutionViewBean selectedInstitutionViewBean;
-
 	private AdministrativeDepartmentViewBean selectedAdministrativeDepartmentViewBean;
-
 	private TeachingDepartmentViewBean selectedTeachingDepartmentViewBean;
 
-	private PickListBean<CommunityViewBean> pickListCommunityViewBeans;
+	private PickListBean pickListCommunityViewBeans;
+	private PickListBean pickListInstitutionViewBeans;
+	private PickListBean pickListAdministrativeDepartmentViewBeans;
+	private PickListBean pickListTeachingDepartmentViewBeans;
 
-	private PickListBean<InstitutionViewBean> pickListInstitutionViewBeans;
-
-	private PickListBean<AdministrativeDepartmentViewBean> pickListAdministrativeDepartmentViewBeans;
-
-	private PickListBean<TeachingDepartmentViewBean> pickListTeachingDepartmentViewBeans;
-
+	private List<InstitutionViewBean> institutionViewBeansForSelectedCommunity;
 	private List<CommunityViewBean> communityViewBeansForSelectedInstitution;
+	private List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeansForSelectedInstitution;
+	private List<TeachingDepartmentViewBean> teachingDepartmentViewBeansForSelectedInstitution;
+	private List<InstitutionViewBean> institutionViewBeansForSelectedAdministrativeDepartment;
+	private List<InstitutionViewBean> institutionViewBeansForSelectedTeachingDepartment;
 
+	private OrganisationViewBean currentOrganisationViewBean;
+	
 	public OrganisationsController() {
 		// TODO : replace those hard-wired instanciations with @Autowired when
 		// Spring 4 will be used
@@ -96,13 +92,18 @@ public class OrganisationsController extends AbstractContextAwareController {
 		institutionViewBeans = new TableBean<InstitutionViewBean>();
 		administrativeDepartmentViewBeans = new TableBean<AdministrativeDepartmentViewBean>();
 		teachingDepartmentViewBeans = new TableBean<TeachingDepartmentViewBean>();
-		
-		pickListCommunityViewBeans = new PickListBean<CommunityViewBean>();
-		pickListInstitutionViewBeans = new PickListBean<InstitutionViewBean>();
-		pickListAdministrativeDepartmentViewBeans = new PickListBean<AdministrativeDepartmentViewBean>();
-		pickListTeachingDepartmentViewBeans = new PickListBean<TeachingDepartmentViewBean>();
 
+		pickListCommunityViewBeans = new PickListBean();
+		pickListInstitutionViewBeans = new PickListBean();
+		pickListAdministrativeDepartmentViewBeans = new PickListBean();
+		pickListTeachingDepartmentViewBeans = new PickListBean();
+
+		institutionViewBeansForSelectedCommunity = new ArrayList<InstitutionViewBean>();
 		communityViewBeansForSelectedInstitution = new ArrayList<CommunityViewBean>();
+		administrativeDepartmentViewBeansForSelectedInstitution = new ArrayList<AdministrativeDepartmentViewBean>();
+		teachingDepartmentViewBeansForSelectedInstitution = new ArrayList<TeachingDepartmentViewBean>();
+		institutionViewBeansForSelectedAdministrativeDepartment = new ArrayList<InstitutionViewBean>();
+		institutionViewBeansForSelectedTeachingDepartment = new ArrayList<InstitutionViewBean>();
 	}
 
 	@PostConstruct
@@ -159,87 +160,124 @@ public class OrganisationsController extends AbstractContextAwareController {
 		}
 	}
 
+	public PickListBean getPickListCommunityViewBeans() {
+		return pickListCommunityViewBeans;
+	}
+
+	public PickListBean getPickListInstitutionViewBeans() {
+		return pickListInstitutionViewBeans;
+	}
+
+	public PickListBean getPickListAdministrativeDepartmentViewBeans() {
+		return pickListAdministrativeDepartmentViewBeans;
+	}
+
+	public PickListBean getPickListTeachingDepartmentViewBeans() {
+		return pickListTeachingDepartmentViewBeans;
+	}
+
+	public OrganisationViewBean getCurrentOrganisationViewBean() {
+		return currentOrganisationViewBean;
+	}
+
+	public void setCurrentOrganisationViewBean(OrganisationViewBean currentOrganisationViewBean) {
+		this.currentOrganisationViewBean = currentOrganisationViewBean;
+	}
+
 	public TableBean<CommunityViewBean> getCommunityViewBeans() {
 		return communityViewBeans;
-	}
-
-	public void setCommunityViewBeans(TableBean<CommunityViewBean> communityViewBeans) {
-		this.communityViewBeans = communityViewBeans;
-	}
-
-	public TableBean<InstitutionViewBean> getInstitutionViewBeans() {
-		return institutionViewBeans;
-	}
-
-	public void setInstitutionViewBeans(TableBean<InstitutionViewBean> institutionViewBeans) {
-		this.institutionViewBeans = institutionViewBeans;
-	}
-
-	public TableBean<AdministrativeDepartmentViewBean> getAdministrativeDepartmentViewBeans() {
-		return administrativeDepartmentViewBeans;
-	}
-
-	public void setAdministrativeDepartmentViewBeans(
-			TableBean<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans) {
-		this.administrativeDepartmentViewBeans = administrativeDepartmentViewBeans;
-	}
-
-	public TableBean<TeachingDepartmentViewBean> getTeachingDepartmentViewBeans() {
-		return teachingDepartmentViewBeans;
-	}
-
-	public void setTeachingDepartmentViewBeans(TableBean<TeachingDepartmentViewBean> teachingDepartmentViewBeans) {
-		this.teachingDepartmentViewBeans = teachingDepartmentViewBeans;
 	}
 
 	public CommunityViewBean getSelectedCommunityViewBean() {
 		return selectedCommunityViewBean;
 	}
 
-	public void setSelectedCommunityViewBean(CommunityViewBean selectedCommunityViewBean) {
-		this.selectedCommunityViewBean = selectedCommunityViewBean;
+	public void setSelectedCommunityViewBean(CommunityViewBean communityViewBean) {
+		this.selectedCommunityViewBean = communityViewBean;
+		setCurrentOrganisationViewBean(communityViewBean);
+		setInstitutionViewBeansForSelectedCommunity();
+		preparePicklistInstitutionViewBeansForSelectedCommunity();
+	}
+
+	public List<InstitutionViewBean> getInstitutionViewBeansForSelectedCommunity() {
+		return institutionViewBeansForSelectedCommunity;
+	}
+
+	private void setInstitutionViewBeansForSelectedCommunity() {
+		logger.info("setInstitutionViewBeansForSelectedCommunity - selectedCommunity = {}",
+				selectedCommunityViewBean.getName());
+		if (selectedCommunityViewBean != null) {
+			institutionViewBeansForSelectedCommunity.clear();
+			for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
+				if (selectedCommunityViewBean.getCommunity().getInstitutions()
+						.contains(institutionViewBean.getInstitution())) {
+					logger.info("selectedCommunity is associated with {}", institutionViewBean.getInstitution()
+							.getName());
+					institutionViewBeansForSelectedCommunity.add(institutionViewBean);
+				}
+			}
+		}
+	}
+
+	public void preparePicklistInstitutionViewBeansForSelectedCommunity() {
+		logger.info("preparePicklistInstitutionViewBeansForSelectedCommunity - selectedCommunity = {}",
+				selectedCommunityViewBean.getName());
+		if (selectedCommunityViewBean != null) {
+			pickListInstitutionViewBeans.getPickListEntities().getSource().clear();
+			pickListInstitutionViewBeans.getPickListEntities().getSource()
+					.addAll(institutionViewBeans.getTableEntries());
+			pickListInstitutionViewBeans.getPickListEntities().getTarget().clear();
+			for (Etablissement institutionAssociatedWithSelectedCommunity : selectedCommunityViewBean.getCommunity()
+					.getInstitutions()) {
+				for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
+					if (institutionAssociatedWithSelectedCommunity.getId().equals(institutionViewBean.getId())) {
+						pickListInstitutionViewBeans.getPickListEntities().getSource().remove(institutionViewBean);
+						pickListInstitutionViewBeans.getPickListEntities().getTarget().add(institutionViewBean);
+					}
+				}
+			}
+		}
+	}
+
+	public TableBean<InstitutionViewBean> getInstitutionViewBeans() {
+		return institutionViewBeans;
 	}
 
 	public InstitutionViewBean getSelectedInstitutionViewBean() {
 		return selectedInstitutionViewBean;
 	}
 
-	public void setSelectedInstitutionViewBean(InstitutionViewBean selectedInstitutionViewBean) {
-		this.selectedInstitutionViewBean = selectedInstitutionViewBean;
+	public void setSelectedInstitutionViewBean(InstitutionViewBean institutionViewBean) {
+		this.selectedInstitutionViewBean = institutionViewBean;
+		setCurrentOrganisationViewBean(institutionViewBean);
 		setCommunityViewBeansForSelectedInstitution();
 		preparePicklistCommunityViewBeansForSelectedInstitution();
-		// TODO : create and call
-		// setAdministrativeDepartmentViewBeansForSelectedInstitution and
-		// setTeachingDepartmentViewBeansForSelectedInstitution
+		setAdministrativeDepartmentViewBeansForSelectedInstitution();
+		preparePicklistAdministrativeDepartmentViewBeansForSelectedInstitution();
+		setTeachingDepartmentViewBeansForSelectedInstitution();
+		preparePicklistTeachingDepartmentViewBeansForSelectedInstitution();
 	}
 
-	public AdministrativeDepartmentViewBean getSelectedAdministrativeDepartmentViewBean() {
-		return selectedAdministrativeDepartmentViewBean;
+	public List<CommunityViewBean> getCommunityViewBeansForSelectedInstitution() {
+		return communityViewBeansForSelectedInstitution;
 	}
 
-	public void setSelectedAdministrativeDepartmentViewBean(
-			AdministrativeDepartmentViewBean selectedAdministrativeDepartmentViewBean) {
-		this.selectedAdministrativeDepartmentViewBean = selectedAdministrativeDepartmentViewBean;
-	}
-
-	public TeachingDepartmentViewBean getSelectedTeachingDepartmentViewBean() {
-		return selectedTeachingDepartmentViewBean;
-	}
-
-	public void setSelectedTeachingDepartmentViewBean(TeachingDepartmentViewBean selectedTeachingDepartmentViewBean) {
-		this.selectedTeachingDepartmentViewBean = selectedTeachingDepartmentViewBean;
-	}
-
-	public PickListBean<CommunityViewBean> getPickListCommunityViewBeans() {
-		return pickListCommunityViewBeans;
-	}
-
-	public void setPickListCommunityViewBeans(PickListBean<CommunityViewBean> pickListCommunityViewBeans) {
-		this.pickListCommunityViewBeans = pickListCommunityViewBeans;
+	private void setCommunityViewBeansForSelectedInstitution() {
+		logger.info("setCommunityViewBeansForSelectedInstitution");
+		if (selectedInstitutionViewBean != null) {
+			communityViewBeansForSelectedInstitution.clear();
+			for (CommunityViewBean communityViewBean : communityViewBeans.getTableEntries()) {
+				if (selectedInstitutionViewBean.getInstitution().getCommunities()
+						.contains(communityViewBean.getCommunity())) {
+					communityViewBeansForSelectedInstitution.add(communityViewBean);
+				}
+			}
+		}
 	}
 
 	public void preparePicklistCommunityViewBeansForSelectedInstitution() {
-		logger.info("preparePicklistCommunityViewBeansForSelectedInstitution");
+		logger.info("preparePicklistCommunityViewBeansForSelectedInstitution - selectedInstitution = {}",
+				selectedInstitutionViewBean.getName());
 		if (selectedInstitutionViewBean != null) {
 			pickListCommunityViewBeans.getPickListEntities().getSource().clear();
 			pickListCommunityViewBeans.getPickListEntities().getSource().addAll(communityViewBeans.getTableEntries());
@@ -256,33 +294,193 @@ public class OrganisationsController extends AbstractContextAwareController {
 		}
 	}
 
-	public PickListBean<InstitutionViewBean> getPickListInstitutionViewBeans() {
-		return pickListInstitutionViewBeans;
+	public List<AdministrativeDepartmentViewBean> getAdministrativeDepartmentViewBeansForSelectedInstitution() {
+		return administrativeDepartmentViewBeansForSelectedInstitution;
 	}
 
-	public void setPickListInstitutionViewBeans(PickListBean<InstitutionViewBean> pickListInstitutionViewBeans) {
-		this.pickListInstitutionViewBeans = pickListInstitutionViewBeans;
+	private void setAdministrativeDepartmentViewBeansForSelectedInstitution() {
+		logger.info("setAdministrativeDepartmentViewBeansForSelectedInstitution");
+		if (selectedInstitutionViewBean != null) {
+			administrativeDepartmentViewBeansForSelectedInstitution.clear();
+			for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
+					.getTableEntries()) {
+				if (selectedInstitutionViewBean.getInstitution().getAdministrativeDepartments()
+						.contains(administrativeDepartmentViewBean.getAdministrativeDepartment())) {
+					administrativeDepartmentViewBeansForSelectedInstitution.add(administrativeDepartmentViewBean);
+				}
+			}
+		}
 	}
 
-	public void preparePicklistInstitutionViewBeansForSelectedCommunity() {
+	public void preparePicklistAdministrativeDepartmentViewBeansForSelectedInstitution() {
+		logger.info("preparePicklistAdministrativeDepartmentViewBeansForSelectedInstitution - selectedInstitution = {}",
+				selectedInstitutionViewBean.getName());
+		if (selectedInstitutionViewBean != null) {
+			pickListAdministrativeDepartmentViewBeans.getPickListEntities().getSource().clear();
+			pickListAdministrativeDepartmentViewBeans.getPickListEntities().getSource()
+					.addAll(administrativeDepartmentViewBeans.getTableEntries());
+			pickListAdministrativeDepartmentViewBeans.getPickListEntities().getTarget().clear();
+			for (Service administrativeDepartmentAssociatedWithSelectedInstitution : selectedInstitutionViewBean
+					.getInstitution().getAdministrativeDepartments()) {
+				for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
+						.getTableEntries()) {
+					if (administrativeDepartmentAssociatedWithSelectedInstitution.getId().equals(
+							administrativeDepartmentViewBean.getId())) {
+						pickListAdministrativeDepartmentViewBeans.getPickListEntities().getSource()
+								.remove(administrativeDepartmentViewBean);
+						pickListAdministrativeDepartmentViewBeans.getPickListEntities().getTarget()
+								.add(administrativeDepartmentViewBean);
+					}
+				}
+			}
+		}
 	}
 
-	public PickListBean<AdministrativeDepartmentViewBean> getPickListAdministrativeDepartmentViewBeans() {
-		return pickListAdministrativeDepartmentViewBeans;
+	public List<TeachingDepartmentViewBean> getTeachingDepartmentViewBeansForSelectedInstitution() {
+		return teachingDepartmentViewBeansForSelectedInstitution;
 	}
 
-	public void setPickListAdministrativeDepartmentViewBeans(
-			PickListBean<AdministrativeDepartmentViewBean> pickListAdministrativeDepartmentViewBeans) {
-		this.pickListAdministrativeDepartmentViewBeans = pickListAdministrativeDepartmentViewBeans;
+	private void setTeachingDepartmentViewBeansForSelectedInstitution() {
+		logger.info("setTeachingDepartmentViewBeansForSelectedInstitution");
+		if (selectedInstitutionViewBean != null) {
+			teachingDepartmentViewBeansForSelectedInstitution.clear();
+			for (TeachingDepartmentViewBean teachingDepartmentViewBean : teachingDepartmentViewBeans.getTableEntries()) {
+				if (selectedInstitutionViewBean.getInstitution().getTeachingDepartments()
+						.contains(teachingDepartmentViewBean.getTeachingDepartment())) {
+					teachingDepartmentViewBeansForSelectedInstitution.add(teachingDepartmentViewBean);
+				}
+			}
+		}
 	}
 
-	public PickListBean<TeachingDepartmentViewBean> getPickListTeachingDepartmentViewBeans() {
-		return pickListTeachingDepartmentViewBeans;
+	public void preparePicklistTeachingDepartmentViewBeansForSelectedInstitution() {
+		logger.info("preparePicklistTeachingDepartmentViewBeansForSelectedInstitution - selectedInstitution = {}",
+				selectedInstitutionViewBean.getName());
+		if (selectedInstitutionViewBean != null) {
+			pickListTeachingDepartmentViewBeans.getPickListEntities().getSource().clear();
+			pickListTeachingDepartmentViewBeans.getPickListEntities().getSource()
+					.addAll(teachingDepartmentViewBeans.getTableEntries());
+			pickListTeachingDepartmentViewBeans.getPickListEntities().getTarget().clear();
+			for (Composante teachingDepartmentAssociatedWithSelectedInstitution : selectedInstitutionViewBean
+					.getInstitution().getTeachingDepartments()) {
+				for (TeachingDepartmentViewBean teachingDepartmentViewBean : teachingDepartmentViewBeans
+						.getTableEntries()) {
+					if (teachingDepartmentAssociatedWithSelectedInstitution.getId().equals(
+							teachingDepartmentViewBean.getId())) {
+						pickListTeachingDepartmentViewBeans.getPickListEntities().getSource()
+								.remove(teachingDepartmentViewBean);
+						pickListTeachingDepartmentViewBeans.getPickListEntities().getTarget()
+								.add(teachingDepartmentViewBean);
+					}
+				}
+			}
+		}
 	}
 
-	public void setPickListTeachingDepartmentViewBeans(
-			PickListBean<TeachingDepartmentViewBean> pickListTeachingDepartmentViewBeans) {
-		this.pickListTeachingDepartmentViewBeans = pickListTeachingDepartmentViewBeans;
+	public TableBean<AdministrativeDepartmentViewBean> getAdministrativeDepartmentViewBeans() {
+		return administrativeDepartmentViewBeans;
+	}
+
+	public AdministrativeDepartmentViewBean getSelectedAdministrativeDepartmentViewBean() {
+		return selectedAdministrativeDepartmentViewBean;
+	}
+
+	public void setSelectedAdministrativeDepartmentViewBean(
+			AdministrativeDepartmentViewBean administrativeDepartmentViewBean) {
+		this.selectedAdministrativeDepartmentViewBean = administrativeDepartmentViewBean;
+		setCurrentOrganisationViewBean(administrativeDepartmentViewBean);
+		setInstitutionViewBeansForSelectedAdministrativeDepartment();
+		preparePicklistInstitutionViewBeansForSelectedAdministrativeDepartment();
+	}
+
+	public List<InstitutionViewBean> getInstitutionViewBeansForSelectedAdministrativeDepartment() {
+		return institutionViewBeansForSelectedAdministrativeDepartment;
+	}
+
+	private void setInstitutionViewBeansForSelectedAdministrativeDepartment() {
+		logger.info("setInstitutionViewBeansForSelectedAdministrativeDepartment");
+		if (selectedAdministrativeDepartmentViewBean != null) {
+			institutionViewBeansForSelectedAdministrativeDepartment.clear();
+			for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
+				if (selectedAdministrativeDepartmentViewBean.getAdministrativeDepartment().getInstitutions()
+						.contains(institutionViewBean.getInstitution())) {
+					institutionViewBeansForSelectedAdministrativeDepartment.add(institutionViewBean);
+				}
+			}
+		}
+	}
+
+	public void preparePicklistInstitutionViewBeansForSelectedAdministrativeDepartment() {
+		logger.info("preparePicklistInstitutionViewBeansForSelectedAdministrativeDepartment - selectedAdministrativeDepartment = {}",
+				selectedAdministrativeDepartmentViewBean.getName());
+		if (selectedAdministrativeDepartmentViewBean != null) {
+			pickListInstitutionViewBeans.getPickListEntities().getSource().clear();
+			pickListInstitutionViewBeans.getPickListEntities().getSource()
+					.addAll(institutionViewBeans.getTableEntries());
+			pickListInstitutionViewBeans.getPickListEntities().getTarget().clear();
+			for (Etablissement institutionAssociatedWithSelectedAdministrativeDepartment : selectedAdministrativeDepartmentViewBean
+					.getAdministrativeDepartment().getInstitutions()) {
+				for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
+					if (institutionAssociatedWithSelectedAdministrativeDepartment.getId().equals(
+							institutionViewBean.getId())) {
+						pickListInstitutionViewBeans.getPickListEntities().getSource().remove(institutionViewBean);
+						pickListInstitutionViewBeans.getPickListEntities().getTarget().add(institutionViewBean);
+					}
+				}
+			}
+		}
+	}
+
+	public TableBean<TeachingDepartmentViewBean> getTeachingDepartmentViewBeans() {
+		return teachingDepartmentViewBeans;
+	}
+
+	public TeachingDepartmentViewBean getSelectedTeachingDepartmentViewBean() {
+		return selectedTeachingDepartmentViewBean;
+	}
+
+	public void setSelectedTeachingDepartmentViewBean(TeachingDepartmentViewBean teachingDepartmentViewBean) {
+		this.selectedTeachingDepartmentViewBean = teachingDepartmentViewBean;
+		setCurrentOrganisationViewBean(teachingDepartmentViewBean);
+		setInstitutionViewBeansForSelectedTeachingDepartment();
+		preparePicklistInstitutionViewBeansForSelectedTeachingDepartment();
+	}
+
+	public List<InstitutionViewBean> getInstitutionViewBeansForSelectedTeachingDepartment() {
+		return institutionViewBeansForSelectedTeachingDepartment;
+	}
+
+	private void setInstitutionViewBeansForSelectedTeachingDepartment() {
+		logger.info("setInstitutionViewBeansForSelectedTeachingDepartment");
+		if (selectedTeachingDepartmentViewBean != null) {
+			institutionViewBeansForSelectedTeachingDepartment.clear();
+			for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
+				if (selectedTeachingDepartmentViewBean.getTeachingDepartment().getInstitutions()
+						.contains(institutionViewBean.getInstitution())) {
+					institutionViewBeansForSelectedTeachingDepartment.add(institutionViewBean);
+				}
+			}
+		}
+	}
+
+	public void preparePicklistInstitutionViewBeansForSelectedTeachingDepartment() {
+		logger.info("preparePicklistInstitutionViewBeansForSelectedTeachingDepartment - selectedTeachingDepartment = {}",
+				selectedTeachingDepartmentViewBean.getName());
+		if (selectedTeachingDepartmentViewBean != null) {
+			pickListInstitutionViewBeans.getPickListEntities().getSource().clear();
+			pickListInstitutionViewBeans.getPickListEntities().getSource()
+					.addAll(institutionViewBeans.getTableEntries());
+			pickListInstitutionViewBeans.getPickListEntities().getTarget().clear();
+			for (Etablissement institutionAssociatedWithSelectedTeachingDepartment : selectedTeachingDepartmentViewBean
+					.getTeachingDepartment().getInstitutions()) {
+				for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
+					if (institutionAssociatedWithSelectedTeachingDepartment.getId().equals(institutionViewBean.getId())) {
+						pickListInstitutionViewBeans.getPickListEntities().getSource().remove(institutionViewBean);
+						pickListInstitutionViewBeans.getPickListEntities().getTarget().add(institutionViewBean);
+					}
+				}
+			}
+		}
 	}
 
 	public void onCommunityAccordionPanelTabChange(TabChangeEvent event) {
@@ -303,26 +501,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	public void onTeachingDepartmentAccordionPanelTabChange(TabChangeEvent event) {
 		logger.info("onTeachingDepartmentAccordionPanelTabChange, tab={}", event.getTab());
 		setSelectedTeachingDepartmentViewBean((TeachingDepartmentViewBean) event.getData());
-	}
-
-	public void onCommunityRowSelect(SelectEvent event) {
-		logger.info("onCommunityRowSelect");
-		setSelectedCommunityViewBean((CommunityViewBean) event.getObject());
-	}
-
-	public void onInstitutionRowSelect(SelectEvent event) {
-		logger.info("onInstitutionRowSelect");
-		setSelectedInstitutionViewBean((InstitutionViewBean) event.getObject());
-	}
-
-	public void onTeachingDepartmentRowSelect(SelectEvent event) {
-		logger.info("onTeachingDepartmentRowSelect");
-		setSelectedTeachingDepartmentViewBean((TeachingDepartmentViewBean) event.getObject());
-	}
-
-	public void onAdministrativeDepartmentRowSelect(SelectEvent event) {
-		logger.info("onAdministrativeDepartmentRowSelect");
-		setSelectedAdministrativeDepartmentViewBean((AdministrativeDepartmentViewBean) event.getObject());
 	}
 
 	public void onCreateCommunity(String name, String shortname) {
@@ -361,31 +539,177 @@ public class OrganisationsController extends AbstractContextAwareController {
 		administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
 		administrativeDepartmentViewBeans.sort();
 	}
-
+	
 	public void onTransferCommunity(TransferEvent event) {
 		logger.info("onTransferCommunity");
 		@SuppressWarnings("unchecked")
-		List<CommunityViewBean> listOfMovedCommunityViewBeans = (List<CommunityViewBean>) event.getItems();
+		List<CommunityViewBean> listOfMovedViewBeans = (List<CommunityViewBean>) event.getItems();
 		if (event.isAdd()) {
-			for (CommunityViewBean movedCommunityViewBean : listOfMovedCommunityViewBeans) {
-				logger.info("We should associate {} and {}", movedCommunityViewBean.getName(),
+			for (CommunityViewBean communityViewBean : listOfMovedViewBeans) {
+				logger.info("We should associate {} and {}",
+						communityViewBean.getName(),
 						selectedInstitutionViewBean.getName());
-				organisationsService.associateCommunityAndInstitution(movedCommunityViewBean.getCommunity().getId(),
+				organisationsService.associateCommunityAndInstitution(
+						communityViewBean.getCommunity().getId(),
 						selectedInstitutionViewBean.getInstitution().getId());
-				communityViewBeansForSelectedInstitution.add(movedCommunityViewBean);
+				communityViewBeansForSelectedInstitution.add(communityViewBean);
 			}
 		}
 		else {
-			for (CommunityViewBean movedCommunityViewBean : listOfMovedCommunityViewBeans) {
-				logger.info("We should dissociate {} and {}", movedCommunityViewBean.getName(),
+			for (CommunityViewBean communityViewBean : listOfMovedViewBeans) {
+				logger.info("We should dissociate {} and {}",
+						communityViewBean.getName(),
 						selectedInstitutionViewBean.getName());
-				organisationsService.dissociateCommunityAndInstitution(movedCommunityViewBean.getCommunity().getId(),
+				organisationsService.dissociateCommunityAndInstitution(
+						communityViewBean.getCommunity().getId(),
 						selectedInstitutionViewBean.getInstitution().getId());
-				communityViewBeansForSelectedInstitution.remove(movedCommunityViewBean);
+				communityViewBeansForSelectedInstitution.remove(communityViewBean);
 			}
 		}
+		selectedInstitutionViewBean.setInstitution(
+				organisationsService.retrieveInstitution(selectedInstitutionViewBean.getInstitution().getId()));
 	}
 
+	public void onTransferAdministrativeDepartment(TransferEvent event) {
+		logger.info("onTransferAdministrativeDepartment");
+		@SuppressWarnings("unchecked")
+		List<AdministrativeDepartmentViewBean> listOfMovedViewBeans = (List<AdministrativeDepartmentViewBean>) event.getItems();
+		if (event.isAdd()) {
+			for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : listOfMovedViewBeans) {
+				logger.info("We should associate {} and {}",
+						administrativeDepartmentViewBean.getName(),
+						selectedInstitutionViewBean.getName());
+				organisationsService.associateInstitutionAndAdministrativeDepartment(
+						selectedInstitutionViewBean.getInstitution().getId(),
+						administrativeDepartmentViewBean.getAdministrativeDepartment().getId());
+				administrativeDepartmentViewBeansForSelectedInstitution.add(administrativeDepartmentViewBean);
+			}
+		}
+		else {
+			for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : listOfMovedViewBeans) {
+				logger.info("We should dissociate {} and {}",
+						administrativeDepartmentViewBean.getName(),
+						selectedInstitutionViewBean.getName());
+				organisationsService.dissociateInstitutionAndAdministrativeDepartment(
+						selectedInstitutionViewBean.getInstitution().getId(),
+						administrativeDepartmentViewBean.getAdministrativeDepartment().getId());
+				administrativeDepartmentViewBeansForSelectedInstitution.remove(administrativeDepartmentViewBean);
+			}
+		}
+		selectedInstitutionViewBean.setInstitution(
+				organisationsService.retrieveInstitution(selectedInstitutionViewBean.getInstitution().getId()));
+	}
+
+	public void onTransferTeachingDepartment(TransferEvent event) {
+		logger.info("onTransferTeachingDepartment");
+		@SuppressWarnings("unchecked")
+		List<TeachingDepartmentViewBean> listOfMovedViewBeans = (List<TeachingDepartmentViewBean>) event.getItems();
+		if (event.isAdd()) {
+			for (TeachingDepartmentViewBean teachingDepartmentViewBean : listOfMovedViewBeans) {
+				logger.info("We should associate {} and {}",
+						teachingDepartmentViewBean.getName(),
+						selectedInstitutionViewBean.getName());
+				organisationsService.associateInstitutionAndTeachingDepartment(
+						selectedInstitutionViewBean.getInstitution().getId(),
+						teachingDepartmentViewBean.getTeachingDepartment().getId());
+				teachingDepartmentViewBeansForSelectedInstitution.add(teachingDepartmentViewBean);
+			}
+		}
+		else {
+			for (TeachingDepartmentViewBean teachingDepartmentViewBean : listOfMovedViewBeans) {
+				logger.info("We should dissociate {} and {}",
+						teachingDepartmentViewBean.getName(),
+						selectedInstitutionViewBean.getName());
+				organisationsService.dissociateInstitutionAndTeachingDepartment(
+						selectedInstitutionViewBean.getInstitution().getId(),
+						teachingDepartmentViewBean.getTeachingDepartment().getId());
+				teachingDepartmentViewBeansForSelectedInstitution.remove(teachingDepartmentViewBean);
+			}
+		}
+		selectedInstitutionViewBean.setInstitution(
+				organisationsService.retrieveInstitution(selectedInstitutionViewBean.getInstitution().getId()));
+	}
+	
+	public void onTransferInstitution(TransferEvent event) {
+		logger.info("onTransferInstitution");
+		@SuppressWarnings("unchecked")
+		List<InstitutionViewBean> listOfMovedViewBeans = (List<InstitutionViewBean>) event.getItems();
+		if (event.isAdd()) {
+			for (InstitutionViewBean institutionViewBean : listOfMovedViewBeans) {
+				if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
+					logger.info("We should associate {} and {}",
+							institutionViewBean.getName(),
+							selectedCommunityViewBean.getName());
+					organisationsService.associateCommunityAndInstitution(
+							selectedCommunityViewBean.getCommunity().getId(),
+							institutionViewBean.getInstitution().getId());
+					institutionViewBeansForSelectedCommunity.add(institutionViewBean);
+				}
+				else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
+					logger.info("We should associate {} and {}",
+							institutionViewBean.getName(),
+							selectedAdministrativeDepartmentViewBean.getName());
+					organisationsService.associateInstitutionAndAdministrativeDepartment(
+							institutionViewBean.getInstitution().getId(),
+							selectedAdministrativeDepartmentViewBean.getAdministrativeDepartment().getId());
+					institutionViewBeansForSelectedAdministrativeDepartment.add(institutionViewBean);
+				}
+				else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
+					logger.info("We should associate {} and {}",
+							institutionViewBean.getName(),
+							selectedTeachingDepartmentViewBean.getName());
+					organisationsService.associateInstitutionAndTeachingDepartment(
+							institutionViewBean.getInstitution().getId(),
+							selectedTeachingDepartmentViewBean.getTeachingDepartment().getId());
+					institutionViewBeansForSelectedTeachingDepartment.add(institutionViewBean);
+				}
+			}
+		}
+		else {
+			for (InstitutionViewBean institutionViewBean : listOfMovedViewBeans) {
+				if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
+					logger.info("We should dissociate {} and {}",
+							institutionViewBean.getName(),
+							selectedCommunityViewBean.getName());
+					organisationsService.dissociateCommunityAndInstitution(
+							selectedCommunityViewBean.getCommunity().getId(),
+							institutionViewBean.getInstitution().getId());
+					institutionViewBeansForSelectedCommunity.remove(institutionViewBean);
+				}
+				else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
+					logger.info("We should dissociate {} and {}",
+							institutionViewBean.getName(),
+							selectedAdministrativeDepartmentViewBean.getName());
+					organisationsService.dissociateInstitutionAndAdministrativeDepartment(
+							institutionViewBean.getInstitution().getId(),
+							selectedAdministrativeDepartmentViewBean.getAdministrativeDepartment().getId());
+					institutionViewBeansForSelectedAdministrativeDepartment.remove(institutionViewBean);
+				}
+				else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
+					logger.info("We should dissociate {} and {}",
+							institutionViewBean.getName(),
+							selectedTeachingDepartmentViewBean.getName());
+					organisationsService.dissociateInstitutionAndTeachingDepartment(
+							institutionViewBean.getInstitution().getId(),
+							selectedTeachingDepartmentViewBean.getTeachingDepartment().getId());
+					institutionViewBeansForSelectedTeachingDepartment.remove(institutionViewBean);
+				}
+			}
+		}
+		if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
+			selectedCommunityViewBean.setCommunity(
+					organisationsService.retrieveCommunity(selectedCommunityViewBean.getCommunity().getId()));
+		}
+		else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
+			selectedAdministrativeDepartmentViewBean.setAdministrativeDepartment(
+					organisationsService.retrieveAdministrativeDepartment(selectedAdministrativeDepartmentViewBean.getAdministrativeDepartment().getId()));
+		}
+		else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
+			selectedTeachingDepartmentViewBean.setTeachingDepartment(
+					organisationsService.retrieveTeachingDepartment(selectedTeachingDepartmentViewBean.getTeachingDepartment().getId()));
+		}
+	}
+	
 	/*
 	 * public void handleNewCommunityIconUpload(FileUploadEvent event) {
 	 * UploadedFile file = event.getFile();
@@ -393,31 +717,4 @@ public class OrganisationsController extends AbstractContextAwareController {
 	 * ("handleNewCommunityIconUpload", file.getFileName()); }
 	 */
 
-	public List<CommunityViewBean> getCommunityViewBeansForSelectedInstitution() {
-		return communityViewBeansForSelectedInstitution;
-	}
-
-	public void setCommunityViewBeansForSelectedInstitution() {
-		logger.info("setCommunityViewBeansForSelectedInstitution");
-		if (selectedInstitutionViewBean != null) {
-			for (Communaute community : selectedInstitutionViewBean.getInstitution().getCommunities()) {
-				int i = 0;
-				Boolean found = false;
-				while ((!found) && (i < communityViewBeans.getTableEntries().size())) {
-					if (communityViewBeans.getTableEntries().get(i).getId().equals(community.getId())) {
-						found = true;
-					}
-					else {
-						i++;
-					}
-				}
-				if (found) {
-					communityViewBeansForSelectedInstitution.add(communityViewBeans.getTableEntries().get(i));
-				}
-				else {
-					communityViewBeansForSelectedInstitution.remove(communityViewBeans.getTableEntries().get(i));
-				}
-			}
-		}
-	}
 }

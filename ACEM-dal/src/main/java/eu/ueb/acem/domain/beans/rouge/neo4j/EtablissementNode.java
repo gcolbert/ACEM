@@ -29,6 +29,7 @@ import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
@@ -116,13 +117,93 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 	}
 
 	@Override
+	@Transactional
 	public void removeCommunity(Communaute community) {
 		if (communities.contains(community)) {
-			communities.remove((CommunauteNode)community);
+			communities.remove(community);
 		}
 		if (community.getInstitutions().contains(this)) {
 			community.removeInstitution(this);
 		}
 	}
 
+	@Override
+	@Transactional
+	public void addAdministrativeDepartment(Service administrativeDepartment) {
+		if (! administrativeDepartments.contains(administrativeDepartment)) {
+			administrativeDepartments.add((ServiceNode)administrativeDepartment);
+		}
+		if (! administrativeDepartment.getInstitutions().contains(this)) {
+			administrativeDepartment.addInstitution(this);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void removeAdministrativeDepartment(Service administrativeDepartment) {
+		if (administrativeDepartments.contains(administrativeDepartment)) {
+			administrativeDepartments.remove(administrativeDepartment);
+		}
+		if (administrativeDepartment.getInstitutions().contains(this)) {
+			administrativeDepartment.removeInstitution(this);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void addTeachingDepartment(Composante teachingDepartment) {
+		if (! teachingDepartments.contains(teachingDepartment)) {
+			teachingDepartments.add((ComposanteNode)teachingDepartment);
+		}
+		if (! teachingDepartment.getInstitutions().contains(this)) {
+			teachingDepartment.addInstitution(this);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void removeTeachingDepartment(Composante teachingDepartment) {
+		if (teachingDepartments.contains(teachingDepartment)) {
+			teachingDepartments.remove(teachingDepartment);
+		}
+		if (teachingDepartment.getInstitutions().contains(this)) {
+			teachingDepartment.removeInstitution(this);
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EtablissementNode other = (EtablissementNode) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		}
+		else
+			if (!id.equals(other.id))
+				return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		}
+		else
+			if (!name.equals(other.name))
+				return false;
+		return true;
+	}
+	
 }

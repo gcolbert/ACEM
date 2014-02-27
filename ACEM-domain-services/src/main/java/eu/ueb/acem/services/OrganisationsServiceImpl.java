@@ -19,10 +19,12 @@
 package eu.ueb.acem.services;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.rouge.CommunauteDAO;
 import eu.ueb.acem.dal.rouge.ComposanteDAO;
@@ -221,15 +223,52 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	public Boolean dissociateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
 		logger.info("in dissociateCommunityAndInstitution");
 		Communaute community = communityDAO.retrieveById(idCommunity);
-		Boolean returnValue = false;
-		for (Etablissement institution : community.getInstitutions()) {
-			if (institution.getId().equals(idInstitution)) {
-				community.removeInstitution(institution);
-				community = communityDAO.update(community);
-				returnValue = true;
-			}
-		}
-		return returnValue;
+		Etablissement institution = institutionDAO.retrieveById(idInstitution);
+		community.removeInstitution(institution);
+		community = communityDAO.update(community);
+		return (! community.getInstitutions().contains(institution));
+	}
+
+	@Override
+	public Boolean associateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment) {
+		logger.info("in associateInstitutionAndAdministrativeDepartment");
+		Etablissement institution = institutionDAO.retrieveById(idInstitution);
+		Service administrativeDepartment = administrativeDepartmentDAO.retrieveById(idAdministrativeDepartment);
+		institution.addAdministrativeDepartment(administrativeDepartment);
+		institution = institutionDAO.update(institution);
+		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
+		return (institution.getAdministrativeDepartments().contains(administrativeDepartment));
+	}
+
+	@Override
+	public Boolean dissociateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment) {
+		logger.info("in dissociateInstitutionAndAdministrativeDepartment");
+		Etablissement institution = institutionDAO.retrieveById(idInstitution);
+		Service administrativeDepartment = administrativeDepartmentDAO.retrieveById(idAdministrativeDepartment);
+		institution.removeAdministrativeDepartment(administrativeDepartment);
+		institution = institutionDAO.update(institution);
+		return (! institution.getAdministrativeDepartments().contains(administrativeDepartment));
+	}
+
+	@Override
+	public Boolean associateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment) {
+		logger.info("in associateInstitutionAndTeachingDepartment");
+		Etablissement institution = institutionDAO.retrieveById(idInstitution);
+		Composante teachingDepartment = teachingDepartmentDAO.retrieveById(idTeachingDepartment);
+		institution.addTeachingDepartment(teachingDepartment);
+		institution = institutionDAO.update(institution);
+		teachingDepartment = teachingDepartmentDAO.update(teachingDepartment);
+		return (institution.getTeachingDepartments().contains(teachingDepartment));
+	}
+
+	@Override
+	public Boolean dissociateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment) {
+		logger.info("in dissociateInstitutionAndTeachingDepartment");
+		Etablissement institution = institutionDAO.retrieveById(idInstitution);
+		Composante teachingDepartment = teachingDepartmentDAO.retrieveById(idTeachingDepartment);
+		institution.removeTeachingDepartment(teachingDepartment);
+		institution = institutionDAO.update(institution);
+		return (! institution.getTeachingDepartments().contains(teachingDepartment));
 	}
 
 }

@@ -28,6 +28,7 @@ import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
@@ -70,4 +71,61 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 		this.institutions = (Set<EtablissementNode>) institutions;
 	}
 
+	@Override
+	@Transactional
+	public void addInstitution(Etablissement institution) {
+		if (! institutions.contains(institution)) {
+			institutions.add((EtablissementNode)institution);
+		}
+		if (! institution.getTeachingDepartments().contains(this)) {
+			institution.addTeachingDepartment(this);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void removeInstitution(Etablissement institution) {
+		if (institutions.contains(institution)) {
+			institutions.remove(institution);
+		}
+		if (institution.getTeachingDepartments().contains(this)) {
+			institution.removeTeachingDepartment(this);
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ComposanteNode other = (ComposanteNode) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		}
+		else
+			if (!id.equals(other.id))
+				return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		}
+		else
+			if (!name.equals(other.name))
+				return false;
+		return true;
+	}
+	
 }

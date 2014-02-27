@@ -19,13 +19,7 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -38,8 +32,6 @@ public class CommunityViewBean implements OrganisationViewBean, Pickable, Serial
 
 	private Communaute community;
 
-	//private List<InstitutionViewBean> institutionViewBeans;
-
 	private Long id;
 
 	private String name;
@@ -47,24 +39,12 @@ public class CommunityViewBean implements OrganisationViewBean, Pickable, Serial
 	private String shortname;
 
 	public CommunityViewBean() {
-		//institutionViewBeans = new ArrayList<InstitutionViewBean>();
 	}
 
 	public CommunityViewBean(Communaute community) {
 		this();
 		setCommunity(community);
 	}
-
-	//@PostConstruct
-	/*
-	public void initCommunityViewBean() {
-		if (community != null) {
-			for (Etablissement institution : community.getInstitutions()) {
-				institutionViewBeans.add(new InstitutionViewBean(institution));
-			}
-		}
-	}
-	*/
 
 	public Communaute getCommunity() {
 		return community;
@@ -75,18 +55,7 @@ public class CommunityViewBean implements OrganisationViewBean, Pickable, Serial
 		setId(community.getId());
 		setName(community.getName());
 		setShortname(community.getShortname());
-		//initCommunityViewBean();
 	}
-
-	/*
-	public List<InstitutionViewBean> getInstitutionViewBeans() {
-		return institutionViewBeans;
-	}
-
-	public void setInstitutions(List<InstitutionViewBean> institutionViewBeans) {
-		this.institutionViewBeans = institutionViewBeans;
-	}
-	*/
 
 	@Override
 	public Long getId() {
@@ -113,24 +82,6 @@ public class CommunityViewBean implements OrganisationViewBean, Pickable, Serial
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
 	}
-
-	/*
-	public void setInstitutionViewBeans(List<InstitutionViewBean> institutionViewBeans) {
-		this.institutionViewBeans = institutionViewBeans;
-	}
-	
-	public void addInstitutionViewBean(InstitutionViewBean institutionViewBean) {
-		if (! institutionViewBeans.contains(institutionViewBean)) {
-			institutionViewBeans.add(institutionViewBean);
-		}
-	}
-
-	public void removeInstitutionViewBean(InstitutionViewBean institutionViewBean) {
-		if (institutionViewBeans.contains(institutionViewBean)) {
-			institutionViewBeans.remove(institutionViewBean);
-		}
-	}
-	*/
 	
 	@Override
 	public int compareTo(CommunityViewBean o) {

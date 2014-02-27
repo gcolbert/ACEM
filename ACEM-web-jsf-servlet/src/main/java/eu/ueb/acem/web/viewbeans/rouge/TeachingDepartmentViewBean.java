@@ -19,13 +19,7 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import eu.ueb.acem.domain.beans.rouge.Composante;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -39,29 +33,17 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickabl
 
 	private Composante teachingDepartment;
 
-	//private List<InstitutionViewBean> institutionViewBeans;
-
 	private Long id;
 	
 	private String name;
 
 	public TeachingDepartmentViewBean() {
-		//institutionViewBeans = new ArrayList<InstitutionViewBean>();
 	}
 
 	public TeachingDepartmentViewBean(Composante teachingDepartment) {
 		this();
 		setTeachingDepartment(teachingDepartment);
 	}
-
-	//@PostConstruct
-	/*
-	public void initTeachingDepartmentViewBean() {
-		for (Etablissement institution : teachingDepartment.getInstitutions()) {
-			institutionViewBeans.add(new InstitutionViewBean(institution));
-		}
-	}
-	*/
 
 	public Composante getTeachingDepartment() {
 		return teachingDepartment;
@@ -71,7 +53,6 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickabl
 		this.teachingDepartment = teachingDepartment;
 		setId(teachingDepartment.getId());
 		setName(teachingDepartment.getName());
-		//initTeachingDepartmentViewBean();
 	}
 
 	@Override
@@ -91,16 +72,6 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickabl
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	/*
-	public List<InstitutionViewBean> getInstitutionViewBeans() {
-		return institutionViewBeans;
-	}
-
-	public void setInstitutionViewBeans(List<InstitutionViewBean> institutionViewBeans) {
-		this.institutionViewBeans = institutionViewBeans;
-	}
-	*/
 
 	@Override
 	public int compareTo(TeachingDepartmentViewBean o) {

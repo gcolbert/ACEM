@@ -31,23 +31,23 @@ import org.springframework.stereotype.Component;
  */
 @Component("pickListBean")
 @Scope("view")
-public class PickListBean<E extends Comparable<E>> implements Serializable {
+public class PickListBean implements Serializable {
 
 	private static final long serialVersionUID = 5863029035918765493L;
 
-	private DualListModel<E> pickListEntities;
+	private DualListModel<Pickable> pickListEntities;
 
 	public PickListBean() {
-		pickListEntities = new DualListModel<E>();
-		pickListEntities.setSource(new ArrayList<E>());
-		pickListEntities.setTarget(new ArrayList<E>());
+		pickListEntities = new DualListModel<Pickable>();
+		pickListEntities.setSource(new ArrayList<Pickable>());
+		pickListEntities.setTarget(new ArrayList<Pickable>());
 	}
 
-	public DualListModel<E> getPickListEntities() {
+	public DualListModel<Pickable> getPickListEntities() {
 		return pickListEntities;
 	}
 
-	public void setPickListEntities(DualListModel<E> pickListEntities) {
+	public void setPickListEntities(DualListModel<Pickable> pickListEntities) {
 		this.pickListEntities = pickListEntities;
 	}
 
@@ -58,11 +58,11 @@ public class PickListBean<E extends Comparable<E>> implements Serializable {
 	}
 	*/
 
-	public void addSourceEntity(E entity) {
+	public void addSourceEntity(Pickable entity) {
 		pickListEntities.getSource().add(entity);
 	}
 
-	public void addTargetEntity(E entity) {
+	public void addTargetEntity(Pickable entity) {
 		pickListEntities.getTarget().add(entity);
 	}
 

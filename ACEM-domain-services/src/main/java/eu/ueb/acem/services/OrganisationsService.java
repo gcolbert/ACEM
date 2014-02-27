@@ -87,4 +87,12 @@ public interface OrganisationsService {
 	
 	Boolean dissociateCommunityAndInstitution(Long idCommunity, Long idInstitution);
 
+	Boolean associateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment);
+
+	Boolean dissociateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment);
+
+	Boolean associateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment);
+
+	Boolean dissociateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment);
+
 }

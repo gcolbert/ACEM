@@ -19,17 +19,9 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
-import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -44,12 +36,6 @@ public class InstitutionViewBean implements OrganisationViewBean, Pickable, Seri
 
 	private Etablissement institution;
 
-	//private List<CommunityViewBean> communityViewBeans;
-
-	//private List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
-
-	//private List<TeachingDepartmentViewBean> teachingDepartmentViewBeans;
-
 	private Long id;
 	
 	private String name;
@@ -57,33 +43,12 @@ public class InstitutionViewBean implements OrganisationViewBean, Pickable, Seri
 	private String shortname;
 
 	public InstitutionViewBean() {
-		/*
-		communityViewBeans = new ArrayList<CommunityViewBean>();
-		administrativeDepartmentViewBeans = new ArrayList<AdministrativeDepartmentViewBean>();
-		teachingDepartmentViewBeans = new ArrayList<TeachingDepartmentViewBean>();
-		*/
 	}
 
 	public InstitutionViewBean(Etablissement institution) {
 		this();
 		setInstitution(institution);
 	}
-
-	//@PostConstruct
-	/*
-	public void initInstitutionViewBean() {
-		logger.info("in initInstitutionViewBean");
-		for (Communaute community : institution.getCommunities()) {
-			communityViewBeans.add(new CommunityViewBean(community));
-		}
-		for (Service administrativeDepartment : institution.getAdministrativeDepartments()) {
-			administrativeDepartmentViewBeans.add(new AdministrativeDepartmentViewBean(administrativeDepartment));
-		}
-		for (Composante teachingDepartment : institution.getTeachingDepartments()) {
-			teachingDepartmentViewBeans.add(new TeachingDepartmentViewBean(teachingDepartment));
-		}
-	}
-	*/
 
 	public Etablissement getInstitution() {
 		return institution;
@@ -94,7 +59,6 @@ public class InstitutionViewBean implements OrganisationViewBean, Pickable, Seri
 		setId(institution.getId());
 		setName(institution.getName());
 		setShortname(institution.getShortname());
-		//initInstitutionViewBean();
 	}
 
 	@Override
@@ -122,33 +86,6 @@ public class InstitutionViewBean implements OrganisationViewBean, Pickable, Seri
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
 	}
-
-	/*
-	public List<CommunityViewBean> getCommunityViewBeans() {
-		return communityViewBeans;
-	}
-
-	public void setCommunityViewBeans(List<CommunityViewBean> communityViewBeans) {
-		this.communityViewBeans = communityViewBeans;
-	}
-
-	public List<AdministrativeDepartmentViewBean> getAdministrativeDepartmentViewBeans() {
-		return administrativeDepartmentViewBeans;
-	}
-
-	public void setAdministrativeDepartmentViewBeans(
-			List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans) {
-		this.administrativeDepartmentViewBeans = administrativeDepartmentViewBeans;
-	}
-
-	public List<TeachingDepartmentViewBean> getTeachingDepartmentViewBeans() {
-		return teachingDepartmentViewBeans;
-	}
-
-	public void setTeachingDepartmentViewBeans(List<TeachingDepartmentViewBean> teachingDepartmentViewBeans) {
-		this.teachingDepartmentViewBeans = teachingDepartmentViewBeans;
-	}
-	*/
 
 	@Override
 	public int compareTo(InstitutionViewBean o) {

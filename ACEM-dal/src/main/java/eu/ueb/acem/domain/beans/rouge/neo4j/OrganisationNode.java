@@ -45,7 +45,7 @@ public abstract class OrganisationNode implements Organisation {
 	private static final long serialVersionUID = -4961037643458063514L;
 
 	@GraphId
-	private Long id;
+	protected Long id;
 
 	@Indexed(indexName = "indexOfOrganisations")
 	private String name;

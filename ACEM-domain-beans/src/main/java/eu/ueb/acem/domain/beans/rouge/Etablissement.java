@@ -42,4 +42,12 @@ public interface Etablissement extends Organisation {
 	
 	void removeCommunity(Communaute community);
 
+	void addAdministrativeDepartment(Service administrativeDepartment);
+
+	void removeAdministrativeDepartment(Service administrativeDepartment);
+
+	void addTeachingDepartment(Composante teachingDepartment);
+
+	void removeTeachingDepartment(Composante teachingDepartment);
+	
 }
