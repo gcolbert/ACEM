@@ -479,8 +479,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 					// Based on the domain rules, currentOrganisationViewBean
 					// must be an instance of InstitutionViewBean
 					if (organisationsService.associateInstitutionAndAdministrativeDepartment(
-							getCurrentOrganisationViewBean().getDomainBean().getId(), getCurrentOrganisationViewBean()
-									.getDomainBean().getId())) {
+							getCurrentOrganisationViewBean().getDomainBean().getId(),
+							movedOrganisationViewBean.getDomainBean().getId())) {
 						administrativeDepartmentViewBeansForCurrentOrganisation
 								.add((AdministrativeDepartmentViewBean) movedOrganisationViewBean);
 						logger.info("association successful");
