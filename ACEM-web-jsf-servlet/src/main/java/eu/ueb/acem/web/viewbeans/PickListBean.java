@@ -51,13 +51,6 @@ public class PickListBean implements Serializable {
 		this.pickListEntities = pickListEntities;
 	}
 
-	/*
-	public void setLists(List<E> listSource, List<E> listTarget) {
-		pickListEntities.setSource(listSource);
-		pickListEntities.setTarget(listTarget);
-	}
-	*/
-
 	public void addSourceEntity(Pickable entity) {
 		pickListEntities.getSource().add(entity);
 	}

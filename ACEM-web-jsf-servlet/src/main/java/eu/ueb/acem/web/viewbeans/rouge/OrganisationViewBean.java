@@ -18,10 +18,19 @@
  */
 package eu.ueb.acem.web.viewbeans.rouge;
 
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
 public interface OrganisationViewBean {
 
+	Long getId();
+	
+	String getName();
+	
+	Organisation getDomainBean();
+
+	void setDomainBean(Organisation organisation);
 }

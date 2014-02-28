@@ -19,8 +19,11 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.ScenariosServiceImpl;
 import eu.ueb.acem.web.viewbeans.Pickable;
@@ -51,6 +54,16 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, P
 		setAdministrativeDepartment(service);
 	}
 
+	@Override
+	public Organisation getDomainBean() {
+		return getAdministrativeDepartment();
+	}
+
+	@Override
+	public void setDomainBean(Organisation organisation) {
+		setAdministrativeDepartment((Service) organisation);
+	}
+
 	public Service getAdministrativeDepartment() {
 		return administrativeDepartment;
 	}
@@ -71,6 +84,7 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, P
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}

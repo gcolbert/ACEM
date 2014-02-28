@@ -19,7 +19,10 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
+
 import eu.ueb.acem.domain.beans.rouge.Communaute;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -46,6 +49,16 @@ public class CommunityViewBean implements OrganisationViewBean, Pickable, Serial
 		setCommunity(community);
 	}
 
+	@Override
+	public Organisation getDomainBean() {
+		return getCommunity();
+	}
+	
+	@Override
+	public void setDomainBean(Organisation organisation) {
+		setCommunity((Communaute) organisation);
+	}
+
 	public Communaute getCommunity() {
 		return community;
 	}
@@ -67,6 +80,7 @@ public class CommunityViewBean implements OrganisationViewBean, Pickable, Serial
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}

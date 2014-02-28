@@ -19,7 +19,10 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
+
 import eu.ueb.acem.domain.beans.rouge.Composante;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -56,6 +59,16 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickabl
 	}
 
 	@Override
+	public Organisation getDomainBean() {
+		return getTeachingDepartment();
+	}
+
+	@Override
+	public void setDomainBean(Organisation organisation) {
+		setTeachingDepartment((Composante) organisation);
+	}
+	
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -65,6 +78,7 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickabl
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}

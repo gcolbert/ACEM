@@ -19,9 +19,13 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -62,6 +66,16 @@ public class InstitutionViewBean implements OrganisationViewBean, Pickable, Seri
 	}
 
 	@Override
+	public Organisation getDomainBean() {
+		return getInstitution();
+	}
+
+	@Override
+	public void setDomainBean(Organisation organisation) {
+		setInstitution((Etablissement) organisation);
+	}
+
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -71,6 +85,7 @@ public class InstitutionViewBean implements OrganisationViewBean, Pickable, Seri
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}

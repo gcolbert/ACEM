@@ -45,21 +45,22 @@
 							onclick="PF('dialogCreateCommunity').show()" process="@this" />
 						<p:accordionPanel id="accordionPanelForCommunities"
 							value="#{organisationsController.communityViewBeans.tableEntries}"
-							var="viewBean" activeIndex="-1">
+							var="communityViewBean" activeIndex="-1">
 							<p:ajax event="tabChange"
-								listener="#{organisationsController.onCommunityAccordionPanelTabChange}"
+								listener="#{organisationsController.onAccordionPanelTabChange}"
 								update="@this" />
-							<p:tab title="#{viewBean.name}">
+							<p:tab title="#{communityViewBean.name}">
 								<p:commandButton
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 									icon="ui-icon-transferthick-e-w"
-									action="#{organisationsController.preparePicklistInstitutionViewBeansForSelectedCommunity()}"
+									actionListener="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
+									action="#{organisationsController.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
 									oncomplete="PF('dialogAssociateInstitution').show()"
 									update=":formOrganisations:idDialogAssociateInstitution"
 									process="@this"/>
 								<p:dataTable id="dataTableInstitutionViewBeansForCommunity" var="institutionViewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{organisationsController.institutionViewBeansForSelectedCommunity}">
+									value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
 									<p:column
 										headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
 										<h:outputText value="#{institutionViewBean.name}" />
@@ -77,23 +78,24 @@
 							onclick="PF('dialogCreateInstitution').show()" process="@this" />
 						<p:accordionPanel id="accordionPanelForInstitutions"
 							value="#{organisationsController.institutionViewBeans.tableEntries}"
-							var="viewBean" activeIndex="-1">
+							var="institutionViewBean" activeIndex="-1">
 							<p:ajax event="tabChange"
-								listener="#{organisationsController.onInstitutionAccordionPanelTabChange}"
+								listener="#{organisationsController.onAccordionPanelTabChange}"
 								update="@this" />
-							<p:tab title="#{viewBean.name}">
+							<p:tab title="#{institutionViewBean.name}">
 								<p:panelGrid columns="3">
 									<p:column>
 										<p:commandButton
 											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
-											action="#{organisationsController.preparePicklistCommunityViewBeansForSelectedInstitution()}"
+											actionListener="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
+											action="#{organisationsController.preparePicklistCommunityViewBeansForCurrentOrganisation()}"
 											oncomplete="PF('dialogAssociateCommunity').show()"
 											update=":formOrganisations:idDialogAssociateCommunity"
 											process="@this"/>
 										<p:dataTable var="communityViewBean"
 											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
-											value="#{organisationsController.communityViewBeansForSelectedInstitution}">
+											value="#{organisationsController.communityViewBeansForCurrentOrganisation}">
 											<p:column
 												headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.COLUMN_HEADER.NAME']}">
 												<h:outputText value="#{communityViewBean.name}" />
@@ -104,13 +106,14 @@
 										<p:commandButton
 											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
-											action="#{organisationsController.preparePicklistAdministrativeDepartmentViewBeansForSelectedInstitution()}"
+											actionListener="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
+											action="#{organisationsController.preparePicklistAdministrativeDepartmentViewBeansForCurrentOrganisation()}"
 											oncomplete="PF('dialogAssociateAdministrativeDepartment').show()"
 											update=":formOrganisations:idDialogAssociateAdministrativeDepartment"
 											process="@this" />
 										<p:dataTable var="administrativeDepartmentViewBean"
 											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
-											value="#{organisationsController.administrativeDepartmentViewBeansForSelectedInstitution}">
+											value="#{organisationsController.administrativeDepartmentViewBeansForCurrentOrganisation}">
 											<p:column
 												headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.COLUMN_HEADER.NAME']}">
 												<h:outputText value="#{administrativeDepartmentViewBean.name}" />
@@ -121,13 +124,14 @@
 										<p:commandButton
 											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
-											action="#{organisationsController.preparePicklistTeachingDepartmentViewBeansForSelectedInstitution()}"
+											actionListener="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
+											action="#{organisationsController.preparePicklistTeachingDepartmentViewBeansForCurrentOrganisation()}"
 											oncomplete="PF('dialogAssociateTeachingDepartment').show()"
 											update=":formOrganisations:idDialogAssociateTeachingDepartment"
 											process="@this" />
 										<p:dataTable var="teachingDepartmentViewBean"
 											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
-											value="#{organisationsController.teachingDepartmentViewBeansForSelectedInstitution}">
+											value="#{organisationsController.teachingDepartmentViewBeansForCurrentOrganisation}">
 											<p:column
 												headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.COLUMN_HEADER.NAME']}">
 												<h:outputText value="#{teachingDepartmentViewBean.name}" />
@@ -148,21 +152,22 @@
 							process="@this" />
 						<p:accordionPanel id="accordionPanelForAdministrativeDepartments"
 							value="#{organisationsController.administrativeDepartmentViewBeans.tableEntries}"
-							var="viewBean" activeIndex="-1">
+							var="administrativeDepartmentViewBean" activeIndex="-1">
 							<p:ajax event="tabChange"
-								listener="#{organisationsController.onAdministrativeDepartmentAccordionPanelTabChange}"
+								listener="#{organisationsController.onAccordionPanelTabChange}"
 								update="@this" />
-							<p:tab title="#{viewBean.name}">
+							<p:tab title="#{administrativeDepartmentViewBean.name}">
 								<p:commandButton
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 									icon="ui-icon-transferthick-e-w"
-									action="#{organisationsController.preparePicklistInstitutionViewBeansForSelectedAdministrativeDepartment()}"
+									actionListener="#{organisationsController.setCurrentOrganisationViewBean(administrativeDepartmentViewBean)}"
+									action="#{organisationsController.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
 									oncomplete="PF('dialogAssociateInstitution').show()"
 									update=":formOrganisations:idDialogAssociateInstitution"
 									process="@this" />
 								<p:dataTable var="institutionViewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{organisationsController.institutionViewBeansForSelectedAdministrativeDepartment}">
+									value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
 									<p:column
 										headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
 										<h:outputText value="#{institutionViewBean.name}" />
@@ -181,21 +186,22 @@
 							process="@this" />
 						<p:accordionPanel id="accordionPanelForTeachingDepartments"
 							value="#{organisationsController.teachingDepartmentViewBeans.tableEntries}"
-							var="viewBean" activeIndex="-1">
+							var="teachingDepartmentViewBean" activeIndex="-1">
 							<p:ajax event="tabChange"
-								listener="#{organisationsController.onTeachingDepartmentAccordionPanelTabChange}"
+								listener="#{organisationsController.onAccordionPanelTabChange}"
 								update="@this" />
-							<p:tab title="#{viewBean.name}">
+							<p:tab title="#{teachingDepartmentViewBean.name}">
 								<p:commandButton
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 									icon="ui-icon-transferthick-e-w"
-									action="#{organisationsController.preparePicklistInstitutionViewBeansForSelectedTeachingDepartment()}"
+									actionListener="#{organisationsController.setCurrentOrganisationViewBean(teachingDepartmentViewBean)}"
+									action="#{organisationsController.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
 									oncomplete="PF('dialogAssociateInstitution').show()"
 									update=":formOrganisations:idDialogAssociateInstitution"
 									process="@this" />
 								<p:dataTable var="institutionViewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{organisationsController.institutionViewBeansForSelectedTeachingDepartment}">
+									value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
 									<p:column
 										headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
 										<h:outputText value="#{institutionViewBean.name}" />
@@ -236,7 +242,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateCommunity(input1.value, input1b.value)}"
 					process="@this idDialogCreateCommunity"
-					update="@form idDialogCreateCommunity"
+					update=":formOrganisations:tabViewOrganisations:accordionPanelForCommunities"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateCommunity.hide(); }" />
 			</p:dialog>
 
@@ -262,7 +268,8 @@
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateInstitution(input2.value, input2b.value)}"
-					process="@this idDialogCreateInstitution" update="@form"
+					process="@this idDialogCreateInstitution"
+					update=":formOrganisations:tabViewOrganisations:accordionPanelForInstitutions"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
 			</p:dialog>
 
@@ -291,7 +298,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateAdministrativeDepartment(input3.value, input3b.value)}"
 					process="@this idDialogCreateAdministrativeDepartment"
-					update="@form"
+					update=":formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateAdministrativeDepartment.hide(); }" />
 			</p:dialog>
 
@@ -318,7 +325,8 @@
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateTeachingDepartment(input4.value, input4b.value)}"
-					process="@this idDialogCreateTeachingDepartment" update="@form"
+					process="@this idDialogCreateTeachingDepartment"
+					update=":formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
 			</p:dialog>
 
@@ -326,7 +334,7 @@
 				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogAssociateCommunity" modal="true" height="auto">
 				<p:pickList id="dialogAssociateCommunityPickList"
-					value="#{organisationsController.pickListCommunityViewBeans.pickListEntities}"
+					value="#{organisationsController.pickListBean.pickListEntities}"
 					var="communityViewBean" itemValue="#{communityViewBean}"
 					itemLabel="#{communityViewBean.name}" converter="PickListConverter"
 					showSourceControls="false" showTargetControls="false"
@@ -335,7 +343,7 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{organisationsController.onTransferCommunity}"
+						listener="#{organisationsController.onTransferOrganisation}"
 						update="@this :formOrganisations:dialogAssociateCommunityPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations" process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -349,7 +357,7 @@
 				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogAssociateInstitution" modal="true" height="auto">
 				<p:pickList id="dialogAssociateInstitutionPickList"
-					value="#{organisationsController.pickListInstitutionViewBeans.pickListEntities}"
+					value="#{organisationsController.pickListBean.pickListEntities}"
 					var="institutionViewBean" itemValue="#{institutionViewBean}"
 					itemLabel="#{institutionViewBean.name}" converter="PickListConverter"
 					showSourceControls="false" showTargetControls="false"
@@ -358,7 +366,7 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{organisationsController.onTransferInstitution}"
+						listener="#{organisationsController.onTransferOrganisation}"
 						update="@this :formOrganisations:dialogAssociateInstitutionPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations" process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -373,7 +381,7 @@
 				widgetVar="dialogAssociateAdministrativeDepartment" modal="true"
 				height="auto">
 				<p:pickList id="dialogAssociateAdministrativeDepartmentPickList"
-					value="#{organisationsController.pickListAdministrativeDepartmentViewBeans.pickListEntities}"
+					value="#{organisationsController.pickListBean.pickListEntities}"
 					var="administrativeDepartmentViewBean" itemValue="#{administrativeDepartmentViewBean}"
 					itemLabel="#{administrativeDepartmentViewBean.name}" converter="PickListConverter"
 					showSourceControls="false" showTargetControls="false"
@@ -382,7 +390,7 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{organisationsController.onTransferAdministrativeDepartment}"
+						listener="#{organisationsController.onTransferOrganisation}"
 						update="@this :formOrganisations:dialogAssociateAdministrativeDepartmentPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations" process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -397,7 +405,7 @@
 				widgetVar="dialogAssociateTeachingDepartment" modal="true"
 				height="auto">
 				<p:pickList id="dialogAssociateTeachingDepartmentPickList"
-					value="#{organisationsController.pickListTeachingDepartmentViewBeans.pickListEntities}"
+					value="#{organisationsController.pickListBean.pickListEntities}"
 					var="teachingDepartmentViewBean" itemValue="#{teachingDepartmentViewBean}"
 					itemLabel="#{teachingDepartmentViewBean.name}" converter="PickListConverter"
 					showSourceControls="false" showTargetControls="false"
@@ -406,7 +414,7 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{organisationsController.onTransferTeachingDepartment}"
+						listener="#{organisationsController.onTransferOrganisation}"
 						update="@this :formOrganisations:dialogAssociateTeachingDepartmentPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations" process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
