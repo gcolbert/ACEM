@@ -30,6 +30,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.gris.neo4j.EnseignantRepository;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
@@ -68,8 +69,14 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	}
 
 	@Override
-	public Enseignant retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Collection<Enseignant> retrieveByName(String name) {
+		Iterable<EnseignantNode> nodes = repository.findByName(name);
+		Collection<Enseignant> entities = new HashSet<Enseignant>();
+		for (EnseignantNode node : nodes) {
+			entities.add(node);
+		}
+		return entities;
+		//return repository.findByPropertyValue("name", name);
 	}
 
 	@Override
@@ -103,6 +110,10 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	@Override
 	public Long count() {
 		return repository.count();
+	}
+
+	public Personne retrieveByLogin(String uid) {
+		return repository.findByLogin(uid);
 	}
 
 }

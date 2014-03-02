@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
  * 
  */
 @NodeEntity
-@TypeAlias("Pedagogical_activity")
+@TypeAlias("PedagogicalActivity")
 public class ActivitePedagogiqueNode implements ActivitePedagogique {
 
 	private static final long serialVersionUID = -5248471016348742765L;
@@ -48,7 +48,7 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfPedagogicalActivities")
+	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = ScenarioNode.class, type = "activityForScenario", direction = OUTGOING)

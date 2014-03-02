@@ -18,8 +18,8 @@
  */
 package eu.ueb.acem.domain.beans.rouge.neo4j;
 
-import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -41,12 +41,12 @@ import eu.ueb.acem.domain.beans.rouge.Service;
  * 
  */
 @NodeEntity
-@TypeAlias("Organisation:Teaching_institution")
+@TypeAlias("Institution")
 public class EtablissementNode extends OrganisationNode implements Etablissement {
 
 	private static final long serialVersionUID = 4218521116992739925L;
 
-	@Indexed(indexName = "indexOfInstitutions")
+	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = CommunauteNode.class, type = "institutionMemberOfCommunity", direction = OUTGOING)

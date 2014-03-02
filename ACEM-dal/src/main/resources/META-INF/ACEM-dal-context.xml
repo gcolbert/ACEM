@@ -32,7 +32,7 @@
 
  	<context:component-scan base-package="eu.ueb.acem.dal"/>
 
-  	<neo4j:repositories base-package="eu.ueb.acem.dal"/>
+  	<neo4j:repositories base-package="eu.ueb.acem.dal.*"/>
 
  	<!-- CHOIX 1 : pour utiliser une base temporaire créée dynamiquement dans le répertoire "target/neo4j-db" -->
  	<!-- 

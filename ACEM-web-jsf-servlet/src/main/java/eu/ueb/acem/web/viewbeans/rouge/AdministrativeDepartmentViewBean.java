@@ -79,7 +79,6 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, P
 		return id;
 	}
 
-	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

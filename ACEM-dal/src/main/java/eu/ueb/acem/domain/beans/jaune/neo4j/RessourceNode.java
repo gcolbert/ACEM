@@ -18,14 +18,13 @@
  */
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
-import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -49,31 +48,22 @@ public abstract class RessourceNode implements Ressource {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfResources")
 	private String name;
 
 	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "resourceHasUseMode", direction = OUTGOING)
-	private Collection<ModaliteUtilisation> useModes;
+	private Set<ModaliteUtilisation> useModes;
 	
 	@RelatedTo(elementClass = ReponseNode.class, type="answeredUsingResource", direction = INCOMING)
-	private Collection<Reponse> answers;
+	private Set<Reponse> answers;
 
 	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type="activityRequiringResource", direction = INCOMING)
-	private Collection<ActivitePedagogique> pedagogicalActivities;
+	private Set<ActivitePedagogique> pedagogicalActivities;
 	
 	public RessourceNode() {
 	}
 
 	public RessourceNode(String name) {
 		this.setName(name);
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -84,11 +74,11 @@ public abstract class RessourceNode implements Ressource {
 		this.name = name;
 	}
 
-	public Collection<ModaliteUtilisation> getModalitesUtilisation() {
+	public Set<ModaliteUtilisation> getModalitesUtilisation() {
 		return useModes;
 	}
 
-	public Collection<Reponse> getAnswers() {
+	public Set<Reponse> getAnswers() {
 		return answers;
 	}
 

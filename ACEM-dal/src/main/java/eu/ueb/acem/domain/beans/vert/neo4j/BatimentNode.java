@@ -21,7 +21,6 @@ package eu.ueb.acem.domain.beans.vert.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -39,13 +38,13 @@ public class BatimentNode extends EspacePhysiqueNode implements Batiment {
 
 	private static final long serialVersionUID = 7469182359332815932L;
 
-	@GraphId
-	private Long id;
+	//@GraphId
+	//private Long id;
 
-	@Indexed(indexName = "indexBatiment")
+	@Indexed
 	private String name;
 
-	@RelatedTo(elementClass = Campus.class, type = "estContenuDans", direction = OUTGOING)
+	@RelatedTo(elementClass = CampusNode.class, type = "estContenuDans", direction = OUTGOING)
 	private Campus campus;
 
 	private Double latitude;

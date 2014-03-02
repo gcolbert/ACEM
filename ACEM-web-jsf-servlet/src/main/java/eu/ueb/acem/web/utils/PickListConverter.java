@@ -72,8 +72,7 @@ public class PickListConverter implements Converter {
 	}
 
 	public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
-		String returnString = ((Pickable) value).getId().toString();
-		return returnString;
+		return ((Pickable) value).getId().toString();
 	}
 
 }

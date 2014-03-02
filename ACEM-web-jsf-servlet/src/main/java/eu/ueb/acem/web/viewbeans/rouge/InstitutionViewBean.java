@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -80,7 +79,6 @@ public class InstitutionViewBean implements OrganisationViewBean, Pickable, Seri
 		return id;
 	}
 
-	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

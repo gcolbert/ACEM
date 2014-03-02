@@ -33,7 +33,7 @@ public interface DAO<ID extends Serializable, E> {
 
 	E retrieveById(ID id);
 
-	E retrieveByName(String name);
+	Collection<E> retrieveByName(String name);
 
 	Collection<E> retrieveAll();
 

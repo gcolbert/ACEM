@@ -21,7 +21,6 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -35,15 +34,12 @@ import eu.ueb.acem.domain.beans.vert.neo4j.EspacePhysiqueNode;
  * 
  */
 @NodeEntity
-@TypeAlias("Resource:Equipment")
+@TypeAlias("Equipment")
 public abstract class EquipementNode extends RessourceNode implements Equipement {
 
 	private static final long serialVersionUID = 795694384595044050L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed(indexName = "indexOfEquipments")
+	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "estContenuDans", direction = OUTGOING)

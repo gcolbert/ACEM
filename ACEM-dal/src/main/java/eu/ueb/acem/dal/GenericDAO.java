@@ -19,12 +19,9 @@
 package eu.ueb.acem.dal;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Collection;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
@@ -59,8 +56,14 @@ public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<
 	}
 
 	@Override
-	public E retrieveByName(String name) {
-		return (E) repository.findByPropertyValue("name", name);
+	public Collection<E> retrieveByName(String name) {
+		Iterable<N> nodes = repository.findByName(name);
+		Collection<E> entities = new HashSet<E>();
+		for (N node : nodes) {
+			entities.add(node);
+		}
+		return entities;
+		//return (E) repository.findByPropertyValue("name", name);
 	}
 
 	@Override

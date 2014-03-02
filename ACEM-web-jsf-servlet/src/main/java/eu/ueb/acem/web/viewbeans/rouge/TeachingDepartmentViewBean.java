@@ -22,7 +22,6 @@ import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -73,7 +72,6 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickabl
 		return id;
 	}
 
-	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

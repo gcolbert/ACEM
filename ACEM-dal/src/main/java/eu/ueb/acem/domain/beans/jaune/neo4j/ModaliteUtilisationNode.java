@@ -30,7 +30,7 @@ import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
  * 
  */
 @NodeEntity
-@TypeAlias("Use_mode")
+@TypeAlias("UseMode")
 public class ModaliteUtilisationNode implements ModaliteUtilisation {
 
 	private static final long serialVersionUID = 465146117417875133L;
@@ -38,7 +38,7 @@ public class ModaliteUtilisationNode implements ModaliteUtilisation {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfUseModes")
+	@Indexed
 	private String name;
 
 	/**

@@ -30,6 +30,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.gris.neo4j.GestionnaireRepository;
 import eu.ueb.acem.domain.beans.gris.Gestionnaire;
+import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
 
 /**
@@ -63,8 +64,14 @@ public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
 	}
 
 	@Override
-	public Gestionnaire retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Collection<Gestionnaire> retrieveByName(String name) {
+		Iterable<GestionnaireNode> nodes = repository.findByName(name);
+		Collection<Gestionnaire> entities = new HashSet<Gestionnaire>();
+		for (GestionnaireNode node : nodes) {
+			entities.add(node);
+		}
+		return entities;
+		//return repository.findByPropertyValue("name", name);
 	}
 
 	@Override
@@ -105,6 +112,10 @@ public class GestionnaireDAO implements DAO<Long, Gestionnaire> {
 	@Override
 	public Long count() {
 		return repository.count();
+	}
+
+	public Personne retrieveByLogin(String id) {
+		return repository.findByLogin(id);
 	}
 
 }

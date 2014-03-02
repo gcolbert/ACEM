@@ -19,7 +19,6 @@
 package eu.ueb.acem.domain.beans.vert.neo4j;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
@@ -35,10 +34,12 @@ public class SalleNode extends EspacePhysiqueNode implements Salle {
 
 	private static final long serialVersionUID = -7525107899854074242L;
 
-	@GraphId
-	private Long id;
+	//@GraphId
+	//private Long id;
 
-	@Indexed(indexName = "indexSalle")
+	@Indexed
+	private String name;
+	
 	private String numero;
 	private Boolean accesWifi;
 	private Integer capaciteAccueil;

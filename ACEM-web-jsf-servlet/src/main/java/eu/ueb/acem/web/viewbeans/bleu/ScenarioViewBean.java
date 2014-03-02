@@ -96,7 +96,6 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		return id;
 	}
 
-	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

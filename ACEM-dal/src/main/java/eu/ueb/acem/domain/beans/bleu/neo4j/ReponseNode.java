@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
  * 
  */
 @NodeEntity
-@TypeAlias("Pedagogical_answer")
+@TypeAlias("PedagogicalAnswer")
 public class ReponseNode implements Reponse {
 
 	private static final long serialVersionUID = 3066979121350858816L;
@@ -48,7 +48,7 @@ public class ReponseNode implements Reponse {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfAnswers")
+	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "needAnsweredBy", direction = INCOMING)

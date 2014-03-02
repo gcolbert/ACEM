@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.dal.bleu;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -70,14 +71,20 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	}
 
 	@Override
-	public Reponse retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Collection<Reponse> retrieveByName(String name) {
+		Iterable<ReponseNode> nodes = repository.findByName(name);
+		Collection<Reponse> entities = new HashSet<Reponse>();
+		for (ReponseNode node : nodes) {
+			entities.add(node);
+		}
+		return entities;
+		//return repository.findByPropertyValue("name", name);
 	}
 
 	@Override
-	public Set<Reponse> retrieveAll() {
+	public Collection<Reponse> retrieveAll() {
 		Iterable<ReponseNode> endResults = repository.findAll();
-		Set<Reponse> collection = new HashSet<Reponse>();
+		Collection<Reponse> collection = new HashSet<Reponse>();
 		if (endResults.iterator() != null) {
 			Iterator<ReponseNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {

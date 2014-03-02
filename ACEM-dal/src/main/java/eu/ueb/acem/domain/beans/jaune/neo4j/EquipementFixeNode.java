@@ -19,7 +19,6 @@
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
@@ -30,15 +29,12 @@ import eu.ueb.acem.domain.beans.jaune.EquipementFixe;
  * 
  */
 @NodeEntity
-@TypeAlias("Resource:Equipment:Fixed_equipment")
+@TypeAlias("FixedEquipment")
 public class EquipementFixeNode extends EquipementNode implements EquipementFixe {
 
 	private static final long serialVersionUID = 7746525608906065863L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed(indexName = "indexOfFixedEquipments")
+	@Indexed
 	private String name;
 
 	public EquipementFixeNode() {

@@ -17,6 +17,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.gris.EnseignantDAO;
+import eu.ueb.acem.dal.gris.GestionnaireDAO;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Gestionnaire;
 import eu.ueb.acem.domain.beans.gris.Personne;
@@ -59,9 +61,9 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 	 * DAO for user
 	 */
 	@Autowired
-	private DAO<Long, Enseignant> enseignantDAO;
+	private EnseignantDAO enseignantDAO;
 	@Autowired
-	private DAO<Long, Gestionnaire> gestionnaireDAO;
+	private GestionnaireDAO gestionnaireDAO;
 
 	/**
 	 * Bean constructor.
@@ -108,9 +110,9 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 				}
 				Personne user;
 				logger.info("authInfo.getId = {}", authInfo.getId());
-				user = gestionnaireDAO.retrieveByName(authInfo.getId());
+				user = gestionnaireDAO.retrieveByLogin(authInfo.getId());
 				if (user == null) {
-					user = enseignantDAO.retrieveByName(authInfo.getId());
+					user = enseignantDAO.retrieveByLogin(authInfo.getId());
 					if (user == null) {
 						user = enseignantDAO.create(new EnseignantNode(authInfo.getId()));
 					}

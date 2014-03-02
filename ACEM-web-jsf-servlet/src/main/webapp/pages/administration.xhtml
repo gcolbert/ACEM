@@ -37,6 +37,11 @@
 
 			<p:panel header="#{msgs['ADMINISTRATION.ORGANISATIONS.HEADER']}">
 				<p:tabView id="tabViewOrganisations" dynamic="true" cache="false">
+				<!-- 
+					<p:ajax event="tabChange"
+						listener="#{organisationsController.onTabViewTabChange}"
+						update="@this" />
+						-->
 					<p:tab
 						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_COMMUNITIES_TITLE']}">
 						<p:commandButton
@@ -242,7 +247,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateCommunity(input1.value, input1b.value)}"
 					process="@this idDialogCreateCommunity"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForCommunities"
+					update=":formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateCommunity.hide(); }" />
 			</p:dialog>
 
@@ -269,7 +274,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateInstitution(input2.value, input2b.value)}"
 					process="@this idDialogCreateInstitution"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForInstitutions"
+					update=":formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
 			</p:dialog>
 
@@ -298,7 +303,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateAdministrativeDepartment(input3.value, input3b.value)}"
 					process="@this idDialogCreateAdministrativeDepartment"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments"
+					update=":formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateAdministrativeDepartment.hide(); }" />
 			</p:dialog>
 
@@ -326,7 +331,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateTeachingDepartment(input4.value, input4b.value)}"
 					process="@this idDialogCreateTeachingDepartment"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments"
+					update=":formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
 			</p:dialog>
 
@@ -343,13 +348,14 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{organisationsController.onTransferOrganisation}"
+						listener="#{organisationsController.onTransfer}"
 						update="@this :formOrganisations:dialogAssociateCommunityPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations" process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
-					onclick="PF('dialogAssociateCommunity').hide()" update="@none"
+					onclick="PF('dialogAssociateCommunity').hide()"
+					update="@none"
 					process="@this idDialogAssociateCommunity" />
 			</p:dialog>
 
@@ -366,7 +372,7 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{organisationsController.onTransferOrganisation}"
+						listener="#{organisationsController.onTransfer}"
 						update="@this :formOrganisations:dialogAssociateInstitutionPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations" process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -390,7 +396,7 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{organisationsController.onTransferOrganisation}"
+						listener="#{organisationsController.onTransfer}"
 						update="@this :formOrganisations:dialogAssociateAdministrativeDepartmentPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations" process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -414,7 +420,7 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{organisationsController.onTransferOrganisation}"
+						listener="#{organisationsController.onTransfer}"
 						update="@this :formOrganisations:dialogAssociateTeachingDepartmentPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations" process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"

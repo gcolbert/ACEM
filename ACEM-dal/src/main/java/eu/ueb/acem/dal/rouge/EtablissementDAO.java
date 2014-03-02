@@ -21,6 +21,7 @@ package eu.ueb.acem.dal.rouge;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,14 @@ public class EtablissementDAO implements DAO<Long, Etablissement> {
 	}
 
 	@Override
-	public Etablissement retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Collection<Etablissement> retrieveByName(String name) {
+		//return repository.findByPropertyValue("name", name);
+		Iterable<EtablissementNode> nodes = repository.findByName(name);
+		Collection<Etablissement> entities = new HashSet<Etablissement>();
+		for (EtablissementNode node : nodes) {
+			entities.add(node);
+		}
+		return entities;
 	}
 
 	@Override

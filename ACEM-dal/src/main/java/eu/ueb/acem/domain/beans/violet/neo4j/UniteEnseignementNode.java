@@ -44,7 +44,8 @@ public class UniteEnseignementNode implements UniteEnseignement {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfCredits")
+	//@Indexed(indexType = IndexType.SIMPLE)
+	@Indexed
 	private String name;
 
 	private String duree;

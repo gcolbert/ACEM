@@ -47,8 +47,8 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@Indexed(indexName = "indexOfAdministrators")
-	protected String name;
+	@Indexed
+	private String name;
 	
 	@RelatedTo(elementClass = BesoinNode.class, type = "authorsNeed", direction = OUTGOING)
 	private Collection<Besoin> needs;

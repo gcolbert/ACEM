@@ -24,10 +24,10 @@ package eu.ueb.acem.domain.beans.vert;
  */
 public interface Etage extends EspacePhysique {
 
-	Batiment getBatiment();
+	Batiment getBuilding();
 
-	Integer getNumero();
+	Integer getNumber();
 
-	void setNumero(Integer numero);
+	void setNumber(Integer number);
 
 }

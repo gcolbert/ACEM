@@ -19,7 +19,6 @@
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
@@ -30,15 +29,12 @@ import eu.ueb.acem.domain.beans.jaune.EquipementMobile;
  * 
  */
 @NodeEntity
-@TypeAlias("Resource:Equipment:Mobile_equipment")
+@TypeAlias("MobileEquipment")
 public class EquipementMobileNode extends EquipementNode implements EquipementMobile {
 
 	private static final long serialVersionUID = 122683505932503559L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed(indexName = "indexOfMobileEquipments")
+	@Indexed
 	private String name;
 
 	private Integer quantite;

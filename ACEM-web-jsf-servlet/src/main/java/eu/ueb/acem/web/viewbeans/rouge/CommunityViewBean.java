@@ -22,7 +22,6 @@ import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -75,7 +74,6 @@ public class CommunityViewBean implements OrganisationViewBean, Pickable, Serial
 		return id;
 	}
 
-	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

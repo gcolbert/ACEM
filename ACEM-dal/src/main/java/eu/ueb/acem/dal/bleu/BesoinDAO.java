@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.dal.bleu;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -65,14 +66,20 @@ public class BesoinDAO implements DAO<Long, Besoin> {
 	}
 
 	@Override
-	public Besoin retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Collection<Besoin> retrieveByName(String name) {
+		//return repository.findByPropertyValue("name", name);
+		Iterable<BesoinNode> needNodes = repository.findByName(name);
+		Collection<Besoin> needs = new HashSet<Besoin>();
+		for (Besoin need : needNodes) {
+			needs.add(need);
+		}
+		return needs;
 	}
 
 	@Override
-	public Set<Besoin> retrieveAll() {
+	public Collection<Besoin> retrieveAll() {
 		Iterable<BesoinNode> endResults = repository.findAll();
-		Set<Besoin> collection = new HashSet<Besoin>();
+		Collection<Besoin> collection = new HashSet<Besoin>();
 		if (endResults.iterator() != null) {
 			Iterator<BesoinNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {

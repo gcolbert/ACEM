@@ -21,6 +21,7 @@ package eu.ueb.acem.dal.rouge;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,14 @@ public class ComposanteDAO implements DAO<Long, Composante> {
 	}
 
 	@Override
-	public Composante retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Collection<Composante> retrieveByName(String name) {
+		//return repository.findByPropertyValue("name", name);
+		Iterable<ComposanteNode> nodes = repository.findByName(name);
+		Collection<Composante> entities = new HashSet<Composante>();
+		for (ComposanteNode node : nodes) {
+			entities.add(node);
+		}
+		return entities;
 	}
 
 	@Override

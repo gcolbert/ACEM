@@ -21,6 +21,7 @@ package eu.ueb.acem.dal.rouge;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,8 +65,14 @@ public class ServiceDAO implements DAO<Long, Service> {
 	}
 
 	@Override
-	public Service retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Collection<Service> retrieveByName(String name) {
+		//return repository.findByPropertyValue("name", name);
+		Iterable<ServiceNode> nodes = repository.findByName(name);
+		Collection<Service> entities = new HashSet<Service>();
+		for (ServiceNode node : nodes) {
+			entities.add(node);
+		}
+		return entities;
 	}
 
 	@Override

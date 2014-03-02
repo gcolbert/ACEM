@@ -18,9 +18,10 @@
  */
 package eu.ueb.acem.dal.bleu;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Collection;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,14 +69,20 @@ public class ActivitePedagogiqueDAO implements DAO<Long, ActivitePedagogique> {
 	}
 
 	@Override
-	public ActivitePedagogique retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Collection<ActivitePedagogique> retrieveByName(String name) {
+		Iterable<ActivitePedagogiqueNode> nodes = repository.findByName(name);
+		Collection<ActivitePedagogique> entities = new HashSet<ActivitePedagogique>();
+		for (ActivitePedagogiqueNode node : nodes) {
+			entities.add(node);
+		}
+		return entities;
+		//return repository.findByPropertyValue("name", name);
 	}
 
 	@Override
-	public Collection<ActivitePedagogique> retrieveAll() {
+	public Set<ActivitePedagogique> retrieveAll() {
 		Iterable<ActivitePedagogiqueNode> endResults = repository.findAll();
-		Collection<ActivitePedagogique> collection = new HashSet<ActivitePedagogique>();
+		Set<ActivitePedagogique> collection = new HashSet<ActivitePedagogique>();
 		if (endResults.iterator() != null) {
 			Iterator<ActivitePedagogiqueNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {

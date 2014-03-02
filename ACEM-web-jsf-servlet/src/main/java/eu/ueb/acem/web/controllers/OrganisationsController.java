@@ -267,6 +267,24 @@ public class OrganisationsController extends AbstractContextAwareController {
 		}
 	}
 
+	public void preparePicklistCommunityViewBeansForCurrentOrganisation() {
+		logger.info("preparePicklistCommunityViewBeansForCurrentOrganisation");
+		if (getCurrentOrganisationViewBean() != null) {
+			pickListBean.getPickListEntities().getSource().clear();
+			pickListBean.getPickListEntities().getSource().addAll(communityViewBeans.getTableEntries());
+			pickListBean.getPickListEntities().getTarget().clear();
+			for (Communaute communityAssociatedWithSelectedInstitution : ((InstitutionViewBean) getCurrentOrganisationViewBean())
+					.getInstitution().getCommunities()) {
+				for (CommunityViewBean communityViewBean : communityViewBeans.getTableEntries()) {
+					if (communityAssociatedWithSelectedInstitution.getId().equals(communityViewBean.getId())) {
+						pickListBean.getPickListEntities().getSource().remove(communityViewBean);
+						pickListBean.getPickListEntities().getTarget().add(communityViewBean);
+					}
+				}
+			}
+		}
+	}
+
 	public void preparePicklistInstitutionViewBeansForCurrentOrganisation() {
 		logger.info("preparePicklistInstitutionViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
@@ -303,24 +321,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 							pickListBean.getPickListEntities().getSource().remove(institutionViewBean);
 							pickListBean.getPickListEntities().getTarget().add(institutionViewBean);
 						}
-					}
-				}
-			}
-		}
-	}
-
-	public void preparePicklistCommunityViewBeansForCurrentOrganisation() {
-		logger.info("preparePicklistCommunityViewBeansForCurrentOrganisation");
-		if (getCurrentOrganisationViewBean() != null) {
-			pickListBean.getPickListEntities().getSource().clear();
-			pickListBean.getPickListEntities().getSource().addAll(communityViewBeans.getTableEntries());
-			pickListBean.getPickListEntities().getTarget().clear();
-			for (Communaute communityAssociatedWithSelectedInstitution : ((InstitutionViewBean) getCurrentOrganisationViewBean())
-					.getInstitution().getCommunities()) {
-				for (CommunityViewBean communityViewBean : communityViewBeans.getTableEntries()) {
-					if (communityAssociatedWithSelectedInstitution.getId().equals(communityViewBean.getId())) {
-						pickListBean.getPickListEntities().getSource().remove(communityViewBean);
-						pickListBean.getPickListEntities().getTarget().add(communityViewBean);
 					}
 				}
 			}
@@ -367,11 +367,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 		}
 	}
 
-	public void onAccordionPanelTabChange(TabChangeEvent event) {
-		logger.info("onAccordionPanelTabChange, tab={}", event.getTab());
-		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
-	}
-
 	public void onCreateCommunity(String name, String shortname) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
 		Communaute community = organisationsService.createCommunity(name, shortname);
@@ -405,7 +400,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 		administrativeDepartmentViewBeans.sort();
 	}
 
-	public void onTransferOrganisation(TransferEvent event) {
+	public void onTransfer(TransferEvent event) {
 		logger.info("onTransferOrganisation");
 		@SuppressWarnings("unchecked")
 		List<OrganisationViewBean> listOfMovedViewBeans = (List<OrganisationViewBean>) event.getItems();
@@ -619,6 +614,15 @@ public class OrganisationsController extends AbstractContextAwareController {
 					organisationsService.retrieveTeachingDepartment(getCurrentOrganisationViewBean().getDomainBean()
 							.getId()));
 		}
+	}
+
+	public void onAccordionPanelTabChange(TabChangeEvent event) {
+		logger.info("onAccordionPanelTabChange, tab={}", event.getTab());
+		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
+	}
+
+	public void onTabViewTabChange(TabChangeEvent event) {
+		logger.info("onTabViewTabChange, tab={}", event.getTab());
 	}
 
 	/*-

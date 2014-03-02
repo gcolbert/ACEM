@@ -36,7 +36,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
  * @author Grégoire Colbert @since 2013-12-11
  * 
  */
-@Repository("activiteDAO")
+@Repository("formationProfessionnelleDAO")
 public class FormationProfessionnelleDAO implements DAO<Long, FormationProfessionnelle> {
 
 	/**
@@ -68,8 +68,14 @@ public class FormationProfessionnelleDAO implements DAO<Long, FormationProfessio
 	}
 
 	@Override
-	public FormationProfessionnelle retrieveByName(String nom) {
-		return repository.findByPropertyValue("nom", nom);
+	public Collection<FormationProfessionnelle> retrieveByName(String name) {
+		//return repository.findByPropertyValue("name", name);
+		Iterable<FormationProfessionnelleNode> nodes = repository.findByName(name);
+		Collection<FormationProfessionnelle> entities = new HashSet<FormationProfessionnelle>();
+		for (FormationProfessionnelleNode node : nodes) {
+			entities.add(node);
+		}
+		return entities;
 	}
 
 	@Override

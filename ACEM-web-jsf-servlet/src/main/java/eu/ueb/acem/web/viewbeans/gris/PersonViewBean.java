@@ -79,7 +79,6 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		return id;
 	}
 
-	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

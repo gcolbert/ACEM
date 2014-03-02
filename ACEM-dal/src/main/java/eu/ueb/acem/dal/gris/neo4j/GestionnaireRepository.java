@@ -19,6 +19,7 @@
 package eu.ueb.acem.dal.gris.neo4j;
 
 import eu.ueb.acem.dal.GenericRepository;
+import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
 
 /**
@@ -26,5 +27,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
  * 
  */
 public interface GestionnaireRepository extends GenericRepository<GestionnaireNode> {
+
+	Personne findByLogin(String id);
 
 }

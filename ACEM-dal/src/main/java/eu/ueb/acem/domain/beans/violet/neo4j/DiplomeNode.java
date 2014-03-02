@@ -47,7 +47,7 @@ public class DiplomeNode implements Diplome {
 	@RelatedTo(elementClass = UniteEnseignementNode.class, type = "isPartOfDiploma", direction = INCOMING)
 	private Collection<UniteEnseignement> credits;
 	
-	@Indexed(indexName = "indexOfDiplomas")
+	@Indexed
 	private String name;
 
 	public DiplomeNode() {

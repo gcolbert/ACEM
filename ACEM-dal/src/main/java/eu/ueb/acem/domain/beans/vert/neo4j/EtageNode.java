@@ -21,7 +21,6 @@ package eu.ueb.acem.domain.beans.vert.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -39,30 +38,34 @@ public class EtageNode extends EspacePhysiqueNode implements Etage {
 
 	private static final long serialVersionUID = -7525107899854074242L;
 
-	@GraphId
-	private Long id;
+	//@GraphId
+	//private Long id;
 
-	@Indexed(indexName = "indexEtage")
-	private Integer numero;
+	@Indexed
+	private String name;
+	
+	private Integer number;
 
-	@RelatedTo(elementClass = Batiment.class, type = "estUnePartieDe", direction = OUTGOING)
-	private Batiment batiment;
+	@RelatedTo(elementClass = BatimentNode.class, type = "estUnePartieDe", direction = OUTGOING)
+	private Batiment building;
 
-	public EtageNode(Integer numero) {
-		this.numero = numero;
-	}
-
-	public Integer getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Integer numero) {
-		this.numero = numero;
+	public EtageNode(Integer number) { 
+		this.number = number;
 	}
 
 	@Override
-	public Batiment getBatiment() {
-		return batiment;
+	public Integer getNumber() {
+		return number;
+	}
+
+	@Override
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
+	@Override
+	public Batiment getBuilding() {
+		return building;
 	}
 
 }

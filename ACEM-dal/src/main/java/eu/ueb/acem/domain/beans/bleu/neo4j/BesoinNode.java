@@ -18,8 +18,8 @@
  */
 package eu.ueb.acem.domain.beans.bleu.neo4j;
 
-import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Set;
 
@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
  * 
  */
 @NodeEntity
-@TypeAlias("Pedagogical_need")
+@TypeAlias("PedagogicalNeed")
 public class BesoinNode implements Besoin {
 
 	private static final long serialVersionUID = -774562771501521566L;
@@ -52,7 +52,7 @@ public class BesoinNode implements Besoin {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfNeeds")
+	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = BesoinNode.class, type = "hasParentNeed", direction = OUTGOING)

@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.gris.EnseignantDAO;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
@@ -49,7 +50,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	private static final Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
 
 	@Autowired
-	private DAO<Long, Enseignant> enseignantDAO;
+	private EnseignantDAO enseignantDAO;
 
 	/**
 	 * Constructor.
@@ -64,7 +65,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 
 	@Override
 	public Personne getUser(String uid) {
-		Personne user = enseignantDAO.retrieveByName(uid);
+		Personne user = enseignantDAO.retrieveByLogin(uid);
 		if (user == null) {
 			user = enseignantDAO.create(new EnseignantNode(uid));
 			user.setLogin(uid);

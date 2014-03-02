@@ -18,8 +18,8 @@
  */
 package eu.ueb.acem.domain.beans.bleu.neo4j;
 
-import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +48,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
  * 
  */
 @NodeEntity
-@TypeAlias("Scenario")
+@TypeAlias("PedagogicalScenario")
 public class ScenarioNode implements Scenario {
 
 	@SuppressWarnings("unused")
@@ -63,7 +63,7 @@ public class ScenarioNode implements Scenario {
 
 	private Long modificationDate;
 
-	@Indexed(indexName = "indexOfScenarios")
+	@Indexed
 	private String name;
 
 	private String objective;

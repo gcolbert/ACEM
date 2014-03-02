@@ -42,7 +42,7 @@ public class CoursNode implements Cours {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfCourses")
+	@Indexed
 	private String name;
 
 	private String duree;

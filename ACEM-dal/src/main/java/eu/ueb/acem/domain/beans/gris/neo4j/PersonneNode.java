@@ -20,6 +20,7 @@ package eu.ueb.acem.domain.beans.gris.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -33,6 +34,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
  * 
  */
 @NodeEntity
+@TypeAlias("Person")
 public abstract class PersonneNode implements Personne {
 
 	private static final long serialVersionUID = -5697929702791942609L;
@@ -40,7 +42,7 @@ public abstract class PersonneNode implements Personne {
 	@GraphId
 	private Long id;
 
-	@Indexed(indexName = "indexOfPersons")
+	@Indexed
 	protected String name;
 
 	@RelatedTo(elementClass = OrganisationNode.class, type = "travaillePour", direction = OUTGOING)

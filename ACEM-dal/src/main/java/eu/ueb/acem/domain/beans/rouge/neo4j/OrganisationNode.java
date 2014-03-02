@@ -47,7 +47,7 @@ public abstract class OrganisationNode implements Organisation {
 	@GraphId
 	protected Long id;
 
-	@Indexed(indexName = "indexOfOrganisations")
+	@Indexed
 	private String name;
 	
 	private String shortname;

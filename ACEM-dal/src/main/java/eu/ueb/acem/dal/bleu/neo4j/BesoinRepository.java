@@ -21,6 +21,7 @@ package eu.ueb.acem.dal.bleu.neo4j;
 import java.util.Set;
 
 import org.springframework.data.neo4j.annotation.Query;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 
@@ -30,8 +31,11 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
  */
 public interface BesoinRepository extends GenericRepository<BesoinNode> {
 
-	@Query(value = "start n=node(*) where has(n.__type__) and n.__type__ = 'Pedagogical_need' and not (n)-[:hasParentNeed]->() return n")
+	@Query(value = "start n=node(*) where (n:PedagogicalNeed) and not (n)-[:hasParentNeed]->() return n")
 	Set<BesoinNode> findRoots();
+	
+	@Query
+	Iterable<BesoinNode> findByName(String name);
 
 	/*
 	 * @Query(value =

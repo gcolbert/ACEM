@@ -76,7 +76,6 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 		return id;
 	}
 
-	@Override
 	public void setId(Long id) {
 		this.id = id;
 	}

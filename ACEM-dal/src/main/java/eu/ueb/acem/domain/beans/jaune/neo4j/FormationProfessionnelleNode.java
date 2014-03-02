@@ -20,7 +20,6 @@
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
@@ -31,15 +30,12 @@ import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
  * 
  */
 @NodeEntity
-@TypeAlias("Resource:ProfessionalTraining")
+@TypeAlias("ProfessionalTraining")
 public class FormationProfessionnelleNode extends RessourceNode implements FormationProfessionnelle {
 
 	private static final long serialVersionUID = 1012212357185877701L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed(indexName = "indexOfProfessionalTrainings")
+	@Indexed
 	private String name;
 
 	public FormationProfessionnelleNode() {

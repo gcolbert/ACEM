@@ -18,9 +18,9 @@
  */
 package eu.ueb.acem.dal.bleu;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,8 +74,14 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 	}
 
 	@Override
-	public Scenario retrieveByName(String name) {
-		return repository.findByPropertyValue("name", name);
+	public Collection<Scenario> retrieveByName(String name) {
+		Iterable<ScenarioNode> nodes = repository.findByName(name);
+		Collection<Scenario> entities = new HashSet<Scenario>();
+		for (ScenarioNode node : nodes) {
+			entities.add(node);
+		}
+		return entities;
+		//return repository.findByPropertyValue("name", name);
 	}
 
 	@Override

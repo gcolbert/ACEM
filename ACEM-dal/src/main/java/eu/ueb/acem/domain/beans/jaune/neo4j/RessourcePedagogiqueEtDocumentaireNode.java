@@ -19,7 +19,6 @@
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
@@ -30,15 +29,12 @@ import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
  * 
  */
 @NodeEntity
-@TypeAlias("Resource:Pedagogical_and_documentary_resources")
+@TypeAlias("PedagogicalAndDocumentaryResources")
 public class RessourcePedagogiqueEtDocumentaireNode extends RessourceNode implements RessourcePedagogiqueEtDocumentaire {
 
 	private static final long serialVersionUID = 795694384595044050L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed(indexName = "indexOfPedagogicalAndDocumentaryResources")
+	@Indexed
 	private String name;
 
 	public RessourcePedagogiqueEtDocumentaireNode() {

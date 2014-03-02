@@ -19,13 +19,9 @@
 package eu.ueb.acem.services;
 
 import java.util.Collection;
-import java.util.Iterator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import eu.ueb.acem.dal.rouge.CommunauteDAO;
 import eu.ueb.acem.dal.rouge.ComposanteDAO;
 import eu.ueb.acem.dal.rouge.EtablissementDAO;

@@ -20,10 +20,9 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -36,19 +35,16 @@ import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
  * 
  */
 @NodeEntity
-@TypeAlias("Resource:Software_documentation")
+@TypeAlias("SoftwareDocumentation")
 public class DocumentationApplicatifNode extends RessourceNode implements DocumentationApplicatif {
 
 	private static final long serialVersionUID = -2471928076966986715L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed(indexName = "indexOfSoftwareDocumentations")
+	@Indexed
 	private String name;
 
-	@RelatedTo(elementClass = Applicatif.class, type = "documentsSoftware", direction = OUTGOING)
-	private Collection<Applicatif> applicatifs;
+	@RelatedTo(elementClass = ApplicatifNode.class, type = "documentsSoftware", direction = OUTGOING)
+	private Set<Applicatif> softwares;
 
 	public DocumentationApplicatifNode() {
 	}
@@ -57,8 +53,14 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 		this.setName(name);
 	}
 
-	public Collection<Applicatif> getApplicatifs() {
-		return applicatifs;
+	@Override
+	public Set<Applicatif> getApplicatifs() {
+		return softwares;
+	}
+	
+	@Override
+	public void setApplicatifs(Set<Applicatif> softwares) {
+		this.softwares = softwares;
 	}
 
 	@Override

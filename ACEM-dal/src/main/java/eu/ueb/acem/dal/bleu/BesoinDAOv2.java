@@ -18,25 +18,14 @@
  */
 package eu.ueb.acem.dal.bleu;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.neo4j.conversion.EndResult;
-import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.GenericDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericDAO;
 import eu.ueb.acem.dal.bleu.neo4j.BesoinRepository;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20

@@ -38,12 +38,12 @@ import eu.ueb.acem.domain.beans.rouge.Service;
  * 
  */
 @NodeEntity
-@TypeAlias("Organisation:Administrative_department")
+@TypeAlias("AdministrativeDepartment")
 public class ServiceNode extends OrganisationNode implements Service {
 
 	private static final long serialVersionUID = -5662533287772515643L;
 
-	@Indexed(indexName = "indexOfAdministrativeDepartments")
+	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = EtablissementNode.class, type = "administrativeDepartmentPartOfInstitution", direction = OUTGOING)
