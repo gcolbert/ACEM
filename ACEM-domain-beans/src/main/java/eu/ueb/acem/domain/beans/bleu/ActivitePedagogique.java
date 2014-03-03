@@ -53,6 +53,8 @@ public interface ActivitePedagogique extends Serializable, Comparable<ActivitePe
 
 	Set<? extends Scenario> getScenarios();
 
+	void setScenarios(Set<? extends Scenario> scenarios);
+
 	void addScenario(Scenario scenario);
 	
 	void removeScenario(Scenario scenario);
@@ -62,5 +64,5 @@ public interface ActivitePedagogique extends Serializable, Comparable<ActivitePe
 	void setResources(Set<? extends Ressource> resources);
 	
 	int compareTo(ActivitePedagogique o);
-	
+
 }

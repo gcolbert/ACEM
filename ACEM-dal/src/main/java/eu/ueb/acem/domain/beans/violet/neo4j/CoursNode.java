@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.violet.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -48,7 +49,8 @@ public class CoursNode implements Cours {
 	private String duree;
 
 	@RelatedTo(elementClass = UniteEnseignementNode.class, type = "isPartOfCredit", direction = OUTGOING)
-	private UniteEnseignement credit;
+	@Fetch
+	private UniteEnseignementNode credit;
 
 	public CoursNode() {
 	}

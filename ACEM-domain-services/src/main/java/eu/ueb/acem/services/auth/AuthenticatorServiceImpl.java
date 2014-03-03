@@ -1,5 +1,20 @@
 /**
- * ESUP-Portail Blank Application - Copyright (c) 2010 ESUP-Portail consortium.
+ *     Copyright Grégoire COLBERT 2013
+ * 
+ *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
+ * 
+ *     ACEM is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     ACEM is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
 package eu.ueb.acem.services.auth;
 
@@ -17,9 +32,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.ueb.acem.dal.gris.EnseignantDAO;
-import eu.ueb.acem.dal.gris.GestionnaireDAO;
+import eu.ueb.acem.dal.gris.PersonneDAO;
 import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 /**
  * @author Grégoire Colbert (Université européenne de Bretagne) @since
@@ -59,8 +74,9 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 	 */
 	@Autowired
 	private EnseignantDAO enseignantDAO;
+
 	@Autowired
-	private GestionnaireDAO gestionnaireDAO;
+	private PersonneDAO personDAO;
 
 	/**
 	 * Bean constructor.
@@ -105,19 +121,19 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 						logger.debug("CAS authentication");
 					}
 				}
-				Personne user;
 				logger.info("authInfo.getId = {}", authInfo.getId());
-				user = gestionnaireDAO.retrieveByLogin(authInfo.getId());
+				Personne user = enseignantDAO.retrieveByLogin(authInfo.getId());
 				if (user == null) {
-					user = enseignantDAO.retrieveByLogin(authInfo.getId());
+					user = personDAO.retrieveByLogin(authInfo.getId());
 					if (user == null) {
-						user = enseignantDAO.create(new EnseignantNode(authInfo.getId()));
+						user = personDAO.create(new PersonneNode(authInfo.getId(), authInfo.getId()));
 					}
 				}
 				storeToSession(authInfo, user);
 				return user;
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			String[] args = { e.getMessage() };
 			throw new Exception(I18nUtils.createI18nService().getString("AUTHENTICATION_EXCEPTION.TITLE",
 					(Object[]) args));

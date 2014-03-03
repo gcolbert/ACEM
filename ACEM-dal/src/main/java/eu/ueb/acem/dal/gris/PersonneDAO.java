@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.bleu;
+package eu.ueb.acem.dal.gris;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -28,27 +28,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.bleu.neo4j.ReponseRepository;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
+import eu.ueb.acem.dal.gris.neo4j.PersonneRepository;
+import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-26
+ * @author Grégoire Colbert @since 2013-12-11
  * 
  */
-@Repository("answerDAO")
-public class ReponseDAO implements DAO<Long, Reponse> {
+@Repository("personDAO")
+public class PersonneDAO implements DAO<Long, Personne> {
 
 	/**
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ReponseDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(PersonneDAO.class);
 
 	@Autowired
-	private ReponseRepository repository;
+	private PersonneRepository repository;
 
-	public ReponseDAO() {
+	public PersonneDAO() {
 
 	}
 
@@ -58,31 +58,31 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	}
 
 	@Override
-	public Reponse create(Reponse reponse) {
-		return repository.save((ReponseNode) reponse);
+	public Personne create(Personne entity) {
+		return repository.save((PersonneNode) entity);
 	}
 
 	@Override
-	public Reponse retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
-	public Collection<Reponse> retrieveByName(String name) {
-		Iterable<ReponseNode> nodes = repository.findByName(name);
-		Collection<Reponse> entities = new HashSet<Reponse>();
-		for (ReponseNode node : nodes) {
+	public Collection<Personne> retrieveByName(String name) {
+		Iterable<PersonneNode> nodes = repository.findByName(name);
+		Collection<Personne> entities = new HashSet<Personne>();
+		for (PersonneNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<Reponse> retrieveAll() {
-		Iterable<ReponseNode> endResults = repository.findAll();
-		Collection<Reponse> collection = new HashSet<Reponse>();
+	public Personne retrieveById(Long id) {
+		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public Collection<Personne> retrieveAll() {
+		Iterable<PersonneNode> endResults = repository.findAll();
+		Collection<Personne> collection = new HashSet<Personne>();
 		if (endResults.iterator() != null) {
-			Iterator<ReponseNode> iterator = endResults.iterator();
+			Iterator<PersonneNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -91,13 +91,15 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	}
 
 	@Override
-	public Reponse update(Reponse reponse) {
-		return repository.save((ReponseNode) reponse);
+	public Personne update(Personne entity) {
+		PersonneNode personNode = (PersonneNode) entity;
+		return repository.save(personNode);
 	}
 
 	@Override
-	public void delete(Reponse reponse) {
-		repository.delete((ReponseNode) reponse);
+	public void delete(Personne entity) {
+		PersonneNode personNode = (PersonneNode) entity;
+		repository.delete(personNode);
 	}
 
 	@Override
@@ -108,6 +110,10 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 	@Override
 	public Long count() {
 		return repository.count();
+	}
+
+	public Personne retrieveByLogin(String id) {
+		return repository.findByLogin(id);
 	}
 
 }

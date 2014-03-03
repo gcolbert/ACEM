@@ -22,13 +22,14 @@ import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 
 public interface ScenariosService {
 
 	Long countScenarios();
 
-	Scenario createScenario(Personne author, String name, String objective);
+	Scenario createScenario(Enseignant author, String name, String objective);
 
 	Scenario retrieveScenario(Long id);
 	

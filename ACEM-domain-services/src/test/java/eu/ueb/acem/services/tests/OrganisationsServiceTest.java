@@ -1,7 +1,6 @@
 package eu.ueb.acem.services.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,7 +21,7 @@ import eu.ueb.acem.services.OrganisationsService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/domain-services-test-context.xml")
-public class OrganisationsServiceTest {
+public class OrganisationsServiceTest extends TestCase {
 
 	@Autowired
 	private OrganisationsService organisationsService;

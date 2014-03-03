@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.web.viewbeans.Pickable;
-import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
  * @author Grégoire Colbert @since 2014-02-17
@@ -51,7 +50,6 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	private Long id;
 	private String name;
 	private String objective;
-	private PersonViewBean author;
 	private Boolean published;
 
 	public ScenarioViewBean() {
@@ -67,12 +65,6 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		return pedagogicalActivityViewBeans;
 	}
 
-	/*
-	public void setPedagogicalActivityViewBeans(List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans) {
-		this.pedagogicalActivityViewBeans = pedagogicalActivityViewBeans;
-	}
-	*/
-
 	public Scenario getScenario() {
 		return scenario;
 	}
@@ -82,7 +74,6 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		setId(scenario.getId());
 		this.name = scenario.getName();
 		this.objective = scenario.getObjective();
-		this.author = new PersonViewBean(scenario.getAuthor());
 		this.published = scenario.isPublished();
 		pedagogicalActivityViewBeans.clear();
 		for (ActivitePedagogique pedagogicalActivity : scenario.getPedagogicalActivities()) {
@@ -116,15 +107,6 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	public void setObjective(String objective) {
 		this.objective = objective;
 		scenario.setObjective(objective);
-	}
-
-	public PersonViewBean getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(PersonViewBean person) {
-		this.author = person;
-		scenario.setAuthor(person.getPerson());
 	}
 
 	public Boolean isPublished() {

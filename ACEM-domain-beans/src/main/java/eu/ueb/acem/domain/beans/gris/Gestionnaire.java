@@ -18,9 +18,11 @@
  */
 package eu.ueb.acem.domain.beans.gris;
 
-import java.util.Collection;
+import java.util.Set;
+
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
@@ -29,10 +31,12 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface Gestionnaire extends Personne {
 
-	Collection<Besoin> getNeeds();
+	Set<? extends Besoin> getNeeds();
 
-	Collection<Reponse> getAnswers();
+	Set<? extends Reponse> getAnswers();
 
-	Collection<Ressource> getResources();
+	Set<? extends Ressource> getResources();
+
+	Set<? extends ModaliteUtilisation> getResourceModes();
 
 }

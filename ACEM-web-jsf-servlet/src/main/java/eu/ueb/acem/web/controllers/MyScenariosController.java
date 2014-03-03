@@ -34,6 +34,7 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.TableBean;
@@ -87,7 +88,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	public void createScenario(String name, String objective) {
 		Scenario scenario;
 		try {
-			scenario = scenariosService.createScenario(getCurrentUser(), name, objective);
+			scenario = scenariosService.createScenario((Enseignant)getCurrentUser(), name, objective);
 			if (scenario != null) {
 				ScenarioViewBean scenarioViewBean = new ScenarioViewBean(scenario);
 				tableBean.getTableEntries().add(scenarioViewBean);

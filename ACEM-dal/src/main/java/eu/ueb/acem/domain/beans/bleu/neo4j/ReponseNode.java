@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -30,8 +31,10 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
 
@@ -114,6 +117,17 @@ public class ReponseNode implements Reponse {
 	@Override
 	public void removeResource(Ressource resource) {
 		needs.remove(resource);
+	}
+
+	@Override
+	public Set<Scenario> getScenariosRelatedToAnswer() {
+		Set<Scenario> scenarios = new HashSet<Scenario>();
+		for (Ressource resource : resources) {
+			for (ActivitePedagogique pedagogicalActivity : resource.getPedagogicalActivities()) {
+				scenarios.addAll(pedagogicalActivity.getScenarios());
+			}
+		}
+		return scenarios;
 	}
 
 }

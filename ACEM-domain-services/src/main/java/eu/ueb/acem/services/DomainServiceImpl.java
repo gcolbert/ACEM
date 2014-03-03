@@ -65,7 +65,7 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	public Personne getUser(String uid) {
 		Personne user = enseignantDAO.retrieveByLogin(uid);
 		if (user == null) {
-			user = enseignantDAO.create(new EnseignantNode(uid));
+			user = enseignantDAO.create(new EnseignantNode(uid, uid));
 			user.setLogin(uid);
 			user.setLanguage("fr");
 		}

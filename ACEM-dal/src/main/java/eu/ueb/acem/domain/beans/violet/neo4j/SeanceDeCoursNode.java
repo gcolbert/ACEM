@@ -21,14 +21,14 @@ package eu.ueb.acem.domain.beans.violet.neo4j;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 import eu.ueb.acem.domain.beans.vert.EspacePhysique;
 import eu.ueb.acem.domain.beans.vert.neo4j.EspacePhysiqueNode;
@@ -51,13 +51,16 @@ public class SeanceDeCoursNode implements SeanceDeCours {
 	private String name;
 
 	@RelatedTo(elementClass = CoursNode.class, type = "isPartOfCourse", direction = OUTGOING)
+	@Fetch
 	private Cours course;
 
 	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "classHappensInLocation", direction = OUTGOING)
-	private EspacePhysique location;
+	@Fetch
+	private EspacePhysiqueNode location;
 
 	@RelatedTo(elementClass = ScenarioNode.class, type = "scenarioUsedForClass", direction = INCOMING)
-	private Collection<Scenario> scenarios;
+	@Fetch
+	private Set<ScenarioNode> scenarios;
 	
 	private String date;
 	private String time;

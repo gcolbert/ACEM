@@ -86,6 +86,12 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 		return scenarios;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setScenarios(Set<? extends Scenario> scenarios) {
+		this.scenarios = (Set<ScenarioNode>) scenarios;
+	}
+	
 	@Override
 	@Transactional
 	public void addScenario(Scenario scenario) {

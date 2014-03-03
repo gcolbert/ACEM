@@ -18,8 +18,8 @@
  */
 package eu.ueb.acem.services;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -27,9 +27,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.gris.EnseignantDAO;
-import eu.ueb.acem.dal.gris.GestionnaireDAO;
+import eu.ueb.acem.dal.gris.PersonneDAO;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 @Service("usersService")
 public class UsersServiceImpl implements UsersService {
@@ -38,26 +40,30 @@ public class UsersServiceImpl implements UsersService {
 	EnseignantDAO teacherDAO;
 
 	@Autowired
-	GestionnaireDAO administratorDAO;
+	PersonneDAO personDAO;
 
 	@Autowired
 	OrganisationsService organisationsService;
 
-	Collection<Personne> persons;
+	Set<Personne> persons;
+	Set<Enseignant> teachers;
 
 	public UsersServiceImpl() {
 		persons = new HashSet<Personne>();
+		teachers = new HashSet<Enseignant>();
 	}
-	
+
 	@PostConstruct
 	public void initUsersService() {
 		persons.clear();
-		persons.addAll(teacherDAO.retrieveAll());
-		persons.addAll(administratorDAO.retrieveAll());
+		persons.addAll(personDAO.retrieveAll());
+
+		teachers.clear();
+		teachers.addAll(teacherDAO.retrieveAll());
 	}
 
 	@Override
-	public Collection<Personne> getPersons() {
+	public Set<Personne> getPersons() {
 		return persons;
 	}
 
@@ -67,43 +73,69 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Long countAdministrators() {
-		return administratorDAO.count();
+	public Long countPersons() {
+		return personDAO.count();
 	}
 
 	@Override
-	public Long countUsers() {
-		return countAdministrators() + countTeachers();
-	}
-
-	@Override
-	public Personne createPerson(String name, Organisation organisation) {
-		// TODO Auto-generated method stub
-		return null;
+	public Personne createPerson(String name, String login) {
+		return personDAO.create(new PersonneNode(name, login));
 	}
 
 	@Override
 	public Personne retrievePerson(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return personDAO.retrieveById(id);
 	}
 
 	@Override
 	public Personne updatePerson(Personne person) {
-		// TODO Auto-generated method stub
-		return null;
+		return personDAO.update(person);
 	}
 
 	@Override
 	public Boolean deletePerson(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		if (personDAO.exists(id)) {
+			personDAO.delete(personDAO.retrieveById(id));
+		}
+		return (!personDAO.exists(id));
 	}
 
 	@Override
 	public void deleteAllPersons() {
-		// TODO Auto-generated method stub
+		personDAO.deleteAll();
+	}
 
+	@Override
+	public Set<Enseignant> getTeachers() {
+		return teachers;
+	}
+	
+	@Override
+	public Enseignant createTeacher(String name, String login) {
+		return teacherDAO.create(new EnseignantNode(name, login));
+	}
+
+	@Override
+	public Enseignant retrieveTeacher(Long id) {
+		return teacherDAO.retrieveById(id);
+	}
+
+	@Override
+	public Enseignant updateTeacher(Enseignant teacher) {
+		return teacherDAO.update(teacher);
+	}
+
+	@Override
+	public Boolean deleteTeacher(Long id) {
+		if (teacherDAO.exists(id)) {
+			teacherDAO.delete(teacherDAO.retrieveById(id));
+		}
+		return (!teacherDAO.exists(id));
+	}
+
+	@Override
+	public void deleteAllTeachers() {
+		teacherDAO.deleteAll();
 	}
 
 }

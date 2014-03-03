@@ -24,6 +24,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -51,13 +52,16 @@ public abstract class RessourceNode implements Ressource {
 	private String name;
 
 	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "resourceHasUseMode", direction = OUTGOING)
-	private Set<ModaliteUtilisation> useModes;
+	@Fetch
+	private Set<ModaliteUtilisationNode> useModes;
 	
 	@RelatedTo(elementClass = ReponseNode.class, type="answeredUsingResource", direction = INCOMING)
-	private Set<Reponse> answers;
+	@Fetch
+	private Set<ReponseNode> answers;
 
 	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type="activityRequiringResource", direction = INCOMING)
-	private Set<ActivitePedagogique> pedagogicalActivities;
+	@Fetch
+	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
 	
 	public RessourceNode() {
 	}
@@ -66,20 +70,34 @@ public abstract class RessourceNode implements Ressource {
 		this.setName(name);
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public Set<ModaliteUtilisation> getModalitesUtilisation() {
+	@Override
+	public Set<? extends ModaliteUtilisation> getUseModes() {
 		return useModes;
 	}
 
-	public Set<Reponse> getAnswers() {
+	@Override
+	public Set<? extends Reponse> getAnswers() {
 		return answers;
 	}
+	
+	@Override
+	public Set<? extends ActivitePedagogique> getPedagogicalActivities() {
+		return pedagogicalActivities;
+	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities) {
+		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>)pedagogicalActivities;
+	}
 }

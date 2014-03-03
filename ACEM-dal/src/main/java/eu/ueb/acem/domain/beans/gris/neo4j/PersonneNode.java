@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -38,7 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
  */
 @NodeEntity
 @TypeAlias("Person")
-public abstract class PersonneNode implements Personne {
+public class PersonneNode implements Personne {
 
 	private static final long serialVersionUID = -5697929702791942609L;
 
@@ -49,14 +50,26 @@ public abstract class PersonneNode implements Personne {
 	private String name;
 
 	@RelatedTo(elementClass = OrganisationNode.class, type = "worksForOrganisation", direction = OUTGOING)
+	@Fetch
 	private Set<OrganisationNode> worksForOrganisations;
 
-	@Indexed(unique=true)
+	@Indexed(unique = true)
 	private String login;
 
 	private String language;
-	
+
 	private Boolean administrator;
+
+	public PersonneNode() {
+		setLanguage("fr");
+		setAdministrator(false);
+	}
+
+	public PersonneNode(String name, String login) {
+		this();
+		setName(name);
+		setLogin(login);
+	}
 
 	@Override
 	public Long getId() {
@@ -75,7 +88,21 @@ public abstract class PersonneNode implements Personne {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setWorksForOrganisations(Set<? extends Organisation> organisations) {
-		this.worksForOrganisations = (Set<OrganisationNode>)organisations;
+		this.worksForOrganisations = (Set<OrganisationNode>) organisations;
+	}
+
+	@Override
+	public void addWorksForOrganisations(Organisation organisation) {
+		if (! worksForOrganisations.contains(organisation)) {
+			worksForOrganisations.add((OrganisationNode) organisation);
+		}
+	}
+
+	@Override
+	public void removeWorksForOrganisations(Organisation organisation) {
+		if (worksForOrganisations.contains(organisation)) {
+			worksForOrganisations.remove(organisation);
+		}
 	}
 	
 	@Override
@@ -112,17 +139,17 @@ public abstract class PersonneNode implements Personne {
 	public Boolean isAdministrator() {
 		return administrator;
 	}
-	
+
 	@Override
 	public void setAdministrator(Boolean isAdministrator) {
 		this.administrator = isAdministrator;
 	}
-	
+
 	@Override
 	public int compareTo(Personne person) {
 		return getName().compareToIgnoreCase(person.getName());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -145,16 +172,14 @@ public abstract class PersonneNode implements Personne {
 			if (other.id != null)
 				return false;
 		}
-		else
-			if (!id.equals(other.id))
-				return false;
+		else if (!id.equals(other.id))
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		}
-		else
-			if (!name.equals(other.name))
-				return false;
+		else if (!name.equals(other.name))
+			return false;
 		return true;
 	}
 

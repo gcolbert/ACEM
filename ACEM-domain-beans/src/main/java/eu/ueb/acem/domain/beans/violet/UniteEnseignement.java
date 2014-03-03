@@ -19,6 +19,7 @@
 package eu.ueb.acem.domain.beans.violet;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
@@ -33,5 +34,9 @@ public interface UniteEnseignement extends Serializable {
 	String getDuration();
 
 	void setDuration(String duration);
+	
+	Set<? extends Diplome> getDiplomas();
+	
+	void setDiplomas(Set<? extends Diplome> diplomas);
 
 }

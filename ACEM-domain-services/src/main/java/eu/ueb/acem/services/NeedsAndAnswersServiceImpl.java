@@ -233,6 +233,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	public Collection<Scenario> getScenariosRelatedToAnswer(Long id) {
-		return answerDAO.retrieveScenariosRelatedToAnswer(id);
+		Reponse answer = answerDAO.retrieveById(id);
+		return answer.getScenariosRelatedToAnswer();
 	}
 }

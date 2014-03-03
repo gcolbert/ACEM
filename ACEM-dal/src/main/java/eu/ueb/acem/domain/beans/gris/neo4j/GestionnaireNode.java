@@ -20,10 +20,10 @@ package eu.ueb.acem.domain.beans.gris.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Indexed;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -47,24 +47,23 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@Indexed
-	private String name;
-	
 	@RelatedTo(elementClass = BesoinNode.class, type = "authorsNeed", direction = OUTGOING)
-	private Collection<Besoin> needs;
+	@Fetch
+	private Set<BesoinNode> needs;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "authorsAnswer", direction = OUTGOING)
-	private Collection<Reponse> answers;
+	@Fetch
+	private Set<ReponseNode> answers;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "authorsResource", direction = OUTGOING)
-	private Collection<Ressource> resources;
+	@Fetch
+	private Set<RessourceNode> resources;
 
 	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "authorsUseMode", direction = OUTGOING)
-	private Collection<ModaliteUtilisation> resourceModes;
+	@Fetch
+	private Set<ModaliteUtilisationNode> resourceModes;
 
-	
 	public GestionnaireNode() {
-		setLanguage("fr");
 		setAdministrator(true);
 	}
 
@@ -75,18 +74,23 @@ public class GestionnaireNode extends PersonneNode implements Gestionnaire {
 	}
 
 	@Override
-	public Collection<Besoin> getNeeds() {
+	public Set<? extends Besoin> getNeeds() {
 		return needs;
 	}
 
 	@Override
-	public Collection<Reponse> getAnswers() {
+	public Set<? extends Reponse> getAnswers() {
 		return answers;
 	}
 
 	@Override
-	public Collection<Ressource> getResources() {
+	public Set<? extends Ressource> getResources() {
 		return resources;
+	}
+
+	@Override
+	public Set<? extends ModaliteUtilisation> getResourceModes() {
+		return resourceModes;
 	}
 	
 }

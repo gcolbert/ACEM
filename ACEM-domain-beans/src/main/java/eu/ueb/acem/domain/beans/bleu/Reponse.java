@@ -47,4 +47,6 @@ public interface Reponse extends Serializable {
 
 	void removeResource(Ressource ressource);
 
+	Set<Scenario> getScenariosRelatedToAnswer();
+
 }

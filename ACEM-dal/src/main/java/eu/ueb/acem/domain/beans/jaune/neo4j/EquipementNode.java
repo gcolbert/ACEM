@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -43,9 +44,14 @@ public abstract class EquipementNode extends RessourceNode implements Equipement
 	private String name;
 
 	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "estContenuDans", direction = OUTGOING)
-	private EspacePhysique physicalSpace;
+	@Fetch
+	private EspacePhysiqueNode physicalSpace;
 
 	public EspacePhysique getPhysicalSpace() {
 		return physicalSpace;
+	}
+	
+	public void setPhysicalSpace(EspacePhysique physicalSpace) {
+		this.physicalSpace = (EspacePhysiqueNode) physicalSpace;
 	}
 }

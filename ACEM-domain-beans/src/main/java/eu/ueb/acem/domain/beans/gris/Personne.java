@@ -35,6 +35,10 @@ public interface Personne extends Serializable, Comparable<Personne> {
 
 	void setWorksForOrganisations(Set<? extends Organisation> organisations);
 
+	void addWorksForOrganisations(Organisation organisation);
+
+	void removeWorksForOrganisations(Organisation organisation);
+	
 	String getName();
 
 	void setName(String name);

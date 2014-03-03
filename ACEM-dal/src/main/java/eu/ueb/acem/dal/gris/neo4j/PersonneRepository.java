@@ -16,41 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.services;
+package eu.ueb.acem.dal.gris.neo4j;
 
-import java.util.Set;
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
 
-import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.dal.GenericRepository;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
-public interface UsersService {
+/**
+ * @author Grégoire Colbert @since 2014-03-03
+ * 
+ */
+public interface PersonneRepository extends GenericRepository<PersonneNode> {
 
-	Long countTeachers();
-	
-	Long countPersons();
-	
-	Personne createPerson(String name, String login);
-
-	Personne retrievePerson(Long id);
-	
-	Personne updatePerson(Personne person);
-
-	Boolean deletePerson(Long id);
-
-	void deleteAllPersons();
-	
-	Set<Personne> getPersons();
-
-	Enseignant createTeacher(String name, String login);
-	
-	Enseignant retrieveTeacher(Long id);
-	
-	Enseignant updateTeacher(Enseignant teacher);
-
-	Boolean deleteTeacher(Long id);
-
-	void deleteAllTeachers();
-	
-	Set<? extends Enseignant> getTeachers();
+	@Query(value = "match (n:Person) where n.login=({login}) return n")
+	PersonneNode findByLogin(@Param("login") String login);
 
 }

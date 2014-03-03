@@ -1,8 +1,9 @@
 package eu.ueb.acem.services.tests;
 
-import static org.junit.Assert.*;
-
 import java.util.Collection;
+
+import junit.framework.TestCase;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ import eu.ueb.acem.services.NeedsAndAnswersService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/domain-services-test-context.xml")
-public class NeedsAndAnswersServiceTest {
+public class NeedsAndAnswersServiceTest extends TestCase {
 
 	@Autowired
 	private NeedsAndAnswersService needsAndAnswersService;

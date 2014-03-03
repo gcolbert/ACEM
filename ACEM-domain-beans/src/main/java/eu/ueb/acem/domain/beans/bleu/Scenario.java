@@ -21,7 +21,7 @@ package eu.ueb.acem.domain.beans.bleu;
 import java.io.Serializable;
 import java.util.Set;
 
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
 /**
@@ -35,25 +35,25 @@ public interface Scenario extends Serializable, Comparable<Scenario> {
 	String getName();
 
 	void setName(String name);
-	
+
 	Long getCreationDate();
-	
+
 	void setCreationDate(Long date);
-	
+
 	Long getModificationDate();
-	
+
 	void setModificationDate(Long date);
 
 	String getObjective();
 
 	void setObjective(String objective);
 
-	Personne getAuthor();
+	Enseignant getAuthor();
 
-	void setAuthor(Personne author);
+	void setAuthor(Enseignant author);
 
 	Boolean isPublished();
-	
+
 	void setPublished(Boolean published);
 
 	Set<? extends ActivitePedagogique> getPedagogicalActivities();

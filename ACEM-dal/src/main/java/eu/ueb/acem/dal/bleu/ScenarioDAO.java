@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.TimeTicker;
 import eu.ueb.acem.dal.bleu.neo4j.ScenarioRepository;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
@@ -49,12 +50,7 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 	@Autowired
 	private ScenarioRepository repository;
 
-	private Long tick() {
-		return System.currentTimeMillis() / 1000;
-	}
-
 	public ScenarioDAO() {
-
 	}
 
 	@Override
@@ -64,7 +60,7 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 
 	@Override
 	public Scenario create(Scenario scenario) {
-		scenario.setCreationDate(tick());
+		scenario.setCreationDate(TimeTicker.tick());
 		return repository.save((ScenarioNode) scenario);
 	}
 
@@ -98,7 +94,7 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 
 	@Override
 	public Scenario update(Scenario scenario) {
-		scenario.setModificationDate(tick());
+		scenario.setModificationDate(TimeTicker.tick());
 		return repository.save((ScenarioNode) scenario);
 	}
 

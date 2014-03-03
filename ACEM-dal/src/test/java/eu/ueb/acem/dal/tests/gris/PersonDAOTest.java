@@ -18,7 +18,7 @@
  */
 package eu.ueb.acem.dal.tests.gris;
 
-import static org.junit.Assert.*;
+import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,11 +31,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import eu.ueb.acem.dal.gris.EnseignantDAO;
-import eu.ueb.acem.dal.gris.GestionnaireDAO;
+import eu.ueb.acem.dal.gris.PersonneDAO;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.Gestionnaire;
+import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
-import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-22
@@ -43,7 +43,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/dal-test-context.xml")
-public class PersonDAOTest {
+public class PersonDAOTest extends TestCase {
 
 	/**
 	 * For Logging.
@@ -52,10 +52,10 @@ public class PersonDAOTest {
 	private static final Logger logger = LoggerFactory.getLogger(PersonDAOTest.class);
 
 	@Autowired
-	private GestionnaireDAO administratorDAO;
-	
-	@Autowired
 	private EnseignantDAO teacherDAO;
+
+	@Autowired
+	private PersonneDAO personDAO;
 
 	public PersonDAOTest() {
 		
@@ -63,9 +63,9 @@ public class PersonDAOTest {
 
 	@Before
 	public void before() {
-		administratorDAO.deleteAll();
-		assertEquals(new Long(0), administratorDAO.count());
-
+		personDAO.deleteAll();
+		assertEquals(new Long(0), personDAO.count());
+		
 		teacherDAO.deleteAll();
 		assertEquals(new Long(0), teacherDAO.count());
 	}
@@ -81,7 +81,7 @@ public class PersonDAOTest {
 	@Test
 	public final void t01_TestCreateTeacher() {
 		// We create a new object in the datastore
-		Enseignant teacher1 = new EnseignantNode("Pr. John Doe");
+		Enseignant teacher1 = new EnseignantNode("Pr. John Doe", "jdoe");
 
 		// We create our object
 		teacher1 = teacherDAO.create(teacher1);
@@ -95,41 +95,22 @@ public class PersonDAOTest {
 	}
 
 	/**
-	 * Create
-	 */
-	@Test
-	public final void t02_TestCreateAdministrator() {
-		// We create a new object in the datastore
-		Gestionnaire administrator1 = new GestionnaireNode("Grégoire Colbert");
-
-		// We create our object
-		administrator1 = administratorDAO.create(administrator1);
-
-		// We check that "create" is idempotent (multiple calls must not
-		// duplicate data)
-		administrator1 = administratorDAO.create(administrator1);
-
-		// There must exactly 1 object in the datastore
-		assertEquals("There are more than one object in the datastore", new Long(1), administratorDAO.count());
-	}
-
-	/**
 	 * RetrieveByLogin
 	 */
 	@Test
-	public final void t03_TestRetrieveByLogin() {
+	public final void t02_TestRetrieveByLogin() {
 		// We create a new object in the datastore
-		Gestionnaire administrator1 = new GestionnaireNode("Grégoire Colbert");
-		administrator1.setLogin("gcolbert");
+		Personne person1 = new PersonneNode("Grégoire Colbert", "gcolbert");
+		person1.setAdministrator(true);
 
 		// We save our object
-		administrator1 = administratorDAO.create(administrator1);
+		person1 = personDAO.update(person1);
 
-		Gestionnaire administrator1bis = administratorDAO.retrieveByLogin(administrator1.getLogin());
+		Personne person1bis = personDAO.retrieveByLogin(person1.getLogin());
 
-		assertNotNull(administrator1bis);
-		assertEquals(administrator1bis, administrator1);
-		assertEquals(administrator1bis.getName(), administrator1.getName());
+		assertNotNull(person1bis);
+		assertEquals(person1bis, person1);
+		assertEquals(person1bis.getName(), person1.getName());
 	}
 	
 }

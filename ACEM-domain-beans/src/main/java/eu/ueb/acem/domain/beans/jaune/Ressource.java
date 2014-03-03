@@ -19,7 +19,10 @@
 package eu.ueb.acem.domain.beans.jaune;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Set;
+
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
+import eu.ueb.acem.domain.beans.bleu.Reponse;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
@@ -31,6 +34,12 @@ public interface Ressource extends Serializable {
 
 	void setName(String name);
 
-	Collection<ModaliteUtilisation> getModalitesUtilisation();
+	Set<? extends Reponse> getAnswers();
+	
+	Set<? extends ModaliteUtilisation> getUseModes();
+
+	Set<? extends ActivitePedagogique> getPedagogicalActivities();
+
+	void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities);
 
 }

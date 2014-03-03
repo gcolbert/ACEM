@@ -18,9 +18,9 @@
  */
 package eu.ueb.acem.dal.gris;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +30,13 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.gris.neo4j.EnseignantRepository;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
  * @author Grégoire Colbert @since 2013-12-11
  * 
  */
-@Repository("enseignantDAO")
+@Repository("teacherDAO")
 public class EnseignantDAO implements DAO<Long, Enseignant> {
 
 	/**
@@ -69,9 +68,9 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	}
 
 	@Override
-	public Collection<Enseignant> retrieveByName(String name) {
+	public Set<Enseignant> retrieveByName(String name) {
 		Iterable<EnseignantNode> nodes = repository.findByName(name);
-		Collection<Enseignant> entities = new HashSet<Enseignant>();
+		Set<Enseignant> entities = new HashSet<Enseignant>();
 		for (EnseignantNode node : nodes) {
 			entities.add(node);
 		}
@@ -79,9 +78,9 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 	}
 
 	@Override
-	public Collection<Enseignant> retrieveAll() {
+	public Set<Enseignant> retrieveAll() {
 		Iterable<EnseignantNode> endResults = repository.findAll();
-		Collection<Enseignant> collection = new HashSet<Enseignant>();
+		Set<Enseignant> collection = new HashSet<Enseignant>();
 		if (endResults.iterator() != null) {
 			Iterator<EnseignantNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
@@ -111,8 +110,8 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 		return repository.count();
 	}
 
-	public Personne retrieveByLogin(String uid) {
-		return repository.findByLogin(uid);
+	public Enseignant retrieveByLogin(String id) {
+		return repository.findByLogin(id);
 	}
 
 }

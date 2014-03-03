@@ -19,11 +19,13 @@
 package eu.ueb.acem.web.controllers;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,8 @@ public class UsersController extends AbstractContextAwareController {
 
 	private static final long serialVersionUID = -977386846045010683L;
 
+	private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
+
 	private List<PersonViewBean> personViewBeans;
 
 	@Autowired
@@ -50,7 +54,7 @@ public class UsersController extends AbstractContextAwareController {
 	@PostConstruct
 	public void initUsersController() {
 		personViewBeans.clear();
-		Collection<Personne> persons = usersService.getPersons();
+		Set<Personne> persons = usersService.getPersons();
 		for (Personne person : persons) {
 			personViewBeans.add(new PersonViewBean(person));
 		}
@@ -62,6 +66,12 @@ public class UsersController extends AbstractContextAwareController {
 
 	public void setPersonViewBeans(List<PersonViewBean> personViewBeans) {
 		this.personViewBeans = personViewBeans;
+	}
+	
+	public void setAdministrator(PersonViewBean personViewBean) {
+		logger.info("setAdministrator({})", personViewBean.getAdministrator());
+		personViewBean.getPerson().setAdministrator(personViewBean.getAdministrator());
+		usersService.updatePerson(personViewBean.getPerson());
 	}
 
 }

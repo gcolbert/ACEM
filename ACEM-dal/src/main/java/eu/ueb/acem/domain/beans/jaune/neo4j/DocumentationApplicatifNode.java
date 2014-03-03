@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -44,7 +45,8 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	private String name;
 
 	@RelatedTo(elementClass = ApplicatifNode.class, type = "documentsSoftware", direction = OUTGOING)
-	private Set<Applicatif> softwares;
+	@Fetch
+	private Set<ApplicatifNode> softwares;
 
 	public DocumentationApplicatifNode() {
 	}
@@ -54,13 +56,14 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	}
 
 	@Override
-	public Set<Applicatif> getApplicatifs() {
+	public Set<? extends Applicatif> getApplicatifs() {
 		return softwares;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void setApplicatifs(Set<Applicatif> softwares) {
-		this.softwares = softwares;
+	public void setApplicatifs(Set<? extends Applicatif> softwares) {
+		this.softwares = (Set<ApplicatifNode>)softwares;
 	}
 
 	@Override

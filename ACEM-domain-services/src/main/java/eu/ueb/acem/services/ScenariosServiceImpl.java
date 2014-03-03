@@ -31,6 +31,7 @@ import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 
 @Service("scenariosService")
@@ -54,7 +55,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 	}
 
 	@Override
-	public Scenario createScenario(Personne author, String name, String objective) {
+	public Scenario createScenario(Enseignant author, String name, String objective) {
 		return scenarioDAO.create(new ScenarioNode(author, name, objective));
 	}
 

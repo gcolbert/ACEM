@@ -20,10 +20,10 @@ package eu.ueb.acem.domain.beans.gris.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Indexed;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -45,41 +45,37 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@Indexed
-	private String name;
-	
 	@RelatedTo(elementClass = RessourceNode.class, type = "hasFavorite", direction = OUTGOING)
-	private Collection<Ressource> ressourcesFavorites;
+	@Fetch
+	private Set<RessourceNode> favoriteResources;
 
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "leadsClass", direction = OUTGOING)
-	private Collection<SeanceDeCours> seancesDeCours;
+	@Fetch
+	private Set<SeanceDeCoursNode> seancesDeCours;
 
-	@RelatedTo(elementClass = ScenarioNode.class, type="authorsScenario", direction = OUTGOING)
-	private Collection<Scenario> scenarios;
+	@RelatedTo(elementClass = ScenarioNode.class, type = "authorsScenario", direction = OUTGOING)
+	@Fetch
+	private Set<ScenarioNode> scenarios;
 
 	public EnseignantNode() {
-		setLanguage("fr");
-		setAdministrator(false);
 	}
 
-	public EnseignantNode(String name) {
-		this();
-		setName(name);
-		setLogin(name);
+	public EnseignantNode(String name, String login) {
+		super(name, login);
 	}
 
 	@Override
-	public Collection<Ressource> getFavoriteResources() {
-		return ressourcesFavorites;
+	public Set<? extends Ressource> getFavoriteResources() {
+		return favoriteResources;
 	}
 
 	@Override
-	public Collection<SeanceDeCours> getTeachingClasses() {
+	public Set<? extends SeanceDeCours> getTeachingClasses() {
 		return seancesDeCours;
 	}
 
 	@Override
-	public Collection<Scenario> getScenarios() {
+	public Set<? extends Scenario> getScenarios() {
 		return scenarios;
 	}
 

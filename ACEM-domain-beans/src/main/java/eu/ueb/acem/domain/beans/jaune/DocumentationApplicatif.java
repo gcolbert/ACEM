@@ -26,8 +26,8 @@ import java.util.Set;
  */
 public interface DocumentationApplicatif extends Ressource {
 
-	Set<Applicatif> getApplicatifs();
+	Set<? extends Applicatif> getApplicatifs();
 
-	void setApplicatifs(Set<Applicatif> softwares);
+	void setApplicatifs(Set<? extends Applicatif> softwares);
 
 }

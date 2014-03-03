@@ -26,7 +26,9 @@
 					</p:column>
 					<p:column
 						headerText="#{msgs['ADMINISTRATION.USERS.LIST.IS_ADMIN.COLUMN_HEADER']}">
-						<p:selectBooleanCheckbox value="#{personViewBean.administrator}" />
+						<p:selectBooleanCheckbox value="#{personViewBean.administrator}">
+							<p:ajax update="@this :formUsers:messagesDisplayerFormUsers" listener="#{usersController.setAdministrator(personViewBean)}" />
+						</p:selectBooleanCheckbox>
 					</p:column>
 				</p:dataTable>
 			</p:panel>

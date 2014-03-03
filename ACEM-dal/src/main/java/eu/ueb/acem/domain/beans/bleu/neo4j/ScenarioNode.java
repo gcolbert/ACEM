@@ -38,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
@@ -78,16 +78,17 @@ public class ScenarioNode implements Scenario {
 	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
 
 	@RelatedTo(elementClass = EnseignantNode.class, type = "authorsScenario", direction = INCOMING)
-	private Personne author;
+	@Fetch
+	private EnseignantNode author;
 
 	public ScenarioNode() {
 		published = false;
 	}
 
-	public ScenarioNode(Personne author, String name, String objective) {
+	public ScenarioNode(Enseignant author, String name, String objective) {
 		this();
 		this.name = name;
-		this.author = author;
+		this.author = (EnseignantNode) author;
 		this.objective = objective;
 	}
 
@@ -183,13 +184,13 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
-	public Personne getAuthor() {
+	public Enseignant getAuthor() {
 		return author;
 	}
 
 	@Override
-	public void setAuthor(Personne author) {
-		this.author = author;
+	public void setAuthor(Enseignant author) {
+		this.author = (EnseignantNode) author;
 	}
 
 	@Override
