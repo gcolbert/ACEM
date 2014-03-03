@@ -76,7 +76,6 @@ public class EnseignantDAO implements DAO<Long, Enseignant> {
 			entities.add(node);
 		}
 		return entities;
-		//return repository.findByPropertyValue("name", name);
 	}
 
 	@Override

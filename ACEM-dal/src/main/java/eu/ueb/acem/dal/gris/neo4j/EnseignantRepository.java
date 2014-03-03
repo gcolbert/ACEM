@@ -10,8 +10,10 @@
  ******************************************************************************/
 package eu.ueb.acem.dal.gris.neo4j;
 
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
@@ -20,6 +22,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
  */
 public interface EnseignantRepository extends GenericRepository<EnseignantNode> {
 
-	Personne findByLogin(String uid);
+	@Query(value = "match (n:Teacher) where n.login=({login}) return n")
+	EnseignantNode findByLogin(@Param("login") String login);
 
 }

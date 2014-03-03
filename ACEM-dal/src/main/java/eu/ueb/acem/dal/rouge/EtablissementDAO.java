@@ -66,7 +66,6 @@ public class EtablissementDAO implements DAO<Long, Etablissement> {
 
 	@Override
 	public Collection<Etablissement> retrieveByName(String name) {
-		//return repository.findByPropertyValue("name", name);
 		Iterable<EtablissementNode> nodes = repository.findByName(name);
 		Collection<Etablissement> entities = new HashSet<Etablissement>();
 		for (EtablissementNode node : nodes) {

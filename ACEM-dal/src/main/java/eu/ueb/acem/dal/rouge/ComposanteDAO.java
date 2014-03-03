@@ -66,7 +66,6 @@ public class ComposanteDAO implements DAO<Long, Composante> {
 
 	@Override
 	public Collection<Composante> retrieveByName(String name) {
-		//return repository.findByPropertyValue("name", name);
 		Iterable<ComposanteNode> nodes = repository.findByName(name);
 		Collection<Composante> entities = new HashSet<Composante>();
 		for (ComposanteNode node : nodes) {

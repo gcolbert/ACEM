@@ -81,7 +81,6 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 			entities.add(node);
 		}
 		return entities;
-		//return repository.findByPropertyValue("name", name);
 	}
 
 	@Override

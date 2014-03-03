@@ -18,8 +18,10 @@
  */
 package eu.ueb.acem.dal.gris.neo4j;
 
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
 
 /**
@@ -28,6 +30,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.GestionnaireNode;
  */
 public interface GestionnaireRepository extends GenericRepository<GestionnaireNode> {
 
-	Personne findByLogin(String id);
+	@Query(value = "match (n:Administrator) where n.login=({login}) return n")
+	GestionnaireNode findByLogin(@Param("login") String login);
 
 }

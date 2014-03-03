@@ -91,6 +91,7 @@ public class BesoinDAOTest extends TestCase {
 	 * Retrieve
 	 */
 	@Test
+	@Transactional
 	public final void t02_TestBesoinDAORetrieve() {
 		// We create a new object in the datastore
 		Besoin need1 = needDAO.create(new BesoinNode("t02 need"));
@@ -103,16 +104,17 @@ public class BesoinDAOTest extends TestCase {
 		assertEquals(need1.getName(), need1bis.getName());
 
 		// We retrieve the object from the datastore using its name
-		//Collection<Besoin> needs = needDAO.retrieveByName(need1.getName());
-		//assertNotNull(needs);
+		Collection<Besoin> needs = needDAO.retrieveByName(need1.getName());
+		assertTrue(needs.contains(need1));
 
-		//assertTrue(needDAO.retrieveByName(need1.getName()).contains(need1));
+		assertTrue(needDAO.retrieveByName(need1.getName()).contains(need1));
 	}
 
 	/**
 	 * Update
 	 */
 	@Test
+	@Transactional
 	public final void t03_TestBesoinDAOUpdate() {
 		// Setting up
 		Besoin need1 = new BesoinNode("t03 need");
@@ -125,13 +127,11 @@ public class BesoinDAOTest extends TestCase {
 
 		// We check that the object cannot be retrieved anymore with its
 		// original name
-		/*
 		Collection<Besoin> needs = needDAO.retrieveByName("t03 need");
-		assertNull(needs);
-		*/
+		assertTrue(needs.isEmpty());
 
 		// We check that the object can be retrieved with its new name
-		//assertTrue(needDAO.retrieveByName("t03 need including modification").contains(need1));
+		assertTrue(needDAO.retrieveByName("t03 need including modification").contains(need1));
 
 		// We check that there is still only 1 object in the datastore
 		assertEquals(new Long(1), needDAO.count());

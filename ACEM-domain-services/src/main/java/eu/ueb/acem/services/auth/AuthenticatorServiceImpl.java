@@ -16,11 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.gris.EnseignantDAO;
 import eu.ueb.acem.dal.gris.GestionnaireDAO;
-import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.Gestionnaire;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 

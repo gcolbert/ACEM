@@ -67,7 +67,6 @@ public class BesoinDAO implements DAO<Long, Besoin> {
 
 	@Override
 	public Collection<Besoin> retrieveByName(String name) {
-		//return repository.findByPropertyValue("name", name);
 		Iterable<BesoinNode> needNodes = repository.findByName(name);
 		Collection<Besoin> needs = new HashSet<Besoin>();
 		for (Besoin need : needNodes) {

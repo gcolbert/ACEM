@@ -33,6 +33,7 @@ import eu.ueb.acem.web.viewbeans.Pickable;
  */
 public class InstitutionViewBean implements OrganisationViewBean, Pickable, Serializable, Comparable<InstitutionViewBean> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(InstitutionViewBean.class);
 	
 	private static final long serialVersionUID = 6170498010377898612L;

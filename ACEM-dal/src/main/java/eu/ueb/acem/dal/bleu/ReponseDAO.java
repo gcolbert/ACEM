@@ -78,7 +78,6 @@ public class ReponseDAO implements DAO<Long, Reponse> {
 			entities.add(node);
 		}
 		return entities;
-		//return repository.findByPropertyValue("name", name);
 	}
 
 	@Override

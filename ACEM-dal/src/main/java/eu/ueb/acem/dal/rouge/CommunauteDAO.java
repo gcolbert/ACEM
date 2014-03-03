@@ -66,7 +66,6 @@ public class CommunauteDAO implements DAO<Long, Communaute> {
 
 	@Override
 	public Collection<Communaute> retrieveByName(String name) {
-		//return repository.findByPropertyValue("name", name);
 		Iterable<CommunauteNode> nodes = repository.findByName(name);
 		Collection<Communaute> entities = new HashSet<Communaute>();
 		for (CommunauteNode node : nodes) {

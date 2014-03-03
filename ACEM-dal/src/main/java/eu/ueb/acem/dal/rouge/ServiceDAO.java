@@ -66,7 +66,6 @@ public class ServiceDAO implements DAO<Long, Service> {
 
 	@Override
 	public Collection<Service> retrieveByName(String name) {
-		//return repository.findByPropertyValue("name", name);
 		Iterable<ServiceNode> nodes = repository.findByName(name);
 		Collection<Service> entities = new HashSet<Service>();
 		for (ServiceNode node : nodes) {

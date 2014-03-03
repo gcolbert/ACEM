@@ -76,7 +76,6 @@ public class ActivitePedagogiqueDAO implements DAO<Long, ActivitePedagogique> {
 			entities.add(node);
 		}
 		return entities;
-		//return repository.findByPropertyValue("name", name);
 	}
 
 	@Override

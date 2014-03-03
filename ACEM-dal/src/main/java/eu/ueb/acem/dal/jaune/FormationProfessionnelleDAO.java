@@ -69,7 +69,6 @@ public class FormationProfessionnelleDAO implements DAO<Long, FormationProfessio
 
 	@Override
 	public Collection<FormationProfessionnelle> retrieveByName(String name) {
-		//return repository.findByPropertyValue("name", name);
 		Iterable<FormationProfessionnelleNode> nodes = repository.findByName(name);
 		Collection<FormationProfessionnelle> entities = new HashSet<FormationProfessionnelle>();
 		for (FormationProfessionnelleNode node : nodes) {

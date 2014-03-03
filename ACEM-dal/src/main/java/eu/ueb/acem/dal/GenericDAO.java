@@ -33,7 +33,6 @@ import java.util.Iterator;
  *   but for now, we cannot use Spring 4 because Spring Data Neo4j isn't yet compatible.
  */
 //@Repository("genericDAO")
-@SuppressWarnings("unused")
 public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<Long, E> {
 
 	// @Autowired
@@ -63,7 +62,6 @@ public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<
 			entities.add(node);
 		}
 		return entities;
-		//return (E) repository.findByPropertyValue("name", name);
 	}
 
 	@Override
