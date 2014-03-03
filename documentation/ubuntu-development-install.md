@@ -7,6 +7,12 @@ Install Neo4j
 - Launch Neo4j
 - You should be able to access http://localhost:7474
 
+Initialize database (optional)
+------------------------------
+- If you want to start with an existing ACEM database, you can delete
+Neo4J's "data" folder, and unzip the file located at :
+"ACEM-dal/src/main/resources/database/data.zip"
+
 Install OpenJDK 7
 -----------------
 - sudo apt-get install openjdk-7-jdk

@@ -20,6 +20,8 @@ package eu.ueb.acem.domain.beans.gris.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.Set;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -27,6 +29,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
 
 /**
@@ -46,7 +49,7 @@ public abstract class PersonneNode implements Personne {
 	private String name;
 
 	@RelatedTo(elementClass = OrganisationNode.class, type = "worksForOrganisation", direction = OUTGOING)
-	private OrganisationNode organisation;
+	private Set<OrganisationNode> worksForOrganisations;
 
 	@Indexed(unique=true)
 	private String login;
@@ -65,10 +68,16 @@ public abstract class PersonneNode implements Personne {
 	}
 
 	@Override
-	public OrganisationNode getOrganisation() {
-		return organisation;
+	public Set<? extends Organisation> getWorksForOrganisations() {
+		return worksForOrganisations;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setWorksForOrganisations(Set<? extends Organisation> organisations) {
+		this.worksForOrganisations = (Set<OrganisationNode>)organisations;
+	}
+	
 	@Override
 	public String getName() {
 		return name;

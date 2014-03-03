@@ -19,6 +19,7 @@
 package eu.ueb.acem.domain.beans.gris;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -30,7 +31,9 @@ public interface Personne extends Serializable, Comparable<Personne> {
 
 	Long getId();
 
-	Organisation getOrganisation();
+	Set<? extends Organisation> getWorksForOrganisations();
+
+	void setWorksForOrganisations(Set<? extends Organisation> organisations);
 
 	String getName();
 
