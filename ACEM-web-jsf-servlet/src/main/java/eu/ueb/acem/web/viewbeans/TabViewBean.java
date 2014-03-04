@@ -16,26 +16,40 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.bleu.neo4j;
+package eu.ueb.acem.web.viewbeans;
 
-import java.util.Set;
+import java.io.Serializable;
 
-import org.springframework.data.neo4j.annotation.Query;
-import org.springframework.data.repository.query.Param;
-
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2014-03-04
  * 
  */
-public interface BesoinRepository extends GenericRepository<BesoinNode> {
+@Component("tabViewBean")
+@Scope("view")
+public class TabViewBean implements Serializable {
 
-	@Query(value = "match (n:PedagogicalNeed) where not (n)-[:hasParentNeed]->() return n")
-	Set<BesoinNode> findRoots();
-	
-	@Query(value = "match (n:PedagogicalNeed) where n.name=({name}) return n")
-	Iterable<BesoinNode> findByName(@Param("name") String name);
+	private static final long serialVersionUID = 4556222445851594028L;
+
+	private static final Logger logger = LoggerFactory.getLogger(TabViewBean.class);
+
+	Integer activeIndex;
+
+	public TabViewBean() {
+
+	}
+
+	public Integer getActiveIndex() {
+		return activeIndex;
+	}
+
+	public void setActiveIndex(Integer activeIndex) {
+		logger.info("setActiveIndex({})", activeIndex);
+		this.activeIndex = activeIndex;
+	}
 
 }

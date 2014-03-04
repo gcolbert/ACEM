@@ -23,6 +23,7 @@ import java.util.Collection;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.Service;
 
 public interface OrganisationsService {
@@ -43,6 +44,8 @@ public interface OrganisationsService {
 
 	Composante createTeachingDepartment(String name, String shortname);
 
+	Organisation retrieveOrganisation(Long idOrganisation);
+
 	Communaute retrieveCommunity(Long id);
 
 	Etablissement retrieveInstitution(Long id);
@@ -59,6 +62,8 @@ public interface OrganisationsService {
 	
 	Collection<Composante> retrieveAllTeachingDepartments();
 	
+	Organisation updateOrganisation(Organisation organisation);
+
 	Communaute updateCommunity(Communaute community);
 
 	Etablissement updateInstitution(Etablissement institution);
@@ -67,6 +72,8 @@ public interface OrganisationsService {
 
 	Composante updateTeachingDepartment(Composante teachingDepartment);
 
+	Boolean deleteOrganisation(Long id);
+
 	Boolean deleteCommunity(Long id);
 
 	Boolean deleteInstitution(Long id);
@@ -74,7 +81,7 @@ public interface OrganisationsService {
 	Boolean deleteAdministrativeDepartment(Long id);
 
 	Boolean deleteTeachingDepartment(Long id);
-
+	
 	void deleteAllCommunities();
 
 	void deleteAllInstitutions();

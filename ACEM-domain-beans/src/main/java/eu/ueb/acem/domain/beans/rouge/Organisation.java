@@ -47,4 +47,6 @@ public interface Organisation extends Serializable {
 
 	void setViewedResources(Set<? extends Ressource> viewedResources);
 
+	int compareTo(Organisation o);
+
 }

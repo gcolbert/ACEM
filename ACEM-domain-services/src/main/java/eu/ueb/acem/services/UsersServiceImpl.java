@@ -23,6 +23,8 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,10 +34,13 @@ import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 @Service("usersService")
 public class UsersServiceImpl implements UsersService {
 
+	private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
+	
 	@Autowired
 	EnseignantDAO teacherDAO;
 
@@ -136,6 +141,33 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public void deleteAllTeachers() {
 		teacherDAO.deleteAll();
+	}
+
+	@Override
+	public boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
+		logger.info("associateUserWorkingForOrganisation");
+		boolean success = false;
+		if (personDAO.exists(idPerson)) {
+			Personne person = personDAO.retrieveById(idPerson);
+			Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation);
+			if (organisation != null) {
+				person.addWorksForOrganisations(organisation);
+				person = personDAO.update(person);
+				organisation = organisationsService.updateOrganisation(organisation);
+				success = true;
+				logger.info("association successful");
+			}
+			else {
+				logger.info("association failed");
+			}
+		}
+		return success;
+	}
+
+	@Override
+	public boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

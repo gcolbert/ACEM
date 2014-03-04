@@ -35,6 +35,7 @@
     		<list>
     			<value>/ACEM-web-jsf-servlet/media/js/functions.js</value>
     			<value>/ACEM-web-jsf-servlet/media/js/navigation.js</value>
+    			<value>http://maps.google.com/maps/api/js?sensor=false</value>
     		</list>
     	</property>
     	<property name="stylesheets" >

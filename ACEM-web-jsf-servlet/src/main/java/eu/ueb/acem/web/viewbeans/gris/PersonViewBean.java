@@ -19,10 +19,21 @@
 package eu.ueb.acem.web.viewbeans.gris;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.rouge.Communaute;
+import eu.ueb.acem.domain.beans.rouge.Composante;
+import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.web.viewbeans.Pickable;
+import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
@@ -32,9 +43,9 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 
 	private static final long serialVersionUID = 4401967530594259861L;
 
-	private Personne person;
+	private Personne domainBean;
 	
-	private OrganisationViewBean organisation;
+	private List<OrganisationViewBean> organisationViewBeans;
 	
 	private Long id;
 	
@@ -47,31 +58,47 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 	private Boolean administrator;
 	
 	public PersonViewBean() {
+		this.organisationViewBeans = new ArrayList<OrganisationViewBean>();
 	}
 	
 	public PersonViewBean(Personne person) {
 		this();
-		setPerson(person);
+		setDomainBean(person);
 	}
 
-	public Personne getPerson() {
-		return person;
+	public Personne getDomainBean() {
+		return domainBean;
 	}
 
-	public void setPerson(Personne person) {
-		this.person = person;
+	public void setDomainBean(Personne person) {
+		this.domainBean = person;
 		setName(person.getName());
 		setLogin(person.getLogin());
 		setLanguage(person.getLanguage());
+		organisationViewBeans.clear();
+		for (Organisation organisation : person.getWorksForOrganisations()) {
+			if (organisation instanceof Communaute) {
+				organisationViewBeans.add(new CommunityViewBean((Communaute)organisation));
+			}
+			else if (organisation instanceof Etablissement) {
+				organisationViewBeans.add(new InstitutionViewBean((Etablissement)organisation));
+			}
+			else if (organisation instanceof Service) {
+				organisationViewBeans.add(new AdministrativeDepartmentViewBean((Service)organisation));
+			}
+			else if (organisation instanceof Composante) {
+				organisationViewBeans.add(new TeachingDepartmentViewBean((Composante)organisation));
+			}
+		}
 		setAdministrator(person.isAdministrator());
 	}
 
-	public OrganisationViewBean getOrganisation() {
-		return organisation;
+	public List<OrganisationViewBean> getOrganisationViewBeans() {
+		return organisationViewBeans;
 	}
 
-	public void setOrganisation(OrganisationViewBean organisation) {
-		this.organisation = organisation;
+	public void setOrganisationViewBeans(List<OrganisationViewBean> organisationViewBeans) {
+		this.organisationViewBeans = organisationViewBeans;
 	}
 
 	@Override
@@ -117,7 +144,7 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 
 	@Override
 	public int compareTo(PersonViewBean o) {
-		return getPerson().compareTo(o.getPerson());
+		return getDomainBean().compareTo(o.getDomainBean());
 	}
 
 	

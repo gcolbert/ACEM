@@ -24,6 +24,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,9 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.UsersService;
+import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 @Controller("usersController")
 @Scope("view")
@@ -44,6 +47,11 @@ public class UsersController extends AbstractContextAwareController {
 
 	private List<PersonViewBean> personViewBeans;
 
+	private PersonViewBean currentUserViewBean;
+
+	@Autowired
+	private PickListBean pickListBean;
+	
 	@Autowired
 	private UsersService usersService;
 
@@ -60,6 +68,10 @@ public class UsersController extends AbstractContextAwareController {
 		}
 	}
 
+	public PickListBean getPickListBean() {
+		return pickListBean;
+	}
+	
 	public List<PersonViewBean> getPersonViewBeans() {
 		return personViewBeans;
 	}
@@ -67,11 +79,78 @@ public class UsersController extends AbstractContextAwareController {
 	public void setPersonViewBeans(List<PersonViewBean> personViewBeans) {
 		this.personViewBeans = personViewBeans;
 	}
-	
+
+	public PersonViewBean getCurrentUserViewBean() {
+		return currentUserViewBean;
+	}
+
+	public void setCurrentUserViewBean(PersonViewBean currentUserViewBean) {
+		this.currentUserViewBean = currentUserViewBean;
+	}
+
 	public void setAdministrator(PersonViewBean personViewBean) {
 		logger.info("setAdministrator({})", personViewBean.getAdministrator());
-		personViewBean.getPerson().setAdministrator(personViewBean.getAdministrator());
-		usersService.updatePerson(personViewBean.getPerson());
+		personViewBean.getDomainBean().setAdministrator(personViewBean.getAdministrator());
+		personViewBean.setDomainBean(usersService.updatePerson(personViewBean.getDomainBean()));
+	}
+
+	public void onTransfer(TransferEvent event) {
+		logger.info("onTransfer");
+		@SuppressWarnings("unchecked")
+		List<OrganisationViewBean> listOfMovedViewBeans = (List<OrganisationViewBean>) event.getItems();
+		try {
+			for (OrganisationViewBean movedOrganisationViewBean : listOfMovedViewBeans) {
+				if (event.isAdd()) {
+					logger.info("We should associate {} and {}", movedOrganisationViewBean.getName(), getCurrentUser()
+							.getName());
+					if (usersService.associateUserWorkingForOrganisation(getCurrentUser().getId(),
+							movedOrganisationViewBean.getDomainBean().getId())) {
+						currentUserViewBean.getOrganisationViewBeans().add(movedOrganisationViewBean);
+						logger.info("association successful");
+					}
+					else {
+						logger.info("association failed");
+					}
+					currentUserViewBean.setDomainBean(usersService.retrievePerson(currentUserViewBean.getId()));
+				}
+				else {
+					logger.info("We should dissociate {} and {}", movedOrganisationViewBean.getName(), getCurrentUser()
+							.getName());
+					if (usersService.dissociateUserWorkingForOrganisation(getCurrentUser().getId(),
+							movedOrganisationViewBean.getDomainBean().getId())) {
+						currentUserViewBean.getOrganisationViewBeans().remove(movedOrganisationViewBean);
+						logger.info("dissociation successful");
+					}
+					else {
+						logger.info("dissociation failed");
+					}
+					currentUserViewBean.setDomainBean(usersService.retrievePerson(currentUserViewBean.getId()));
+				}
+			}
+		}
+		catch (Exception e) {
+			logger.error("onTransfer exception = ", e);
+		}
+		/*-
+		if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
+			getCurrentOrganisationViewBean().setDomainBean(
+					organisationsService.retrieveCommunity(getCurrentOrganisationViewBean().getDomainBean().getId()));
+		}
+		else if (getCurrentOrganisationViewBean() instanceof InstitutionViewBean) {
+			getCurrentOrganisationViewBean().setDomainBean(
+					organisationsService.retrieveInstitution(getCurrentOrganisationViewBean().getDomainBean().getId()));
+		}
+		else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
+			getCurrentOrganisationViewBean().setDomainBean(
+					organisationsService.retrieveAdministrativeDepartment(getCurrentOrganisationViewBean()
+							.getDomainBean().getId()));
+		}
+		else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
+			getCurrentOrganisationViewBean().setDomainBean(
+					organisationsService.retrieveTeachingDepartment(getCurrentOrganisationViewBean().getDomainBean()
+							.getId()));
+		}
+		 */
 	}
 
 }

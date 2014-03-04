@@ -27,10 +27,4 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
  */
 public interface ActivitePedagogiqueRepository extends GenericRepository<ActivitePedagogiqueNode> {
 
-	/*
-	@Query(value = "start scenario=node({scenarioId}) where (scenario)<-[:activityForScenario]-(activity) "
-			+ "return activity order by activity.positionInScenario asc")
-	List<BesoinNode> findPedagogicalActivitiesOfScenario(@Param("scenarioId") Long id);
-	*/
-
 }

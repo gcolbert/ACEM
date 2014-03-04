@@ -38,9 +38,6 @@ import org.springframework.stereotype.Component;
 @Scope("view")
 public class TableBean<E extends Comparable<E>> implements Serializable {
 
-	/**
-	 * For Logging.
-	 */
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(TableBean.class);
 

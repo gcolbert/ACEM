@@ -19,43 +19,49 @@
 package eu.ueb.acem.web.viewbeans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import org.primefaces.model.DualListModel;
+
+import org.primefaces.component.accordionpanel.AccordionPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Grégoire Colbert @since 2014-01-10
+ * @author Grégoire Colbert @since 2014-03-04
  * 
  */
-@Component("pickListBean")
+@Component("accordionPanelBean")
 @Scope("view")
-public class PickListBean implements Serializable {
+public class AccordionPanelBean implements Serializable {
 
-	private static final long serialVersionUID = 5863029035918765493L;
+	private static final long serialVersionUID = -4445898195655694994L;
 
-	private DualListModel<Pickable> pickListEntities;
+	private AccordionPanel accordionPanel;
 
-	public PickListBean() {
-		pickListEntities = new DualListModel<Pickable>();
-		pickListEntities.setSource(new ArrayList<Pickable>());
-		pickListEntities.setTarget(new ArrayList<Pickable>());
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(AccordionPanelBean.class);
+
+	Integer activeIndex;
+
+	public AccordionPanelBean() {
+
 	}
 
-	public DualListModel<Pickable> getPickListEntities() {
-		return pickListEntities;
+	public Integer getActiveIndex() {
+		return activeIndex;
 	}
 
-	public void setPickListEntities(DualListModel<Pickable> pickListEntities) {
-		this.pickListEntities = pickListEntities;
+	public void setActiveIndex(Integer activeIndex) {
+		logger.info("setActiveIndex({})", activeIndex);
+		this.activeIndex = activeIndex;
 	}
 
-	public void addSourceEntity(Pickable entity) {
-		pickListEntities.getSource().add(entity);
+	public AccordionPanel getAccordionPanel() {
+		return accordionPanel;
 	}
 
-	public void addTargetEntity(Pickable entity) {
-		pickListEntities.getTarget().add(entity);
+	public void setAccordionPanel(AccordionPanel accordionPanel) {
+		this.accordionPanel = accordionPanel;
 	}
 
 }

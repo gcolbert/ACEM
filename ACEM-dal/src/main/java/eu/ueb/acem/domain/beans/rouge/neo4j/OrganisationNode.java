@@ -120,4 +120,9 @@ public abstract class OrganisationNode implements Organisation {
 		this.viewedResources = (Set<RessourceNode>) viewedResources;
 	}
 
+	@Override
+	public int compareTo(Organisation o) {
+		return this.getName().compareTo(o.getName());
+	}
+	
 }

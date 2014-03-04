@@ -53,4 +53,8 @@ public interface UsersService {
 	
 	Set<? extends Enseignant> getTeachers();
 
+	boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
+
+	boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
+
 }

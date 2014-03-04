@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
@@ -38,7 +37,9 @@ import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
+import eu.ueb.acem.web.viewbeans.AccordionPanelBean;
 import eu.ueb.acem.web.viewbeans.PickListBean;
+import eu.ueb.acem.web.viewbeans.TabViewBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
@@ -72,8 +73,24 @@ public class OrganisationsController extends AbstractContextAwareController {
 	private List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeansForCurrentOrganisation;
 	private List<TeachingDepartmentViewBean> teachingDepartmentViewBeansForCurrentOrganisation;
 
+	@Autowired
 	private PickListBean pickListBean;
 
+	@Autowired
+	private TabViewBean tabViewBean;
+	
+	@Autowired
+	private AccordionPanelBean communitiesAccordionPanelBean;
+
+	@Autowired
+	private AccordionPanelBean institutionsAccordionPanelBean;
+
+	@Autowired
+	private AccordionPanelBean administrativeDepartmentAccordionPanelBean;
+
+	@Autowired
+	private AccordionPanelBean teachingDepartmentAccordionPanelBean;
+	
 	public OrganisationsController() {
 		// TODO : replace those hard-wired instanciations with @Autowired when
 		// Spring 4 will be used
@@ -81,8 +98,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 		institutionViewBeans = new TableBean<InstitutionViewBean>();
 		administrativeDepartmentViewBeans = new TableBean<AdministrativeDepartmentViewBean>();
 		teachingDepartmentViewBeans = new TableBean<TeachingDepartmentViewBean>();
-
-		pickListBean = new PickListBean();
 
 		communityViewBeansForCurrentOrganisation = new ArrayList<CommunityViewBean>();
 		institutionViewBeansForCurrentOrganisation = new ArrayList<InstitutionViewBean>();
@@ -139,6 +154,26 @@ public class OrganisationsController extends AbstractContextAwareController {
 		return pickListBean;
 	}
 
+	public TabViewBean getTabViewBean() {
+		return tabViewBean;
+	}
+
+	public AccordionPanelBean getCommunitiesAccordionPanelBean() {
+		return communitiesAccordionPanelBean;
+	}
+
+	public AccordionPanelBean getInstitutionsAccordionPanelBean() {
+		return institutionsAccordionPanelBean;
+	}
+
+	public AccordionPanelBean getAdministrativeDepartmentAccordionPanelBean() {
+		return administrativeDepartmentAccordionPanelBean;
+	}
+	
+	public AccordionPanelBean getTeachingDepartmentAccordionPanelBean() {
+		return teachingDepartmentAccordionPanelBean;
+	}
+	
 	public TableBean<CommunityViewBean> getCommunityViewBeans() {
 		return communityViewBeans;
 	}
@@ -401,7 +436,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void onTransfer(TransferEvent event) {
-		logger.info("onTransferOrganisation");
+		logger.info("onTransfer");
 		@SuppressWarnings("unchecked")
 		List<OrganisationViewBean> listOfMovedViewBeans = (List<OrganisationViewBean>) event.getItems();
 		for (OrganisationViewBean movedOrganisationViewBean : listOfMovedViewBeans) {
@@ -474,8 +509,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 					// Based on the domain rules, currentOrganisationViewBean
 					// must be an instance of InstitutionViewBean
 					if (organisationsService.associateInstitutionAndAdministrativeDepartment(
-							getCurrentOrganisationViewBean().getDomainBean().getId(),
-							movedOrganisationViewBean.getDomainBean().getId())) {
+							getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean
+									.getDomainBean().getId())) {
 						administrativeDepartmentViewBeansForCurrentOrganisation
 								.add((AdministrativeDepartmentViewBean) movedOrganisationViewBean);
 						logger.info("association successful");
@@ -521,10 +556,9 @@ public class OrganisationsController extends AbstractContextAwareController {
 				}
 				else if (movedOrganisationViewBean instanceof InstitutionViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
-					// can be an
-					// instance of CommunityViewBean,
-					// AdministrativeDepartmentViewBean
-					// or TeachingDepartmentViewBean.
+					// can be an instance of CommunityViewBean,
+					// AdministrativeDepartmentViewBean or
+					// TeachingDepartmentViewBean.
 					// So here, we have to test which class
 					// currentOrganisationViewBean belongs to.
 					if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
@@ -620,11 +654,11 @@ public class OrganisationsController extends AbstractContextAwareController {
 		logger.info("onAccordionPanelTabChange, tab={}", event.getTab());
 		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
 	}
-
+	
 	public void onTabViewTabChange(TabChangeEvent event) {
 		logger.info("onTabViewTabChange, tab={}", event.getTab());
 	}
-
+	
 	/*-
 	public void handleNewCommunityIconUpload(FileUploadEvent event) {
 		UploadedFile file = event.getFile();

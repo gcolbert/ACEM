@@ -19,9 +19,11 @@
 package eu.ueb.acem.services;
 
 import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import eu.ueb.acem.dal.rouge.CommunauteDAO;
 import eu.ueb.acem.dal.rouge.ComposanteDAO;
 import eu.ueb.acem.dal.rouge.EtablissementDAO;
@@ -29,6 +31,7 @@ import eu.ueb.acem.dal.rouge.ServiceDAO;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
@@ -39,7 +42,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 public class OrganisationsServiceImpl implements OrganisationsService {
 
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationsServiceImpl.class);
-	
+
 	@Autowired
 	private CommunauteDAO communityDAO;
 
@@ -93,6 +96,29 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
+	public Organisation retrieveOrganisation(Long idOrganisation) {
+		logger.info("retrieveOrganisation");
+		Organisation organisation = null;
+		if (communityDAO.exists(idOrganisation)) {
+			logger.info("organisation found using communityDAO");
+			organisation = communityDAO.retrieveById(idOrganisation);
+		}
+		else if (institutionDAO.exists(idOrganisation)) {
+			logger.info("organisation found using institutionDAO");
+			organisation = institutionDAO.retrieveById(idOrganisation);
+		}
+		else if (administrativeDepartmentDAO.exists(idOrganisation)) {
+			logger.info("organisation found using administrativeDepartmentDAO");
+			organisation = administrativeDepartmentDAO.retrieveById(idOrganisation);
+		}
+		else if (teachingDepartmentDAO.exists(idOrganisation)) {
+			logger.info("organisation found using teachingDepartmentDAO");
+			organisation = teachingDepartmentDAO.retrieveById(idOrganisation);
+		}
+		return organisation;
+	}
+
+	@Override
 	public Communaute retrieveCommunity(Long id) {
 		return communityDAO.retrieveById(id);
 	}
@@ -133,6 +159,24 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
+	public Organisation updateOrganisation(Organisation organisation) {
+		Organisation updatedOrganisation = null;
+		if (organisation instanceof Communaute) {
+			updatedOrganisation = updateCommunity((Communaute) organisation);
+		}
+		else if (organisation instanceof Etablissement) {
+			updatedOrganisation = updateInstitution((Etablissement) organisation);
+		}
+		else if (organisation instanceof Service) {
+			updatedOrganisation = updateAdministrativeDepartment((Service) organisation);
+		}
+		else if (organisation instanceof Composante) {
+			updatedOrganisation = updateTeachingDepartment((Composante) organisation);
+		}
+		return updatedOrganisation;
+	}
+
+	@Override
 	public Communaute updateCommunity(Communaute community) {
 		return communityDAO.update(community);
 	}
@@ -150,6 +194,21 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Composante updateTeachingDepartment(Composante teachingDepartment) {
 		return teachingDepartmentDAO.update(teachingDepartment);
+	}
+
+	@Override
+	public Boolean deleteOrganisation(Long id) {
+		boolean success = deleteCommunity(id);
+		if (!success) {
+			success = deleteInstitution(id);
+		}
+		if (!success) {
+			success = deleteAdministrativeDepartment(id);
+		}
+		if (!success) {
+			success = deleteTeachingDepartment(id);
+		}
+		return success;
 	}
 
 	@Override
@@ -223,7 +282,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		community.removeInstitution(institution);
 		community = communityDAO.update(community);
 		institution = institutionDAO.update(institution);
-		return (! community.getInstitutions().contains(institution));
+		return (!community.getInstitutions().contains(institution));
 	}
 
 	@Override
@@ -245,7 +304,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		institution.removeAdministrativeDepartment(administrativeDepartment);
 		institution = institutionDAO.update(institution);
 		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
-		return (! institution.getAdministrativeDepartments().contains(administrativeDepartment));
+		return (!institution.getAdministrativeDepartments().contains(administrativeDepartment));
 	}
 
 	@Override
@@ -267,7 +326,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		institution.removeTeachingDepartment(teachingDepartment);
 		institution = institutionDAO.update(institution);
 		teachingDepartment = teachingDepartmentDAO.update(teachingDepartment);
-		return (! institution.getTeachingDepartments().contains(teachingDepartment));
+		return (!institution.getTeachingDepartments().contains(teachingDepartment));
 	}
 
 }
