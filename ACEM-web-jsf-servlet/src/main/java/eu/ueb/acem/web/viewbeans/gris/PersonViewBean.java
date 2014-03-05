@@ -72,9 +72,11 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 
 	public void setDomainBean(Personne person) {
 		this.domainBean = person;
+		setId(person.getId());
 		setName(person.getName());
 		setLogin(person.getLogin());
 		setLanguage(person.getLanguage());
+		setAdministrator(person.isAdministrator());
 		organisationViewBeans.clear();
 		for (Organisation organisation : person.getWorksForOrganisations()) {
 			if (organisation instanceof Communaute) {
@@ -90,7 +92,6 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 				organisationViewBeans.add(new TeachingDepartmentViewBean((Composante)organisation));
 			}
 		}
-		setAdministrator(person.isAdministrator());
 	}
 
 	public List<OrganisationViewBean> getOrganisationViewBeans() {

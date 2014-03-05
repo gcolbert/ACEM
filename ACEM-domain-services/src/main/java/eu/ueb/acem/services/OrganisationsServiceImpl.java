@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.slf4j.Logger;
@@ -136,6 +137,16 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Composante retrieveTeachingDepartment(Long id) {
 		return teachingDepartmentDAO.retrieveById(id);
+	}
+
+	@Override
+	public Collection<Organisation> retrieveAllOrganisations() {
+		Collection<Organisation> organisations = new ArrayList<Organisation>();
+		organisations.addAll(communityDAO.retrieveAll());
+		organisations.addAll(institutionDAO.retrieveAll());
+		organisations.addAll(administrativeDepartmentDAO.retrieveAll());
+		organisations.addAll(teachingDepartmentDAO.retrieveAll());
+		return organisations;
 	}
 
 	@Override

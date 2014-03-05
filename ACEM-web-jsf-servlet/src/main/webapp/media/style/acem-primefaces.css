@@ -43,6 +43,9 @@
 td[role=gridcell] .ui-button {
 	width:100%;
 }
+.ui-button {
+	margin:4px 0;
+}
 .ui-panelgrid {
 	width:100%;
 }

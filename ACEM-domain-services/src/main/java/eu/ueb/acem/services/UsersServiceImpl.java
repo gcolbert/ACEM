@@ -165,9 +165,47 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation, String typeOfOrganisation) {
+		logger.info("dissociateUserWorkingForOrganisation");
+		boolean success = false;
+		if (personDAO.exists(idPerson)) {
+			Personne person = personDAO.retrieveById(idPerson);
+			Organisation organisation = null;
+			switch (typeOfOrganisation) {
+				case "Community":
+					organisation = organisationsService.retrieveCommunity(idOrganisation);
+				break;
+				case "Institution":
+					organisation = organisationsService.retrieveInstitution(idOrganisation);
+					break;
+				case "AdministrativeDepartment":
+					organisation = organisationsService.retrieveAdministrativeDepartment(idOrganisation);
+					break;
+				case "TeachingDepartment":
+					organisation = organisationsService.retrieveTeachingDepartment(idOrganisation);
+					break;
+				default:
+					break;
+			}
+			/*-
+			 * TODO : The following call would be better than the switch on the typeOfOrganisation but I hit a problem
+			 * because my DAOs all say they know about the entity with idOrganisation :
+			 * https://groups.google.com/d/msg/neo4j/GZlft7vw8n0/8Rb70lQ6jM8J
+			 */
+			//Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation);
+			if (organisation != null) {
+				person.removeWorksForOrganisations(organisation);
+				person = personDAO.update(person);
+				success = true;
+			}
+		}
+		if (success) {
+			logger.info("dissociation successful");
+		}
+		else {
+			logger.info("dissociation failed");
+		}
+		return success;
 	}
 
 }

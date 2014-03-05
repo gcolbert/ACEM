@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.dal.rouge.neo4j;
 
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
 
@@ -26,5 +29,11 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
  * 
  */
 public interface CommunauteRepository extends GenericRepository<CommunauteNode> {
+
+	/*-
+	@Override
+	@Query(value = "match (n:Community) where id(n)={id} return count(n) > 0")
+	public boolean exists(@Param("id") Long id);
+	*/
 
 }

@@ -54,6 +54,8 @@ public interface OrganisationsService {
 
 	Composante retrieveTeachingDepartment(Long id);
 
+	Collection<Organisation> retrieveAllOrganisations();
+	
 	Collection<Communaute> retrieveAllCommunities();
 	
 	Collection<Etablissement> retrieveAllInstitutions();

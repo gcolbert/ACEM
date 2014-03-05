@@ -37,7 +37,7 @@ import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
-import eu.ueb.acem.web.viewbeans.TableBean;
+import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalActivityViewBean;
 import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
 
@@ -61,7 +61,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	ScenariosService scenariosService;
 
 	@Autowired
-	TableBean<ScenarioViewBean> tableBean;
+	SortableTableBean<ScenarioViewBean> sortableTableBean;
 
 	public MyScenariosController() {
 	}
@@ -73,12 +73,12 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 			Collection<Scenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(getCurrentUser());
 			logger.info("found {} scenarios for author {}", scenariosOfCurrentUser.size(), getCurrentUser().getName());
-			tableBean.getTableEntries().clear();
+			sortableTableBean.getTableEntries().clear();
 			for (Scenario scenario : scenariosOfCurrentUser) {
 				logger.info("scenario = {}", scenario.getName());
-				tableBean.getTableEntries().add(new ScenarioViewBean(scenario));
+				sortableTableBean.getTableEntries().add(new ScenarioViewBean(scenario));
 			}
-			tableBean.sortReverseOrder();
+			sortableTableBean.sortReverseOrder();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -91,8 +91,8 @@ public class MyScenariosController extends AbstractContextAwareController {
 			scenario = scenariosService.createScenario((Enseignant)getCurrentUser(), name, objective);
 			if (scenario != null) {
 				ScenarioViewBean scenarioViewBean = new ScenarioViewBean(scenario);
-				tableBean.getTableEntries().add(scenarioViewBean);
-				tableBean.sortReverseOrder();
+				sortableTableBean.getTableEntries().add(scenarioViewBean);
+				sortableTableBean.sortReverseOrder();
 				setSelectedScenarioViewBean(scenarioViewBean);
 				MessageDisplayer.showMessageToUserWithSeverityInfo(
 						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
@@ -113,7 +113,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 		if (selectedScenarioViewBean != null) {
 			logger.info("deleteSelectedScenario, id={}", selectedScenarioViewBean.getId());
 			if (scenariosService.deleteScenario(selectedScenarioViewBean.getId())) {
-				tableBean.getTableEntries().remove(selectedScenarioViewBean);
+				sortableTableBean.getTableEntries().remove(selectedScenarioViewBean);
 				MessageDisplayer.showMessageToUserWithSeverityInfo(
 						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE"),
 						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS"));
@@ -128,7 +128,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 
 	public List<ScenarioViewBean> getScenarioViewBeans() {
-		return tableBean.getTableEntries();
+		return sortableTableBean.getTableEntries();
 	}
 
 	public ScenarioViewBean getSelectedScenarioViewBean() {
@@ -166,7 +166,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	public void onSave() {
 		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
-		tableBean.sortReverseOrder();
+		sortableTableBean.sortReverseOrder();
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE"),
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS"));

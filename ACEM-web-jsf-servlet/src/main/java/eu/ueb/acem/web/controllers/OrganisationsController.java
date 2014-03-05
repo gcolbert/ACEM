@@ -37,15 +37,15 @@ import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
-import eu.ueb.acem.web.viewbeans.AccordionPanelBean;
 import eu.ueb.acem.web.viewbeans.PickListBean;
+import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.TabViewBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 /**
  * @author Grégoire Colbert @since 2014-02-19
@@ -62,10 +62,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 	@Autowired
 	private OrganisationsService organisationsService;
 
-	private TableBean<CommunityViewBean> communityViewBeans;
-	private TableBean<InstitutionViewBean> institutionViewBeans;
-	private TableBean<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
-	private TableBean<TeachingDepartmentViewBean> teachingDepartmentViewBeans;
+	private SortableTableBean<CommunityViewBean> communityViewBeans;
+	private SortableTableBean<InstitutionViewBean> institutionViewBeans;
+	private SortableTableBean<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
+	private SortableTableBean<TeachingDepartmentViewBean> teachingDepartmentViewBeans;
 
 	private OrganisationViewBean currentOrganisationViewBean;
 	private List<CommunityViewBean> communityViewBeansForCurrentOrganisation;
@@ -79,6 +79,9 @@ public class OrganisationsController extends AbstractContextAwareController {
 	@Autowired
 	private TabViewBean tabViewBean;
 	
+	/*-
+	 * TODO : enable those lines after correction of issue https://github.com/gcolbert/ACEM/issues/3
+	 * 
 	@Autowired
 	private AccordionPanelBean communitiesAccordionPanelBean;
 
@@ -90,14 +93,15 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	@Autowired
 	private AccordionPanelBean teachingDepartmentAccordionPanelBean;
+	*/
 	
 	public OrganisationsController() {
 		// TODO : replace those hard-wired instanciations with @Autowired when
 		// Spring 4 will be used
-		communityViewBeans = new TableBean<CommunityViewBean>();
-		institutionViewBeans = new TableBean<InstitutionViewBean>();
-		administrativeDepartmentViewBeans = new TableBean<AdministrativeDepartmentViewBean>();
-		teachingDepartmentViewBeans = new TableBean<TeachingDepartmentViewBean>();
+		communityViewBeans = new SortableTableBean<CommunityViewBean>();
+		institutionViewBeans = new SortableTableBean<InstitutionViewBean>();
+		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
+		teachingDepartmentViewBeans = new SortableTableBean<TeachingDepartmentViewBean>();
 
 		communityViewBeansForCurrentOrganisation = new ArrayList<CommunityViewBean>();
 		institutionViewBeansForCurrentOrganisation = new ArrayList<InstitutionViewBean>();
@@ -158,6 +162,9 @@ public class OrganisationsController extends AbstractContextAwareController {
 		return tabViewBean;
 	}
 
+	/*
+	 * TODO : Issue at https://github.com/gcolbert/ACEM/issues/3
+	 * 
 	public AccordionPanelBean getCommunitiesAccordionPanelBean() {
 		return communitiesAccordionPanelBean;
 	}
@@ -173,6 +180,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	public AccordionPanelBean getTeachingDepartmentAccordionPanelBean() {
 		return teachingDepartmentAccordionPanelBean;
 	}
+	*/
 	
 	public TableBean<CommunityViewBean> getCommunityViewBeans() {
 		return communityViewBeans;
@@ -655,10 +663,14 @@ public class OrganisationsController extends AbstractContextAwareController {
 		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
 	}
 	
+	/*-
+	 * TODO : see issue at https://github.com/gcolbert/ACEM/issues/3
+	 * Here, we should collapse the opened accordion panel when we switch tab on the outer tab.
+	 */
 	public void onTabViewTabChange(TabChangeEvent event) {
 		logger.info("onTabViewTabChange, tab={}", event.getTab());
 	}
-	
+
 	/*-
 	public void handleNewCommunityIconUpload(FileUploadEvent event) {
 		UploadedFile file = event.getFile();

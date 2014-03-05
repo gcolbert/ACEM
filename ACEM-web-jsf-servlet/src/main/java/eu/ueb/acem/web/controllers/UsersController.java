@@ -32,10 +32,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.rouge.Communaute;
+import eu.ueb.acem.domain.beans.rouge.Composante;
+import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
+import eu.ueb.acem.web.viewbeans.TableBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 @Controller("usersController")
 @Scope("view")
@@ -54,6 +63,12 @@ public class UsersController extends AbstractContextAwareController {
 	
 	@Autowired
 	private UsersService usersService;
+	
+	@Autowired
+	public OrganisationsController organisationsController;
+	
+	@Autowired
+	public TableBean<OrganisationViewBean> organisationViewBeans;
 
 	public UsersController() {
 		personViewBeans = new ArrayList<PersonViewBean>();
@@ -66,6 +81,19 @@ public class UsersController extends AbstractContextAwareController {
 		for (Personne person : persons) {
 			personViewBeans.add(new PersonViewBean(person));
 		}
+
+		List<CommunityViewBean> communityViewBeans = organisationsController.getCommunityViewBeans().getTableEntries();
+		List<InstitutionViewBean> institutionViewBeans = organisationsController.getInstitutionViewBeans().getTableEntries();
+		List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans = organisationsController.getAdministrativeDepartmentViewBeans().getTableEntries();
+		List<TeachingDepartmentViewBean> teachingDepartmentViewBeans = organisationsController.getTeachingDepartmentViewBeans().getTableEntries();
+		
+		List<OrganisationViewBean> organisationViewBeansList = new ArrayList<OrganisationViewBean>();
+		organisationViewBeansList.addAll(communityViewBeans);
+		organisationViewBeansList.addAll(institutionViewBeans);
+		organisationViewBeansList.addAll(administrativeDepartmentViewBeans);
+		organisationViewBeansList.addAll(teachingDepartmentViewBeans);
+		
+		organisationViewBeans.setTableEntries(organisationViewBeansList);
 	}
 
 	public PickListBean getPickListBean() {
@@ -86,6 +114,21 @@ public class UsersController extends AbstractContextAwareController {
 
 	public void setCurrentUserViewBean(PersonViewBean currentUserViewBean) {
 		this.currentUserViewBean = currentUserViewBean;
+	}
+
+	public void preparePicklistOrganisationViewBeansForCurrentUser() {
+		logger.info("preparePicklistOrganisationViewBeansForCurrentUser");
+		if (getCurrentUserViewBean() != null) {
+			pickListBean.getPickListEntities().getSource().clear();
+			pickListBean.getPickListEntities().getSource().addAll(organisationViewBeans.getTableEntries());
+			pickListBean.getPickListEntities().getTarget().clear();
+			for (OrganisationViewBean organisationViewBean : organisationViewBeans.getTableEntries()) {
+				if (getCurrentUserViewBean().getDomainBean().getWorksForOrganisations().contains(organisationViewBean.getDomainBean())) {
+					pickListBean.getPickListEntities().getSource().remove(organisationViewBean);
+					pickListBean.getPickListEntities().getTarget().add(organisationViewBean);
+				}
+			}
+		}
 	}
 
 	public void setAdministrator(PersonViewBean personViewBean) {
@@ -116,8 +159,22 @@ public class UsersController extends AbstractContextAwareController {
 				else {
 					logger.info("We should dissociate {} and {}", movedOrganisationViewBean.getName(), getCurrentUser()
 							.getName());
+					String typeOfOrganisation = "";
+					// TODO : remove that "typeOfOrganisation" shit (see https://groups.google.com/d/msg/neo4j/GZlft7vw8n0/8Rb70lQ6jM8J)
+					if (movedOrganisationViewBean.getDomainBean() instanceof Communaute) {
+						typeOfOrganisation = "Community";
+					}
+					else if (movedOrganisationViewBean.getDomainBean() instanceof Etablissement) {
+						typeOfOrganisation = "Institution";
+					}
+					else if (movedOrganisationViewBean.getDomainBean() instanceof Service) {
+						typeOfOrganisation = "AdministrativeDepartment";
+					}
+					else if (movedOrganisationViewBean.getDomainBean() instanceof Composante) {
+						typeOfOrganisation = "TeachingDepartment";
+					}
 					if (usersService.dissociateUserWorkingForOrganisation(getCurrentUser().getId(),
-							movedOrganisationViewBean.getDomainBean().getId())) {
+							movedOrganisationViewBean.getDomainBean().getId(), typeOfOrganisation)) {
 						currentUserViewBean.getOrganisationViewBeans().remove(movedOrganisationViewBean);
 						logger.info("dissociation successful");
 					}

@@ -21,7 +21,6 @@ package eu.ueb.acem.web.viewbeans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -36,14 +35,14 @@ import org.springframework.stereotype.Component;
  */
 @Component("tableBean")
 @Scope("view")
-public class TableBean<E extends Comparable<E>> implements Serializable {
+public class TableBean<E> implements Serializable {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(TableBean.class);
 
 	private static final long serialVersionUID = -3164178023755035995L;
 
-	private List<E> tableEntries;
+	protected List<E> tableEntries;
 
 	public TableBean() {
 		tableEntries = new ArrayList<E>();
@@ -58,16 +57,7 @@ public class TableBean<E extends Comparable<E>> implements Serializable {
 		for (E entity : collectionEntities) {
 			tableEntries.add(entity);
 		}
-		sortReverseOrder();
 		return tableEntries;
-	}
-
-	public void sort() {
-		Collections.sort(tableEntries);
-	}
-
-	public void sortReverseOrder() {
-		Collections.sort(tableEntries, Collections.reverseOrder());
 	}
 
 }

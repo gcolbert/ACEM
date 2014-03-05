@@ -14,12 +14,25 @@
 
 			<p:panel header="#{msgs['ADMINISTRATION.ORGANISATIONS.HEADER']}">
 				<p:tabView id="tabViewOrganisations" dynamic="true" cache="false">
-					<!-- Commented out because of PrimeFaces 4 bug (see https://code.google.com/p/primefaces/issues/detail?id=3876) -->
+					<!--
+						There's a problem at the moment with the refresh of tabView's tabs after the association of organisations process.
+						For example :
+						1) open the "Communities" tab, then open the first community accordion panel,
+						2) go to the "Institutions" tab, then open the first institution accordion panel,
+						3) change the associated communities, it should update the "institutions" tab
+						4) but not the "communities" tab.
+						A solution could be to force the user to reopen the accordion panels on the first tab.
+						So we would need a way to collapse the accordion when the outer tab changes.
+						Unfortunately there's a bug with PrimeFaces 4 (see https://code.google.com/p/primefaces/issues/detail?id=3876)
+						that prevent us to put a listener on the outer tabview.
+					    TODO : enable this event handler when PF 5 will be used. Then code the onTabViewTabChange method to collapse
+					    the accordionPanel before tab switching.
+					-->
 					<!-- 
 					<p:ajax event="tabChange"
 						listener="#{organisationsController.onTabViewTabChange}"
 						update="@this" />
-					 -->
+					-->
 					<p:tab
 						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_COMMUNITIES_TITLE']}">
 						<p:commandButton
@@ -29,7 +42,7 @@
 						<p:accordionPanel id="accordionPanelForCommunities"
 							widgetVar="accordionPanelForCommunitiesWidget"
 							value="#{organisationsController.communityViewBeans.tableEntries}"
-							var="communityViewBean" activeIndex="-" dynamic="true"
+							var="communityViewBean" activeIndex="-1" dynamic="true"
 							collapsible="true">
 							<p:ajax event="tabChange"
 								listener="#{organisationsController.onAccordionPanelTabChange}"
@@ -52,10 +65,6 @@
 										<h:outputText value="#{institutionViewBean.name}" />
 									</p:column>
 								</p:dataTable>
-								<!-- 
-								<p:gmap center="48.118296, -1.641302" zoom="15" type="HYBRID"
-									style="width:400px;height:300px" />
-									 -->
 							</p:tab>
 						</p:accordionPanel>
 					</p:tab>
@@ -69,7 +78,7 @@
 						<p:accordionPanel id="accordionPanelForInstitutions"
 							widgetVar="accordionPanelForInstitutionsWidget"
 							value="#{organisationsController.institutionViewBeans.tableEntries}"
-							var="institutionViewBean" activeIndex="-" dynamic="true"
+							var="institutionViewBean" activeIndex="-1" dynamic="true"
 							collapsible="true">
 							<p:ajax event="tabChange"
 								listener="#{organisationsController.onAccordionPanelTabChange}"
@@ -145,7 +154,7 @@
 							process="@this" />
 						<p:accordionPanel id="accordionPanelForAdministrativeDepartments"
 							value="#{organisationsController.administrativeDepartmentViewBeans.tableEntries}"
-							var="administrativeDepartmentViewBean" activeIndex="-"
+							var="administrativeDepartmentViewBean" activeIndex="-1"
 							dynamic="true" collapsible="true">
 							<p:ajax event="tabChange"
 								listener="#{organisationsController.onAccordionPanelTabChange}"
@@ -180,7 +189,7 @@
 							process="@this" />
 						<p:accordionPanel id="accordionPanelForTeachingDepartments"
 							value="#{organisationsController.teachingDepartmentViewBeans.tableEntries}"
-							var="teachingDepartmentViewBean" activeIndex="-" dynamic="true"
+							var="teachingDepartmentViewBean" activeIndex="-1" dynamic="true"
 							collapsible="true">
 							<p:ajax event="tabChange"
 								listener="#{organisationsController.onAccordionPanelTabChange}"
@@ -339,7 +348,7 @@
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
-						update="@this :formOrganisations:dialogAssociateCommunityPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
+						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -364,7 +373,7 @@
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
-						update="@this :formOrganisations:dialogAssociateInstitutionPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
+						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -391,7 +400,7 @@
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
-						update="@this :formOrganisations:dialogAssociateAdministrativeDepartmentPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
+						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -419,7 +428,7 @@
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
-						update="@this :formOrganisations:dialogAssociateTeachingDepartmentPickList :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
+						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -460,7 +469,10 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.USERS.WORKS_FOR_ORGANISATIONS.ASSOCIATE_ORGANISATION_FOR_USER_LABEL']}"
 							icon="ui-icon-transferthick-e-w"
-							onclick="PF('dialogAssociateOrganisationWithUser').show()"
+							actionListener="#{usersController.setCurrentUserViewBean(personViewBean)}"
+							action="#{usersController.preparePicklistOrganisationViewBeansForCurrentUser()}"
+							oncomplete="PF('dialogAssociateOrganisationWithUser').show()"
+							update=":formUsers:idDialogAssociateOrganisationWithUser"
 							process="@this" />
 					</p:column>
 					<p:column width="20"
@@ -487,7 +499,7 @@
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.WORKS_FOR']}</f:facet>
 					<p:ajax event="transfer" listener="#{usersController.onTransfer}"
-						update="@this :formUsers:dialogAssociateOrganisationsWithUserPickList :formUsers:usersDataTable:organisationsOfUserDataTable :formUsers:messagesDisplayerFormUsers"
+						update="@this :formUsers:usersDataTable :formUsers:messagesDisplayerFormUsers"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"

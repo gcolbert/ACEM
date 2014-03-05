@@ -19,12 +19,13 @@
 package eu.ueb.acem.web.viewbeans.rouge;
 
 import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
  * 
  */
-public interface OrganisationViewBean {
+public interface OrganisationViewBean extends Pickable {
 
 	Long getId();
 	

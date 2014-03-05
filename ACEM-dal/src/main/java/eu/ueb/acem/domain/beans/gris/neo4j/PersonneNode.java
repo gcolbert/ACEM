@@ -22,6 +22,8 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -43,6 +45,9 @@ public class PersonneNode implements Personne {
 
 	private static final long serialVersionUID = -5697929702791942609L;
 
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(PersonneNode.class);
+	
 	@GraphId
 	private Long id;
 
@@ -100,6 +105,10 @@ public class PersonneNode implements Personne {
 
 	@Override
 	public void removeWorksForOrganisations(Organisation organisation) {
+		logger.info("checking if user works for : {}", organisation);
+		for (Organisation worksForOrganisation : worksForOrganisations) {
+			logger.info("the user works for organisation : {}", worksForOrganisation);
+		}
 		if (worksForOrganisations.contains(organisation)) {
 			worksForOrganisations.remove(organisation);
 		}
