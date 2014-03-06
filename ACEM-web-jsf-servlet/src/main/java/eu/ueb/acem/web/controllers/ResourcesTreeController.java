@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.primefaces.model.TreeNode;
@@ -27,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 
@@ -49,6 +52,34 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	private EditableTreeBean editableTreeBean;
 	
 	private TreeNode selectedNode;
+	
+	public ResourcesTreeController() {
+	}
+	
+	@PostConstruct
+	public void initTree() {
+		logger.info("entering initTree");
+		editableTreeBean.setVisibleRootLabel(getString("RESOURCES.TREE.VISIBLE_ROOT.LABEL"));
+
+		/*
+		editableTreeBean.addChild(getTreeRoot(), id, label, concept);
+
+		List<Ressource> resources = resourcesService.getResourcesTypes();
+		logger.info("Found {} resource types.", resources.size());
+		for (Resource resource : resources) {
+			logger.info("resource = {}", resource.getName());
+			createTree(need, editableTreeBean.getVisibleRoot());
+		}
+		*/
+
+		editableTreeBean.getVisibleRoot().setExpanded(true);
+		logger.info("leaving initTree");
+		logger.info("------");
+	}
+
+	public TreeNode getTreeRoot() {
+		return editableTreeBean.getRoot();
+	}
 
 	public TreeNode getSelectedNode() {
 		return selectedNode;
@@ -61,35 +92,4 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		}
 		this.selectedNode = selectedNode;
 	}
-
-	private TreeNode treeRoot;
-	
-	public ResourcesTreeController() {
-	}
-	
-	@PostConstruct
-	public void initTree() {
-		logger.info("entering initTree");
-		editableTreeBean.setVisibleRootLabel("Ressources");
-		/*
-		Collection<Resource> resources = resourcesService.getResourcesTypes();
-		logger.info("Found {} resources at root of tree.", needs.size());
-		for (Resource resource : resources) {
-			logger.info("resource = {}", resource.getName());
-			createTree(need, editableTreeBean.getVisibleRoot());
-		}
-		*/
-		editableTreeBean.getVisibleRoot().setExpanded(true);
-		logger.info("leaving initTree");
-		logger.info("------");
-	}
-
-	public TreeNode getTreeRoot() {
-		return treeRoot;
-	}
-
-	public void setTreeRoot(TreeNode treeRoot) {
-		this.treeRoot = treeRoot;
-	}
-
 }

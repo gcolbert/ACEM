@@ -224,4 +224,9 @@ public class BesoinNode implements Besoin {
 		return true;
 	}
 
+	@Override
+	public int compareTo(Besoin o) {
+		return getName().compareTo(o.getName());
+	}
+
 }

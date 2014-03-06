@@ -3,21 +3,30 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<t:div id="header" styleClass="app-header fl-container-auto">  
-		<t:div styleClass="logo"/>
+	<t:div id="header" styleClass="app-header fl-container-auto">
 		<t:div styleClass="header_suite">
 			<t:div styleClass="user_displayName">
-				<t:outputText value="#{sessionController.currentUser.login}" styleClass="span_currentUser"  />
+				<t:outputText value="#{sessionController.currentUser.login}"
+					styleClass="span_currentUser" />
 			</t:div>
 
-			<t:div id="titreAppli" styleClass="titreAppli">
-				<t:outputText value="#{msgs['APPLICATION.TITLE']}" styleClass="span_bigTitre"/>
+			<t:div styleClass="logo">
+				<h:graphicImage url="media/images/ueb-logo-blanc.svg" alt="Logo UEB" />
 			</t:div>
-			
-			<t:div styleClass="descriptionAppli">
-				<t:outputText value="#{msgs['APPLICATION.DESCRIPTION']} (#{msgs['APPLICATION.VERSION']} #{applicationService.version})" styleClass="span_titre"/>
+
+			<t:div styleClass="titreEtDescription">
+				<t:div id="titreAppli" styleClass="titreAppli">
+					<t:outputText value="#{msgs['APPLICATION.TITLE']}"
+						styleClass="span_bigTitre" />
+				</t:div>
+	
+				<t:div styleClass="descriptionAppli">
+					<t:outputText
+						value="#{msgs['APPLICATION.DESCRIPTION']} (#{msgs['APPLICATION.VERSION']} #{applicationService.version})"
+						styleClass="span_titre" />
+				</t:div>
 			</t:div>
-			
+
 		</t:div>
 	</t:div>
 </ui:composition>

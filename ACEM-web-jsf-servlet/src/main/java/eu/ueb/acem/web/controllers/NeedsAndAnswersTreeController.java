@@ -98,19 +98,15 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 				createTree(besoinChild, newNode);
 			}
 		}
-		// We look for answers only if "need" doesn't have any child
-		// NOTE : this is a business-level constraint, technically we could
-		// display Needs and Answers as children of a Need node.
-		else {
-			@SuppressWarnings("unchecked")
-			Collection<Reponse> answers = (Collection<Reponse>) need.getAnswers();
-			if (answers.size() > 0) {
-				((DefaultTreeNode) newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
-				need.setAnswers((Set<Reponse>)answers);
-				for (Reponse answer : answers) {
-					new DefaultTreeNode(TREE_NODE_TYPE_ANSWER_LEAF, new TreeNodeData(answer.getId(), answer.getName(),
-							"Answer"), newNode);
-				}
+
+		@SuppressWarnings("unchecked")
+		Collection<Reponse> answers = (Collection<Reponse>) need.getAnswers();
+		if (answers.size() > 0) {
+			((DefaultTreeNode) newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
+			need.setAnswers((Set<Reponse>)answers);
+			for (Reponse answer : answers) {
+				new DefaultTreeNode(TREE_NODE_TYPE_ANSWER_LEAF, new TreeNodeData(answer.getId(), answer.getName(),
+						"Answer"), newNode);
 			}
 		}
 	}

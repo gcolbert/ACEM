@@ -18,10 +18,18 @@
  */
 package eu.ueb.acem.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 @Service("resourcesService")
 public class ResourcesServiceImpl implements ResourcesService {
 
+	@Override
+	public List<Ressource> getResourceTypes() {
+		return null;
+	}
 
 }

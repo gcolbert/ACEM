@@ -1,23 +1,55 @@
-.span_bigTitre {
-  font-size: 2em;
-  font-weight: bold;
-  padding-right: 0.5em;
+#header {
+	color:white;
+	background-image:url("../../media/images/BandeauNumeriqueAccueil2013.png");
+	background-repeat: no-repeat;
+	height: 60px;
+	background-size: 100% 100%, auto auto;
+	padding:1em 1em 0 1em;
 }
-.span_titre {
+
+#header .logo {
+	display:inline-block;
+}
+
+#header .logo img {
+	height:50px;
+}
+
+#header .titreEtDescription {
+	display:inline-block;
+	vertical-align:top;
+	margin-left:1em;
+	border-left:1px solid white;
+	padding-left:1em;
+}
+
+#header .span_bigTitre {
+	font-size : 2em;
+	font-weight: bold;
+}
+
+#header .span_titre {
 	font-style: italic;
 }
-.span_version {
+
+#header .span_version {
 	font-size: 0.8em;
 }
-.descriptionAppli {
-	margin-bottom:1em;
+
+#header .descriptionAppli {
 }
-.span_currentUser {
-	float:right;
+
+#header .span_currentUser {
+	float: right;
+	font-weight: bold;
+}
+
+#body {
+	padding:1em;
 }
 
 .label {
-	text-decoration:underline;
+	text-decoration: underline;
 }
 
 .ui-panel {
@@ -36,56 +68,66 @@
 
 /* p:confirmDialog */
 .ui-dialog-buttonpane {
-	text-align:right !important;
+	text-align: right !important;
 }
 
 /* NEEDS AND ANSWERS */
 .Need {
 	
 }
+
 .Answer {
 	color: #2779AA;
 }
+
 .Resource {
 	
 }
 
 /* MY SCENARIOS */
 .ui-layout-unit-content {
-	padding:0;
+	padding: 0;
 }
+
 .ui-layout-pane {
-	min-width:250px;
-	width:100%;
+	min-width: 250px;
+	width: 100%;
 }
+
 .ui-layout-pane .ui-panel {
 	border: 0;
-	padding:0;
+	padding: 0;
 }
+
 td[role=gridcell] .ui-button {
-	width:100%;
+	width: 100%;
 }
+
 .ui-button {
-	margin:4px 0;
+	margin: 4px 0;
 }
+
 .ui-panelgrid {
-	width:100%;
-}
-.ui-scrollpanel {
-	width:100%;
-}
-.ui-layout-center {
-	width:100%;
+	width: 100%;
 }
 
 .ui-scrollpanel {
-	width:100%;
-	height:300px;
+	width: 100%;
 }
+
+.ui-layout-center {
+	width: 100%;
+}
+
+.ui-scrollpanel {
+	width: 100%;
+	height: 300px;
+}
+
 .dialogValidationButton {
-	float:right;
+	float: right;
 }
 
 .ui-inplace-content input {
-	width:500px;
+	width: 500px;
 }

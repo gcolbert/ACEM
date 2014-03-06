@@ -130,4 +130,9 @@ public class ReponseNode implements Reponse {
 		return scenarios;
 	}
 
+	@Override
+	public int compareTo(Reponse o) {
+		return getName().compareTo(o.getName());
+	}
+
 }

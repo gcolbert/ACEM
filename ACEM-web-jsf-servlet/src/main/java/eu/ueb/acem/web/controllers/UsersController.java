@@ -28,6 +28,7 @@ import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -68,6 +69,7 @@ public class UsersController extends AbstractContextAwareController {
 	public OrganisationsController organisationsController;
 	
 	@Autowired
+	@Qualifier(value = "tableBean")
 	public TableBean<OrganisationViewBean> organisationViewBeans;
 
 	public UsersController() {

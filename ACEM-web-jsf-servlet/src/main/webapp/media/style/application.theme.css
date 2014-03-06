@@ -29,11 +29,14 @@ html {
 
 /* Body */
 .fl-theme-app {
+	margin:0;
+	/*
 	background: url("../../media/images/blankbac.png") no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
+	*/
 }
 .fl-theme-app .app-body {
 	
