@@ -97,6 +97,7 @@
 .ui-layout-pane .ui-panel {
 	border: 0;
 	padding: 0;
+	margin:0;
 }
 
 td[role=gridcell] .ui-button {
