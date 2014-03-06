@@ -19,6 +19,8 @@
 package eu.ueb.acem.web.viewbeans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -45,27 +47,34 @@ public class EditableTreeBean implements Serializable {
 
 	private TreeNode root;
 
-	private TreeNode visibleRoot;
+	private List<TreeNode> visibleRoots;
 
 	public EditableTreeBean() {
 		// For some reason, the root of the tree is not visible
 		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
-		// Therefore, we add a visible root so that it is possible to right
-		// click and add children nodes
-		visibleRoot = new DefaultTreeNode(new TreeNodeData(null, "Default visible root", null), root);
+		
+		// Therefore, we add a list of visible roots, so that it is possible to right
+		// click on something to add children nodes
+		visibleRoots = new ArrayList<TreeNode>();
 	}
 
 	public TreeNode getRoot() {
 		return root;
 	}
 
-	public TreeNode getVisibleRoot() {
-		return visibleRoot;
+	public List<TreeNode> getVisibleRoots() {
+		return visibleRoots;
 	}
 
+	public void addVisibleRoot(String label) {
+		visibleRoots.add(new DefaultTreeNode(new TreeNodeData(null, label, null), root));
+	}
+	
+	/*
 	public void setVisibleRootLabel(String label) {
 		((TreeNodeData) visibleRoot.getData()).setLabel(label);
 	}
+	*/
 
 	public void setRoot(TreeNode root) {
 		this.root = root;
@@ -95,8 +104,10 @@ public class EditableTreeBean implements Serializable {
 	}
 
 	public void collapseTree() {
-		getVisibleRoot().setExpanded(false);
-		collapseChildrenOf(getVisibleRoot());
+		for (TreeNode visibleRoot : visibleRoots) {
+			visibleRoot.setExpanded(false);
+			collapseChildrenOf(visibleRoot);
+		}
 	}
 
 	public void expandOnlyOneNode(TreeNode node) {

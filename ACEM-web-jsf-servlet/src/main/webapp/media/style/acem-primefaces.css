@@ -63,7 +63,8 @@
 
 /* p:contextMenu */
 .ui-menu {
-	min-width: 14em;
+	min-width: 16em;
+	margin-bottom:1em;
 }
 
 /* p:confirmDialog */

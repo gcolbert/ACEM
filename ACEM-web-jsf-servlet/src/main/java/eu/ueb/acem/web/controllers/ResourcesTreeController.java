@@ -59,11 +59,10 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	@PostConstruct
 	public void initTree() {
 		logger.info("entering initTree");
-		editableTreeBean.setVisibleRootLabel(getString("RESOURCES.TREE.VISIBLE_ROOT.LABEL"));
+		editableTreeBean.addVisibleRoot("Applicatifs");
+		editableTreeBean.addVisibleRoot("Documentations d'applicatifs");
 
 		/*
-		editableTreeBean.addChild(getTreeRoot(), id, label, concept);
-
 		List<Ressource> resources = resourcesService.getResourcesTypes();
 		logger.info("Found {} resource types.", resources.size());
 		for (Resource resource : resources) {
@@ -72,7 +71,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		}
 		*/
 
-		editableTreeBean.getVisibleRoot().setExpanded(true);
+		//editableTreeBean.getVisibleRoots().get(0).setExpanded(true);
 		logger.info("leaving initTree");
 		logger.info("------");
 	}

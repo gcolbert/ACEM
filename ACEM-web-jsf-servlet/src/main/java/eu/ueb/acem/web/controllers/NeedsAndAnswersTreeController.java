@@ -70,14 +70,15 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	@PostConstruct
 	public void initTree() {
 		logger.info("entering initTree");
-		editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
+		editableTreeBean.addVisibleRoot(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
+		//editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
 		Collection<Besoin> needs = needsAndAnswersService.retrieveNeedsAtRoot();
 		logger.info("Found {} needs at root of tree.", needs.size());
 		for (Besoin need : needs) {
 			logger.info("need = {}", need.getName());
-			createTree(need, editableTreeBean.getVisibleRoot());
+			createTree(need, editableTreeBean.getVisibleRoots().get(0));
 		}
-		editableTreeBean.getVisibleRoot().setExpanded(true);
+		editableTreeBean.getVisibleRoots().get(0).setExpanded(true);
 		logger.info("leaving initTree");
 		logger.info("------");
 	}
