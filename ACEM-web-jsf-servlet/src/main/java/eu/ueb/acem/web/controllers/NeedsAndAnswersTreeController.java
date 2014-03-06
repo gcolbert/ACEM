@@ -70,8 +70,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	@PostConstruct
 	public void initTree() {
 		logger.info("entering initTree");
-		// editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.ROOT.LABEL"));
-		editableTreeBean.setVisibleRootLabel("Besoins");
+		editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
 		Collection<Besoin> needs = needsAndAnswersService.retrieveNeedsAtRoot();
 		logger.info("Found {} needs at root of tree.", needs.size());
 		for (Besoin need : needs) {
@@ -127,7 +126,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	public void setSelectedNode(TreeNode selectedNode) {
 		if (this.selectedNode != null) {
 			this.selectedNode.setSelected(false);
-			expandOnlyOneNode(selectedNode);
+			editableTreeBean.expandOnlyOneNode(selectedNode);
 		}
 		this.selectedNode = selectedNode;
 	}
@@ -145,7 +144,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		((DefaultTreeNode) selectedNode).setType("NeedWithAssociatedNeeds");
 		setSelectedNode(newNode);
 		saveTreeNode(newNode);
-		expandOnlyOneNode(newNode);
+		editableTreeBean.expandOnlyOneNode(newNode);
 		logger.info("leaving addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.info("------");
 	}
@@ -157,7 +156,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		((DefaultTreeNode) selectedNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
 		setSelectedNode(newNode);
 		saveTreeNode(newNode);
-		expandOnlyOneNode(newNode);
+		editableTreeBean.expandOnlyOneNode(newNode);
 		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.info("------");
 	}
@@ -248,35 +247,6 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		}
 		logger.info("leaving saveTreeNode");
 		logger.info("------");
-	}
-
-	private void expandParentsOf(TreeNode node) {
-		TreeNode parent = node.getParent();
-		while (parent != null) {
-			parent.setExpanded(true);
-			parent = parent.getParent();
-		}
-	}
-
-	private void collapseChildrenOf(TreeNode node) {
-		for (TreeNode child : node.getChildren()) {
-			child.setExpanded(false);
-			if (!child.isLeaf()) {
-				collapseChildrenOf(child);
-			}
-		}
-	}
-
-	private void collapseTree() {
-		editableTreeBean.getVisibleRoot().setExpanded(false);
-		collapseChildrenOf(editableTreeBean.getVisibleRoot());
-	}
-
-	private void expandOnlyOneNode(TreeNode node) {
-		if (node != null) {
-			collapseTree();
-			expandParentsOf(node);
-		}
 	}
 
 	public String getTreeNodeType_NEED_LEAF() {

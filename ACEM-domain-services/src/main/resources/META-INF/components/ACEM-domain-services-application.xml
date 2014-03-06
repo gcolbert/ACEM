@@ -44,7 +44,7 @@
 	    		The update of the application (3 for version 1.2.3).
 	    	</description>
     	</property>
-    	<property name="copyright" value="Copyright © 2013 Gregoire Colbert - Universite europeenne de Bretagne - Region Bretagne - Ministere de l'Enseignement Superieur et de la Recherche" >
+    	<property name="copyright" value="Copyright © 2013-2014 Gregoire Colbert - Universite europeenne de Bretagne - Region Bretagne - Ministere de l'Enseignement Superieur et de la Recherche" >
 	    	<description>
 	    		The copyright.
 	    	</description>

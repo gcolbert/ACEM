@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.rouge.neo4j;
 
-import org.springframework.data.neo4j.annotation.Query;
-import org.springframework.data.repository.query.Param;
-
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 
@@ -29,11 +26,5 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
  * 
  */
 public interface ServiceRepository extends GenericRepository<ServiceNode> {
-
-	/*-
-	@Override
-	@Query(value = "match (n:AdministrativeDepartment) where id(n)={id} return count(n) > 0")
-	public boolean exists(@Param("id") Long id);
-	*/
 
 }

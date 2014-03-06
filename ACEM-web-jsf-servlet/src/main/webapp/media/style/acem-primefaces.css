@@ -1,5 +1,27 @@
+.span_bigTitre {
+  font-size: 2em;
+  font-weight: bold;
+  padding-right: 0.5em;
+}
+.span_titre {
+	font-style: italic;
+}
+.span_version {
+	font-size: 0.8em;
+}
+.descriptionAppli {
+	margin-bottom:1em;
+}
+.span_currentUser {
+	float:right;
+}
+
 .label {
 	text-decoration:underline;
+}
+
+.ui-panel {
+	margin-top: 1em;
 }
 
 /* p:tree */

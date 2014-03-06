@@ -48,6 +48,20 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	@Autowired
 	private EditableTreeBean editableTreeBean;
 	
+	private TreeNode selectedNode;
+
+	public TreeNode getSelectedNode() {
+		return selectedNode;
+	}
+
+	public void setSelectedNode(TreeNode selectedNode) {
+		if (this.selectedNode != null) {
+			this.selectedNode.setSelected(false);
+			editableTreeBean.expandOnlyOneNode(selectedNode);
+		}
+		this.selectedNode = selectedNode;
+	}
+
 	private TreeNode treeRoot;
 	
 	public ResourcesTreeController() {

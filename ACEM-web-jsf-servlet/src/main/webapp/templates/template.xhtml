@@ -18,11 +18,11 @@
 		<h:outputScript name="jsf.js" library="javax.faces" target="head" />
 	</h:head>
 	<h:body styleClass="fl-theme-app">
-		<h1>ACEM</h1>
+		<ui:include src="_include/_header.xhtml" />
 		<div id="body">
 			<div class="app-body">
 				<ui:include src="menu.xhtml" />
-				<div class="app-content"><br />
+				<div class="app-content">
 				<ui:insert name="content" /></div>
 				<div style="clear: both;" />
 			</div>

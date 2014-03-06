@@ -77,6 +77,35 @@ public class EditableTreeBean implements Serializable {
 		return child;
 	}
 
+	public void expandParentsOf(TreeNode node) {
+		TreeNode parent = node.getParent();
+		while (parent != null) {
+			parent.setExpanded(true);
+			parent = parent.getParent();
+		}
+	}
+
+	public void collapseChildrenOf(TreeNode node) {
+		for (TreeNode child : node.getChildren()) {
+			child.setExpanded(false);
+			if (!child.isLeaf()) {
+				collapseChildrenOf(child);
+			}
+		}
+	}
+
+	public void collapseTree() {
+		getVisibleRoot().setExpanded(false);
+		collapseChildrenOf(getVisibleRoot());
+	}
+
+	public void expandOnlyOneNode(TreeNode node) {
+		if (node != null) {
+			collapseTree();
+			expandParentsOf(node);
+		}
+	}
+	
 	public static class TreeNodeData implements Serializable {
 
 		private static final long serialVersionUID = -5623188924862380160L;
