@@ -59,8 +59,13 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	@PostConstruct
 	public void initTree() {
 		logger.info("entering initTree");
-		editableTreeBean.addVisibleRoot("Applicatifs");
-		editableTreeBean.addVisibleRoot("Documentations d'applicatifs");
+		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL"));
+		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL"));
+		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
+		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.MOBILE_EQUIPMENT.LABEL"));
+		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.FIXED_EQUIPMENT.LABEL"));
+		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.STAFF.LABEL"));
+		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTATION_RESOURCES.LABEL"));
 
 		/*
 		List<Ressource> resources = resourcesService.getResourcesTypes();
