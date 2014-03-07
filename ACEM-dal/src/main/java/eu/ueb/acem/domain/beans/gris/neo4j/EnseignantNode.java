@@ -79,4 +79,14 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 		return scenarios;
 	}
 
+	@Override
+	public void addAuthor(Scenario scenario) {
+		scenarios.add((ScenarioNode)scenario);
+	}
+
+	@Override
+	public void removeAuthor(Scenario scenario) {
+		scenarios.remove(scenario);
+	}
+
 }

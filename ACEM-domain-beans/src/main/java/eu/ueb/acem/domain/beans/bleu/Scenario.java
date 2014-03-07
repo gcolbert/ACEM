@@ -48,9 +48,9 @@ public interface Scenario extends Serializable, Comparable<Scenario> {
 
 	void setObjective(String objective);
 
-	Enseignant getAuthor();
+	Set<? extends Enseignant> getAuthors();
 
-	void setAuthor(Enseignant author);
+	void setAuthors(Set<? extends Enseignant> authors);
 
 	Boolean isPublished();
 
@@ -65,5 +65,9 @@ public interface Scenario extends Serializable, Comparable<Scenario> {
 	void addPedagogicalActivity(ActivitePedagogique pedagogicalActivity);
 
 	void removePedagogicalActivity(ActivitePedagogique pedagogicalActivity);
+
+	void addAuthor(Enseignant author);
+	
+	void removeAuthor(Enseignant author);
 
 }

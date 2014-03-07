@@ -23,11 +23,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.web.viewbeans.Pickable;
+import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
  * @author Grégoire Colbert @since 2014-02-17
@@ -35,15 +41,13 @@ import eu.ueb.acem.web.viewbeans.Pickable;
  */
 public class ScenarioViewBean implements Pickable, Serializable, Comparable<ScenarioViewBean> {
 
-	/**
-	 * For Logging.
-	 */
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ScenarioViewBean.class);
 
 	private static final long serialVersionUID = -3164178023755035995L;
 
 	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
+	private List<PersonViewBean> authorViewBeans;
 
 	private Scenario scenario;
 
@@ -51,9 +55,12 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	private String name;
 	private String objective;
 	private Boolean published;
+	private String creationDate;
+	private String modificationDate;
 
 	public ScenarioViewBean() {
 		pedagogicalActivityViewBeans = new ArrayList<PedagogicalActivityViewBean>();
+		authorViewBeans = new ArrayList<PersonViewBean>();
 	}
 
 	public ScenarioViewBean(Scenario scenario) {
@@ -63,6 +70,10 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 
 	public List<PedagogicalActivityViewBean> getPedagogicalActivityViewBeans() {
 		return pedagogicalActivityViewBeans;
+	}
+
+	public List<PersonViewBean> getAuthorViewBeans() {
+		return authorViewBeans;
 	}
 
 	public Scenario getScenario() {
@@ -75,11 +86,20 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		this.name = scenario.getName();
 		this.objective = scenario.getObjective();
 		this.published = scenario.isPublished();
+		setCreationDate(scenario.getCreationDate());
+		setModificationDate(scenario.getModificationDate());
+
 		pedagogicalActivityViewBeans.clear();
 		for (ActivitePedagogique pedagogicalActivity : scenario.getPedagogicalActivities()) {
 			pedagogicalActivityViewBeans.add(new PedagogicalActivityViewBean(pedagogicalActivity));
 		}
 		Collections.sort(pedagogicalActivityViewBeans);
+
+		authorViewBeans.clear();
+		for (Enseignant author : scenario.getAuthors()) {
+			authorViewBeans.add(new PersonViewBean(author));
+		}
+		Collections.sort(authorViewBeans);
 	}
 
 	@Override
@@ -116,6 +136,26 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	public void setPublished(Boolean published) {
 		this.published = published;
 		scenario.setPublished(published);
+	}
+
+	public String getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Long creationTimeStampInSeconds) {
+		DateTime creationDate = new DateTime(creationTimeStampInSeconds * 1000L);
+		DateTimeFormatter fmt = DateTimeFormat.mediumDateTime();
+		this.creationDate = fmt.print(creationDate);
+	}
+
+	public String getModificationDate() {
+		return modificationDate;
+	}
+
+	public void setModificationDate(Long modificationTimeStampInSeconds) {
+		DateTime modificationDate = new DateTime(modificationTimeStampInSeconds * 1000L);
+		DateTimeFormatter fmt = DateTimeFormat.mediumDateTime();
+		this.modificationDate = fmt.print(modificationDate);
 	}
 
 	@Override

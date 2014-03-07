@@ -97,6 +97,30 @@
 										required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
 								</p:inplace>
 							</p:panel>
+
+							<h:outputLabel for="selectedScenarioAuthors"
+								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.AUTHORS_LABEL']}"
+								styleClass="label" />
+							<p:panel id="selectedScenarioAuthors">
+								<ui:repeat value="#{myScenariosController.selectedScenarioViewBean.authorViewBeans}" var="authorViewBean">
+									<h:outputText value="#{authorViewBean.name}"/>
+								</ui:repeat>
+							</p:panel>
+
+							<h:outputLabel for="selectedScenarioCreationDate"
+								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.CREATION_DATE_LABEL']}"
+								styleClass="label" />
+							<p:panel>
+								<h:outputText id="selectedScenarioCreationDate" value="#{myScenariosController.selectedScenarioViewBean.creationDate}"/>
+							</p:panel>
+
+							<h:outputLabel for="selectedScenarioModificationDate"
+								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.MODIFICATION_DATE_LABEL']}"
+								styleClass="label" />
+							<p:panel>
+								<h:outputText id="selectedScenarioModificationDate" value="#{myScenariosController.selectedScenarioViewBean.modificationDate}"/>
+							</p:panel>
+
 						</h:panelGrid>
 
 						<p:dataTable id="selectedScenarioActivitiesDataTable"

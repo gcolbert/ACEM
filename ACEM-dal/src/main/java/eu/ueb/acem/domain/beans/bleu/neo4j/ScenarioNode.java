@@ -79,7 +79,7 @@ public class ScenarioNode implements Scenario {
 
 	@RelatedTo(elementClass = EnseignantNode.class, type = "authorsScenario", direction = INCOMING)
 	@Fetch
-	private EnseignantNode author;
+	private Set<EnseignantNode> authors;
 
 	public ScenarioNode() {
 		published = false;
@@ -88,8 +88,8 @@ public class ScenarioNode implements Scenario {
 	public ScenarioNode(Enseignant author, String name, String objective) {
 		this();
 		this.name = name;
-		this.author = (EnseignantNode) author;
 		this.objective = objective;
+		addAuthor((EnseignantNode) author);
 	}
 
 	@Override
@@ -140,7 +140,27 @@ public class ScenarioNode implements Scenario {
 	public void setObjective(String objective) {
 		this.objective = objective;
 	}
+	
+	@Override
+	public void addAuthor(Enseignant teacher) {
+		if (! authors.contains(teacher)) {
+			authors.add((EnseignantNode) teacher);
+		}
+		if (! teacher.getScenarios().contains(this)) {
+			teacher.addAuthor(this);
+		}
+	}
 
+	@Override
+	public void removeAuthor(Enseignant teacher) {
+		if (authors.contains(teacher)) {
+			authors.remove(teacher);
+		}
+		if (teacher.getScenarios().contains(this)) {
+			teacher.removeAuthor(this);
+		}
+	}
+	
 	@Override
 	@Transactional
 	public void addPedagogicalActivity(ActivitePedagogique pedagogicalActivity) {
@@ -184,13 +204,13 @@ public class ScenarioNode implements Scenario {
 	}
 
 	@Override
-	public Enseignant getAuthor() {
-		return author;
+	public Set<? extends Enseignant> getAuthors() {
+		return authors;
 	}
 
 	@Override
-	public void setAuthor(Enseignant author) {
-		this.author = (EnseignantNode) author;
+	public void setAuthors(Set<? extends Enseignant> author) {
+		this.authors = (Set<EnseignantNode>) author;
 	}
 
 	@Override

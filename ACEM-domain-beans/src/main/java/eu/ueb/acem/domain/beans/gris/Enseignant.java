@@ -36,4 +36,8 @@ public interface Enseignant extends Personne {
 
 	Set<? extends Scenario> getScenarios();
 
+	void addAuthor(Scenario scenario);
+
+	void removeAuthor(Scenario scenario);
+
 }
