@@ -45,7 +45,6 @@ public class PersonneNode implements Personne {
 
 	private static final long serialVersionUID = -5697929702791942609L;
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PersonneNode.class);
 	
 	@GraphId
@@ -90,26 +89,18 @@ public class PersonneNode implements Personne {
 		return worksForOrganisations;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void setWorksForOrganisations(Set<? extends Organisation> organisations) {
-		this.worksForOrganisations = (Set<OrganisationNode>) organisations;
-	}
-
 	@Override
 	public void addWorksForOrganisations(Organisation organisation) {
 		if (! worksForOrganisations.contains(organisation)) {
+			logger.info("adding {} as a work place for user", organisation.getName());
 			worksForOrganisations.add((OrganisationNode) organisation);
 		}
 	}
 
 	@Override
 	public void removeWorksForOrganisations(Organisation organisation) {
-		logger.info("checking if user works for : {}", organisation);
-		for (Organisation worksForOrganisation : worksForOrganisations) {
-			logger.info("the user works for organisation : {}", worksForOrganisation);
-		}
 		if (worksForOrganisations.contains(organisation)) {
+			logger.info("removing {} as a work place for user", organisation.getName());
 			worksForOrganisations.remove(organisation);
 		}
 	}

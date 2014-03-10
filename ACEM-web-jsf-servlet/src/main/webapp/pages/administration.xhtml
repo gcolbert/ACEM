@@ -470,7 +470,7 @@
 							value="#{msgs['ADMINISTRATION.USERS.WORKS_FOR_ORGANISATIONS.ASSOCIATE_ORGANISATION_FOR_USER_LABEL']}"
 							icon="ui-icon-transferthick-e-w"
 							actionListener="#{usersController.setCurrentUserViewBean(personViewBean)}"
-							action="#{usersController.preparePicklistOrganisationViewBeansForCurrentUser()}"
+							action="#{usersController.preparePicklistOrganisationViewBeans()}"
 							oncomplete="PF('dialogAssociateOrganisationWithUser').show()"
 							update=":formUsers:idDialogAssociateOrganisationWithUser"
 							process="@this" />
@@ -495,7 +495,7 @@
 					converter="PickListConverter" showSourceControls="false"
 					showTargetControls="false" showCheckbox="true"
 					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains">
+					filterMatchMode="contains" itemDisabled="#{usersController.isDisabledInPickList(organisationViewBean)}">
 					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.WORKS_FOR']}</f:facet>
 					<p:ajax event="transfer" listener="#{usersController.onTransfer}"

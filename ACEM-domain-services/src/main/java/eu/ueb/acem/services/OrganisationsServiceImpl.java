@@ -98,7 +98,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	@Override
 	public Organisation retrieveOrganisation(Long idOrganisation) {
-		logger.info("retrieveOrganisation");
+		logger.info("retrieveOrganisation({})", idOrganisation);
 		Organisation organisation = null;
 		if (communityDAO.exists(idOrganisation)) {
 			logger.info("organisation found using communityDAO");

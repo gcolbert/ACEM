@@ -41,10 +41,10 @@ public class ScenariosServiceImpl implements ScenariosService {
 	private static final Logger logger = LoggerFactory.getLogger(ScenariosServiceImpl.class);
 
 	@Autowired
-	ScenarioDAO scenarioDAO;
+	private ScenarioDAO scenarioDAO;
 
 	@Autowired
-	ActivitePedagogiqueDAO pedagogicalActivityDAO;
+	private ActivitePedagogiqueDAO pedagogicalActivityDAO;
 
 	public ScenariosServiceImpl() {
 	}

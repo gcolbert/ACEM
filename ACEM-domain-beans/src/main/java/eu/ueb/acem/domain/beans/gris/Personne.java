@@ -33,8 +33,6 @@ public interface Personne extends Serializable, Comparable<Personne> {
 
 	Set<? extends Organisation> getWorksForOrganisations();
 
-	void setWorksForOrganisations(Set<? extends Organisation> organisations);
-
 	void addWorksForOrganisations(Organisation organisation);
 
 	void removeWorksForOrganisations(Organisation organisation);

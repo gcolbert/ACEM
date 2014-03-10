@@ -78,6 +78,8 @@ public class UsersController extends AbstractContextAwareController {
 
 	@PostConstruct
 	public void initUsersController() {
+		logger.info("initUsersController");
+		
 		personViewBeans.clear();
 		Set<Personne> persons = usersService.getPersons();
 		for (Personne person : persons) {
@@ -118,8 +120,8 @@ public class UsersController extends AbstractContextAwareController {
 		this.currentUserViewBean = currentUserViewBean;
 	}
 
-	public void preparePicklistOrganisationViewBeansForCurrentUser() {
-		logger.info("preparePicklistOrganisationViewBeansForCurrentUser");
+	public void preparePicklistOrganisationViewBeans() {
+		logger.info("preparePicklistOrganisationViewBeans");
 		if (getCurrentUserViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(organisationViewBeans.getTableEntries());
@@ -146,20 +148,19 @@ public class UsersController extends AbstractContextAwareController {
 		try {
 			for (OrganisationViewBean movedOrganisationViewBean : listOfMovedViewBeans) {
 				if (event.isAdd()) {
-					logger.info("We should associate {} and {}", movedOrganisationViewBean.getName(), getCurrentUser()
+					logger.info("We should associate {} and {}", movedOrganisationViewBean.getName(), getCurrentUserViewBean()
 							.getName());
-					if (usersService.associateUserWorkingForOrganisation(getCurrentUser().getId(),
-							movedOrganisationViewBean.getDomainBean().getId())) {
-						currentUserViewBean.getOrganisationViewBeans().add(movedOrganisationViewBean);
+					if (usersService.associateUserWorkingForOrganisation(getCurrentUserViewBean().getId(),
+							movedOrganisationViewBean.getId())) {
+						currentUserViewBean.getDomainBean().addWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
 						logger.info("association successful");
 					}
 					else {
 						logger.info("association failed");
 					}
-					currentUserViewBean.setDomainBean(usersService.retrievePerson(currentUserViewBean.getId()));
 				}
 				else {
-					logger.info("We should dissociate {} and {}", movedOrganisationViewBean.getName(), getCurrentUser()
+					logger.info("We should dissociate {} and {}", movedOrganisationViewBean.getName(), getCurrentUserViewBean()
 							.getName());
 					String typeOfOrganisation = "";
 					// TODO : remove that "typeOfOrganisation" shit (see https://groups.google.com/d/msg/neo4j/GZlft7vw8n0/8Rb70lQ6jM8J)
@@ -175,17 +176,17 @@ public class UsersController extends AbstractContextAwareController {
 					else if (movedOrganisationViewBean.getDomainBean() instanceof Composante) {
 						typeOfOrganisation = "TeachingDepartment";
 					}
-					if (usersService.dissociateUserWorkingForOrganisation(getCurrentUser().getId(),
-							movedOrganisationViewBean.getDomainBean().getId(), typeOfOrganisation)) {
-						currentUserViewBean.getOrganisationViewBeans().remove(movedOrganisationViewBean);
+					if (usersService.dissociateUserWorkingForOrganisation(getCurrentUserViewBean().getId(),
+							movedOrganisationViewBean.getId(), typeOfOrganisation)) {
+						currentUserViewBean.getDomainBean().removeWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
 						logger.info("dissociation successful");
 					}
 					else {
 						logger.info("dissociation failed");
 					}
-					currentUserViewBean.setDomainBean(usersService.retrievePerson(currentUserViewBean.getId()));
 				}
 			}
+			currentUserViewBean.setDomainBean(usersService.updatePerson(currentUserViewBean.getDomainBean()));
 		}
 		catch (Exception e) {
 			logger.error("onTransfer exception = ", e);
@@ -209,7 +210,22 @@ public class UsersController extends AbstractContextAwareController {
 					organisationsService.retrieveTeachingDepartment(getCurrentOrganisationViewBean().getDomainBean()
 							.getId()));
 		}
-		 */
+		*/
 	}
-
+	
+	// TODO : implement this method so that the worksFor relationship is not redundant with organisations associations
+	public Boolean isDisabledInPickList(OrganisationViewBean organisationViewBean) {
+		return false;
+		/*
+		if (organisationViewBean instanceof CommunityViewBean) {
+			if (currentUserViewBean.getOrganisationViewBeans().contains(organisationViewBean)) {
+				return false;
+			}
+			else {
+				
+			}
+		}
+		*/
+	}
+	
 }

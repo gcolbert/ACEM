@@ -42,16 +42,16 @@ public class UsersServiceImpl implements UsersService {
 	private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 	
 	@Autowired
-	EnseignantDAO teacherDAO;
+	private EnseignantDAO teacherDAO;
 
 	@Autowired
-	PersonneDAO personDAO;
+	private PersonneDAO personDAO;
 
 	@Autowired
-	OrganisationsService organisationsService;
+	private OrganisationsService organisationsService;
 
-	Set<Personne> persons;
-	Set<Enseignant> teachers;
+	private Set<Personne> persons;
+	private Set<Enseignant> teachers;
 
 	public UsersServiceImpl() {
 		persons = new HashSet<Personne>();
@@ -60,6 +60,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@PostConstruct
 	public void initUsersService() {
+		logger.info("initUsersService");
 		persons.clear();
 		persons.addAll(personDAO.retrieveAll());
 

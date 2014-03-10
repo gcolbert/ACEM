@@ -45,10 +45,10 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
 
 	@Autowired
-	BesoinDAO needDAO;
+	private BesoinDAO needDAO;
 
 	@Autowired
-	ReponseDAO answerDAO;
+	private ReponseDAO answerDAO;
 
 	public NeedsAndAnswersServiceImpl() {
 

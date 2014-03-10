@@ -22,6 +22,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
@@ -43,6 +46,8 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 
 	private static final long serialVersionUID = 4401967530594259861L;
 
+	private static final Logger logger = LoggerFactory.getLogger(PersonViewBean.class);
+	
 	private Personne domainBean;
 	
 	private List<OrganisationViewBean> organisationViewBeans;
@@ -80,15 +85,19 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		organisationViewBeans.clear();
 		for (Organisation organisation : person.getWorksForOrganisations()) {
 			if (organisation instanceof Communaute) {
+				logger.info("setDomainBean user works for community {}", organisation.getName());
 				organisationViewBeans.add(new CommunityViewBean((Communaute)organisation));
 			}
 			else if (organisation instanceof Etablissement) {
+				logger.info("setDomainBean user works for institution {}", organisation.getName());
 				organisationViewBeans.add(new InstitutionViewBean((Etablissement)organisation));
 			}
 			else if (organisation instanceof Service) {
+				logger.info("setDomainBean user works for administrative department {}", organisation.getName());
 				organisationViewBeans.add(new AdministrativeDepartmentViewBean((Service)organisation));
 			}
 			else if (organisation instanceof Composante) {
+				logger.info("setDomainBean user works for teaching department {}", organisation.getName());
 				organisationViewBeans.add(new TeachingDepartmentViewBean((Composante)organisation));
 			}
 		}
@@ -96,10 +105,6 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 
 	public List<OrganisationViewBean> getOrganisationViewBeans() {
 		return organisationViewBeans;
-	}
-
-	public void setOrganisationViewBeans(List<OrganisationViewBean> organisationViewBeans) {
-		this.organisationViewBeans = organisationViewBeans;
 	}
 
 	@Override

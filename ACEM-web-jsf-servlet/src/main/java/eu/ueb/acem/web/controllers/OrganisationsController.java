@@ -111,6 +111,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	@PostConstruct
 	public void initOrganisationsController() {
+		logger.info("initOrganisationsController");
 		try {
 			Collection<Communaute> communities = organisationsService.retrieveAllCommunities();
 			logger.info("found {} communities", communities.size());
