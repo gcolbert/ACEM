@@ -57,7 +57,7 @@ public class UsersController extends AbstractContextAwareController {
 
 	private List<PersonViewBean> personViewBeans;
 
-	private PersonViewBean currentUserViewBean;
+	private PersonViewBean selectedUserViewBean;
 
 	@Autowired
 	private PickListBean pickListBean;
@@ -78,7 +78,7 @@ public class UsersController extends AbstractContextAwareController {
 
 	@PostConstruct
 	public void initUsersController() {
-		logger.info("initUsersController");
+		logger.debug("initUsersController");
 		
 		personViewBeans.clear();
 		Set<Personne> persons = usersService.getPersons();
@@ -112,22 +112,21 @@ public class UsersController extends AbstractContextAwareController {
 		this.personViewBeans = personViewBeans;
 	}
 
-	public PersonViewBean getCurrentUserViewBean() {
-		return currentUserViewBean;
+	public PersonViewBean getSelectedUserViewBean() {
+		return selectedUserViewBean;
 	}
 
-	public void setCurrentUserViewBean(PersonViewBean currentUserViewBean) {
-		this.currentUserViewBean = currentUserViewBean;
+	public void setSelectedUserViewBean(PersonViewBean selectedUserViewBean) {
+		this.selectedUserViewBean = selectedUserViewBean;
 	}
 
 	public void preparePicklistOrganisationViewBeans() {
-		logger.info("preparePicklistOrganisationViewBeans");
-		if (getCurrentUserViewBean() != null) {
+		if (getSelectedUserViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(organisationViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
 			for (OrganisationViewBean organisationViewBean : organisationViewBeans.getTableEntries()) {
-				if (getCurrentUserViewBean().getDomainBean().getWorksForOrganisations().contains(organisationViewBean.getDomainBean())) {
+				if (getSelectedUserViewBean().getDomainBean().getWorksForOrganisations().contains(organisationViewBean.getDomainBean())) {
 					pickListBean.getPickListEntities().getSource().remove(organisationViewBean);
 					pickListBean.getPickListEntities().getTarget().add(organisationViewBean);
 				}
@@ -136,7 +135,7 @@ public class UsersController extends AbstractContextAwareController {
 	}
 
 	public void setAdministrator(PersonViewBean personViewBean) {
-		logger.info("setAdministrator({})", personViewBean.getAdministrator());
+		logger.debug("setAdministrator({})", personViewBean.getAdministrator());
 		personViewBean.getDomainBean().setAdministrator(personViewBean.getAdministrator());
 		personViewBean.setDomainBean(usersService.updatePerson(personViewBean.getDomainBean()));
 	}
@@ -148,11 +147,11 @@ public class UsersController extends AbstractContextAwareController {
 		try {
 			for (OrganisationViewBean movedOrganisationViewBean : listOfMovedViewBeans) {
 				if (event.isAdd()) {
-					logger.info("We should associate {} and {}", movedOrganisationViewBean.getName(), getCurrentUserViewBean()
+					logger.info("We should associate {} and {}", movedOrganisationViewBean.getName(), getSelectedUserViewBean()
 							.getName());
-					if (usersService.associateUserWorkingForOrganisation(getCurrentUserViewBean().getId(),
+					if (usersService.associateUserWorkingForOrganisation(getSelectedUserViewBean().getId(),
 							movedOrganisationViewBean.getId())) {
-						currentUserViewBean.getDomainBean().addWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
+						selectedUserViewBean.getDomainBean().addWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
 						logger.info("association successful");
 					}
 					else {
@@ -160,7 +159,7 @@ public class UsersController extends AbstractContextAwareController {
 					}
 				}
 				else {
-					logger.info("We should dissociate {} and {}", movedOrganisationViewBean.getName(), getCurrentUserViewBean()
+					logger.debug("We should dissociate {} and {}", movedOrganisationViewBean.getName(), getSelectedUserViewBean()
 							.getName());
 					String typeOfOrganisation = "";
 					// TODO : remove that "typeOfOrganisation" shit (see https://groups.google.com/d/msg/neo4j/GZlft7vw8n0/8Rb70lQ6jM8J)
@@ -176,9 +175,9 @@ public class UsersController extends AbstractContextAwareController {
 					else if (movedOrganisationViewBean.getDomainBean() instanceof Composante) {
 						typeOfOrganisation = "TeachingDepartment";
 					}
-					if (usersService.dissociateUserWorkingForOrganisation(getCurrentUserViewBean().getId(),
+					if (usersService.dissociateUserWorkingForOrganisation(getSelectedUserViewBean().getId(),
 							movedOrganisationViewBean.getId(), typeOfOrganisation)) {
-						currentUserViewBean.getDomainBean().removeWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
+						selectedUserViewBean.getDomainBean().removeWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
 						logger.info("dissociation successful");
 					}
 					else {
@@ -186,7 +185,7 @@ public class UsersController extends AbstractContextAwareController {
 					}
 				}
 			}
-			currentUserViewBean.setDomainBean(usersService.updatePerson(currentUserViewBean.getDomainBean()));
+			selectedUserViewBean.setDomainBean(usersService.retrievePerson(selectedUserViewBean.getDomainBean().getId()));
 		}
 		catch (Exception e) {
 			logger.error("onTransfer exception = ", e);

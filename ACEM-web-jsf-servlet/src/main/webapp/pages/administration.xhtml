@@ -469,7 +469,7 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.USERS.WORKS_FOR_ORGANISATIONS.ASSOCIATE_ORGANISATION_FOR_USER_LABEL']}"
 							icon="ui-icon-transferthick-e-w"
-							actionListener="#{usersController.setCurrentUserViewBean(personViewBean)}"
+							actionListener="#{usersController.setSelectedUserViewBean(personViewBean)}"
 							action="#{usersController.preparePicklistOrganisationViewBeans()}"
 							oncomplete="PF('dialogAssociateOrganisationWithUser').show()"
 							update=":formUsers:idDialogAssociateOrganisationWithUser"

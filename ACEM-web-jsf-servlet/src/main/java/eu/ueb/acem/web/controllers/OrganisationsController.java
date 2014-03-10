@@ -111,41 +111,41 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	@PostConstruct
 	public void initOrganisationsController() {
-		logger.info("initOrganisationsController");
+		logger.debug("initOrganisationsController");
 		try {
 			Collection<Communaute> communities = organisationsService.retrieveAllCommunities();
-			logger.info("found {} communities", communities.size());
+			logger.debug("found {} communities", communities.size());
 			communityViewBeans.getTableEntries().clear();
 			for (Communaute community : communities) {
-				logger.info("community = {}", community.getName());
+				logger.debug("community = {}", community.getName());
 				communityViewBeans.getTableEntries().add(new CommunityViewBean(community));
 			}
 			communityViewBeans.sort();
 
 			Collection<Etablissement> institutions = organisationsService.retrieveAllInstitutions();
-			logger.info("found {} institutions", institutions.size());
+			logger.debug("found {} institutions", institutions.size());
 			institutionViewBeans.getTableEntries().clear();
 			for (Etablissement institution : institutions) {
-				logger.info("institution = {}", institution.getName());
+				logger.debug("institution = {}", institution.getName());
 				institutionViewBeans.getTableEntries().add(new InstitutionViewBean(institution));
 			}
 			institutionViewBeans.sort();
 
 			Collection<Service> administrativeDepartments = organisationsService.retrieveAllAdministrativeDepartments();
-			logger.info("found {} administrative departments", administrativeDepartments.size());
+			logger.debug("found {} administrative departments", administrativeDepartments.size());
 			administrativeDepartmentViewBeans.getTableEntries().clear();
 			for (Service administrativeDepartment : administrativeDepartments) {
-				logger.info("administrative department = {}", administrativeDepartment.getName());
+				logger.debug("administrative department = {}", administrativeDepartment.getName());
 				administrativeDepartmentViewBeans.getTableEntries().add(
 						new AdministrativeDepartmentViewBean(administrativeDepartment));
 			}
 			administrativeDepartmentViewBeans.sort();
 
 			Collection<Composante> teachingDepartments = organisationsService.retrieveAllTeachingDepartments();
-			logger.info("found {} teaching departments", teachingDepartments.size());
+			logger.debug("found {} teaching departments", teachingDepartments.size());
 			teachingDepartmentViewBeans.getTableEntries().clear();
 			for (Composante teachingDepartment : teachingDepartments) {
-				logger.info("teaching department = {}", teachingDepartment.getName());
+				logger.debug("teaching department = {}", teachingDepartment.getName());
 				teachingDepartmentViewBeans.getTableEntries().add(new TeachingDepartmentViewBean(teachingDepartment));
 			}
 			teachingDepartmentViewBeans.sort();
@@ -204,7 +204,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void setCurrentOrganisationViewBean(OrganisationViewBean currentOrganisationViewBean) {
-		logger.info("setCurrentOrganisationViewBean({})", currentOrganisationViewBean.getName());
+		logger.debug("setCurrentOrganisationViewBean({})", currentOrganisationViewBean.getName());
 		this.currentOrganisationViewBean = currentOrganisationViewBean;
 		if (currentOrganisationViewBean instanceof CommunityViewBean) {
 			setInstitutionViewBeansForCurrentOrganisation();
@@ -229,7 +229,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	// Note : can only be called for an institution (given the current domain
 	// modelisation)
 	private void setCommunityViewBeansForCurrentOrganisation() {
-		logger.info("setCommunityViewBeansForCurrentOrganisation");
+		logger.debug("setCommunityViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			communityViewBeansForCurrentOrganisation.clear();
 			for (CommunityViewBean communityViewBean : communityViewBeans.getTableEntries()) {
@@ -246,14 +246,14 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	private void setInstitutionViewBeansForCurrentOrganisation() {
-		logger.info("setInstitutionViewBeansForCurrentOrganisation");
+		logger.debug("setInstitutionViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			institutionViewBeansForCurrentOrganisation.clear();
 			for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
 				if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
 					if (((CommunityViewBean) getCurrentOrganisationViewBean()).getCommunity().getInstitutions()
 							.contains(institutionViewBean.getInstitution())) {
-						logger.info("selectedCommunity is associated with {}", institutionViewBean.getInstitution()
+						logger.debug("selectedCommunity is associated with {}", institutionViewBean.getInstitution()
 								.getName());
 						institutionViewBeansForCurrentOrganisation.add(institutionViewBean);
 					}
@@ -280,7 +280,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	private void setAdministrativeDepartmentViewBeansForCurrentOrganisation() {
-		logger.info("setAdministrativeDepartmentViewBeansForCurrentOrganisation");
+		logger.debug("setAdministrativeDepartmentViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			administrativeDepartmentViewBeansForCurrentOrganisation.clear();
 			for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
@@ -299,7 +299,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	private void setTeachingDepartmentViewBeansForCurrentOrganisation() {
-		logger.info("setTeachingDepartmentViewBeansForCurrentOrganisation");
+		logger.debug("setTeachingDepartmentViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			teachingDepartmentViewBeansForCurrentOrganisation.clear();
 			for (TeachingDepartmentViewBean teachingDepartmentViewBean : teachingDepartmentViewBeans.getTableEntries()) {
@@ -312,7 +312,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistCommunityViewBeansForCurrentOrganisation() {
-		logger.info("preparePicklistCommunityViewBeansForCurrentOrganisation");
+		logger.debug("preparePicklistCommunityViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(communityViewBeans.getTableEntries());
@@ -330,7 +330,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistInstitutionViewBeansForCurrentOrganisation() {
-		logger.info("preparePicklistInstitutionViewBeansForCurrentOrganisation");
+		logger.debug("preparePicklistInstitutionViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(institutionViewBeans.getTableEntries());
@@ -372,7 +372,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistAdministrativeDepartmentViewBeansForCurrentOrganisation() {
-		logger.info("preparePicklistAdministrativeDepartmentViewBeansForCurrentOrganisation");
+		logger.debug("preparePicklistAdministrativeDepartmentViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(administrativeDepartmentViewBeans.getTableEntries());
@@ -392,7 +392,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistTeachingDepartmentViewBeansForCurrentOrganisation() {
-		logger.info("preparePicklistTeachingDepartmentViewBeansForCurrentOrganisation");
+		logger.debug("preparePicklistTeachingDepartmentViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(teachingDepartmentViewBeans.getTableEntries());
@@ -445,12 +445,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void onTransfer(TransferEvent event) {
-		logger.info("onTransfer");
+		logger.debug("onTransfer");
 		@SuppressWarnings("unchecked")
 		List<OrganisationViewBean> listOfMovedViewBeans = (List<OrganisationViewBean>) event.getItems();
 		for (OrganisationViewBean movedOrganisationViewBean : listOfMovedViewBeans) {
 			if (event.isAdd()) {
-				logger.info("We should associate {} and {}", movedOrganisationViewBean.getName(),
+				logger.debug("We should associate {} and {}", movedOrganisationViewBean.getName(),
 						getCurrentOrganisationViewBean().getName());
 				if (movedOrganisationViewBean instanceof CommunityViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
@@ -458,10 +458,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 					if (organisationsService.associateCommunityAndInstitution(movedOrganisationViewBean.getDomainBean()
 							.getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
 						communityViewBeansForCurrentOrganisation.add((CommunityViewBean) movedOrganisationViewBean);
-						logger.info("association successful");
+						logger.debug("association successful");
 					}
 					else {
-						logger.info("association failed");
+						logger.debug("association failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
 							.retrieveCommunity(movedOrganisationViewBean.getId()));
@@ -479,10 +479,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 								.getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
 							institutionViewBeansForCurrentOrganisation
 									.add((InstitutionViewBean) movedOrganisationViewBean);
-							logger.info("association successful");
+							logger.debug("association successful");
 						}
 						else {
-							logger.info("association failed");
+							logger.debug("association failed");
 						}
 					}
 					else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
@@ -491,10 +491,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 										.getDomainBean().getId())) {
 							institutionViewBeansForCurrentOrganisation
 									.add((InstitutionViewBean) movedOrganisationViewBean);
-							logger.info("association successful");
+							logger.debug("association successful");
 						}
 						else {
-							logger.info("association failed");
+							logger.debug("association failed");
 						}
 					}
 					else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
@@ -502,10 +502,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 								.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
 							institutionViewBeansForCurrentOrganisation
 									.add((InstitutionViewBean) movedOrganisationViewBean);
-							logger.info("association successful");
+							logger.debug("association successful");
 						}
 						else {
-							logger.info("association failed");
+							logger.debug("association failed");
 						}
 					}
 					else {
@@ -522,10 +522,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 									.getDomainBean().getId())) {
 						administrativeDepartmentViewBeansForCurrentOrganisation
 								.add((AdministrativeDepartmentViewBean) movedOrganisationViewBean);
-						logger.info("association successful");
+						logger.debug("association successful");
 					}
 					else {
-						logger.info("association failed");
+						logger.debug("association failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
 							.retrieveAdministrativeDepartment(movedOrganisationViewBean.getId()));
@@ -537,10 +537,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 							.getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
 						teachingDepartmentViewBeansForCurrentOrganisation
 								.add((TeachingDepartmentViewBean) movedOrganisationViewBean);
-						logger.info("association successful");
+						logger.debug("association successful");
 					}
 					else {
-						logger.info("association failed");
+						logger.debug("association failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
 							.retrieveTeachingDepartment(movedOrganisationViewBean.getId()));
@@ -555,10 +555,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 					if (organisationsService.dissociateCommunityAndInstitution(movedOrganisationViewBean
 							.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
 						communityViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
-						logger.info("dissociation successful");
+						logger.debug("dissociation successful");
 					}
 					else {
-						logger.info("dissociation failed");
+						logger.debug("dissociation failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
 							.retrieveCommunity(movedOrganisationViewBean.getId()));
@@ -574,10 +574,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 						if (organisationsService.dissociateCommunityAndInstitution(getCurrentOrganisationViewBean()
 								.getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
 							institutionViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
-							logger.info("dissociation successful");
+							logger.debug("dissociation successful");
 						}
 						else {
-							logger.info("dissociation failed");
+							logger.debug("dissociation failed");
 						}
 					}
 					else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
@@ -585,24 +585,24 @@ public class OrganisationsController extends AbstractContextAwareController {
 								movedOrganisationViewBean.getDomainBean().getId(), getCurrentOrganisationViewBean()
 										.getDomainBean().getId())) {
 							institutionViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
-							logger.info("dissociation successful");
+							logger.debug("dissociation successful");
 						}
 						else {
-							logger.info("dissociation failed");
+							logger.debug("dissociation failed");
 						}
 					}
 					else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
 						if (organisationsService.dissociateInstitutionAndTeachingDepartment(movedOrganisationViewBean
 								.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
 							institutionViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
-							logger.info("dissociation successful");
+							logger.debug("dissociation successful");
 						}
 						else {
-							logger.info("dissociation failed");
+							logger.debug("dissociation failed");
 						}
 					}
 					else {
-						logger.info("currentOrganisationViewBean instanceof {}", currentOrganisationViewBean.getClass());
+						logger.debug("currentOrganisationViewBean instanceof {}", currentOrganisationViewBean.getClass());
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
 							.retrieveInstitution(movedOrganisationViewBean.getId()));
@@ -614,10 +614,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 							getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean
 									.getDomainBean().getId())) {
 						administrativeDepartmentViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
-						logger.info("dissociation successful");
+						logger.debug("dissociation successful");
 					}
 					else {
-						logger.info("dissociation failed");
+						logger.debug("dissociation failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
 							.retrieveAdministrativeDepartment(movedOrganisationViewBean.getId()));
@@ -629,10 +629,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 							getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean
 									.getDomainBean().getId())) {
 						teachingDepartmentViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
-						logger.info("dissociation successful");
+						logger.debug("dissociation successful");
 					}
 					else {
-						logger.info("dissociated failed");
+						logger.debug("dissociated failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
 							.retrieveTeachingDepartment(movedOrganisationViewBean.getId()));

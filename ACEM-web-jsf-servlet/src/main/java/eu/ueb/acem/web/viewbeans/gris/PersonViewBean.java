@@ -46,6 +46,7 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 
 	private static final long serialVersionUID = 4401967530594259861L;
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PersonViewBean.class);
 	
 	private Personne domainBean;
@@ -85,19 +86,15 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		organisationViewBeans.clear();
 		for (Organisation organisation : person.getWorksForOrganisations()) {
 			if (organisation instanceof Communaute) {
-				logger.info("setDomainBean user works for community {}", organisation.getName());
 				organisationViewBeans.add(new CommunityViewBean((Communaute)organisation));
 			}
 			else if (organisation instanceof Etablissement) {
-				logger.info("setDomainBean user works for institution {}", organisation.getName());
 				organisationViewBeans.add(new InstitutionViewBean((Etablissement)organisation));
 			}
 			else if (organisation instanceof Service) {
-				logger.info("setDomainBean user works for administrative department {}", organisation.getName());
 				organisationViewBeans.add(new AdministrativeDepartmentViewBean((Service)organisation));
 			}
 			else if (organisation instanceof Composante) {
-				logger.info("setDomainBean user works for teaching department {}", organisation.getName());
 				organisationViewBeans.add(new TeachingDepartmentViewBean((Composante)organisation));
 			}
 		}
