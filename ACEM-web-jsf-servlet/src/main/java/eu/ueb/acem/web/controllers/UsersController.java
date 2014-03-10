@@ -191,26 +191,6 @@ public class UsersController extends AbstractContextAwareController {
 		catch (Exception e) {
 			logger.error("onTransfer exception = ", e);
 		}
-		/*-
-		if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
-			getCurrentOrganisationViewBean().setDomainBean(
-					organisationsService.retrieveCommunity(getCurrentOrganisationViewBean().getDomainBean().getId()));
-		}
-		else if (getCurrentOrganisationViewBean() instanceof InstitutionViewBean) {
-			getCurrentOrganisationViewBean().setDomainBean(
-					organisationsService.retrieveInstitution(getCurrentOrganisationViewBean().getDomainBean().getId()));
-		}
-		else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
-			getCurrentOrganisationViewBean().setDomainBean(
-					organisationsService.retrieveAdministrativeDepartment(getCurrentOrganisationViewBean()
-							.getDomainBean().getId()));
-		}
-		else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
-			getCurrentOrganisationViewBean().setDomainBean(
-					organisationsService.retrieveTeachingDepartment(getCurrentOrganisationViewBean().getDomainBean()
-							.getId()));
-		}
-		*/
 	}
 	
 	// TODO : implement this method so that the worksFor relationship is not redundant with organisations associations
