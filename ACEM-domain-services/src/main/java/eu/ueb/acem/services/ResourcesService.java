@@ -20,10 +20,8 @@ package eu.ueb.acem.services;
 
 import java.util.List;
 
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-
 public interface ResourcesService {
 
-	List<Ressource> getResourceTypes();
+	List<String> getCategories();
 
 }

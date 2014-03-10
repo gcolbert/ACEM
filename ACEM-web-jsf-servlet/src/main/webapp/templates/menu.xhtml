@@ -7,26 +7,26 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<p:menubar id="viewList">
-		<p:menuitem value="#{msgs['MENU.HOME']}" url="/accueil"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('accueil')}"
+		<p:menuitem value="#{msgs['MENU.HOME']}" url="/home"
+			styleClass="#{mainMenuController.getMenuitemStyleClass('home')}"
 			onclick="selectMenuitemLink(this)" ajax="false"/>
-		<p:menuitem value="#{msgs['MENU.MY_TEACHINGS']}" url="/mes-enseignements"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('mes-enseignements')}"
+		<p:menuitem value="#{msgs['MENU.MY_TEACHINGS']}" url="/my-teachings"
+			styleClass="#{mainMenuController.getMenuitemStyleClass('my-teachings')}"
 			onclick="selectMenuitemLink(this)" ajax="false"/>
-		<p:menuitem value="#{msgs['MENU.MY_SCENARIOS']}" url="/mes-scenarios"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('mes-scenarios')}"
+		<p:menuitem value="#{msgs['MENU.MY_SCENARIOS']}" url="/my-scenarios"
+			styleClass="#{mainMenuController.getMenuitemStyleClass('my-scenarios')}"
 			onclick="selectMenuitemLink(this)" ajax="false"/>
-		<p:menuitem value="#{msgs['MENU.RESOURCES']}" url="/ressources"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('ressources')}"
+		<p:menuitem value="#{msgs['MENU.RESOURCES']}" url="/my-tools"
+			styleClass="#{mainMenuController.getMenuitemStyleClass('my-tools')}"
 			onclick="selectMenuitemLink(this)" ajax="false"/>
-		<p:menuitem value="#{msgs['MENU.SERVICES']}" url="/services-supports"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('services-supports')}"
+		<p:menuitem value="#{msgs['MENU.SERVICES']}" url="/my-services"
+			styleClass="#{mainMenuController.getMenuitemStyleClass('my-services')}"
 			onclick="selectMenuitemLink(this)" ajax="false"/>
-		<p:menuitem value="#{msgs['MENU.SCENARIOS_LIBRARY']}" url="/bibliotheque-de-scenarios"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('bibliotheque-de-scenarios')}"
+		<p:menuitem value="#{msgs['MENU.SCENARIOS_LIBRARY']}" url="/scenarios-library"
+			styleClass="#{mainMenuController.getMenuitemStyleClass('scenarios-library')}"
 			onclick="selectMenuitemLink(this)" ajax="false"/>
-		<p:menuitem value="#{msgs['MENU.NEEDS_AND_ANSWERS']}" url="/besoins-et-reponses"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('besoins-et-reponses')}"
+		<p:menuitem value="#{msgs['MENU.NEEDS_AND_ANSWERS']}" url="/pedagogical-advice"
+			styleClass="#{mainMenuController.getMenuitemStyleClass('pedagogical-advice')}"
 			onclick="selectMenuitemLink(this)" ajax="false"/>
 		<p:menuitem value="#{msgs['MENU.ADMIN']}" url="/administration"
 			styleClass="#{mainMenuController.getMenuitemStyleClass('administration')}"

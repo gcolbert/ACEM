@@ -3,44 +3,44 @@
   xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
                       http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
 
-	<url-mapping id="accueil">
-		<pattern value="/accueil" />
-		<view-id value="/pages/accueil.xhtml" />
+	<url-mapping id="home">
+		<pattern value="/home" />
+		<view-id value="/pages/home.xhtml" />
 	</url-mapping>
 
-	<url-mapping id="besoins-et-reponses">
-		<pattern value="/besoins-et-reponses" />
-		<view-id value="/pages/besoins-et-reponses.xhtml" />
+	<url-mapping id="pedagogical-advice">
+		<pattern value="/pedagogical-advice" />
+		<view-id value="/pages/pedagogical-advice.xhtml" />
 	</url-mapping>
 
-	<url-mapping id="ressources">
-		<pattern value="/ressources" />
-		<view-id value="/pages/ressources.xhtml" />
+	<url-mapping id="my-tools">
+		<pattern value="/my-tools" />
+		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
 
-	<url-mapping id="ressources-param">
-		<pattern value="/ressources/{resourceId}" />
-		<view-id value="/pages/ressources.xhtml" />
+	<url-mapping id="my-tools-param">
+		<pattern value="/my-tools/{resourceId}" />
+		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
 
-	<url-mapping id="services-supports">
-		<pattern value="/services-supports" />
-		<view-id value="/pages/services-supports.xhtml" />
+	<url-mapping id="my-services">
+		<pattern value="/my-services" />
+		<view-id value="/pages/my-services.xhtml" />
 	</url-mapping>
 
-	<url-mapping id="mes-scenarios">
-		<pattern value="/mes-scenarios" />
-		<view-id value="/pages/mes-scenarios.xhtml" />
+	<url-mapping id="my-scenarios">
+		<pattern value="/my-scenarios" />
+		<view-id value="/pages/my-scenarios.xhtml" />
 	</url-mapping>
 
-	<url-mapping id="mes-enseignements">
-		<pattern value="/mes-enseignements" />
-		<view-id value="/pages/mes-enseignements.xhtml" />
+	<url-mapping id="my-teachings">
+		<pattern value="/my-teachings" />
+		<view-id value="/pages/my-teachings.xhtml" />
 	</url-mapping>
 
-	<url-mapping id="bibliotheque-de-scenarios">
-		<pattern value="/bibliotheque-de-scenarios" />
-		<view-id value="/pages/bibliotheque-de-scenarios.xhtml" />
+	<url-mapping id="scenarios-library">
+		<pattern value="/scenarios-library" />
+		<view-id value="/pages/scenarios-library.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="administration">

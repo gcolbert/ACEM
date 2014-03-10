@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 
@@ -64,17 +63,15 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
 		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.MOBILE_EQUIPMENT.LABEL"));
 		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.FIXED_EQUIPMENT.LABEL"));
-		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.STAFF.LABEL"));
+		//editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_SERVICE.LABEL"));
 		editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTATION_RESOURCES.LABEL"));
 
-		/*
-		List<Ressource> resources = resourcesService.getResourcesTypes();
-		logger.info("Found {} resource types.", resources.size());
-		for (Resource resource : resources) {
-			logger.info("resource = {}", resource.getName());
-			createTree(need, editableTreeBean.getVisibleRoot());
+		List<String> categories = resourcesService.getCategories();
+		logger.info("Found {} resource categories.", categories.size());
+		for (String category : categories) {
+			logger.info("category = {}", category);
+			//createTree(category, editableTreeBean.getVisibleRoots());
 		}
-		*/
 
 		//editableTreeBean.getVisibleRoots().get(0).setExpanded(true);
 		logger.info("leaving initTree");

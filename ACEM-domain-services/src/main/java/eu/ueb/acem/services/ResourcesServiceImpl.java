@@ -20,15 +20,17 @@ package eu.ueb.acem.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 @Service("resourcesService")
 public class ResourcesServiceImpl implements ResourcesService {
 
+	@Autowired
+	//private EquipementMobileDAO mobileEquipmentDAO;
+	
 	@Override
-	public List<Ressource> getResourceTypes() {
+	public List<String> getCategories() {
 		return null;
 	}
 
