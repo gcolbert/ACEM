@@ -35,7 +35,11 @@ import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
 import eu.ueb.acem.dal.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
+import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 
 /**
  * @author Grégoire Colbert @since 2014-03-05
@@ -104,6 +108,25 @@ public class OrganisationDAOTest extends TestCase {
 
 		// There must exactly 1 object in the datastore
 		assertEquals("There are more than one object in the datastore", new Long(1), communityDAO.count());
+	}
+
+	/**
+	 * AssociateInstitutionWithAdministrativeDepartment
+	 */
+	@Test
+	public final void t02_TestAssociateInstitutionWithAdministrativeDepartment() {
+		Etablissement institution = new EtablissementNode("University of California, Los Angeles", "UCLA");
+		institution = institutionDAO.create(institution);
+
+		Service administrativeDepartment = new ServiceNode("Department of Health Policy and Management", "HPM");
+		administrativeDepartment.addInstitution(institution);
+		administrativeDepartmentDAO.update(administrativeDepartment);
+
+		Etablissement institution2 = institutionDAO.retrieveById(institution.getId());
+
+		// There must exactly 1 object in the datastore
+		assertTrue("The administrative department is not associated with the institution", institution2
+				.getAdministrativeDepartments().contains(administrativeDepartment));
 	}
 
 }

@@ -59,12 +59,12 @@ public abstract class RessourceNode implements Ressource {
 	
 	@RelatedTo(elementClass = ReponseNode.class, type="answeredUsingResource", direction = INCOMING)
 	@Fetch
-	private Set<ReponseNode> answers;
+	private Set<ReponseNode> pedagogicalAnswers;
 
 	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type="activityRequiringResource", direction = INCOMING)
 	@Fetch
 	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
-	
+
 	public RessourceNode() {
 	}
 
@@ -99,7 +99,7 @@ public abstract class RessourceNode implements Ressource {
 
 	@Override
 	public Set<? extends Reponse> getAnswers() {
-		return answers;
+		return pedagogicalAnswers;
 	}
 	
 	@Override
@@ -112,4 +112,5 @@ public abstract class RessourceNode implements Ressource {
 	public void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities) {
 		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>)pedagogicalActivities;
 	}
+
 }

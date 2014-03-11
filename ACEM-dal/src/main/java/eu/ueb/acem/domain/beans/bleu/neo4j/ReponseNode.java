@@ -37,6 +37,8 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
+import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
@@ -58,10 +60,14 @@ public class ReponseNode implements Reponse {
 	@Fetch
 	private Set<BesoinNode> needs;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "answeredUsingRessource", direction = OUTGOING)
+	@RelatedTo(elementClass = RessourceNode.class, type = "answeredUsingResource", direction = OUTGOING)
 	@Fetch
 	private Set<RessourceNode> resources;
 
+	@RelatedTo(elementClass = ServiceNode.class, type = "answeredByAdministrativeDepartment", direction = OUTGOING)
+	@Fetch
+	private Set<ServiceNode> administrativeDepartments;
+	
 	public ReponseNode() {
 	}
 
@@ -99,6 +105,11 @@ public class ReponseNode implements Reponse {
 		return resources;
 	}
 
+	@Override
+	public Set<? extends Service> getAdministrativeDepartments() {
+		return administrativeDepartments;
+	}
+	
 	@Override
 	public void addNeed(Besoin need) {
 		needs.add((BesoinNode)need);

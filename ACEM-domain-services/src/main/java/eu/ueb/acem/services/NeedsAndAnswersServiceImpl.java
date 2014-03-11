@@ -34,6 +34,7 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
@@ -236,4 +237,20 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		Reponse answer = answerDAO.retrieveById(id);
 		return answer.getScenariosRelatedToAnswer();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<eu.ueb.acem.domain.beans.rouge.Service> getAdministrativeDepartmentsRelatedToAnswer(Long id) {
+		Reponse answer = answerDAO.retrieveById(id);
+		return (Collection<eu.ueb.acem.domain.beans.rouge.Service>)answer.getAdministrativeDepartments();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<Ressource> getResourcesRelatedToAnswer(Long id) {
+		Reponse answer = answerDAO.retrieveById(id);
+		return (Collection<Ressource>)answer.getResources();
+	}
+	
+	
 }

@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.domain.beans.rouge.neo4j;
 
+import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.HashSet;
@@ -30,6 +31,8 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 import org.springframework.transaction.annotation.Transactional;
 
+import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Service;
 
@@ -50,6 +53,10 @@ public class ServiceNode extends OrganisationNode implements Service {
 	@Fetch
 	private Set<EtablissementNode> institutions;
 
+	@RelatedTo(elementClass = ReponseNode.class, type="answeredByAdministrativeDepartment", direction = INCOMING)
+	@Fetch
+	private Set<ReponseNode> pedagogicalAnswers;
+	
 	public ServiceNode() {
 		institutions = new HashSet<EtablissementNode>();
 	}
@@ -91,6 +98,17 @@ public class ServiceNode extends OrganisationNode implements Service {
 		if (institution.getAdministrativeDepartments().contains(this)) {
 			institution.removeAdministrativeDepartment(this);
 		}
+	}
+
+	@Override
+	public Set<? extends Reponse> getPedagogicalAnswers() {
+		return pedagogicalAnswers;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setPedagogicalAnswers(Set<? extends Reponse> pedagogicalAnswers) {
+		this.pedagogicalAnswers = (Set<ReponseNode>) pedagogicalAnswers;
 	}
 
 }
