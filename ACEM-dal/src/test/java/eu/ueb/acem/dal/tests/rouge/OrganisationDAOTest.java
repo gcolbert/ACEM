@@ -30,10 +30,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import eu.ueb.acem.dal.rouge.CommunauteDAO;
-import eu.ueb.acem.dal.rouge.ComposanteDAO;
-import eu.ueb.acem.dal.rouge.EtablissementDAO;
-import eu.ueb.acem.dal.rouge.ServiceDAO;
+import eu.ueb.acem.dal.rouge.CommunityDAO;
+import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
+import eu.ueb.acem.dal.rouge.InstitutionDAO;
+import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
 
@@ -52,16 +52,16 @@ public class OrganisationDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationDAOTest.class);
 
 	@Autowired
-	private CommunauteDAO communityDAO;
+	private CommunityDAO communityDAO;
 
 	@Autowired
-	private EtablissementDAO institutionDAO;
+	private InstitutionDAO institutionDAO;
 
 	@Autowired
-	private ServiceDAO administrativeDepartmentDAO;
+	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 
 	@Autowired
-	private ComposanteDAO teachingDepartmentDAO;
+	private TeachingDepartmentDAO teachingDepartmentDAO;
 
 	public OrganisationDAOTest() {
 

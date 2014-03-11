@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.bleu.ActivitePedagogiqueDAO;
+import eu.ueb.acem.dal.bleu.PedagogicalActivityDAO;
 import eu.ueb.acem.dal.bleu.ScenarioDAO;
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
@@ -44,7 +44,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 	private ScenarioDAO scenarioDAO;
 
 	@Autowired
-	private ActivitePedagogiqueDAO pedagogicalActivityDAO;
+	private PedagogicalActivityDAO pedagogicalActivityDAO;
 
 	public ScenariosServiceImpl() {
 	}
@@ -56,7 +56,9 @@ public class ScenariosServiceImpl implements ScenariosService {
 
 	@Override
 	public Scenario createScenario(Enseignant author, String name, String objective) {
-		return scenarioDAO.create(new ScenarioNode(author, name, objective));
+		Scenario scenario = new ScenarioNode(name, objective);
+		scenario.addAuthor(author);
+		return scenarioDAO.create(scenario);
 	}
 
 	@Override

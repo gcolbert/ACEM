@@ -16,24 +16,21 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.jaune;
+package eu.ueb.acem.dal.gris.neo4j;
 
-import java.util.Set;
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
 
-import eu.ueb.acem.domain.beans.vert.EspacePhysique;
+import eu.ueb.acem.dal.GenericRepository;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2014-03-03
  * 
  */
-public interface Equipement extends Ressource {
+public interface PersonRepository extends GenericRepository<PersonneNode> {
 
-	Set<? extends EspacePhysique> getStorageLocations();
+	@Query(value = "match (n:Person) where n.login=({login}) return n")
+	PersonneNode findByLogin(@Param("login") String login);
 
-	Integer getQuantity();
-
-	void setQuantity(Integer quantity);
-
-	void setStorageLocations(Set<? extends EspacePhysique> storageLocations);
-	
 }

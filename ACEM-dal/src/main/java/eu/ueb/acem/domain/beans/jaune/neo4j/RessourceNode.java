@@ -50,6 +50,8 @@ public abstract class RessourceNode implements Ressource {
 	private Long id;
 
 	private String name;
+	
+	private String category;
 
 	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "resourceHasUseMode", direction = OUTGOING)
 	@Fetch
@@ -78,6 +80,16 @@ public abstract class RessourceNode implements Ressource {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String getCategory() {
+		return category;
+	}
+
+	@Override
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	@Override

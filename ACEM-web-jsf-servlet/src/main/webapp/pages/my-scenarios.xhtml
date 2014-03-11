@@ -116,8 +116,8 @@
 
 							<h:outputLabel for="selectedScenarioModificationDate"
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.MODIFICATION_DATE_LABEL']}"
-								styleClass="label" />
-							<p:panel>
+								styleClass="label" rendered="#{myScenariosController.selectedScenarioViewBean.modificationDate != null}"/>
+							<p:panel rendered="#{myScenariosController.selectedScenarioViewBean.modificationDate != null}">
 								<h:outputText id="selectedScenarioModificationDate" value="#{myScenariosController.selectedScenarioViewBean.modificationDate}"/>
 							</p:panel>
 

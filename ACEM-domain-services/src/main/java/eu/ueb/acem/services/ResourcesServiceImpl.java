@@ -18,19 +18,18 @@
  */
 package eu.ueb.acem.services;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("resourcesService")
 public class ResourcesServiceImpl implements ResourcesService {
 
-	@Autowired
-	//private EquipementMobileDAO mobileEquipmentDAO;
-	
 	@Override
 	public List<String> getCategories() {
+		Set<String> categories = new HashSet<String>();
 		return null;
 	}
 

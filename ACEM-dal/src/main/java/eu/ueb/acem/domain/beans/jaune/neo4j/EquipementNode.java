@@ -20,6 +20,8 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.Set;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -42,16 +44,31 @@ public abstract class EquipementNode extends RessourceNode implements Equipement
 
 	@Indexed
 	private String name;
+	
+	private Integer quantity;
 
-	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "estContenuDans", direction = OUTGOING)
+	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "isStoredIn", direction = OUTGOING)
 	@Fetch
-	private EspacePhysiqueNode physicalSpace;
+	private Set<EspacePhysiqueNode> storageLocations;
 
-	public EspacePhysique getPhysicalSpace() {
-		return physicalSpace;
+	@Override
+	public Set<? extends EspacePhysique> getStorageLocations() {
+		return storageLocations;
 	}
 	
-	public void setPhysicalSpace(EspacePhysique physicalSpace) {
-		this.physicalSpace = (EspacePhysiqueNode) physicalSpace;
+	@Override
+	public void setStorageLocations(Set<? extends EspacePhysique> storageLocations) {
+		this.storageLocations = (Set<EspacePhysiqueNode>) storageLocations;
 	}
+	
+	@Override
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	@Override
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+	
 }

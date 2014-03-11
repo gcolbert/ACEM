@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>ACEM-web-jsf-servlet</artifactId>
 	<packaging>war</packaging>
-	<description>couche présentation</description>
+	<description>Data access layer</description>
 	<properties>
 		<org.springframework-version>3.2.8.RELEASE</org.springframework-version>
 		<!-- <org.springframework-version>4.0.0.RELEASE</org.springframework-version> -->

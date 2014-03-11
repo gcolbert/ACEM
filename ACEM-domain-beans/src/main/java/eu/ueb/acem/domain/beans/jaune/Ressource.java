@@ -33,6 +33,10 @@ public interface Ressource extends Serializable {
 	String getName();
 
 	void setName(String name);
+	
+	String getCategory();
+	
+	void setCategory(String category);
 
 	Set<? extends Reponse> getAnswers();
 	

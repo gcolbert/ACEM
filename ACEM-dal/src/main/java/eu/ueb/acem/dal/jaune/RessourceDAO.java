@@ -16,24 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.jaune;
+package eu.ueb.acem.dal.jaune;
 
-import java.util.Set;
-
-import eu.ueb.acem.domain.beans.vert.EspacePhysique;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert @since 2013-12-11
  * 
  */
-public interface Equipement extends Ressource {
+public class RessourceDAO {
 
-	Set<? extends EspacePhysique> getStorageLocations();
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(RessourceDAO.class);
 
-	Integer getQuantity();
+	public RessourceDAO() {
 
-	void setQuantity(Integer quantity);
+	}
 
-	void setStorageLocations(Set<? extends EspacePhysique> storageLocations);
 	
 }

@@ -16,24 +16,24 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.jaune;
+package eu.ueb.acem.dal.bleu.neo4j;
 
 import java.util.Set;
 
-import eu.ueb.acem.domain.beans.vert.EspacePhysique;
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
+import eu.ueb.acem.dal.GenericRepository;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-public interface Equipement extends Ressource {
+public interface PedagogicalAnswerRepository extends GenericRepository<ReponseNode> {
 
-	Set<? extends EspacePhysique> getStorageLocations();
+	@Query(value = "start answer=node({answerId}) match (answer)-[:answeredUsingRessource]->(resource)<-[:stepRequiringResource]-(scenarioStep)-[:isPartOfScenario]->scenario return scenario")
+	Set<ScenarioNode> findScenariosRelatedToAnswer(@Param("answerId") Long id);
 
-	Integer getQuantity();
-
-	void setQuantity(Integer quantity);
-
-	void setStorageLocations(Set<? extends EspacePhysique> storageLocations);
-	
 }

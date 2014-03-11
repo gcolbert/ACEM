@@ -153,9 +153,11 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	}
 
 	public void setModificationDate(Long modificationTimeStampInSeconds) {
-		DateTime modificationDate = new DateTime(modificationTimeStampInSeconds * 1000L);
-		DateTimeFormatter fmt = DateTimeFormat.mediumDateTime();
-		this.modificationDate = fmt.print(modificationDate);
+		if (modificationTimeStampInSeconds != null) {
+			DateTime modificationDate = new DateTime(modificationTimeStampInSeconds * 1000L);
+			DateTimeFormatter fmt = DateTimeFormat.mediumDateTime();
+			this.modificationDate = fmt.print(modificationDate);
+		}
 	}
 
 	@Override

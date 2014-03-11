@@ -25,10 +25,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import eu.ueb.acem.dal.rouge.CommunauteDAO;
-import eu.ueb.acem.dal.rouge.ComposanteDAO;
-import eu.ueb.acem.dal.rouge.EtablissementDAO;
-import eu.ueb.acem.dal.rouge.ServiceDAO;
+import eu.ueb.acem.dal.rouge.CommunityDAO;
+import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
+import eu.ueb.acem.dal.rouge.InstitutionDAO;
+import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
@@ -45,16 +45,16 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationsServiceImpl.class);
 
 	@Autowired
-	private CommunauteDAO communityDAO;
+	private CommunityDAO communityDAO;
 
 	@Autowired
-	private EtablissementDAO institutionDAO;
+	private InstitutionDAO institutionDAO;
 
 	@Autowired
-	private ComposanteDAO teachingDepartmentDAO;
+	private TeachingDepartmentDAO teachingDepartmentDAO;
 
 	@Autowired
-	private ServiceDAO administrativeDepartmentDAO;
+	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 
 	@Override
 	public Long countCommunities() {

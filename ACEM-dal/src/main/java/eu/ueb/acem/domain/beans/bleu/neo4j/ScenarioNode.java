@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -85,11 +86,11 @@ public class ScenarioNode implements Scenario {
 		published = false;
 	}
 
-	public ScenarioNode(Enseignant author, String name, String objective) {
+	public ScenarioNode(String name, String objective) {
 		this();
 		this.name = name;
 		this.objective = objective;
-		addAuthor((EnseignantNode) author);
+		this.authors = new HashSet<EnseignantNode>();
 	}
 
 	@Override
@@ -143,6 +144,7 @@ public class ScenarioNode implements Scenario {
 	
 	@Override
 	public void addAuthor(Enseignant teacher) {
+		logger.info("addAuthor, teacher = {}", teacher);
 		if (! authors.contains(teacher)) {
 			authors.add((EnseignantNode) teacher);
 		}
@@ -208,9 +210,10 @@ public class ScenarioNode implements Scenario {
 		return authors;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void setAuthors(Set<? extends Enseignant> author) {
-		this.authors = (Set<EnseignantNode>) author;
+	public void setAuthors(Set<? extends Enseignant> authors) {
+		this.authors = (Set<EnseignantNode>) authors;
 	}
 
 	@Override

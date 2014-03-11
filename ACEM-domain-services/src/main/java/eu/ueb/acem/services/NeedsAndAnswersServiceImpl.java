@@ -27,8 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.bleu.BesoinDAO;
-import eu.ueb.acem.dal.bleu.ReponseDAO;
+import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
+import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
@@ -45,10 +45,10 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
 
 	@Autowired
-	private BesoinDAO needDAO;
+	private PedagogicalNeedDAO needDAO;
 
 	@Autowired
-	private ReponseDAO answerDAO;
+	private PedagogicalAnswerDAO answerDAO;
 
 	public NeedsAndAnswersServiceImpl() {
 

@@ -30,8 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import eu.ueb.acem.dal.gris.EnseignantDAO;
-import eu.ueb.acem.dal.gris.PersonneDAO;
+import eu.ueb.acem.dal.gris.TeacherDAO;
+import eu.ueb.acem.dal.gris.PersonDAO;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
@@ -52,10 +52,10 @@ public class PersonDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(PersonDAOTest.class);
 
 	@Autowired
-	private EnseignantDAO teacherDAO;
+	private TeacherDAO teacherDAO;
 
 	@Autowired
-	private PersonneDAO personDAO;
+	private PersonDAO personDAO;
 
 	public PersonDAOTest() {
 		

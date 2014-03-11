@@ -16,24 +16,26 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.jaune;
+package eu.ueb.acem.dal.bleu.neo4j;
 
 import java.util.Set;
 
-import eu.ueb.acem.domain.beans.vert.EspacePhysique;
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
+import eu.ueb.acem.dal.GenericRepository;
+import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 
 /**
  * @author Grégoire Colbert @since 2013-11-20
  * 
  */
-public interface Equipement extends Ressource {
+public interface PedagogicalNeedRepository extends GenericRepository<BesoinNode> {
 
-	Set<? extends EspacePhysique> getStorageLocations();
-
-	Integer getQuantity();
-
-	void setQuantity(Integer quantity);
-
-	void setStorageLocations(Set<? extends EspacePhysique> storageLocations);
+	@Query(value = "match (n:PedagogicalNeed) where not (n)-[:hasParentNeed]->() return n")
+	Set<BesoinNode> findRoots();
 	
+	@Query(value = "match (n:PedagogicalNeed) where n.name=({name}) return n")
+	Iterable<BesoinNode> findByName(@Param("name") String name);
+
 }

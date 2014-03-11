@@ -119,7 +119,7 @@
 	</filter-mapping>
 
 	<welcome-file-list>
-		<welcome-file>pages/accueil.xhtml</welcome-file>
+		<welcome-file>pages/home.xhtml</welcome-file>
 	</welcome-file-list>
 	<error-page>
 		<error-code>404</error-code>

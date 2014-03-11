@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import eu.ueb.acem.dal.gris.EnseignantDAO;
-import eu.ueb.acem.dal.gris.PersonneDAO;
+import eu.ueb.acem.dal.gris.TeacherDAO;
+import eu.ueb.acem.dal.gris.PersonDAO;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
@@ -73,10 +73,10 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 	 * DAO for user
 	 */
 	@Autowired
-	private EnseignantDAO enseignantDAO;
+	private TeacherDAO enseignantDAO;
 
 	@Autowired
-	private PersonneDAO personDAO;
+	private PersonDAO personDAO;
 
 	/**
 	 * Bean constructor.
