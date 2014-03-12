@@ -9,7 +9,7 @@
 		<ui:debug hotkey="1"
 			rendered="#{facesContext.application.projectStage == 'Development'}" />
 
-		<h:form id="formTree">
+		<h:form id="formResources">
 			<p:panel header="#{msgs['RESOURCES.TREE.HEADER']}">
 
 				<p:growl id="messages" showDetail="true" />
@@ -17,22 +17,66 @@
 				<p:contextMenu for="resourcesTree" nodeType="default">
 					<p:menuitem
 						value="#{msgs['RESOURCES.TREE.CONTEXT_MENU.CREATE_RESOURCE']}"
-						update="resourcesTree :formTree:messages"
-						action="#{resourcesTreeController.createResource}"
-						icon="ui-icon-plus" />
+						update=":formCreateResource"
+						oncomplete="PF('dialogCreateResource').show()" icon="ui-icon-plus">
+						<p:resetInput target=":formCreateResource" />
+					</p:menuitem>
 				</p:contextMenu>
 
+				<p:panelGrid columns="5">
+					<p:commandLink styleClass="menu-entry"
+						action="#{resourcesController.prepareTree('equipment')}"
+						update=":formResources:resourcesTree">
+						<h:graphicImage url="media/images/personnage.png"
+							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}"
+							styleClass="menu-entry-image" />
+						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}</h:outputText></span>
+					</p:commandLink>
+					<p:commandLink styleClass="menu-entry"
+						action="#{resourcesController.prepareTree('software')}"
+						update=":formResources:resourcesTree">
+						<h:graphicImage url="media/images/personnage.png"
+							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}"
+							styleClass="menu-entry-image" />
+						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}</h:outputText></span>
+					</p:commandLink>
+					<p:commandLink styleClass="menu-entry"
+						action="#{resourcesController.prepareTree('softwareDocumentation')}"
+						update=":formResources:resourcesTree">
+						<h:graphicImage url="media/images/personnage.png"
+							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}"
+							styleClass="menu-entry-image" />
+						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}</h:outputText></span>
+					</p:commandLink>
+					<p:commandLink styleClass="menu-entry"
+						action="#{resourcesController.prepareTree('professionalTraining')}"
+						update=":formResources:resourcesTree">
+						<h:graphicImage url="media/images/personnage.png"
+							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"
+							styleClass="menu-entry-image" />
+						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}</h:outputText></span>
+					</p:commandLink>
+					<p:commandLink styleClass="menu-entry"
+						action="#{resourcesController.prepareTree('pedagogicalAndDocumentaryResources')}"
+						update=":formResources:resourcesTree">
+						<h:graphicImage url="media/images/personnage.png"
+							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}"
+							styleClass="menu-entry-image" />
+						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}</h:outputText></span>
+					</p:commandLink>
+				</p:panelGrid>
+
 				<p:tree id="resourcesTree" dynamic="true"
-					value="#{resourcesTreeController.treeRoot}"
-					var="treeNodeData" selectionMode="single"
-					selection="#{resourcesTreeController.selectedNode}">
+					value="#{resourcesController.treeRoot}" var="treeNodeData"
+					selectionMode="single"
+					selection="#{resourcesController.selectedNode}">
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
 					<p:treeNode type="" styleClass="#{treeNodeData.styleClass}">
 						<p:inplace editor="true" event="dblclick">
 							<p:ajax event="save"
-								listener="#{resourcesTreeController.onLabelSave(treeNodeData)}"
+								listener="#{resourcesController.onLabelSave(treeNodeData)}"
 								update="@this" />
 							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
@@ -40,5 +84,39 @@
 				</p:tree>
 			</p:panel>
 		</h:form>
+
+		<p:dialog id="dialogCreateResourceId"
+				header="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogCreateResource" modal="true" height="auto">
+			<h:form id="formCreateResource">
+				<h:panelGrid columns="2">
+					<h:outputLabel for="newResourceCategory"
+						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
+					<p:selectOneMenu id="newResourceCategory" effect="fold" required="true" editable="true" binding="#{input1}">
+						<f:selectItem
+							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY_OR_TYPE_A_NEW_ONE_LABEL']}"
+							itemValue="" />
+						<f:selectItems value="#{resourcesController.categoriesForSelectedResourceType}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="3">
+					<h:outputLabel for="newSoftwareName"
+						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />
+					<p:inputText id="newSoftwareName" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						binding="#{input2}" />
+					<p:message for="newSoftwareName" display="text" />
+				</h:panelGrid>
+
+				<p:commandButton
+					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value)}"
+					update="@form :formResources"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
+			</h:form>
+		</p:dialog>
+
 	</ui:define>
 </ui:composition>

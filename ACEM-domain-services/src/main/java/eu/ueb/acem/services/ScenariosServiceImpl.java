@@ -46,6 +46,9 @@ public class ScenariosServiceImpl implements ScenariosService {
 	@Autowired
 	private PedagogicalActivityDAO pedagogicalActivityDAO;
 
+	@Autowired
+	private UsersService usersService;
+	
 	public ScenariosServiceImpl() {
 	}
 
@@ -76,6 +79,27 @@ public class ScenariosServiceImpl implements ScenariosService {
 		return scenarioDAO.update(scenario);
 	}
 
+	@Override
+	public Boolean dissociateAuthorOrDeleteScenarioIfLastAuthor(Long idScenario, Long idAuthor) {
+		if (scenarioDAO.exists(idScenario)) {
+			Scenario scenario = scenarioDAO.retrieveById(idScenario);
+			if (scenario.getAuthors().size() > 1) {
+				// It's not the last author, we just want to dissociate the author from the scenario
+				Enseignant author = usersService.retrieveTeacher(idAuthor);
+				scenario.removeAuthor(author);
+				scenario = scenarioDAO.update(scenario);
+				return true;
+			}
+			else {
+				// It's the last author, we really delete the scenario
+				return deleteScenario(idScenario);
+			}
+		}
+		else {
+			return false;
+		}
+	}
+	
 	@Override
 	public Boolean deleteScenario(Long id) {
 		if (scenarioDAO.exists(id)) {

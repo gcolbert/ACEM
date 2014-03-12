@@ -44,11 +44,9 @@ import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
 @ContextConfiguration("/dal-test-context.xml")
 public class ResourceDAOTest extends TestCase {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ResourceDAOTest.class);
 
-	@Autowired
-	private ProfessionalTrainingDAO professionalTrainingDAO;
-	
 	@Autowired
 	private SoftwareDAO softwareDAO;
 	
@@ -57,6 +55,9 @@ public class ResourceDAOTest extends TestCase {
 	
 	@Autowired
 	private EquipmentDAO equipmentDAO;
+
+	@Autowired
+	private ProfessionalTrainingDAO professionalTrainingDAO;
 	
 	@Autowired
 	private PedagogicalAndDocumentaryResourcesDAO pedagogicalAndDocumentaryResourcesDAO;
@@ -79,7 +80,7 @@ public class ResourceDAOTest extends TestCase {
 	 * Create
 	 */
 	@Test
-	public final void t01_TestBesoinDAOCreate() {
+	public final void t01_TestDAOCreate() {
 	}
 
 }

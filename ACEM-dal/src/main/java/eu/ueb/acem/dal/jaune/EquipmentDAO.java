@@ -107,4 +107,8 @@ public class EquipmentDAO implements DAO<Long, Equipement> {
 		return repository.count();
 	}
 
+	public Collection<? extends String> getCategories() {
+		return repository.getCategories();
+	}
+
 }

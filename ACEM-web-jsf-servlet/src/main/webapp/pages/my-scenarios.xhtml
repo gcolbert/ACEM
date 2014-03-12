@@ -28,7 +28,10 @@
 							<p:commandButton
 								value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
 								icon="ui-icon-plusthick"
-								onclick="PF('dialogCreateScenario').show()" />
+								update=":dialogCreateScenarioId"
+								oncomplete="PF('dialogCreateScenario').show()">
+								<p:resetInput target=":dialogCreateScenarioId" />
+							</p:commandButton>
 							<p:scrollPanel mode="native">
 								<p:dataTable id="scenariosDataTable"
 									emptyMessage="#{msgs['MY_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
@@ -220,7 +223,7 @@
 			</p:layout>
 		</h:form>
 
-		<p:dialog
+		<p:dialog id="dialogCreateScenarioId"
 			header="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogCreateScenario" modal="true" height="auto">
 			<h:form id="formCreateScenario">

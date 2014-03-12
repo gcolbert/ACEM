@@ -38,7 +38,7 @@ import eu.ueb.acem.domain.beans.vert.neo4j.EspacePhysiqueNode;
  */
 @NodeEntity
 @TypeAlias("Equipment")
-public abstract class EquipementNode extends RessourceNode implements Equipement {
+public class EquipementNode extends RessourceNode implements Equipement {
 
 	private static final long serialVersionUID = 795694384595044050L;
 
@@ -51,6 +51,13 @@ public abstract class EquipementNode extends RessourceNode implements Equipement
 	@Fetch
 	private Set<EspacePhysiqueNode> storageLocations;
 
+	public EquipementNode() {
+	}
+
+	public EquipementNode(String name) {
+		setName(name);
+	}
+	
 	@Override
 	public Set<? extends EspacePhysique> getStorageLocations() {
 		return storageLocations;

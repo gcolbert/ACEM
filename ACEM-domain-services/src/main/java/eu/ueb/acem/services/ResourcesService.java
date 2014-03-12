@@ -18,10 +18,12 @@
  */
 package eu.ueb.acem.services;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface ResourcesService {
 
-	List<String> getCategories();
+	Collection<String> getCategoriesForResourceType(String resourceType);
+
+	void createResource(String resourceType, String category, String name);
 
 }

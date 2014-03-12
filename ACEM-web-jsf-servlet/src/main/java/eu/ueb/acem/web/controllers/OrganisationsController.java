@@ -96,8 +96,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	*/
 	
 	public OrganisationsController() {
-		// TODO : replace those hard-wired instanciations with @Autowired when
-		// Spring 4 will be used
+		// TODO : replace those hard-wired instanciations with @Autowired when Spring 4 will be used
 		communityViewBeans = new SortableTableBean<CommunityViewBean>();
 		institutionViewBeans = new SortableTableBean<InstitutionViewBean>();
 		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();

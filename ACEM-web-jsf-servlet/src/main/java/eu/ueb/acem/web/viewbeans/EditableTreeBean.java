@@ -37,9 +37,6 @@ import org.springframework.stereotype.Component;
 @Scope("view")
 public class EditableTreeBean implements Serializable {
 
-	/**
-	 * For Logging.
-	 */
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(EditableTreeBean.class);
 
@@ -58,6 +55,11 @@ public class EditableTreeBean implements Serializable {
 		visibleRoots = new ArrayList<TreeNode>();
 	}
 
+	public void reset() {
+		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
+		visibleRoots = new ArrayList<TreeNode>();
+	}
+	
 	public TreeNode getRoot() {
 		return root;
 	}
@@ -68,16 +70,6 @@ public class EditableTreeBean implements Serializable {
 
 	public void addVisibleRoot(String label) {
 		visibleRoots.add(new DefaultTreeNode(new TreeNodeData(null, label, null), root));
-	}
-	
-	/*
-	public void setVisibleRootLabel(String label) {
-		((TreeNodeData) visibleRoot.getData()).setLabel(label);
-	}
-	*/
-
-	public void setRoot(TreeNode root) {
-		this.root = root;
 	}
 
 	public TreeNode addChild(TreeNode parent, Long id, String label, String concept) {

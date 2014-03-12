@@ -18,19 +18,111 @@
  */
 package eu.ueb.acem.services;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import eu.ueb.acem.dal.jaune.EquipmentDAO;
+import eu.ueb.acem.dal.jaune.PedagogicalAndDocumentaryResourcesDAO;
+import eu.ueb.acem.dal.jaune.ProfessionalTrainingDAO;
+import eu.ueb.acem.dal.jaune.SoftwareDAO;
+import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
+import eu.ueb.acem.domain.beans.jaune.Applicatif;
+import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.Equipement;
+import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
 
 @Service("resourcesService")
 public class ResourcesServiceImpl implements ResourcesService {
 
+	private static final Logger logger = LoggerFactory.getLogger(ResourcesServiceImpl.class);
+
+	@Autowired
+	private EquipmentDAO equipmentDAO;
+	
+	@Autowired
+	private PedagogicalAndDocumentaryResourcesDAO pedagogicalAndDocumentaryResourcesDAO;
+	
+	@Autowired
+	private ProfessionalTrainingDAO professionalTrainingDAO;
+	
+	@Autowired
+	private SoftwareDAO softwareDAO;
+	
+	@Autowired
+	private SoftwareDocumentationDAO softwareDocumentationDAO;
+	
 	@Override
-	public List<String> getCategories() {
+	public Collection<String> getCategoriesForResourceType(String resourceType) {
 		Set<String> categories = new HashSet<String>();
-		return null;
+		switch (resourceType) {
+		case "software":
+			categories.addAll(softwareDAO.getCategories());
+			break;
+		case "softwareDocumentation":
+			categories.addAll(softwareDocumentationDAO.getCategories());
+			break;
+		case "professionalTraining":
+			categories.addAll(professionalTrainingDAO.getCategories());
+			break;
+		case "equipment":
+			categories.addAll(equipmentDAO.getCategories());
+			break;
+		case "pedagogicalAndDocumentaryResources":
+			categories.addAll(pedagogicalAndDocumentaryResourcesDAO.getCategories());
+			break;
+		default:
+			logger.error("Unknown resourceType '{}'", resourceType);
+			break;
+		}
+		return categories;
+	}
+
+	@Override
+	public void createResource(String resourceType, String category, String name) {
+		Ressource entity;
+		switch (resourceType) {
+		case "software":
+			entity = new ApplicatifNode(name);
+			entity.setCategory(category);
+			entity = softwareDAO.create((Applicatif) entity);
+			break;
+		case "softwareDocumentation":
+			entity = new DocumentationApplicatifNode(name);
+			entity.setCategory(category);
+			entity = softwareDocumentationDAO.create((DocumentationApplicatif) entity);
+			break;
+		case "professionalTraining":
+			entity = new FormationProfessionnelleNode(name);
+			entity.setCategory(category);
+			entity = professionalTrainingDAO.create((FormationProfessionnelle) entity);
+			break;
+		case "equipment":
+			entity = new EquipementNode(name);
+			entity.setCategory(category);
+			entity = equipmentDAO.create((Equipement) entity);
+			break;
+		case "pedagogicalAndDocumentaryResources":
+			entity = new RessourcePedagogiqueEtDocumentaireNode(name);
+			entity.setCategory(category);
+			entity = pedagogicalAndDocumentaryResourcesDAO.create((RessourcePedagogiqueEtDocumentaire) entity);
+			break;
+		default:
+			logger.error("Unknown resourceType '{}'", resourceType);
+			break;
+		}
 	}
 
 }

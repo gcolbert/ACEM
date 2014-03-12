@@ -107,4 +107,8 @@ public class ProfessionalTrainingDAO implements DAO<Long, FormationProfessionnel
 		return repository.count();
 	}
 
+	public Collection<? extends String> getCategories() {
+		return repository.getCategories();
+	}
+	
 }

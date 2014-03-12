@@ -112,16 +112,21 @@ public class MyScenariosController extends AbstractContextAwareController {
 	public void deleteSelectedScenario() {
 		if (selectedScenarioViewBean != null) {
 			logger.info("deleteSelectedScenario, id={}", selectedScenarioViewBean.getId());
-			if (scenariosService.deleteScenario(selectedScenarioViewBean.getId())) {
-				sortableTableBean.getTableEntries().remove(selectedScenarioViewBean);
-				MessageDisplayer.showMessageToUserWithSeverityInfo(
-						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE"),
-						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS"));
+			try {
+				if (scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(selectedScenarioViewBean.getId(), getCurrentUser().getId())) {
+					sortableTableBean.getTableEntries().remove(selectedScenarioViewBean);
+					MessageDisplayer.showMessageToUserWithSeverityInfo(
+							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE"),
+							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS"));
+				}
+				else {
+					MessageDisplayer.showMessageToUserWithSeverityError(
+							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.TITLE"),
+							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.DETAILS"));
+				}
 			}
-			else {
-				MessageDisplayer.showMessageToUserWithSeverityError(
-						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.TITLE"),
-						getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.DETAILS"));
+			catch (Exception e) {
+				e.printStackTrace();
 			}
 			selectedScenarioViewBean = null;
 		}

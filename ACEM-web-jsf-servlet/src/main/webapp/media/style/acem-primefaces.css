@@ -133,3 +133,26 @@ td[role=gridcell] .ui-button {
 .ui-inplace-content input {
 	width: 500px;
 }
+
+/* MY RESOURCES */
+#formResources td[role=gridcell] {
+	width:100px;
+	text-align:center;
+	background-color:white;
+	border:none;
+	vertical-align:top;
+}
+#formResources .menu-entry {
+	text-decoration:none;
+	text-align:center;
+}
+#formResources .menu-entry-text {
+	display:block;
+	font-size:small;
+	font-weight:bold;
+}
+#formResources .menu-entry-image {
+	width:100%;
+	display:block;
+	margin:auto;
+}

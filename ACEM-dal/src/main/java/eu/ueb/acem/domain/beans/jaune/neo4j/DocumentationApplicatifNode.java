@@ -52,7 +52,7 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	}
 
 	public DocumentationApplicatifNode(String name) {
-		this.setName(name);
+		setName(name);
 	}
 
 	@Override

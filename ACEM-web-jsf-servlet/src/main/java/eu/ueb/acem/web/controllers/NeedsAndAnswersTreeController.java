@@ -71,7 +71,6 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	public void initTree() {
 		logger.info("entering initTree");
 		editableTreeBean.addVisibleRoot(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
-		//editableTreeBean.setVisibleRootLabel(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
 		Collection<Besoin> needs = needsAndAnswersService.retrieveNeedsAtRoot();
 		logger.info("Found {} needs at root of tree.", needs.size());
 		for (Besoin need : needs) {

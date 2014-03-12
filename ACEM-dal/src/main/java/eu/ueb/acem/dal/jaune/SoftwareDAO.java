@@ -107,4 +107,8 @@ public class SoftwareDAO implements DAO<Long, Applicatif> {
 		return repository.count();
 	}
 
+	public Collection<String> getCategories() {
+		return repository.getCategories();
+	}
+
 }

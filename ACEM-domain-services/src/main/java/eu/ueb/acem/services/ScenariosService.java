@@ -37,6 +37,8 @@ public interface ScenariosService {
 
 	Boolean deleteScenario(Long id);
 
+	Boolean dissociateAuthorOrDeleteScenarioIfLastAuthor(Long idScenario, Long idAuthor);
+	
 	void deleteAllScenarios();
 
 	Long countPedagogicalActivities();
@@ -52,5 +54,5 @@ public interface ScenariosService {
 	void deleteAllPedagogicalActivities();
 
 	Collection<Scenario> retrieveScenariosWithAuthor(Personne author);
-	
+
 }

@@ -50,7 +50,7 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 	}
 
 	public ApplicatifNode(String name) {
-		this.setName(name);
+		setName(name);
 	}
 
 	@Override

@@ -107,4 +107,8 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Ressourc
 		return repository.count();
 	}
 
+	public Collection<? extends String> getCategories() {
+		return repository.getCategories();
+	}
+
 }

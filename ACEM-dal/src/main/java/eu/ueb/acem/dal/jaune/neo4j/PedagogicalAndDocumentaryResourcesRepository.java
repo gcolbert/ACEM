@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.jaune.neo4j;
 
+import java.util.Set;
+
+import org.springframework.data.neo4j.annotation.Query;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
 
@@ -27,5 +31,8 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNo
  */
 public interface PedagogicalAndDocumentaryResourcesRepository extends
 		GenericRepository<RessourcePedagogiqueEtDocumentaireNode> {
+
+	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) RETURN DISTINCT n.category")
+	Set<String> getCategories();
 
 }

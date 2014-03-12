@@ -42,7 +42,7 @@ public class FormationProfessionnelleNode extends RessourceNode implements Forma
 	}
 
 	public FormationProfessionnelleNode(String name) {
-		this.setName(name);
+		setName(name);
 	}
 
 	@Override

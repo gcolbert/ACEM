@@ -69,7 +69,7 @@ public abstract class RessourceNode implements Ressource {
 	}
 
 	public RessourceNode(String name) {
-		this.setName(name);
+		setName(name);
 	}
 
 	@Override

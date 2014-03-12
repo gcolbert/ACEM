@@ -107,4 +107,8 @@ public class SoftwareDocumentationDAO implements DAO<Long, DocumentationApplicat
 		return repository.count();
 	}
 
+	public Collection<? extends String> getCategories() {
+		return repository.getCategories();
+	}
+
 }

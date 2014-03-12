@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.jaune.neo4j;
 
+import java.util.Set;
+
+import org.springframework.data.neo4j.annotation.Query;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
 
@@ -26,5 +30,8 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
  * 
  */
 public interface EquipmentRepository extends GenericRepository<EquipementNode> {
+
+	@Query(value = "MATCH (n:Equipment) RETURN DISTINCT n.category")
+	Set<String> getCategories();
 
 }
