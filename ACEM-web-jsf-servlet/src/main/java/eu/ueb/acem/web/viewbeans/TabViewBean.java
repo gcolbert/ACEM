@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("tabViewBean")
 @Scope("view")
+// TODO : choose whether we should keep this for correction of issue https://github.com/gcolbert/ACEM/issues/3
 public class TabViewBean implements Serializable {
 
 	private static final long serialVersionUID = 4556222445851594028L;

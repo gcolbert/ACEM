@@ -20,7 +20,6 @@ package eu.ueb.acem.web.viewbeans;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -45,10 +44,9 @@ public class SortableTableBean<E extends Comparable<E>> extends TableBean<E> {
 	}
 
 	@Override
-	public List<E> setTableEntries(Collection<E> collectionEntities) {
+	public void setTableEntries(Collection<E> collectionEntities) {
 		super.setTableEntries(collectionEntities);
 		sortReverseOrder();
-		return tableEntries;
 	}
 	
 }

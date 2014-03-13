@@ -46,6 +46,8 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, P
 	
 	private String name;
 
+	private String shortname;
+	
 	public AdministrativeDepartmentViewBean() {
 	}
 
@@ -72,6 +74,7 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, P
 		this.administrativeDepartment = administrativeDepartment;
 		setId(administrativeDepartment.getId());
 		setName(administrativeDepartment.getName());
+		setShortname(administrativeDepartment.getShortname());
 	}
 
 	@Override
@@ -92,6 +95,14 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, P
 		this.name = name;
 	}
 
+	public String getShortname() {
+		return shortname;
+	}
+
+	public void setShortname(String shortname) {
+		this.shortname = shortname;
+	}
+	
 	@Override
 	public int compareTo(AdministrativeDepartmentViewBean o) {
 		return name.compareTo(o.getName());

@@ -125,4 +125,60 @@ public class ResourcesServiceImpl implements ResourcesService {
 		}
 	}
 
+	@Override
+	public Collection<Applicatif> getSoftwaresWithCategory(String category) {
+		if (category != null) {
+			return softwareDAO.retrieveAllWithCategory(category);
+		}
+		else {
+			return softwareDAO.retrieveAll();
+		}
+	}
+
+	@Override
+	public Collection<DocumentationApplicatif> getSoftwareDocumentationsWithCategory(String category) {
+		if (category != null) {
+			return softwareDocumentationDAO.retrieveAllWithCategory(category);
+		}
+		else {
+			return softwareDocumentationDAO.retrieveAll();
+		}
+	}
+
+	@Override
+	public Collection<Equipement> getEquipmentWithCategory(String category) {
+		if (category != null) {
+			return equipmentDAO.retrieveAllWithCategory(category);
+		}
+		else {
+			return equipmentDAO.retrieveAll();
+		}
+	}
+
+	@Override
+	public Collection<FormationProfessionnelle> getProfessionalTrainingsWithCategory(String category) {
+		if (category != null) {
+			return professionalTrainingDAO.retrieveAllWithCategory(category);
+		}
+		else {
+			return professionalTrainingDAO.retrieveAll();
+		}
+	}
+
+	@Override
+	public Collection<RessourcePedagogiqueEtDocumentaire> getPedagogicalAndDocumentaryResourcesWithCategory(
+			String category) {
+		if (category != null) {
+			return pedagogicalAndDocumentaryResourcesDAO.retrieveAllWithCategory(category);
+		}
+		else {
+			return pedagogicalAndDocumentaryResourcesDAO.retrieveAll();
+		}
+	}
+
+	@Override
+	public void saveResourceName(Long id, String label) {
+		
+	}
+
 }

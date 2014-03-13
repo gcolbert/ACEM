@@ -21,6 +21,7 @@ package eu.ueb.acem.dal.jaune.neo4j;
 import java.util.Set;
 
 import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
@@ -33,5 +34,8 @@ public interface SoftwareDocumentationRepository extends GenericRepository<Docum
 
 	@Query(value = "MATCH (n:SoftwareDocumentation) RETURN DISTINCT n.category")
 	Set<String> getCategories();
+
+	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE n.category=({category}) RETURN n")
+	Set<DocumentationApplicatifNode> getEntitiesWithCategory(@Param("category") String category);
 
 }

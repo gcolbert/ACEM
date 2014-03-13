@@ -73,6 +73,11 @@ public abstract class RessourceNode implements Ressource {
 	}
 
 	@Override
+	public Long getId() {
+		return id;
+	}
+	
+	@Override
 	public String getName() {
 		return name;
 	}

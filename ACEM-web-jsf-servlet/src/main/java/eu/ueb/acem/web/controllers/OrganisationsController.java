@@ -76,6 +76,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	@Autowired
 	private PickListBean pickListBean;
 
+	// TODO : choose whether we should keep this for correction of issue https://github.com/gcolbert/ACEM/issues/3
 	@Autowired
 	private TabViewBean tabViewBean;
 	
@@ -443,6 +444,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 		administrativeDepartmentViewBeans.sort();
 	}
 
+	public void onRenameOrganisation() {
+		currentOrganisationViewBean.getDomainBean().setName(currentOrganisationViewBean.getName());
+		currentOrganisationViewBean.getDomainBean().setShortname(currentOrganisationViewBean.getShortname());
+		currentOrganisationViewBean.setDomainBean(organisationsService.updateOrganisation(currentOrganisationViewBean.getDomainBean()));
+	}
+	
 	public void onTransfer(TransferEvent event) {
 		logger.debug("onTransfer");
 		@SuppressWarnings("unchecked")

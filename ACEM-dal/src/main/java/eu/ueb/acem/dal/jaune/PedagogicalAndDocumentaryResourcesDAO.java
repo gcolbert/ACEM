@@ -107,8 +107,20 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Ressourc
 		return repository.count();
 	}
 
-	public Collection<? extends String> getCategories() {
+	public Collection<String> getCategories() {
 		return repository.getCategories();
 	}
 
+	public Collection<RessourcePedagogiqueEtDocumentaire> retrieveAllWithCategory(String category) {
+		Iterable<RessourcePedagogiqueEtDocumentaireNode> endResults = repository.getEntitiesWithCategory(category);
+		Collection<RessourcePedagogiqueEtDocumentaire> collection = new HashSet<RessourcePedagogiqueEtDocumentaire>();
+		if (endResults.iterator() != null) {
+			Iterator<RessourcePedagogiqueEtDocumentaireNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
+	}
+	
 }

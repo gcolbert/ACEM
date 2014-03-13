@@ -20,10 +20,28 @@ package eu.ueb.acem.services;
 
 import java.util.Collection;
 
+import eu.ueb.acem.domain.beans.jaune.Applicatif;
+import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.Equipement;
+import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
+
 public interface ResourcesService {
 
 	Collection<String> getCategoriesForResourceType(String resourceType);
 
 	void createResource(String resourceType, String category, String name);
+	
+	Collection<Applicatif> getSoftwaresWithCategory(String category);
 
+	Collection<DocumentationApplicatif> getSoftwareDocumentationsWithCategory(String category);
+
+	Collection<Equipement> getEquipmentWithCategory(String category);
+
+	Collection<FormationProfessionnelle> getProfessionalTrainingsWithCategory(String category);
+
+	Collection<RessourcePedagogiqueEtDocumentaire> getPedagogicalAndDocumentaryResourcesWithCategory(String category);
+
+	void saveResourceName(Long id, String label);
+	
 }

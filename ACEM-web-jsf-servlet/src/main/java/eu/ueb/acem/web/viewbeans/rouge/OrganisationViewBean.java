@@ -28,10 +28,13 @@ import eu.ueb.acem.web.viewbeans.Pickable;
 public interface OrganisationViewBean extends Pickable {
 
 	Long getId();
-	
+
 	String getName();
-	
+
 	Organisation getDomainBean();
 
 	void setDomainBean(Organisation organisation);
+
+	String getShortname();
+
 }

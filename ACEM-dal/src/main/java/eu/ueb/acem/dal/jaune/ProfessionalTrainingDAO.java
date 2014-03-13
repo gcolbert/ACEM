@@ -107,8 +107,20 @@ public class ProfessionalTrainingDAO implements DAO<Long, FormationProfessionnel
 		return repository.count();
 	}
 
-	public Collection<? extends String> getCategories() {
+	public Collection<String> getCategories() {
 		return repository.getCategories();
+	}
+	
+	public Collection<FormationProfessionnelle> retrieveAllWithCategory(String category) {
+		Iterable<FormationProfessionnelleNode> endResults = repository.getEntitiesWithCategory(category);
+		Collection<FormationProfessionnelle> collection = new HashSet<FormationProfessionnelle>();
+		if (endResults.iterator() != null) {
+			Iterator<FormationProfessionnelleNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 	
 }

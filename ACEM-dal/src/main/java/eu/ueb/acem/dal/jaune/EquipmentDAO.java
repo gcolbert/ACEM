@@ -107,8 +107,20 @@ public class EquipmentDAO implements DAO<Long, Equipement> {
 		return repository.count();
 	}
 
-	public Collection<? extends String> getCategories() {
+	public Collection<String> getCategories() {
 		return repository.getCategories();
 	}
 
+	public Collection<Equipement> retrieveAllWithCategory(String category) {
+		Iterable<EquipementNode> endResults = repository.getEntitiesWithCategory(category);
+		Collection<Equipement> collection = new HashSet<Equipement>();
+		if (endResults.iterator() != null) {
+			Iterator<EquipementNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
+	}
+	
 }

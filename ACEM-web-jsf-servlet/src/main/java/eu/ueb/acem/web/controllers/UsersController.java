@@ -41,11 +41,7 @@ import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 @Controller("usersController")
 @Scope("view")
@@ -86,20 +82,15 @@ public class UsersController extends AbstractContextAwareController {
 			personViewBeans.add(new PersonViewBean(person));
 		}
 
-		List<CommunityViewBean> communityViewBeans = organisationsController.getCommunityViewBeans().getTableEntries();
-		List<InstitutionViewBean> institutionViewBeans = organisationsController.getInstitutionViewBeans().getTableEntries();
-		List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans = organisationsController.getAdministrativeDepartmentViewBeans().getTableEntries();
-		List<TeachingDepartmentViewBean> teachingDepartmentViewBeans = organisationsController.getTeachingDepartmentViewBeans().getTableEntries();
-		
 		List<OrganisationViewBean> organisationViewBeansList = new ArrayList<OrganisationViewBean>();
-		organisationViewBeansList.addAll(communityViewBeans);
-		organisationViewBeansList.addAll(institutionViewBeans);
-		organisationViewBeansList.addAll(administrativeDepartmentViewBeans);
-		organisationViewBeansList.addAll(teachingDepartmentViewBeans);
+		organisationViewBeansList.addAll(organisationsController.getCommunityViewBeans().getTableEntries());
+		organisationViewBeansList.addAll(organisationsController.getInstitutionViewBeans().getTableEntries());
+		organisationViewBeansList.addAll(organisationsController.getAdministrativeDepartmentViewBeans().getTableEntries());
+		organisationViewBeansList.addAll(organisationsController.getTeachingDepartmentViewBeans().getTableEntries());
 		
 		organisationViewBeans.setTableEntries(organisationViewBeansList);
 	}
-
+	
 	public PickListBean getPickListBean() {
 		return pickListBean;
 	}

@@ -111,4 +111,16 @@ public class SoftwareDAO implements DAO<Long, Applicatif> {
 		return repository.getCategories();
 	}
 
+	public Collection<Applicatif> retrieveAllWithCategory(String category) {
+		Iterable<ApplicatifNode> endResults = repository.getEntitiesWithCategory(category);
+		Collection<Applicatif> collection = new HashSet<Applicatif>();
+		if (endResults.iterator() != null) {
+			Iterator<ApplicatifNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
+	}
+
 }

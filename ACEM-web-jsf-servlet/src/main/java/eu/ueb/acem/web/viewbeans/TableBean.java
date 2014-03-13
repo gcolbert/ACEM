@@ -52,12 +52,16 @@ public class TableBean<E> implements Serializable {
 		return tableEntries;
 	}
 
-	public List<E> setTableEntries(Collection<E> collectionEntities) {
+	public void setTableEntries(Collection<E> collectionEntities) {
 		tableEntries.clear();
-		for (E entity : collectionEntities) {
-			tableEntries.add(entity);
+		if (collectionEntities instanceof List<?>) {
+			tableEntries = (List<E>) collectionEntities;
 		}
-		return tableEntries;
+		else {
+			for (E entity : collectionEntities) {
+				tableEntries.add(entity);
+			}
+		}
 	}
 
 }

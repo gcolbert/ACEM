@@ -30,6 +30,8 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
  */
 public interface Ressource extends Serializable {
 
+	Long getId();
+	
 	String getName();
 
 	void setName(String name);

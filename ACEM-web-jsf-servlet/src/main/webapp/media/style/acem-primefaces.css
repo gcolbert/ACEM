@@ -153,6 +153,7 @@ td[role=gridcell] .ui-button {
 }
 #formResources .menu-entry-image {
 	width:100%;
+	max-width:130px;
 	display:block;
 	margin:auto;
 }

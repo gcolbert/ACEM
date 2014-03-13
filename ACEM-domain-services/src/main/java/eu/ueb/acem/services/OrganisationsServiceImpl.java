@@ -209,6 +209,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	@Override
 	public Boolean deleteOrganisation(Long id) {
+		// TODO : rewrite this function using exists() on each DAO
 		boolean success = deleteCommunity(id);
 		if (!success) {
 			success = deleteInstitution(id);

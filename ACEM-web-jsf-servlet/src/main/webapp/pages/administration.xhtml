@@ -38,7 +38,10 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_LABEL']}"
 							icon="ui-icon-plusthick"
-							onclick="PF('dialogCreateCommunity').show()" process="@this" />
+							update=":formOrganisations:idDialogCreateCommunity"
+							oncomplete="PF('dialogCreateCommunity').show()" process="@this">
+							<p:resetInput target=":formOrganisations:idDialogCreateCommunity"/>
+						</p:commandButton>
 						<p:accordionPanel id="accordionPanelForCommunities"
 							widgetVar="accordionPanelForCommunitiesWidget"
 							value="#{organisationsController.communityViewBeans.tableEntries}"
@@ -56,6 +59,12 @@
 									oncomplete="PF('dialogAssociateInstitution').show()"
 									update=":formOrganisations:idDialogAssociateInstitution"
 									process="@this" />
+								<p:commandButton
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_COMMUNITY_LABEL']}"
+									icon="ui-icon-pencil"
+									actionListener="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
+									update=":formOrganisations:idDialogRenameOrganisation"
+									oncomplete="PF('dialogRenameOrganisation').show()" process="@this"/>
 								<p:dataTable id="dataTableInstitutionViewBeansForCommunity"
 									var="institutionViewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
@@ -74,7 +83,10 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_LABEL']}"
 							icon="ui-icon-plusthick"
-							onclick="PF('dialogCreateInstitution').show()" process="@this" />
+							update=":formOrganisations:idDialogCreateInstitution"
+							oncomplete="PF('dialogCreateInstitution').show()" process="@this">
+							<p:resetInput target=":formOrganisations:idDialogCreateInstitution"/>
+						</p:commandButton>
 						<p:accordionPanel id="accordionPanelForInstitutions"
 							widgetVar="accordionPanelForInstitutionsWidget"
 							value="#{organisationsController.institutionViewBeans.tableEntries}"
@@ -84,6 +96,12 @@
 								listener="#{organisationsController.onAccordionPanelTabChange}"
 								update="@this" />
 							<p:tab title="#{institutionViewBean.name}">
+								<p:commandButton
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_INSTITUTION_LABEL']}"
+									icon="ui-icon-pencil"
+									actionListener="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
+									update=":formOrganisations:idDialogRenameOrganisation"
+									oncomplete="PF('dialogRenameOrganisation').show()" process="@this"/>
 								<p:panelGrid columns="3">
 									<p:column>
 										<p:commandButton
@@ -150,8 +168,11 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 							icon="ui-icon-plusthick"
-							onclick="PF('dialogCreateAdministrativeDepartment').show()"
-							process="@this" />
+							update=":formOrganisations:idDialogCreateAdministrativeDepartment"
+							oncomplete="PF('dialogCreateAdministrativeDepartment').show()"
+							process="@this">
+							<p:resetInput target=":formOrganisations:idDialogCreateAdministrativeDepartment"/>
+						</p:commandButton>
 						<p:accordionPanel id="accordionPanelForAdministrativeDepartments"
 							value="#{organisationsController.administrativeDepartmentViewBeans.tableEntries}"
 							var="administrativeDepartmentViewBean" activeIndex="-1"
@@ -168,6 +189,12 @@
 									oncomplete="PF('dialogAssociateInstitution').show()"
 									update=":formOrganisations:idDialogAssociateInstitution"
 									process="@this" />
+								<p:commandButton
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
+									icon="ui-icon-pencil"
+									actionListener="#{organisationsController.setCurrentOrganisationViewBean(administrativeDepartmentViewBean)}"
+									update=":formOrganisations:idDialogRenameOrganisation"
+									oncomplete="PF('dialogRenameOrganisation').show()" process="@this"/>
 								<p:dataTable var="institutionViewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 									value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
@@ -185,8 +212,11 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_LABEL']}"
 							icon="ui-icon-plusthick"
-							onclick="PF('dialogCreateTeachingDepartment').show()"
-							process="@this" />
+							update=":formOrganisations:idDialogCreateTeachingDepartment"
+							oncomplete="PF('dialogCreateTeachingDepartment').show()"
+							process="@this">
+							<p:resetInput target=":formOrganisations:idDialogCreateTeachingDepartment"/>
+						</p:commandButton>
 						<p:accordionPanel id="accordionPanelForTeachingDepartments"
 							value="#{organisationsController.teachingDepartmentViewBeans.tableEntries}"
 							var="teachingDepartmentViewBean" activeIndex="-1" dynamic="true"
@@ -203,6 +233,12 @@
 									oncomplete="PF('dialogAssociateInstitution').show()"
 									update=":formOrganisations:idDialogAssociateInstitution"
 									process="@this" />
+								<p:commandButton
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_TEACHING_DEPARTMENT_LABEL']}"
+									icon="ui-icon-pencil"
+									actionListener="#{organisationsController.setCurrentOrganisationViewBean(teachingDepartmentViewBean)}"
+									update=":formOrganisations:idDialogRenameOrganisation"
+									oncomplete="PF('dialogRenameOrganisation').show()" process="@this"/>
 								<p:dataTable var="institutionViewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 									value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
@@ -332,6 +368,32 @@
 					process="@this idDialogCreateTeachingDepartment"
 					update=":formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
+			</p:dialog>
+
+			<p:dialog id="idDialogRenameOrganisation"
+				header="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogRenameOrganisation" modal="true" height="auto">
+				<h:panelGrid columns="3" rendered="#{organisationsController.currentOrganisationViewBean != null}">
+					<h:outputLabel for="newName"
+						value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.NEW_NAME_LABEL']}" />
+					<p:inputText id="newName" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						value="#{organisationsController.currentOrganisationViewBean.name}" />
+					<p:message for="newName" display="text" />
+					<h:outputLabel for="newShortName"
+						value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.NEW_SHORTNAME_LABEL']}" />
+					<p:inputText id="newShortName" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
+						value="#{organisationsController.currentOrganisationViewBean.shortname}" />
+					<p:message for="newShortName" display="text" />
+				</h:panelGrid>
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{organisationsController.onRenameOrganisation}"
+					process="@this idDialogRenameOrganisation"
+					update=":formOrganisations:tabViewOrganisations :formUsers:usersDataTable:organisationsOfUserDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogRenameOrganisation.hide(); }" />
 			</p:dialog>
 
 			<p:dialog id="idDialogAssociateCommunity"

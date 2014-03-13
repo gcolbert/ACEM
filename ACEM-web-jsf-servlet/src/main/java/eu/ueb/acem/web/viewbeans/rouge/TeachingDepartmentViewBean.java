@@ -39,6 +39,8 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickabl
 	
 	private String name;
 
+	private String shortname;
+	
 	public TeachingDepartmentViewBean() {
 	}
 
@@ -55,6 +57,7 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickabl
 		this.teachingDepartment = teachingDepartment;
 		setId(teachingDepartment.getId());
 		setName(teachingDepartment.getName());
+		setShortname(teachingDepartment.getShortname());
 	}
 
 	@Override
@@ -85,6 +88,14 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Pickabl
 		this.name = name;
 	}
 
+	public String getShortname() {
+		return shortname;
+	}
+
+	public void setShortname(String shortname) {
+		this.shortname = shortname;
+	}
+	
 	@Override
 	public int compareTo(TeachingDepartmentViewBean o) {
 		return name.compareTo(o.getName());

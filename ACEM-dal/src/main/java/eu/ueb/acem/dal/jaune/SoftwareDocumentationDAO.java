@@ -107,8 +107,20 @@ public class SoftwareDocumentationDAO implements DAO<Long, DocumentationApplicat
 		return repository.count();
 	}
 
-	public Collection<? extends String> getCategories() {
+	public Collection<String> getCategories() {
 		return repository.getCategories();
+	}
+
+	public Collection<DocumentationApplicatif> retrieveAllWithCategory(String category) {
+		Iterable<DocumentationApplicatifNode> endResults = repository.getEntitiesWithCategory(category);
+		Collection<DocumentationApplicatif> collection = new HashSet<DocumentationApplicatif>();
+		if (endResults.iterator() != null) {
+			Iterator<DocumentationApplicatifNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 
 }

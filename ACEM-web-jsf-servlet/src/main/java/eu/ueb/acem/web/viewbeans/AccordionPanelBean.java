@@ -38,7 +38,6 @@ public class AccordionPanelBean implements Serializable {
 
 	private AccordionPanel accordionPanel;
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(AccordionPanelBean.class);
 
 	Integer activeIndex;
