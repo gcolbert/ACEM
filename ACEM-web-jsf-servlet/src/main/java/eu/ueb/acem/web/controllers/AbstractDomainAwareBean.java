@@ -110,7 +110,6 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 		try {
 			currentUser = getCurrentUser();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (currentUser == null) {

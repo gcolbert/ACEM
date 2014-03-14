@@ -21,8 +21,10 @@ package eu.ueb.acem.web.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
+
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
@@ -62,6 +64,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 	@Autowired
 	private OrganisationsService organisationsService;
 
+	private TreeMap<Long, OrganisationViewBean> organisationViewBeans;
+	
 	private SortableTableBean<CommunityViewBean> communityViewBeans;
 	private SortableTableBean<InstitutionViewBean> institutionViewBeans;
 	private SortableTableBean<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
@@ -107,6 +111,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 		institutionViewBeansForCurrentOrganisation = new ArrayList<InstitutionViewBean>();
 		administrativeDepartmentViewBeansForCurrentOrganisation = new ArrayList<AdministrativeDepartmentViewBean>();
 		teachingDepartmentViewBeansForCurrentOrganisation = new ArrayList<TeachingDepartmentViewBean>();
+		
+		organisationViewBeans = new TreeMap<Long, OrganisationViewBean>();
 	}
 
 	@PostConstruct
@@ -118,7 +124,9 @@ public class OrganisationsController extends AbstractContextAwareController {
 			communityViewBeans.getTableEntries().clear();
 			for (Communaute community : communities) {
 				logger.debug("community = {}", community.getName());
-				communityViewBeans.getTableEntries().add(new CommunityViewBean(community));
+				CommunityViewBean communityViewBean = new CommunityViewBean(community);
+				communityViewBeans.getTableEntries().add(communityViewBean);
+				organisationViewBeans.put(communityViewBean.getId(), communityViewBean);
 			}
 			communityViewBeans.sort();
 
@@ -127,7 +135,9 @@ public class OrganisationsController extends AbstractContextAwareController {
 			institutionViewBeans.getTableEntries().clear();
 			for (Etablissement institution : institutions) {
 				logger.debug("institution = {}", institution.getName());
-				institutionViewBeans.getTableEntries().add(new InstitutionViewBean(institution));
+				InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
+				institutionViewBeans.getTableEntries().add(institutionViewBean);
+				organisationViewBeans.put(institutionViewBean.getId(), institutionViewBean);
 			}
 			institutionViewBeans.sort();
 
@@ -136,8 +146,9 @@ public class OrganisationsController extends AbstractContextAwareController {
 			administrativeDepartmentViewBeans.getTableEntries().clear();
 			for (Service administrativeDepartment : administrativeDepartments) {
 				logger.debug("administrative department = {}", administrativeDepartment.getName());
-				administrativeDepartmentViewBeans.getTableEntries().add(
-						new AdministrativeDepartmentViewBean(administrativeDepartment));
+				AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(administrativeDepartment);
+				administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
+				organisationViewBeans.put(administrativeDepartmentViewBean.getId(), administrativeDepartmentViewBean);
 			}
 			administrativeDepartmentViewBeans.sort();
 
@@ -146,7 +157,9 @@ public class OrganisationsController extends AbstractContextAwareController {
 			teachingDepartmentViewBeans.getTableEntries().clear();
 			for (Composante teachingDepartment : teachingDepartments) {
 				logger.debug("teaching department = {}", teachingDepartment.getName());
-				teachingDepartmentViewBeans.getTableEntries().add(new TeachingDepartmentViewBean(teachingDepartment));
+				TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
+				teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
+				organisationViewBeans.put(teachingDepartmentViewBean.getId(), teachingDepartmentViewBean);
 			}
 			teachingDepartmentViewBeans.sort();
 		}
@@ -163,6 +176,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 		return tabViewBean;
 	}
 
+	public OrganisationViewBean getOrganisationViewBeanFromId(Long id) {
+		return organisationViewBeans.get(id);
+	}
+	
 	/*
 	 * TODO : Issue at https://github.com/gcolbert/ACEM/issues/3
 	 * 

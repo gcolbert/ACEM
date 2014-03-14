@@ -26,17 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Composante;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
-import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.web.viewbeans.Pickable;
-import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 /**
  * @author Grégoire Colbert @since 2014-02-25
@@ -83,21 +74,6 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		setLogin(person.getLogin());
 		setLanguage(person.getLanguage());
 		setAdministrator(person.isAdministrator());
-		organisationViewBeans.clear();
-		for (Organisation organisation : person.getWorksForOrganisations()) {
-			if (organisation instanceof Communaute) {
-				organisationViewBeans.add(new CommunityViewBean((Communaute)organisation));
-			}
-			else if (organisation instanceof Etablissement) {
-				organisationViewBeans.add(new InstitutionViewBean((Etablissement)organisation));
-			}
-			else if (organisation instanceof Service) {
-				organisationViewBeans.add(new AdministrativeDepartmentViewBean((Service)organisation));
-			}
-			else if (organisation instanceof Composante) {
-				organisationViewBeans.add(new TeachingDepartmentViewBean((Composante)organisation));
-			}
-		}
 	}
 
 	public List<OrganisationViewBean> getOrganisationViewBeans() {

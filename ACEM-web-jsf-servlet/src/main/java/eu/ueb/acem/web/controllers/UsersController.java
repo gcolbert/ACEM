@@ -36,6 +36,7 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -75,20 +76,23 @@ public class UsersController extends AbstractContextAwareController {
 	@PostConstruct
 	public void initUsersController() {
 		logger.debug("initUsersController");
-		
-		personViewBeans.clear();
-		Set<Personne> persons = usersService.getPersons();
-		for (Personne person : persons) {
-			personViewBeans.add(new PersonViewBean(person));
-		}
 
 		List<OrganisationViewBean> organisationViewBeansList = new ArrayList<OrganisationViewBean>();
 		organisationViewBeansList.addAll(organisationsController.getCommunityViewBeans().getTableEntries());
 		organisationViewBeansList.addAll(organisationsController.getInstitutionViewBeans().getTableEntries());
 		organisationViewBeansList.addAll(organisationsController.getAdministrativeDepartmentViewBeans().getTableEntries());
 		organisationViewBeansList.addAll(organisationsController.getTeachingDepartmentViewBeans().getTableEntries());
-		
 		organisationViewBeans.setTableEntries(organisationViewBeansList);
+
+		personViewBeans.clear();
+		Set<Personne> persons = usersService.getPersons();
+		for (Personne person : persons) {
+			PersonViewBean personViewBean = new PersonViewBean(person);
+			personViewBeans.add(personViewBean);
+			for (Organisation organisation : person.getWorksForOrganisations()) {
+				personViewBean.getOrganisationViewBeans().add(organisationsController.getOrganisationViewBeanFromId(organisation.getId()));
+			}
+		}
 	}
 	
 	public PickListBean getPickListBean() {
