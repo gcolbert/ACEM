@@ -9,4 +9,4 @@ Cet applicatif permettra, en outre, de lier un besoin pédagogique à l'outil, �
 
 Ainsi les enseignants pourront s'appuyer sur plusieurs modalités différentes pour diversifier les activités proposées aux étudiants.
 
-![ScreenShot](https://raw.github.com/gcolbert/ACEM/ACEM-web-jsf-servlet/src/main/webapp/media/images/ACEM-circular-explanation.png)
+![ScreenShot](https://raw.github.com/gcolbert/ACEM/master/ACEM-web-jsf-servlet/src/main/webapp/media/images/ACEM-circular-explanation.png)
