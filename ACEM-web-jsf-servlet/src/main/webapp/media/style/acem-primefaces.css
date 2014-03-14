@@ -48,6 +48,15 @@
 	padding:1em;
 }
 
+/* HOME */
+.circular-explanation-image {
+	max-width:635px;
+	width:90%;
+	display:block;
+	margin:auto;
+	padding:1em;
+}
+
 .label {
 	text-decoration: underline;
 }

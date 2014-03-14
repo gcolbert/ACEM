@@ -66,7 +66,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	private OrganisationsService organisationsService;
 
 	private Map<Long, OrganisationViewBean> organisationViewBeans;
-	
+
 	private SortableTableBean<CommunityViewBean> communityViewBeans;
 	private SortableTableBean<InstitutionViewBean> institutionViewBeans;
 	private SortableTableBean<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
@@ -81,10 +81,11 @@ public class OrganisationsController extends AbstractContextAwareController {
 	@Autowired
 	private PickListBean pickListBean;
 
-	// TODO : choose whether we should keep this for correction of issue https://github.com/gcolbert/ACEM/issues/3
+	// TODO : choose whether we should keep this for correction of issue
+	// https://github.com/gcolbert/ACEM/issues/3
 	@Autowired
 	private TabViewBean tabViewBean;
-	
+
 	/*-
 	 * TODO : enable those lines after correction of issue https://github.com/gcolbert/ACEM/issues/3
 	 * 
@@ -99,10 +100,11 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	@Autowired
 	private AccordionPanelBean teachingDepartmentAccordionPanelBean;
-	*/
-	
+	 */
+
 	public OrganisationsController() {
-		// TODO : replace those hard-wired instanciations with @Autowired when Spring 4 will be used
+		// TODO : replace those hard-wired instanciations with @Autowired when
+		// Spring 4 will be used
 		communityViewBeans = new SortableTableBean<CommunityViewBean>();
 		institutionViewBeans = new SortableTableBean<InstitutionViewBean>();
 		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
@@ -112,7 +114,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 		institutionViewBeansForCurrentOrganisation = new ArrayList<InstitutionViewBean>();
 		administrativeDepartmentViewBeansForCurrentOrganisation = new ArrayList<AdministrativeDepartmentViewBean>();
 		teachingDepartmentViewBeansForCurrentOrganisation = new ArrayList<TeachingDepartmentViewBean>();
-		
+
 		organisationViewBeans = new HashMap<Long, OrganisationViewBean>();
 	}
 
@@ -147,7 +149,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 			administrativeDepartmentViewBeans.getTableEntries().clear();
 			for (Service administrativeDepartment : administrativeDepartments) {
 				logger.debug("administrative department = {}", administrativeDepartment.getName());
-				AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(administrativeDepartment);
+				AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
+						administrativeDepartment);
 				administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
 				organisationViewBeans.put(administrativeDepartmentViewBean.getId(), administrativeDepartmentViewBean);
 			}
@@ -158,7 +161,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 			teachingDepartmentViewBeans.getTableEntries().clear();
 			for (Composante teachingDepartment : teachingDepartments) {
 				logger.debug("teaching department = {}", teachingDepartment.getName());
-				TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
+				TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(
+						teachingDepartment);
 				teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
 				organisationViewBeans.put(teachingDepartmentViewBean.getId(), teachingDepartmentViewBean);
 			}
@@ -180,27 +184,23 @@ public class OrganisationsController extends AbstractContextAwareController {
 	public OrganisationViewBean getOrganisationViewBeanFromId(Long id) {
 		return organisationViewBeans.get(id);
 	}
-	
+
 	/*
 	 * TODO : Issue at https://github.com/gcolbert/ACEM/issues/3
 	 * 
-	public AccordionPanelBean getCommunitiesAccordionPanelBean() {
-		return communitiesAccordionPanelBean;
-	}
+	 * public AccordionPanelBean getCommunitiesAccordionPanelBean() { return
+	 * communitiesAccordionPanelBean; }
+	 * 
+	 * public AccordionPanelBean getInstitutionsAccordionPanelBean() { return
+	 * institutionsAccordionPanelBean; }
+	 * 
+	 * public AccordionPanelBean getAdministrativeDepartmentAccordionPanelBean()
+	 * { return administrativeDepartmentAccordionPanelBean; }
+	 * 
+	 * public AccordionPanelBean getTeachingDepartmentAccordionPanelBean() {
+	 * return teachingDepartmentAccordionPanelBean; }
+	 */
 
-	public AccordionPanelBean getInstitutionsAccordionPanelBean() {
-		return institutionsAccordionPanelBean;
-	}
-
-	public AccordionPanelBean getAdministrativeDepartmentAccordionPanelBean() {
-		return administrativeDepartmentAccordionPanelBean;
-	}
-	
-	public AccordionPanelBean getTeachingDepartmentAccordionPanelBean() {
-		return teachingDepartmentAccordionPanelBean;
-	}
-	*/
-	
 	public TableBean<CommunityViewBean> getCommunityViewBeans() {
 		return communityViewBeans;
 	}
@@ -465,9 +465,13 @@ public class OrganisationsController extends AbstractContextAwareController {
 	public void onRenameOrganisation() {
 		currentOrganisationViewBean.getDomainBean().setName(currentOrganisationViewBean.getName());
 		currentOrganisationViewBean.getDomainBean().setShortname(currentOrganisationViewBean.getShortname());
-		currentOrganisationViewBean.setDomainBean(organisationsService.updateOrganisation(currentOrganisationViewBean.getDomainBean()));
+		currentOrganisationViewBean.setDomainBean(organisationsService.updateOrganisation(currentOrganisationViewBean
+				.getDomainBean()));
+		MessageDisplayer.showMessageToUserWithSeverityInfo(
+				getString("ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.RENAME_SUCCESSFUL.TITLE"),
+				getString("ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.RENAME_SUCCESSFUL.DETAILS"));
 	}
-	
+
 	public void onTransfer(TransferEvent event) {
 		logger.debug("onTransfer");
 		@SuppressWarnings("unchecked")
@@ -626,7 +630,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 						}
 					}
 					else {
-						logger.debug("currentOrganisationViewBean instanceof {}", currentOrganisationViewBean.getClass());
+						logger.debug("currentOrganisationViewBean instanceof {}",
+								currentOrganisationViewBean.getClass());
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
 							.retrieveInstitution(movedOrganisationViewBean.getId()));
@@ -687,7 +692,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 		logger.info("onAccordionPanelTabChange, tab={}", event.getTab());
 		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
 	}
-	
+
 	/*-
 	 * TODO : see issue at https://github.com/gcolbert/ACEM/issues/3
 	 * Here, we should collapse the opened accordion panel when we switch tab on the outer tab.

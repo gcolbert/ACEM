@@ -9,17 +9,21 @@
 		<ui:debug hotkey="1"
 			rendered="#{facesContext.application.projectStage == 'Development'}" />
 
-		<p:panel header="Explication de l'ACEM">
-			<h:outputText>L'Atelier de Création d'Enseignement Multimodal (ACEM) vous permet de visualiser l'ensemble des services numériques, équipements et appuis que vous pouvez utiliser quand vous préparez vos cours.</h:outputText>
-		</p:panel>
+		<p:layout id="layout" style="min-width:600px;min-height:1000px;">
+			<p:layoutUnit position="east" size="220" collapsible="true"
+				header="#{msgs['HOME.NEWS.HEADER']}">
+				<p:panel header="#{msgs['HOME.MOST_USED_RESOURCES.HEADER']}">
+				</p:panel>
+			</p:layoutUnit>
 
-		<p:panel header="Actualités">
-		
-		</p:panel>
+			<p:layoutUnit position="center"
+				header="#{msgs['HOME.PRESENTATION.HEADER']}"
+				style="min-height:800px;min-width:300px;">
+				<h:outputText>#{msgs['HOME.PRESENTATION.INTRODUCTION_TEXT']}</h:outputText>
+				<h:graphicImage url="media/images/ACEM-circular-explanation.png"
+					alt="ACEM" styleClass="circular-explanation-image" />
+			</p:layoutUnit>
+		</p:layout>
 
-		<p:panel header="Ressources les plus utilisées">
-		
-		</p:panel>
- 		
 	</ui:define>
 </ui:composition>

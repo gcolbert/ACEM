@@ -189,11 +189,12 @@ public class UsersController extends AbstractContextAwareController {
 	}
 	
 	/*-
-	 * TODO : implement this method so that the worksFor relationship is not redundant with
+	 * TODO : implement this method so that the worksForOrganisation relationships are not redundant with
 	 * the associations of the various organisations. 
 	 * Example : if the user works for UNIV, and UNIV is associated with COMMUNITY, then when we say
 	 * the user works for UNIV, we should disable COMMUNITY (because he implicitly can access resources of
-	 * COMMUNITY through the UNIV->COMMUNITY association).
+	 * COMMUNITY through the UNIV->COMMUNITY association). And so there is no need to state that he works
+	 * for COMMUNITY too.
 	 */
 	public Boolean isDisabledInPickList(OrganisationViewBean organisationViewBean) {
 		return false;
