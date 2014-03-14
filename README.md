@@ -8,3 +8,5 @@ Le projet ACEM a pour objectif de mettre à disposition de l'enseignant, via une
 Cet applicatif permettra, en outre, de lier un besoin pédagogique à l'outil, à l'application, ou à l'équipement le plus pertinent.
 
 Ainsi les enseignants pourront s'appuyer sur plusieurs modalités différentes pour diversifier les activités proposées aux étudiants.
+
+![ScreenShot](https://raw.github.com/gcolbert/ACEM/ACEM-web-jsf-servlet/src/main/webapp/media/images/ACEM-circular-explanation.png)
