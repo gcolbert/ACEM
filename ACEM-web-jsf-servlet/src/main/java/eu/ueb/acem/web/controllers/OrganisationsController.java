@@ -20,8 +20,9 @@ package eu.ueb.acem.web.controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -64,7 +65,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	@Autowired
 	private OrganisationsService organisationsService;
 
-	private TreeMap<Long, OrganisationViewBean> organisationViewBeans;
+	private Map<Long, OrganisationViewBean> organisationViewBeans;
 	
 	private SortableTableBean<CommunityViewBean> communityViewBeans;
 	private SortableTableBean<InstitutionViewBean> institutionViewBeans;
@@ -112,7 +113,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 		administrativeDepartmentViewBeansForCurrentOrganisation = new ArrayList<AdministrativeDepartmentViewBean>();
 		teachingDepartmentViewBeansForCurrentOrganisation = new ArrayList<TeachingDepartmentViewBean>();
 		
-		organisationViewBeans = new TreeMap<Long, OrganisationViewBean>();
+		organisationViewBeans = new HashMap<Long, OrganisationViewBean>();
 	}
 
 	@PostConstruct

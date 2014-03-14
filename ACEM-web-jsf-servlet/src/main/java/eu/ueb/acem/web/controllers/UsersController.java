@@ -90,7 +90,7 @@ public class UsersController extends AbstractContextAwareController {
 			PersonViewBean personViewBean = new PersonViewBean(person);
 			personViewBeans.add(personViewBean);
 			for (Organisation organisation : person.getWorksForOrganisations()) {
-				personViewBean.getOrganisationViewBeans().add(organisationsController.getOrganisationViewBeanFromId(organisation.getId()));
+				personViewBean.addOrganisationViewBean(organisationsController.getOrganisationViewBeanFromId(organisation.getId()));
 			}
 		}
 	}
@@ -147,6 +147,7 @@ public class UsersController extends AbstractContextAwareController {
 					if (usersService.associateUserWorkingForOrganisation(getSelectedUserViewBean().getId(),
 							movedOrganisationViewBean.getId())) {
 						selectedUserViewBean.getDomainBean().addWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
+						selectedUserViewBean.addOrganisationViewBean(movedOrganisationViewBean);
 						logger.info("association successful");
 					}
 					else {
@@ -173,6 +174,7 @@ public class UsersController extends AbstractContextAwareController {
 					if (usersService.dissociateUserWorkingForOrganisation(getSelectedUserViewBean().getId(),
 							movedOrganisationViewBean.getId(), typeOfOrganisation)) {
 						selectedUserViewBean.getDomainBean().removeWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
+						selectedUserViewBean.removeOrganisationViewBean(movedOrganisationViewBean);
 						logger.info("dissociation successful");
 					}
 					else {
@@ -180,14 +182,19 @@ public class UsersController extends AbstractContextAwareController {
 					}
 				}
 			}
-			selectedUserViewBean.setDomainBean(usersService.retrievePerson(selectedUserViewBean.getDomainBean().getId()));
 		}
 		catch (Exception e) {
 			logger.error("onTransfer exception = ", e);
 		}
 	}
 	
-	// TODO : implement this method so that the worksFor relationship is not redundant with organisations associations
+	/*-
+	 * TODO : implement this method so that the worksFor relationship is not redundant with
+	 * the associations of the various organisations. 
+	 * Example : if the user works for UNIV, and UNIV is associated with COMMUNITY, then when we say
+	 * the user works for UNIV, we should disable COMMUNITY (because he implicitly can access resources of
+	 * COMMUNITY through the UNIV->COMMUNITY association).
+	 */
 	public Boolean isDisabledInPickList(OrganisationViewBean organisationViewBean) {
 		return false;
 		/*

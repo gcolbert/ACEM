@@ -80,6 +80,14 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		return organisationViewBeans;
 	}
 
+	public void addOrganisationViewBean(OrganisationViewBean organisationViewBean) {
+		organisationViewBeans.add(organisationViewBean);
+	}
+
+	public void removeOrganisationViewBean(OrganisationViewBean organisationViewBean) {
+		organisationViewBeans.remove(organisationViewBean);
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

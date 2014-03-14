@@ -31,10 +31,10 @@ public interface OrganisationViewBean extends Pickable {
 
 	String getName();
 
+	String getShortname();
+
 	Organisation getDomainBean();
 
 	void setDomainBean(Organisation organisation);
-
-	String getShortname();
 
 }
