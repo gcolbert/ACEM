@@ -26,13 +26,13 @@ import org.slf4j.LoggerFactory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.ScenariosServiceImpl;
-import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
- * @author Grégoire Colbert @since 2014-02-25
+ * @author Grégoire Colbert
+ * @since 2014-02-25
  * 
  */
-public class AdministrativeDepartmentViewBean implements OrganisationViewBean, Pickable, Serializable,
+public class AdministrativeDepartmentViewBean implements OrganisationViewBean, Serializable,
 		Comparable<AdministrativeDepartmentViewBean> {
 
 	@SuppressWarnings("unused")

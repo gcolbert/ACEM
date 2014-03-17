@@ -25,8 +25,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Grégoire Colbert @since 2014-01-10
+ * A view bean for <a
+ * href="http://www.primefaces.org/showcase/ui/picklist.jsf">PrimeFaces PickList
+ * component</a>.
  * 
+ * @author Grégoire Colbert
+ * @since 2014-01-10
+ * @see <a href="http://www.primefaces.org/showcase/ui/picklist.jsf">PrimeFaces
+ *      PickList component</a>
  */
 @Component("pickListBean")
 @Scope("view")

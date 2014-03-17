@@ -21,6 +21,16 @@ package eu.ueb.acem.web.utils;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+/**
+ * Tool to display a message to the user after an action has been performed on
+ * the server side. The JSF page must have a
+ * <p:growl id="someId">
+ * component in the same form, and the component that calls the server must
+ * reference this id using update=":someId" attribute.
+ * 
+ * @author gcolbert
+ * @since 2014-03-17
+ */
 public class MessageDisplayer {
 
 	public static void showMessageToUserWithSeverityInfo(String summary, String details) {
@@ -32,7 +42,7 @@ public class MessageDisplayer {
 		FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, details);
 		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	}
-	
+
 	public static void showMessageToUserWithSeverityError(String summary, String details) {
 		FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, details);
 		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
@@ -42,5 +52,5 @@ public class MessageDisplayer {
 		FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_FATAL, summary, details);
 		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	}
-	
+
 }

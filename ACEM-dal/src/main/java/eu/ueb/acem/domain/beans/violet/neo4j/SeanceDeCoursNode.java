@@ -26,6 +26,7 @@ import java.util.Set;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
+import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -36,7 +37,8 @@ import eu.ueb.acem.domain.beans.violet.Cours;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  * 
  */
 @NodeEntity
@@ -48,6 +50,7 @@ public class SeanceDeCoursNode implements SeanceDeCours {
 	@GraphId
 	private Long id;
 	
+	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = CoursNode.class, type = "isPartOfCourse", direction = OUTGOING)
@@ -72,6 +75,14 @@ public class SeanceDeCoursNode implements SeanceDeCours {
 
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public String getDate() {
 		return date;
 	}

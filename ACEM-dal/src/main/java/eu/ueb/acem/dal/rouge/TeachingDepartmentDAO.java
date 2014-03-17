@@ -33,7 +33,8 @@ import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
 
 /**
- * @author Grégoire Colbert @since 2014-02-07
+ * @author Grégoire Colbert
+ * @since 2014-02-07
  * 
  */
 @Repository("teachingDepartmentDAO")

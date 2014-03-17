@@ -22,7 +22,8 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
- * @author Grégoire Colbert @since 2014-02-25
+ * @author Grégoire Colbert
+ * @since 2014-02-25
  * 
  */
 public interface OrganisationViewBean extends Pickable {

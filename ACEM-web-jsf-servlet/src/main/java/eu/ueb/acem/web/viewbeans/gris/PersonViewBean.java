@@ -30,7 +30,8 @@ import eu.ueb.acem.web.viewbeans.Pickable;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
- * @author Grégoire Colbert @since 2014-02-25
+ * @author Grégoire Colbert
+ * @since 2014-02-25
  * 
  */
 public class PersonViewBean implements Pickable, Serializable, Comparable<PersonViewBean> {

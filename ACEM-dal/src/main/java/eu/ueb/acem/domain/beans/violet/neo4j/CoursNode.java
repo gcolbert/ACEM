@@ -31,11 +31,12 @@ import eu.ueb.acem.domain.beans.violet.Cours;
 import eu.ueb.acem.domain.beans.violet.UniteEnseignement;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  * 
  */
 @NodeEntity
-@TypeAlias("Class")
+@TypeAlias("TeachingClass")
 public class CoursNode implements Cours {
 
 	private static final long serialVersionUID = -4467389921550574916L;

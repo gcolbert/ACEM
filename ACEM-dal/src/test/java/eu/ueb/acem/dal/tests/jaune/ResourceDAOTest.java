@@ -37,7 +37,8 @@ import eu.ueb.acem.dal.jaune.SoftwareDAO;
 import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
 
 /**
- * @author Grégoire Colbert @since 2014-03-11
+ * @author Grégoire Colbert
+ * @since 2014-03-11
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -51,7 +51,8 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 /**
- * @author Grégoire Colbert @since 2014-02-19
+ * @author Grégoire Colbert
+ * @since 2014-02-19
  * 
  */
 @Controller("organisationsController")

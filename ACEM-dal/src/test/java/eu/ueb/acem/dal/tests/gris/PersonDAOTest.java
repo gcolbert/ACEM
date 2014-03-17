@@ -38,7 +38,8 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-22
+ * @author Grégoire Colbert
+ * @since 2013-11-22
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)

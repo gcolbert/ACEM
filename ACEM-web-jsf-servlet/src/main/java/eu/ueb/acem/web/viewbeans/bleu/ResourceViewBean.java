@@ -18,23 +18,22 @@
  */
 package eu.ueb.acem.web.viewbeans.bleu;
 
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
- * @author Grégoire Colbert @since 2014-02-25
+ * @author Grégoire Colbert
+ * @since 2014-02-25
  * 
  */
-public class ResourceViewBean implements Pickable {
-
-	private Long id;
+public interface ResourceViewBean extends Pickable {
 	
-	@Override
-	public Long getId() {
-		return id;
-	}
+	Long getId();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	String getName();
+
+	Organisation getDomainBean();
+
+	void setDomainBean(Organisation organisation);
 
 }

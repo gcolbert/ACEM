@@ -16,7 +16,8 @@ import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.services.OrganisationsService;
 
 /**
- * @author Grégoire Colbert @since 2014-02-26
+ * @author Grégoire Colbert
+ * @since 2014-02-26
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)

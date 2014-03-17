@@ -25,7 +25,8 @@ import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 /**
- * @author Grégoire Colbert @since 2014-03-03
+ * @author Grégoire Colbert
+ * @since 2014-03-03
  * 
  */
 public interface PersonRepository extends GenericRepository<PersonneNode> {

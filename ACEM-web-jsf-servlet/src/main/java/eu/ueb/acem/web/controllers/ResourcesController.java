@@ -39,9 +39,11 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
+import eu.ueb.acem.web.viewbeans.bleu.ResourceViewBean;
 
 /**
- * @author Grégoire Colbert @since 2014-02-19
+ * @author Grégoire Colbert
+ * @since 2014-02-19
  * 
  */
 @Controller("resourcesController")
@@ -61,6 +63,8 @@ public class ResourcesController extends AbstractContextAwareController {
 	private TreeNode selectedNode;
 
 	private String selectedResourceType;
+	
+	private ResourceViewBean selectedResourceViewBean;
 
 	private List<String> categoriesForSelectedResourceType;
 

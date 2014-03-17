@@ -25,13 +25,13 @@ import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
- * @author Grégoire Colbert @since 2014-02-25
+ * @author Grégoire Colbert
+ * @since 2014-02-25
  * 
  */
-public class InstitutionViewBean implements OrganisationViewBean, Pickable, Serializable, Comparable<InstitutionViewBean> {
+public class InstitutionViewBean implements OrganisationViewBean, Serializable, Comparable<InstitutionViewBean> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(InstitutionViewBean.class);

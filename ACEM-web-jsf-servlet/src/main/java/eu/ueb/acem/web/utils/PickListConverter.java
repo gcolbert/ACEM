@@ -31,8 +31,17 @@ import org.slf4j.LoggerFactory;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
- * @author Grégoire Colbert @since 2014-02-25
+ * A converter implementation for <a
+ * href="http://www.primefaces.org/showcase/ui/picklist.jsf">PrimeFaces PickList
+ * component</a>. It must be referenced using the converter attribute of the
+ * p:pickList element with a value equal to "PickListConverter" (in other words,
+ * use &lt;p:pickList converter="PickListConverter" .../&gt;). The view beans
+ * must implement the {@link Pickable} interface for this converter to work.
  * 
+ * @author Grégoire Colbert
+ * @since 2014-02-25
+ * @see <a href="http://www.primefaces.org/showcase/ui/picklist.jsf">PrimeFaces
+ *      PickList component</a>
  */
 @FacesConverter("PickListConverter")
 public class PickListConverter implements Converter {

@@ -22,13 +22,13 @@ import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
- * @author Grégoire Colbert @since 2014-02-25
+ * @author Grégoire Colbert
+ * @since 2014-02-25
  * 
  */
-public class CommunityViewBean implements OrganisationViewBean, Pickable, Serializable, Comparable<CommunityViewBean> {
+public class CommunityViewBean implements OrganisationViewBean, Serializable, Comparable<CommunityViewBean> {
 
 	private static final long serialVersionUID = -116654020465612191L;
 

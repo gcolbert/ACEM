@@ -29,7 +29,8 @@ import eu.ueb.acem.domain.beans.vert.Batiment;
 import eu.ueb.acem.domain.beans.vert.Etage;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  * 
  */
 @NodeEntity

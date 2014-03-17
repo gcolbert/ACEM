@@ -45,14 +45,14 @@ import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  * 
  */
 @NodeEntity
 @TypeAlias("PedagogicalScenario")
 public class ScenarioNode implements Scenario {
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ScenarioNode.class);
 
 	private static final long serialVersionUID = -5248471016348742765L;

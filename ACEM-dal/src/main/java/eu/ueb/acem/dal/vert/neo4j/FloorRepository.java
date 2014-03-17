@@ -22,7 +22,8 @@ import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.vert.neo4j.EtageNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  * 
  */
 public interface FloorRepository extends GenericRepository<EtageNode> {

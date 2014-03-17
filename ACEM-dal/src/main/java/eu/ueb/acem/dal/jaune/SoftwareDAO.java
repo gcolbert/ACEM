@@ -33,7 +33,8 @@ import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
 
 /**
- * @author Grégoire Colbert @since 2014-03-11
+ * @author Grégoire Colbert
+ * @since 2014-03-11
  * 
  */
 @Repository("softwareDAO")

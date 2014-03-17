@@ -28,13 +28,18 @@ import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * TODO This class is not used for now, because Spring 3 doesn't allow the
+ * autowiring of generics. It is solved in Spring 4 :
+ * <ul>
+ * <li>http://www.jayway.com/2013/11/03/spring-and-autowiring-of-generic-types/</li>
+ * <li>https://spring.io/blog/2013/12/03/spring-framework-4-0-and-java-generics</li>
+ * </ul>
+ * but for now, we cannot use Spring 4 because Spring Data Neo4j isn't yet
+ * compatible.
  * 
- * TODO : this class is not used for now, because Spring 3 doesn't allow the autowiring of generics.
- * 	It is solved in Spring 4 :
- * 	 - http://www.jayway.com/2013/11/03/spring-and-autowiring-of-generic-types/
- *   - https://spring.io/blog/2013/12/03/spring-framework-4-0-and-java-generics
- *   but for now, we cannot use Spring 4 because Spring Data Neo4j isn't yet compatible.
+ * @author Grégoire Colbert
+ * @since 2013-11-20
+ * 
  */
 //@Repository("besoinDAOv2") // Uncomment to use this class
 @SuppressWarnings("unused")

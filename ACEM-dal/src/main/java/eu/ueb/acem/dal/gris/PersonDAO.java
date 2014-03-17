@@ -33,7 +33,8 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 /**
- * @author Grégoire Colbert @since 2013-12-11
+ * @author Grégoire Colbert
+ * @since 2013-12-11
  * 
  */
 @Repository("personDAO")

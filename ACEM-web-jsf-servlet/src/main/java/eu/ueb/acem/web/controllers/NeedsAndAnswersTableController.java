@@ -19,6 +19,7 @@
 package eu.ueb.acem.web.controllers;
 
 import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,11 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.services.NeedsAndAnswersService;
-import eu.ueb.acem.web.viewbeans.TableBean;
+import eu.ueb.acem.web.viewbeans.SortableTableBean;
 
 /**
- * @author Grégoire Colbert @since 2014-01-10
+ * @author Grégoire Colbert
+ * @since 2014-01-10
  * 
  */
 @Controller("needsAndAnswersTableController")
@@ -49,7 +51,7 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 	private NeedsAndAnswersService needsAndAnswersService;
 
 	@Autowired
-	private TableBean<Scenario> tableBean;
+	private SortableTableBean<Scenario> sortableTableBean;
 
 	private Reponse selectedAnswer;
 
@@ -62,9 +64,9 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 			logger.info("entering setScenariosRelatedToSelectedAnswer");
 			Collection<Scenario> scenarios = needsAndAnswersService.getScenariosRelatedToAnswer(selectedAnswer.getId());
 			logger.info("Found {} scenarios related to answer {}.", scenarios.size(), selectedAnswer.getName());
-			tableBean.getTableEntries().clear();
+			sortableTableBean.getTableEntries().clear();
 			for (Scenario scenario : scenarios) {
-				tableBean.getTableEntries().add(scenario);
+				sortableTableBean.getTableEntries().add(scenario);
 			}
 			logger.info("leaving setScenariosRelatedToSelectedAnswer");
 			logger.info("------");
@@ -72,7 +74,7 @@ public class NeedsAndAnswersTableController extends AbstractContextAwareControll
 	}
 
 	public Collection<Scenario> getScenariosRelatedToSelectedAnswer() {
-		return tableBean.getTableEntries();
+		return sortableTableBean.getTableEntries();
 	}
 
 	public void setSelectedAnswer(Long id) {

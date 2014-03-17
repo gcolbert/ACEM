@@ -19,7 +19,8 @@
 package eu.ueb.acem.domain.beans.jaune;
 
 /**
- * @author Grégoire Colbert @since 2014-02-06
+ * @author Grégoire Colbert
+ * @since 2014-02-06
  * 
  */
 public interface FormationProfessionnelle extends Ressource {

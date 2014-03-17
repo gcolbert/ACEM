@@ -94,29 +94,18 @@
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
 					<p:treeNode type="category" styleClass="#{treeNodeData.styleClass}">
-					<!-- 
-						<p:inplace editor="true" event="dblclick">
-							<p:ajax event="save"
-								listener="#{resourcesController.onLabelSave(treeNodeData)}"
-								update="@this" />
-							<p:inputText value="#{treeNodeData.label}" />
-						</p:inplace>
-					 -->
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
 					<p:treeNode type="resource" styleClass="#{treeNodeData.styleClass}">
-					<!-- 
-						<p:inplace editor="true" event="dblclick">
-							<p:ajax event="save"
-								listener="#{resourcesController.onLabelSave(treeNodeData)}"
-								update="@this" />
-							<p:inputText value="#{treeNodeData.label}" />
-						</p:inplace>
-					 -->
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
 				</p:tree>
 			</p:panel>
+
+			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}" rendered="#{resourcesController.selectedResource != null}">
+				
+			</p:panel>
+				
 		</h:form>
 
 		<p:dialog id="dialogCreateResourceId"
@@ -142,7 +131,7 @@
 					<p:message for="newSoftwareName" display="text" />
 				</h:panelGrid>
 
-				<p:commandButton
+				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value)}"

@@ -28,7 +28,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 /**
- * @author Grégoire Colbert @since 2014-01-22
+ * @author Grégoire Colbert
+ * @since 2014-01-22
  * 
  */
 @Controller("mainMenuController")

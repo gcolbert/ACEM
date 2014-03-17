@@ -39,6 +39,11 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 
+/**
+ * @author Grégoire Colbert
+ * @since 2013-11-20
+ * 
+ */
 @org.springframework.stereotype.Service("organisationsService")
 public class OrganisationsServiceImpl implements OrganisationsService {
 

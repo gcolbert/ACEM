@@ -24,7 +24,8 @@ import java.util.Set;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  * 
  */
 public interface ActivitePedagogique extends Serializable, Comparable<ActivitePedagogique> {

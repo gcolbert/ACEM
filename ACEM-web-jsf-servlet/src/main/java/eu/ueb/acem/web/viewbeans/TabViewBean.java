@@ -26,7 +26,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Grégoire Colbert @since 2014-03-04
+ * @author Grégoire Colbert
+ * @since 2014-03-04
  * 
  */
 @Component("tabViewBean")

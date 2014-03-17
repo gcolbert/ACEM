@@ -25,8 +25,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Grégoire Colbert @since 2014-03-06
+ * A extended {@link TableBean} to display domain view beans in a table and sort
+ * them, if they implement the {@link Comparable} interface.
+ * 
+ * @author Grégoire Colbert
+ * @since 2014-03-06
  * @param <E>
+ *            A domain view bean, chosen from the eu.ueb.acem.web.viewbeans.*
+ *            packages
  * 
  */
 @Component("sortableTableBean")
@@ -36,11 +42,11 @@ public class SortableTableBean<E extends Comparable<E>> extends TableBean<E> {
 	private static final long serialVersionUID = -5189856159830582038L;
 
 	public void sort() {
-		Collections.sort(tableEntries);
+		Collections.sort(getTableEntries());
 	}
 
 	public void sortReverseOrder() {
-		Collections.sort(tableEntries, Collections.reverseOrder());
+		Collections.sort(getTableEntries(), Collections.reverseOrder());
 	}
 
 	@Override
@@ -48,5 +54,5 @@ public class SortableTableBean<E extends Comparable<E>> extends TableBean<E> {
 		super.setTableEntries(collectionEntities);
 		sortReverseOrder();
 	}
-	
+
 }

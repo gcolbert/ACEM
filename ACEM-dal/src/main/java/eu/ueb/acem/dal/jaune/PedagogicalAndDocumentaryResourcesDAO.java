@@ -33,7 +33,8 @@ import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
 
 /**
- * @author Grégoire Colbert @since 2014-03-11
+ * @author Grégoire Colbert
+ * @since 2014-03-11
  * 
  */
 @Repository("pedagogicalAndDocumentaryResourcesDAO")

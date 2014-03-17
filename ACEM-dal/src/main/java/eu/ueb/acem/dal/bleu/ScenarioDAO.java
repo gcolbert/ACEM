@@ -35,7 +35,8 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Personne;
 
 /**
- * @author Grégoire Colbert @since 2013-12-11
+ * @author Grégoire Colbert
+ * @since 2013-12-11
  * 
  */
 @Repository("scenarioDAO")

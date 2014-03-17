@@ -39,7 +39,8 @@ import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-22
+ * @author Grégoire Colbert
+ * @since 2013-11-22
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -20,7 +20,8 @@ import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.services.UsersService;
 
 /**
- * @author Grégoire Colbert @since 2014-02-07
+ * @author Grégoire Colbert
+ * @since 2014-02-07
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)

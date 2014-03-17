@@ -37,10 +37,9 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 /**
- * @author Grégoire Colbert (Université européenne de Bretagne) @since
- *         2013-11-25
+ * @author Grégoire Colbert (Université européenne de Bretagne)
  * @author Yves Deschamps (Universite de Lille 1) - 2010
- * 
+ * @since 2013-11-25
  */
 public class AuthenticatorServiceImpl implements Serializable, InitializingBean, AuthenticatorService {
 

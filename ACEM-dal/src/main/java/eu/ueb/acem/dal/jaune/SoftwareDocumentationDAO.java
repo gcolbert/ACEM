@@ -33,7 +33,8 @@ import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
 
 /**
- * @author Grégoire Colbert @since 2014-03-11
+ * @author Grégoire Colbert
+ * @since 2014-03-11
  * 
  */
 @Repository("softwareDocumentationDAO")

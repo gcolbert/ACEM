@@ -29,8 +29,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Grégoire Colbert @since 2014-01-10
+ * A simple view bean that allows to display domain view beans in a table.
+ * @author Grégoire Colbert
+ * @since 2014-01-10
  * @param <E>
+ * @see SortableTableBean An extended TableBean that allows sorting.
  * 
  */
 @Component("tableBean")
@@ -42,7 +45,7 @@ public class TableBean<E> implements Serializable {
 
 	private static final long serialVersionUID = -3164178023755035995L;
 
-	protected List<E> tableEntries;
+	private List<E> tableEntries;
 
 	public TableBean() {
 		tableEntries = new ArrayList<E>();

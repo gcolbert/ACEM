@@ -17,7 +17,8 @@ import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.services.NeedsAndAnswersService;
 
 /**
- * @author Grégoire Colbert @since 2013-11-27
+ * @author Grégoire Colbert
+ * @since 2013-11-27
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)

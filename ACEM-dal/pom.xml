@@ -34,9 +34,6 @@
 		 <!-- 
 		<org.springframework-version>4.0.0.RELEASE</org.springframework-version>
 		 -->
-		 <!-- 
-		<org.springframework.data-version>2.3.3.RELEASE</org.springframework.data-version>
-		 -->
 		<org.springframework.data-version>3.0.0.RELEASE</org.springframework.data-version>
 		<org.slf4j-version>1.7.1</org.slf4j-version>
 		<javax.validation-version>1.1.0.Final</javax.validation-version>

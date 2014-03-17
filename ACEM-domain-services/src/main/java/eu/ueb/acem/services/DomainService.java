@@ -23,9 +23,9 @@ import java.io.Serializable;
 import eu.ueb.acem.domain.beans.gris.Personne;
 
 /**
- * @author Grégoire Colbert @since 2013-11-25
+ * @author Grégoire Colbert
  * @author Yves Deschamps (Universite de Lille 1) - 2010
- * 
+ * @since 2013-11-25
  */
 public interface DomainService extends Serializable {
 

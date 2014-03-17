@@ -26,7 +26,8 @@ import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
- * @author Grégoire Colbert @since 2014-02-25
+ * @author Grégoire Colbert
+ * @since 2014-02-25
  * 
  */
 public class PedagogicalActivityViewBean implements Pickable, Serializable, Comparable<PedagogicalActivityViewBean> {

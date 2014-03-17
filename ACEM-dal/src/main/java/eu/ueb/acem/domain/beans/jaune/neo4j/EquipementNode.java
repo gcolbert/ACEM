@@ -33,7 +33,8 @@ import eu.ueb.acem.domain.beans.vert.EspacePhysique;
 import eu.ueb.acem.domain.beans.vert.neo4j.EspacePhysiqueNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  * 
  */
 @NodeEntity
@@ -63,6 +64,7 @@ public class EquipementNode extends RessourceNode implements Equipement {
 		return storageLocations;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setStorageLocations(Set<? extends EspacePhysique> storageLocations) {
 		this.storageLocations = (Set<EspacePhysiqueNode>) storageLocations;

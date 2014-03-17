@@ -36,7 +36,8 @@ import eu.ueb.acem.web.viewbeans.Pickable;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
- * @author Grégoire Colbert @since 2014-02-17
+ * @author Grégoire Colbert
+ * @since 2014-02-17
  * 
  */
 public class ScenarioViewBean implements Pickable, Serializable, Comparable<ScenarioViewBean> {

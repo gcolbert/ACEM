@@ -42,7 +42,8 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 
 /**
- * @author Grégoire Colbert @since 2014-03-05
+ * @author Grégoire Colbert
+ * @since 2014-03-05
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)

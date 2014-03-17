@@ -28,7 +28,8 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  * 
  */
 public interface PedagogicalAnswerRepository extends GenericRepository<ReponseNode> {

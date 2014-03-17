@@ -33,7 +33,8 @@ import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
 
 /**
- * @author Grégoire Colbert @since 2014-02-07
+ * @author Grégoire Colbert
+ * @since 2014-02-07
  * 
  */
 @Repository("communityDAO")

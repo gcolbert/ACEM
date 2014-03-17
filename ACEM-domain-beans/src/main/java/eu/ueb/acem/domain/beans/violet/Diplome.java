@@ -22,7 +22,8 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * @author Grégoire Colbert @since 2013-11-20
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  * 
  */
 public interface Diplome extends Serializable {

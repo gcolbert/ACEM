@@ -34,6 +34,11 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 
+/**
+ * @author Grégoire Colbert
+ * @since 2013-11-20
+ * 
+ */
 @Service("scenariosService")
 public class ScenariosServiceImpl implements ScenariosService {
 

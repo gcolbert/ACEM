@@ -20,10 +20,10 @@ package eu.ueb.acem.dal.jaune;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
 /**
- * @author Grégoire Colbert @since 2013-12-11
+ * @author Grégoire Colbert
+ * @since 2013-12-11
  * 
  */
 public class RessourceDAO {

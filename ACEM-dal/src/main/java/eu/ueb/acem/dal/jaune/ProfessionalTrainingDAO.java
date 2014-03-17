@@ -33,7 +33,8 @@ import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
 import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
 
 /**
- * @author Grégoire Colbert @since 2013-12-11
+ * @author Grégoire Colbert
+ * @since 2013-12-11
  * 
  */
 @Repository("professionalTrainingDAO")

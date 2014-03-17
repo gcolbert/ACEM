@@ -26,7 +26,8 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
 
 /**
- * @author Grégoire Colbert @since 2014-02-06
+ * @author Grégoire Colbert
+ * @since 2014-02-06
  * 
  */
 @NodeEntity
