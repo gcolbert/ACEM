@@ -243,7 +243,7 @@
 					<p:message for="newScenarioObjective" display="text" />
 				</h:panelGrid>
 
-				<p:commandButton
+				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{myScenariosController.createScenario(input1.value, input2.value)}"

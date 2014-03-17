@@ -60,9 +60,14 @@
 		<description>A controller for the "My scenarios" page.</description>
 	</bean>
 
-	<bean id="resourcesController" class="eu.ueb.acem.web.controllers.ResourcesController"
+	<bean id="resourcesSelectedResourceController" class="eu.ueb.acem.web.controllers.ResourcesSelectedResourceController"
 		parent="abstractContextAwareController">
-		<description>A controller for the "My scenarios" page.</description>
+		<description>A controller for the "My tools" page.</description>
+	</bean>
+
+	<bean id="resourcesTreeController" class="eu.ueb.acem.web.controllers.ResourcesTreeController"
+		parent="abstractContextAwareController">
+		<description>A controller for the "My tools" page.</description>
 	</bean>
 
 	<bean id="usersController" class="eu.ueb.acem.web.controllers.UsersController"

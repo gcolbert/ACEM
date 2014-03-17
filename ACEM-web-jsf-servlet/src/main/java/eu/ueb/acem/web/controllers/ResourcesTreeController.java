@@ -46,13 +46,13 @@ import eu.ueb.acem.web.viewbeans.bleu.ResourceViewBean;
  * @since 2014-02-19
  * 
  */
-@Controller("resourcesController")
+@Controller("resourcesTreeController")
 @Scope("view")
-public class ResourcesController extends AbstractContextAwareController {
+public class ResourcesTreeController extends AbstractContextAwareController {
 
 	private static final long serialVersionUID = -5663154564837226988L;
 
-	private static final Logger logger = LoggerFactory.getLogger(ResourcesController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ResourcesTreeController.class);
 
 	@Autowired
 	private ResourcesService resourcesService;
@@ -63,12 +63,10 @@ public class ResourcesController extends AbstractContextAwareController {
 	private TreeNode selectedNode;
 
 	private String selectedResourceType;
-	
-	private ResourceViewBean selectedResourceViewBean;
 
 	private List<String> categoriesForSelectedResourceType;
 
-	public ResourcesController() {
+	public ResourcesTreeController() {
 	}
 
 	public void prepareTree(String resourceType) {
@@ -149,7 +147,7 @@ public class ResourcesController extends AbstractContextAwareController {
 		}
 		this.selectedNode = selectedNode;
 	}
-
+	
 	public List<String> getCategoriesForSelectedResourceType() {
 		return categoriesForSelectedResourceType;
 	}

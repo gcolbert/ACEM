@@ -49,10 +49,12 @@ public class EditableTreeBean implements Serializable {
 
 	public EditableTreeBean() {
 		// For some reason, the root of the tree is not visible
+		// root = new DefaultTreeNode(new TreeNodeData(null, "Root", null),
+		// null);
 		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
-		
-		// Therefore, we add a list of visible roots, so that it is possible to right
-		// click on something to add children nodes
+
+		// Therefore, we add a list of visible roots, so that it is possible to
+		// right click on something to add children nodes
 		visibleRoots = new ArrayList<TreeNode>();
 	}
 
@@ -60,7 +62,7 @@ public class EditableTreeBean implements Serializable {
 		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
 		visibleRoots = new ArrayList<TreeNode>();
 	}
-	
+
 	public TreeNode getRoot() {
 		return root;
 	}
@@ -73,6 +75,20 @@ public class EditableTreeBean implements Serializable {
 		visibleRoots.add(new DefaultTreeNode(new TreeNodeData(null, label, null), root));
 	}
 
+	/**
+	 * 
+	 * @param parent
+	 *            The node of the parent
+	 * @param id
+	 *            The identifier of the underlying domain bean (so that we can,
+	 *            for example, save the label if the user modifies it)
+	 * @param label
+	 *            The text displayed by the node
+	 * @param concept
+	 *            Allows different kinds of &lt;p:treeNode&gt; using the "type"
+	 *            attribute (e.g. &lt;p:treeNode type="Answer"&gt;)
+	 * @return the node that the method created
+	 */
 	public TreeNode addChild(TreeNode parent, Long id, String label, String concept) {
 		TreeNode child = new DefaultTreeNode(concept, new TreeNodeData(id, label, concept), parent);
 		parent.setExpanded(true);
@@ -109,7 +125,7 @@ public class EditableTreeBean implements Serializable {
 			expandParentsOf(node);
 		}
 	}
-	
+
 	public static class TreeNodeData implements Serializable {
 
 		private static final long serialVersionUID = -5623188924862380160L;
@@ -126,6 +142,11 @@ public class EditableTreeBean implements Serializable {
 			this.concept = concept;
 		}
 
+		/**
+		 * @return the identifier of the node, which is, by construction, the
+		 *         identifier of the underlying domain bean (so that we can, for
+		 *         example, save the label if the user modifies it)
+		 */
 		public Long getId() {
 			return id;
 		}
@@ -150,6 +171,15 @@ public class EditableTreeBean implements Serializable {
 			this.concept = concept;
 		}
 
+		/**
+		 * By convention, the CSS class returned by the TreeNodeData class will
+		 * be equal to the "concept" parameter that was used to construct it.
+		 * For example, if you create a node with the concept "Answer", then you
+		 * have to use a CSS class equal to ".Answer" to give a style to this
+		 * node.
+		 * 
+		 * @return the concept
+		 */
 		public String getStyleClass() {
 			return getConcept();
 		}

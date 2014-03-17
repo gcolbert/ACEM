@@ -36,11 +36,11 @@
 
  	<!-- CHOIX 1 : pour utiliser une base temporaire créée dynamiquement dans le répertoire "target/neo4j-db" -->
  	<!-- 
-	<neo4j:config storeDirectory="target/neo4j-db" />
+	<neo4j:config storeDirectory="target/neo4j-db" base-package="eu.ueb.acem.domain.beans.*.neo4j" />
 	-->
 
  	<!-- CHOIX 2 : pour utiliser un serveur autonome -->
-	<neo4j:config graphDatabaseService="graphDatabaseService"/>
+	<neo4j:config graphDatabaseService="graphDatabaseService" base-package="eu.ueb.acem.domain.beans.*.neo4j"/>
 	<bean id="graphDatabaseService" class="org.springframework.data.neo4j.rest.SpringRestGraphDatabase">
 		<constructor-arg value="http://localhost:7474/db/data"/>
 	</bean>
