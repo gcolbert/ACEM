@@ -33,11 +33,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Composante;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
@@ -157,22 +153,8 @@ public class UsersController extends AbstractContextAwareController {
 				else {
 					logger.debug("We should dissociate {} and {}", movedOrganisationViewBean.getName(), getSelectedUserViewBean()
 							.getName());
-					String typeOfOrganisation = "";
-					// TODO : remove that "typeOfOrganisation" shit (see https://groups.google.com/d/msg/neo4j/GZlft7vw8n0/8Rb70lQ6jM8J)
-					if (movedOrganisationViewBean.getDomainBean() instanceof Communaute) {
-						typeOfOrganisation = "Community";
-					}
-					else if (movedOrganisationViewBean.getDomainBean() instanceof Etablissement) {
-						typeOfOrganisation = "Institution";
-					}
-					else if (movedOrganisationViewBean.getDomainBean() instanceof Service) {
-						typeOfOrganisation = "AdministrativeDepartment";
-					}
-					else if (movedOrganisationViewBean.getDomainBean() instanceof Composante) {
-						typeOfOrganisation = "TeachingDepartment";
-					}
 					if (usersService.dissociateUserWorkingForOrganisation(getSelectedUserViewBean().getId(),
-							movedOrganisationViewBean.getId(), typeOfOrganisation)) {
+							movedOrganisationViewBean.getId())) {
 						selectedUserViewBean.getDomainBean().removeWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
 						selectedUserViewBean.removeOrganisationViewBean(movedOrganisationViewBean);
 						logger.info("dissociation successful");

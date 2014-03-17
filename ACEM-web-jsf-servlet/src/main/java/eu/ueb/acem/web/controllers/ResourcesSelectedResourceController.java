@@ -20,10 +20,13 @@ package eu.ueb.acem.web.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.web.viewbeans.bleu.ResourceViewBean;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.services.ResourcesService;
+import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -37,9 +40,12 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 	private static final long serialVersionUID = -9206373933131626589L;
 
 	private static final Logger logger = LoggerFactory.getLogger(ResourcesSelectedResourceController.class);
-	
+
+	@Autowired
+	private ResourcesService resourcesService;
+
 	private ResourceViewBean selectedResourceViewBean;
-	
+
 	public ResourcesSelectedResourceController() {
 	}
 
@@ -50,5 +56,25 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 	public void setSelectedResourceViewBean(ResourceViewBean selectedResourceViewBean) {
 		this.selectedResourceViewBean = selectedResourceViewBean;
 	}
-	
+
+	public void setSelectedResource(String resourceType, Long id) {
+		logger.info("resourceType = {}, id = {}", resourceType, id);
+		Ressource resource = resourcesService.getResource(resourceType, id);
+		switch(resourceType) {
+		case "software":
+			break;
+		case "softwareDocumentation":
+			break;
+		case "pedagogicalAndDocumentaryResource":
+			break;
+		case "equipment":
+			break;
+		default:
+			logger.error("Unknown resourceType '{}'", resourceType);
+			break;
+		}
+
+		this.selectedResourceViewBean = selectedResourceViewBean;
+	}
+
 }

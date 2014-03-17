@@ -86,7 +86,8 @@ public class EditableTreeBean implements Serializable {
 	 *            The text displayed by the node
 	 * @param concept
 	 *            Allows different kinds of &lt;p:treeNode&gt; using the "type"
-	 *            attribute (e.g. &lt;p:treeNode type="Answer"&gt;)
+	 *            attribute (e.g. if "Answer" here, then the JSF can use
+	 *            &lt;p:treeNode type="Answer"&gt;)
 	 * @return the node that the method created
 	 */
 	public TreeNode addChild(TreeNode parent, Long id, String label, String concept) {

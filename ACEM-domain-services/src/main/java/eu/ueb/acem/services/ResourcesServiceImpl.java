@@ -131,6 +131,32 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
+	public Ressource getResource(String resourceType, Long id) {
+		Ressource entity = null;
+		switch (resourceType) {
+		case "software":
+			entity = softwareDAO.retrieveById(id);
+			break;
+		case "softwareDocumentation":
+			entity = softwareDocumentationDAO.retrieveById(id);
+			break;
+		case "professionalTraining":
+			entity = professionalTrainingDAO.retrieveById(id);
+			break;
+		case "equipment":
+			entity = equipmentDAO.retrieveById(id);
+			break;
+		case "pedagogicalAndDocumentaryResources":
+			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
+			break;
+		default:
+			logger.error("Unknown resourceType '{}'", resourceType);
+			break;
+		}
+		return entity;
+	}
+
+	@Override
 	public Collection<Applicatif> getSoftwaresWithCategory(String category) {
 		if (category != null) {
 			return softwareDAO.retrieveAllWithCategory(category);
@@ -182,8 +208,43 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public void saveResourceName(Long id, String label) {
-		
+	public void saveResourceName(String resourceType, Long id, String label) {
+		Ressource entity = null;
+		switch (resourceType) {
+		case "software":
+			entity = softwareDAO.retrieveById(id);
+			if (entity != null) {
+				entity = softwareDAO.update((Applicatif)entity);
+			}
+			break;
+		case "softwareDocumentation":
+			entity = softwareDocumentationDAO.retrieveById(id);
+			if (entity != null) {
+				entity = softwareDocumentationDAO.update((DocumentationApplicatif)entity);
+			}
+			break;
+		case "professionalTraining":
+			entity = professionalTrainingDAO.retrieveById(id);
+			if (entity != null) {
+				entity = professionalTrainingDAO.update((FormationProfessionnelle)entity);
+			}
+			break;
+		case "equipment":
+			entity = equipmentDAO.retrieveById(id);
+			if (entity != null) {
+				entity = equipmentDAO.update((Equipement)entity);
+			}
+			break;
+		case "pedagogicalAndDocumentaryResources":
+			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
+			if (entity != null) {
+				entity = pedagogicalAndDocumentaryResourcesDAO.update((RessourcePedagogiqueEtDocumentaire)entity);
+			}
+			break;
+		default:
+			logger.error("Unknown resourceType '{}'", resourceType);
+			break;
+		}
 	}
 
 }

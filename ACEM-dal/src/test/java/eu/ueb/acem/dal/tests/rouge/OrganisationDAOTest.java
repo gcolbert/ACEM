@@ -130,4 +130,30 @@ public class OrganisationDAOTest extends TestCase {
 				.getAdministrativeDepartments().contains(administrativeDepartment));
 	}
 
+	/**
+	 * Exists
+	 */
+	@Test
+	public final void t03_TestExists() {
+		// We create a new institution
+		Etablissement institution = new EtablissementNode("Université de Rennes 1", "UR1");
+		institution = institutionDAO.create(institution);
+
+		// We create a new community
+		Communaute community = new CommunauteNode("Université européenne de Bretagne", "UEB");
+		community = communityDAO.create(community);
+
+		// There must exactly 1 object in the community repository
+		assertEquals("There are more than one object in the community repository", new Long(1), communityDAO.count());
+
+		// There must exactly 1 object in the institution repository
+		assertEquals("There are more than one object in the institution repository", new Long(1),
+				institutionDAO.count());
+
+		assertFalse("The institution was found through the Community repository",
+				communityDAO.exists(institution.getId()));
+
+		assertTrue("The community was not found through the Community repository",
+				communityDAO.exists(community.getId()));
+	}
 }

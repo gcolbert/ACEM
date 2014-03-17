@@ -60,6 +60,6 @@ public interface UsersService {
 
 	boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
 
-	boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation, String typeOfOrganisation);
+	boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
 
 }

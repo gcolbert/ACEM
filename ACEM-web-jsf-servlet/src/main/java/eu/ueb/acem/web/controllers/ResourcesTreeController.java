@@ -34,12 +34,11 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
-import eu.ueb.acem.web.viewbeans.bleu.ResourceViewBean;
+import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 
 /**
  * @author Grégoire Colbert
@@ -56,6 +55,9 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 
 	@Autowired
 	private ResourcesService resourcesService;
+
+	@Autowired
+	private ResourcesSelectedResourceController resourcesSelectedResourceController;
 
 	@Autowired
 	private EditableTreeBean editableTreeBean;
@@ -78,50 +80,61 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		case "software":
 			editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL"));
 			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L, category, "category");
+				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L,
+						category, "category");
 				Collection<Applicatif> entities = resourcesService.getSoftwaresWithCategory(category);
 				for (Ressource entity : entities) {
-					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), "resource");
+					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
 				}
 			}
 			break;
 		case "softwareDocumentation":
 			editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL"));
 			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L, category, "category");
-				Collection<DocumentationApplicatif> entities = resourcesService.getSoftwareDocumentationsWithCategory(category);
+				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L,
+						category, "category");
+				Collection<DocumentationApplicatif> entities = resourcesService
+						.getSoftwareDocumentationsWithCategory(category);
 				for (Ressource entity : entities) {
-					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), "resource");
+					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
 				}
 			}
 			break;
+		/*
 		case "professionalTraining":
 			editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
 			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L, category, "category");
-				Collection<FormationProfessionnelle> entities = resourcesService.getProfessionalTrainingsWithCategory(category);
+				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L,
+						category, "category");
+				Collection<FormationProfessionnelle> entities = resourcesService
+						.getProfessionalTrainingsWithCategory(category);
 				for (Ressource entity : entities) {
-					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), "resource");
+					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
 				}
 			}
 			break;
+		*/
 		case "equipment":
 			editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL"));
 			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L, category, "category");
+				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L,
+						category, "category");
 				Collection<Equipement> entities = resourcesService.getEquipmentWithCategory(category);
 				for (Ressource entity : entities) {
-					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), "resource");
+					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
 				}
 			}
 			break;
 		case "pedagogicalAndDocumentaryResources":
-			editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL"));
+			editableTreeBean
+					.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL"));
 			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L, category, "category");
-				Collection<RessourcePedagogiqueEtDocumentaire> entities = resourcesService.getPedagogicalAndDocumentaryResourcesWithCategory(category);
+				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L,
+						category, "category");
+				Collection<RessourcePedagogiqueEtDocumentaire> entities = resourcesService
+						.getPedagogicalAndDocumentaryResourcesWithCategory(category);
 				for (Ressource entity : entities) {
-					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), "resource");
+					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
 				}
 			}
 			break;
@@ -147,7 +160,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		}
 		this.selectedNode = selectedNode;
 	}
-	
+
 	public List<String> getCategoriesForSelectedResourceType() {
 		return categoriesForSelectedResourceType;
 	}
@@ -166,14 +179,19 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		resourcesService.createResource(selectedResourceType, category, name);
 	}
 
+	/*
 	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
 		if (treeNodeData.getConcept().equals("resource")) {
-			resourcesService.saveResourceName(treeNodeData.getId(), treeNodeData.getLabel());
-			/*
+			//resourcesService.saveResourceName(treeNodeData.getId(), treeNodeData.getLabel());
 		} else if (treeNodeData.getConcept().equals("category")) {
-			resourcesService.saveCategoryName(treeNodeData.getId(), treeNodeData.getLabel());
-			*/
+			resourcesService.saveCategoryName(treeNodeData.getId(),
+			treeNodeData.getLabel());
 		}
 	}
+	*/
 	
+	public void onNodeSelect() {
+		resourcesSelectedResourceController.setSelectedResource(selectedNode.getType(), ((TreeNodeData)selectedNode.getData()).getId());
+	}
+
 }

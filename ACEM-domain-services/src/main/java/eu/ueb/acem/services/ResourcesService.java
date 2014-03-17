@@ -24,6 +24,7 @@ import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
 import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 
 /**
@@ -36,6 +37,8 @@ public interface ResourcesService {
 	Collection<String> getCategoriesForResourceType(String resourceType);
 
 	void createResource(String resourceType, String category, String name);
+
+	Ressource getResource(String resourceType, Long id);
 	
 	Collection<Applicatif> getSoftwaresWithCategory(String category);
 
@@ -47,6 +50,6 @@ public interface ResourcesService {
 
 	Collection<RessourcePedagogiqueEtDocumentaire> getPedagogicalAndDocumentaryResourcesWithCategory(String category);
 
-	void saveResourceName(Long id, String label);
+	void saveResourceName(String resourceType, Long id, String label);
 	
 }

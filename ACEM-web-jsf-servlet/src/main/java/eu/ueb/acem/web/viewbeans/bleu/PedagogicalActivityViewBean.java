@@ -24,6 +24,7 @@ import java.util.List;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.web.viewbeans.Pickable;
+import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 
 /**
  * @author Grégoire Colbert

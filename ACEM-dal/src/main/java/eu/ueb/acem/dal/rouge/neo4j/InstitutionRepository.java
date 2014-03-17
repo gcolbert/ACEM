@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.dal.rouge.neo4j;
 
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
 
@@ -27,5 +30,8 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
  * 
  */
 public interface InstitutionRepository extends GenericRepository<EtablissementNode> {
+	
+	@Query(value = "MATCH (n:Institution) WHERE id(n)=({id}) RETURN count(n)")
+	public Long count(@Param("id") Long id);
 	
 }

@@ -497,8 +497,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 				}
 				else if (movedOrganisationViewBean instanceof InstitutionViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
-					// can be an
-					// instance of CommunityViewBean,
+					// can be an instance of CommunityViewBean,
 					// AdministrativeDepartmentViewBean
 					// or TeachingDepartmentViewBean.
 					// So here, we have to test which class
@@ -669,24 +668,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 				}
 			}
 		}
-		if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
-			getCurrentOrganisationViewBean().setDomainBean(
-					organisationsService.retrieveCommunity(getCurrentOrganisationViewBean().getDomainBean().getId()));
-		}
-		else if (getCurrentOrganisationViewBean() instanceof InstitutionViewBean) {
-			getCurrentOrganisationViewBean().setDomainBean(
-					organisationsService.retrieveInstitution(getCurrentOrganisationViewBean().getDomainBean().getId()));
-		}
-		else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
-			getCurrentOrganisationViewBean().setDomainBean(
-					organisationsService.retrieveAdministrativeDepartment(getCurrentOrganisationViewBean()
-							.getDomainBean().getId()));
-		}
-		else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
-			getCurrentOrganisationViewBean().setDomainBean(
-					organisationsService.retrieveTeachingDepartment(getCurrentOrganisationViewBean().getDomainBean()
-							.getId()));
-		}
+		getCurrentOrganisationViewBean().setDomainBean(
+				organisationsService.retrieveOrganisation(getCurrentOrganisationViewBean().getDomainBean().getId()));
 	}
 
 	public void onAccordionPanelTabChange(TabChangeEvent event) {
