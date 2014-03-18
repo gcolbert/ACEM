@@ -36,4 +36,6 @@ public interface ResourceViewBean extends Pickable {
 
 	void setDomainBean(Ressource resource);
 
+	Boolean getFavoriteResource();
+	
 }

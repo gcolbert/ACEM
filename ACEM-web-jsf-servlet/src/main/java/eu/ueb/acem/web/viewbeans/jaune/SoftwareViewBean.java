@@ -38,6 +38,8 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 
 	private String name;
 
+	private Boolean favoriteResource;
+	
 	public SoftwareViewBean() {
 	}
 
@@ -84,6 +86,15 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 		this.name = name;
 	}
 
+	@Override
+	public Boolean getFavoriteResource() {
+		return favoriteResource;
+	}
+	
+	public void setFavoriteResource(Boolean favoriteResource) {
+		this.favoriteResource = favoriteResource;
+	}
+	
 	@Override
 	public int compareTo(SoftwareViewBean o) {
 		return name.compareTo(o.getName());

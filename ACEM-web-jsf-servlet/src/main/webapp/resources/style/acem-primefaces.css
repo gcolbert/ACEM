@@ -1,6 +1,6 @@
 #header {
 	color:white;
-	background-image:url("../../media/images/BandeauNumeriqueAccueil2013.png");
+	background-image:url("../../resources/images/BandeauNumeriqueAccueil2013.png");
 	background-repeat: no-repeat;
 	height: 60px;
 	background-size: 100% 100%, auto auto;
@@ -196,4 +196,17 @@ td[role=gridcell] .ui-button {
 	max-width:130px;
 	display:block;
 	margin:auto;
+}
+#formResources .bottom-toolboxes tr,
+#formResources .bottom-toolboxes td {
+	border: none;
+	background-color:white;
+	padding:0;
+	width:50%;
+}
+#formResources .bottom-toolboxes td:first-of-type {
+	padding-right:0.5em;
+}
+#formResources .bottom-toolboxes td:last-child {
+	padding-left:0.5em;
 }

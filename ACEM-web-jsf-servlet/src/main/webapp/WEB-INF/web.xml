@@ -47,7 +47,7 @@
 	</context-param>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>cupertino</param-value>
+		<param-value>acem-theme-2</param-value>
 	</context-param>
 	<context-param>
 		<param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>

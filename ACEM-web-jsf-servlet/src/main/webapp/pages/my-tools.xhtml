@@ -46,7 +46,7 @@
 						action="#{resourcesTreeController.prepareTree('equipment')}"
 						update=":formResources:resourcesTree">
 						<h:graphicImage
-							url="media/images/my-tools/my-tools.equipments.png"
+							url="resources/images/my-tools/my-tools.equipments.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}"
 							styleClass="menu-entry-image" />
 						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}</h:outputText></span>
@@ -54,7 +54,7 @@
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesTreeController.prepareTree('software')}"
 						update=":formResources:resourcesTree">
-						<h:graphicImage url="media/images/my-tools/my-tools.softwares.png"
+						<h:graphicImage url="resources/images/my-tools/my-tools.softwares.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}"
 							styleClass="menu-entry-image" />
 						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}</h:outputText></span>
@@ -63,7 +63,7 @@
 						action="#{resourcesTreeController.prepareTree('softwareDocumentation')}"
 						update=":formResources:resourcesTree">
 						<h:graphicImage
-							url="media/images/my-tools/my-tools.software-documentations.png"
+							url="resources/images/my-tools/my-tools.software-documentations.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}"
 							styleClass="menu-entry-image" />
 						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}</h:outputText></span>
@@ -72,7 +72,7 @@
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesTreeController.prepareTree('professionalTraining')}"
 						update=":formResources:resourcesTree">
-						<h:graphicImage url="media/images/my-tools/my-tools.professional-trainings.png"
+						<h:graphicImage url="resources/images/my-tools/my-tools.professional-trainings.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"
 							styleClass="menu-entry-image" />
 						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}</h:outputText></span>
@@ -82,7 +82,7 @@
 						action="#{resourcesTreeController.prepareTree('pedagogicalAndDocumentaryResources')}"
 						update=":formResources:resourcesTree">
 						<h:graphicImage
-							url="media/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
+							url="resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}"
 							styleClass="menu-entry-image" />
 						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}</h:outputText></span>
@@ -93,7 +93,8 @@
 					value="#{resourcesTreeController.treeRoot}" var="treeNodeData"
 					selectionMode="single"
 					selection="#{resourcesTreeController.selectedNode}">
-					<p:ajax event="select" update="@form :formResources:messagesDisplayer"
+					<p:ajax event="select"
+						update="@this :formResources:selectedResourcePanel :formResources:messagesDisplayer"
 						listener="#{resourcesTreeController.onNodeSelect}" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
@@ -104,31 +105,54 @@
 					<p:treeNode type="software" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
-					<p:treeNode type="softwareDocumentation" styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode type="softwareDocumentation"
+						styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
-					<p:treeNode type="equipment" styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode type="equipment"
+						styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
-					<p:treeNode type="pedagogicalAndDocumentaryResources" styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode type="pedagogicalAndDocumentaryResources"
+						styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
 				</p:tree>
 			</p:panel>
 
-			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}"
+			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}" id="selectedResourcePanel"
 				rendered="#{resourcesSelectedResourceController.selectedResourceViewBean != null}">
 				<p:panelGrid columns="2">
 					<p:column>
-						<h:outputText styleClass="title" value="#{resourcesSelectedResourceController.selectedResourceViewBean.name}" />
+						<p:panelGrid columns="1">
+							<h:outputText styleClass="title"
+								value="#{resourcesSelectedResourceController.selectedResourceViewBean.name}" />
+							<p:selectBooleanCheckbox
+								value="#{resourcesSelectedResourceController.selectedResourceViewBean.favoriteResource}" />
+						</p:panelGrid>
 					</p:column>
 					<p:column>
-						<h:outputText value="#{resourcesSelectedResourceController.selectedResourceViewBean.name}" />
+						<p:commandButton value="Test" />
 					</p:column>
 				</p:panelGrid>
 			</p:panel>
 
- 		</h:form>
+			<p:panelGrid styleClass="bottom-toolboxes">
+				<p:row>
+					<p:column width="50%">
+						<p:panel
+							header="#{msgs['RESOURCES.MY_FAVORITE_RESOURCES.HEADER']}">
+						</p:panel>
+					</p:column>
+					<p:column width="50%">
+						<p:panel
+							header="#{msgs['RESOURCES.LAST_VIEWED_RESOURCES.HEADER']}">
+						</p:panel>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+		</h:form>
 
 		<p:dialog id="dialogCreateResourceId"
 			header="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
@@ -153,14 +177,16 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
 						binding="#{input2}" />
 					<p:message for="newSoftwareName" display="text" />
+					
+					<f:facet name="footer">
+						<p:commandButton styleClass="dialogValidationButton"
+							value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
+							icon="ui-icon-check" validateClient="true"
+							action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value)}"
+							update=":formResources:resourcesTree :formResources:messagesDisplayer"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
+					</f:facet>
 				</p:panelGrid>
-
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
-					icon="ui-icon-check" validateClient="true"
-					action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value)}"
-					update=":formResources:resourcesTree :formResources:messagesDisplayer"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
 			</h:form>
 		</p:dialog>
 

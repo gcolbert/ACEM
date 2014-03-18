@@ -24,10 +24,14 @@ import org.springframework.stereotype.Component;
 import eu.ueb.acem.domain.beans.gris.Personne;
 
 /**
- * An abstract class inherited by all the beans for them to get: - the context
- * of the application (sessionController). - the domain service (domainService).
- * - the application service (applicationService). - the i18n service
- * (i18nService).
+ * An abstract class inherited by all the beans for them to get:
+ * 
+ * <ul>
+ * <li>the context of the application (sessionController).</li>
+ * <li>the domain service (domainService).</li>
+ * <li>the application service (applicationService).</li>
+ * <li>the i18n service (i18nService).
+ * </ul>
  */
 @Component
 public abstract class AbstractContextAwareController extends AbstractDomainAwareBean {
