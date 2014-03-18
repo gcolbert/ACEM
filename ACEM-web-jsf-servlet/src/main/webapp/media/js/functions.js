@@ -58,7 +58,7 @@ function highlightTableRows(tableId) {
     }
     var previousClass = null;
     // add event handlers so rows light up
-    for (i = 0; i < rows.length; i++) {
+    for (var i = 0; i < rows.length; i++) {
         rows[i].onmouseover = function() { previousClass = this.className; this.className = 'portlet-table-selected'; };
         rows[i].onmouseout = function() { this.className = previousClass; };
     }

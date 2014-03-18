@@ -41,7 +41,7 @@
 				</p:contextMenu>
 				-->
 
-				<p:panelGrid columns="4">
+				<p:panelGrid styleClass="menu" columns="4">
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesTreeController.prepareTree('equipment')}"
 						update=":formResources:resourcesTree">
@@ -93,7 +93,7 @@
 					value="#{resourcesTreeController.treeRoot}" var="treeNodeData"
 					selectionMode="single"
 					selection="#{resourcesTreeController.selectedNode}">
-					<p:ajax event="select" update=":formResources:messagesDisplayer"
+					<p:ajax event="select" update="@form :formResources:messagesDisplayer"
 						listener="#{resourcesTreeController.onNodeSelect}" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
@@ -118,15 +118,23 @@
 
 			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}"
 				rendered="#{resourcesSelectedResourceController.selectedResourceViewBean != null}">
-
+				<p:panelGrid columns="2">
+					<p:column>
+						<h:outputText styleClass="title" value="#{resourcesSelectedResourceController.selectedResourceViewBean.name}" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{resourcesSelectedResourceController.selectedResourceViewBean.name}" />
+					</p:column>
+				</p:panelGrid>
 			</p:panel>
+
  		</h:form>
 
 		<p:dialog id="dialogCreateResourceId"
 			header="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogCreateResource" modal="true" height="auto">
 			<h:form id="formCreateResource">
-				<h:panelGrid columns="3">
+				<p:panelGrid columns="3">
 					<h:outputLabel for="newResourceCategory"
 						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
 					<p:selectOneMenu id="newResourceCategory" effect="fold"
@@ -145,7 +153,7 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
 						binding="#{input2}" />
 					<p:message for="newSoftwareName" display="text" />
-				</h:panelGrid>
+				</p:panelGrid>
 
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"

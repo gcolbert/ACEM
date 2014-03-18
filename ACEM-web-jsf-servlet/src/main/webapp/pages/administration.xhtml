@@ -256,7 +256,7 @@
 			<p:dialog id="idDialogCreateCommunity"
 				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateCommunity" modal="true" height="auto">
-				<h:panelGrid columns="3">
+				<p:panelGrid columns="3">
 					<h:outputLabel for="newCommunityName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newCommunityName" required="true"
@@ -269,7 +269,6 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
 						binding="#{input1b}" />
 					<p:message for="newCommunityShortName" display="text" />
-				</h:panelGrid>
 				<!-- 
 				<p:fileUpload
 					fileUploadListener="#{organisationsController.handleNewCommunityIconUpload}"
@@ -277,19 +276,22 @@
 					fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 					update=":formOrganisations:messagesDisplayerFormOrganisations" />
 				 -->
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
-					icon="ui-icon-check" validateClient="true"
-					action="#{organisationsController.onCreateCommunity(input1.value, input1b.value)}"
-					process="@this idDialogCreateCommunity"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateCommunity.hide(); }" />
+					<f:facet name="footer">
+						<p:commandButton styleClass="dialogValidationButton"
+							value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
+							icon="ui-icon-check" validateClient="true"
+							action="#{organisationsController.onCreateCommunity(input1.value, input1b.value)}"
+							process="@this idDialogCreateCommunity"
+							update=":formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateCommunity.hide(); }" />
+					</f:facet>
+				</p:panelGrid>
 			</p:dialog>
 
 			<p:dialog id="idDialogCreateInstitution"
 				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateInstitution" modal="true" height="auto">
-				<h:panelGrid columns="3">
+				<p:panelGrid columns="3">
 					<h:outputLabel for="newInstitutionName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newInstitutionName" required="true"
@@ -303,21 +305,23 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
 						binding="#{input2b}" />
 					<p:message for="newInstitutionShortName" display="text" />
-				</h:panelGrid>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.VALIDATE']}"
-					icon="ui-icon-check" validateClient="true"
-					action="#{organisationsController.onCreateInstitution(input2.value, input2b.value)}"
-					process="@this idDialogCreateInstitution"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
+					<f:facet name="footer">
+						<p:commandButton styleClass="dialogValidationButton"
+							value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.VALIDATE']}"
+							icon="ui-icon-check" validateClient="true"
+							action="#{organisationsController.onCreateInstitution(input2.value, input2b.value)}"
+							process="@this idDialogCreateInstitution"
+							update=":formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
+					</f:facet>
+				</p:panelGrid>
 			</p:dialog>
 
 			<p:dialog id="idDialogCreateAdministrativeDepartment"
 				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateAdministrativeDepartment" modal="true"
 				height="auto">
-				<h:panelGrid columns="3">
+				<p:panelGrid columns="3">
 					<h:outputLabel for="newAdministrativeDepartmentName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newAdministrativeDepartmentName" required="true"
@@ -332,21 +336,23 @@
 						size="20" binding="#{input3b}" />
 					<p:message for="newAdministrativeDepartmentShortName"
 						display="text" />
-				</h:panelGrid>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
-					icon="ui-icon-check" validateClient="true"
-					action="#{organisationsController.onCreateAdministrativeDepartment(input3.value, input3b.value)}"
-					process="@this idDialogCreateAdministrativeDepartment"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:messagesDisplayerFormOrganisations"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateAdministrativeDepartment.hide(); }" />
+					<f:facet name="footer">
+						<p:commandButton styleClass="dialogValidationButton"
+							value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
+							icon="ui-icon-check" validateClient="true"
+							action="#{organisationsController.onCreateAdministrativeDepartment(input3.value, input3b.value)}"
+							process="@this idDialogCreateAdministrativeDepartment"
+							update=":formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:messagesDisplayerFormOrganisations"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateAdministrativeDepartment.hide(); }" />
+					</f:facet>
+				</p:panelGrid>
 			</p:dialog>
 
 			<p:dialog id="idDialogCreateTeachingDepartment"
 				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateTeachingDepartment" modal="true"
 				height="auto">
-				<h:panelGrid columns="3">
+				<p:panelGrid columns="3">
 					<h:outputLabel for="newTeachingDepartmentName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newTeachingDepartmentName" required="true"
@@ -360,20 +366,22 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
 						binding="#{input4b}" />
 					<p:message for="newTeachingDepartmentShortName" display="text" />
-				</h:panelGrid>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
-					icon="ui-icon-check" validateClient="true"
-					action="#{organisationsController.onCreateTeachingDepartment(input4.value, input4b.value)}"
-					process="@this idDialogCreateTeachingDepartment"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
+					<f:facet name="footer">
+						<p:commandButton styleClass="dialogValidationButton"
+							value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
+							icon="ui-icon-check" validateClient="true"
+							action="#{organisationsController.onCreateTeachingDepartment(input4.value, input4b.value)}"
+							process="@this idDialogCreateTeachingDepartment"
+							update=":formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
+					</f:facet>
+				</p:panelGrid>
 			</p:dialog>
 
 			<p:dialog id="idDialogRenameOrganisation"
 				header="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogRenameOrganisation" modal="true" height="auto">
-				<h:panelGrid columns="3" rendered="#{organisationsController.currentOrganisationViewBean != null}">
+				<p:panelGrid columns="3" rendered="#{organisationsController.currentOrganisationViewBean != null}">
 					<h:outputLabel for="newName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.NEW_NAME_LABEL']}" />
 					<p:inputText id="newName" required="true"
@@ -386,14 +394,16 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
 						value="#{organisationsController.currentOrganisationViewBean.shortname}" />
 					<p:message for="newShortName" display="text" />
-				</h:panelGrid>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
-					icon="ui-icon-check" validateClient="true"
-					action="#{organisationsController.onRenameOrganisation}"
-					process="@this idDialogRenameOrganisation"
-					update=":formOrganisations:tabViewOrganisations :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogRenameOrganisation.hide(); }" />
+					<f:facet name="footer">
+						<p:commandButton styleClass="dialogValidationButton"
+							value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
+							icon="ui-icon-check" validateClient="true"
+							action="#{organisationsController.onRenameOrganisation}"
+							process="@this idDialogRenameOrganisation"
+							update=":formOrganisations:tabViewOrganisations :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogRenameOrganisation.hide(); }" />
+					</f:facet>
+				</p:panelGrid>
 			</p:dialog>
 
 			<p:dialog id="idDialogAssociateCommunity"

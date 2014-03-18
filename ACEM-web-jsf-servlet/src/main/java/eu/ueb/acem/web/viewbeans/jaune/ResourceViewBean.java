@@ -18,7 +18,7 @@
  */
 package eu.ueb.acem.web.viewbeans.jaune;
 
-import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -32,8 +32,8 @@ public interface ResourceViewBean extends Pickable {
 
 	String getName();
 
-	Organisation getDomainBean();
+	Ressource getDomainBean();
 
-	void setDomainBean(Organisation organisation);
+	void setDomainBean(Ressource resource);
 
 }

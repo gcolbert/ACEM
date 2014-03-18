@@ -27,8 +27,7 @@
 						<p:panelGrid columns="1">
 							<p:commandButton
 								value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
-								icon="ui-icon-plusthick"
-								update=":dialogCreateScenarioId"
+								icon="ui-icon-plusthick" update=":dialogCreateScenarioId"
 								oncomplete="PF('dialogCreateScenario').show()">
 								<p:resetInput target=":dialogCreateScenarioId" />
 							</p:commandButton>
@@ -72,7 +71,7 @@
 					<p:panel header="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}"
 						rendered="#{myScenariosController.selectedScenarioViewBean != null}">
 
-						<h:panelGrid columns="2">
+						<p:panelGrid columns="2">
 							<h:outputLabel for="selectedScenarioName"
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.NAME_LABEL']}"
 								styleClass="label" />
@@ -105,8 +104,10 @@
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.AUTHORS_LABEL']}"
 								styleClass="label" />
 							<p:panel id="selectedScenarioAuthors">
-								<ui:repeat value="#{myScenariosController.selectedScenarioViewBean.authorViewBeans}" var="authorViewBean">
-									<h:outputText value="#{authorViewBean.name}"/>
+								<ui:repeat
+									value="#{myScenariosController.selectedScenarioViewBean.authorViewBeans}"
+									var="authorViewBean">
+									<h:outputText value="#{authorViewBean.name}" />
 								</ui:repeat>
 							</p:panel>
 
@@ -114,17 +115,21 @@
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.CREATION_DATE_LABEL']}"
 								styleClass="label" />
 							<p:panel>
-								<h:outputText id="selectedScenarioCreationDate" value="#{myScenariosController.selectedScenarioViewBean.creationDate}"/>
+								<h:outputText id="selectedScenarioCreationDate"
+									value="#{myScenariosController.selectedScenarioViewBean.creationDate}" />
 							</p:panel>
 
 							<h:outputLabel for="selectedScenarioModificationDate"
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.MODIFICATION_DATE_LABEL']}"
-								styleClass="label" rendered="#{myScenariosController.selectedScenarioViewBean.modificationDate != null}"/>
-							<p:panel rendered="#{myScenariosController.selectedScenarioViewBean.modificationDate != null}">
-								<h:outputText id="selectedScenarioModificationDate" value="#{myScenariosController.selectedScenarioViewBean.modificationDate}"/>
+								styleClass="label"
+								rendered="#{myScenariosController.selectedScenarioViewBean.modificationDate != null}" />
+							<p:panel
+								rendered="#{myScenariosController.selectedScenarioViewBean.modificationDate != null}">
+								<h:outputText id="selectedScenarioModificationDate"
+									value="#{myScenariosController.selectedScenarioViewBean.modificationDate}" />
 							</p:panel>
 
-						</h:panelGrid>
+						</p:panelGrid>
 
 						<p:dataTable id="selectedScenarioActivitiesDataTable"
 							editable="true"
@@ -227,7 +232,7 @@
 			header="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogCreateScenario" modal="true" height="auto">
 			<h:form id="formCreateScenario">
-				<h:panelGrid columns="3">
+				<p:panelGrid columns="3">
 					<h:outputLabel for="newScenarioName"
 						value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newScenarioName" required="true"
@@ -241,14 +246,16 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
 						binding="#{input2}" />
 					<p:message for="newScenarioObjective" display="text" />
-				</h:panelGrid>
 
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
-					icon="ui-icon-check" validateClient="true"
-					action="#{myScenariosController.createScenario(input1.value, input2.value)}"
-					update="@form :formScenarios"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateScenario.hide(); }" />
+					<f:facet name="footer">
+						<p:commandButton styleClass="dialogValidationButton"
+							value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
+							icon="ui-icon-check" validateClient="true"
+							action="#{myScenariosController.createScenario(input1.value, input2.value)}"
+							update="@form :formScenarios"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateScenario.hide(); }" />
+					</f:facet>
+				</p:panelGrid>
 			</h:form>
 		</p:dialog>
 

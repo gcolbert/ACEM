@@ -27,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -60,10 +61,15 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 	public void setSelectedResource(String resourceType, Long id) {
 		logger.info("resourceType = {}, id = {}", resourceType, id);
 		Ressource resource = resourcesService.getResource(resourceType, id);
+		ResourceViewBean resourceViewBean = null;
 		switch(resourceType) {
 		case "software":
+			resourceViewBean = new SoftwareViewBean();
+			resourceViewBean.setDomainBean(resource);
+			this.selectedResourceViewBean = resourceViewBean;
 			break;
 		case "softwareDocumentation":
+			//TODO create softwareDocumentViewBean
 			break;
 		case "pedagogicalAndDocumentaryResource":
 			break;
@@ -73,8 +79,6 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 			logger.error("Unknown resourceType '{}'", resourceType);
 			break;
 		}
-
-		this.selectedResourceViewBean = selectedResourceViewBean;
 	}
 
 }

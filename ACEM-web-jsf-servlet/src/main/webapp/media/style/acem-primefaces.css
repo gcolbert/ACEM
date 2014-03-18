@@ -9,6 +9,7 @@
 
 #header .logo {
 	display:inline-block;
+	width:40px;
 }
 
 #header .logo img {
@@ -24,7 +25,7 @@
 }
 
 #header .span_bigTitre {
-	font-size : 2em;
+	font-size: 2em;
 	font-weight: bold;
 }
 
@@ -48,14 +49,44 @@
 	padding:1em;
 }
 
+.title {
+	font-size:1.5em;
+	font-weight:bold;
+}
+
 /* HOME */
-.circular-explanation-image {
+#home {
+	
+}
+#presentation td[role=gridcell] {
+	vertical-align:top;
+	border:0;
+}
+#presentation .description-column {
+	width:400px;
+}
+#presentation .description-column tr[role=row] {
+	border:0;
+	background:none;
+	background-color:white;
+}
+#presentation .description-column td[role=gridcell] {
+	vertical-align:middle;	
+}
+#presentation .description-column td[role=gridcell] table {
+	border:0;
+}
+#presentation .introduction_text {
+	font-size:1.3em;
+}
+#circular-explanation-image {
 	max-width:635px;
 	width:90%;
 	display:block;
 	margin:auto;
 	padding:1em;
 }
+
 
 .label {
 	text-decoration: underline;
@@ -144,7 +175,7 @@ td[role=gridcell] .ui-button {
 }
 
 /* MY RESOURCES */
-#formResources td[role=gridcell] {
+#formResources .menu td[role=gridcell] {
 	width:100px;
 	text-align:center;
 	background-color:white;
