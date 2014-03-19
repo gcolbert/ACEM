@@ -34,6 +34,9 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNo
 public interface PedagogicalAndDocumentaryResourcesRepository extends
 		GenericRepository<RessourcePedagogiqueEtDocumentaireNode> {
 
+	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+	
 	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) RETURN DISTINCT n.category")
 	Set<String> getCategories();
 

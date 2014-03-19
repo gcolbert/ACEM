@@ -32,6 +32,6 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 public interface AdministrativeDepartmentRepository extends GenericRepository<ServiceNode> {
 
 	@Query(value = "MATCH (n:AdministrativeDepartment) WHERE id(n)=({id}) RETURN count(n)")
-	public Long count(@Param("id") Long id);
+	Long count(@Param("id") Long id);
 	
 }

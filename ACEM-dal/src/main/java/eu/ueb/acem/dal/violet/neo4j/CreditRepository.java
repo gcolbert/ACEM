@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.dal.violet.neo4j;
 
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.violet.neo4j.UniteEnseignementNode;
 
@@ -27,5 +30,8 @@ import eu.ueb.acem.domain.beans.violet.neo4j.UniteEnseignementNode;
  * 
  */
 public interface CreditRepository extends GenericRepository<UniteEnseignementNode> {
+
+	@Query(value = "MATCH (n:Credit) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
 
 }

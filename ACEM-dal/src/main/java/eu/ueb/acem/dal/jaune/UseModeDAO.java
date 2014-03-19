@@ -16,12 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.bleu;
+package eu.ueb.acem.dal.jaune;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,28 +28,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.bleu.neo4j.PedagogicalActivityRepository;
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
+import eu.ueb.acem.dal.jaune.neo4j.UseModeRepository;
+import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ModaliteUtilisationNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-11-20
+ * @since 2014-03-19
  * 
  */
-@Repository("pedagogicalActivityDAO")
-public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
+@Repository("useModeDAO")
+public class UseModeDAO implements DAO<Long, ModaliteUtilisation> {
 
-	/**
-	 * For Logging.
-	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(PedagogicalActivityDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(UseModeDAO.class);
 
 	@Autowired
-	private PedagogicalActivityRepository repository;
+	private UseModeRepository repository;
 
-	public PedagogicalActivityDAO() {
+	public UseModeDAO() {
 
 	}
 
@@ -66,31 +62,31 @@ public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
 	}
 
 	@Override
-	public ActivitePedagogique create(ActivitePedagogique entity) {
-		return repository.save((ActivitePedagogiqueNode) entity);
+	public ModaliteUtilisation create(ModaliteUtilisation entity) {
+		return repository.save((ModaliteUtilisationNode) entity);
 	}
 
 	@Override
-	public ActivitePedagogique retrieveById(Long id) {
+	public ModaliteUtilisation retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<ActivitePedagogique> retrieveByName(String name) {
-		Iterable<ActivitePedagogiqueNode> nodes = repository.findByName(name);
-		Collection<ActivitePedagogique> entities = new HashSet<ActivitePedagogique>();
-		for (ActivitePedagogiqueNode node : nodes) {
-			entities.add(node);
+	public Collection<ModaliteUtilisation> retrieveByName(String name) {
+		Iterable<ModaliteUtilisationNode> useModeNodes = repository.findByName(name);
+		Collection<ModaliteUtilisation> useModes = new HashSet<ModaliteUtilisation>();
+		for (ModaliteUtilisation useMode : useModeNodes) {
+			useModes.add(useMode);
 		}
-		return entities;
+		return useModes;
 	}
 
 	@Override
-	public Set<ActivitePedagogique> retrieveAll() {
-		Iterable<ActivitePedagogiqueNode> endResults = repository.findAll();
-		Set<ActivitePedagogique> collection = new HashSet<ActivitePedagogique>();
+	public Collection<ModaliteUtilisation> retrieveAll() {
+		Iterable<ModaliteUtilisationNode> endResults = repository.findAll();
+		Collection<ModaliteUtilisation> collection = new HashSet<ModaliteUtilisation>();
 		if (endResults.iterator() != null) {
-			Iterator<ActivitePedagogiqueNode> iterator = endResults.iterator();
+			Iterator<ModaliteUtilisationNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -99,13 +95,13 @@ public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
 	}
 
 	@Override
-	public ActivitePedagogique update(ActivitePedagogique entity) {
-		return repository.save((ActivitePedagogiqueNode) entity);
+	public ModaliteUtilisation update(ModaliteUtilisation entity) {
+		return repository.save((ModaliteUtilisationNode) entity);
 	}
 
 	@Override
-	public void delete(ActivitePedagogique entity) {
-		repository.delete((ActivitePedagogiqueNode) entity);
+	public void delete(ModaliteUtilisation entity) {
+		repository.delete((ModaliteUtilisationNode) entity);
 	}
 
 	@Override

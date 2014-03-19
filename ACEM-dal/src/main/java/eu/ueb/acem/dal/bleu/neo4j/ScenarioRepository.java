@@ -33,6 +33,9 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
  */
 public interface ScenarioRepository extends GenericRepository<ScenarioNode> {
 
+	@Query(value = "MATCH (n:PedagogicalScenario) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+	
 	@Query(value = "start n=node({personId})  match (n)-[:authorsScenario]->(scenario) return scenario")
 	Set<ScenarioNode> findScenariosWithAuthor(@Param("personId") Long id);
 	

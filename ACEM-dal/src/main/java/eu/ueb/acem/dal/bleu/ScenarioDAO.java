@@ -56,7 +56,13 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 
 	@Override
 	public Boolean exists(Long id) {
-		return (id != null) ? repository.exists(id) : false;
+		//return (id != null) ? repository.exists(id) : false;
+		if (id == null) {
+			return false;
+		}
+		else {
+			return repository.count(id) > 0 ? true : false;
+		}
 	}
 
 	@Override

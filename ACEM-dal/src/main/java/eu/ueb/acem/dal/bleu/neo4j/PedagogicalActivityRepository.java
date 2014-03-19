@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.dal.bleu.neo4j;
 
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 
@@ -28,4 +31,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
  */
 public interface PedagogicalActivityRepository extends GenericRepository<ActivitePedagogiqueNode> {
 
+	@Query(value = "MATCH (n:PedagogicalActivity) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+	
 }

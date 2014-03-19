@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.dal.jaune.neo4j;
 
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ModaliteUtilisationNode;
 
@@ -28,4 +31,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ModaliteUtilisationNode;
  */
 public interface UseModeRepository extends GenericRepository<ModaliteUtilisationNode> {
 
+	@Query(value = "MATCH (n:UseMode) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+	
 }

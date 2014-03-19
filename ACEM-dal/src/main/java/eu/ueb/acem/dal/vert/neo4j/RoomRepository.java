@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.dal.vert.neo4j;
 
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.vert.neo4j.SalleNode;
 
@@ -27,5 +30,8 @@ import eu.ueb.acem.domain.beans.vert.neo4j.SalleNode;
  * 
  */
 public interface RoomRepository extends GenericRepository<SalleNode> {
+
+	@Query(value = "MATCH (n:Room) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
 
 }

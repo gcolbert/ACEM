@@ -33,6 +33,9 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
  */
 public interface ProfessionalTrainingRepository extends GenericRepository<FormationProfessionnelleNode> {
 
+	@Query(value = "MATCH (n:ProfessionalTraining) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+	
 	@Query(value = "MATCH (n:ProfessionalTraining) RETURN DISTINCT n.category")
 	Set<String> getCategories();
 

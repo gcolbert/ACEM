@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.dal.vert.neo4j;
 
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
+
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
 
@@ -28,4 +31,7 @@ import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
  */
 public interface CampusRepository extends GenericRepository<CampusNode> {
 
+	@Query(value = "MATCH (n:Campus) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+	
 }

@@ -33,6 +33,9 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
  */
 public interface PedagogicalNeedRepository extends GenericRepository<BesoinNode> {
 
+	@Query(value = "MATCH (n:PedagogicalNeed) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+	
 	@Query(value = "match (n:PedagogicalNeed) where not (n)-[:hasParentNeed]->() return n")
 	Set<BesoinNode> findRoots();
 	

@@ -42,7 +42,7 @@ import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
  * 
  */
 @NodeEntity
-@TypeAlias("Course")
+@TypeAlias("TeachingClass")
 public class SeanceDeCoursNode implements SeanceDeCours {
 
 	private static final long serialVersionUID = -3903886807338724952L;

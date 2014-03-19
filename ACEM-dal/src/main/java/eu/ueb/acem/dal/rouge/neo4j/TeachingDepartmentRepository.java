@@ -32,6 +32,6 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
 public interface TeachingDepartmentRepository extends GenericRepository<ComposanteNode> {
 
 	@Query(value = "MATCH (n:TeachingDepartment) WHERE id(n)=({id}) RETURN count(n)")
-	public Long count(@Param("id") Long id);
+	Long count(@Param("id") Long id);
 	
 }

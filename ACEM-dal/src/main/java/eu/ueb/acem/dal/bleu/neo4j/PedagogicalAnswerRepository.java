@@ -34,6 +34,9 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
  */
 public interface PedagogicalAnswerRepository extends GenericRepository<ReponseNode> {
 
+	@Query(value = "MATCH (n:PedagogicalAnswer) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+
 	@Query(value = "start answer=node({answerId}) match (answer)-[:answeredUsingRessource]->(resource)<-[:stepRequiringResource]-(scenarioStep)-[:isPartOfScenario]->scenario return scenario")
 	Set<ScenarioNode> findScenariosRelatedToAnswer(@Param("answerId") Long id);
 

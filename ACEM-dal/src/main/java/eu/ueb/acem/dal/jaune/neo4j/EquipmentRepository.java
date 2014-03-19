@@ -33,6 +33,9 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
  */
 public interface EquipmentRepository extends GenericRepository<EquipementNode> {
 
+	@Query(value = "MATCH (n:Equipment) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+
 	@Query(value = "MATCH (n:Equipment) RETURN DISTINCT n.category")
 	Set<String> getCategories();
 

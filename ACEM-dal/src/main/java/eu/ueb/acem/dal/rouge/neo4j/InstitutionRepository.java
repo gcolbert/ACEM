@@ -32,6 +32,6 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
 public interface InstitutionRepository extends GenericRepository<EtablissementNode> {
 	
 	@Query(value = "MATCH (n:Institution) WHERE id(n)=({id}) RETURN count(n)")
-	public Long count(@Param("id") Long id);
+	Long count(@Param("id") Long id);
 	
 }

@@ -32,6 +32,6 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
 public interface CommunityRepository extends GenericRepository<CommunauteNode> {
 
 	@Query(value = "MATCH (n:Community) WHERE id(n)=({id}) RETURN count(n)")
-	public Long count(@Param("id") Long id);
+	Long count(@Param("id") Long id);
 
 }

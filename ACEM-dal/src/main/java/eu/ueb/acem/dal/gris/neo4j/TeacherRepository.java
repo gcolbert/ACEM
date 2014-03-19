@@ -23,6 +23,9 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
  */
 public interface TeacherRepository extends GenericRepository<EnseignantNode> {
 
+	@Query(value = "MATCH (n:Teacher) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+	
 	@Query(value = "match (n:Teacher) where n.login=({login}) return n")
 	EnseignantNode findByLogin(@Param("login") String login);
 

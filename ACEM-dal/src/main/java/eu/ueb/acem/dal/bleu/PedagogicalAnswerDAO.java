@@ -55,7 +55,13 @@ public class PedagogicalAnswerDAO implements DAO<Long, Reponse> {
 
 	@Override
 	public Boolean exists(Long id) {
-		return (id != null) ? repository.exists(id) : false;
+		//return (id != null) ? repository.exists(id) : false;
+		if (id == null) {
+			return false;
+		}
+		else {
+			return repository.count(id) > 0 ? true : false;
+		}
 	}
 
 	@Override

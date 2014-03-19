@@ -33,6 +33,9 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
  */
 public interface SoftwareRepository extends GenericRepository<ApplicatifNode> {
 
+	@Query(value = "MATCH (n:Software) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
+	
 	@Query(value = "MATCH (n:Software) RETURN DISTINCT n.category")
 	Set<String> getCategories();
 
