@@ -24,9 +24,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.jaune.Applicatif;
+import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.Equipement;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
+import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.SoftwareDocumentationViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
 
 /**
@@ -47,38 +54,34 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 
 	private ResourceViewBean selectedResourceViewBean;
 
+	private Long selectedResourceId;
+
 	public ResourcesSelectedResourceController() {
+	}
+
+	public void setSelectedResourceId(Long resourceId) {
+		logger.info("resourceId={}", resourceId);
+		this.selectedResourceId = resourceId;
+		Ressource resource = resourcesService.getResource(resourceId);
+		if (resource != null) {
+			if (resource instanceof Applicatif) {
+				selectedResourceViewBean = new SoftwareViewBean();
+			}
+			else if (resource instanceof DocumentationApplicatif) {
+				selectedResourceViewBean = new SoftwareDocumentationViewBean();
+			}
+			else if (resource instanceof Equipement) {
+				selectedResourceViewBean = new EquipmentViewBean();
+			}
+			else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
+				selectedResourceViewBean = new DocumentaryAndPedagogicalResourceViewBean();
+			}
+			selectedResourceViewBean.setDomainBean(resource);
+		}
 	}
 
 	public ResourceViewBean getSelectedResourceViewBean() {
 		return selectedResourceViewBean;
-	}
-
-	public void setSelectedResourceViewBean(ResourceViewBean selectedResourceViewBean) {
-		this.selectedResourceViewBean = selectedResourceViewBean;
-	}
-
-	public void setSelectedResource(String resourceType, Long id) {
-		logger.info("resourceType = {}, id = {}", resourceType, id);
-		Ressource resource = resourcesService.getResource(resourceType, id);
-		ResourceViewBean resourceViewBean = null;
-		switch(resourceType) {
-		case "software":
-			resourceViewBean = new SoftwareViewBean();
-			resourceViewBean.setDomainBean(resource);
-			this.selectedResourceViewBean = resourceViewBean;
-			break;
-		case "softwareDocumentation":
-			//TODO create softwareDocumentViewBean
-			break;
-		case "pedagogicalAndDocumentaryResource":
-			break;
-		case "equipment":
-			break;
-		default:
-			logger.error("Unknown resourceType '{}'", resourceType);
-			break;
-		}
 	}
 
 }

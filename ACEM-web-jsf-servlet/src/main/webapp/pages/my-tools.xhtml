@@ -5,6 +5,9 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
+	<f:metadata>
+	    <f:viewParam name="resourceId" value="#{resourcesSelectedResourceController.selectedResourceId}" />
+	</f:metadata>
 	<ui:define name="content">
 		<ui:debug hotkey="1"
 			rendered="#{facesContext.application.projectStage == 'Development'}" />
@@ -95,7 +98,7 @@
 					selectionMode="single"
 					selection="#{resourcesTreeController.selectedNode}">
 					<p:ajax event="select"
-						update="@this :formResources:selectedResourcePanel :formResources:messagesDisplayer"
+						update=":formResources:selectedResourcePanel :formResources:messagesDisplayer"
 						listener="#{resourcesTreeController.onNodeSelect}" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
@@ -122,9 +125,9 @@
 			</p:panel>
 
 			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}"
-				id="selectedResourcePanel"
+				id="selectedResourcePanel">
+				<p:panelGrid columns="2" 
 				rendered="#{resourcesSelectedResourceController.selectedResourceViewBean != null}">
-				<p:panelGrid columns="2">
 					<p:column>
 						<p:panelGrid columns="1">
 							<h:outputText styleClass="title"

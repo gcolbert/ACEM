@@ -41,7 +41,7 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 	private Long positionInScenario;
 	private String name;
 	private String objective;
-	private String description;
+	private String instructions;
 	private String duration;
 	private List<ResourceViewBean> resources;
 
@@ -59,7 +59,7 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 		setPositionInScenario(pedagogicalActivity.getPositionInScenario());
 		setName(pedagogicalActivity.getName());
 		setObjective(pedagogicalActivity.getObjective());
-		setDescription(pedagogicalActivity.getDescription());
+		setInstructions(pedagogicalActivity.getInstructions());
 		setDuration(pedagogicalActivity.getDuration());
 		//setResources(pedagogicalActivity.getResources());
 	}
@@ -100,13 +100,13 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 		pedagogicalActivity.setObjective(objective);
 	}
 
-	public String getDescription() {
-		return description;
+	public String getInstructions() {
+		return instructions;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-		pedagogicalActivity.setDescription(description);
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
+		pedagogicalActivity.setInstructions(instructions);
 	}
 
 	public String getDuration() {

@@ -68,6 +68,7 @@ public class ScenarioNode implements Scenario {
 	private String name;
 
 	private String objective;
+	private String evaluationModes;
 	private Boolean published;
 
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "scenarioUsedForClass", direction = OUTGOING)
@@ -140,6 +141,16 @@ public class ScenarioNode implements Scenario {
 	@Override
 	public void setObjective(String objective) {
 		this.objective = objective;
+	}
+
+	@Override
+	public String getEvaluationModes() {
+		return evaluationModes;
+	}
+
+	@Override
+	public void setEvaluationModes(String evaluationModes) {
+		this.evaluationModes = evaluationModes;
 	}
 	
 	@Override

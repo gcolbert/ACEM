@@ -49,6 +49,10 @@ public interface Scenario extends Serializable, Comparable<Scenario> {
 
 	void setObjective(String objective);
 
+	String getEvaluationModes();
+	
+	void setEvaluationModes(String evaluationModes);
+	
 	Set<? extends Enseignant> getAuthors();
 
 	void setAuthors(Set<? extends Enseignant> authors);

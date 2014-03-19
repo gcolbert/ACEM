@@ -186,21 +186,23 @@ public class OrganisationsController extends AbstractContextAwareController {
 		return organisationViewBeans.get(id);
 	}
 
-	/*
+	/*-
 	 * TODO : Issue at https://github.com/gcolbert/ACEM/issues/3
-	 * 
-	 * public AccordionPanelBean getCommunitiesAccordionPanelBean() { return
-	 * communitiesAccordionPanelBean; }
-	 * 
-	 * public AccordionPanelBean getInstitutionsAccordionPanelBean() { return
-	 * institutionsAccordionPanelBean; }
-	 * 
-	 * public AccordionPanelBean getAdministrativeDepartmentAccordionPanelBean()
-	 * { return administrativeDepartmentAccordionPanelBean; }
-	 * 
-	 * public AccordionPanelBean getTeachingDepartmentAccordionPanelBean() {
-	 * return teachingDepartmentAccordionPanelBean; }
-	 */
+	 */ 
+	/*-
+	public AccordionPanelBean getCommunitiesAccordionPanelBean() {
+		return communitiesAccordionPanelBean;
+	}
+	public AccordionPanelBean getInstitutionsAccordionPanelBean() {
+		return institutionsAccordionPanelBean;
+	}
+	public AccordionPanelBean getAdministrativeDepartmentAccordionPanelBean() {
+		return administrativeDepartmentAccordionPanelBean;
+	}
+	public AccordionPanelBean getTeachingDepartmentAccordionPanelBean() {
+		return teachingDepartmentAccordionPanelBean;
+	}
+	*/
 
 	public TableBean<CommunityViewBean> getCommunityViewBeans() {
 		return communityViewBeans;

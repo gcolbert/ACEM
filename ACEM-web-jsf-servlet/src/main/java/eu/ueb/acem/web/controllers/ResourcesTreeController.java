@@ -68,8 +68,19 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 
 	private List<String> categoriesForSelectedResourceType;
 
+	//private Map<Long, ResourceViewBean> resourceViewBeans;
+
 	public ResourcesTreeController() {
+		//resourceViewBeans = new HashMap<Long, ResourceViewBean>();
 	}
+
+	/*-
+	@PostConstruct
+	public void initResourcesTreeController() {
+		Collection<Ressource> resources = resourcesService.g 
+		resourceViewBeans.put(key, value)
+	}
+	*/
 
 	public void prepareTree(String resourceType) {
 		logger.info("prepareTree for resourceType={}", resourceType);
@@ -100,20 +111,6 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 				}
 			}
 			break;
-		/*
-		case "professionalTraining":
-			editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
-			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = editableTreeBean.addChild(editableTreeBean.getVisibleRoots().get(0), -1L,
-						category, "category");
-				Collection<FormationProfessionnelle> entities = resourcesService
-						.getProfessionalTrainingsWithCategory(category);
-				for (Ressource entity : entities) {
-					editableTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
-				}
-			}
-			break;
-		*/
 		case "equipment":
 			editableTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL"));
 			for (String category : categoriesForSelectedResourceType) {
@@ -179,19 +176,19 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		resourcesService.createResource(selectedResourceType, category, name);
 	}
 
-	/*
+	/*-
 	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
 		if (treeNodeData.getConcept().equals("resource")) {
 			//resourcesService.saveResourceName(treeNodeData.getId(), treeNodeData.getLabel());
-		} else if (treeNodeData.getConcept().equals("category")) {
-			resourcesService.saveCategoryName(treeNodeData.getId(),
-			treeNodeData.getLabel());
+		}
+		else if (treeNodeData.getConcept().equals("category")) {
+			resourcesService.saveCategoryName(treeNodeData.getId(), treeNodeData.getLabel());
 		}
 	}
 	*/
-	
+
 	public void onNodeSelect() {
-		resourcesSelectedResourceController.setSelectedResource(selectedNode.getType(), ((TreeNodeData)selectedNode.getData()).getId());
+		resourcesSelectedResourceController.setSelectedResourceId(((TreeNodeData) selectedNode.getData()).getId());
 	}
 
 }

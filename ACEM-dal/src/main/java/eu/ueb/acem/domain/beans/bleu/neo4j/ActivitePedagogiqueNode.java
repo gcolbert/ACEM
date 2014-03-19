@@ -62,7 +62,7 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 
 	private Long positionInScenario;
 	private String objective;
-	private String description;
+	private String instructions;
 	private String duration;
 
 	public ActivitePedagogiqueNode() {
@@ -144,13 +144,13 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	}
 
 	@Override
-	public String getDescription() {
-		return description;
+	public String getInstructions() {
+		return instructions;
 	}
 
 	@Override
-	public void setDescription(String description) {
-		this.description = description;
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
 	}
 
 	@Override

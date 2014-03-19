@@ -44,9 +44,9 @@ public interface ActivitePedagogique extends Serializable, Comparable<ActivitePe
 
 	void setObjective(String objectif);
 
-	String getDescription();
+	String getInstructions();
 
-	void setDescription(String descriptif);
+	void setInstructions(String descriptif);
 
 	String getDuration();
 

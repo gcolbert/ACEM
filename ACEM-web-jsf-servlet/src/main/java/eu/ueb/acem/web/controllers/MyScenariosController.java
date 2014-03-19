@@ -171,6 +171,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 
 	public void onSave() {
+		logger.info("onSave");
 		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
 		sortableTableBean.sortReverseOrder();
 		MessageDisplayer.showMessageToUserWithSeverityInfo(

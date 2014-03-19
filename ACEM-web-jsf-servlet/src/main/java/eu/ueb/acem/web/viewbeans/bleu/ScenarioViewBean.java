@@ -58,6 +58,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	private Boolean published;
 	private String creationDate;
 	private String modificationDate;
+	private String evaluationModes;
 
 	public ScenarioViewBean() {
 		pedagogicalActivityViewBeans = new ArrayList<PedagogicalActivityViewBean>();
@@ -86,6 +87,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		setId(scenario.getId());
 		this.name = scenario.getName();
 		this.objective = scenario.getObjective();
+		this.evaluationModes = scenario.getEvaluationModes();
 		this.published = scenario.isPublished();
 		setCreationDate(scenario.getCreationDate());
 		setModificationDate(scenario.getModificationDate());
@@ -128,6 +130,15 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	public void setObjective(String objective) {
 		this.objective = objective;
 		scenario.setObjective(objective);
+	}
+
+	public String getEvaluationModes() {
+		return evaluationModes;
+	}
+
+	public void setEvaluationModes(String evaluationModes) {
+		this.evaluationModes = evaluationModes;
+		scenario.setEvaluationModes(evaluationModes);
 	}
 
 	public Boolean isPublished() {

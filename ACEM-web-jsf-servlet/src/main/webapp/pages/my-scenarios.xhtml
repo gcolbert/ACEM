@@ -176,15 +176,15 @@
 								</p:cellEditor>
 							</p:column>
 							<p:column
-								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DESCRIPTION']}">
+								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_INSTRUCTIONS']}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText
-											value="#{pedagogicalActivityViewBean.description}" />
+											value="#{pedagogicalActivityViewBean.instructions}" />
 									</f:facet>
 									<f:facet name="input">
 										<h:inputText
-											value="#{pedagogicalActivityViewBean.description}"
+											value="#{pedagogicalActivityViewBean.instructions}"
 											style="width:100%" />
 									</f:facet>
 								</p:cellEditor>
@@ -202,7 +202,7 @@
 								</p:cellEditor>
 							</p:column>
 							<p:column
-								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_RESOURCES']}">
+								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_TOOLS']}">
 								<p:cellEditor>
 									<f:facet name="output">
 										<h:outputText value="#{pedagogicalActivityViewBean.resources}" />
@@ -223,6 +223,16 @@
 							icon="ui-icon-plusthick"
 							action="#{myScenariosController.onCreateActivity}" update="@form" />
 
+						<p:panelGrid columns="2">
+							<h:outputLabel for="selectedScenarioName"
+								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}"
+								styleClass="label" />
+							<p:editor id="evaluationModesEditor"
+								value="#{myScenariosController.selectedScenarioViewBean.evaluationModes}"
+								controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo" />
+						</p:panelGrid>
+						
+						<p:commandButton value="Save" action="#{myScenariosController.onSave()}" update=":formScenarios:messagesDisplayer"/>
 					</p:panel>
 				</p:layoutUnit>
 			</p:layout>

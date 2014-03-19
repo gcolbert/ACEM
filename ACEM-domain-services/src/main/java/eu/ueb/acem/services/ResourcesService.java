@@ -36,9 +36,11 @@ public interface ResourcesService {
 
 	Collection<String> getCategoriesForResourceType(String resourceType);
 
-	void createResource(String resourceType, String category, String name);
+	Ressource createResource(String resourceType, String category, String name);
 
-	Ressource getResource(String resourceType, Long id);
+	Ressource updateResource(Ressource resource);
+	
+	Ressource getResource(Long id);
 	
 	Collection<Applicatif> getSoftwaresWithCategory(String category);
 

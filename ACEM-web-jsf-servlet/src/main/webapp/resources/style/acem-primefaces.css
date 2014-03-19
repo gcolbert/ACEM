@@ -190,7 +190,11 @@
 }
 
 .ui-inplace-content input {
-	width: 500px;
+	width: 400px;
+}
+
+.ui-editor {
+	width: 99.5% !important;
 }
 
 /* MY RESOURCES */

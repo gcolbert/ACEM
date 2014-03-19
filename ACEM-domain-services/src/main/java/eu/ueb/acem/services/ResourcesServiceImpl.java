@@ -41,7 +41,6 @@ import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
 
 /**
@@ -56,19 +55,19 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	@Autowired
 	private EquipmentDAO equipmentDAO;
-	
+
 	@Autowired
 	private PedagogicalAndDocumentaryResourcesDAO pedagogicalAndDocumentaryResourcesDAO;
-	
+
 	@Autowired
 	private ProfessionalTrainingDAO professionalTrainingDAO;
-	
+
 	@Autowired
 	private SoftwareDAO softwareDAO;
-	
+
 	@Autowired
 	private SoftwareDocumentationDAO softwareDocumentationDAO;
-	
+
 	@Override
 	public Collection<String> getCategoriesForResourceType(String resourceType) {
 		Set<String> categories = new HashSet<String>();
@@ -79,9 +78,11 @@ public class ResourcesServiceImpl implements ResourcesService {
 		case "softwareDocumentation":
 			categories.addAll(softwareDocumentationDAO.getCategories());
 			break;
+		/*-
 		case "professionalTraining":
-			categories.addAll(professionalTrainingDAO.getCategories());
-			break;
+		categories.addAll(professionalTrainingDAO.getCategories());
+		break;
+		 */
 		case "equipment":
 			categories.addAll(equipmentDAO.getCategories());
 			break;
@@ -96,8 +97,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public void createResource(String resourceType, String category, String name) {
-		Ressource entity;
+	public Ressource createResource(String resourceType, String category, String name) {
+		Ressource entity = null;
 		switch (resourceType) {
 		case "software":
 			entity = new ApplicatifNode(name);
@@ -109,11 +110,13 @@ public class ResourcesServiceImpl implements ResourcesService {
 			entity.setCategory(category);
 			entity = softwareDocumentationDAO.create((DocumentationApplicatif) entity);
 			break;
+		/*-
 		case "professionalTraining":
-			entity = new FormationProfessionnelleNode(name);
-			entity.setCategory(category);
-			entity = professionalTrainingDAO.create((FormationProfessionnelle) entity);
-			break;
+		entity = new FormationProfessionnelleNode(name);
+		entity.setCategory(category);
+		entity = professionalTrainingDAO.create((FormationProfessionnelle) entity);
+		break;
+		 */
 		case "equipment":
 			entity = new EquipementNode(name);
 			entity.setCategory(category);
@@ -128,10 +131,29 @@ public class ResourcesServiceImpl implements ResourcesService {
 			logger.error("Unknown resourceType '{}'", resourceType);
 			break;
 		}
+		return entity;
 	}
 
 	@Override
-	public Ressource getResource(String resourceType, Long id) {
+	public Ressource updateResource(Ressource resource) {
+		Ressource updatedResource = null;
+		if (resource instanceof Applicatif) {
+			resource = softwareDAO.update((Applicatif) resource);
+		}
+		else if (resource instanceof DocumentationApplicatif) {
+			resource = softwareDocumentationDAO.update((DocumentationApplicatif) resource);
+		}
+		else if (resource instanceof Equipement) {
+			resource = equipmentDAO.update((Equipement) resource);
+		}
+		else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
+			resource = pedagogicalAndDocumentaryResourcesDAO.update((RessourcePedagogiqueEtDocumentaire) resource);
+		}
+		return updatedResource;
+	}
+
+	@Override
+	public void saveResourceName(String resourceType, Long id, String label) {
 		Ressource entity = null;
 		switch (resourceType) {
 		case "software":
@@ -152,6 +174,32 @@ public class ResourcesServiceImpl implements ResourcesService {
 		default:
 			logger.error("Unknown resourceType '{}'", resourceType);
 			break;
+		}
+		if (entity != null) {
+			entity = updateResource(entity);
+		}
+	}
+
+	@Override
+	public Ressource getResource(Long id) {
+		Ressource entity = null;
+		if (softwareDAO.exists(id)) {
+			entity = softwareDAO.retrieveById(id);
+		}
+		else if (softwareDocumentationDAO.exists(id)) {
+			entity = softwareDocumentationDAO.retrieveById(id);
+		}
+		else if (equipmentDAO.exists(id)) {
+			entity = equipmentDAO.retrieveById(id);
+		}
+		else if (pedagogicalAndDocumentaryResourcesDAO.exists(id)) {
+			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
+		}
+		else if (professionalTrainingDAO.exists(id)) {
+			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
+		}
+		else {
+			logger.error("There is no resource with id='{}'", id);
 		}
 		return entity;
 	}
@@ -204,46 +252,6 @@ public class ResourcesServiceImpl implements ResourcesService {
 		}
 		else {
 			return pedagogicalAndDocumentaryResourcesDAO.retrieveAll();
-		}
-	}
-
-	@Override
-	public void saveResourceName(String resourceType, Long id, String label) {
-		Ressource entity = null;
-		switch (resourceType) {
-		case "software":
-			entity = softwareDAO.retrieveById(id);
-			if (entity != null) {
-				entity = softwareDAO.update((Applicatif)entity);
-			}
-			break;
-		case "softwareDocumentation":
-			entity = softwareDocumentationDAO.retrieveById(id);
-			if (entity != null) {
-				entity = softwareDocumentationDAO.update((DocumentationApplicatif)entity);
-			}
-			break;
-		case "professionalTraining":
-			entity = professionalTrainingDAO.retrieveById(id);
-			if (entity != null) {
-				entity = professionalTrainingDAO.update((FormationProfessionnelle)entity);
-			}
-			break;
-		case "equipment":
-			entity = equipmentDAO.retrieveById(id);
-			if (entity != null) {
-				entity = equipmentDAO.update((Equipement)entity);
-			}
-			break;
-		case "pedagogicalAndDocumentaryResources":
-			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
-			if (entity != null) {
-				entity = pedagogicalAndDocumentaryResourcesDAO.update((RessourcePedagogiqueEtDocumentaire)entity);
-			}
-			break;
-		default:
-			logger.error("Unknown resourceType '{}'", resourceType);
-			break;
 		}
 	}
 
