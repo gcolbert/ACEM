@@ -247,15 +247,13 @@
 						binding="#{input2}" />
 					<p:message for="newScenarioObjective" display="text" />
 
-					<f:facet name="footer">
-						<p:commandButton styleClass="dialogValidationButton"
-							value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
-							icon="ui-icon-check" validateClient="true"
-							action="#{myScenariosController.createScenario(input1.value, input2.value)}"
-							update="@form :formScenarios"
-							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateScenario.hide(); }" />
-					</f:facet>
 				</p:panelGrid>
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{myScenariosController.createScenario(input1.value, input2.value)}"
+					update="@form :formScenarios"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateScenario.hide(); }" />
 			</h:form>
 		</p:dialog>
 

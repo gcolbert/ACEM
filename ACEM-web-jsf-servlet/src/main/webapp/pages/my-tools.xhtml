@@ -54,7 +54,8 @@
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesTreeController.prepareTree('software')}"
 						update=":formResources:resourcesTree">
-						<h:graphicImage url="resources/images/my-tools/my-tools.softwares.png"
+						<h:graphicImage
+							url="resources/images/my-tools/my-tools.softwares.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}"
 							styleClass="menu-entry-image" />
 						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}</h:outputText></span>
@@ -120,7 +121,8 @@
 				</p:tree>
 			</p:panel>
 
-			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}" id="selectedResourcePanel"
+			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}"
+				id="selectedResourcePanel"
 				rendered="#{resourcesSelectedResourceController.selectedResourceViewBean != null}">
 				<p:panelGrid columns="2">
 					<p:column>
@@ -177,16 +179,14 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
 						binding="#{input2}" />
 					<p:message for="newSoftwareName" display="text" />
-					
-					<f:facet name="footer">
-						<p:commandButton styleClass="dialogValidationButton"
-							value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
-							icon="ui-icon-check" validateClient="true"
-							action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value)}"
-							update=":formResources:resourcesTree :formResources:messagesDisplayer"
-							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
-					</f:facet>
+
 				</p:panelGrid>
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value)}"
+					update=":formResources:resourcesTree :formResources:messagesDisplayer"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
 			</h:form>
 		</p:dialog>
 

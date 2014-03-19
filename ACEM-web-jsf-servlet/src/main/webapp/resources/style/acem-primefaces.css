@@ -76,6 +76,11 @@
 #presentation .description-column td[role=gridcell] table {
 	border:0;
 }
+#presentation .section-title {
+	font-weight:bold;
+	color:#a3c3ea;
+	font-size:1.1em;
+}
 #presentation .introduction_text {
 	font-size:1.3em;
 }
@@ -94,6 +99,23 @@
 
 .ui-panel {
 	margin-top: 1em;
+}
+
+.ui-tabs .ui-tabs-nav {
+	background:#E6E1E0;
+}
+
+.ui-tabs .ui-tabs-nav .ui-state-default:not(.ui-tabs-selected):not(.ui-state-hover)  {
+	background:white;
+}
+
+.ui-menu .ui-menuitem {
+	background-color:#878786;
+	margin-right:0.3em !important;
+}
+.ui-menu .ui-menuitem .ui-menuitem-text {
+	color:white;
+	font-weight:bold;
 }
 
 /* p:tree */
@@ -141,12 +163,9 @@
 	margin:0;
 }
 
-td[role=gridcell] .ui-button {
-	width: 100%;
-}
-
 .ui-button {
 	margin: 4px 0;
+	background-color:#878786;
 }
 
 .ui-panelgrid {
