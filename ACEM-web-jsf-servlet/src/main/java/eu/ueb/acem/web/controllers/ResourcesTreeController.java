@@ -149,13 +149,30 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	}
 	
 	public void setSelectedResourceId(Long resourceId) {
+		logger.info("setSelectedResourceId({})", resourceId);
 		this.selectedResourceId = resourceId;
+		Ressource resource = resourcesService.getResource(resourceId);
+		if (resource instanceof Applicatif) {
+			prepareTree("software");
+		}
+		else if (resource instanceof DocumentationApplicatif) {
+			prepareTree("softwareDocumentation");
+		}
+		else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
+			prepareTree("pedagogicalAndDocumentaryResources");
+		}
+		else if (resource instanceof Equipement) {
+			prepareTree("equipment");
+		}
 		TreeNode node = editableTreeBean.getNodeWithId(resourceId);
 		if (node != null) {
 			node.setSelected(true);
 			editableTreeBean.expandOnlyOneNode(node);
 			
 			resourcesSelectedResourceController.setSelectedResourceId(resourceId);
+		}
+		else {
+			logger.info("setSelectedResourceId - no TreeNode found for id={}", resourceId);
 		}
 	}
 	
