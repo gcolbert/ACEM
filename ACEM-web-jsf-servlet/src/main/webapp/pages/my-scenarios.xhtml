@@ -22,7 +22,7 @@
 
 			<p:layout id="layout">
 
-				<p:layoutUnit position="west" resizable="true">
+				<p:layoutUnit position="west" resizable="false">
 					<p:panel header="#{msgs['MY_SCENARIOS.HEADER']}">
 						<p:panelGrid columns="1">
 							<p:commandButton
@@ -223,7 +223,18 @@
 							icon="ui-icon-plusthick"
 							action="#{myScenariosController.onCreateActivity}" update="@form" />
 
+						<p:panel id="grid" header="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}">
+							<p:editor id="evaluationModesEditor"
+								value="#{myScenariosController.selectedScenarioViewBean.evaluationModes}"
+								controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo" />
+						</p:panel>
+
+<!-- 
 						<p:panelGrid columns="2">
+							<h:outputLabel for="selectedScenarioName"
+								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}"
+								styleClass="label" />
+
 							<h:outputLabel for="selectedScenarioName"
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}"
 								styleClass="label" />
@@ -231,8 +242,8 @@
 								value="#{myScenariosController.selectedScenarioViewBean.evaluationModes}"
 								controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo" />
 						</p:panelGrid>
-						
-						<p:commandButton value="Save" action="#{myScenariosController.onSave()}" update=":formScenarios:messagesDisplayer"/>
+-->						
+						<p:commandButton value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.SAVE_LABEL']}" action="#{myScenariosController.onSave}" update=":formScenarios:messagesDisplayer"/>
 					</p:panel>
 				</p:layoutUnit>
 			</p:layout>

@@ -59,6 +59,10 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 	public ResourcesSelectedResourceController() {
 	}
 
+	public Long getSelectedResourceId() {
+		return selectedResourceId;
+	}
+	
 	public void setSelectedResourceId(Long resourceId) {
 		logger.info("resourceId={}", resourceId);
 		this.selectedResourceId = resourceId;

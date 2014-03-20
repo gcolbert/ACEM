@@ -82,6 +82,8 @@
 	font-size:1.1em;
 }
 #presentation .introduction_text {
+	display:block;
+	padding-top:8px;
 	font-size:1.3em;
 }
 #circular-explanation-image {
@@ -152,6 +154,10 @@
 	padding: 0;
 }
 
+.ui-layout-center {
+	width:auto !important;
+}
+
 .ui-layout-pane {
 	min-width: 250px;
 	width: 100%;
@@ -193,8 +199,12 @@
 	width: 400px;
 }
 
-.ui-editor {
-	width: 99.5% !important;
+.ui-editor iframe {
+	width: 100% !important;
+}
+
+.ui-datatable .ui-datatable-header {
+	text-align: left;	
 }
 
 /* MY RESOURCES */
@@ -211,8 +221,8 @@
 }
 #formResources .menu-entry-text {
 	display:block;
-	font-size:small;
 	font-weight:bold;
+	padding:0.5em 0;
 }
 #formResources .menu-entry-image {
 	width:100%;

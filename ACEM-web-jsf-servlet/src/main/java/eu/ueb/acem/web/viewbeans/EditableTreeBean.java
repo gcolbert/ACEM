@@ -20,7 +20,9 @@ package eu.ueb.acem.web.viewbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -46,6 +48,8 @@ public class EditableTreeBean implements Serializable {
 	private TreeNode root;
 
 	private List<TreeNode> visibleRoots;
+	
+	private Map<Long, TreeNode> allNodes;
 
 	public EditableTreeBean() {
 		// For some reason, the root of the tree is not visible
@@ -56,6 +60,8 @@ public class EditableTreeBean implements Serializable {
 		// Therefore, we add a list of visible roots, so that it is possible to
 		// right click on something to add children nodes
 		visibleRoots = new ArrayList<TreeNode>();
+		
+		allNodes = new HashMap<Long, TreeNode>();
 	}
 
 	public void reset() {
@@ -93,6 +99,7 @@ public class EditableTreeBean implements Serializable {
 	public TreeNode addChild(TreeNode parent, Long id, String label, String concept) {
 		TreeNode child = new DefaultTreeNode(concept, new TreeNodeData(id, label, concept), parent);
 		parent.setExpanded(true);
+		allNodes.put(id, child);
 		return child;
 	}
 
@@ -127,6 +134,10 @@ public class EditableTreeBean implements Serializable {
 		}
 	}
 
+	public TreeNode getNodeWithId(Long resourceId) {
+		return allNodes.get(resourceId);
+	}
+	
 	public static class TreeNodeData implements Serializable {
 
 		private static final long serialVersionUID = -5623188924862380160L;

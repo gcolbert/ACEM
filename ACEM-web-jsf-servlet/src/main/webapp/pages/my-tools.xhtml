@@ -6,7 +6,7 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<f:metadata>
-	    <f:viewParam name="resourceId" value="#{resourcesSelectedResourceController.selectedResourceId}" />
+	    <f:viewParam name="resourceId" value="#{resourcesTreeController.selectedResourceId}" />
 	</f:metadata>
 	<ui:define name="content">
 		<ui:debug hotkey="1"
@@ -52,7 +52,7 @@
 							url="resources/images/my-tools/my-tools.equipments.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}"
 							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}</h:outputText></span>
+						<span class="menu-entry-text"><h:outputText value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}"/></span>
 					</p:commandLink>
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesTreeController.prepareTree('software')}"
@@ -61,7 +61,7 @@
 							url="resources/images/my-tools/my-tools.softwares.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}"
 							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}</h:outputText></span>
+						<span class="menu-entry-text"><h:outputText value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}"/></span>
 					</p:commandLink>
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesTreeController.prepareTree('softwareDocumentation')}"
@@ -70,7 +70,7 @@
 							url="resources/images/my-tools/my-tools.software-documentations.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}"
 							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}</h:outputText></span>
+						<span class="menu-entry-text"><h:outputText escape="false" value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}"/></span>
 					</p:commandLink>
 					<!-- 
 					<p:commandLink styleClass="menu-entry"
@@ -79,7 +79,7 @@
 						<h:graphicImage url="resources/images/my-tools/my-tools.professional-trainings.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"
 							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}</h:outputText></span>
+						<span class="menu-entry-text"><h:outputText value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"/></span>
 					</p:commandLink>
 					 -->
 					<p:commandLink styleClass="menu-entry"
@@ -89,13 +89,13 @@
 							url="resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}"
 							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText>#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}</h:outputText></span>
+						<span class="menu-entry-text"><h:outputText escape="false" value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}"/></span>
 					</p:commandLink>
 				</p:panelGrid>
 
 				<p:tree id="resourcesTree" dynamic="true"
 					value="#{resourcesTreeController.treeRoot}" var="treeNodeData"
-					selectionMode="single"
+					selectionMode="single" 
 					selection="#{resourcesTreeController.selectedNode}">
 					<p:ajax event="select"
 						update=":formResources:selectedResourcePanel :formResources:messagesDisplayer"
@@ -107,7 +107,7 @@
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
 					<p:treeNode type="software" styleClass="#{treeNodeData.styleClass}">
-						<h:outputText value="#{treeNodeData.label}" />
+						<h:outputText value="#{treeNodeData.label}"/>
 					</p:treeNode>
 					<p:treeNode type="softwareDocumentation"
 						styleClass="#{treeNodeData.styleClass}">

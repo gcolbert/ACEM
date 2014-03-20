@@ -65,7 +65,9 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	private TreeNode selectedNode;
 
 	private String selectedResourceType;
-
+	
+	private Long selectedResourceId;
+	
 	private List<String> categoriesForSelectedResourceType;
 
 	//private Map<Long, ResourceViewBean> resourceViewBeans;
@@ -142,6 +144,21 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		editableTreeBean.getVisibleRoots().get(0).setExpanded(true);
 	}
 
+	public Long getSelectedResourceId() {
+		return selectedResourceId;
+	}
+	
+	public void setSelectedResourceId(Long resourceId) {
+		this.selectedResourceId = resourceId;
+		TreeNode node = editableTreeBean.getNodeWithId(resourceId);
+		if (node != null) {
+			node.setSelected(true);
+			editableTreeBean.expandOnlyOneNode(node);
+			
+			resourcesSelectedResourceController.setSelectedResourceId(resourceId);
+		}
+	}
+	
 	public TreeNode getTreeRoot() {
 		return editableTreeBean.getRoot();
 	}
@@ -153,8 +170,8 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	public void setSelectedNode(TreeNode selectedNode) {
 		if (this.selectedNode != null) {
 			this.selectedNode.setSelected(false);
-			editableTreeBean.expandOnlyOneNode(selectedNode);
 		}
+		editableTreeBean.expandOnlyOneNode(selectedNode);
 		this.selectedNode = selectedNode;
 	}
 
@@ -188,6 +205,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	*/
 
 	public void onNodeSelect() {
+		setSelectedResourceId(((TreeNodeData) selectedNode.getData()).getId());
 		resourcesSelectedResourceController.setSelectedResourceId(((TreeNodeData) selectedNode.getData()).getId());
 	}
 
