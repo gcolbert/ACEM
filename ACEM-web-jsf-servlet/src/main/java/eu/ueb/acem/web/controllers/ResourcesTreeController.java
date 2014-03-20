@@ -206,7 +206,6 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 
 	public void onNodeSelect() {
 		setSelectedResourceId(((TreeNodeData) selectedNode.getData()).getId());
-		resourcesSelectedResourceController.setSelectedResourceId(((TreeNodeData) selectedNode.getData()).getId());
 	}
 
 }

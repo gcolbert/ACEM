@@ -93,9 +93,9 @@
 					</p:commandLink>
 				</p:panelGrid>
 
-				<p:tree id="resourcesTree" dynamic="true"
+				<p:tree id="resourcesTree" dynamic="true" datakey="#{treeNodeData.id}"
 					value="#{resourcesTreeController.treeRoot}" var="treeNodeData"
-					selectionMode="single" 
+					selectionMode="single" onNodeClick="if ( (node.attr('data-nodetype')!='default') &amp;&amp; (node.attr('data-nodetype')!='category') ) { history.pushState('','','my-tools?resourceId='+node.attr('data-datakey')); }"
 					selection="#{resourcesTreeController.selectedNode}">
 					<p:ajax event="select"
 						update=":formResources:selectedResourcePanel :formResources:messagesDisplayer"
@@ -172,7 +172,7 @@
 							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY_OR_TYPE_A_NEW_ONE_LABEL']}"
 							itemValue="" />
 						<f:selectItems
-							value="#{resourcesController.categoriesForSelectedResourceType}" />
+							value="#{resourcesTreeController.categoriesForSelectedResourceType}" />
 					</p:selectOneMenu>
 					<p:message for="newResourceCategory" display="text" />
 
@@ -187,7 +187,7 @@
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value)}"
+					action="#{resourcesTreeController.createResourceForSelectedResourceType(input1.value, input2.value)}"
 					update=":formResources:resourcesTree :formResources:messagesDisplayer"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
 			</h:form>
