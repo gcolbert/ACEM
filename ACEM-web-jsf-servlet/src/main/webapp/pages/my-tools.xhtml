@@ -135,30 +135,61 @@
 
 			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}"
 				id="selectedResourcePanel">
-				<p:panelGrid columns="2"
+				<p:panelGrid columns="1"
 					rendered="#{resourcesSelectedResourceController.selectedResourceViewBean != null}">
-					<p:column>
-						<p:panelGrid columns="1">
-							<h:outputText styleClass="title"
-								value="#{resourcesSelectedResourceController.selectedResourceViewBean.name}" />
-							<h:panelGroup>
-								<p:selectBooleanCheckbox id="favoriteResource"
-									value="#{resourcesSelectedResourceController.selectedResourceViewBean.favoriteResource}" />
-								<p:outputLabel for="favoriteResource"
-									value="#{msgs['RESOURCES.SELECTED_RESOURCE.ADD_TO_MY_FAVORITE_TOOLS']}" />
-							</h:panelGroup>
-						</p:panelGrid>
-						<!-- 
-						<p:panelGrid columns="2">
-							<p:selectBooleanCheckbox id="favoriteResource"
-								value="#{resourcesSelectedResourceController.selectedResourceViewBean.favoriteResource}" />
-							<p:outputLabel for="favoriteResource" value="#{msgs['RESOURCES.SELECTED_RESOURCE.ADD_TO_MY_FAVORITE_TOOLS']}" />
-						</p:panelGrid>
+
+					<h:outputText styleClass="title"
+						value="#{resourcesSelectedResourceController.selectedResourceViewBean.name}" />
+
+					<!-- 
+						<p:fileUpload fileUploadListener="#{fileController.handleFileUpload}" />
+						-->
+					<!-- 
+						<p:graphicImage value="#{imagesController.image}" title="#{resourcesSelectedResourceController.selectedResourceViewBean.name}">
+							<f:param name="imageId" value="#{resourcesSelectedResourceController.selectedResourceViewBean.id}" />
+						</p:graphicImage>
 						 -->
-					</p:column>
-					<p:column>
-						<p:commandButton value="Test" />
-					</p:column>
+
+					<h:panelGroup>
+						<p:selectBooleanCheckbox id="favoriteResource"
+							value="#{resourcesSelectedResourceController.selectedResourceViewBean.favoriteResource}" />
+						<p:outputLabel for="favoriteResource"
+							value="#{msgs['RESOURCES.SELECTED_RESOURCE.ADD_TO_MY_FAVORITE_TOOLS']}" />
+					</h:panelGroup>
+
+					<p:outputLabel
+						value="#{msgs['RESOURCES.SELECTED_RESOURCE.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}"
+						for="pedagogicalUseTree" />
+					<p:tree id="pedagogicalUseTree" dynamic="true"
+						value="#{resourcesSelectedResourceController.treeRoot}"
+						var="treeNodeData">
+						<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
+							<h:outputText value="#{treeNodeData.label}" />
+						</p:treeNode>
+						<p:treeNode
+							type="#{needsAndAnswersTreeController.treeNodeType_NEED_LEAF}"
+							styleClass="#{treeNodeData.styleClass}">
+							<h:outputText value="#{treeNodeData.label}" />
+						</p:treeNode>
+						<p:treeNode
+							type="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}"
+							styleClass="#{treeNodeData.styleClass}">
+							<h:outputText value="#{treeNodeData.label}" />
+						</p:treeNode>
+						<p:treeNode
+							type="#{needsAndAnswersTreeController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}"
+							styleClass="#{treeNodeData.styleClass}">
+							<h:outputText value="#{treeNodeData.label}" />
+						</p:treeNode>
+						<p:treeNode
+							type="#{needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF}"
+							styleClass="#{treeNodeData.styleClass}">
+							<h:outputText value="#{treeNodeData.label}" />
+						</p:treeNode>
+					</p:tree>
+
+					<p:commandButton value="Test" />
+
 				</p:panelGrid>
 			</p:panel>
 

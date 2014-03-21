@@ -85,11 +85,8 @@
 						icon="ui-icon-trash" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_RESOURCE']}"
-						update="needsAndAnswersTree"
-						icon="ui-icon-link"
-						onclick="PF('dialogAssociateResource').show()"
-						type="button"
-					/>
+						update="needsAndAnswersTree" icon="ui-icon-link"
+						onclick="PF('dialogAssociateResource').show()" type="button" />
 				</p:contextMenu>
 
 				<p:tree id="needsAndAnswersTree" dynamic="true"
@@ -168,8 +165,9 @@
 		</h:form>
 
 		<h:form id="formAssociateResource">
-			<p:dialog id="modalDialog" header="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_DIALOG.HEADER']}" widgetVar="dialogAssociateResource"
-				modal="true" height="100">
+			<p:dialog id="modalDialog"
+				header="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_DIALOG.HEADER']}"
+				widgetVar="dialogAssociateResource" modal="true" height="100">
 				<h:outputText value="This is a Modal Dialog." />
 			</p:dialog>
 		</h:form>

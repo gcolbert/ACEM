@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import javax.annotation.PostConstruct;
+
+import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +32,9 @@ import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
+import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.services.ResourcesService;
+import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
@@ -52,17 +57,34 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 	@Autowired
 	private ResourcesService resourcesService;
 
+	@Autowired
+	private NeedsAndAnswersService needsAndAnswersService;
+
 	private ResourceViewBean selectedResourceViewBean;
+
+	@Autowired
+	private EditableTreeBean pedagogicalUseTreeBean;
+
+	@Autowired
+	private NeedsAndAnswersTreeController needsAndAnswersTreeController;
 
 	private Long selectedResourceId;
 
 	public ResourcesSelectedResourceController() {
 	}
 
+	@PostConstruct
+	public void initResourcesSelectedResourceController() {
+		logger.info("entering initResourcesSelectedResourceController");
+		needsAndAnswersTreeController.initTree(pedagogicalUseTreeBean, null);
+		logger.info("leaving initResourcesSelectedResourceController");
+		logger.info("------");
+	}
+
 	public Long getSelectedResourceId() {
 		return selectedResourceId;
 	}
-	
+
 	public void setSelectedResourceId(Long resourceId) {
 		logger.info("resourceId={}", resourceId);
 		this.selectedResourceId = resourceId;
@@ -84,8 +106,16 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 		}
 	}
 
+	public TreeNode getTreeRoot() {
+		return pedagogicalUseTreeBean.getRoot();
+	}
+
 	public ResourceViewBean getSelectedResourceViewBean() {
 		return selectedResourceViewBean;
+	}
+
+	public EditableTreeBean getPedagogicalUseTreeBean() {
+		return pedagogicalUseTreeBean;
 	}
 
 }

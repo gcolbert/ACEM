@@ -67,7 +67,7 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 		setId(software.getId());
 		setName(software.getName());
 	}
-
+	
 	@Override
 	public Long getId() {
 		return id;

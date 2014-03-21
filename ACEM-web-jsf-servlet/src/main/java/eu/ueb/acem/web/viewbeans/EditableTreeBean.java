@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
  * 
  */
 @Component("editableTreeBean")
-@Scope("view")
+@Scope("prototype")
 public class EditableTreeBean implements Serializable {
 
 	@SuppressWarnings("unused")
@@ -48,7 +48,7 @@ public class EditableTreeBean implements Serializable {
 	private TreeNode root;
 
 	private List<TreeNode> visibleRoots;
-	
+
 	private Map<Long, TreeNode> allNodes;
 
 	public EditableTreeBean() {
@@ -60,7 +60,7 @@ public class EditableTreeBean implements Serializable {
 		// Therefore, we add a list of visible roots, so that it is possible to
 		// right click on something to add children nodes
 		visibleRoots = new ArrayList<TreeNode>();
-		
+
 		allNodes = new HashMap<Long, TreeNode>();
 	}
 
@@ -77,8 +77,10 @@ public class EditableTreeBean implements Serializable {
 		return visibleRoots;
 	}
 
-	public void addVisibleRoot(String label) {
-		visibleRoots.add(new DefaultTreeNode(new TreeNodeData(null, label, null), root));
+	public TreeNode addVisibleRoot(String label) {
+		TreeNode node = new DefaultTreeNode(new TreeNodeData(null, label, null), root);
+		visibleRoots.add(node);
+		return node;
 	}
 
 	/**
@@ -137,7 +139,7 @@ public class EditableTreeBean implements Serializable {
 	public TreeNode getNodeWithId(Long resourceId) {
 		return allNodes.get(resourceId);
 	}
-	
+
 	public static class TreeNodeData implements Serializable {
 
 		private static final long serialVersionUID = -5623188924862380160L;
@@ -155,9 +157,9 @@ public class EditableTreeBean implements Serializable {
 		}
 
 		/**
-		 * @return the identifier of the node, which is, by construction, the
-		 *         identifier of the underlying domain bean (so that we can, for
-		 *         example, save the label if the user modifies it)
+		 * @return the identifier of the node, which is equal, by construction,
+		 *         to the identifier of the underlying domain bean (so that we
+		 *         can, for example, save the label if the user modifies it)
 		 */
 		public Long getId() {
 			return id;

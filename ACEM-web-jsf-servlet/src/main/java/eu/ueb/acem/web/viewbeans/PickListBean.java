@@ -20,6 +20,7 @@ package eu.ueb.acem.web.viewbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import org.primefaces.model.DualListModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,8 @@ import org.springframework.stereotype.Component;
 /**
  * A view bean for <a
  * href="http://www.primefaces.org/showcase/ui/picklist.jsf">PrimeFaces PickList
- * component</a>.
+ * component</a>. It can handle other view beans as long as they implement the
+ * {@link Pickable} interface.
  * 
  * @author Grégoire Colbert
  * @since 2014-01-10

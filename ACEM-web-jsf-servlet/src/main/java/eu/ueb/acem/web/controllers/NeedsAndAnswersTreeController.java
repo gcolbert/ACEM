@@ -61,7 +61,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	private NeedsAndAnswersService needsAndAnswersService;
 
 	@Autowired
-	private EditableTreeBean editableTreeBean;
+	private EditableTreeBean needsAndAnswersTreeBean;
 
 	private TreeNode selectedNode;
 
@@ -69,18 +69,59 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	}
 
 	@PostConstruct
-	public void initTree() {
-		logger.info("entering initTree");
-		editableTreeBean.addVisibleRoot(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
+	public void initNeedsAndAnswersTreeController() {
+		logger.info("entering initNeedsAndAnswersTreeController");
+		initTree(needsAndAnswersTreeBean, getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
+		logger.info("leaving initNeedsAndAnswersTreeController");
+		logger.info("------");
+	}
+
+	/**
+	 * Fills the given {@link EditableTreeBean} with the Pedagogical Advice
+	 * nodes returned by the {@link NeedsAndAnswersService} implementation
+	 * defined in this controller.
+	 * 
+	 * @param treeBean
+	 *            the treeBean to initialize.
+	 * @param singleTreeRootLabel
+	 *            is an optional string, that, if not null, will be the label of
+	 *            a special unique node at the root of the tree. Even if the
+	 *            data returned from the service have multiple roots, it can be
+	 *            useful to force the creation of an ancestor node, for example
+	 *            if the creation of a child node requires the user to
+	 *            right-click on an existing node. That way, the user will be
+	 *            able to start creating nodes even if there is no node returned
+	 *            from the service.
+	 */
+	public void initTree(EditableTreeBean treeBean, String singleVisibleTreeRootLabel) {
+		if (singleVisibleTreeRootLabel != null) {
+			treeBean.addVisibleRoot(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
+		}
 		Collection<Besoin> needs = needsAndAnswersService.retrieveNeedsAtRoot();
 		logger.info("Found {} needs at root of tree.", needs.size());
 		for (Besoin need : needs) {
 			logger.info("need = {}", need.getName());
-			createTree(need, editableTreeBean.getVisibleRoots().get(0));
+			TreeNode currentVisibleRoot = null;
+			if (singleVisibleTreeRootLabel != null) {
+				// If the function was called with the
+				// "singleVisibleTreeRootLabel" set,
+				// we add the real roots of the tree as children of this
+				// "artificial" root.
+				currentVisibleRoot = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(),
+						need.getName(), "Need"), treeBean.getVisibleRoots().get(0));
+			}
+			else {
+				// otherwise, we add the current node as a visible root by
+				// itself (thus allowing many visible roots)
+				currentVisibleRoot = treeBean.addVisibleRoot(need.getName());
+			}
+			for (Besoin child : need.getChildren()) {
+				createTree(child, currentVisibleRoot);
+			}
 		}
-		editableTreeBean.getVisibleRoots().get(0).setExpanded(true);
-		logger.info("leaving initTree");
-		logger.info("------");
+		if (singleVisibleTreeRootLabel != null) {
+			treeBean.getVisibleRoots().get(0).setExpanded(true);
+		}
 	}
 
 	/**
@@ -88,13 +129,13 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	 */
 	private void createTree(Besoin need, TreeNode rootNode) {
 		// We create the root node
-		TreeNode newNode = new DefaultTreeNode(TREE_NODE_TYPE_NEED_LEAF, new TreeNodeData(need.getId(), need.getName(),
-				"Need"), rootNode);
+		TreeNode newNode = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(),
+				need.getName(), "Need"), rootNode);
 		// We look for children and recursively create them too
 		@SuppressWarnings("unchecked")
 		Collection<Besoin> associatedNeeds = (Collection<Besoin>) need.getChildren();
 		if (associatedNeeds.size() > 0) {
-			((DefaultTreeNode) newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS);
+			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 			for (Besoin besoinChild : associatedNeeds) {
 				createTree(besoinChild, newNode);
 			}
@@ -103,17 +144,17 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		@SuppressWarnings("unchecked")
 		Collection<Reponse> answers = (Collection<Reponse>) need.getAnswers();
 		if (answers.size() > 0) {
-			((DefaultTreeNode) newNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
-			need.setAnswers((Set<Reponse>)answers);
+			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
+			need.setAnswers((Set<Reponse>) answers);
 			for (Reponse answer : answers) {
-				new DefaultTreeNode(TREE_NODE_TYPE_ANSWER_LEAF, new TreeNodeData(answer.getId(), answer.getName(),
+				new DefaultTreeNode(getTreeNodeType_ANSWER_LEAF(), new TreeNodeData(answer.getId(), answer.getName(),
 						"Answer"), newNode);
 			}
 		}
 	}
 
 	public TreeNode getTreeRoot() {
-		return editableTreeBean.getRoot();
+		return needsAndAnswersTreeBean.getRoot();
 	}
 
 	public TreeNode getSelectedNode() {
@@ -123,7 +164,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	public void setSelectedNode(TreeNode selectedNode) {
 		if (this.selectedNode != null) {
 			this.selectedNode.setSelected(false);
-			editableTreeBean.expandOnlyOneNode(selectedNode);
+			needsAndAnswersTreeBean.expandOnlyOneNode(selectedNode);
 		}
 		this.selectedNode = selectedNode;
 	}
@@ -136,24 +177,24 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 
 	public void associateNeedWithSelectedNode() {
 		logger.info("entering addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
-		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
+		TreeNode newNode = needsAndAnswersTreeBean.addChild(selectedNode, null,
 				getString("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL"), "Need");
 		((DefaultTreeNode) selectedNode).setType("NeedWithAssociatedNeeds");
 		setSelectedNode(newNode);
 		saveTreeNode(newNode);
-		editableTreeBean.expandOnlyOneNode(newNode);
+		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
 		logger.info("leaving addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.info("------");
 	}
 
 	public void associateAnswerWithSelectedNode() {
 		logger.info("entering associateAnswerToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
-		TreeNode newNode = editableTreeBean.addChild(selectedNode, null,
+		TreeNode newNode = needsAndAnswersTreeBean.addChild(selectedNode, null,
 				getString("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL"), "Answer");
 		((DefaultTreeNode) selectedNode).setType(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS);
 		setSelectedNode(newNode);
 		saveTreeNode(newNode);
-		editableTreeBean.expandOnlyOneNode(newNode);
+		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
 		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.info("------");
 	}
@@ -178,13 +219,15 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 					selectedNode.getParent().getChildren().remove(selectedNode);
 					selectedNode.setParent(null);
 					this.selectedNode = null;
-				} else {
+				}
+				else {
 					MessageDisplayer.showMessageToUserWithSeverityError(
 							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE"),
 							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS"));
 					logger.info("The service failed to delete the node.");
 				}
-			} else {
+			}
+			else {
 				MessageDisplayer.showMessageToUserWithSeverityError(
 						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE"),
 						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS"));
@@ -205,14 +248,15 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 
 		needsAndAnswersService.changeParentOfNeed(dragNodeData.getId(), dropNodeData.getId());
 
-		MessageDisplayer.showMessageToUserWithSeverityInfo("Dragged " + dragNodeData, "Dropped on " + dropNodeData + " at "
-				+ dropIndex);
+		MessageDisplayer.showMessageToUserWithSeverityInfo("Dragged " + dragNodeData, "Dropped on " + dropNodeData
+				+ " at " + dropIndex);
 	}
 
 	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
 		if (treeNodeData.getConcept().equals("Answer")) {
 			needsAndAnswersService.saveAnswerName(treeNodeData.getId(), treeNodeData.getLabel());
-		} else if (treeNodeData.getConcept().equals("Need")) {
+		}
+		else if (treeNodeData.getConcept().equals("Need")) {
 			needsAndAnswersService.saveNeedName(treeNodeData.getId(), treeNodeData.getLabel());
 		}
 	}
@@ -239,7 +283,8 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 				logger.info("treeNode has an unknown concept value: {}", treeNodeData.getConcept());
 				break;
 			}
-		} else {
+		}
+		else {
 			logger.info("entering saveTreeNode with null parameter, we do nothing.");
 		}
 		logger.info("leaving saveTreeNode");

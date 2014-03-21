@@ -33,6 +33,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("accordionPanelBean")
 @Scope("view")
+//TODO : choose whether we should keep this for correction of issue https://github.com/gcolbert/ACEM/issues/3
 public class AccordionPanelBean implements Serializable {
 
 	private static final long serialVersionUID = -4445898195655694994L;
