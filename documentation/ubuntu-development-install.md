@@ -11,7 +11,7 @@ Initialize database (optional)
 ------------------------------
 - If you want to start with an existing ACEM database, you can delete
 Neo4J's "data" folder, and unzip the file located at :
-"ACEM-dal/src/main/resources/database/data.zip"
+[ACEM-dal/src/main/resources/database/data.zip](https://github.com/gcolbert/ACEM/blob/master/ACEM-dal/src/main/resources/database/data.zip)
 
 Install OpenJDK 7
 -----------------
@@ -109,7 +109,7 @@ Run the server using Eclipse and Tomcat
 
 - Once the server is installed, double-click on it and choose :
 "Use Tomcat installation (takes control of Tomcat installation)"
-in the "Server Locations" panel. Change the deploy-path from "wtpwebapps"
+in the "Server Locations" panel. **Change the deploy-path** from "wtpwebapps"
 to "webapps". Save the file.
 
 - Now right-click on the server and choose "Add and remove".
