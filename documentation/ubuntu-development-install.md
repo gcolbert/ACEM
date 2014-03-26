@@ -25,7 +25,7 @@ Install Maven 2
 Install Eclipse for Java EE
 ---------------------------
 
-- Download Eclipse IDE for Java EE developers at http://www.eclipse.org/downloads/
+- Download **Eclipse IDE for Java EE developers** at http://www.eclipse.org/downloads/
 
 - Put the tar.gz inside a folder in your $HOME directory (e.g. in ~/ACEM-project)
 
@@ -109,8 +109,8 @@ Run the server using Eclipse and Tomcat
 
 - Once the server is installed, double-click on it and choose :
 "Use Tomcat installation (takes control of Tomcat installation)"
-in the "Server Locations" panel. **Change the deploy-path** from "wtpwebapps"
-to "webapps". Save the file.
+in the "Server Locations" panel. **Change the deploy-path from "wtpwebapps"
+to "webapps"**. Save the file.
 
 - Now right-click on the server and choose "Add and remove".
 Add the ACEM-web-jsf-servlet project to Tomcat.
