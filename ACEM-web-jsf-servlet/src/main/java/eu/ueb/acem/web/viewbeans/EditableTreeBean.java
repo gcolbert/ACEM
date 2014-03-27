@@ -113,19 +113,29 @@ public class EditableTreeBean implements Serializable {
 		}
 	}
 
-	public void collapseChildrenOf(TreeNode node) {
+	public void expandIncludingChildren(TreeNode node) {
+		node.setExpanded(true);
+		for (TreeNode child : node.getChildren()) {
+			child.setExpanded(true);
+			if (!child.isLeaf()) {
+				expandIncludingChildren(child);
+			}
+		}
+	}
+	
+	public void collapseIncludingChildren(TreeNode node) {
+		node.setExpanded(false);
 		for (TreeNode child : node.getChildren()) {
 			child.setExpanded(false);
 			if (!child.isLeaf()) {
-				collapseChildrenOf(child);
+				collapseIncludingChildren(child);
 			}
 		}
 	}
 
 	public void collapseTree() {
 		for (TreeNode visibleRoot : visibleRoots) {
-			visibleRoot.setExpanded(false);
-			collapseChildrenOf(visibleRoot);
+			collapseIncludingChildren(visibleRoot);
 		}
 	}
 

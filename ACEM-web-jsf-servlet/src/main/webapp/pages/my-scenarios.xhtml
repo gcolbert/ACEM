@@ -48,7 +48,8 @@
 										 -->
 									<p:column
 										headerText="#{msgs['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
-										<h:outputText value="#{scenarioViewBean.name}" />
+										<h:outputText id="scenario" value="#{scenarioViewBean.name}" />
+										<p:tooltip for="scenario" value="#{scenarioViewBean.objective}" />  
 									</p:column>
 								</p:dataTable>
 							</p:scrollPanel>

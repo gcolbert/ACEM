@@ -109,6 +109,12 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 				// "artificial" root.
 				currentVisibleRoot = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(),
 						need.getName(), "Need"), treeBean.getVisibleRoots().get(0));
+				if (need.getChildren().size() > 0) {
+					((DefaultTreeNode) currentVisibleRoot).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
+				}
+				else if (need.getAnswers().size() > 0) {
+					((DefaultTreeNode) currentVisibleRoot).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
+				}
 			}
 			else {
 				// otherwise, we add the current node as a visible root by
@@ -174,7 +180,27 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 			MessageDisplayer.showMessageToUserWithSeverityInfo("Selected", selectedNode.getData().toString());
 		}
 	}
+	
+	public void expandSelectedNodeIncludingChildren() {
+		if (selectedNode != null) {
+			logger.info("selectedNode = {}",  selectedNode.getData().toString());
+			needsAndAnswersTreeBean.expandIncludingChildren(selectedNode);
+		}
+		else {
+			logger.info("selectedNode is null");
+		}
+	}
 
+	public void collapseSelectedNodeIncludingChildren() {
+		if (selectedNode != null) {
+			logger.info("selectedNode = {}",  selectedNode.getData().toString());
+			needsAndAnswersTreeBean.collapseIncludingChildren(selectedNode);
+		}
+		else {
+			logger.info("selectedNode is null");
+		}
+	}
+	
 	public void associateNeedWithSelectedNode() {
 		logger.info("entering addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		TreeNode newNode = needsAndAnswersTreeBean.addChild(selectedNode, null,
