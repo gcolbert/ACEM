@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.primefaces.model.TreeNode;
@@ -27,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
@@ -118,4 +122,7 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 		return pedagogicalUseTreeBean;
 	}
 
+	public List<Scenario> getScenariosUsingSelectedTool() {
+		return new ArrayList<Scenario>(resourcesService.getScenariosAssociatedWithRessource(selectedResourceId));
+	}
 }

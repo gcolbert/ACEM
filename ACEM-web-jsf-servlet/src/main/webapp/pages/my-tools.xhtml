@@ -188,7 +188,26 @@
 						</p:treeNode>
 					</p:tree>
 
-					<p:commandButton value="Test" />
+					<p:outputLabel
+						value="#{msgs['RESOURCES.SELECTED_RESOURCE.SCENARIOS_USING_SELECTED_TOOL_LABEL']}"
+						for="scenariosUsingSelectedToolTable" />
+						
+					<p:dataTable id="scenariosUsingSelectedToolTable"
+						value="#{resourcesSelectedResourceController.scenariosUsingSelectedTool}"
+						var="scenario">
+						<p:column
+							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE.SCENARIOS.COLUMNS.TITLE']}">
+							<h:outputText value="#{scenario.name}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE.SCENARIOS.COLUMNS.OBJECTIVE']}">
+							<h:outputText value="#{scenario.objective}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE.SCENARIOS.COLUMNS.AUTHOR']}">
+							<h:outputText value="#{scenario.author}" />
+						</p:column>
+					</p:dataTable>
 
 				</p:panelGrid>
 			</p:panel>
@@ -218,10 +237,11 @@
 					<h:outputLabel for="newResourceCategory"
 						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
 					<p:selectOneMenu id="newResourceCategory" effect="fold"
-						required="true" editable="true" binding="#{input1}">
+						required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}"
+						editable="true" binding="#{input1}">
 						<f:selectItem
 							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY_OR_TYPE_A_NEW_ONE_LABEL']}"
-							itemValue="" />
+							itemValue="" itemDisabled="true" noSelectionOption="true"/>
 						<f:selectItems
 							value="#{resourcesTreeController.categoriesForSelectedResourceType}" />
 					</p:selectOneMenu>
@@ -239,7 +259,7 @@
 					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{resourcesTreeController.createResourceForSelectedResourceType(input1.value, input2.value)}"
-					update=":formResources:resourcesTree :formResources:messagesDisplayer"
+					update="@form :formResources"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
 			</h:form>
 		</p:dialog>

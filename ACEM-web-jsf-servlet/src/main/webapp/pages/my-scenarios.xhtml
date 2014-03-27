@@ -105,12 +105,18 @@
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.AUTHORS_LABEL']}"
 								styleClass="label" />
 							<p:panel id="selectedScenarioAuthors">
+								<h:outputText 
+									value="#{myScenariosController.selectedScenarioViewBean.authors}" />
+							</p:panel>
+							<!-- 
+							<p:panel id="selectedScenarioAuthors">
 								<ui:repeat
 									value="#{myScenariosController.selectedScenarioViewBean.authorViewBeans}"
 									var="authorViewBean">
 									<h:outputText value="#{authorViewBean.name}" />
 								</ui:repeat>
 							</p:panel>
+							-->
 
 							<h:outputLabel for="selectedScenarioCreationDate"
 								value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.CREATION_DATE_LABEL']}"
@@ -190,7 +196,7 @@
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
-							<p:column width="20"
+							<p:column
 								headerText="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DURATION']}">
 								<p:cellEditor>
 									<f:facet name="output">

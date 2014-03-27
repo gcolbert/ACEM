@@ -270,6 +270,7 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
 						binding="#{input1}" />
 					<p:message for="newCommunityName" display="text" />
+
 					<h:outputLabel for="newCommunityShortName"
 						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
 					<p:inputText id="newCommunityShortName" required="true"
@@ -289,7 +290,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateCommunity(input1.value, input1b.value)}"
 					process="@this idDialogCreateCommunity"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations"
+					update=":formOrganisations:idDialogCreateCommunity :formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateCommunity.hide(); }" />
 			</p:dialog>
 
@@ -316,7 +317,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateInstitution(input2.value, input2b.value)}"
 					process="@this idDialogCreateInstitution"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations"
+					update=":formOrganisations:idDialogCreateInstitution :formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
 			</p:dialog>
 
@@ -345,7 +346,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateAdministrativeDepartment(input3.value, input3b.value)}"
 					process="@this idDialogCreateAdministrativeDepartment"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:messagesDisplayerFormOrganisations"
+					update=":formOrganisations:idDialogCreateAdministrativeDepartment :formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateAdministrativeDepartment.hide(); }" />
 			</p:dialog>
 
@@ -373,7 +374,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateTeachingDepartment(input4.value, input4b.value)}"
 					process="@this idDialogCreateTeachingDepartment"
-					update=":formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations"
+					update=":formOrganisations:idDialogCreateTeachingDepartment :formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
 			</p:dialog>
 
@@ -400,7 +401,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onRenameOrganisation}"
 					process="@this idDialogRenameOrganisation"
-					update=":formOrganisations:tabViewOrganisations :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+					update=":formOrganisations:idDialogRenameOrganisation :formOrganisations:tabViewOrganisations :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogRenameOrganisation.hide(); }" />
 			</p:dialog>
 

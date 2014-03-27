@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -48,12 +49,13 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	private static final long serialVersionUID = -3164178023755035995L;
 
 	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
-	private List<PersonViewBean> authorViewBeans;
+	//private List<PersonViewBean> authorViewBeans;
 
 	private Scenario scenario;
 
 	private Long id;
 	private String name;
+	private String authors;
 	private String objective;
 	private Boolean published;
 	private String creationDate;
@@ -62,7 +64,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 
 	public ScenarioViewBean() {
 		pedagogicalActivityViewBeans = new ArrayList<PedagogicalActivityViewBean>();
-		authorViewBeans = new ArrayList<PersonViewBean>();
+		//authorViewBeans = new ArrayList<PersonViewBean>();
 	}
 
 	public ScenarioViewBean(Scenario scenario) {
@@ -74,9 +76,11 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		return pedagogicalActivityViewBeans;
 	}
 
+	/*
 	public List<PersonViewBean> getAuthorViewBeans() {
 		return authorViewBeans;
 	}
+	*/
 
 	public Scenario getScenario() {
 		return scenario;
@@ -87,6 +91,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		setId(scenario.getId());
 		this.name = scenario.getName();
 		this.objective = scenario.getObjective();
+		setAuthors(scenario.getAuthors());
 		this.evaluationModes = scenario.getEvaluationModes();
 		this.published = scenario.isPublished();
 		setCreationDate(scenario.getCreationDate());
@@ -97,12 +102,14 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 			pedagogicalActivityViewBeans.add(new PedagogicalActivityViewBean(pedagogicalActivity));
 		}
 		Collections.sort(pedagogicalActivityViewBeans);
-
+		
+		/*
 		authorViewBeans.clear();
 		for (Enseignant author : scenario.getAuthors()) {
 			authorViewBeans.add(new PersonViewBean(author));
 		}
 		Collections.sort(authorViewBeans);
+		*/
 	}
 
 	@Override
@@ -132,6 +139,22 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		scenario.setObjective(objective);
 	}
 
+	public String getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(Set<? extends Enseignant> authors) {
+		String authorsAsString = "";
+		for (Enseignant author : authors) {
+			authorsAsString = authorsAsString.concat(author.getName().concat(", "));
+		}
+		if (authorsAsString.length() > 0) {
+			// We remove the last two characters (corresponding to the ending ", " characters)
+			authorsAsString = authorsAsString.substring(0, authorsAsString.length() - 2);
+		}
+		this.authors = authorsAsString;
+	}
+	
 	public String getEvaluationModes() {
 		return evaluationModes;
 	}

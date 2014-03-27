@@ -32,6 +32,8 @@ import eu.ueb.acem.dal.jaune.PedagogicalAndDocumentaryResourcesDAO;
 import eu.ueb.acem.dal.jaune.ProfessionalTrainingDAO;
 import eu.ueb.acem.dal.jaune.SoftwareDAO;
 import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
+import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
@@ -253,6 +255,18 @@ public class ResourcesServiceImpl implements ResourcesService {
 		else {
 			return pedagogicalAndDocumentaryResourcesDAO.retrieveAll();
 		}
+	}
+
+	@Override
+	public Collection<Scenario> getScenariosAssociatedWithRessource(Long id) {
+		Ressource resource = getResource(id);
+		Set<Scenario> scenarios = new HashSet<Scenario>();
+		if (resource != null) {
+			for (ActivitePedagogique activity : resource.getPedagogicalActivities()) {
+				scenarios.addAll(activity.getScenarios());
+			}
+		}
+		return scenarios;
 	}
 
 }
