@@ -107,12 +107,22 @@ Run the server using Eclipse and Tomcat
 
 - Choose the directory where you extracted Tomcat's distribution archive
 
-- Once the server is installed, double-click on it and choose :
-"Use Tomcat installation (takes control of Tomcat installation)"
-in the "Server Locations" panel. **Change the deploy-path from "wtpwebapps"
-to "webapps"**. Save the file.
+- Once the server is installed, double-click on it.
 
-- Now right-click on the server and choose "Add and remove".
-Add the ACEM-web-jsf-servlet project to Tomcat.
+- In the "Server Locations" panel, choose "Use Tomcat installation (takes control of Tomcat installation)".
 
-- Make sure that Neo4j is running or the application won't start. Click the start icon.
+- Change the deploy-path from "wtpwebapps" to "webapps".
+
+- In the "Timeouts" panel on the right, increase the "Start (in seconds)" value to 200. Do the same thing for the "Stop (in seconds)" value.
+
+- Save the server configuration.
+
+- Now, right-click on the server and choose "Add and remove".
+
+- Pick the ACEM-web-jsf-servlet project so that it appears in the "Configured" column. Click "Finish".
+
+- **Make sure that Neo4j is running, or the application won't start.**
+
+- Click the start icon of the server.
+
+- In a web browser, go to http://localhost:8080/ACEM-web-jsf-servlet
