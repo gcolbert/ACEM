@@ -57,6 +57,19 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
+	public Boolean deleteNode(Long id) {
+		if (needDAO.exists(id)) {
+			return deleteNeed(id);
+		}
+		else if (answerDAO.exists(id)) {
+			return deleteAnswer(id);
+		}
+		else {
+			return false;
+		}
+	}
+	
+	@Override
 	public Long countNeeds() {
 		return needDAO.count();
 	}

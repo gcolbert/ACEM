@@ -109,14 +109,18 @@
 						action="#{needsAndAnswersTreeController.displaySelectedNodeInfo}"
 						icon="ui-icon-search" />
 					<p:menuitem
+						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_TOOL']}"
+						update="needsAndAnswersTree" icon="ui-icon-link"
+						onclick="PF('dialogAssociateTool').show()" type="button" />
+					<p:menuitem
+						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_SERVICE']}"
+						update="needsAndAnswersTree" icon="ui-icon-link"
+						onclick="PF('dialogAssociateService').show()" type="button" />
+					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
 						update="needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
 						icon="ui-icon-trash" />
-					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_RESOURCE']}"
-						update="needsAndAnswersTree" icon="ui-icon-link"
-						onclick="PF('dialogAssociateResource').show()" type="button" />
 				</p:contextMenu>
 
 				<p:tree id="needsAndAnswersTree" dynamic="true"
@@ -194,11 +198,19 @@
 			</p:panel>
 		</h:form>
 
-		<h:form id="formAssociateResource">
+		<h:form id="formAssociateTool">
 			<p:dialog id="modalDialog"
-				header="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_DIALOG.HEADER']}"
-				widgetVar="dialogAssociateResource" modal="true" height="100">
-				<h:outputText value="This is a Modal Dialog." />
+				header="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_TOOL_DIALOG.HEADER']}"
+				widgetVar="dialogAssociateTool" modal="true" height="200">
+				Ici, on doit pouvoir choisir une catégorie d'outil.
+			</p:dialog>
+		</h:form>
+
+		<h:form id="formAssociateService">
+			<p:dialog id="modalDialog"
+				header="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_SERVICE_DIALOG.HEADER']}"
+				widgetVar="dialogAssociateService" modal="true" height="200">
+				Ici, on doit pouvoir choisir un service-support.
 			</p:dialog>
 		</h:form>
 

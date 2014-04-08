@@ -33,6 +33,8 @@ import eu.ueb.acem.domain.beans.rouge.Service;
  */
 public interface NeedsAndAnswersService {
 
+	Boolean deleteNode(Long id);
+	
 	Long countNeeds();
 
 	Besoin createNeed(String name);

@@ -52,10 +52,10 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeController.class);
 
-	private static final String TREE_NODE_TYPE_NEED_LEAF = "Need";
+	private static final String TREE_NODE_TYPE_NEED_LEAF = "NeedLeaf";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS = "NeedWithAssociatedNeeds";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS = "NeedWithAssociatedAnswers";
-	private static final String TREE_NODE_TYPE_ANSWER_LEAF = "Answer";
+	private static final String TREE_NODE_TYPE_ANSWER_LEAF = "AnswerLeaf";
 
 	@Autowired
 	private NeedsAndAnswersService needsAndAnswersService;
@@ -231,7 +231,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 			// Business-level constraint : we don't make possible to recursively
 			// delete nodes
 			if (selectedNode.isLeaf()) {
-				if (needsAndAnswersService.deleteNeed(((TreeNodeData) selectedNode.getData()).getId())) {
+				if (needsAndAnswersService.deleteNode(((TreeNodeData) selectedNode.getData()).getId())) {
 					// If the selectedNode was the only child, we must change
 					// back the parent's type to "Need", so that the good
 					// ContextMenu will be displayed
@@ -239,7 +239,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 						if ((selectedNode.getParent().getType().equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS))
 								|| (selectedNode.getParent().getType()
 										.equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS))) {
-							((DefaultTreeNode) selectedNode.getParent()).setType("Need");
+							((DefaultTreeNode) selectedNode.getParent()).setType(TREE_NODE_TYPE_NEED_LEAF);
 						}
 					}
 					selectedNode.getParent().getChildren().remove(selectedNode);
