@@ -53,6 +53,7 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	}
 
 	public DocumentationApplicatifNode(String name) {
+		this();
 		setName(name);
 	}
 
@@ -77,4 +78,24 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 		this.name = name;
 	}
 
+	@Override
+	public void addApplicatif(Applicatif software) {
+		if (! softwares.contains(software)) {
+			softwares.add((ApplicatifNode)software);
+		}
+		if (! software.getDocumentations().contains(this)) {
+			software.addDocumentation(this);
+		}
+	}
+
+	@Override
+	public void removeApplicatif(Applicatif software) {
+		if (softwares.contains(software)) {
+			softwares.remove(software);
+		}
+		if (software.getDocumentations().contains(this)) {
+			software.removeDocumentation(this);
+		}
+	}
+	
 }

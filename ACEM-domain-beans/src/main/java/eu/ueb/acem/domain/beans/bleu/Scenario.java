@@ -67,6 +67,8 @@ public interface Scenario extends Serializable, Comparable<Scenario> {
 
 	Set<? extends SeanceDeCours> getTeachingClasses();
 
+	void setTeachingClasses(Set<? extends SeanceDeCours> teachingClasses);
+	
 	void addPedagogicalActivity(ActivitePedagogique pedagogicalActivity);
 
 	void removePedagogicalActivity(ActivitePedagogique pedagogicalActivity);

@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.web.viewbeans.Pickable;
-import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
+//import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
  * @author Grégoire Colbert

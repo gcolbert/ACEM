@@ -31,4 +31,8 @@ public interface DocumentationApplicatif extends Ressource {
 
 	void setApplicatifs(Set<? extends Applicatif> softwares);
 
+	void addApplicatif(Applicatif software);
+
+	void removeApplicatif(Applicatif software);
+
 }

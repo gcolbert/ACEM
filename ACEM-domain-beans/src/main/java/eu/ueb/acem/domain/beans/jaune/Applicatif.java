@@ -18,11 +18,21 @@
  */
 package eu.ueb.acem.domain.beans.jaune;
 
+import java.util.Set;
+
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
 public interface Applicatif extends Ressource {
+
+	void addDocumentation(DocumentationApplicatif documentation);
+
+	void removeDocumentation(DocumentationApplicatif documentation);
+
+	Set<? extends DocumentationApplicatif> getDocumentations();
+
+	void setDocumentations(Set<? extends DocumentationApplicatif> softwareDocumentations);
 
 }

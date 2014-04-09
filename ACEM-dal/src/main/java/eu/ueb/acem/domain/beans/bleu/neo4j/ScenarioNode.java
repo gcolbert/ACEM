@@ -23,7 +23,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -91,7 +90,6 @@ public class ScenarioNode implements Scenario {
 		this();
 		this.name = name;
 		this.objective = objective;
-		this.authors = new HashSet<EnseignantNode>();
 	}
 
 	@Override
@@ -242,6 +240,12 @@ public class ScenarioNode implements Scenario {
 		return teachingClasses;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setTeachingClasses(Set<? extends SeanceDeCours> teachingClasses) {
+		this.teachingClasses = (Set<SeanceDeCoursNode>)teachingClasses;
+	}
+	
 	@Override
 	public int compareTo(Scenario o) {
 		int returnValue;

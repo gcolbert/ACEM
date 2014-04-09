@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.INCOMING;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -45,12 +46,14 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 	private String name;
 
 	@RelatedTo(elementClass = DocumentationApplicatifNode.class, type = "documentsSoftware", direction = INCOMING)
-	private Set<DocumentationApplicatif> documentations;
+	@Fetch
+	private Set<DocumentationApplicatifNode> documentations;
 	
 	public ApplicatifNode() {
 	}
 
 	public ApplicatifNode(String name) {
+		this();
 		setName(name);
 	}
 
@@ -64,4 +67,35 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 		this.name = name;
 	}
 
+	@Override
+	public void addDocumentation(DocumentationApplicatif documentation) {
+		if (! documentations.contains(documentation)) {
+			documentations.add((DocumentationApplicatifNode) documentation);
+		}
+		if (! documentation.getApplicatifs().contains(this)) {
+			documentation.addApplicatif(this);
+		}
+	}
+
+	@Override
+	public void removeDocumentation(DocumentationApplicatif documentation) {
+		if (documentations.contains(documentation)) {
+			documentations.remove(documentation);
+		}
+		if (documentation.getApplicatifs().contains(this)) {
+			documentation.removeApplicatif(this);
+		}
+	}
+
+	@Override
+	public Set<? extends DocumentationApplicatif> getDocumentations() {
+		return documentations;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setDocumentations(Set<? extends DocumentationApplicatif> softwareDocumentations) {
+		this.documentations = (Set<DocumentationApplicatifNode>) softwareDocumentations;
+	}
+	
 }
