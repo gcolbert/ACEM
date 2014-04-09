@@ -202,9 +202,9 @@ public class ResourcesServiceImpl implements ResourcesService {
 		}
 		return entity;
 	}
-
+	
 	@Override
-	public Collection<Applicatif> getSoftwaresWithCategory(String category) {
+	public Collection<? extends Ressource> getSoftwaresWithCategory(String category) {
 		if (category != null) {
 			return softwareDAO.retrieveAllWithCategory(category);
 		}
@@ -214,7 +214,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<DocumentationApplicatif> getSoftwareDocumentationsWithCategory(String category) {
+	public Collection<? extends Ressource> getSoftwareDocumentationsWithCategory(String category) {
 		if (category != null) {
 			return softwareDocumentationDAO.retrieveAllWithCategory(category);
 		}
@@ -224,7 +224,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<Equipement> getEquipmentWithCategory(String category) {
+	public Collection<? extends Ressource> getEquipmentWithCategory(String category) {
 		if (category != null) {
 			return equipmentDAO.retrieveAllWithCategory(category);
 		}
@@ -234,7 +234,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<FormationProfessionnelle> getProfessionalTrainingsWithCategory(String category) {
+	public Collection<? extends Ressource> getProfessionalTrainingsWithCategory(String category) {
 		if (category != null) {
 			return professionalTrainingDAO.retrieveAllWithCategory(category);
 		}
@@ -244,7 +244,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<RessourcePedagogiqueEtDocumentaire> getPedagogicalAndDocumentaryResourcesWithCategory(
+	public Collection<? extends Ressource> getPedagogicalAndDocumentaryResourcesWithCategory(
 			String category) {
 		if (category != null) {
 			return pedagogicalAndDocumentaryResourcesDAO.retrieveAllWithCategory(category);

@@ -54,6 +54,9 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ResourcesTreeController.class);
 
+	private static final String TREE_NODE_TYPE_CATEGORY = "CategoryNode";
+	private static final String TREE_NODE_TYPE_RESOURCE = "ResourceNode";
+
 	@Autowired
 	private ResourcesService resourcesService;
 
@@ -93,67 +96,52 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		switch (resourceType) {
 		case "software":
 			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL"));
-			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = resourcesTreeBean.addChild(resourcesTreeBean.getVisibleRoots().get(0), -1L,
-						category, "category");
-				Collection<Applicatif> entities = resourcesService.getSoftwaresWithCategory(category);
-				for (Ressource entity : entities) {
-					resourcesTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
-				}
-			}
 			break;
 		case "softwareDocumentation":
 			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL"));
-			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = resourcesTreeBean.addChild(resourcesTreeBean.getVisibleRoots().get(0), -1L,
-						category, "category");
-				Collection<DocumentationApplicatif> entities = resourcesService
-						.getSoftwareDocumentationsWithCategory(category);
-				for (Ressource entity : entities) {
-					resourcesTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
-				}
-			}
 			break;
 		case "equipment":
 			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL"));
-			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = resourcesTreeBean.addChild(resourcesTreeBean.getVisibleRoots().get(0), -1L,
-						category, "category");
-				Collection<Equipement> entities = resourcesService.getEquipmentWithCategory(category);
-				for (Ressource entity : entities) {
-					resourcesTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
-				}
-			}
 			break;
 		case "pedagogicalAndDocumentaryResources":
 			resourcesTreeBean
 					.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL"));
-			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = resourcesTreeBean.addChild(resourcesTreeBean.getVisibleRoots().get(0), -1L,
-						category, "category");
-				Collection<RessourcePedagogiqueEtDocumentaire> entities = resourcesService
-						.getPedagogicalAndDocumentaryResourcesWithCategory(category);
-				for (Ressource entity : entities) {
-					resourcesTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
-				}
-			}
 			break;
 		case "professionalTraining":
-			resourcesTreeBean
-					.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
-			for (String category : categoriesForSelectedResourceType) {
-				TreeNode categoryNode = resourcesTreeBean.addChild(resourcesTreeBean.getVisibleRoots().get(0), -1L,
-						category, "category");
-				Collection<FormationProfessionnelle> entities = resourcesService
-						.getProfessionalTrainingsWithCategory(category);
-				for (Ressource entity : entities) {
-					resourcesTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
-				}
-			}
+			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
 			break;
 		default:
 			logger.error("Unknown resourceType '{}'", resourceType);
 			break;
+		}
+		for (String category : categoriesForSelectedResourceType) {
+			TreeNode categoryNode = resourcesTreeBean.addChild(getTreeNodeType_CATEGORY(), resourcesTreeBean
+					.getVisibleRoots().get(0), -1L, category, "category");
+			Collection<Ressource> entriesForCategory = null;
+			switch (resourceType) {
+			case "software":
+				entriesForCategory = (Collection<Ressource>) resourcesService.getSoftwaresWithCategory(category);
+				break;
+			case "softwareDocumentation":
+				entriesForCategory = (Collection<Ressource>) resourcesService.getSoftwareDocumentationsWithCategory(category);
+				break;
+			case "equipment":
+				entriesForCategory = (Collection<Ressource>) resourcesService.getEquipmentWithCategory(category);
+				break;
+			case "pedagogicalAndDocumentaryResources":
+				entriesForCategory = (Collection<Ressource>) resourcesService.getPedagogicalAndDocumentaryResourcesWithCategory(category);
+				break;
+			case "professionalTraining":
+				entriesForCategory = (Collection<Ressource>) resourcesService.getProfessionalTrainingsWithCategory(category);
+				break;
+			default:
+				logger.error("Unknown resourceType '{}'", resourceType);
+				break;
+			}
+			for (Ressource entity : entriesForCategory) {
+				resourcesTreeBean.addChild(getTreeNodeType_RESOURCE(), categoryNode, entity.getId(),
+						entity.getName(), resourceType);
+			}
 		}
 		resourcesTreeBean.getVisibleRoots().get(0).setExpanded(true);
 	}
@@ -240,6 +228,14 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 
 	public void onNodeSelect() {
 		setSelectedResourceId(((TreeNodeData) selectedNode.getData()).getId());
+	}
+
+	public String getTreeNodeType_CATEGORY() {
+		return TREE_NODE_TYPE_CATEGORY;
+	}
+
+	public String getTreeNodeType_RESOURCE() {
+		return TREE_NODE_TYPE_RESOURCE;
 	}
 
 }

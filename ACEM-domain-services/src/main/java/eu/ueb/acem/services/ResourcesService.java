@@ -43,15 +43,15 @@ public interface ResourcesService {
 	
 	Ressource getResource(Long id);
 	
-	Collection<Applicatif> getSoftwaresWithCategory(String category);
+	Collection<? extends Ressource> getSoftwaresWithCategory(String category);
 
-	Collection<DocumentationApplicatif> getSoftwareDocumentationsWithCategory(String category);
+	Collection<? extends Ressource> getSoftwareDocumentationsWithCategory(String category);
 
-	Collection<Equipement> getEquipmentWithCategory(String category);
+	Collection<? extends Ressource> getEquipmentWithCategory(String category);
 
-	Collection<FormationProfessionnelle> getProfessionalTrainingsWithCategory(String category);
+	Collection<? extends Ressource> getProfessionalTrainingsWithCategory(String category);
 
-	Collection<RessourcePedagogiqueEtDocumentaire> getPedagogicalAndDocumentaryResourcesWithCategory(String category);
+	Collection<? extends Ressource> getPedagogicalAndDocumentaryResourcesWithCategory(String category);
 
 	void saveResourceName(String resourceType, Long id, String label);
 	
