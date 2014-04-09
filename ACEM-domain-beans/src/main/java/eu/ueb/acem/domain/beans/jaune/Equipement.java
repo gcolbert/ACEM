@@ -37,4 +37,8 @@ public interface Equipement extends Ressource {
 
 	void setStorageLocations(Set<? extends EspacePhysique> storageLocations);
 	
+	Boolean isMobile();
+	
+	void setMobile(Boolean mobile);
+	
 }

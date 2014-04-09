@@ -48,10 +48,12 @@ public class EquipementNode extends RessourceNode implements Equipement {
 	
 	private Integer quantity;
 
+	private Boolean mobile;
+
 	@RelatedTo(elementClass = EspacePhysiqueNode.class, type = "isStoredIn", direction = OUTGOING)
 	@Fetch
 	private Set<EspacePhysiqueNode> storageLocations;
-
+	
 	public EquipementNode() {
 	}
 
@@ -78,6 +80,16 @@ public class EquipementNode extends RessourceNode implements Equipement {
 	@Override
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	@Override
+	public Boolean isMobile() {
+		return mobile;
+	}
+
+	@Override
+	public void setMobile(Boolean isMobile) {
+		this.mobile = isMobile;
 	}
 	
 }

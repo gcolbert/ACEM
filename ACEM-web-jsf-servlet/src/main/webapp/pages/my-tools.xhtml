@@ -47,7 +47,7 @@
 				</p:contextMenu>
 				-->
 
-				<p:panelGrid styleClass="menu" columns="4">
+				<p:panelGrid styleClass="menu" columns="5">
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesTreeController.prepareTree('equipment')}"
 						update=":formResources:resourcesTree">
@@ -78,16 +78,6 @@
 						<span class="menu-entry-text"><h:outputText escape="false"
 								value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}" /></span>
 					</p:commandLink>
-					<!-- 
-					<p:commandLink styleClass="menu-entry"
-						action="#{resourcesTreeController.prepareTree('professionalTraining')}"
-						update=":formResources:resourcesTree">
-						<h:graphicImage url="resources/images/my-tools/my-tools.professional-trainings.png"
-							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"
-							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"/></span>
-					</p:commandLink>
-					 -->
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesTreeController.prepareTree('pedagogicalAndDocumentaryResources')}"
 						update=":formResources:resourcesTree">
@@ -97,6 +87,16 @@
 							styleClass="menu-entry-image" />
 						<span class="menu-entry-text"><h:outputText escape="false"
 								value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}" /></span>
+					</p:commandLink>
+					<p:commandLink styleClass="menu-entry"
+						action="#{resourcesTreeController.prepareTree('professionalTraining')}"
+						update=":formResources:resourcesTree">
+						<h:graphicImage
+							url="resources/images/my-tools/my-tools.professional-trainings.png"
+							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"
+							styleClass="menu-entry-image" />
+						<span class="menu-entry-text"><h:outputText
+								value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}" /></span>
 					</p:commandLink>
 				</p:panelGrid>
 
@@ -191,7 +191,7 @@
 					<p:outputLabel
 						value="#{msgs['RESOURCES.SELECTED_RESOURCE.SCENARIOS_USING_SELECTED_TOOL_LABEL']}"
 						for="scenariosUsingSelectedToolTable" />
-						
+
 					<p:dataTable id="scenariosUsingSelectedToolTable"
 						value="#{resourcesSelectedResourceController.scenariosUsingSelectedTool}"
 						var="scenario">
@@ -241,7 +241,7 @@
 						editable="true" binding="#{input1}">
 						<f:selectItem
 							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY_OR_TYPE_A_NEW_ONE_LABEL']}"
-							itemValue="" itemDisabled="true" noSelectionOption="true"/>
+							itemValue="" itemDisabled="true" noSelectionOption="true" />
 						<f:selectItems
 							value="#{resourcesTreeController.categoriesForSelectedResourceType}" />
 					</p:selectOneMenu>

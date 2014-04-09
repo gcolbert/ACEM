@@ -43,6 +43,7 @@ import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
 
 /**
@@ -80,11 +81,9 @@ public class ResourcesServiceImpl implements ResourcesService {
 		case "softwareDocumentation":
 			categories.addAll(softwareDocumentationDAO.getCategories());
 			break;
-		/*-
 		case "professionalTraining":
-		categories.addAll(professionalTrainingDAO.getCategories());
-		break;
-		 */
+			categories.addAll(professionalTrainingDAO.getCategories());
+			break;
 		case "equipment":
 			categories.addAll(equipmentDAO.getCategories());
 			break;
@@ -112,13 +111,11 @@ public class ResourcesServiceImpl implements ResourcesService {
 			entity.setCategory(category);
 			entity = softwareDocumentationDAO.create((DocumentationApplicatif) entity);
 			break;
-		/*-
 		case "professionalTraining":
-		entity = new FormationProfessionnelleNode(name);
-		entity.setCategory(category);
-		entity = professionalTrainingDAO.create((FormationProfessionnelle) entity);
-		break;
-		 */
+			entity = new FormationProfessionnelleNode(name);
+			entity.setCategory(category);
+			entity = professionalTrainingDAO.create((FormationProfessionnelle) entity);
+			break;
 		case "equipment":
 			entity = new EquipementNode(name);
 			entity.setCategory(category);
@@ -198,7 +195,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
 		}
 		else if (professionalTrainingDAO.exists(id)) {
-			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
+			entity = professionalTrainingDAO.retrieveById(id);
 		}
 		else {
 			logger.error("There is no resource with id='{}'", id);

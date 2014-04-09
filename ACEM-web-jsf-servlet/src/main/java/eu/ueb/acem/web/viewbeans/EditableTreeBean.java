@@ -85,6 +85,8 @@ public class EditableTreeBean implements Serializable {
 
 	/**
 	 * 
+	 * @param nodeType
+	 *            The node type of the new node (supported types are defined by the tree controller)
 	 * @param parent
 	 *            The node of the parent
 	 * @param id
@@ -98,8 +100,8 @@ public class EditableTreeBean implements Serializable {
 	 *            &lt;p:treeNode type="Answer"&gt;)
 	 * @return the node that the method created
 	 */
-	public TreeNode addChild(TreeNode parent, Long id, String label, String concept) {
-		TreeNode child = new DefaultTreeNode(concept, new TreeNodeData(id, label, concept), parent);
+	public TreeNode addChild(String nodeType, TreeNode parent, Long id, String label, String concept) {
+		TreeNode child = new DefaultTreeNode(nodeType, new TreeNodeData(id, label, concept), parent);
 		parent.setExpanded(true);
 		allNodes.put(id, child);
 		return child;

@@ -18,17 +18,17 @@
 				<p:contextMenu for="needsAndAnswersTree" nodeType="default">
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.expandSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.collapseSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-minus" />
 				</p:contextMenu>
@@ -41,17 +41,17 @@
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
 						icon="ui-icon-close" />
 				</p:contextMenu>
@@ -64,17 +64,17 @@
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.expandSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.collapseSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-minus" />
 				</p:contextMenu>
@@ -87,17 +87,17 @@
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.expandSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-plus" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.collapseSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-minus" />
 				</p:contextMenu>
@@ -110,15 +110,15 @@
 						icon="ui-icon-search" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_TOOL']}"
-						update="needsAndAnswersTree" icon="ui-icon-link"
+						update=":formTree:needsAndAnswersTree" icon="ui-icon-link"
 						onclick="PF('dialogAssociateTool').show()" type="button" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_SERVICE']}"
-						update="needsAndAnswersTree" icon="ui-icon-link"
+						update=":formTree:needsAndAnswersTree" icon="ui-icon-link"
 						onclick="PF('dialogAssociateService').show()" type="button" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer"
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer"
 						action="#{needsAndAnswersTreeController.deleteSelectedNode}"
 						icon="ui-icon-trash" />
 				</p:contextMenu>
@@ -131,7 +131,7 @@
 					update="contextMenuForNeeds">
 					<p:ajax event="dragdrop"
 						listener="#{needsAndAnswersTreeController.onDragDrop}"
-						update="needsAndAnswersTree :formTree:messagesDisplayer" />
+						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>

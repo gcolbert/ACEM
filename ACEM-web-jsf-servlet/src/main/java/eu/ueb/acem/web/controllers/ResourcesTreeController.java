@@ -34,6 +34,7 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
+import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
@@ -65,15 +66,15 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	private TreeNode selectedNode;
 
 	private String selectedResourceType;
-	
+
 	private Long selectedResourceId;
-	
+
 	private List<String> categoriesForSelectedResourceType;
 
-	//private Map<Long, ResourceViewBean> resourceViewBeans;
+	// private Map<Long, ResourceViewBean> resourceViewBeans;
 
 	public ResourcesTreeController() {
-		//resourceViewBeans = new HashMap<Long, ResourceViewBean>();
+		// resourceViewBeans = new HashMap<Long, ResourceViewBean>();
 	}
 
 	/*-
@@ -82,7 +83,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		Collection<Ressource> resources = resourcesService.g 
 		resourceViewBeans.put(key, value)
 	}
-	*/
+	 */
 
 	public void prepareTree(String resourceType) {
 		logger.info("prepareTree for resourceType={}", resourceType);
@@ -137,6 +138,19 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 				}
 			}
 			break;
+		case "professionalTraining":
+			resourcesTreeBean
+					.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
+			for (String category : categoriesForSelectedResourceType) {
+				TreeNode categoryNode = resourcesTreeBean.addChild(resourcesTreeBean.getVisibleRoots().get(0), -1L,
+						category, "category");
+				Collection<FormationProfessionnelle> entities = resourcesService
+						.getProfessionalTrainingsWithCategory(category);
+				for (Ressource entity : entities) {
+					resourcesTreeBean.addChild(categoryNode, entity.getId(), entity.getName(), resourceType);
+				}
+			}
+			break;
 		default:
 			logger.error("Unknown resourceType '{}'", resourceType);
 			break;
@@ -147,7 +161,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	public Long getSelectedResourceId() {
 		return selectedResourceId;
 	}
-	
+
 	public void setSelectedResourceId(Long resourceId) {
 		logger.info("setSelectedResourceId({})", resourceId);
 		this.selectedResourceId = resourceId;
@@ -164,18 +178,21 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		else if (resource instanceof Equipement) {
 			prepareTree("equipment");
 		}
+		else if (resource instanceof FormationProfessionnelle) {
+			prepareTree("professionalTraining");
+		}
 		TreeNode node = resourcesTreeBean.getNodeWithId(resourceId);
 		if (node != null) {
 			node.setSelected(true);
 			resourcesTreeBean.expandOnlyOneNode(node);
-			
+
 			resourcesSelectedResourceController.setSelectedResourceId(resourceId);
 		}
 		else {
 			logger.info("setSelectedResourceId - no TreeNode found for id={}", resourceId);
 		}
 	}
-	
+
 	public TreeNode getTreeRoot() {
 		return resourcesTreeBean.getRoot();
 	}
@@ -219,7 +236,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 			resourcesService.saveCategoryName(treeNodeData.getId(), treeNodeData.getLabel());
 		}
 	}
-	*/
+	 */
 
 	public void onNodeSelect() {
 		setSelectedResourceId(((TreeNodeData) selectedNode.getData()).getId());
