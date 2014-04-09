@@ -16,25 +16,24 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune;
+package eu.ueb.acem.domain.beans.jaune;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-12-11
+ * @since 2014-04-09
  * 
  */
-public class RessourceDAO {
+public interface ResourceCategory extends Serializable {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(RessourceDAO.class);
+	Long getId();
+	
+	String getName();
 
-	public RessourceDAO() {
-	}
+	void setName(String name);
 
-	public void saveName(Long id, String name) {
-		
-	}
+	Set<? extends Ressource> getResources();
+	
 }

@@ -19,6 +19,7 @@
 package eu.ueb.acem.services;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
@@ -259,12 +261,14 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		return (Collection<eu.ueb.acem.domain.beans.rouge.Service>)answer.getAdministrativeDepartments();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Ressource> getResourcesRelatedToAnswer(Long id) {
 		Reponse answer = answerDAO.retrieveById(id);
-		return (Collection<Ressource>)answer.getResources();
+		Collection<Ressource> resources = new HashSet<Ressource>();
+		for (ResourceCategory resourceCategory : answer.getResourceCategories()) {
+			resources.addAll(resourceCategory.getResources());
+		}
+		return resources;
 	}
-	
-	
+
 }

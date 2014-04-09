@@ -88,6 +88,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	}
 	 */
 
+	@SuppressWarnings("unchecked")
 	public void prepareTree(String resourceType) {
 		logger.info("prepareTree for resourceType={}", resourceType);
 		selectedResourceType = resourceType;

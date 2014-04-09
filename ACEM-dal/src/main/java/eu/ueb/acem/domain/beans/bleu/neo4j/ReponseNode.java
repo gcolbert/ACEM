@@ -35,8 +35,10 @@ import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+//import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 
@@ -61,9 +63,15 @@ public class ReponseNode implements Reponse {
 	@Fetch
 	private Set<BesoinNode> needs;
 
+	/*
 	@RelatedTo(elementClass = RessourceNode.class, type = "answeredUsingResource", direction = OUTGOING)
 	@Fetch
 	private Set<RessourceNode> resources;
+	*/
+
+	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "answeredUsingResourceCategory", direction = OUTGOING)
+	@Fetch
+	private Set<ResourceCategoryNode> resourceCategories;
 
 	@RelatedTo(elementClass = ServiceNode.class, type = "answeredByAdministrativeDepartment", direction = OUTGOING)
 	@Fetch
@@ -101,9 +109,16 @@ public class ReponseNode implements Reponse {
 		return needs;
 	}
 
+	/*
 	@Override
 	public Set<? extends Ressource> getResources() {
 		return resources;
+	}
+	*/
+
+	@Override
+	public Set<? extends ResourceCategory> getResourceCategories() {
+		return resourceCategories;
 	}
 
 	@Override
@@ -121,6 +136,7 @@ public class ReponseNode implements Reponse {
 		needs.remove(need);
 	}
 
+	/*
 	@Override
 	public void addResource(Ressource resource) {
 		resources.add((RessourceNode)resource);
@@ -128,15 +144,28 @@ public class ReponseNode implements Reponse {
 
 	@Override
 	public void removeResource(Ressource resource) {
-		needs.remove(resource);
+		resources.remove(resource);
+	}
+	*/
+	
+	@Override
+	public void addResourceCategory(ResourceCategory resourceCategory) {
+		resourceCategories.add((ResourceCategoryNode)resourceCategory);
 	}
 
 	@Override
+	public void removeResourceCategory(ResourceCategory resourceCategory) {
+		resourceCategories.remove(resourceCategory);
+	}
+	
+	@Override
 	public Set<Scenario> getScenariosRelatedToAnswer() {
 		Set<Scenario> scenarios = new HashSet<Scenario>();
-		for (Ressource resource : resources) {
-			for (ActivitePedagogique pedagogicalActivity : resource.getPedagogicalActivities()) {
-				scenarios.addAll(pedagogicalActivity.getScenarios());
+		for (ResourceCategory resourceCategory : resourceCategories) {
+			for (Ressource resource : resourceCategory.getResources()) {
+				for (ActivitePedagogique pedagogicalActivity : resource.getPedagogicalActivities()) {
+					scenarios.addAll(pedagogicalActivity.getScenarios());
+				}
 			}
 		}
 		return scenarios;

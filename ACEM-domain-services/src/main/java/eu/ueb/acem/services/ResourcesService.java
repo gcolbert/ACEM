@@ -21,12 +21,7 @@ package eu.ueb.acem.services;
 import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.jaune.Applicatif;
-import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
-import eu.ueb.acem.domain.beans.jaune.Equipement;
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 
 /**
  * @author Grégoire Colbert

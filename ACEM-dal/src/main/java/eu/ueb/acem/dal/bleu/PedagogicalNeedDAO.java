@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.GenericDAO;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalNeedRepository;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;

@@ -16,12 +16,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.bleu;
+package eu.ueb.acem.dal.jaune;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,28 +28,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.bleu.neo4j.PedagogicalActivityRepository;
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
+import eu.ueb.acem.dal.jaune.neo4j.ResourceCategoryRepository;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-11-20
+ * @since 2014-04-09
  * 
  */
-@Repository("pedagogicalActivityDAO")
-public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
+@Repository("resourceCategoryDAO")
+public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 
-	/**
-	 * For Logging.
-	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(PedagogicalActivityDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(ResourceCategoryDAO.class);
 
 	@Autowired
-	private PedagogicalActivityRepository repository;
+	private ResourceCategoryRepository repository;
 
-	public PedagogicalActivityDAO() {
+	public ResourceCategoryDAO() {
 
 	}
 
@@ -66,31 +62,31 @@ public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
 	}
 
 	@Override
-	public ActivitePedagogique create(ActivitePedagogique entity) {
-		return repository.save((ActivitePedagogiqueNode) entity);
+	public ResourceCategory create(ResourceCategory entity) {
+		return repository.save((ResourceCategoryNode) entity);
 	}
 
 	@Override
-	public ActivitePedagogique retrieveById(Long id) {
+	public ResourceCategory retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<ActivitePedagogique> retrieveByName(String name) {
-		Iterable<ActivitePedagogiqueNode> nodes = repository.findByName(name);
-		Collection<ActivitePedagogique> entities = new HashSet<ActivitePedagogique>();
-		for (ActivitePedagogiqueNode node : nodes) {
-			entities.add(node);
+	public Collection<ResourceCategory> retrieveByName(String name) {
+		Iterable<ResourceCategoryNode> nodes = repository.findByName(name);
+		Collection<ResourceCategory> categories = new HashSet<ResourceCategory>();
+		for (ResourceCategory category : nodes) {
+			categories.add(category);
 		}
-		return entities;
+		return categories;
 	}
 
 	@Override
-	public Set<ActivitePedagogique> retrieveAll() {
-		Iterable<ActivitePedagogiqueNode> endResults = repository.findAll();
-		Set<ActivitePedagogique> collection = new HashSet<ActivitePedagogique>();
+	public Collection<ResourceCategory> retrieveAll() {
+		Iterable<ResourceCategoryNode> endResults = repository.findAll();
+		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
 		if (endResults.iterator() != null) {
-			Iterator<ActivitePedagogiqueNode> iterator = endResults.iterator();
+			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -99,13 +95,13 @@ public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
 	}
 
 	@Override
-	public ActivitePedagogique update(ActivitePedagogique entity) {
-		return repository.save((ActivitePedagogiqueNode) entity);
+	public ResourceCategory update(ResourceCategory entity) {
+		return repository.save((ResourceCategoryNode) entity);
 	}
 
 	@Override
-	public void delete(ActivitePedagogique entity) {
-		repository.delete((ActivitePedagogiqueNode) entity);
+	public void delete(ResourceCategory entity) {
+		repository.delete((ResourceCategoryNode) entity);
 	}
 
 	@Override

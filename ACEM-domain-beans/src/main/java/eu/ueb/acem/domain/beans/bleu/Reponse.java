@@ -21,7 +21,7 @@ package eu.ueb.acem.domain.beans.bleu;
 import java.io.Serializable;
 import java.util.Set;
 
-import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Service;
 
 /**
@@ -39,17 +39,17 @@ public interface Reponse extends Serializable, Comparable<Reponse> {
 
 	Set<? extends Besoin> getNeeds();
 
-	Set<? extends Ressource> getResources();
+	Set<? extends ResourceCategory> getResourceCategories();
+
+	void addResourceCategory(ResourceCategory resourceCategory);
+
+	void removeResourceCategory(ResourceCategory resourceCategory);
 	
 	Set<? extends Service> getAdministrativeDepartments();
 
 	void addNeed(Besoin besoin);
 
 	void removeNeed(Besoin besoin);
-
-	void addResource(Ressource ressource);
-
-	void removeResource(Ressource ressource);
 
 	Set<Scenario> getScenariosRelatedToAnswer();
 
