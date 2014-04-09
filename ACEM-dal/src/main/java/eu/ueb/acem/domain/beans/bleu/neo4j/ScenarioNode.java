@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -90,6 +91,7 @@ public class ScenarioNode implements Scenario {
 		this();
 		this.name = name;
 		this.objective = objective;
+		this.authors = new HashSet<EnseignantNode>(); // TODO : find why we need to initialize this Set
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
+import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -41,10 +42,13 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 @NodeEntity
 @TypeAlias("ResourceCategory")
-public class ResourceCategoryNode extends RessourceNode implements ResourceCategory {
+public class ResourceCategoryNode implements ResourceCategory {
 
 	private static final long serialVersionUID = -9101136355869813825L;
 
+	@GraphId
+	private Long id;
+	
 	@Indexed
 	private String name;
 
@@ -63,6 +67,11 @@ public class ResourceCategoryNode extends RessourceNode implements ResourceCateg
 	}
 
 	@Override
+	public Long getId() {
+		return id;
+	}
+	
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -77,9 +86,41 @@ public class ResourceCategoryNode extends RessourceNode implements ResourceCateg
 		return answers;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setAnswers(Set<? extends Reponse> answers) {
+		this.answers = (Set<ReponseNode>) answers;
+	}
+	
 	@Override
 	public Set<? extends Ressource> getResources() {
 		return resources;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setResources(Set<? extends Ressource> resources) {
+		this.resources = (Set<RessourceNode>) resources;
+	}
+
+	@Override
+	public void addResource(Ressource resource) {
+		if (! resources.contains(resource)) {
+			resources.add((RessourceNode) resource);
+		}
+		if (! resource.getCategories().contains(this)) {
+			resource.addCategory(this);
+		}
+	}
+
+	@Override
+	public void removeResource(Ressource resource) {
+		if (resources.contains(resource)) {
+			resources.remove(resource);
+		}
+		if (resource.getCategories().contains(this)) {
+			resource.removeCategory(this);
+		}
 	}
 
 }

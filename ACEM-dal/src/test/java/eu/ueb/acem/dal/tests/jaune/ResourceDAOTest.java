@@ -111,8 +111,8 @@ public class ResourceDAOTest extends TestCase {
 	 * Test Resource creation and ResourceCategory association
 	 */
 	@Test
-	public final void t01_TestDAOCreate() {
-
+	public final void t01_TestDAOResourceAndResourceCategoryAssociation() {
+		// TODO : write this test
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class ResourceDAOTest extends TestCase {
 		softwareDocumentation = softwareDocumentationDAO.create(softwareDocumentation);
 
 		software.addDocumentation(softwareDocumentation);
-		
+
 		software = softwareDAO.update(software);
 		softwareDocumentation = softwareDocumentationDAO.update(softwareDocumentation);
 

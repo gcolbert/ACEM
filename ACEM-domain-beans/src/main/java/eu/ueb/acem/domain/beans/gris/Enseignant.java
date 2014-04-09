@@ -33,9 +33,15 @@ public interface Enseignant extends Personne {
 
 	Set<? extends Ressource> getFavoriteResources();
 
+	void setFavoriteResources(Set<? extends Ressource> favoriteResources);
+
 	Set<? extends SeanceDeCours> getTeachingClasses();
 
+	void setTeachingClasses(Set<? extends SeanceDeCours> teachingClasses);
+
 	Set<? extends Scenario> getScenarios();
+
+	void setScenarios(Set<? extends Scenario> scenarios);
 
 	void addAuthor(Scenario scenario);
 

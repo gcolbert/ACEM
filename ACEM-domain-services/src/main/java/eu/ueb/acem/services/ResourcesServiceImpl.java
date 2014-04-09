@@ -30,20 +30,24 @@ import org.springframework.stereotype.Service;
 import eu.ueb.acem.dal.jaune.EquipmentDAO;
 import eu.ueb.acem.dal.jaune.PedagogicalAndDocumentaryResourcesDAO;
 import eu.ueb.acem.dal.jaune.ProfessionalTrainingDAO;
+import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
 import eu.ueb.acem.dal.jaune.SoftwareDAO;
 import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
+import eu.ueb.acem.dal.jaune.UseModeDAO;
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
 import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
 
 /**
@@ -55,6 +59,12 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNo
 public class ResourcesServiceImpl implements ResourcesService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ResourcesServiceImpl.class);
+
+	@Autowired
+	private ResourceCategoryDAO resourceCategoryDAO;
+
+	@Autowired
+	private UseModeDAO useModeDAO;
 
 	@Autowired
 	private EquipmentDAO equipmentDAO;
@@ -98,38 +108,63 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Ressource createResource(String resourceType, String category, String name) {
+	public Ressource createResource(String resourceType, String categoryName, String name) {
+		// We look for the given category in the ResourceCategoryDAO
+		Collection<ResourceCategory> resourceCategories = resourceCategoryDAO.retrieveByName(categoryName);
+		ResourceCategory resourceCategory;
+		if (resourceCategories.size() == 0) {
+			resourceCategory = resourceCategories.iterator().next();
+		}
+		else {
+			resourceCategory = new ResourceCategoryNode(categoryName);
+		}
+
 		Ressource entity = null;
 		switch (resourceType) {
 		case "software":
 			entity = new ApplicatifNode(name);
-			entity.setCategory(category);
-			entity = softwareDAO.create((Applicatif) entity);
 			break;
 		case "softwareDocumentation":
 			entity = new DocumentationApplicatifNode(name);
-			entity.setCategory(category);
-			entity = softwareDocumentationDAO.create((DocumentationApplicatif) entity);
 			break;
 		case "professionalTraining":
 			entity = new FormationProfessionnelleNode(name);
-			entity.setCategory(category);
-			entity = professionalTrainingDAO.create((FormationProfessionnelle) entity);
 			break;
 		case "equipment":
 			entity = new EquipementNode(name);
-			entity.setCategory(category);
-			entity = equipmentDAO.create((Equipement) entity);
 			break;
 		case "pedagogicalAndDocumentaryResources":
 			entity = new RessourcePedagogiqueEtDocumentaireNode(name);
-			entity.setCategory(category);
-			entity = pedagogicalAndDocumentaryResourcesDAO.create((RessourcePedagogiqueEtDocumentaire) entity);
 			break;
 		default:
 			logger.error("Unknown resourceType '{}'", resourceType);
 			break;
 		}
+
+		entity.addCategory(resourceCategory);
+		resourceCategoryDAO.update(resourceCategory);
+
+		switch (resourceType) {
+		case "software":
+			entity = softwareDAO.create((Applicatif)entity);
+			break;
+		case "softwareDocumentation":
+			entity = softwareDocumentationDAO.create((DocumentationApplicatif)entity);
+			break;
+		case "professionalTraining":
+			entity = professionalTrainingDAO.create((FormationProfessionnelle)entity);
+			break;
+		case "equipment":
+			entity = equipmentDAO.create((Equipement)entity);
+			break;
+		case "pedagogicalAndDocumentaryResources":
+			entity = pedagogicalAndDocumentaryResourcesDAO.create((RessourcePedagogiqueEtDocumentaire)entity);
+			break;
+		default:
+			logger.error("Unknown resourceType '{}'", resourceType);
+			break;
+		}
+
 		return entity;
 	}
 
@@ -202,7 +237,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 		}
 		return entity;
 	}
-	
+
 	@Override
 	public Collection<? extends Ressource> getSoftwaresWithCategory(String category) {
 		if (category != null) {
@@ -244,8 +279,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Ressource> getPedagogicalAndDocumentaryResourcesWithCategory(
-			String category) {
+	public Collection<? extends Ressource> getPedagogicalAndDocumentaryResourcesWithCategory(String category) {
 		if (category != null) {
 			return pedagogicalAndDocumentaryResourcesDAO.retrieveAllWithCategory(category);
 		}

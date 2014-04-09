@@ -23,6 +23,7 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Set;
 
+import org.junit.experimental.categories.Categories;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -30,10 +31,9 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
@@ -52,16 +52,14 @@ public abstract class RessourceNode implements Ressource {
 
 	private String name;
 	
-	private String category;
-
+	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "categoryContains", direction = INCOMING)
+	@Fetch
+	private Set<ResourceCategoryNode> categories;
+	
 	@RelatedTo(elementClass = ModaliteUtilisationNode.class, type = "resourceHasUseMode", direction = OUTGOING)
 	@Fetch
 	private Set<ModaliteUtilisationNode> useModes;
 	
-	@RelatedTo(elementClass = ReponseNode.class, type="answeredUsingResource", direction = INCOMING)
-	@Fetch
-	private Set<ReponseNode> pedagogicalAnswers;
-
 	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type="activityRequiringResource", direction = INCOMING)
 	@Fetch
 	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
@@ -89,25 +87,16 @@ public abstract class RessourceNode implements Ressource {
 	}
 
 	@Override
-	public String getCategory() {
-		return category;
-	}
-
-	@Override
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-	@Override
 	public Set<? extends ModaliteUtilisation> getUseModes() {
 		return useModes;
 	}
-
-	@Override
-	public Set<? extends Reponse> getAnswers() {
-		return pedagogicalAnswers;
-	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setUseModes(Set<? extends ModaliteUtilisation> useModes) {
+		this.useModes = (Set<ModaliteUtilisationNode>) useModes;
+	}
+
 	@Override
 	public Set<? extends ActivitePedagogique> getPedagogicalActivities() {
 		return pedagogicalActivities;
@@ -119,6 +108,36 @@ public abstract class RessourceNode implements Ressource {
 		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>)pedagogicalActivities;
 	}
 
+	@Override
+	public void addCategory(ResourceCategory category) {
+		if (! categories.contains(category)) {
+			categories.add((ResourceCategoryNode) category);
+		}
+		if (! category.getResources().contains(this)) {
+			category.addResource(this);
+		}
+	}
+
+	@Override
+	public void removeCategory(ResourceCategory category) {
+		if (categories.contains(category)) {
+			categories.remove(category);
+		}
+		if (category.getResources().contains(this)) {
+			category.removeResource(this);
+		}
+	}
+	
+	@Override
+	public Set<? extends ResourceCategory> getCategories() {
+		return categories;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setCategories(Set<? extends ResourceCategory> categories) {
+		this.categories = (Set<ResourceCategoryNode>) categories;
+	}
 
 	@Override
 	public int hashCode() {

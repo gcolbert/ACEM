@@ -21,6 +21,8 @@ package eu.ueb.acem.domain.beans.jaune;
 import java.io.Serializable;
 import java.util.Set;
 
+import eu.ueb.acem.domain.beans.bleu.Reponse;
+
 /**
  * @author Grégoire Colbert
  * @since 2014-04-09
@@ -35,5 +37,15 @@ public interface ResourceCategory extends Serializable {
 	void setName(String name);
 
 	Set<? extends Ressource> getResources();
+
+	void setResources(Set<? extends Ressource> resources);
+
+	void addResource(Ressource ressource);
+
+	void removeResource(Ressource ressource);
+
+	Set<? extends Reponse> getAnswers();
+
+	void setAnswers(Set<? extends Reponse> answers);
 	
 }

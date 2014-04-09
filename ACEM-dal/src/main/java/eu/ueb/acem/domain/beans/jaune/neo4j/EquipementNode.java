@@ -91,5 +91,5 @@ public class EquipementNode extends RessourceNode implements Equipement {
 	public void setMobile(Boolean isMobile) {
 		this.mobile = isMobile;
 	}
-	
+
 }

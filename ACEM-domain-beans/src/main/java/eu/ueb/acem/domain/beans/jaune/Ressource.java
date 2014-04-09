@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
 
 /**
  * @author Grégoire Colbert
@@ -32,18 +31,22 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
 public interface Ressource extends Serializable {
 
 	Long getId();
-	
+
 	String getName();
 
 	void setName(String name);
-	
-	String getCategory();
-	
-	void setCategory(String category);
 
-	Set<? extends Reponse> getAnswers();
+	Set<? extends ResourceCategory> getCategories();
+
+	void setCategories(Set<? extends ResourceCategory> categories);
+
+	void addCategory(ResourceCategory category);
+
+	void removeCategory(ResourceCategory category);
 	
 	Set<? extends ModaliteUtilisation> getUseModes();
+
+	void setUseModes(Set<? extends ModaliteUtilisation> useModes);
 
 	Set<? extends ActivitePedagogique> getPedagogicalActivities();
 

@@ -52,7 +52,7 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "leadsClass", direction = OUTGOING)
 	@Fetch
-	private Set<SeanceDeCoursNode> seancesDeCours;
+	private Set<SeanceDeCoursNode> teachingClasses;
 
 	@RelatedTo(elementClass = ScenarioNode.class, type = "authorsScenario", direction = OUTGOING)
 	@Fetch
@@ -70,16 +70,34 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 		return favoriteResources;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setFavoriteResources(Set<? extends Ressource> favoriteResources) {
+		this.favoriteResources = (Set<RessourceNode>) favoriteResources;
+	}
+	
 	@Override
 	public Set<? extends SeanceDeCours> getTeachingClasses() {
-		return seancesDeCours;
+		return teachingClasses;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setTeachingClasses(Set<? extends SeanceDeCours> teachingClasses) {
+		this.teachingClasses = (Set<SeanceDeCoursNode>) teachingClasses;
+	}
+	
 	@Override
 	public Set<? extends Scenario> getScenarios() {
 		return scenarios;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setScenarios(Set<? extends Scenario> scenarios) {
+		this.scenarios = (Set<ScenarioNode>) scenarios;
+	}
+	
 	@Override
 	public void addAuthor(Scenario scenario) {
 		scenarios.add((ScenarioNode)scenario);
