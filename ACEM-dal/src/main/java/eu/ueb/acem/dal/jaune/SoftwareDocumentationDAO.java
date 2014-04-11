@@ -30,7 +30,9 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.SoftwareDocumentationRepository;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
@@ -114,12 +116,20 @@ public class SoftwareDocumentationDAO implements DAO<Long, DocumentationApplicat
 		return repository.count();
 	}
 
-	public Collection<String> getCategories() {
-		return repository.getCategories();
+	public Collection<ResourceCategory> getCategories() {
+		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
+		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
+		if (endResults.iterator() != null) {
+			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 
-	public Collection<DocumentationApplicatif> retrieveAllWithCategory(String category) {
-		Iterable<DocumentationApplicatifNode> endResults = repository.getEntitiesWithCategory(category);
+	public Collection<DocumentationApplicatif> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<DocumentationApplicatifNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<DocumentationApplicatif> collection = new HashSet<DocumentationApplicatif>();
 		if (endResults.iterator() != null) {
 			Iterator<DocumentationApplicatifNode> iterator = endResults.iterator();

@@ -35,6 +35,7 @@ import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
 import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
@@ -72,7 +73,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 
 	private Long selectedResourceId;
 
-	private List<String> categoriesForSelectedResourceType;
+	private List<ResourceCategory> categoriesForSelectedResourceType;
 
 	// private Map<Long, ResourceViewBean> resourceViewBeans;
 
@@ -92,7 +93,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	public void prepareTree(String resourceType) {
 		logger.info("prepareTree for resourceType={}", resourceType);
 		selectedResourceType = resourceType;
-		setCategoriesForSelectedResourceType(resourcesService.getCategoriesForResourceType(resourceType));
+		setCategoriesForSelectedResourceType(resourcesService.retrieveCategoriesForResourceType(resourceType));
 		resourcesTreeBean.reset();
 		switch (resourceType) {
 		case "software":
@@ -115,25 +116,25 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 			logger.error("Unknown resourceType '{}'", resourceType);
 			break;
 		}
-		for (String category : categoriesForSelectedResourceType) {
+		for (ResourceCategory category : categoriesForSelectedResourceType) {
 			TreeNode categoryNode = resourcesTreeBean.addChild(getTreeNodeType_CATEGORY(), resourcesTreeBean
-					.getVisibleRoots().get(0), -1L, category, "category");
+					.getVisibleRoots().get(0), category.getId(), category.getName(), "category");
 			Collection<Ressource> entriesForCategory = null;
 			switch (resourceType) {
 			case "software":
-				entriesForCategory = (Collection<Ressource>) resourcesService.getSoftwaresWithCategory(category);
+				entriesForCategory = (Collection<Ressource>) resourcesService.retrieveSoftwaresWithCategory(category);
 				break;
 			case "softwareDocumentation":
-				entriesForCategory = (Collection<Ressource>) resourcesService.getSoftwareDocumentationsWithCategory(category);
+				entriesForCategory = (Collection<Ressource>) resourcesService.retrieveSoftwareDocumentationsWithCategory(category);
 				break;
 			case "equipment":
-				entriesForCategory = (Collection<Ressource>) resourcesService.getEquipmentWithCategory(category);
+				entriesForCategory = (Collection<Ressource>) resourcesService.retrieveEquipmentWithCategory(category);
 				break;
 			case "pedagogicalAndDocumentaryResources":
-				entriesForCategory = (Collection<Ressource>) resourcesService.getPedagogicalAndDocumentaryResourcesWithCategory(category);
+				entriesForCategory = (Collection<Ressource>) resourcesService.retrievePedagogicalAndDocumentaryResourcesWithCategory(category);
 				break;
 			case "professionalTraining":
-				entriesForCategory = (Collection<Ressource>) resourcesService.getProfessionalTrainingsWithCategory(category);
+				entriesForCategory = (Collection<Ressource>) resourcesService.retrieveProfessionalTrainingsWithCategory(category);
 				break;
 			default:
 				logger.error("Unknown resourceType '{}'", resourceType);
@@ -154,7 +155,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	public void setSelectedResourceId(Long resourceId) {
 		logger.info("setSelectedResourceId({})", resourceId);
 		this.selectedResourceId = resourceId;
-		Ressource resource = resourcesService.getResource(resourceId);
+		Ressource resource = resourcesService.retrieveResource(resourceId);
 		if (resource instanceof Applicatif) {
 			prepareTree("software");
 		}
@@ -198,16 +199,17 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		this.selectedNode = selectedNode;
 	}
 
-	public List<String> getCategoriesForSelectedResourceType() {
+	public List<ResourceCategory> getCategoriesForSelectedResourceType() {
 		return categoriesForSelectedResourceType;
 	}
-
-	public void setCategoriesForSelectedResourceType(Collection<String> categoriesForSelectedResourceType) {
+	
+	public void setCategoriesForSelectedResourceType(Collection<ResourceCategory> categoriesForSelectedResourceType) {
+		logger.info("setCategoriesForSelectedResourceType");
 		if (categoriesForSelectedResourceType instanceof Set) {
-			this.categoriesForSelectedResourceType = new ArrayList<String>(categoriesForSelectedResourceType);
+			this.categoriesForSelectedResourceType = new ArrayList<ResourceCategory>(categoriesForSelectedResourceType);
 		}
 		else {
-			this.categoriesForSelectedResourceType = (List<String>) categoriesForSelectedResourceType;
+			this.categoriesForSelectedResourceType = (List<ResourceCategory>) categoriesForSelectedResourceType;
 		}
 		Collections.sort(this.categoriesForSelectedResourceType);
 	}

@@ -33,9 +33,13 @@ public interface Ressource extends Serializable {
 	Long getId();
 
 	String getName();
-
+	
 	void setName(String name);
 
+	String getDescription();
+
+	void setDescription(String description);
+	
 	Set<? extends ResourceCategory> getCategories();
 
 	void setCategories(Set<? extends ResourceCategory> categories);

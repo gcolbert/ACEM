@@ -49,6 +49,7 @@ public class PickListConverter implements Converter {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PickListConverter.class);
 
+	@Override
 	public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
 		Object ret = null;
 		if (component instanceof PickList) {
@@ -80,6 +81,7 @@ public class PickListConverter implements Converter {
 		return ret;
 	}
 
+	@Override
 	public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
 		return ((Pickable) value).getId().toString();
 	}

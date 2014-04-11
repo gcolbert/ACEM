@@ -25,6 +25,7 @@ import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
@@ -36,10 +37,10 @@ public interface SoftwareDocumentationRepository extends GenericRepository<Docum
 	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 	
-	@Query(value = "MATCH (n:SoftwareDocumentation) RETURN DISTINCT n.category")
-	Set<String> getCategories();
+	@Query(value = "MATCH (n:SoftwareDocumentation)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
+	Set<ResourceCategoryNode> getCategories();
 
-	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE n.category=({category}) RETURN n")
-	Set<DocumentationApplicatifNode> getEntitiesWithCategory(@Param("category") String category);
-
+	@Query(value = "MATCH (n:SoftwareDocumentation)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
+	Set<DocumentationApplicatifNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
+	
 }

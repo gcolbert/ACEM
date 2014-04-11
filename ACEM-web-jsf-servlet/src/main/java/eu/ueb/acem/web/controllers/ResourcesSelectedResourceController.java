@@ -92,7 +92,7 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 	public void setSelectedResourceId(Long resourceId) {
 		logger.info("resourceId={}", resourceId);
 		this.selectedResourceId = resourceId;
-		Ressource resource = resourcesService.getResource(resourceId);
+		Ressource resource = resourcesService.retrieveResource(resourceId);
 		if (resource != null) {
 			if (resource instanceof Applicatif) {
 				selectedResourceViewBean = new SoftwareViewBean();
@@ -123,6 +123,6 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 	}
 
 	public List<Scenario> getScenariosUsingSelectedTool() {
-		return new ArrayList<Scenario>(resourcesService.getScenariosAssociatedWithRessource(selectedResourceId));
+		return new ArrayList<Scenario>(resourcesService.retrieveScenariosAssociatedWithRessource(selectedResourceId));
 	}
 }

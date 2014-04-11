@@ -29,7 +29,9 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.PedagogicalAndDocumentaryResourcesRepository;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
 
 /**
@@ -114,12 +116,20 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Ressourc
 		return repository.count();
 	}
 
-	public Collection<String> getCategories() {
-		return repository.getCategories();
+	public Collection<ResourceCategory> getCategories() {
+		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
+		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
+		if (endResults.iterator() != null) {
+			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 
-	public Collection<RessourcePedagogiqueEtDocumentaire> retrieveAllWithCategory(String category) {
-		Iterable<RessourcePedagogiqueEtDocumentaireNode> endResults = repository.getEntitiesWithCategory(category);
+	public Collection<RessourcePedagogiqueEtDocumentaire> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<RessourcePedagogiqueEtDocumentaireNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<RessourcePedagogiqueEtDocumentaire> collection = new HashSet<RessourcePedagogiqueEtDocumentaire>();
 		if (endResults.iterator() != null) {
 			Iterator<RessourcePedagogiqueEtDocumentaireNode> iterator = endResults.iterator();

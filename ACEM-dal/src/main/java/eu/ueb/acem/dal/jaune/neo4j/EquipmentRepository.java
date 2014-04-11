@@ -25,6 +25,7 @@ import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
@@ -36,10 +37,10 @@ public interface EquipmentRepository extends GenericRepository<EquipementNode> {
 	@Query(value = "MATCH (n:Equipment) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
-	@Query(value = "MATCH (n:Equipment) RETURN DISTINCT n.category")
-	Set<String> getCategories();
+	@Query(value = "MATCH (n:Equipment)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
+	Set<ResourceCategoryNode> getCategories();
 
-	@Query(value = "MATCH (n:Equipment) WHERE n.category=({category}) RETURN n")
-	Set<EquipementNode> getEntitiesWithCategory(@Param("category") String category);
+	@Query(value = "MATCH (n:Software)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
+	Set<EquipementNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 	
 }

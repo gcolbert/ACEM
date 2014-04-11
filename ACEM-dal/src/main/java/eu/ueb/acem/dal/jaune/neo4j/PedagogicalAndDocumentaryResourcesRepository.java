@@ -24,6 +24,7 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
 
 /**
@@ -37,10 +38,10 @@ public interface PedagogicalAndDocumentaryResourcesRepository extends
 	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 	
-	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) RETURN DISTINCT n.category")
-	Set<String> getCategories();
+	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
+	Set<ResourceCategoryNode> getCategories();
 
-	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) WHERE n.category=({category}) RETURN n")
-	Set<RessourcePedagogiqueEtDocumentaireNode> getEntitiesWithCategory(@Param("category") String category);
+	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
+	Set<RessourcePedagogiqueEtDocumentaireNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 
 }

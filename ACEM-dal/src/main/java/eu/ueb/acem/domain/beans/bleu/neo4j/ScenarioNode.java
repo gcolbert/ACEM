@@ -154,27 +154,6 @@ public class ScenarioNode implements Scenario {
 	}
 	
 	@Override
-	public void addAuthor(Enseignant teacher) {
-		logger.info("addAuthor, teacher = {}", teacher);
-		if (! authors.contains(teacher)) {
-			authors.add((EnseignantNode) teacher);
-		}
-		if (! teacher.getScenarios().contains(this)) {
-			teacher.addAuthor(this);
-		}
-	}
-
-	@Override
-	public void removeAuthor(Enseignant teacher) {
-		if (authors.contains(teacher)) {
-			authors.remove(teacher);
-		}
-		if (teacher.getScenarios().contains(this)) {
-			teacher.removeAuthor(this);
-		}
-	}
-	
-	@Override
 	@Transactional
 	public void addPedagogicalActivity(ActivitePedagogique pedagogicalActivity) {
 		if (!pedagogicalActivities.contains(pedagogicalActivity)) {
@@ -225,6 +204,27 @@ public class ScenarioNode implements Scenario {
 	@Override
 	public void setAuthors(Set<? extends Enseignant> authors) {
 		this.authors = (Set<EnseignantNode>) authors;
+	}
+
+	@Override
+	public void addAuthor(Enseignant teacher) {
+		logger.info("addAuthor, teacher = {}", teacher);
+		if (! authors.contains(teacher)) {
+			authors.add((EnseignantNode) teacher);
+		}
+		if (! teacher.getScenarios().contains(this)) {
+			teacher.addAuthor(this);
+		}
+	}
+
+	@Override
+	public void removeAuthor(Enseignant teacher) {
+		if (authors.contains(teacher)) {
+			authors.remove(teacher);
+		}
+		if (teacher.getScenarios().contains(this)) {
+			teacher.removeAuthor(this);
+		}
 	}
 
 	@Override

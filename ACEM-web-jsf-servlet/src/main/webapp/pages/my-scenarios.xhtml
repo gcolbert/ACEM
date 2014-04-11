@@ -22,50 +22,48 @@
 
 			<p:layout id="layout">
 
-				<p:layoutUnit position="west" resizable="false">
-					<p:panel header="#{msgs['MY_SCENARIOS.HEADER']}">
-						<p:panelGrid columns="1">
-							<p:commandButton
-								value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
-								icon="ui-icon-plusthick" update=":dialogCreateScenarioId"
-								oncomplete="PF('dialogCreateScenario').show()">
-								<p:resetInput target=":dialogCreateScenarioId" />
-							</p:commandButton>
-							<p:scrollPanel mode="native">
-								<p:dataTable id="scenariosDataTable"
-									emptyMessage="#{msgs['MY_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
-									value="#{myScenariosController.scenarioViewBeans}"
-									var="scenarioViewBean" rowKey="#{scenarioViewBean.id}"
-									selection="#{myScenariosController.selectedScenarioViewBean}"
-									selectionMode="single">
-									<p:ajax event="rowSelect"
-										listener="#{myScenariosController.onScenarioRowSelect}"
-										update="@form" />
-									<!-- 
-									<p:ajax event="rowUnselect"
-										listener="#{myScenariosController.onRowUnselect}"
-										update="@form" />
-										 -->
-									<p:column
-										headerText="#{msgs['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
-										<h:outputText id="scenario" value="#{scenarioViewBean.name}" />
-										<p:tooltip for="scenario" value="#{scenarioViewBean.objective}" />  
-									</p:column>
-								</p:dataTable>
-							</p:scrollPanel>
-							<p:commandButton id="deleteScenarioButton"
-								value="#{msgs['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
-								icon="ui-icon-trash"
-								action="#{myScenariosController.deleteSelectedScenario}"
-								disabled="#{myScenariosController.selectedScenarioViewBean == null}"
-								update="@form">
-								<p:confirm
-									header="#{msgs['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_HEADER']}"
-									message="#{msgs['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_QUESTION']}"
-									icon="ui-icon-alert" />
-							</p:commandButton>
-						</p:panelGrid>
-					</p:panel>
+				<p:layoutUnit position="west" resizable="false"  collapsible="true" header="#{msgs['MY_SCENARIOS.HEADER']}">
+					<p:panelGrid columns="1">
+						<p:commandButton
+							value="#{msgs['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
+							icon="ui-icon-plusthick" update=":dialogCreateScenarioId"
+							oncomplete="PF('dialogCreateScenario').show()">
+							<p:resetInput target=":dialogCreateScenarioId" />
+						</p:commandButton>
+						<p:scrollPanel mode="native">
+							<p:dataTable id="scenariosDataTable"
+								emptyMessage="#{msgs['MY_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
+								value="#{myScenariosController.scenarioViewBeans}"
+								var="scenarioViewBean" rowKey="#{scenarioViewBean.id}"
+								selection="#{myScenariosController.selectedScenarioViewBean}"
+								selectionMode="single">
+								<p:ajax event="rowSelect"
+									listener="#{myScenariosController.onScenarioRowSelect}"
+									update="@form" />
+								<!-- 
+								<p:ajax event="rowUnselect"
+									listener="#{myScenariosController.onRowUnselect}"
+									update="@form" />
+									 -->
+								<p:column
+									headerText="#{msgs['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
+									<h:outputText id="scenario" value="#{scenarioViewBean.name}" />
+									<p:tooltip for="scenario" value="#{scenarioViewBean.objective}" />  
+								</p:column>
+							</p:dataTable>
+						</p:scrollPanel>
+						<p:commandButton id="deleteScenarioButton"
+							value="#{msgs['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
+							icon="ui-icon-trash"
+							action="#{myScenariosController.deleteSelectedScenario}"
+							disabled="#{myScenariosController.selectedScenarioViewBean == null}"
+							update="@form">
+							<p:confirm
+								header="#{msgs['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_HEADER']}"
+								message="#{msgs['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_QUESTION']}"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</p:panelGrid>
 				</p:layoutUnit>
 
 				<p:layoutUnit position="center">

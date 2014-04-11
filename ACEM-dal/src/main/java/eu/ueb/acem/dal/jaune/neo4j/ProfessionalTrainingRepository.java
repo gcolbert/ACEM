@@ -25,6 +25,7 @@ import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
@@ -36,10 +37,10 @@ public interface ProfessionalTrainingRepository extends GenericRepository<Format
 	@Query(value = "MATCH (n:ProfessionalTraining) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 	
-	@Query(value = "MATCH (n:ProfessionalTraining) RETURN DISTINCT n.category")
-	Set<String> getCategories();
+	@Query(value = "MATCH (n:ProfessionalTraining)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
+	Set<ResourceCategoryNode> getCategories();
 
-	@Query(value = "MATCH (n:ProfessionalTraining) WHERE n.category=({category}) RETURN n")
-	Set<FormationProfessionnelleNode> getEntitiesWithCategory(@Param("category") String category);
-
+	@Query(value = "MATCH (n:ProfessionalTraining)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
+	Set<FormationProfessionnelleNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
+	
 }

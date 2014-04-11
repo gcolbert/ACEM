@@ -28,7 +28,7 @@ import eu.ueb.acem.domain.beans.bleu.Reponse;
  * @since 2014-04-09
  * 
  */
-public interface ResourceCategory extends Serializable {
+public interface ResourceCategory extends Serializable, Comparable<ResourceCategory> {
 
 	Long getId();
 	
@@ -47,5 +47,7 @@ public interface ResourceCategory extends Serializable {
 	Set<? extends Reponse> getAnswers();
 
 	void setAnswers(Set<? extends Reponse> answers);
+
+	int compareTo(ResourceCategory o);
 	
 }

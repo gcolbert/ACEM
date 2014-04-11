@@ -23,7 +23,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Set;
 
-import org.junit.experimental.categories.Categories;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
@@ -52,6 +51,8 @@ public abstract class RessourceNode implements Ressource {
 
 	private String name;
 	
+	private String description;
+	
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "categoryContains", direction = INCOMING)
 	@Fetch
 	private Set<ResourceCategoryNode> categories;
@@ -68,6 +69,7 @@ public abstract class RessourceNode implements Ressource {
 	}
 
 	public RessourceNode(String name) {
+		this();
 		setName(name);
 	}
 
@@ -86,6 +88,16 @@ public abstract class RessourceNode implements Ressource {
 		this.name = name;
 	}
 
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	@Override
 	public Set<? extends ModaliteUtilisation> getUseModes() {
 		return useModes;

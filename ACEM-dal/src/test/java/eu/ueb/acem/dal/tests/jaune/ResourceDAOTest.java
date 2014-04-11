@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.tests.jaune;
 
+import java.util.Collection;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -29,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.jaune.EquipmentDAO;
 import eu.ueb.acem.dal.jaune.PedagogicalAndDocumentaryResourcesDAO;
@@ -39,8 +42,10 @@ import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
 import eu.ueb.acem.dal.jaune.UseModeDAO;
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
@@ -111,8 +116,26 @@ public class ResourceDAOTest extends TestCase {
 	 * Test Resource creation and ResourceCategory association
 	 */
 	@Test
+	@Transactional
 	public final void t01_TestDAOResourceAndResourceCategoryAssociation() {
-		// TODO : write this test
+		ResourceCategory learningManagementSystem = new ResourceCategoryNode("Learning Management System");
+		learningManagementSystem = resourceCategoryDAO.create(learningManagementSystem);
+		
+		Applicatif moodle = new ApplicatifNode("Moodle");
+		moodle = softwareDAO.create(moodle);
+
+		moodle.addCategory(learningManagementSystem);
+		moodle = softwareDAO.update(moodle);
+		learningManagementSystem = resourceCategoryDAO.update(learningManagementSystem);
+		
+		Applicatif moodleBis = softwareDAO.retrieveById(moodle.getId());
+		ResourceCategory learningManagementSystemBis = resourceCategoryDAO.retrieveById(learningManagementSystem.getId());
+
+		assertTrue(learningManagementSystemBis.getResources().contains(moodleBis));
+		assertTrue(moodleBis.getCategories().contains(learningManagementSystemBis));
+		
+		Collection<Applicatif> softwares = softwareDAO.retrieveAllWithCategory(learningManagementSystemBis);
+		assertTrue(softwares.contains(moodleBis));
 	}
 
 	/**

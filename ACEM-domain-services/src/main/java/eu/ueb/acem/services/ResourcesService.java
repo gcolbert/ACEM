@@ -21,6 +21,7 @@ package eu.ueb.acem.services;
 import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
 /**
@@ -30,26 +31,32 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface ResourcesService {
 
-	Collection<String> getCategoriesForResourceType(String resourceType);
+	ResourceCategory createResourceCategory(String name);
+
+	ResourceCategory retrieveResourceCategory(Long id);
+
+	ResourceCategory retrieveResourceCategoryByName(String value);
+	
+	Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType);
 
 	Ressource createResource(String resourceType, String category, String name);
 
 	Ressource updateResource(Ressource resource);
 	
-	Ressource getResource(Long id);
+	Ressource retrieveResource(Long id);
 	
-	Collection<? extends Ressource> getSoftwaresWithCategory(String category);
+	Collection<? extends Ressource> retrieveSoftwaresWithCategory(ResourceCategory category);
 
-	Collection<? extends Ressource> getSoftwareDocumentationsWithCategory(String category);
+	Collection<? extends Ressource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
 
-	Collection<? extends Ressource> getEquipmentWithCategory(String category);
+	Collection<? extends Ressource> retrieveEquipmentWithCategory(ResourceCategory category);
 
-	Collection<? extends Ressource> getProfessionalTrainingsWithCategory(String category);
+	Collection<? extends Ressource> retrieveProfessionalTrainingsWithCategory(ResourceCategory category);
 
-	Collection<? extends Ressource> getPedagogicalAndDocumentaryResourcesWithCategory(String category);
+	Collection<? extends Ressource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category);
 
 	void saveResourceName(String resourceType, Long id, String label);
 	
-	Collection<Scenario> getScenariosAssociatedWithRessource(Long id);
+	Collection<Scenario> retrieveScenariosAssociatedWithRessource(Long id);
 
 }

@@ -30,7 +30,9 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.ProfessionalTrainingRepository;
 import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
@@ -114,12 +116,20 @@ public class ProfessionalTrainingDAO implements DAO<Long, FormationProfessionnel
 		return repository.count();
 	}
 
-	public Collection<String> getCategories() {
-		return repository.getCategories();
+	public Collection<ResourceCategory> getCategories() {
+		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
+		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
+		if (endResults.iterator() != null) {
+			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 	
-	public Collection<FormationProfessionnelle> retrieveAllWithCategory(String category) {
-		Iterable<FormationProfessionnelleNode> endResults = repository.getEntitiesWithCategory(category);
+	public Collection<FormationProfessionnelle> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<FormationProfessionnelleNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<FormationProfessionnelle> collection = new HashSet<FormationProfessionnelle>();
 		if (endResults.iterator() != null) {
 			Iterator<FormationProfessionnelleNode> iterator = endResults.iterator();

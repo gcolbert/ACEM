@@ -30,7 +30,9 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.EquipmentRepository;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
@@ -114,12 +116,20 @@ public class EquipmentDAO implements DAO<Long, Equipement> {
 		return repository.count();
 	}
 
-	public Collection<String> getCategories() {
-		return repository.getCategories();
+	public Collection<ResourceCategory> getCategories() {
+		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
+		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
+		if (endResults.iterator() != null) {
+			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 
-	public Collection<Equipement> retrieveAllWithCategory(String category) {
-		Iterable<EquipementNode> endResults = repository.getEntitiesWithCategory(category);
+	public Collection<Equipement> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<EquipementNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<Equipement> collection = new HashSet<Equipement>();
 		if (endResults.iterator() != null) {
 			Iterator<EquipementNode> iterator = endResults.iterator();

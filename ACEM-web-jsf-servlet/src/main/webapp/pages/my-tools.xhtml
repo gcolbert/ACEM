@@ -222,18 +222,19 @@
 			widgetVar="dialogCreateResource" modal="true" height="auto">
 			<h:form id="formCreateResource">
 				<p:panelGrid columns="3">
-					<h:outputLabel for="newResourceCategory"
+					<h:outputLabel for="categoryForTheNewResource"
 						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
-					<p:selectOneMenu id="newResourceCategory" effect="fold"
+					<p:selectOneMenu id="categoryForTheNewResource" effect="fold"
 						required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}"
-						editable="true" binding="#{input1}">
+						editable="false" binding="#{input1}">
+						<f:converter converterId="ResourceCategoryConverter" />
 						<f:selectItem
-							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY_OR_TYPE_A_NEW_ONE_LABEL']}"
+							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY']}"
 							itemValue="" itemDisabled="true" noSelectionOption="true" />
 						<f:selectItems
 							value="#{resourcesTreeController.categoriesForSelectedResourceType}" />
 					</p:selectOneMenu>
-					<p:message for="newResourceCategory" display="text" />
+					<p:message for="categoryForTheNewResource" display="text" />
 
 					<h:outputLabel for="newSoftwareName"
 						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />

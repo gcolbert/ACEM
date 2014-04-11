@@ -82,8 +82,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 	private SoftwareDocumentationDAO softwareDocumentationDAO;
 
 	@Override
-	public Collection<String> getCategoriesForResourceType(String resourceType) {
-		Set<String> categories = new HashSet<String>();
+	public Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType) {
+		Set<ResourceCategory> categories = new HashSet<ResourceCategory>();
 		switch (resourceType) {
 		case "software":
 			categories.addAll(softwareDAO.getCategories());
@@ -169,6 +169,30 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
+	public Ressource retrieveResource(Long id) {
+		Ressource entity = null;
+		if (softwareDAO.exists(id)) {
+			entity = softwareDAO.retrieveById(id);
+		}
+		else if (softwareDocumentationDAO.exists(id)) {
+			entity = softwareDocumentationDAO.retrieveById(id);
+		}
+		else if (equipmentDAO.exists(id)) {
+			entity = equipmentDAO.retrieveById(id);
+		}
+		else if (pedagogicalAndDocumentaryResourcesDAO.exists(id)) {
+			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
+		}
+		else if (professionalTrainingDAO.exists(id)) {
+			entity = professionalTrainingDAO.retrieveById(id);
+		}
+		else {
+			logger.error("There is no resource with id='{}'", id);
+		}
+		return entity;
+	}
+
+	@Override
 	public Ressource updateResource(Ressource resource) {
 		Ressource updatedResource = null;
 		if (resource instanceof Applicatif) {
@@ -215,31 +239,29 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Ressource getResource(Long id) {
-		Ressource entity = null;
-		if (softwareDAO.exists(id)) {
-			entity = softwareDAO.retrieveById(id);
-		}
-		else if (softwareDocumentationDAO.exists(id)) {
-			entity = softwareDocumentationDAO.retrieveById(id);
-		}
-		else if (equipmentDAO.exists(id)) {
-			entity = equipmentDAO.retrieveById(id);
-		}
-		else if (pedagogicalAndDocumentaryResourcesDAO.exists(id)) {
-			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
-		}
-		else if (professionalTrainingDAO.exists(id)) {
-			entity = professionalTrainingDAO.retrieveById(id);
+	public ResourceCategory createResourceCategory(String name) {
+		return resourceCategoryDAO.create(new ResourceCategoryNode(name));
+	}
+	
+	@Override
+	public ResourceCategory retrieveResourceCategory(Long id) {
+		return resourceCategoryDAO.retrieveById(id);
+	}
+	
+	@Override
+	public ResourceCategory retrieveResourceCategoryByName(String name) {
+		Collection<ResourceCategory> resourceCategories = resourceCategoryDAO.retrieveByName(name);
+		if (resourceCategories.iterator().hasNext()) {
+			 // TODO : we need to make sure that there are no two categories with the same name
+			return resourceCategories.iterator().next();
 		}
 		else {
-			logger.error("There is no resource with id='{}'", id);
+			return null;
 		}
-		return entity;
 	}
-
+	
 	@Override
-	public Collection<? extends Ressource> getSoftwaresWithCategory(String category) {
+	public Collection<? extends Ressource> retrieveSoftwaresWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return softwareDAO.retrieveAllWithCategory(category);
 		}
@@ -249,7 +271,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Ressource> getSoftwareDocumentationsWithCategory(String category) {
+	public Collection<? extends Ressource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return softwareDocumentationDAO.retrieveAllWithCategory(category);
 		}
@@ -259,7 +281,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Ressource> getEquipmentWithCategory(String category) {
+	public Collection<? extends Ressource> retrieveEquipmentWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return equipmentDAO.retrieveAllWithCategory(category);
 		}
@@ -269,7 +291,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Ressource> getProfessionalTrainingsWithCategory(String category) {
+	public Collection<? extends Ressource> retrieveProfessionalTrainingsWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return professionalTrainingDAO.retrieveAllWithCategory(category);
 		}
@@ -279,7 +301,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Ressource> getPedagogicalAndDocumentaryResourcesWithCategory(String category) {
+	public Collection<? extends Ressource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return pedagogicalAndDocumentaryResourcesDAO.retrieveAllWithCategory(category);
 		}
@@ -289,8 +311,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<Scenario> getScenariosAssociatedWithRessource(Long id) {
-		Ressource resource = getResource(id);
+	public Collection<Scenario> retrieveScenariosAssociatedWithRessource(Long id) {
+		Ressource resource = retrieveResource(id);
 		Set<Scenario> scenarios = new HashSet<Scenario>();
 		if (resource != null) {
 			for (ActivitePedagogique activity : resource.getPedagogicalActivities()) {
