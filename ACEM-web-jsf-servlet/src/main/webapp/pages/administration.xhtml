@@ -12,6 +12,14 @@
 		<h:form id="formOrganisations">
 			<p:growl id="messagesDisplayerFormOrganisations" showDetail="true" />
 
+			<p:confirmDialog global="true" showEffect="fade">
+				<p:commandButton value="#{msgs['CONFIRM_DIALOG.YES_LABEL']}"
+					type="button" styleClass="ui-confirmdialog-yes"
+					icon="ui-icon-check" />
+				<p:commandButton value="#{msgs['CONFIRM_DIALOG.NO_LABEL']}"
+					type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
 			<p:panel header="#{msgs['ADMINISTRATION.ORGANISATIONS.HEADER']}">
 				<p:tabView id="tabViewOrganisations" dynamic="true" cache="false">
 					<!--
@@ -66,6 +74,17 @@
 									update=":formOrganisations:idDialogRenameOrganisation"
 									oncomplete="PF('dialogRenameOrganisation').show()"
 									process="@this" />
+								<p:commandButton id="deleteCommunityButton"
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+									icon="ui-icon-trash"
+									action="#{organisationsController.onDeleteOrganisation}"
+									disabled="#{organisationsController.currentOrganisationViewBean == null}"
+									update="accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations" process="@this">
+									<p:confirm
+										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+										icon="ui-icon-alert" />
+								</p:commandButton>
 								<p:dataTable id="dataTableInstitutionViewBeansForCommunity"
 									var="institutionViewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
@@ -105,6 +124,17 @@
 									update=":formOrganisations:idDialogRenameOrganisation"
 									oncomplete="PF('dialogRenameOrganisation').show()"
 									process="@this" />
+								<p:commandButton id="deleteInstitutionButton"
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+									icon="ui-icon-trash"
+									action="#{organisationsController.onDeleteOrganisation}"
+									disabled="#{organisationsController.currentOrganisationViewBean == null}"
+									update="accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations" process="@this">
+									<p:confirm
+										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+										icon="ui-icon-alert" />
+								</p:commandButton>
 								<p:panelGrid columns="3">
 									<p:column>
 										<p:commandButton
@@ -200,6 +230,17 @@
 									update=":formOrganisations:idDialogRenameOrganisation"
 									oncomplete="PF('dialogRenameOrganisation').show()"
 									process="@this" />
+								<p:commandButton id="deleteAdministrativeDepartmentButton"
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+									icon="ui-icon-trash"
+									action="#{organisationsController.onDeleteOrganisation}"
+									disabled="#{organisationsController.currentOrganisationViewBean == null}"
+									update="accordionPanelForAdministrativeDepartments :formOrganisations:messagesDisplayerFormOrganisations" process="@this">
+									<p:confirm
+										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+										icon="ui-icon-alert" />
+								</p:commandButton>
 								<p:dataTable var="institutionViewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 									value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
@@ -246,6 +287,17 @@
 									update=":formOrganisations:idDialogRenameOrganisation"
 									oncomplete="PF('dialogRenameOrganisation').show()"
 									process="@this" />
+								<p:commandButton id="deleteTeachingDepartmentButton"
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+									icon="ui-icon-trash"
+									action="#{organisationsController.onDeleteOrganisation}"
+									disabled="#{organisationsController.currentOrganisationViewBean == null}"
+									update="accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations" process="@this">
+									<p:confirm
+										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+										icon="ui-icon-alert" />
+								</p:commandButton>
 								<p:dataTable var="institutionViewBean"
 									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 									value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
@@ -278,13 +330,10 @@
 						binding="#{input1b}" />
 					<p:message for="newCommunityShortName" display="text" />
 				</p:panelGrid>
-				<!-- 
-				<p:fileUpload
-					fileUploadListener="#{organisationsController.handleNewCommunityIconUpload}"
+				<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
 					mode="advanced" dragDropSupport="false" sizeLimit="100000"
 					fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 					update=":formOrganisations:messagesDisplayerFormOrganisations" />
-				 -->
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
@@ -581,6 +630,15 @@
 					update="@none"
 					process="@this idDialogAssociateOrganisationWithUser" />
 			</p:dialog>
+		</h:form>
+
+		<h:form id="formResourceCategories">
+			<p:growl id="messagesDisplayerFormResourceCategories"
+				showDetail="true" />
+			<p:panel
+				header="#{msgs['ADMINISTRATION.RESOURCE_CATEGORIES.HEADER']}">
+
+			</p:panel>
 		</h:form>
 
 	</ui:define>

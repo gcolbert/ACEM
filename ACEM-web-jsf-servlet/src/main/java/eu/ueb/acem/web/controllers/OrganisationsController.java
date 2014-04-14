@@ -26,8 +26,10 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TransferEvent;
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -475,6 +477,24 @@ public class OrganisationsController extends AbstractContextAwareController {
 				getString("ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.RENAME_SUCCESSFUL.DETAILS"));
 	}
 
+	public void onDeleteOrganisation() {
+		logger.info("onDeleteOrganisation");
+		if (organisationsService.deleteOrganisation(currentOrganisationViewBean.getDomainBean().getId())) {
+			logger.info("succcess");
+			communityViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+			organisationViewBeans.remove(currentOrganisationViewBean.getId());
+			MessageDisplayer.showMessageToUserWithSeverityInfo(
+					getString("ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE"),
+					getString("ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS"));
+		}
+		else {
+			logger.info("failure");
+			MessageDisplayer.showMessageToUserWithSeverityError(
+					getString("ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.TITLE"),
+					getString("ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.DETAILS"));
+		}
+	}
+	
 	public void onTransfer(TransferEvent event) {
 		logger.debug("onTransfer");
 		@SuppressWarnings("unchecked")
@@ -687,11 +707,11 @@ public class OrganisationsController extends AbstractContextAwareController {
 		logger.info("onTabViewTabChange, tab={}", event.getTab());
 	}
 
-	/*-
+	/*
 	public void handleNewCommunityIconUpload(FileUploadEvent event) {
 		UploadedFile file = event.getFile();
 		MessageDisplayer.showMessageToUserWithSeverityInfo("handleNewCommunityIconUpload", file.getFileName());
 	}
-	 */
+	*/
 
 }
