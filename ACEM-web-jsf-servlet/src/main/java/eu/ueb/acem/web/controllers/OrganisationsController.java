@@ -478,9 +478,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void onDeleteOrganisation() {
-		logger.info("onDeleteOrganisation");
 		if (organisationsService.deleteOrganisation(currentOrganisationViewBean.getDomainBean().getId())) {
-			logger.info("succcess");
 			communityViewBeans.getTableEntries().remove(currentOrganisationViewBean);
 			organisationViewBeans.remove(currentOrganisationViewBean.getId());
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
@@ -488,7 +486,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 					getString("ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS"));
 		}
 		else {
-			logger.info("failure");
 			MessageDisplayer.showMessageToUserWithSeverityError(
 					getString("ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.TITLE"),
 					getString("ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.DETAILS"));
