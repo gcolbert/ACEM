@@ -185,6 +185,7 @@ public class UsersController extends AbstractContextAwareController {
 		logger.info("onDeleteOrganisation, organisation={}",organisationsController.getCurrentOrganisationViewBean().getDomainBean().getName());
 		for (PersonViewBean personViewBean : personViewBeans) {
 			personViewBean.removeOrganisationViewBean(organisationsController.getCurrentOrganisationViewBean());
+			personViewBean.getDomainBean().removeWorksForOrganisations(organisationsController.getCurrentOrganisationViewBean().getDomainBean());
 		}
 	}
 	
