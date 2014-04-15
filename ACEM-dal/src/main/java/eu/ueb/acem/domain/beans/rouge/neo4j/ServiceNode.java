@@ -62,10 +62,11 @@ public class ServiceNode extends OrganisationNode implements Service {
 		institutions = new HashSet<EtablissementNode>();
 	}
 
-	public ServiceNode(String name, String shortname) {
+	public ServiceNode(String name, String shortname, String iconFileName) {
 		this();
 		this.setName(name);
 		this.setShortname(shortname);
+		this.setIconFileName(iconFileName);
 	}
 
 	@Override

@@ -40,6 +40,8 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 
 	private String shortname;
 
+	private String iconFileName;
+
 	public CommunityViewBean() {
 	}
 
@@ -52,7 +54,7 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 	public Organisation getDomainBean() {
 		return getCommunity();
 	}
-	
+
 	@Override
 	public void setDomainBean(Organisation organisation) {
 		setCommunity((Communaute) organisation);
@@ -67,6 +69,7 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 		setId(community.getId());
 		setName(community.getName());
 		setShortname(community.getShortname());
+		setIconFileName(community.getIconFileName());
 	}
 
 	@Override
@@ -83,18 +86,31 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String getShortname() {
 		return shortname;
 	}
 
+	@Override
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
 	}
-	
+
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
+	}
+
 	@Override
 	public int compareTo(CommunityViewBean o) {
 		return name.compareTo(o.getName());

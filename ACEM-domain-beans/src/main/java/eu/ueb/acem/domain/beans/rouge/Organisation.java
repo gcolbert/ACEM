@@ -40,6 +40,10 @@ public interface Organisation extends Serializable {
 
 	void setShortname(String shortname);
 
+	String getIconFileName();
+
+	void setIconFileName(String iconFileName);
+
 	Set<? extends Ressource> getPossessedResources();
 
 	void setPossessedResources(Set<? extends Ressource> possessedResources);

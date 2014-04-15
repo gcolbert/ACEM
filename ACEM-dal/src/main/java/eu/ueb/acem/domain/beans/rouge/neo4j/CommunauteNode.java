@@ -60,10 +60,11 @@ public class CommunauteNode extends OrganisationNode implements Communaute {
 		institutions = new HashSet<EtablissementNode>();
 	}
 
-	public CommunauteNode(String name, String shortname) {
+	public CommunauteNode(String name, String shortname, String iconFileName) {
 		this();
 		this.setName(name);
 		this.setShortname(shortname);
+		this.setIconFileName(iconFileName);
 	}
 
 	@Override

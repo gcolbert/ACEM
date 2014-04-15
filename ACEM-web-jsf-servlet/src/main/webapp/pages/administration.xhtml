@@ -9,7 +9,7 @@
 		<ui:debug hotkey="1"
 			rendered="#{facesContext.application.projectStage == 'Development'}" />
 
-		<h:form id="formOrganisations">
+		<h:form id="formOrganisations" enctype="multipart/form-data">
 			<p:growl id="messagesDisplayerFormOrganisations" showDetail="true" />
 
 			<p:confirmDialog global="true" showEffect="fade">
@@ -59,6 +59,9 @@
 								listener="#{organisationsController.onAccordionPanelTabChange}"
 								update="@this" />
 							<p:tab title="#{communityViewBean.name}">
+								<p:graphicImage id="communityIcon"
+									alt="#{communityViewBean.name}" cache="false" width="200" height="200"
+									value="#{communityViewBean.iconFileName}" />
 								<p:commandButton
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 									icon="ui-icon-transferthick-e-w"
@@ -330,17 +333,23 @@
 						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
 						binding="#{input1b}" />
 					<p:message for="newCommunityShortName" display="text" />
+
+					<h:outputLabel value="Icone" for="newCommunityIcon" />
+					<p:column rowspan="2">
+						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
+							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
+							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
+							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
+							update="newCommunityIcon :formOrganisations:messagesDisplayerFormOrganisations" />
+						<p:graphicImage id="newCommunityIcon" cache="false" height="200"
+							width="200" value="#{fileUploadController.uploadedFile}" />
+					</p:column>
 				</p:panelGrid>
-				<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-					sizeLimit="1000000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
-					uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
-					cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
-					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-					update=":formOrganisations:messagesDisplayerFormOrganisations" />
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{organisationsController.onCreateCommunity(input1.value, input1b.value)}"
+					action="#{organisationsController.onCreateCommunity(input1.value, input1b.value, fileUploadController.uploadedFileName)}"
 					process="@this idDialogCreateCommunity"
 					update=":formOrganisations:idDialogCreateCommunity :formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateCommunity.hide(); }" />

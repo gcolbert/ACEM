@@ -48,6 +48,8 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, S
 
 	private String shortname;
 	
+	private String iconFileName;
+	
 	public AdministrativeDepartmentViewBean() {
 	}
 
@@ -75,6 +77,7 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, S
 		setId(administrativeDepartment.getId());
 		setName(administrativeDepartment.getName());
 		setShortname(administrativeDepartment.getShortname());
+		setIconFileName(administrativeDepartment.getIconFileName());
 	}
 
 	@Override
@@ -91,16 +94,29 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, S
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String getShortname() {
 		return shortname;
 	}
 
+	@Override
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
+	}
+
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
 	}
 	
 	@Override

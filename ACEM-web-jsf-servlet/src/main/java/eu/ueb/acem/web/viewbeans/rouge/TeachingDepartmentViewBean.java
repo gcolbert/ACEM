@@ -41,6 +41,8 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Seriali
 
 	private String shortname;
 	
+	private String iconFileName;
+	
 	public TeachingDepartmentViewBean() {
 	}
 
@@ -58,6 +60,7 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Seriali
 		setId(teachingDepartment.getId());
 		setName(teachingDepartment.getName());
 		setShortname(teachingDepartment.getShortname());
+		setIconFileName(teachingDepartment.getIconFileName());
 	}
 
 	@Override
@@ -84,16 +87,29 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Seriali
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String getShortname() {
 		return shortname;
 	}
 
+	@Override
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
+	}
+
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
 	}
 	
 	@Override

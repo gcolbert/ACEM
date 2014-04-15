@@ -26,10 +26,9 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.primefaces.event.FileUploadEvent;
+import org.primefaces.component.graphicimage.GraphicImage;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TransferEvent;
-import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -261,7 +260,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 			communityViewBeansForCurrentOrganisation.clear();
 			for (CommunityViewBean communityViewBean : communityViewBeans.getTableEntries()) {
 				if (((InstitutionViewBean) getCurrentOrganisationViewBean()).getInstitution().getCommunities()
-						.contains(communityViewBean.getCommunity())) {
+						.contains(communityViewBean.getDomainBean())) {
 					communityViewBeansForCurrentOrganisation.add(communityViewBean);
 				}
 			}
@@ -438,36 +437,36 @@ public class OrganisationsController extends AbstractContextAwareController {
 		}
 	}
 
-	public void onCreateCommunity(String name, String shortname) {
+	public void onCreateCommunity(String name, String shortname, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
-		Communaute community = organisationsService.createCommunity(name, shortname);
+		Communaute community = organisationsService.createCommunity(name, shortname, iconFileName);
 		CommunityViewBean communityViewBean = new CommunityViewBean(community);
 		communityViewBeans.getTableEntries().add(communityViewBean);
 		communityViewBeans.sort();
 		organisationViewBeans.put(communityViewBean.getId(), communityViewBean);
 	}
 
-	public void onCreateInstitution(String name, String shortname) {
+	public void onCreateInstitution(String name, String shortname, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateInstitution", name);
-		Etablissement institution = organisationsService.createInstitution(name, shortname);
+		Etablissement institution = organisationsService.createInstitution(name, shortname, iconFileName);
 		InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
 		institutionViewBeans.getTableEntries().add(institutionViewBean);
 		institutionViewBeans.sort();
 		organisationViewBeans.put(institutionViewBean.getId(), institutionViewBean);
 	}
 
-	public void onCreateTeachingDepartment(String name, String shortname) {
+	public void onCreateTeachingDepartment(String name, String shortname, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateTeachingDepartment", name);
-		Composante teachingDepartment = organisationsService.createTeachingDepartment(name, shortname);
+		Composante teachingDepartment = organisationsService.createTeachingDepartment(name, shortname, iconFileName);
 		TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
 		teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
 		teachingDepartmentViewBeans.sort();
 		organisationViewBeans.put(teachingDepartmentViewBean.getId(), teachingDepartmentViewBean);
 	}
 
-	public void onCreateAdministrativeDepartment(String name, String shortname) {
+	public void onCreateAdministrativeDepartment(String name, String shortname, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateAdministrativeDepartment", name);
-		Service administrativeDepartment = organisationsService.createAdministrativeDepartment(name, shortname);
+		Service administrativeDepartment = organisationsService.createAdministrativeDepartment(name, shortname, iconFileName);
 		AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
 				administrativeDepartment);
 		administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);

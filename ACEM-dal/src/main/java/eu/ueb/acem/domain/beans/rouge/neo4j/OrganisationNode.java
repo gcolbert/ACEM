@@ -52,6 +52,8 @@ public abstract class OrganisationNode implements Organisation {
 	private String name;
 	
 	private String shortname;
+	
+	private String iconFileName;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "possessesResource", direction = OUTGOING)
 	@Fetch
@@ -97,6 +99,16 @@ public abstract class OrganisationNode implements Organisation {
 	@Override
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
+	}
+
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
 	}
 
 	@Override

@@ -82,23 +82,23 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
-	public Communaute createCommunity(String name, String shortname) {
-		return communityDAO.create(new CommunauteNode(name, shortname));
+	public Communaute createCommunity(String name, String shortname, String iconFileName) {
+		return communityDAO.create(new CommunauteNode(name, shortname, iconFileName));
 	}
 
 	@Override
-	public Etablissement createInstitution(String name, String shortname) {
-		return institutionDAO.create(new EtablissementNode(name, shortname));
+	public Etablissement createInstitution(String name, String shortname, String iconFileName) {
+		return institutionDAO.create(new EtablissementNode(name, shortname, iconFileName));
 	}
 
 	@Override
-	public Service createAdministrativeDepartment(String name, String shortname) {
-		return administrativeDepartmentDAO.create(new ServiceNode(name, shortname));
+	public Service createAdministrativeDepartment(String name, String shortname, String iconFileName) {
+		return administrativeDepartmentDAO.create(new ServiceNode(name, shortname, iconFileName));
 	}
 
 	@Override
-	public Composante createTeachingDepartment(String name, String shortname) {
-		return teachingDepartmentDAO.create(new ComposanteNode(name, shortname));
+	public Composante createTeachingDepartment(String name, String shortname, String iconFileName) {
+		return teachingDepartmentDAO.create(new ComposanteNode(name, shortname, iconFileName));
 	}
 
 	@Override

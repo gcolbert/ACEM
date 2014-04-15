@@ -69,7 +69,7 @@ public class ScenariosServiceTest extends TestCase {
 	@Transactional
 	@Test
 	public final void t01_TestGetScenariosWithAuthor() {
-		Etablissement institution = organisationsService.createInstitution("University of Music", "UoM");
+		Etablissement institution = organisationsService.createInstitution("University of Music", "UoM", null);
 		
 		Enseignant teacher = usersService.createTeacher("Grégoire COLBERT", "gcolbert");
 		teacher.addWorksForOrganisations(institution);

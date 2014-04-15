@@ -98,7 +98,7 @@ public class OrganisationDAOTest extends TestCase {
 	@Test
 	public final void t01_TestCreateOrganisation() {
 		// We create a new object in the datastore
-		Communaute community = new CommunauteNode("University of California, Los Angeles", "UCLA");
+		Communaute community = new CommunauteNode("University of California, Los Angeles", "UCLA", null);
 
 		// We create our object
 		community = communityDAO.create(community);
@@ -116,10 +116,10 @@ public class OrganisationDAOTest extends TestCase {
 	 */
 	@Test
 	public final void t02_TestAssociateInstitutionWithAdministrativeDepartment() {
-		Etablissement institution = new EtablissementNode("University of California, Los Angeles", "UCLA");
+		Etablissement institution = new EtablissementNode("University of California, Los Angeles", "UCLA", null);
 		institution = institutionDAO.create(institution);
 
-		Service administrativeDepartment = new ServiceNode("Department of Health Policy and Management", "HPM");
+		Service administrativeDepartment = new ServiceNode("Department of Health Policy and Management", "HPM", null);
 		administrativeDepartment.addInstitution(institution);
 		administrativeDepartmentDAO.update(administrativeDepartment);
 
@@ -136,11 +136,11 @@ public class OrganisationDAOTest extends TestCase {
 	@Test
 	public final void t03_TestExists() {
 		// We create a new institution
-		Etablissement institution = new EtablissementNode("Université de Rennes 1", "UR1");
+		Etablissement institution = new EtablissementNode("Université de Rennes 1", "UR1", null);
 		institution = institutionDAO.create(institution);
 
 		// We create a new community
-		Communaute community = new CommunauteNode("Université européenne de Bretagne", "UEB");
+		Communaute community = new CommunauteNode("Université européenne de Bretagne", "UEB", null);
 		community = communityDAO.create(community);
 
 		// There must exactly 1 object in the community repository

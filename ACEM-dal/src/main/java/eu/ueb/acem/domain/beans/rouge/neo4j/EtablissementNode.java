@@ -68,10 +68,11 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 		administrativeDepartments = new HashSet<ServiceNode>();
 	}
 
-	public EtablissementNode(String name, String shortname) {
+	public EtablissementNode(String name, String shortname, String iconFileName) {
 		this();
 		this.setName(name);
 		this.setShortname(shortname);
+		this.setIconFileName(iconFileName);
 	}
 
 	@Override

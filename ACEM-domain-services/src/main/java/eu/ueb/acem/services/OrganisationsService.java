@@ -41,13 +41,13 @@ public interface OrganisationsService {
 
 	Long countTeachingDepartments();
 
-	Communaute createCommunity(String name, String shortname);
+	Communaute createCommunity(String name, String shortname, String iconFileName);
 
-	Etablissement createInstitution(String name, String shortname);
+	Etablissement createInstitution(String name, String shortname, String iconFileName);
 
-	Service createAdministrativeDepartment(String name, String shortname);
+	Service createAdministrativeDepartment(String name, String shortname, String iconFileName);
 
-	Composante createTeachingDepartment(String name, String shortname);
+	Composante createTeachingDepartment(String name, String shortname, String iconFileName);
 
 	Organisation retrieveOrganisation(Long idOrganisation);
 

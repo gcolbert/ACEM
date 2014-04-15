@@ -32,8 +32,16 @@ public interface OrganisationViewBean extends Pickable {
 
 	String getName();
 
+	void setName(String name);
+	
 	String getShortname();
 
+	void setShortname(String name);
+	
+	String getIconFileName();
+	
+	void setIconFileName(String iconFileName);
+	
 	Organisation getDomainBean();
 
 	void setDomainBean(Organisation organisation);

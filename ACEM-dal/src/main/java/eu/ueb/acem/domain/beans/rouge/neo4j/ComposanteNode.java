@@ -55,10 +55,11 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 		institutions = new HashSet<EtablissementNode>();
 	}
 
-	public ComposanteNode(String name, String shortname) {
+	public ComposanteNode(String name, String shortname, String iconFileName) {
 		this();
 		this.setName(name);
 		this.setShortname(shortname);
+		this.setIconFileName(iconFileName);
 	}
 
 	@Override

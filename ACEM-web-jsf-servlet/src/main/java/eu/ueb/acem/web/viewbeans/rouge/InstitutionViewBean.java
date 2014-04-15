@@ -35,17 +35,19 @@ public class InstitutionViewBean implements OrganisationViewBean, Serializable, 
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(InstitutionViewBean.class);
-	
+
 	private static final long serialVersionUID = 6170498010377898612L;
 
 	private Etablissement institution;
 
 	private Long id;
-	
+
 	private String name;
 
 	private String shortname;
 
+	private String iconFileName;
+	
 	public InstitutionViewBean() {
 	}
 
@@ -63,6 +65,7 @@ public class InstitutionViewBean implements OrganisationViewBean, Serializable, 
 		setId(institution.getId());
 		setName(institution.getName());
 		setShortname(institution.getShortname());
+		setIconFileName(institution.getIconFileName());
 	}
 
 	@Override
@@ -89,18 +92,31 @@ public class InstitutionViewBean implements OrganisationViewBean, Serializable, 
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String getShortname() {
 		return shortname;
 	}
 
+	@Override
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
 	}
 
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
+	}
+	
 	@Override
 	public int compareTo(InstitutionViewBean o) {
 		return name.compareTo(o.getName());

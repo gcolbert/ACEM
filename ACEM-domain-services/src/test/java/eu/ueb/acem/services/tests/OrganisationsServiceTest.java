@@ -55,8 +55,8 @@ public class OrganisationsServiceTest extends TestCase {
 	 */
 	@Test
 	public final void t01_TestAssociateCommunityAndInstitution() {
-		Communaute community1 = organisationsService.createCommunity("my community", "mc");
-		Etablissement institution1 = organisationsService.createInstitution("my institution", "mi");
+		Communaute community1 = organisationsService.createCommunity("my community", "mc", null);
+		Etablissement institution1 = organisationsService.createInstitution("my institution", "mi", null);
 		assertTrue(organisationsService.associateCommunityAndInstitution(community1.getId(), institution1.getId()));
 
 		Communaute community1bis = organisationsService.retrieveCommunity(community1.getId());
@@ -70,9 +70,9 @@ public class OrganisationsServiceTest extends TestCase {
 	@Test
 	@Transactional
 	public final void t02_TestDissociateCommunityAndInstitution() {
-		Communaute community1 = organisationsService.createCommunity("my community", "mc");
+		Communaute community1 = organisationsService.createCommunity("my community", "mc", null);
 
-		Etablissement institution1 = organisationsService.createInstitution("my institution", "mi");
+		Etablissement institution1 = organisationsService.createInstitution("my institution", "mi", null);
 
 		assertTrue(organisationsService.associateCommunityAndInstitution(community1.getId(), institution1.getId()));
 		

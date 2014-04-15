@@ -80,4 +80,9 @@
 		<description>A controller for administering the organisations from the "administration" page.</description>
 	</bean>
 
+	<bean id="fileUploadController" class="eu.ueb.acem.web.controllers.FileUploadController"
+		parent="abstractContextAwareController">
+		<description>A controller to upload files.</description>
+	</bean>
+
 </beans>
