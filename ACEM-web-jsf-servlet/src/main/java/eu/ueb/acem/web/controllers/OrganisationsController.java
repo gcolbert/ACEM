@@ -206,6 +206,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 	*/
 
+	public Map<Long, OrganisationViewBean> getOrganisationViewBeans() {
+		return organisationViewBeans;
+	}
+
 	public TableBean<CommunityViewBean> getCommunityViewBeans() {
 		return communityViewBeans;
 	}
@@ -440,6 +444,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 		CommunityViewBean communityViewBean = new CommunityViewBean(community);
 		communityViewBeans.getTableEntries().add(communityViewBean);
 		communityViewBeans.sort();
+		organisationViewBeans.put(communityViewBean.getId(), communityViewBean);
 	}
 
 	public void onCreateInstitution(String name, String shortname) {
@@ -448,6 +453,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 		InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
 		institutionViewBeans.getTableEntries().add(institutionViewBean);
 		institutionViewBeans.sort();
+		organisationViewBeans.put(institutionViewBean.getId(), institutionViewBean);
 	}
 
 	public void onCreateTeachingDepartment(String name, String shortname) {
@@ -456,6 +462,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 		TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
 		teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
 		teachingDepartmentViewBeans.sort();
+		organisationViewBeans.put(teachingDepartmentViewBean.getId(), teachingDepartmentViewBean);
 	}
 
 	public void onCreateAdministrativeDepartment(String name, String shortname) {
@@ -465,6 +472,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 				administrativeDepartment);
 		administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
 		administrativeDepartmentViewBeans.sort();
+		organisationViewBeans.put(administrativeDepartmentViewBean.getId(), administrativeDepartmentViewBean);
 	}
 
 	public void onRenameOrganisation() {
@@ -479,7 +487,18 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	public void onDeleteOrganisation() {
 		if (organisationsService.deleteOrganisation(currentOrganisationViewBean.getDomainBean().getId())) {
-			communityViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+			if (currentOrganisationViewBean instanceof CommunityViewBean) {
+				communityViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+			}
+			else if (currentOrganisationViewBean instanceof InstitutionViewBean) {
+				institutionViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+			}
+			else if (currentOrganisationViewBean instanceof AdministrativeDepartmentViewBean) {
+				administrativeDepartmentViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+			}
+			else if (currentOrganisationViewBean instanceof TeachingDepartmentViewBean) {
+				teachingDepartmentViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+			}
 			organisationViewBeans.remove(currentOrganisationViewBean.getId());
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
 					getString("ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE"),

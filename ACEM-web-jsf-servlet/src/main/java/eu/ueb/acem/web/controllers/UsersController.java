@@ -28,7 +28,6 @@ import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -36,7 +35,6 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
-import eu.ueb.acem.web.viewbeans.TableBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -61,10 +59,6 @@ public class UsersController extends AbstractContextAwareController {
 	@Autowired
 	public OrganisationsController organisationsController;
 	
-	@Autowired
-	@Qualifier(value = "tableBean")
-	public TableBean<OrganisationViewBean> organisationViewBeans;
-
 	public UsersController() {
 		personViewBeans = new ArrayList<PersonViewBean>();
 	}
@@ -72,13 +66,6 @@ public class UsersController extends AbstractContextAwareController {
 	@PostConstruct
 	public void initUsersController() {
 		logger.debug("initUsersController");
-
-		List<OrganisationViewBean> organisationViewBeansList = new ArrayList<OrganisationViewBean>();
-		organisationViewBeansList.addAll(organisationsController.getCommunityViewBeans().getTableEntries());
-		organisationViewBeansList.addAll(organisationsController.getInstitutionViewBeans().getTableEntries());
-		organisationViewBeansList.addAll(organisationsController.getAdministrativeDepartmentViewBeans().getTableEntries());
-		organisationViewBeansList.addAll(organisationsController.getTeachingDepartmentViewBeans().getTableEntries());
-		organisationViewBeans.setTableEntries(organisationViewBeansList);
 
 		personViewBeans.clear();
 		Set<Personne> persons = usersService.getPersons();
@@ -112,11 +99,13 @@ public class UsersController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistOrganisationViewBeans() {
+		logger.info("preparePicklistOrganisationViewBeans");
 		if (getSelectedUserViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
-			pickListBean.getPickListEntities().getSource().addAll(organisationViewBeans.getTableEntries());
+			pickListBean.getPickListEntities().getSource().addAll(organisationsController.getOrganisationViewBeans().values());
 			pickListBean.getPickListEntities().getTarget().clear();
-			for (OrganisationViewBean organisationViewBean : organisationViewBeans.getTableEntries()) {
+			for (OrganisationViewBean organisationViewBean : organisationsController.getOrganisationViewBeans().values()) {
+				logger.info("organisationViewBean={}",organisationViewBean.getDomainBean().getName());
 				if (getSelectedUserViewBean().getDomainBean().getWorksForOrganisations().contains(organisationViewBean.getDomainBean())) {
 					pickListBean.getPickListEntities().getSource().remove(organisationViewBean);
 					pickListBean.getPickListEntities().getTarget().add(organisationViewBean);
@@ -190,6 +179,13 @@ public class UsersController extends AbstractContextAwareController {
 			}
 		}
 		*/
+	}
+	
+	public void onDeleteOrganisation() {
+		logger.info("onDeleteOrganisation, organisation={}",organisationsController.getCurrentOrganisationViewBean().getDomainBean().getName());
+		for (PersonViewBean personViewBean : personViewBeans) {
+			personViewBean.removeOrganisationViewBean(organisationsController.getCurrentOrganisationViewBean());
+		}
 	}
 	
 }

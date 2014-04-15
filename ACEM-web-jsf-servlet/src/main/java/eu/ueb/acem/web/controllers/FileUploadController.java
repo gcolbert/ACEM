@@ -10,20 +10,27 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FileUploadEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Controller("fileUploadController")
 @Scope("session")
 public class FileUploadController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
+	
 	private String destination = "D:/tmp";
 
 	public void upload(FileUploadEvent event) {
+		logger.info("upload");
 		FacesMessage msg = new FacesMessage("Success! ", event.getFile().getFileName() + " is uploaded.");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		// Do what you want with the file
 		try {
 			copyFile(event.getFile().getFileName(), event.getFile().getInputstream());
+			logger.info("successful");
 		}
 		catch (IOException e) {
 			e.printStackTrace();

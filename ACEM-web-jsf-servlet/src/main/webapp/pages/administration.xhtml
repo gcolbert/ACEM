@@ -77,9 +77,10 @@
 								<p:commandButton id="deleteCommunityButton"
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 									icon="ui-icon-trash"
-									action="#{organisationsController.onDeleteOrganisation}"
-									disabled="#{organisationsController.currentOrganisationViewBean == null}"
-									update="accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations" process="@this">
+									actionListener="#{organisationsController.onDeleteOrganisation}"
+									action="#{usersController.onDeleteOrganisation}"
+									update="accordionPanelForCommunities :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+									process="@this">
 									<p:confirm
 										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
 										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
@@ -128,8 +129,8 @@
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 									icon="ui-icon-trash"
 									action="#{organisationsController.onDeleteOrganisation}"
-									disabled="#{organisationsController.currentOrganisationViewBean == null}"
-									update="accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations" process="@this">
+									update="accordionPanelForInstitutions :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+									process="@this">
 									<p:confirm
 										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
 										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
@@ -234,8 +235,8 @@
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 									icon="ui-icon-trash"
 									action="#{organisationsController.onDeleteOrganisation}"
-									disabled="#{organisationsController.currentOrganisationViewBean == null}"
-									update="accordionPanelForAdministrativeDepartments :formOrganisations:messagesDisplayerFormOrganisations" process="@this">
+									update="accordionPanelForAdministrativeDepartments :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+									process="@this">
 									<p:confirm
 										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
 										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
@@ -291,8 +292,8 @@
 									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 									icon="ui-icon-trash"
 									action="#{organisationsController.onDeleteOrganisation}"
-									disabled="#{organisationsController.currentOrganisationViewBean == null}"
-									update="accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations" process="@this">
+									update="accordionPanelForTeachingDepartments :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+									process="@this">
 									<p:confirm
 										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
 										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
@@ -331,15 +332,17 @@
 					<p:message for="newCommunityShortName" display="text" />
 				</p:panelGrid>
 				<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-					mode="advanced" dragDropSupport="false" sizeLimit="100000"
-					fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+					sizeLimit="1000000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
+					uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
+					cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+					allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 					update=":formOrganisations:messagesDisplayerFormOrganisations" />
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateCommunity(input1.value, input1b.value)}"
 					process="@this idDialogCreateCommunity"
-					update=":formOrganisations:idDialogCreateCommunity :formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations"
+					update=":formOrganisations:idDialogCreateCommunity :formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formUsers :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateCommunity.hide(); }" />
 			</p:dialog>
 
@@ -366,7 +369,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateInstitution(input2.value, input2b.value)}"
 					process="@this idDialogCreateInstitution"
-					update=":formOrganisations:idDialogCreateInstitution :formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations"
+					update=":formOrganisations:idDialogCreateInstitution :formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formUsers:dialogAssociateOrganisationsWithUserPickList :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
 			</p:dialog>
 
@@ -395,7 +398,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateAdministrativeDepartment(input3.value, input3b.value)}"
 					process="@this idDialogCreateAdministrativeDepartment"
-					update=":formOrganisations:idDialogCreateAdministrativeDepartment :formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:messagesDisplayerFormOrganisations"
+					update=":formOrganisations:idDialogCreateAdministrativeDepartment :formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formUsers :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateAdministrativeDepartment.hide(); }" />
 			</p:dialog>
 
@@ -423,7 +426,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateTeachingDepartment(input4.value, input4b.value)}"
 					process="@this idDialogCreateTeachingDepartment"
-					update=":formOrganisations:idDialogCreateTeachingDepartment :formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations"
+					update=":formOrganisations:idDialogCreateTeachingDepartment :formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments :formUsers :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateTeachingDepartment.hide(); }" />
 			</p:dialog>
 
