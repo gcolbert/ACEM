@@ -285,6 +285,10 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 				+ " at " + dropIndex);
 	}
 
+	public void onNodeSelect() {
+		setSelectedNode(selectedNode);
+	}
+	
 	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
 		if (treeNodeData.getConcept().equals("Answer")) {
 			needsAndAnswersService.saveAnswerName(treeNodeData.getId(), treeNodeData.getLabel());

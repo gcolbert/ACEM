@@ -35,6 +35,7 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 
 	private static final long serialVersionUID = -116654020465612191L;
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CommunityViewBean.class);
 
 	private Communaute community;

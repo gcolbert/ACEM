@@ -10,7 +10,9 @@
 			rendered="#{facesContext.application.projectStage == 'Development'}" />
 
 		<p:tooltip />
+
 		<h:form id="formTree">
+
 			<p:panel header="#{msgs['NEEDS_AND_ANSWERS.TREE.HEADER']}">
 
 				<p:growl id="messagesDisplayer" showDetail="true" />
@@ -111,7 +113,8 @@
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_RESOURCE_CATEGORY']}"
 						update=":formTree:needsAndAnswersTree" icon="ui-icon-link"
-						onclick="PF('dialogAssociateResourceCategory').show()" type="button" />
+						onclick="PF('dialogAssociateResourceCategory').show()"
+						type="button" />
 					<p:menuitem
 						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_SERVICE']}"
 						update=":formTree:needsAndAnswersTree" icon="ui-icon-link"
@@ -132,6 +135,9 @@
 					<p:ajax event="dragdrop"
 						listener="#{needsAndAnswersTreeController.onDragDrop}"
 						update=":formTree:needsAndAnswersTree :formTree:messagesDisplayer" />
+					<p:ajax event="select" oncomplete="PrimeFaces.scrollTo('formScenariosExamples')"
+						listener="#{needsAndAnswersTreeController.onNodeSelect}"
+						update=":formTree:selectedNodeDetailsOutputPanel :formScenariosExamples:examplesOfScenariosPanel" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
@@ -174,35 +180,82 @@
 								update="@this" />
 							<p:inputText value="#{treeNodeData.label}" />
 						</p:inplace>
-						<p:commandLink oncomplete="PrimeFaces.scrollTo('formTable')"
-							action="#{needsAndAnswersTableController.setSelectedAnswer(treeNodeData.id)}"
-							update=":formTable">
-							<h:outputText id="viewScenariosBtn"
-								styleClass="ui-icon ui-icon-lightbulb"
-								style="display:inline-block; vertical-align:middle;" />
-							<p:tooltip
-								value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.VIEW_SCENARIOS_EXAMPLES']}"
-								for="viewScenariosBtn" />
-						</p:commandLink>
-						<h:link outcome="my-tools">
-							<f:param name="resourceId" value="#{treeNodeData.id}" />
-							<h:outputText id="goToResourceBtn"
-								styleClass="ui-icon ui-icon-arrowthickstop-1-e"
-								style="display:inline-block; vertical-align:middle;" />
-							<p:tooltip
-								value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_RESOURCE']}"
-								for="goToResourceBtn" />
-						</h:link>
 					</p:treeNode>
 				</p:tree>
 			</p:panel>
+
+			<p:outputPanel id="selectedNodeDetailsOutputPanel">
+				<p:panel id="selectedNodeDetails" header="#{needsAndAnswersTreeController.selectedNode.data.label}"
+					rendered="#{(not empty needsAndAnswersTreeController.selectedNode) and (needsAndAnswersTreeController.selectedNode.type == needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF)}">
+					<h2><h:outputText value="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_CATEGORIES_LABEL']}"/></h2>
+
+					<h2><h:outputText value="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_SERVICES_LABEL']}"/></h2>
+
+<!-- 
+					<p:commandLink oncomplete="PrimeFaces.scrollTo('formScenariosExamples')"
+						action="#{needsAndAnswersTableController.setSelectedAnswer(treeNodeData.id)}"
+						update=":formScenariosExamples">
+						<h:outputText id="viewScenariosBtn"
+							styleClass="ui-icon ui-icon-lightbulb"
+							style="display:inline-block; vertical-align:middle;" />
+						<p:tooltip
+							value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.VIEW_SCENARIOS_EXAMPLES']}"
+							for="viewScenariosBtn" />
+					</p:commandLink>
+ -->
+					<h:link outcome="my-tools">
+
+						<f:param name="resourceId" value="#{treeNodeData.id}" />
+						<h:outputText id="goToResourceBtn"
+							styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+							style="display:inline-block; vertical-align:middle;" />
+						<p:tooltip
+							value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_RESOURCE']}"
+							for="goToResourceBtn" />
+					</h:link>
+					<ul>
+						<li>Afficher la/les catégories d'outils liées à cette
+							réponse.</li>
+						<li>Pour chaque catégorie, afficher le/les outil(s) avec un
+							lien vers la rubrique "mes outils".</li>
+					</ul>
+
+					<h2><h:outputText value="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']}"/></h2>
+					
+					<p:dataTable id="examplesOfScenariosTable"
+						value="#{needsAndAnswersTableController.scenariosRelatedToSelectedAnswer}"
+						var="scenario">
+						<p:column
+							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
+							<h:outputText value="#{scenario.name}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.OBJECTIVE']}">
+							<h:outputText value="#{scenario.objective}" />
+						</p:column>
+						<p:column
+							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.AUTHOR']}">
+							<h:outputText value="#{scenario.author}" />
+						</p:column>
+						<!-- 
+						<p:column
+							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.RESOURCES']}">
+							<h:outputText value="#{scenario.resources}" />
+						</p:column>
+						 -->
+					</p:dataTable>
+					
+				</p:panel>
+			</p:outputPanel>
+
 		</h:form>
 
 		<h:form id="formAssociateResourceCategory">
 			<p:dialog id="modalDialog"
 				header="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.HEADER']}"
-				widgetVar="dialogAssociateResourceCategory" modal="true" height="200">
-				Ici, on doit pouvoir choisir une catégorie d'outil ou en créer une nouvelle.
+				widgetVar="dialogAssociateResourceCategory" modal="true"
+				height="200">
+				Ici, on doit pouvoir choisir une catégorie d'outil.
 			</p:dialog>
 		</h:form>
 
@@ -214,11 +267,11 @@
 			</p:dialog>
 		</h:form>
 
-		<h:form id="formTable">
+		<h:form id="formScenariosExamples">
 			<p:outputPanel id="examplesOfScenariosPanel">
 				<p:panel
-					header="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']} «#{needsAndAnswersTableController.selectedAnswer.name}»"
-					rendered="#{needsAndAnswersTableController.selectedAnswer != null}">
+					header="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']} «#{needsAndAnswersTreeController.selectedNode.data.label}»"
+					rendered="#{(not empty needsAndAnswersTreeController.selectedNode) and (needsAndAnswersTreeController.selectedNode.type == needsAndAnswersTreeController.treeNodeType_ANSWER_LEAF)}">
 					<p:dataTable id="examplesOfScenariosTable"
 						value="#{needsAndAnswersTableController.scenariosRelatedToSelectedAnswer}"
 						var="scenario">
