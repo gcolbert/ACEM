@@ -75,7 +75,7 @@
 							url="resources/images/my-tools/my-tools.software-documentations.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}"
 							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText escape="false"
+						<span class="menu-entry-text"><h:outputText
 								value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}" /></span>
 					</p:commandLink>
 					<p:commandLink styleClass="menu-entry"
@@ -85,7 +85,7 @@
 							url="resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
 							alt="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}"
 							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText escape="false"
+						<span class="menu-entry-text"><h:outputText
 								value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}" /></span>
 					</p:commandLink>
 					<p:commandLink styleClass="menu-entry"
@@ -112,10 +112,12 @@
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
-					<p:treeNode type="CategoryNode" styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode type="CategoryNode"
+						styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
-					<p:treeNode type="ResourceNode" styleClass="#{treeNodeData.styleClass}">
+					<p:treeNode type="ResourceNode"
+						styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
 				</p:tree>
@@ -224,15 +226,16 @@
 				<p:panelGrid columns="3">
 					<h:outputLabel for="categoryForTheNewResource"
 						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
-					<p:selectOneMenu id="categoryForTheNewResource" effect="fold"
-						required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}"
-						editable="false" binding="#{input1}">
-						<f:converter converterId="ResourceCategoryConverter" />
+					<p:selectOneMenu id="categoryForTheNewResource" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false"
+						binding="#{input1}" converter="ResourceCategoryConverter">
 						<f:selectItem
 							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY']}"
 							itemValue="" itemDisabled="true" noSelectionOption="true" />
 						<f:selectItems
-							value="#{resourcesTreeController.categoriesForSelectedResourceType}" />
+							value="#{resourcesTreeController.categoriesForSelectedResourceType}"
+							var="category" itemLabel="#{category.name}"
+							itemValue="#{category}" />
 					</p:selectOneMenu>
 					<p:message for="categoryForTheNewResource" display="text" />
 
@@ -248,7 +251,7 @@
 					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{resourcesTreeController.createResourceForSelectedResourceType(input1.value, input2.value)}"
-					update="@form :formResources"
+					update="@form :formResources:resourcesTree"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
 			</h:form>
 		</p:dialog>
@@ -257,7 +260,7 @@
 			header="#{msgs['RESOURCES.ASSOCIATE_USE_MODE_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogAssociateUseMode" modal="true" height="auto">
 			<h:form id="formAssociateUseMode">
-				
+
 			</h:form>
 		</p:dialog>
 

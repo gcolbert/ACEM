@@ -26,7 +26,6 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.primefaces.component.graphicimage.GraphicImage;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
@@ -82,6 +81,9 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	@Autowired
 	private PickListBean pickListBean;
+	
+	@Autowired
+	private FileUploadController fileUploadController;
 
 	// TODO : choose whether we should keep this for correction of issue
 	// https://github.com/gcolbert/ACEM/issues/3
@@ -477,8 +479,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 	public void onRenameOrganisation() {
 		currentOrganisationViewBean.getDomainBean().setName(currentOrganisationViewBean.getName());
 		currentOrganisationViewBean.getDomainBean().setShortname(currentOrganisationViewBean.getShortname());
+		currentOrganisationViewBean.getDomainBean().setIconFileName(currentOrganisationViewBean.getIconFileName());
 		currentOrganisationViewBean.setDomainBean(organisationsService.updateOrganisation(currentOrganisationViewBean
 				.getDomainBean()));
+		fileUploadController.reset();
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
 				getString("ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.RENAME_SUCCESSFUL.TITLE"),
 				getString("ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.RENAME_SUCCESSFUL.DETAILS"));

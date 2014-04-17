@@ -108,17 +108,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Ressource createResource(String resourceType, String categoryName, String name) {
-		// We look for the given category in the ResourceCategoryDAO
-		Collection<ResourceCategory> resourceCategories = resourceCategoryDAO.retrieveByName(categoryName);
-		ResourceCategory resourceCategory;
-		if (resourceCategories.size() == 0) {
-			resourceCategory = resourceCategories.iterator().next();
-		}
-		else {
-			resourceCategory = new ResourceCategoryNode(categoryName);
-		}
-
+	public Ressource createResource(String resourceType, ResourceCategory resourceCategory, String name) {
 		Ressource entity = null;
 		switch (resourceType) {
 		case "software":
@@ -246,6 +236,11 @@ public class ResourcesServiceImpl implements ResourcesService {
 	@Override
 	public ResourceCategory retrieveResourceCategory(Long id) {
 		return resourceCategoryDAO.retrieveById(id);
+	}
+	
+	@Override
+	public Collection<ResourceCategory> retrieveAllCategories() {
+		return resourceCategoryDAO.retrieveAll();
 	}
 	
 	@Override

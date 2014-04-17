@@ -93,7 +93,8 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	public void prepareTree(String resourceType) {
 		logger.info("prepareTree for resourceType={}", resourceType);
 		selectedResourceType = resourceType;
-		setCategoriesForSelectedResourceType(resourcesService.retrieveCategoriesForResourceType(resourceType));
+		//setCategoriesForSelectedResourceType(resourcesService.retrieveCategoriesForResourceType(resourceType));
+		setCategoriesForSelectedResourceType(resourcesService.retrieveAllCategories());
 		resourcesTreeBean.reset();
 		switch (resourceType) {
 		case "software":
@@ -117,6 +118,7 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 			break;
 		}
 		for (ResourceCategory category : categoriesForSelectedResourceType) {
+			logger.info("category = {}", category.getName());
 			TreeNode categoryNode = resourcesTreeBean.addChild(getTreeNodeType_CATEGORY(), resourcesTreeBean
 					.getVisibleRoots().get(0), category.getId(), category.getName(), "category");
 			Collection<Ressource> entriesForCategory = null;
@@ -214,7 +216,8 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		Collections.sort(this.categoriesForSelectedResourceType);
 	}
 
-	public void createResourceForSelectedResourceType(String category, String name) {
+	public void createResourceForSelectedResourceType(ResourceCategory category, String name) {
+		logger.info("createResourceForSelectedResourceType");
 		resourcesService.createResource(selectedResourceType, category, name);
 	}
 

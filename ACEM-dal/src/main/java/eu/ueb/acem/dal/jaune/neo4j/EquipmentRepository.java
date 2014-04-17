@@ -40,7 +40,7 @@ public interface EquipmentRepository extends GenericRepository<EquipementNode> {
 	@Query(value = "MATCH (n:Equipment)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 
-	@Query(value = "MATCH (n:Software)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
+	@Query(value = "MATCH (n:Equipment)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
 	Set<EquipementNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 	
 }

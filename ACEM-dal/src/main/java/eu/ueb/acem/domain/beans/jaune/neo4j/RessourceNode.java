@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -66,6 +67,7 @@ public abstract class RessourceNode implements Ressource {
 	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
 
 	public RessourceNode() {
+		categories = new HashSet<ResourceCategoryNode>();
 	}
 
 	public RessourceNode(String name) {

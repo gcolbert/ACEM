@@ -21,7 +21,7 @@ public class ImagesController {
 
 	@Autowired
 	private ImagesService imagesService;
-	
+
 	public StreamedContent getImage() throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
 
@@ -33,8 +33,8 @@ public class ImagesController {
 		else {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
-			String imageId = context.getExternalContext().getRequestParameterMap().get("imageId");
-			File image = imagesService.getImage(Long.valueOf(imageId));
+			String imageFileName = context.getExternalContext().getRequestParameterMap().get("imageFileName");
+			File image = imagesService.getImage(imageFileName);
 			return new DefaultStreamedContent(new FileInputStream(image));
 		}
 	}

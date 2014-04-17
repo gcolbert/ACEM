@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.web.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -38,14 +41,27 @@ import eu.ueb.acem.services.ResourcesService;
 @FacesConverter("ResourceCategoryConverter")
 public class ResourceCategoryConverter implements Converter {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ResourceCategoryConverter.class);
 	
 	@Autowired
 	private ResourcesService resourcesService;
 
+    private static final String KEY = "eu.ueb.acem.web.utils.ResourceCategoryConverter";
+	
+    private Map<String, Object> getViewMap(FacesContext context) {
+        Map<String, Object> viewMap = context.getViewRoot().getViewMap();
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        Map<String, Object> idMap = (Map) viewMap.get(KEY);
+        if (idMap == null) {
+            idMap = new HashMap<String, Object>();
+            viewMap.put(KEY, idMap);
+        }
+        return idMap;
+    }
+	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-		logger.info("getAsObject, value={}", value);
         if (value == null || value.isEmpty()) {
             return null;
         }
@@ -54,17 +70,16 @@ public class ResourceCategoryConverter implements Converter {
             throw new ConverterException("The value is not a valid ID number: " + value);
         }
 
-        Long id = Long.parseLong(value);
-        return resourcesService.retrieveResourceCategory(id);
+        return getViewMap(context).get(value);
 	}
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
-		logger.info("getAsString, value={}", value);
         if (value == "") {
 			return null;
 		}
 		else {
+            getViewMap(context).put(((ResourceCategory) value).getId().toString(), value);
 			return ((ResourceCategory) value).getId().toString();
 		}
 	}

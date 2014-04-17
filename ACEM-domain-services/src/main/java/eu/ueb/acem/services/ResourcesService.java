@@ -39,7 +39,9 @@ public interface ResourcesService {
 	
 	Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType);
 
-	Ressource createResource(String resourceType, String category, String name);
+	Collection<ResourceCategory> retrieveAllCategories();
+	
+	Ressource createResource(String resourceType, ResourceCategory category, String name);
 
 	Ressource updateResource(Ressource resource);
 	

@@ -35,8 +35,8 @@ public class ImagesServiceImpl implements ImagesService {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ImagesServiceImpl.class);
 
-	public File getImage(Long id) {
-		File file = new File("D:/home/gcolbert/mes images/usine-a-gaz.jpg");
+	public File getImage(String imageFileName) {
+		File file = new File("D:/tmp/"+imageFileName);
 		return file;
 	}
 

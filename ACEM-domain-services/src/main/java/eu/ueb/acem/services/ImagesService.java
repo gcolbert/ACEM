@@ -27,6 +27,6 @@ import java.io.File;
  */
 public interface ImagesService {
 
-	File getImage(Long id);
+	File getImage(String imageFileName);
 
 }

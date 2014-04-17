@@ -20,6 +20,9 @@ package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -31,6 +34,8 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 public class CommunityViewBean implements OrganisationViewBean, Serializable, Comparable<CommunityViewBean> {
 
 	private static final long serialVersionUID = -116654020465612191L;
+
+	private static final Logger logger = LoggerFactory.getLogger(CommunityViewBean.class);
 
 	private Communaute community;
 

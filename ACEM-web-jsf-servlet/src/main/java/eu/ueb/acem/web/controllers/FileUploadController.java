@@ -82,7 +82,10 @@ public class FileUploadController extends AbstractContextAwareController {
 		return uploadedFileName;
 	}
 	
-	public String getDestination() {
-		return destination;
+	public void reset() {
+		logger.info("reset()");
+		uploadedFile = null;
+		uploadedFileName = null;
 	}
+
 }
