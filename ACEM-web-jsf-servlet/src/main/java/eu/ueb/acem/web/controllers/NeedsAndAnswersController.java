@@ -18,11 +18,14 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.primefaces.event.TransferEvent;
 import org.primefaces.event.TreeDragDropEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -34,23 +37,30 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.NeedsAndAnswersService;
+import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
+import eu.ueb.acem.web.viewbeans.PickListBean;
+import eu.ueb.acem.web.viewbeans.SortableTableBean;
+import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-@Controller("needsAndAnswersTreeController")
+@Controller("needsAndAnswersController")
 @Scope("view")
-public class NeedsAndAnswersTreeController extends AbstractContextAwareController {
+public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 	private static final long serialVersionUID = 3305497053688875560L;
 
-	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersController.class);
 
 	private static final String TREE_NODE_TYPE_NEED_LEAF = "NeedLeaf";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS = "NeedWithAssociatedNeeds";
@@ -61,21 +71,69 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	private NeedsAndAnswersService needsAndAnswersService;
 
 	@Autowired
+	private ResourcesService resourcesService;
+
+	@Autowired
 	private EditableTreeBean needsAndAnswersTreeBean;
 
+	@Autowired
+	private SortableTableBean<Scenario> sortableTableBean;
+
+	@Autowired
+	private PickListBean pickListBean;
+	
 	private TreeNode selectedNode;
 
-	public NeedsAndAnswersTreeController() {
+	private SortableTableBean<ToolCategoryViewBean> toolCategoryViewBeans;
+
+	private List<ToolCategoryViewBean> toolCategoryViewBeansForSelectedAnswer;
+
+	private Collection<Service> administrativeDepartmentsAssociatedWithSelectedAnswer;
+
+	public String getTreeNodeType_NEED_LEAF() {
+		return TREE_NODE_TYPE_NEED_LEAF;
+	}
+
+	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
+		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS;
+	}
+
+	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
+		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS;
+	}
+
+	public String getTreeNodeType_ANSWER_LEAF() {
+		return TREE_NODE_TYPE_ANSWER_LEAF;
+	}
+
+	public NeedsAndAnswersController() {
+		toolCategoryViewBeansForSelectedAnswer = new ArrayList<ToolCategoryViewBean>();
+		toolCategoryViewBeans = new SortableTableBean<ToolCategoryViewBean>();
 	}
 
 	@PostConstruct
 	public void initNeedsAndAnswersTreeController() {
 		logger.info("entering initNeedsAndAnswersTreeController");
 		initTree(needsAndAnswersTreeBean, getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
+
+		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
+		logger.debug("found {} tool categories", toolCategories.size());
+		toolCategoryViewBeans.getTableEntries().clear();
+		for (ResourceCategory toolCategory : toolCategories) {
+			logger.debug("tool category = {}", toolCategory.getName());
+			ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
+			toolCategoryViewBeans.getTableEntries().add(toolCategoryViewBean);
+		}
+		toolCategoryViewBeans.sort();
+
 		logger.info("leaving initNeedsAndAnswersTreeController");
 		logger.info("------");
 	}
 
+	public PickListBean getPickListBean() {
+		return pickListBean;
+	}
+	
 	/**
 	 * Fills the given {@link EditableTreeBean} with the Pedagogical Advice
 	 * nodes returned by the {@link NeedsAndAnswersService} implementation
@@ -171,6 +229,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		if (this.selectedNode != null) {
 			this.selectedNode.setSelected(false);
 			needsAndAnswersTreeBean.expandOnlyOneNode(selectedNode);
+			setToolCategoryViewBeansForSelectedAnswer();
 		}
 		this.selectedNode = selectedNode;
 	}
@@ -179,6 +238,45 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		if (selectedNode != null) {
 			MessageDisplayer.showMessageToUserWithSeverityInfo("Selected", selectedNode.getData().toString());
 		}
+	}
+
+	public void deleteSelectedNode() {
+		logger.info("entering deleteSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
+		if (selectedNode != null) {
+			// Business-level constraint : we don't make possible to recursively
+			// delete nodes
+			if (selectedNode.isLeaf()) {
+				if (needsAndAnswersService.deleteNode(((TreeNodeData) selectedNode.getData()).getId())) {
+					// If the selectedNode was the only child, we must change
+					// back the parent's type to be a "Need leaf", so that the
+					// good ContextMenu will be displayed
+					if (selectedNode.getParent().getChildCount() == 1) {
+						if ((selectedNode.getParent().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS()))
+								|| (selectedNode.getParent().getType()
+										.equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS))) {
+							((DefaultTreeNode) selectedNode.getParent()).setType(getTreeNodeType_NEED_LEAF());
+						}
+					}
+					selectedNode.getParent().getChildren().remove(selectedNode);
+					selectedNode.setParent(null);
+					this.selectedNode = null;
+				}
+				else {
+					MessageDisplayer.showMessageToUserWithSeverityError(
+							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE"),
+							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS"));
+					logger.info("The service failed to delete the node.");
+				}
+			}
+			else {
+				MessageDisplayer.showMessageToUserWithSeverityError(
+						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE"),
+						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS"));
+				logger.info("The selected node has children, cannot delete!");
+			}
+		}
+		logger.info("leaving deleteSelectedNode");
+		logger.info("------");
 	}
 
 	public void expandSelectedNodeIncludingChildren() {
@@ -231,46 +329,6 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		logger.info("------");
 	}
 
-	public void deleteSelectedNode() {
-		logger.info("entering deleteSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
-		if (selectedNode != null) {
-			// Business-level constraint : we don't make possible to recursively
-			// delete nodes
-			if (selectedNode.isLeaf()) {
-				if (needsAndAnswersService.deleteNode(((TreeNodeData) selectedNode.getData()).getId())) {
-					// If the selectedNode was the only child, we must change
-					// back the parent's type to be a "Need leaf", so that the
-					// good
-					// ContextMenu will be displayed
-					if (selectedNode.getParent().getChildCount() == 1) {
-						if ((selectedNode.getParent().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS()))
-								|| (selectedNode.getParent().getType()
-										.equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS))) {
-							((DefaultTreeNode) selectedNode.getParent()).setType(getTreeNodeType_NEED_LEAF());
-						}
-					}
-					selectedNode.getParent().getChildren().remove(selectedNode);
-					selectedNode.setParent(null);
-					this.selectedNode = null;
-				}
-				else {
-					MessageDisplayer.showMessageToUserWithSeverityError(
-							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE"),
-							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS"));
-					logger.info("The service failed to delete the node.");
-				}
-			}
-			else {
-				MessageDisplayer.showMessageToUserWithSeverityError(
-						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE"),
-						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS"));
-				logger.info("The selected node has children, cannot delete!");
-			}
-		}
-		logger.info("leaving deleteSelectedNode");
-		logger.info("------");
-	}
-
 	public void onDragDrop(TreeDragDropEvent event) {
 		TreeNode dragNode = event.getDragNode();
 		TreeNode dropNode = event.getDropNode();
@@ -288,7 +346,7 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 	public void onNodeSelect() {
 		setSelectedNode(selectedNode);
 	}
-	
+
 	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
 		if (treeNodeData.getConcept().equals("Answer")) {
 			needsAndAnswersService.saveAnswerName(treeNodeData.getId(), treeNodeData.getLabel());
@@ -298,20 +356,105 @@ public class NeedsAndAnswersTreeController extends AbstractContextAwareControlle
 		}
 	}
 
-	public String getTreeNodeType_NEED_LEAF() {
-		return TREE_NODE_TYPE_NEED_LEAF;
+	public Collection<Scenario> getScenariosRelatedToSelectedAnswer() {
+		return sortableTableBean.getTableEntries();
 	}
 
-	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
-		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS;
+	public void setScenariosRelatedToSelectedAnswer() {
+		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
+			logger.info("entering setScenariosRelatedToSelectedAnswer");
+			Collection<Scenario> scenarios = needsAndAnswersService
+					.getScenariosRelatedToAnswer(((TreeNodeData) selectedNode.getData()).getId());
+			logger.info("Found {} scenarios related to selected answer.", scenarios.size());
+			sortableTableBean.getTableEntries().clear();
+			for (Scenario scenario : scenarios) {
+				sortableTableBean.getTableEntries().add(scenario);
+			}
+			logger.info("leaving setScenariosRelatedToSelectedAnswer");
+			logger.info("------");
+		}
 	}
 
-	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
-		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS;
+	public List<ToolCategoryViewBean> getToolCategoryViewBeansForSelectedAnswer() {
+		return toolCategoryViewBeansForSelectedAnswer;
 	}
 
-	public String getTreeNodeType_ANSWER_LEAF() {
-		return TREE_NODE_TYPE_ANSWER_LEAF;
+	private void setToolCategoryViewBeansForSelectedAnswer() {
+		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
+			logger.info("setToolCategoryViewBeansForSelectedAnswer");
+			toolCategoryViewBeansForSelectedAnswer.clear();
+			Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer(((TreeNodeData) selectedNode.getData())
+					.getId());
+			for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
+				if (selectedAnswer.getResourceCategories().contains(toolCategoryViewBean.getResourceCategory())) {
+					logger.info("selectedAnswer is associated with {}", toolCategoryViewBean.getResourceCategory()
+							.getName());
+					toolCategoryViewBeansForSelectedAnswer.add(toolCategoryViewBean);
+				}
+			}
+		}
+	}
+
+	public Collection<Service> getAdministrativeDepartmentsAssociatedWithSelectedAnswer() {
+		return administrativeDepartmentsAssociatedWithSelectedAnswer;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void setAdministrativeDepartmentsAssociatedWithSelectedAnswer() {
+		Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer(((TreeNodeData) selectedNode.getData()).getId());
+		administrativeDepartmentsAssociatedWithSelectedAnswer = (Collection<Service>) selectedAnswer.getAdministrativeDepartments();
+	}
+
+	public void preparePicklistToolCategoryViewBeansForSelectedAnswer() {
+		logger.debug("preparePicklistToolCategoryViewBeansForSelectedAnswer");
+		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
+			pickListBean.getPickListEntities().getSource().clear();
+			pickListBean.getPickListEntities().getSource().addAll(toolCategoryViewBeans.getTableEntries());
+			pickListBean.getPickListEntities().getTarget().clear();
+			Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData()).getId()));
+			for (ResourceCategory toolCategoryForSelectedAnswer : selectedAnswer.getResourceCategories()) {
+				for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
+					if (toolCategoryForSelectedAnswer.getId().equals(toolCategoryViewBean.getId())) {
+						pickListBean.getPickListEntities().getSource().remove(toolCategoryViewBean);
+						pickListBean.getPickListEntities().getTarget().add(toolCategoryViewBean);
+					}
+				}
+			}
+		}
+	}
+	
+	public void onTransferToolCategory(TransferEvent event) {
+		logger.info("onTransferToolCategory");
+		@SuppressWarnings("unchecked")
+		List<ToolCategoryViewBean> listOfMovedViewBeans = (List<ToolCategoryViewBean>) event.getItems();
+		for (ToolCategoryViewBean movedToolCategoryViewBean : listOfMovedViewBeans) {
+			if (event.isAdd()) {
+				logger.info("We should associate answer {} and tool category {}",
+						((TreeNodeData) selectedNode.getData()).getLabel(), movedToolCategoryViewBean.getName());
+				if (needsAndAnswersService.associateAnswerWithToolCategory(((TreeNodeData) selectedNode.getData())
+						.getId(), movedToolCategoryViewBean.getDomainBean().getId())) {
+					toolCategoryViewBeansForSelectedAnswer.add(movedToolCategoryViewBean);
+					logger.info("association successful");
+				}
+				else {
+					logger.info("association failed");
+				}
+				movedToolCategoryViewBean.setDomainBean(resourcesService.retrieveResourceCategory(movedToolCategoryViewBean.getId()));
+			}
+			else {
+				logger.info("We should dissociate answer {} and tool category {}",
+						((TreeNodeData) selectedNode.getData()).getLabel(), movedToolCategoryViewBean.getName());
+				if (needsAndAnswersService.dissociateAnswerWithToolCategory(((TreeNodeData) selectedNode.getData())
+						.getId(), movedToolCategoryViewBean.getDomainBean().getId())) {
+					toolCategoryViewBeansForSelectedAnswer.remove(movedToolCategoryViewBean);
+					logger.info("dissociation successful");
+				}
+				else {
+					logger.info("dissociation failed");
+				}
+				movedToolCategoryViewBean.setDomainBean(resourcesService.retrieveResourceCategory(movedToolCategoryViewBean.getId()));
+			}
+		}
 	}
 
 }

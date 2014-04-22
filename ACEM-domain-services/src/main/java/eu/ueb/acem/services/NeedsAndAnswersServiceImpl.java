@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
+import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
@@ -53,6 +54,9 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Autowired
 	private PedagogicalAnswerDAO answerDAO;
+	
+	@Autowired
+	private ResourceCategoryDAO resourceCategoryDAO;
 
 	public NeedsAndAnswersServiceImpl() {
 
@@ -271,4 +275,25 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		return resources;
 	}
 
+	@Override
+	public Boolean associateAnswerWithToolCategory(Long answerId, Long toolCategoryId) {
+		Reponse answer = answerDAO.retrieveById(answerId);
+		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
+		answer.addResourceCategory(resourceCategory);
+		answer = answerDAO.update(answer);
+		resourceCategory = resourceCategoryDAO.update(resourceCategory);
+		return answer.getResourceCategories().contains(resourceCategory);
+	}
+
+	@Override
+	public Boolean dissociateAnswerWithToolCategory(Long answerId, Long toolCategoryId) {
+		logger.info("dissociateAnswerWithToolCategory");
+		Reponse answer = answerDAO.retrieveById(answerId);
+		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
+		answer.removeResourceCategory(resourceCategory);
+		answer = answerDAO.update(answer);
+		resourceCategory = resourceCategoryDAO.update(resourceCategory);
+		return ! answer.getResourceCategories().contains(resourceCategory);
+	}
+	
 }

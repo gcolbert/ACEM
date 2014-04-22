@@ -38,7 +38,7 @@ import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-//import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 
@@ -150,12 +150,22 @@ public class ReponseNode implements Reponse {
 	
 	@Override
 	public void addResourceCategory(ResourceCategory resourceCategory) {
-		resourceCategories.add((ResourceCategoryNode)resourceCategory);
+		if (!resourceCategories.contains(resourceCategory)) {
+			resourceCategories.add((ResourceCategoryNode)resourceCategory);
+		}
+		if (!resourceCategory.getAnswers().contains(this)) {
+			resourceCategory.addAnswer(this);
+		}
 	}
 
 	@Override
 	public void removeResourceCategory(ResourceCategory resourceCategory) {
-		resourceCategories.remove(resourceCategory);
+		if (resourceCategories.contains(resourceCategory)) {
+			resourceCategories.remove(resourceCategory);
+		}
+		if (resourceCategory.getAnswers().contains(this)) {
+			resourceCategory.removeAnswer(this);
+		}
 	}
 	
 	@Override
@@ -176,4 +186,39 @@ public class ReponseNode implements Reponse {
 		return getName().compareTo(o.getName());
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ReponseNode other = (ReponseNode) obj;
+		if (getId() == null) {
+			if (other.getId() != null)
+				return false;
+		}
+		else
+			if (!getId().equals(other.getId()))
+				return false;
+		if (getName() == null) {
+			if (other.getName() != null)
+				return false;
+		}
+		else
+			if (!getName().equals(other.getName()))
+				return false;
+		return true;
+	}
+	
 }

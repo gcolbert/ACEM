@@ -47,10 +47,12 @@ public interface Reponse extends Serializable, Comparable<Reponse> {
 	
 	Set<? extends Service> getAdministrativeDepartments();
 
-	void addNeed(Besoin besoin);
+	void addNeed(Besoin need);
 
-	void removeNeed(Besoin besoin);
+	void removeNeed(Besoin need);
 
 	Set<Scenario> getScenariosRelatedToAnswer();
+
+	int compareTo(Reponse o);
 
 }

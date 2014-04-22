@@ -48,6 +48,10 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 
 	void setAnswers(Set<? extends Reponse> answers);
 
-	int compareTo(ResourceCategory o);
+	void addAnswer(Reponse answer);
 	
+	void removeAnswer(Reponse answer);
+
+	int compareTo(ResourceCategory o);
+
 }

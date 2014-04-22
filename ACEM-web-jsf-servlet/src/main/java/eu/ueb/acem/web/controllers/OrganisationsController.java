@@ -616,7 +616,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 				}
 			}
 			else {
-				logger.info("We should dissociate {} and {}", movedOrganisationViewBean.getName(),
+				logger.debug("We should dissociate {} and {}", movedOrganisationViewBean.getName(),
 						getCurrentOrganisationViewBean().getName());
 				if (movedOrganisationViewBean instanceof CommunityViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean

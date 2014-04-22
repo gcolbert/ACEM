@@ -48,14 +48,16 @@ public interface Besoin extends Serializable, Comparable<Besoin> {
 
 	void addParent(Besoin parent);
 
-	void addChild(Besoin besoin);
+	void addChild(Besoin need);
 
-	void addAnswer(Reponse reponse);
+	void addAnswer(Reponse answer);
 
-	void removeParent(Besoin besoin);
+	void removeParent(Besoin need);
 
-	void removeChild(Besoin besoin);
+	void removeChild(Besoin need);
 
-	void removeAnswer(Reponse reponse);
+	void removeAnswer(Reponse answer);
+
+	int compareTo(Besoin o);
 
 }

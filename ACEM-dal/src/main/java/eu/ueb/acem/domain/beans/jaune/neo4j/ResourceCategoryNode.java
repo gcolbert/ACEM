@@ -125,6 +125,26 @@ public class ResourceCategoryNode implements ResourceCategory {
 	}
 
 	@Override
+	public void addAnswer(Reponse answer) {
+		if (! answers.contains(answer)) {
+			answers.add((ReponseNode) answer);
+		}
+		if (! answer.getResourceCategories().contains(this)) {
+			answer.addResourceCategory(this);
+		}
+	}
+
+	@Override
+	public void removeAnswer(Reponse answer) {
+		if (answers.contains(answer)) {
+			answers.remove(answer);
+		}
+		if (answer.getResourceCategories().contains(this)) {
+			answer.removeResourceCategory(this);
+		}
+	}
+
+	@Override
 	public int compareTo(ResourceCategory o) {
 		return getName().compareTo(o.getName());
 	}

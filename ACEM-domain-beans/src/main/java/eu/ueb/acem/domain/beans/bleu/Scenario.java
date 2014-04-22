@@ -77,4 +77,6 @@ public interface Scenario extends Serializable, Comparable<Scenario> {
 	
 	void removeAuthor(Enseignant author);
 
+	int compareTo(Scenario o);
+	
 }

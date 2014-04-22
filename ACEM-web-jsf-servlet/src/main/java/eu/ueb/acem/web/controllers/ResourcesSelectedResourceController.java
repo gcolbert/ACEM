@@ -70,7 +70,7 @@ public class ResourcesSelectedResourceController extends AbstractContextAwareCon
 	private EditableTreeBean pedagogicalUseTreeBean;
 
 	@Autowired
-	private NeedsAndAnswersTreeController needsAndAnswersTreeController;
+	private NeedsAndAnswersController needsAndAnswersTreeController;
 
 	private Long selectedResourceId;
 

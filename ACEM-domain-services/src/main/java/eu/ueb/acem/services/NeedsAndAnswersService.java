@@ -77,4 +77,8 @@ public interface NeedsAndAnswersService {
 
 	Collection<Ressource> getResourcesRelatedToAnswer(Long id);
 
+	Boolean associateAnswerWithToolCategory(Long answerId, Long toolCategoryId);
+
+	Boolean dissociateAnswerWithToolCategory(Long answerId, Long toolCategoryId);
+
 }
