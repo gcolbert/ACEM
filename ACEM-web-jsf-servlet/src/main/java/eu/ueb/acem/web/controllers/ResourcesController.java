@@ -121,8 +121,8 @@ public class ResourcesController extends AbstractContextAwareController {
 	public void prepareTree(String resourceType) {
 		logger.info("prepareTree for resourceType={}", resourceType);
 		selectedResourceType = resourceType;
-		//setCategoriesForSelectedResourceType(resourcesService.retrieveCategoriesForResourceType(resourceType));
-		setCategoriesForSelectedResourceType(resourcesService.retrieveAllCategories());
+		setCategoriesForSelectedResourceType(resourcesService.retrieveCategoriesForResourceType(resourceType));
+		//setCategoriesForSelectedResourceType(resourcesService.retrieveAllCategories());
 		resourcesTreeBean.reset();
 		switch (resourceType) {
 		case "software":
@@ -243,7 +243,7 @@ public class ResourcesController extends AbstractContextAwareController {
 		return categoriesForSelectedResourceType;
 	}
 	
-	public void setCategoriesForSelectedResourceType(Collection<ResourceCategory> categoriesForSelectedResourceType) {
+	private void setCategoriesForSelectedResourceType(Collection<ResourceCategory> categoriesForSelectedResourceType) {
 		logger.info("setCategoriesForSelectedResourceType");
 		if (categoriesForSelectedResourceType instanceof Set) {
 			this.categoriesForSelectedResourceType = new ArrayList<ResourceCategory>(categoriesForSelectedResourceType);
@@ -275,11 +275,10 @@ public class ResourcesController extends AbstractContextAwareController {
 	}
 
 	public TreeNode getPedagogicalUsesTreeRoot() {
+		// TODO : trouver comment faire la requête :
+		// MATCH (r:Resource)<-[:categoryContains]-()<-[:answeredUsingResourceCategory]-(answer)<-[*]-(need) where id(r)=151 RETURN r,answer,need;
+		//pedagogicalUsesTreeBean.retainAll(selectedResourceId);
 		return pedagogicalUsesTreeBean.getRoot();
-	}
-
-	public EditableTreeBean getPedagogicalUsesTreeBean() {
-		return pedagogicalUsesTreeBean;
 	}
 
 	public List<Scenario> getScenariosUsingSelectedTool() {

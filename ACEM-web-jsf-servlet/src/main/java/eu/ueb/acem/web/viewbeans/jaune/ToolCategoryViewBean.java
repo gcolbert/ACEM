@@ -73,6 +73,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 		this.resourceCategory = resourceCategory;
 		setId(resourceCategory.getId());
 		setName(resourceCategory.getName());
+		resourceViewBeans.clear();
 		for (Ressource resource : resourceCategory.getResources()) {
 			if (resource instanceof Applicatif) {
 				addResourceViewBean(new SoftwareViewBean((Applicatif)resource));

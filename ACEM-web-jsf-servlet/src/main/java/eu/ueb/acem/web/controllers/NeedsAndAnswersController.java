@@ -526,7 +526,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	}
 
 	public void onTransferAdministrativeDepartment(TransferEvent event) {
-		logger.info("onTransferToolCategory");
+		logger.info("onTransferAdministrativeDepartment");
 		@SuppressWarnings("unchecked")
 		List<AdministrativeDepartmentViewBean> listOfMovedViewBeans = (List<AdministrativeDepartmentViewBean>) event
 				.getItems();
@@ -547,12 +547,12 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 						.retrieveOrganisation(movedAdministrativeDepartmentViewBean.getId()));
 			}
 			else {
-				logger.info("We should dissociate answer {} and tool category {}",
+				logger.info("We should dissociate answer {} and administrative department {}",
 						((TreeNodeData) selectedNode.getData()).getLabel(),
 						movedAdministrativeDepartmentViewBean.getName());
 				if (needsAndAnswersService.dissociateAnswerWithAdministrativeDepartment(((TreeNodeData) selectedNode
 						.getData()).getId(), movedAdministrativeDepartmentViewBean.getDomainBean().getId())) {
-					toolCategoryViewBeansForSelectedAnswer.remove(movedAdministrativeDepartmentViewBean);
+					administrativeDepartmentViewBeansForSelectedAnswer.remove(movedAdministrativeDepartmentViewBean);
 					logger.info("dissociation successful");
 				}
 				else {

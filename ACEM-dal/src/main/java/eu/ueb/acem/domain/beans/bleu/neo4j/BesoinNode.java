@@ -191,6 +191,11 @@ public class BesoinNode implements Besoin {
 	}
 
 	@Override
+	public int compareTo(Besoin o) {
+		return getName().compareTo(o.getName());
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -223,11 +228,6 @@ public class BesoinNode implements Besoin {
 			if (!name.equals(other.name))
 				return false;
 		return true;
-	}
-
-	@Override
-	public int compareTo(Besoin o) {
-		return getName().compareTo(o.getName());
 	}
 
 }

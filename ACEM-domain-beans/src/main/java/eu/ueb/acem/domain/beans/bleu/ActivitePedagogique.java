@@ -21,7 +21,7 @@ package eu.ueb.acem.domain.beans.bleu;
 import java.io.Serializable;
 import java.util.Set;
 
-import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
  * @author Grégoire Colbert
@@ -60,9 +60,9 @@ public interface ActivitePedagogique extends Serializable, Comparable<ActivitePe
 	
 	void removeScenario(Scenario scenario);
 
-	Set<? extends Ressource> getResources();
+	Set<? extends ResourceCategory> getResourceCategories();
 
-	void setResources(Set<? extends Ressource> resources);
+	void setResourceCategories(Set<? extends ResourceCategory> resourceCategories);
 	
 	int compareTo(ActivitePedagogique o);
 

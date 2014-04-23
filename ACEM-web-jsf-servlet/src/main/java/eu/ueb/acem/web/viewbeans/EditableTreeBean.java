@@ -20,9 +20,12 @@ package eu.ueb.acem.web.viewbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -148,10 +151,29 @@ public class EditableTreeBean implements Serializable {
 		}
 	}
 
-	public TreeNode getNodeWithId(Long resourceId) {
-		return allNodes.get(resourceId);
+	public TreeNode getNodeWithId(Long id) {
+		return allNodes.get(id);
 	}
-
+	
+	public void retainAll(Set<Long> idsToKeep) {
+		for (Long id : idsToKeep) {
+			TreeNode node = allNodes.get(id);
+			idsToKeep.add(id);
+			while (node.getParent() != null) {
+				node = node.getParent();
+				idsToKeep.add(id);
+			}
+		}
+		retainChildren(root, idsToKeep);
+	}
+	
+	private void retainChildren(TreeNode node, Set<Long> idsOfNodesToKeep) {
+		node.getChildren().retainAll(idsOfNodesToKeep);
+		for (TreeNode child : node.getChildren()) {
+			retainChildren(child, idsOfNodesToKeep);
+		}
+	}
+	
 	public static class TreeNodeData implements Serializable {
 
 		private static final long serialVersionUID = -5623188924862380160L;

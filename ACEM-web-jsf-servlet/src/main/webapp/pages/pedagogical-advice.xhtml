@@ -310,7 +310,10 @@
 					converter="PickListConverter" showSourceControls="false"
 					showTargetControls="false" showCheckbox="true"
 					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains">
+					filterMatchMode="contains" addLabel="#{msgs['PICKLIST.ADD_LABEL']}"
+					addAllLabel="#{msgs['PICKLIST.ADD_ALL_LABEL']}"
+					removeLabel="#{msgs['PICKLIST.REMOVE_LABEL']}"
+					removeAllLabel="#{msgs['PICKLIST.REMOVE_ALL_LABEL']}">
 					<f:facet name="sourceCaption">#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.ASSOCIATED_WITH_SELECTED_ANSWER']}</f:facet>
 					<p:ajax event="transfer"
@@ -341,7 +344,10 @@
 					converter="PickListConverter" showSourceControls="false"
 					showTargetControls="false" showCheckbox="true"
 					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains">
+					filterMatchMode="contains" addLabel="#{msgs['PICKLIST.ADD_LABEL']}"
+					addAllLabel="#{msgs['PICKLIST.ADD_ALL_LABEL']}"
+					removeLabel="#{msgs['PICKLIST.REMOVE_LABEL']}"
+					removeAllLabel="#{msgs['PICKLIST.REMOVE_ALL_LABEL']}">
 					<f:facet name="sourceCaption">#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.PICKLIST_HEADER.ASSOCIATED_WITH_SELECTED_ANSWER']}</f:facet>
 					<p:ajax event="transfer"

@@ -32,8 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
@@ -56,9 +56,9 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	@Fetch
 	private Set<ScenarioNode> scenarios;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "activityRequiringResource", direction = OUTGOING)
+	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "activityRequiringResourceFromCategory", direction = OUTGOING)
 	@Fetch
-	private Set<RessourceNode> resources;
+	private Set<ResourceCategoryNode> resourceCategories;
 
 	private Long positionInScenario;
 	private String objective;
@@ -164,14 +164,14 @@ public class ActivitePedagogiqueNode implements ActivitePedagogique {
 	}
 
 	@Override
-	public Set<? extends Ressource> getResources() {
-		return resources;
+	public Set<? extends ResourceCategory> getResourceCategories() {
+		return resourceCategories;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setResources(Set<? extends Ressource> resources) {
-		this.resources = (Set<RessourceNode>)resources;
+	public void setResourceCategories(Set<? extends ResourceCategory> resourceCategories) {
+		this.resourceCategories = (Set<ResourceCategoryNode>)resourceCategories;
 	}
 
 	@Override
