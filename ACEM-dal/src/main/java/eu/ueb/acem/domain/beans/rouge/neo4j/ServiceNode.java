@@ -113,4 +113,26 @@ public class ServiceNode extends OrganisationNode implements Service {
 		this.pedagogicalAnswers = (Set<ReponseNode>) pedagogicalAnswers;
 	}
 
+	@Override
+	@Transactional
+	public void addPedagogicalAnswer(Reponse answer) {
+		if (! pedagogicalAnswers.contains(answer)) {
+			pedagogicalAnswers.add((ReponseNode)answer);
+		}
+		if (! answer.getAdministrativeDepartments().contains(this)) {
+			answer.addAdministrativeDepartment(this);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void removePedagogicalAnswer(Reponse answer) {
+		if (pedagogicalAnswers.contains(answer)) {
+			pedagogicalAnswers.remove(answer);
+		}
+		if (answer.getAdministrativeDepartments().contains(this)) {
+			answer.removeAdministrativeDepartment(this);
+		}
+	}
+
 }

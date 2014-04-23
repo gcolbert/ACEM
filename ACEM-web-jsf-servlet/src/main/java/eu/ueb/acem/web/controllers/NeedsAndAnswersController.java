@@ -41,13 +41,16 @@ import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.NeedsAndAnswersService;
+import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.SortableTableBean;
+import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -74,21 +77,30 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	private ResourcesService resourcesService;
 
 	@Autowired
+	private OrganisationsService organisationsService;
+
+	@Autowired
 	private EditableTreeBean needsAndAnswersTreeBean;
 
 	@Autowired
-	private SortableTableBean<Scenario> sortableTableBean;
+	private PickListBean pickListBean;
+
+	private TreeNode selectedNode;
+	
+	private Reponse selectedAnswer;
 
 	@Autowired
-	private PickListBean pickListBean;
-	
-	private TreeNode selectedNode;
+	private SortableTableBean<ScenarioViewBean> scenarioViewBeans;
+
+	private List<ScenarioViewBean> scenarioViewBeansForSelectedAnswer;
 
 	private SortableTableBean<ToolCategoryViewBean> toolCategoryViewBeans;
 
 	private List<ToolCategoryViewBean> toolCategoryViewBeansForSelectedAnswer;
 
-	private Collection<Service> administrativeDepartmentsAssociatedWithSelectedAnswer;
+	private SortableTableBean<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
+
+	private List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeansForSelectedAnswer;
 
 	public String getTreeNodeType_NEED_LEAF() {
 		return TREE_NODE_TYPE_NEED_LEAF;
@@ -109,11 +121,17 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	public NeedsAndAnswersController() {
 		toolCategoryViewBeansForSelectedAnswer = new ArrayList<ToolCategoryViewBean>();
 		toolCategoryViewBeans = new SortableTableBean<ToolCategoryViewBean>();
+
+		administrativeDepartmentViewBeansForSelectedAnswer = new ArrayList<AdministrativeDepartmentViewBean>();
+		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
+
+		scenarioViewBeansForSelectedAnswer = new ArrayList<ScenarioViewBean>();
+		scenarioViewBeans = new SortableTableBean<ScenarioViewBean>();
 	}
 
 	@PostConstruct
-	public void initNeedsAndAnswersTreeController() {
-		logger.info("entering initNeedsAndAnswersTreeController");
+	public void initNeedsAndAnswersController() {
+		logger.debug("entering initNeedsAndAnswersTreeController");
 		initTree(needsAndAnswersTreeBean, getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
 
 		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
@@ -126,14 +144,25 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		}
 		toolCategoryViewBeans.sort();
 
-		logger.info("leaving initNeedsAndAnswersTreeController");
-		logger.info("------");
+		Collection<Service> administrativeDepartments = organisationsService.retrieveAllAdministrativeDepartments();
+		logger.debug("found {} administrative departments", administrativeDepartments.size());
+		administrativeDepartmentViewBeans.getTableEntries().clear();
+		for (Service administrativeDepartment : administrativeDepartments) {
+			logger.debug("administrative department = {}", administrativeDepartment.getName());
+			AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
+					administrativeDepartment);
+			administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
+		}
+		administrativeDepartmentViewBeans.sort();
+		
+		logger.debug("leaving initNeedsAndAnswersTreeController");
+		logger.debug("------");
 	}
 
 	public PickListBean getPickListBean() {
 		return pickListBean;
 	}
-	
+
 	/**
 	 * Fills the given {@link EditableTreeBean} with the Pedagogical Advice
 	 * nodes returned by the {@link NeedsAndAnswersService} implementation
@@ -229,9 +258,16 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		if (this.selectedNode != null) {
 			this.selectedNode.setSelected(false);
 			needsAndAnswersTreeBean.expandOnlyOneNode(selectedNode);
-			setToolCategoryViewBeansForSelectedAnswer();
 		}
 		this.selectedNode = selectedNode;
+
+		selectedAnswer = null;
+		if ((this.selectedNode != null) && (this.selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
+			selectedAnswer = needsAndAnswersService.retrieveAnswer(((TreeNodeData) selectedNode.getData()).getId());
+			setToolCategoryViewBeansForSelectedAnswer();
+			setAdministrativeDepartmentViewBeansForSelectedAnswer();
+			setScenarioViewBeansRelatedToSelectedAnswer();
+		}
 	}
 
 	public void displaySelectedNodeInfo() {
@@ -259,7 +295,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 					}
 					selectedNode.getParent().getChildren().remove(selectedNode);
 					selectedNode.setParent(null);
-					this.selectedNode = null;
+					setSelectedNode(null);
 				}
 				else {
 					MessageDisplayer.showMessageToUserWithSeverityError(
@@ -344,7 +380,13 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	}
 
 	public void onNodeSelect() {
-		setSelectedNode(selectedNode);
+		// We need to keep this callback function empty.
+		// Its purpose is to bind the Ajax "select" event of treenodes.
+		// The real function is "setSelectedNode", which is called
+		// by the "selection" attribute of the <p:tree>.
+		// Thus, this callback does nothing, but it's necessary to have
+		// it so that the tree and the selectedNode variable are
+		// synchronized on "select" Ajax event.
 	}
 
 	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
@@ -356,21 +398,20 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		}
 	}
 
-	public Collection<Scenario> getScenariosRelatedToSelectedAnswer() {
-		return sortableTableBean.getTableEntries();
+	public List<ScenarioViewBean> getScenarioViewBeansRelatedToSelectedAnswer() {
+		return scenarioViewBeans.getTableEntries();
 	}
 
-	public void setScenariosRelatedToSelectedAnswer() {
+	private void setScenarioViewBeansRelatedToSelectedAnswer() {
 		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
-			logger.info("entering setScenariosRelatedToSelectedAnswer");
-			Collection<Scenario> scenarios = needsAndAnswersService
-					.getScenariosRelatedToAnswer(((TreeNodeData) selectedNode.getData()).getId());
+			logger.info("entering setScenarioViewBeansRelatedToSelectedAnswer");
+			Collection<Scenario> scenarios = needsAndAnswersService.getScenariosRelatedToAnswer(((TreeNodeData) selectedNode.getData()).getId());
 			logger.info("Found {} scenarios related to selected answer.", scenarios.size());
-			sortableTableBean.getTableEntries().clear();
+			scenarioViewBeans.getTableEntries().clear();
 			for (Scenario scenario : scenarios) {
-				sortableTableBean.getTableEntries().add(scenario);
+				scenarioViewBeans.getTableEntries().add(new ScenarioViewBean(scenario));
 			}
-			logger.info("leaving setScenariosRelatedToSelectedAnswer");
+			logger.info("leaving setScenarioViewBeansRelatedToSelectedAnswer");
 			logger.info("------");
 		}
 	}
@@ -380,11 +421,9 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	}
 
 	private void setToolCategoryViewBeansForSelectedAnswer() {
-		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
+		if (selectedAnswer != null) {
 			logger.info("setToolCategoryViewBeansForSelectedAnswer");
 			toolCategoryViewBeansForSelectedAnswer.clear();
-			Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer(((TreeNodeData) selectedNode.getData())
-					.getId());
 			for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
 				if (selectedAnswer.getResourceCategories().contains(toolCategoryViewBean.getResourceCategory())) {
 					logger.info("selectedAnswer is associated with {}", toolCategoryViewBean.getResourceCategory()
@@ -395,14 +434,19 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		}
 	}
 
-	public Collection<Service> getAdministrativeDepartmentsAssociatedWithSelectedAnswer() {
-		return administrativeDepartmentsAssociatedWithSelectedAnswer;
+	public Collection<AdministrativeDepartmentViewBean> getAdministrativeDepartmentViewBeansForSelectedAnswer() {
+		return administrativeDepartmentViewBeansForSelectedAnswer;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setAdministrativeDepartmentsAssociatedWithSelectedAnswer() {
-		Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer(((TreeNodeData) selectedNode.getData()).getId());
-		administrativeDepartmentsAssociatedWithSelectedAnswer = (Collection<Service>) selectedAnswer.getAdministrativeDepartments();
+	private void setAdministrativeDepartmentViewBeansForSelectedAnswer() {
+		if (selectedAnswer != null) {
+			administrativeDepartmentViewBeansForSelectedAnswer.clear();
+			for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans.getTableEntries()) {
+				if (selectedAnswer.getAdministrativeDepartments().contains(administrativeDepartmentViewBean.getAdministrativeDepartment())) {
+					administrativeDepartmentViewBeansForSelectedAnswer.add(administrativeDepartmentViewBean);
+				}
+			}
+		}
 	}
 
 	public void preparePicklistToolCategoryViewBeansForSelectedAnswer() {
@@ -411,7 +455,8 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(toolCategoryViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
-			Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData()).getId()));
+			Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData())
+					.getId()));
 			for (ResourceCategory toolCategoryForSelectedAnswer : selectedAnswer.getResourceCategories()) {
 				for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
 					if (toolCategoryForSelectedAnswer.getId().equals(toolCategoryViewBean.getId())) {
@@ -422,7 +467,28 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			}
 		}
 	}
-	
+
+	public void preparePicklistAdministrativeDepartmentViewBeansForSelectedAnswer() {
+		logger.debug("preparePicklistAdministrativeDepartmentViewBeansForSelectedAnswer");
+		if (selectedAnswer != null) {
+			pickListBean.getPickListEntities().getSource().clear();
+			pickListBean.getPickListEntities().getSource().addAll(administrativeDepartmentViewBeans.getTableEntries());
+			pickListBean.getPickListEntities().getTarget().clear();
+			Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData())
+					.getId()));
+			for (Service administrativeDepartmentForSelectedAnswer : selectedAnswer.getAdministrativeDepartments()) {
+				for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
+						.getTableEntries()) {
+					if (administrativeDepartmentForSelectedAnswer.getId().equals(
+							administrativeDepartmentViewBean.getId())) {
+						pickListBean.getPickListEntities().getSource().remove(administrativeDepartmentViewBean);
+						pickListBean.getPickListEntities().getTarget().add(administrativeDepartmentViewBean);
+					}
+				}
+			}
+		}
+	}
+
 	public void onTransferToolCategory(TransferEvent event) {
 		logger.info("onTransferToolCategory");
 		@SuppressWarnings("unchecked")
@@ -439,7 +505,8 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 				else {
 					logger.info("association failed");
 				}
-				movedToolCategoryViewBean.setDomainBean(resourcesService.retrieveResourceCategory(movedToolCategoryViewBean.getId()));
+				movedToolCategoryViewBean.setDomainBean(resourcesService
+						.retrieveResourceCategory(movedToolCategoryViewBean.getId()));
 			}
 			else {
 				logger.info("We should dissociate answer {} and tool category {}",
@@ -452,7 +519,47 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 				else {
 					logger.info("dissociation failed");
 				}
-				movedToolCategoryViewBean.setDomainBean(resourcesService.retrieveResourceCategory(movedToolCategoryViewBean.getId()));
+				movedToolCategoryViewBean.setDomainBean(resourcesService
+						.retrieveResourceCategory(movedToolCategoryViewBean.getId()));
+			}
+		}
+	}
+
+	public void onTransferAdministrativeDepartment(TransferEvent event) {
+		logger.info("onTransferToolCategory");
+		@SuppressWarnings("unchecked")
+		List<AdministrativeDepartmentViewBean> listOfMovedViewBeans = (List<AdministrativeDepartmentViewBean>) event
+				.getItems();
+		for (AdministrativeDepartmentViewBean movedAdministrativeDepartmentViewBean : listOfMovedViewBeans) {
+			if (event.isAdd()) {
+				logger.info("We should associate answer {} and administrative department {}",
+						((TreeNodeData) selectedNode.getData()).getLabel(),
+						movedAdministrativeDepartmentViewBean.getName());
+				if (needsAndAnswersService.associateAnswerWithAdministrativeDepartment(((TreeNodeData) selectedNode
+						.getData()).getId(), movedAdministrativeDepartmentViewBean.getDomainBean().getId())) {
+					administrativeDepartmentViewBeansForSelectedAnswer.add(movedAdministrativeDepartmentViewBean);
+					logger.info("association successful");
+				}
+				else {
+					logger.info("association failed");
+				}
+				movedAdministrativeDepartmentViewBean.setDomainBean(organisationsService
+						.retrieveOrganisation(movedAdministrativeDepartmentViewBean.getId()));
+			}
+			else {
+				logger.info("We should dissociate answer {} and tool category {}",
+						((TreeNodeData) selectedNode.getData()).getLabel(),
+						movedAdministrativeDepartmentViewBean.getName());
+				if (needsAndAnswersService.dissociateAnswerWithAdministrativeDepartment(((TreeNodeData) selectedNode
+						.getData()).getId(), movedAdministrativeDepartmentViewBean.getDomainBean().getId())) {
+					toolCategoryViewBeansForSelectedAnswer.remove(movedAdministrativeDepartmentViewBean);
+					logger.info("dissociation successful");
+				}
+				else {
+					logger.info("dissociation failed");
+				}
+				movedAdministrativeDepartmentViewBean.setDomainBean(organisationsService
+						.retrieveOrganisation(movedAdministrativeDepartmentViewBean.getId()));
 			}
 		}
 	}

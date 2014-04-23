@@ -46,15 +46,9 @@ public class TestBeansLoaded extends TestCase {
 	}
 
 	@Test
-	public void testNeedsAndAnswersTreeController() {
+	public void testNeedsAndAnswersController() {
 		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Controller needsAndAnswersTreeController is not loaded", context.containsBean("needsAndAnswersTreeController"));
-	}
-
-	@Test
-	public void testNeedsAndAnswersTableController() {
-		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Controller needsAndAnswersTableController is not loaded", context.containsBean("needsAndAnswersTableController"));
+		assertTrue("Controller needsAndAnswersController is not loaded", context.containsBean("needsAndAnswersController"));
 	}
 
 	@Test

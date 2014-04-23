@@ -244,18 +244,6 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 	
 	@Override
-	public ResourceCategory retrieveResourceCategoryByName(String name) {
-		Collection<ResourceCategory> resourceCategories = resourceCategoryDAO.retrieveByName(name);
-		if (resourceCategories.iterator().hasNext()) {
-			 // TODO : we need to make sure that there are no two categories with the same name
-			return resourceCategories.iterator().next();
-		}
-		else {
-			return null;
-		}
-	}
-	
-	@Override
 	public Collection<? extends Ressource> retrieveSoftwaresWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return softwareDAO.retrieveAllWithCategory(category);

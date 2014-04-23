@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
 import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
+import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
@@ -57,6 +58,9 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	
 	@Autowired
 	private ResourceCategoryDAO resourceCategoryDAO;
+	
+	@Autowired
+	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 
 	public NeedsAndAnswersServiceImpl() {
 
@@ -287,7 +291,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	public Boolean dissociateAnswerWithToolCategory(Long answerId, Long toolCategoryId) {
-		logger.info("dissociateAnswerWithToolCategory");
 		Reponse answer = answerDAO.retrieveById(answerId);
 		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
 		answer.removeResourceCategory(resourceCategory);
@@ -296,4 +299,24 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		return ! answer.getResourceCategories().contains(resourceCategory);
 	}
 	
+
+	@Override
+	public Boolean associateAnswerWithAdministrativeDepartment(Long answerId, Long administrativeDepartmentId) {
+		Reponse answer = answerDAO.retrieveById(answerId);
+		eu.ueb.acem.domain.beans.rouge.Service administrativeDepartment = administrativeDepartmentDAO.retrieveById(administrativeDepartmentId);
+		answer.addAdministrativeDepartment(administrativeDepartment);
+		answer = answerDAO.update(answer);
+		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
+		return answer.getAdministrativeDepartments().contains(administrativeDepartment);
+	}
+
+	@Override
+	public Boolean dissociateAnswerWithAdministrativeDepartment(Long answerId, Long administrativeDepartmentId) {
+		Reponse answer = answerDAO.retrieveById(answerId);
+		eu.ueb.acem.domain.beans.rouge.Service administrativeDepartment = administrativeDepartmentDAO.retrieveById(administrativeDepartmentId);
+		answer.removeAdministrativeDepartment(administrativeDepartment);
+		answer = answerDAO.update(answer);
+		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
+		return ! answer.getAdministrativeDepartments().contains(administrativeDepartment);
+	}	
 }

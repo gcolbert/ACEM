@@ -40,5 +40,9 @@ public interface Service extends Organisation {
 	Set<? extends Reponse> getPedagogicalAnswers();
 	
 	void setPedagogicalAnswers(Set<? extends Reponse> pedagogicalAnswers);
+
+	void addPedagogicalAnswer(Reponse answer);
+	
+	void removePedagogicalAnswer(Reponse answer);
 	
 }

@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
@@ -41,19 +44,25 @@ import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
+import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ProfessionalTrainingViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.SoftwareDocumentationViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-19
  * 
  */
-@Controller("resourcesTreeController")
+@Controller("resourcesController")
 @Scope("view")
-public class ResourcesTreeController extends AbstractContextAwareController {
+public class ResourcesController extends AbstractContextAwareController {
 
 	private static final long serialVersionUID = -5663154564837226988L;
 
-	private static final Logger logger = LoggerFactory.getLogger(ResourcesTreeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ResourcesController.class);
 
 	private static final String TREE_NODE_TYPE_CATEGORY = "CategoryNode";
 	private static final String TREE_NODE_TYPE_RESOURCE = "ResourceNode";
@@ -62,11 +71,16 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 	private ResourcesService resourcesService;
 
 	@Autowired
-	private ResourcesSelectedResourceController resourcesSelectedResourceController;
-
+	private NeedsAndAnswersController needsAndAnswersTreeController;
+	
 	@Autowired
 	private EditableTreeBean resourcesTreeBean;
 
+	private ResourceViewBean selectedResourceViewBean;
+
+	@Autowired
+	private EditableTreeBean pedagogicalUsesTreeBean;
+	
 	private TreeNode selectedNode;
 
 	private String selectedResourceType;
@@ -77,17 +91,31 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 
 	// private Map<Long, ResourceViewBean> resourceViewBeans;
 
-	public ResourcesTreeController() {
+	public ResourcesController() {
 		// resourceViewBeans = new HashMap<Long, ResourceViewBean>();
 	}
 
-	/*-
 	@PostConstruct
-	public void initResourcesTreeController() {
+	public void initResourcesController() {
+		logger.info("entering initResourcesController");
+		needsAndAnswersTreeController.initTree(pedagogicalUsesTreeBean, null);
+		/*
 		Collection<Ressource> resources = resourcesService.g 
 		resourceViewBeans.put(key, value)
+		*/
+		logger.info("leaving initResourcesController");
+		logger.info("------");
 	}
-	 */
+
+	// private Map<Long, ResourceViewBean> resourceViewBeans;
+	
+	public String getTreeNodeType_CATEGORY() {
+		return TREE_NODE_TYPE_CATEGORY;
+	}
+
+	public String getTreeNodeType_RESOURCE() {
+		return TREE_NODE_TYPE_RESOURCE;
+	}
 
 	@SuppressWarnings("unchecked")
 	public void prepareTree(String resourceType) {
@@ -158,34 +186,44 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		logger.info("setSelectedResourceId({})", resourceId);
 		this.selectedResourceId = resourceId;
 		Ressource resource = resourcesService.retrieveResource(resourceId);
-		if (resource instanceof Applicatif) {
-			prepareTree("software");
-		}
-		else if (resource instanceof DocumentationApplicatif) {
-			prepareTree("softwareDocumentation");
-		}
-		else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
-			prepareTree("pedagogicalAndDocumentaryResources");
-		}
-		else if (resource instanceof Equipement) {
-			prepareTree("equipment");
-		}
-		else if (resource instanceof FormationProfessionnelle) {
-			prepareTree("professionalTraining");
+		if (resource != null) {
+			if (resource instanceof Applicatif) {
+				prepareTree("software");
+				selectedResourceViewBean = new SoftwareViewBean();
+			}
+			else if (resource instanceof DocumentationApplicatif) {
+				prepareTree("softwareDocumentation");
+				selectedResourceViewBean = new SoftwareDocumentationViewBean();
+			}
+			else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
+				prepareTree("pedagogicalAndDocumentaryResources");
+				selectedResourceViewBean = new DocumentaryAndPedagogicalResourceViewBean();
+			}
+			else if (resource instanceof Equipement) {
+				prepareTree("equipment");
+				selectedResourceViewBean = new EquipmentViewBean();
+			}
+			else if (resource instanceof FormationProfessionnelle) {
+				prepareTree("professionalTraining");
+				selectedResourceViewBean = new ProfessionalTrainingViewBean();
+			}
+			selectedResourceViewBean.setDomainBean(resource);
 		}
 		TreeNode node = resourcesTreeBean.getNodeWithId(resourceId);
 		if (node != null) {
 			node.setSelected(true);
 			resourcesTreeBean.expandOnlyOneNode(node);
-
-			resourcesSelectedResourceController.setSelectedResourceId(resourceId);
 		}
 		else {
 			logger.info("setSelectedResourceId - no TreeNode found for id={}", resourceId);
 		}
 	}
 
-	public TreeNode getTreeRoot() {
+	public ResourceViewBean getSelectedResourceViewBean() {
+		return selectedResourceViewBean;
+	}
+
+	public TreeNode getResourcesTreeRoot() {
 		return resourcesTreeBean.getRoot();
 	}
 
@@ -236,12 +274,16 @@ public class ResourcesTreeController extends AbstractContextAwareController {
 		setSelectedResourceId(((TreeNodeData) selectedNode.getData()).getId());
 	}
 
-	public String getTreeNodeType_CATEGORY() {
-		return TREE_NODE_TYPE_CATEGORY;
+	public TreeNode getPedagogicalUsesTreeRoot() {
+		return pedagogicalUsesTreeBean.getRoot();
 	}
 
-	public String getTreeNodeType_RESOURCE() {
-		return TREE_NODE_TYPE_RESOURCE;
+	public EditableTreeBean getPedagogicalUsesTreeBean() {
+		return pedagogicalUsesTreeBean;
+	}
+
+	public List<Scenario> getScenariosUsingSelectedTool() {
+		return new ArrayList<Scenario>(resourcesService.retrieveScenariosAssociatedWithRessource(selectedResourceId));
 	}
 
 }

@@ -19,8 +19,16 @@
 package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import eu.ueb.acem.domain.beans.jaune.Applicatif;
+import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.Equipement;
+import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -34,11 +42,14 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	private ResourceCategory resourceCategory;
 
+	private List<ResourceViewBean> resourceViewBeans;
+	
 	private Long id;
 
 	private String name;
 
 	public ToolCategoryViewBean() {
+		resourceViewBeans = new ArrayList<ResourceViewBean>();
 	}
 
 	public ToolCategoryViewBean(ResourceCategory resourceCategory) {
@@ -62,8 +73,38 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 		this.resourceCategory = resourceCategory;
 		setId(resourceCategory.getId());
 		setName(resourceCategory.getName());
+		for (Ressource resource : resourceCategory.getResources()) {
+			if (resource instanceof Applicatif) {
+				addResourceViewBean(new SoftwareViewBean((Applicatif)resource));
+			}
+			else if (resource instanceof Equipement) {
+				addResourceViewBean(new EquipmentViewBean((Equipement)resource));
+			}
+			else if (resource instanceof FormationProfessionnelle) {
+				addResourceViewBean(new ProfessionalTrainingViewBean((FormationProfessionnelle)resource));
+			}
+			else if (resource instanceof DocumentationApplicatif) {
+				addResourceViewBean(new SoftwareDocumentationViewBean((DocumentationApplicatif)resource));
+			}
+			else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
+				addResourceViewBean(new DocumentaryAndPedagogicalResourceViewBean((RessourcePedagogiqueEtDocumentaire)resource));
+			}
+		}
 	}
 	
+	public List<ResourceViewBean> getResourceViewBeans() {
+		return resourceViewBeans;
+	}
+
+	public void addResourceViewBean(ResourceViewBean resourceViewBean) {
+		resourceViewBeans.add(resourceViewBean);
+	}
+
+	public void removeResourceViewBean(ResourceViewBean resourceViewBean) {
+		resourceViewBeans.remove(resourceViewBean);
+	}
+	
+	@Override
 	public Long getId() {
 		return id;
 	}

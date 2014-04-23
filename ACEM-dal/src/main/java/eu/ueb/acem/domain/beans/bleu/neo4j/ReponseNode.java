@@ -38,7 +38,6 @@ import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 
@@ -117,16 +116,6 @@ public class ReponseNode implements Reponse {
 	*/
 
 	@Override
-	public Set<? extends ResourceCategory> getResourceCategories() {
-		return resourceCategories;
-	}
-
-	@Override
-	public Set<? extends Service> getAdministrativeDepartments() {
-		return administrativeDepartments;
-	}
-	
-	@Override
 	public void addNeed(Besoin need) {
 		needs.add((BesoinNode)need);
 	}
@@ -136,17 +125,10 @@ public class ReponseNode implements Reponse {
 		needs.remove(need);
 	}
 
-	/*
 	@Override
-	public void addResource(Ressource resource) {
-		resources.add((RessourceNode)resource);
+	public Set<? extends ResourceCategory> getResourceCategories() {
+		return resourceCategories;
 	}
-
-	@Override
-	public void removeResource(Ressource resource) {
-		resources.remove(resource);
-	}
-	*/
 	
 	@Override
 	public void addResourceCategory(ResourceCategory resourceCategory) {
@@ -165,6 +147,31 @@ public class ReponseNode implements Reponse {
 		}
 		if (resourceCategory.getAnswers().contains(this)) {
 			resourceCategory.removeAnswer(this);
+		}
+	}
+
+	@Override
+	public Set<? extends Service> getAdministrativeDepartments() {
+		return administrativeDepartments;
+	}
+	
+	@Override
+	public void addAdministrativeDepartment(Service administrativeDepartment) {
+		if (!administrativeDepartments.contains(administrativeDepartment)) {
+			administrativeDepartments.add((ServiceNode)administrativeDepartment);
+		}
+		if (!administrativeDepartment.getPedagogicalAnswers().contains(this)) {
+			administrativeDepartment.addPedagogicalAnswer(this);
+		}
+	}
+
+	@Override
+	public void removeAdministrativeDepartment(Service administrativeDepartment) {
+		if (administrativeDepartments.contains(administrativeDepartment)) {
+			administrativeDepartments.remove(administrativeDepartment);
+		}
+		if (administrativeDepartment.getPedagogicalAnswers().contains(this)) {
+			administrativeDepartment.removePedagogicalAnswer(this);
 		}
 	}
 	

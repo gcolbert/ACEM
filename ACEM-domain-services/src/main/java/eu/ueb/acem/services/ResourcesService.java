@@ -35,8 +35,6 @@ public interface ResourcesService {
 
 	ResourceCategory retrieveResourceCategory(Long id);
 
-	ResourceCategory retrieveResourceCategoryByName(String value);
-	
 	Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType);
 
 	Collection<ResourceCategory> retrieveAllCategories();

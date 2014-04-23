@@ -81,4 +81,8 @@ public interface NeedsAndAnswersService {
 
 	Boolean dissociateAnswerWithToolCategory(Long answerId, Long toolCategoryId);
 
+	Boolean associateAnswerWithAdministrativeDepartment(Long answerId, Long administrativeDepartmentId);
+
+	Boolean dissociateAnswerWithAdministrativeDepartment(Long answerId, Long administrativeDepartmentId);
+	
 }
