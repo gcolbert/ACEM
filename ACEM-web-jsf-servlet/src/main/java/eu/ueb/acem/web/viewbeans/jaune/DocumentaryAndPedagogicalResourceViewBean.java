@@ -91,6 +91,7 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 		return favoriteResource;
 	}
 	
+	@Override
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
 	}

@@ -162,6 +162,10 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	public PickListBean getPickListBean() {
 		return pickListBean;
 	}
+	
+	public EditableTreeBean getNeedsAndAnswersTreeBean() {
+		return needsAndAnswersTreeBean;
+	}
 
 	/**
 	 * Fills the given {@link EditableTreeBean} with the Pedagogical Advice

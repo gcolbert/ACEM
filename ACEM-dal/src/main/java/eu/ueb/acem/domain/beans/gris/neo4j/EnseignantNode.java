@@ -46,7 +46,7 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "hasFavorite", direction = OUTGOING)
+	@RelatedTo(elementClass = RessourceNode.class, type = "hasFavoriteResource", direction = OUTGOING)
 	@Fetch
 	private Set<RessourceNode> favoriteResources;
 
@@ -77,16 +77,21 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 	}
 	
 	@Override
-	public Set<? extends SeanceDeCours> getTeachingClasses() {
-		return teachingClasses;
+	public Boolean addFavoriteResource(Ressource resource) {
+		if (! favoriteResources.contains(resource)) {
+			favoriteResources.add((RessourceNode) resource);
+		}
+		return favoriteResources.contains(resource);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setTeachingClasses(Set<? extends SeanceDeCours> teachingClasses) {
-		this.teachingClasses = (Set<SeanceDeCoursNode>) teachingClasses;
+	public Boolean removeFavoriteResource(Ressource resource) {
+		if (favoriteResources.contains(resource)) {
+			favoriteResources.remove(resource);
+		}
+		return ! favoriteResources.contains(resource);
 	}
-	
+
 	@Override
 	public Set<? extends Scenario> getScenarios() {
 		return scenarios;
@@ -106,6 +111,17 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 	@Override
 	public void removeAuthor(Scenario scenario) {
 		scenarios.remove(scenario);
+	}
+
+	@Override
+	public Set<? extends SeanceDeCours> getTeachingClasses() {
+		return teachingClasses;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setTeachingClasses(Set<? extends SeanceDeCours> teachingClasses) {
+		this.teachingClasses = (Set<SeanceDeCoursNode>) teachingClasses;
 	}
 
 }

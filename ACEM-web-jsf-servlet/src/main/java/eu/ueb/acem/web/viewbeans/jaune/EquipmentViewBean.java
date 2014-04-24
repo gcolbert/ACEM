@@ -20,6 +20,9 @@ package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.ueb.acem.domain.beans.jaune.Equipement;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
@@ -32,6 +35,9 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 
 	private static final long serialVersionUID = -116654020465612191L;
 
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(EquipmentViewBean.class);
+	
 	private Equipement equipment;
 
 	private Long id;
@@ -91,10 +97,11 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		return favoriteResource;
 	}
 	
+	@Override
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
 	}
-	
+
 	@Override
 	public int compareTo(EquipmentViewBean o) {
 		return name.compareTo(o.getName());

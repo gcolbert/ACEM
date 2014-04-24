@@ -54,7 +54,9 @@
 	font-weight:bold;
 }
 
+/********/
 /* HOME */
+/********/
 #home {
 	
 }
@@ -145,7 +147,9 @@
 	text-align: right !important;
 }
 
-/* NEEDS AND ANSWERS */
+/**********************/
+/* PEDAGOGICAL ADVICE */
+/**********************/
 .Need {
 	
 }
@@ -158,7 +162,9 @@
 	
 }
 
+/****************/
 /* MY SCENARIOS */
+/****************/
 .ui-layout-unit-content {
 	padding: 0;
 }
@@ -217,7 +223,14 @@
 	text-align: left;	
 }
 
-/* MY RESOURCES */
+/************/
+/* MY TOOLS */
+/************/
+#formResources .menu tr[role=row],
+#formResources .ui-tree,
+#formSelectedResource .ui-tree {
+	border:none;
+}
 #formResources .menu td[role=gridcell] {
 	width:100px;
 	text-align:center;
@@ -242,16 +255,29 @@
 	display:block;
 	margin:auto;
 }
-#formResources .bottom-toolboxes tr,
-#formResources .bottom-toolboxes td {
+
+#formSelectedResource table[role=grid],
+#formSelectedResource tr[role=row],
+#formSelectedResource td[role=gridcell] {
+	border:none;	
+}
+#formSelectedResource .bottom-toolboxes tr,
+#formSelectedResource .bottom-toolboxes td {
 	border: none;
 	background-color:white;
 	padding:0;
 	width:50%;
 }
-#formResources .bottom-toolboxes td:first-of-type {
+#formSelectedResource .favoriteResource {
+	margin-left:2em;
+}
+#formSelectedResource .favoriteResourceCheckbox {
+	vertical-align:middle;
+	margin-left:0.5em;
+}
+#formSelectedResource .bottom-toolboxes td:first-of-type {
 	padding-right:0.5em;
 }
-#formResources .bottom-toolboxes td:last-child {
+#formSelectedResource .bottom-toolboxes td:last-child {
 	padding-left:0.5em;
 }

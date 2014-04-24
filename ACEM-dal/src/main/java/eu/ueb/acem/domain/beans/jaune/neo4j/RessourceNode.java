@@ -32,6 +32,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
@@ -66,6 +67,10 @@ public abstract class RessourceNode implements Ressource {
 	@Fetch
 	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
 
+	@RelatedTo(elementClass = EnseignantNode.class, type="hasFavoriteResource", direction = INCOMING)
+	@Fetch
+	private Set<EnseignantNode> teachersHavingThisAsFavoriteResource;
+	
 	public RessourceNode() {
 		categories = new HashSet<ResourceCategoryNode>();
 	}
@@ -123,6 +128,17 @@ public abstract class RessourceNode implements Ressource {
 	}
 
 	@Override
+	public Set<? extends ResourceCategory> getCategories() {
+		return categories;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setCategories(Set<? extends ResourceCategory> categories) {
+		this.categories = (Set<ResourceCategoryNode>) categories;
+	}
+
+	@Override
 	public void addCategory(ResourceCategory category) {
 		if (! categories.contains(category)) {
 			categories.add((ResourceCategoryNode) category);
@@ -142,17 +158,54 @@ public abstract class RessourceNode implements Ressource {
 		}
 	}
 	
+	/*
 	@Override
-	public Set<? extends ResourceCategory> getCategories() {
-		return categories;
+	public Boolean getFavoriteResource(Enseignant teacher) {
+		return teachersHavingThisAsFavoriteResource.contains(teacher);
+	}
+	
+	@Override
+	public void setFavoriteResource(Enseignant teacher, Boolean favoriteResource) {
+		addTeacherHavingThisAsFavoriteResource(teacher);
+	}
+
+	@Override
+	public Set<? extends Enseignant> getTeachersHavingThisAsFavoriteResource() {
+		return teachersHavingThisAsFavoriteResource;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setCategories(Set<? extends ResourceCategory> categories) {
-		this.categories = (Set<ResourceCategoryNode>) categories;
+	public void setTeachersHavingThisAsFavoriteResource(Set<? extends Enseignant> teachers) {
+		this.teachersHavingThisAsFavoriteResource = (Set<EnseignantNode>)teachers;
 	}
 
+	@Override
+	public void addTeacherHavingThisAsFavoriteResource(Enseignant teacher) {
+		if (! teachersHavingThisAsFavoriteResource.contains(teacher)) {
+			teachersHavingThisAsFavoriteResource.add((EnseignantNode) teacher);
+		}
+		if (! teacher.getFavoriteResources().contains(this)) {
+			teacher.addFavoriteResource(this);
+		}
+	}
+
+	@Override
+	public void removeTeacherHavingThisAsFavoriteResource(Enseignant teacher) {
+		if (teachersHavingThisAsFavoriteResource.contains(teacher)) {
+			teachersHavingThisAsFavoriteResource.remove(teacher);
+		}
+		if (teacher.getFavoriteResources().contains(this)) {
+			teacher.removeFavoriteResource(this);
+		}
+	}
+	*/
+	
+	@Override
+	public int compareTo(Ressource o) {
+		return getName().compareTo(o.getName());
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

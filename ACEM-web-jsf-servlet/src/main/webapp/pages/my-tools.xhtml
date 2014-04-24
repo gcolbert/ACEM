@@ -105,7 +105,7 @@
 					onNodeClick="if ( (node.attr('data-nodetype')!='default') &amp;&amp; (node.attr('data-nodetype')!='category') ) { history.pushState('','','my-tools?resourceId='+node.attr('data-datakey')); }"
 					selection="#{resourcesController.selectedNode}">
 					<p:ajax event="select"
-						update=":formResources:selectedResourcePanel :formResources:messagesDisplayer"
+						update=":formSelectedResource:selectedResourcePanel :formResources:messagesDisplayer"
 						listener="#{resourcesController.onNodeSelect}" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
@@ -120,30 +120,37 @@
 					</p:treeNode>
 				</p:tree>
 			</p:panel>
+		</h:form>
 
+		<h:form id="formSelectedResource">
 			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}"
 				id="selectedResourcePanel">
 				<p:panelGrid columns="1"
 					rendered="#{resourcesController.selectedResourceViewBean != null}">
 
-					<h:outputText styleClass="title"
-						value="#{resourcesController.selectedResourceViewBean.name}" />
-
-					<!-- 
-						<p:fileUpload fileUploadListener="#{fileController.handleFileUpload}" />
-						-->
-					<!-- 
-						<p:graphicImage value="#{imagesController.image}" title="#{resourcesController.selectedResourceViewBean.name}">
-							<f:param name="imageId" value="#{resourcesController.selectedResourceViewBean.id}" />
-						</p:graphicImage>
-						 -->
-
-					<h:panelGroup>
-						<p:selectBooleanCheckbox id="favoriteResource"
-							value="#{resourcesController.selectedResourceViewBean.favoriteResource}" />
-						<p:outputLabel for="favoriteResource"
-							value="#{msgs['RESOURCES.SELECTED_RESOURCE.ADD_TO_MY_FAVORITE_TOOLS']}" />
-					</h:panelGroup>
+					<p:row>
+						<h:outputText styleClass="title"
+							value="#{resourcesController.selectedResourceViewBean.name}" />
+	
+						<!-- 
+							<p:fileUpload fileUploadListener="#{fileController.handleFileUpload}" />
+							-->
+						<!-- 
+							<p:graphicImage value="#{imagesController.image}" title="#{resourcesController.selectedResourceViewBean.name}">
+								<f:param name="imageId" value="#{resourcesController.selectedResourceViewBean.id}" />
+							</p:graphicImage>
+							 -->
+	
+						<h:panelGroup styleClass="favoriteResource">
+							<p:outputLabel for="favoriteResourceCheckbox"
+								value="#{msgs['RESOURCES.SELECTED_RESOURCE.ADD_TO_MY_FAVORITE_TOOLS']}" />
+							<p:selectBooleanCheckbox id="favoriteResourceCheckbox"  styleClass="favoriteResourceCheckbox"
+								value="#{resourcesController.selectedResourceViewBean.favoriteResource}">
+								<p:ajax update="@this :formResources:messagesDisplayer"
+									listener="#{usersController.toggleFavoriteResourceForCurrentUser(resourcesController.selectedResourceViewBean)}" />
+							</p:selectBooleanCheckbox>
+						</h:panelGroup>
+					</p:row>
 
 					<p:outputLabel
 						value="#{msgs['RESOURCES.SELECTED_RESOURCE.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}"
@@ -231,7 +238,7 @@
 							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY']}"
 							itemValue="" itemDisabled="true" noSelectionOption="true" />
 						<f:selectItems
-							value="#{resourcesController.categoriesForSelectedResourceType}"
+							value="#{resourcesController.allCategories}"
 							var="category" itemLabel="#{category.name}"
 							itemValue="#{category}" />
 					</p:selectOneMenu>

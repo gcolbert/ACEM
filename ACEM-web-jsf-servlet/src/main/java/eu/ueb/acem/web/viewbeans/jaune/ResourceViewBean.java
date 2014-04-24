@@ -39,4 +39,5 @@ public interface ResourceViewBean extends Pickable {
 	Boolean getFavoriteResource();
 	
 	void setFavoriteResource(Boolean favoriteResource);
+
 }

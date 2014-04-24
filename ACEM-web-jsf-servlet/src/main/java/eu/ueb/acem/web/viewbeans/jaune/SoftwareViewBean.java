@@ -91,6 +91,7 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 		return favoriteResource;
 	}
 	
+	@Override
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
 	}

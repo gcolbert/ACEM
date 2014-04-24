@@ -33,13 +33,13 @@ public interface Ressource extends Serializable {
 	Long getId();
 
 	String getName();
-	
+
 	void setName(String name);
 
 	String getDescription();
 
 	void setDescription(String description);
-	
+
 	Set<? extends ResourceCategory> getCategories();
 
 	void setCategories(Set<? extends ResourceCategory> categories);
@@ -47,7 +47,7 @@ public interface Ressource extends Serializable {
 	void addCategory(ResourceCategory category);
 
 	void removeCategory(ResourceCategory category);
-	
+
 	Set<? extends ModaliteUtilisation> getUseModes();
 
 	void setUseModes(Set<? extends ModaliteUtilisation> useModes);
@@ -56,4 +56,20 @@ public interface Ressource extends Serializable {
 
 	void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities);
 
+	/*
+	Boolean getFavoriteResource(Enseignant teacher);
+
+	void setFavoriteResource(Enseignant teacher, Boolean favorite);
+
+	Set<? extends Enseignant> getTeachersHavingThisAsFavoriteResource();
+
+	void setTeachersHavingThisAsFavoriteResource(Set<? extends Enseignant> teachers);
+
+	void addTeacherHavingThisAsFavoriteResource(Enseignant teacher);
+
+	void removeTeacherHavingThisAsFavoriteResource(Enseignant teacher);
+	*/
+
+	int compareTo(Ressource o);
+	
 }

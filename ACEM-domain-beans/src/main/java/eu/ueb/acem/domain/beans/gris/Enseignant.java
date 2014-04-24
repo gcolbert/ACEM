@@ -47,4 +47,8 @@ public interface Enseignant extends Personne {
 
 	void removeAuthor(Scenario scenario);
 
+	Boolean addFavoriteResource(Ressource ressourceNode);
+
+	Boolean removeFavoriteResource(Ressource ressourceNode);
+
 }

@@ -91,6 +91,7 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 		return favoriteResource;
 	}
 	
+	@Override
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
 	}

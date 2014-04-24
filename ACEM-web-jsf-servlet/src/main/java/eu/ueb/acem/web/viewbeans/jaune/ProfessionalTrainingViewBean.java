@@ -90,7 +90,8 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 	public Boolean getFavoriteResource() {
 		return favoriteResource;
 	}
-	
+
+	@Override
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
 	}

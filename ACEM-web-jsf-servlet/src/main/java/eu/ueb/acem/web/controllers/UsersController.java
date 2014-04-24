@@ -31,11 +31,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 @Controller("usersController")
@@ -120,6 +122,31 @@ public class UsersController extends AbstractContextAwareController {
 		personViewBean.setDomainBean(usersService.updatePerson(personViewBean.getDomainBean()));
 	}
 
+	public void toggleFavoriteResourceForCurrentUser(ResourceViewBean resourceViewBean) {
+		logger.info("toggleFavoriteResourceForCurrentUser, resource name = {}", resourceViewBean.getName());
+		
+		try {
+			if (getCurrentUser() instanceof Enseignant) {
+				Enseignant teacher = (Enseignant)getCurrentUser();
+				if (usersService.toggleFavoriteResourceForTeacher(teacher.getId(), resourceViewBean.getDomainBean().getId())) {
+					if (teacher.getFavoriteResources().contains(resourceViewBean.getDomainBean())) {
+						teacher.removeFavoriteResource(resourceViewBean.getDomainBean());
+					}
+					else {
+						teacher.addFavoriteResource(resourceViewBean.getDomainBean());
+					}
+					resourceViewBean.setFavoriteResource(teacher.getFavoriteResources().contains(resourceViewBean.getDomainBean()));
+				}
+				else {
+					logger.error("Couldn't toggle {} as a favorite resource of teacher {}", resourceViewBean.getName(), teacher.getLogin());
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void onTransfer(TransferEvent event) {
 		logger.info("onTransfer");
 		@SuppressWarnings("unchecked")

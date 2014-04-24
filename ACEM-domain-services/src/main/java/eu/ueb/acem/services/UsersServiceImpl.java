@@ -34,6 +34,7 @@ import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -55,6 +56,9 @@ public class UsersServiceImpl implements UsersService {
 	@Autowired
 	private OrganisationsService organisationsService;
 
+	@Autowired
+	private ResourcesService resourcesService;
+	
 	private Set<Personne> persons;
 	private Set<Enseignant> teachers;
 
@@ -150,7 +154,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
+	public Boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
 		logger.info("associateUserWorkingForOrganisation");
 		boolean success = false;
 		if (personDAO.exists(idPerson)) {
@@ -171,7 +175,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
+	public Boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
 		logger.info("dissociateUserWorkingForOrganisation");
 		boolean success = false;
 		if (personDAO.exists(idPerson)) {
@@ -186,6 +190,27 @@ public class UsersServiceImpl implements UsersService {
 		}
 		if (!success) {
 			logger.info("dissociation failed");
+		}
+		return success;
+	}
+
+	@Override
+	public Boolean toggleFavoriteResourceForTeacher(Long idTeacher, Long idResource) {
+		logger.info("toggleFavoriteResourceForTeacher");
+		boolean success = false;
+		if (personDAO.exists(idTeacher)) {
+			Enseignant teacher = teacherDAO.retrieveById(idTeacher);
+			Ressource resource = resourcesService.retrieveResource(idResource);
+			if (resource != null) {
+				if (! teacher.getFavoriteResources().contains(resource)) {
+					teacher.addFavoriteResource(resource);
+				}
+				else {
+					teacher.removeFavoriteResource(resource);
+				}
+				teacher = teacherDAO.update(teacher);
+				success = true;
+			}
 		}
 		return success;
 	}
