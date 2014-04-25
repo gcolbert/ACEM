@@ -40,6 +40,10 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 
 	private Boolean favoriteResource;
 	
+	private String iconFileName;
+	
+	private String description;
+	
 	public ProfessionalTrainingViewBean() {
 	}
 
@@ -66,6 +70,8 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 		this.professionalTraining = professionalTraining;
 		setId(professionalTraining.getId());
 		setName(professionalTraining.getName());
+		setIconFileName(professionalTraining.getIconFileName());
+		setDescription(professionalTraining.getDescription());
 	}
 
 	@Override
@@ -94,6 +100,26 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 	@Override
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
+	}
+
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
+	}
+
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	@Override

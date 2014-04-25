@@ -44,7 +44,7 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 
 	@Indexed
 	private String name;
-
+	
 	@RelatedTo(elementClass = DocumentationApplicatifNode.class, type = "documentsSoftware", direction = INCOMING)
 	@Fetch
 	private Set<DocumentationApplicatifNode> documentations;
@@ -52,9 +52,10 @@ public class ApplicatifNode extends RessourceNode implements Applicatif {
 	public ApplicatifNode() {
 	}
 
-	public ApplicatifNode(String name) {
+	public ApplicatifNode(String name, String iconFileName) {
 		this();
 		setName(name);
+		setIconFileName(iconFileName);
 	}
 
 	@Override

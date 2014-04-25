@@ -195,19 +195,14 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Boolean toggleFavoriteResourceForTeacher(Long idTeacher, Long idResource) {
-		logger.info("toggleFavoriteResourceForTeacher");
+	public Boolean addFavoriteResourceForTeacher(Long idTeacher, Long idResource) {
+		logger.info("addFavoriteResourceForTeacher");
 		boolean success = false;
 		if (personDAO.exists(idTeacher)) {
 			Enseignant teacher = teacherDAO.retrieveById(idTeacher);
 			Ressource resource = resourcesService.retrieveResource(idResource);
 			if (resource != null) {
-				if (! teacher.getFavoriteResources().contains(resource)) {
-					teacher.addFavoriteResource(resource);
-				}
-				else {
-					teacher.removeFavoriteResource(resource);
-				}
+				teacher.addFavoriteResource(resource);
 				teacher = teacherDAO.update(teacher);
 				success = true;
 			}
@@ -215,4 +210,20 @@ public class UsersServiceImpl implements UsersService {
 		return success;
 	}
 
+	@Override
+	public Boolean removeFavoriteResourceForTeacher(Long idTeacher, Long idResource) {
+		logger.info("removeFavoriteResourceForTeacher");
+		boolean success = false;
+		if (personDAO.exists(idTeacher)) {
+			Enseignant teacher = teacherDAO.retrieveById(idTeacher);
+			Ressource resource = resourcesService.retrieveResource(idResource);
+			if (resource != null) {
+				teacher.removeFavoriteResource(resource);
+				teacher = teacherDAO.update(teacher);
+				success = true;
+			}
+		}
+		return success;
+	}
+	
 }

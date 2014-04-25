@@ -33,10 +33,12 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
+import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -61,6 +63,9 @@ public class UsersController extends AbstractContextAwareController {
 	@Autowired
 	public OrganisationsController organisationsController;
 	
+	@Autowired
+	public ResourcesController resourcesController;
+	
 	public UsersController() {
 		personViewBeans = new ArrayList<PersonViewBean>();
 	}
@@ -72,11 +77,24 @@ public class UsersController extends AbstractContextAwareController {
 		personViewBeans.clear();
 		Set<Personne> persons = usersService.getPersons();
 		for (Personne person : persons) {
-			PersonViewBean personViewBean = new PersonViewBean(person);
-			personViewBeans.add(personViewBean);
+			PersonViewBean personViewBean;
+			if (person instanceof Enseignant) {
+				Enseignant teacher = (Enseignant)person;
+				personViewBean = new TeacherViewBean(teacher);
+				for (Ressource resource : teacher.getFavoriteResources()) {
+					logger.info("We add the resource {} as favorite for user {}", resource.getName(), teacher.getLogin());
+					ResourceViewBean resourceViewBean = resourcesController.getResourceViewBean(resource.getId());
+					teacher.addFavoriteResource(resourceViewBean.getDomainBean());
+					((TeacherViewBean)personViewBean).addFavoriteResourceViewBean(resourceViewBean);
+				}
+			}
+			else {
+				personViewBean = new PersonViewBean(person);
+			}
 			for (Organisation organisation : person.getWorksForOrganisations()) {
 				personViewBean.addOrganisationViewBean(organisationsController.getOrganisationViewBeanFromId(organisation.getId()));
 			}
+			personViewBeans.add(personViewBean);
 		}
 	}
 	
@@ -124,26 +142,39 @@ public class UsersController extends AbstractContextAwareController {
 
 	public void toggleFavoriteResourceForCurrentUser(ResourceViewBean resourceViewBean) {
 		logger.info("toggleFavoriteResourceForCurrentUser, resource name = {}", resourceViewBean.getName());
-		
-		try {
-			if (getCurrentUser() instanceof Enseignant) {
-				Enseignant teacher = (Enseignant)getCurrentUser();
-				if (usersService.toggleFavoriteResourceForTeacher(teacher.getId(), resourceViewBean.getDomainBean().getId())) {
-					if (teacher.getFavoriteResources().contains(resourceViewBean.getDomainBean())) {
-						teacher.removeFavoriteResource(resourceViewBean.getDomainBean());
-					}
-					else {
-						teacher.addFavoriteResource(resourceViewBean.getDomainBean());
-					}
-					resourceViewBean.setFavoriteResource(teacher.getFavoriteResources().contains(resourceViewBean.getDomainBean()));
-				}
-				else {
-					logger.error("Couldn't toggle {} as a favorite resource of teacher {}", resourceViewBean.getName(), teacher.getLogin());
+		if (getCurrentUserViewBean() instanceof TeacherViewBean) {
+			TeacherViewBean currentUserViewBean = (TeacherViewBean)getCurrentUserViewBean();
+			if (currentUserViewBean.getFavoriteResourceViewBeans().contains(resourceViewBean)) {
+				logger.info("user has resource as favorite, we should remove it");
+				if (usersService.removeFavoriteResourceForTeacher(currentUserViewBean.getId(), resourceViewBean.getId())) {
+					currentUserViewBean.removeFavoriteResourceViewBean(resourceViewBean);
+					//currentUserViewBean.getDomainBean().removeFavoriteResource(resourceViewBean.getDomainBean());
 				}
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
+			else {
+				logger.info("user has not resource as favorite, we should add it");
+				if (usersService.addFavoriteResourceForTeacher(currentUserViewBean.getId(), resourceViewBean.getId())) {
+					currentUserViewBean.addFavoriteResourceViewBean(resourceViewBean);
+					//currentUserViewBean.getDomainBean().addFavoriteResource(resourceViewBean.getDomainBean());
+				}
+			}
+			//resourceViewBean.setFavoriteResource(currentUserViewBean.getDomainBean().getFavoriteResources().contains(resourceViewBean.getDomainBean()));
+			/*
+			if (usersService.toggleFavoriteResourceForTeacher(currentUserViewBean.getId(), resourceViewBean.getId())) {
+				if (currentUserViewBean.getFavoriteResourceViewBeans().contains(resourceViewBean)) {
+					currentUserViewBean.getDomainBean().removeFavoriteResource(resourceViewBean.getDomainBean());
+					currentUserViewBean.removeFavoriteResourceViewBean(resourceViewBean);
+				}
+				else {
+					currentUserViewBean.getDomainBean().addFavoriteResource(resourceViewBean.getDomainBean());
+					currentUserViewBean.addFavoriteResourceViewBean(resourceViewBean);
+				}
+				resourceViewBean.setFavoriteResource(currentUserViewBean.getDomainBean().getFavoriteResources().contains(resourceViewBean.getDomainBean()));
+			}
+			else {
+				logger.error("Couldn't toggle {} as a favorite resource of teacher {}", resourceViewBean.getName(), currentUserViewBean.getLogin());
+			}
+			*/
 		}
 	}
 	

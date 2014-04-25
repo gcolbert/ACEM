@@ -39,7 +39,7 @@ public interface ResourcesService {
 
 	Collection<ResourceCategory> retrieveAllCategories();
 	
-	Ressource createResource(String resourceType, ResourceCategory category, String name);
+	Ressource createResource(String resourceType, ResourceCategory resourceCategory, String name, String iconFileName);
 
 	Ressource updateResource(Ressource resource);
 	

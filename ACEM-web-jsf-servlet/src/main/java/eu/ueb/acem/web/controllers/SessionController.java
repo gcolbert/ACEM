@@ -24,8 +24,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
+import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.services.auth.AuthenticatorService;
+import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
+import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 
 import org.esupportail.commons.utils.Assert;
 import org.esupportail.commons.utils.ContextUtils;
@@ -61,6 +64,8 @@ public class SessionController extends AbstractDomainAwareBean {
 	 */
 	private String casLogoutUrl;
 
+	private PersonViewBean currentUserViewBean;
+	
 	/*
 	 * ****************** INIT ********************
 	 */
@@ -90,6 +95,24 @@ public class SessionController extends AbstractDomainAwareBean {
 	/*
 	 * ****************** METHODS ********************
 	 */
+	
+	public PersonViewBean getCurrentUserViewBean() {
+		if (currentUserViewBean == null) {
+			try {
+				Personne user = getCurrentUser();
+				if (user instanceof Enseignant) {
+					currentUserViewBean = new TeacherViewBean((Enseignant) user);
+				}
+				else {
+					currentUserViewBean = new PersonViewBean(user);
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return currentUserViewBean;
+	}
 
 	/**
 	 * @return the current user, or null if guest.

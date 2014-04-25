@@ -40,6 +40,10 @@ public interface Ressource extends Serializable {
 
 	void setDescription(String description);
 
+	String getIconFileName();
+	
+	void setIconFileName(String iconFileName);
+	
 	Set<? extends ResourceCategory> getCategories();
 
 	void setCategories(Set<? extends ResourceCategory> categories);
@@ -55,20 +59,6 @@ public interface Ressource extends Serializable {
 	Set<? extends ActivitePedagogique> getPedagogicalActivities();
 
 	void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities);
-
-	/*
-	Boolean getFavoriteResource(Enseignant teacher);
-
-	void setFavoriteResource(Enseignant teacher, Boolean favorite);
-
-	Set<? extends Enseignant> getTeachersHavingThisAsFavoriteResource();
-
-	void setTeachersHavingThisAsFavoriteResource(Set<? extends Enseignant> teachers);
-
-	void addTeacherHavingThisAsFavoriteResource(Enseignant teacher);
-
-	void removeTeacherHavingThisAsFavoriteResource(Enseignant teacher);
-	*/
 
 	int compareTo(Ressource o);
 	

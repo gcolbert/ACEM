@@ -46,6 +46,10 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 
 	private Boolean favoriteResource;
 	
+	private String iconFileName;
+	
+	private String description;
+	
 	public EquipmentViewBean() {
 	}
 
@@ -72,6 +76,8 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		this.equipment = equipment;
 		setId(equipment.getId());
 		setName(equipment.getName());
+		setIconFileName(equipment.getIconFileName());
+		setDescription(equipment.getDescription());
 	}
 
 	@Override
@@ -102,6 +108,26 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		this.favoriteResource = favoriteResource;
 	}
 
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
+	}
+	
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	@Override
 	public int compareTo(EquipmentViewBean o) {
 		return name.compareTo(o.getName());

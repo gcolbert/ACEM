@@ -105,7 +105,7 @@
 					onNodeClick="if ( (node.attr('data-nodetype')!='default') &amp;&amp; (node.attr('data-nodetype')!='category') ) { history.pushState('','','my-tools?resourceId='+node.attr('data-datakey')); }"
 					selection="#{resourcesController.selectedNode}">
 					<p:ajax event="select"
-						update=":formSelectedResource:selectedResourcePanel :formResources:messagesDisplayer"
+						update=":formSelectedResourceCategory:selectedResourceCategoryPanel :formResources:messagesDisplayer"
 						listener="#{resourcesController.onNodeSelect}" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
@@ -122,38 +122,36 @@
 			</p:panel>
 		</h:form>
 
-		<h:form id="formSelectedResource">
-			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE.HEADER']}"
-				id="selectedResourcePanel">
+		<h:form id="formSelectedResourceCategory">
+			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.HEADER']}"
+				id="selectedResourceCategoryPanel">
 				<p:panelGrid columns="1"
 					rendered="#{resourcesController.selectedResourceViewBean != null}">
 
 					<p:row>
 						<h:outputText styleClass="title"
 							value="#{resourcesController.selectedResourceViewBean.name}" />
-	
-						<!-- 
-							<p:fileUpload fileUploadListener="#{fileController.handleFileUpload}" />
-							-->
-						<!-- 
-							<p:graphicImage value="#{imagesController.image}" title="#{resourcesController.selectedResourceViewBean.name}">
-								<f:param name="imageId" value="#{resourcesController.selectedResourceViewBean.id}" />
-							</p:graphicImage>
-							 -->
-	
+						<p:graphicImage id="resourceIcon"
+							rendered="#{not empty resourcesController.selectedResourceViewBean.iconFileName}"
+							styleClass="resourceLogo" alt="#{resourcesController.selectedResourceViewBean.name}"
+							cache="false" width="80"
+							value="#{imagesController.getImage()}">
+							<f:param name="imageFileName"
+								value="#{resourcesController.selectedResourceViewBean.iconFileName}" />
+						</p:graphicImage>
 						<h:panelGroup styleClass="favoriteResource">
 							<p:outputLabel for="favoriteResourceCheckbox"
-								value="#{msgs['RESOURCES.SELECTED_RESOURCE.ADD_TO_MY_FAVORITE_TOOLS']}" />
+								value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
 							<p:selectBooleanCheckbox id="favoriteResourceCheckbox"  styleClass="favoriteResourceCheckbox"
 								value="#{resourcesController.selectedResourceViewBean.favoriteResource}">
-								<p:ajax update="@this :formResources:messagesDisplayer"
+								<p:ajax update="@this :formSelectedResourceCategory:favoriteResourcesPanel :formResources:messagesDisplayer"
 									listener="#{usersController.toggleFavoriteResourceForCurrentUser(resourcesController.selectedResourceViewBean)}" />
 							</p:selectBooleanCheckbox>
 						</h:panelGroup>
 					</p:row>
 
 					<p:outputLabel
-						value="#{msgs['RESOURCES.SELECTED_RESOURCE.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}"
+						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}"
 						for="pedagogicalUsesTree" />
 					<p:tree id="pedagogicalUsesTree" dynamic="true"
 						value="#{resourcesController.pedagogicalUsesTreeRoot}"
@@ -184,22 +182,22 @@
 					</p:tree>
 
 					<p:outputLabel
-						value="#{msgs['RESOURCES.SELECTED_RESOURCE.SCENARIOS_USING_SELECTED_TOOL_LABEL']}"
+						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS_USING_SELECTED_TOOL_LABEL']}"
 						for="scenariosUsingSelectedToolTable" />
 
 					<p:dataTable id="scenariosUsingSelectedToolTable"
 						value="#{resourcesController.scenariosUsingSelectedTool}"
 						var="scenario">
 						<p:column
-							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE.SCENARIOS.COLUMNS.TITLE']}">
+							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.TITLE']}">
 							<h:outputText value="#{scenario.name}" />
 						</p:column>
 						<p:column
-							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE.SCENARIOS.COLUMNS.OBJECTIVE']}">
+							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.OBJECTIVE']}">
 							<h:outputText value="#{scenario.objective}" />
 						</p:column>
 						<p:column
-							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE.SCENARIOS.COLUMNS.AUTHOR']}">
+							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.AUTHOR']}">
 							<h:outputText value="#{scenario.author}" />
 						</p:column>
 					</p:dataTable>
@@ -209,9 +207,25 @@
 
 			<p:panelGrid styleClass="bottom-toolboxes">
 				<p:row>
-					<p:column width="50%">
-						<p:panel
+					<p:column width="100%">
+						<p:panel id="favoriteResourcesPanel"
 							header="#{msgs['RESOURCES.MY_FAVORITE_RESOURCES.HEADER']}">
+							<ui:repeat id="favoriteResources"
+								value="#{sessionController.currentUserViewBean.favoriteResourceViewBeans}"
+								var="resourceViewBean">
+								<h:link id="goToResourceBtn" outcome="my-tools">
+									<f:param name="resourceId" value="#{resourceViewBean.id}" />
+									<h:outputText value="#{resourceViewBean.name}" rendered="#{empty resourceViewBean.iconFileName}"/>
+									<p:graphicImage id="favoriteResourceIcon"
+										rendered="#{not empty resourceViewBean.iconFileName}"
+										styleClass="resourceLogo" alt="#{resourceViewBean.name}"
+										cache="false" width="50"
+										value="#{imagesController.getImage()}">
+										<f:param name="imageFileName"
+											value="#{resourceViewBean.iconFileName}" />
+									</p:graphicImage>
+								</h:link>
+							</ui:repeat>
 						</p:panel>
 					</p:column>
 					<p:column width="50%">
@@ -220,11 +234,11 @@
 						</p:panel>
 					</p:column>
 				</p:row>
-			</p:panelGrid>
+ 			</p:panelGrid>
 
 		</h:form>
 
-		<p:dialog id="dialogCreateResourceId"
+		<p:dialog id="idDialogCreateResource"
 			header="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogCreateResource" modal="true" height="auto">
 			<h:form id="formCreateResource">
@@ -238,9 +252,9 @@
 							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY']}"
 							itemValue="" itemDisabled="true" noSelectionOption="true" />
 						<f:selectItems
-							value="#{resourcesController.allCategories}"
-							var="category" itemLabel="#{category.name}"
-							itemValue="#{category}" />
+							value="#{resourcesController.allCategoryViewBeans}"
+							var="categoryViewBean" itemLabel="#{categoryViewBean.domainBean.name}"
+							itemValue="#{categoryViewBean.domainBean}" />
 					</p:selectOneMenu>
 					<p:message for="categoryForTheNewResource" display="text" />
 
@@ -251,11 +265,40 @@
 						binding="#{input2}" />
 					<p:message for="newSoftwareName" display="text" />
 
+					<h:outputLabel
+						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.ICON_LABEL']}"
+						for="icon" />
+					<p:column rowspan="2">
+						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
+							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
+							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
+							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
+							update="icon :formResources:messagesDisplayer" />
+						<p:panel id="icon">
+							<p:graphicImage
+								rendered="#{(not empty resourcesController.selectedResourceViewBean.iconFileName) and (empty fileUploadController.uploadedFileName)}"
+								alt="#{resourcesController.selectedResourceViewBean.name}"
+								cache="false" width="200" value="#{imagesController.image}">
+								<f:param name="imageFileName"
+									value="#{resourcesController.selectedResourceViewBean.iconFileName}" />
+							</p:graphicImage>
+							<p:graphicImage
+								rendered="#{not empty fileUploadController.uploadedFileName}"
+								alt="#{resourcesController.selectedResourceViewBean.name}"
+								cache="false" width="200" value="#{imagesController.image}">
+								<f:param name="imageFileName"
+									value="#{fileUploadController.uploadedFileName}" />
+							</p:graphicImage>
+						</p:panel>
+					</p:column>
+
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value)}"
+					action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value, fileUploadController.uploadedFileName)}"
+					process="@this"
 					update="@form :formResources:resourcesTree"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
 			</h:form>
@@ -265,6 +308,7 @@
 			header="#{msgs['RESOURCES.ASSOCIATE_USE_MODE_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogAssociateUseMode" modal="true" height="auto">
 			<h:form id="formAssociateUseMode">
+			
 
 			</h:form>
 		</p:dialog>

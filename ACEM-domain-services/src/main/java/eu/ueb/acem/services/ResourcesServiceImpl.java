@@ -108,23 +108,23 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Ressource createResource(String resourceType, ResourceCategory resourceCategory, String name) {
+	public Ressource createResource(String resourceType, ResourceCategory resourceCategory, String name, String iconFileName) {
 		Ressource entity = null;
 		switch (resourceType) {
 		case "software":
-			entity = new ApplicatifNode(name);
+			entity = new ApplicatifNode(name, iconFileName);
 			break;
 		case "softwareDocumentation":
-			entity = new DocumentationApplicatifNode(name);
+			entity = new DocumentationApplicatifNode(name, iconFileName);
 			break;
 		case "professionalTraining":
-			entity = new FormationProfessionnelleNode(name);
+			entity = new FormationProfessionnelleNode(name, iconFileName);
 			break;
 		case "equipment":
-			entity = new EquipementNode(name);
+			entity = new EquipementNode(name, iconFileName);
 			break;
 		case "pedagogicalAndDocumentaryResources":
-			entity = new RessourcePedagogiqueEtDocumentaireNode(name);
+			entity = new RessourcePedagogiqueEtDocumentaireNode(name, iconFileName);
 			break;
 		default:
 			logger.error("Unknown resourceType '{}'", resourceType);

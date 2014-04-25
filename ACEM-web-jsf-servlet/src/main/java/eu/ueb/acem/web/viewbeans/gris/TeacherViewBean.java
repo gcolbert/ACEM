@@ -25,7 +25,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.jaune.Applicatif;
+import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.Equipement;
+import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
+import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ProfessionalTrainingViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.SoftwareDocumentationViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -59,6 +70,24 @@ public class TeacherViewBean extends PersonViewBean {
 
 	public void setDomainBean(Enseignant teacher) {
 		super.setDomainBean(teacher);
+		this.domainBean = teacher;
+		for (Ressource resource : teacher.getFavoriteResources()) {
+			if (resource instanceof Equipement) {
+				addFavoriteResourceViewBean(new EquipmentViewBean((Equipement)resource));
+			}
+			else if (resource instanceof Applicatif) {
+				addFavoriteResourceViewBean(new SoftwareViewBean((Applicatif)resource));
+			}
+			else if (resource instanceof DocumentationApplicatif) {
+				addFavoriteResourceViewBean(new SoftwareDocumentationViewBean((DocumentationApplicatif)resource));
+			}
+			else if (resource instanceof FormationProfessionnelle) {
+				addFavoriteResourceViewBean(new ProfessionalTrainingViewBean((FormationProfessionnelle)resource));
+			}
+			else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
+				addFavoriteResourceViewBean(new DocumentaryAndPedagogicalResourceViewBean((RessourcePedagogiqueEtDocumentaire)resource));
+			}
+		}
 	}
 
 	public List<ResourceViewBean> getFavoriteResourceViewBeans() {
@@ -67,10 +96,12 @@ public class TeacherViewBean extends PersonViewBean {
 
 	public void addFavoriteResourceViewBean(ResourceViewBean resourceViewBean) {
 		favoriteResourceViewBeans.add(resourceViewBean);
+		resourceViewBean.setFavoriteResource(true);
 	}
-
-	public void removeOrganisationViewBean(ResourceViewBean resourceViewBean) {
+	
+	public void removeFavoriteResourceViewBean(ResourceViewBean resourceViewBean) {
 		favoriteResourceViewBeans.remove(resourceViewBean);
+		resourceViewBean.setFavoriteResource(false);
 	}
 	
 }

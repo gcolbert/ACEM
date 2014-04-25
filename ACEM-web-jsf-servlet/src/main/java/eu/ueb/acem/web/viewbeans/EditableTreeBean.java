@@ -20,7 +20,6 @@ package eu.ueb.acem.web.viewbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -155,22 +154,23 @@ public class EditableTreeBean implements Serializable {
 		return allNodes.get(id);
 	}
 	
-	public void retainAll(Set<Long> idsToKeep) {
-		for (Long id : idsToKeep) {
-			TreeNode node = allNodes.get(id);
-			idsToKeep.add(id);
+	public void retainLeavesAndParents(Set<Long> idsOfLeavesToKeep) {
+		Set<TreeNode> nodesToKeep = new HashSet<TreeNode>();
+		for (Long id : idsOfLeavesToKeep) {
+			TreeNode node = getNodeWithId(id);
+			nodesToKeep.add(node);
 			while (node.getParent() != null) {
 				node = node.getParent();
-				idsToKeep.add(id);
+				nodesToKeep.add(node);
 			}
 		}
-		retainChildren(root, idsToKeep);
+		retainChildren(root, nodesToKeep);
 	}
 	
-	private void retainChildren(TreeNode node, Set<Long> idsOfNodesToKeep) {
-		node.getChildren().retainAll(idsOfNodesToKeep);
+	private void retainChildren(TreeNode node, Set<TreeNode> nodesToKeep) {
+		node.getChildren().retainAll(nodesToKeep);
 		for (TreeNode child : node.getChildren()) {
-			retainChildren(child, idsOfNodesToKeep);
+			retainChildren(child, nodesToKeep);
 		}
 	}
 	

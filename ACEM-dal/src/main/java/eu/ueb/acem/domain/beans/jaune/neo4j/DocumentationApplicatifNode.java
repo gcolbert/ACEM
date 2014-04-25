@@ -52,9 +52,10 @@ public class DocumentationApplicatifNode extends RessourceNode implements Docume
 	public DocumentationApplicatifNode() {
 	}
 
-	public DocumentationApplicatifNode(String name) {
+	public DocumentationApplicatifNode(String name, String iconFileName) {
 		this();
 		setName(name);
+		setIconFileName(iconFileName);
 	}
 
 	@Override

@@ -46,6 +46,7 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_LABEL']}"
 							icon="ui-icon-plusthick"
+							actionListener="#{fileUploadController.reset()}"
 							update=":formOrganisations:idDialogCreateCommunity"
 							oncomplete="PF('dialogCreateCommunity').show()" process="@this">
 							<p:resetInput target=":formOrganisations:idDialogCreateCommunity" />
@@ -117,6 +118,7 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_LABEL']}"
 							icon="ui-icon-plusthick"
+							actionListener="#{fileUploadController.reset()}"
 							update=":formOrganisations:idDialogCreateInstitution"
 							oncomplete="PF('dialogCreateInstitution').show()" process="@this">
 							<p:resetInput
@@ -228,6 +230,7 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 							icon="ui-icon-plusthick"
+							actionListener="#{fileUploadController.reset()}"
 							update=":formOrganisations:idDialogCreateAdministrativeDepartment"
 							oncomplete="PF('dialogCreateAdministrativeDepartment').show()"
 							process="@this">
@@ -298,6 +301,7 @@
 						<p:commandButton
 							value="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_LABEL']}"
 							icon="ui-icon-plusthick"
+							actionListener="#{fileUploadController.reset()}"
 							update=":formOrganisations:idDialogCreateTeachingDepartment"
 							oncomplete="PF('dialogCreateTeachingDepartment').show()"
 							process="@this">

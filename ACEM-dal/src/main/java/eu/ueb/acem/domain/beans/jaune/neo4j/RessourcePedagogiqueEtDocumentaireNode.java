@@ -41,8 +41,10 @@ public class RessourcePedagogiqueEtDocumentaireNode extends RessourceNode implem
 	public RessourcePedagogiqueEtDocumentaireNode() {
 	}
 
-	public RessourcePedagogiqueEtDocumentaireNode(String name) {
+	public RessourcePedagogiqueEtDocumentaireNode(String name, String iconFileName) {
+		this();
 		setName(name);
+		setIconFileName(iconFileName);
 	}
 
 	@Override

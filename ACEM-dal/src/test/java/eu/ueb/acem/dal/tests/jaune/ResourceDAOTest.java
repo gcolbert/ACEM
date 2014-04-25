@@ -121,7 +121,7 @@ public class ResourceDAOTest extends TestCase {
 		ResourceCategory learningManagementSystem = new ResourceCategoryNode("Learning Management System");
 		learningManagementSystem = resourceCategoryDAO.create(learningManagementSystem);
 		
-		Applicatif moodle = new ApplicatifNode("Moodle");
+		Applicatif moodle = new ApplicatifNode("Moodle", null);
 		moodle = softwareDAO.create(moodle);
 
 		moodle.addCategory(learningManagementSystem);
@@ -143,10 +143,10 @@ public class ResourceDAOTest extends TestCase {
 	 */
 	@Test
 	public final void t02_TestAssociateSoftwareAndDocumentation() {
-		Applicatif software = new ApplicatifNode("Moodle");
+		Applicatif software = new ApplicatifNode("Moodle", null);
 		software = softwareDAO.create(software);
 
-		DocumentationApplicatif softwareDocumentation = new DocumentationApplicatifNode("Tutorial for Moodle");
+		DocumentationApplicatif softwareDocumentation = new DocumentationApplicatifNode("Tutorial for Moodle", null);
 		softwareDocumentation = softwareDocumentationDAO.create(softwareDocumentation);
 
 		software.addDocumentation(softwareDocumentation);

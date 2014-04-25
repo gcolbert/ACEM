@@ -42,8 +42,10 @@ public class FormationProfessionnelleNode extends RessourceNode implements Forma
 	public FormationProfessionnelleNode() {
 	}
 
-	public FormationProfessionnelleNode(String name) {
+	public FormationProfessionnelleNode(String name, String iconFileName) {
+		this();
 		setName(name);
+		setIconFileName(iconFileName);
 	}
 
 	@Override

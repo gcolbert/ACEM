@@ -256,28 +256,33 @@
 	margin:auto;
 }
 
-#formSelectedResource table[role=grid],
-#formSelectedResource tr[role=row],
-#formSelectedResource td[role=gridcell] {
+#formSelectedResourceCategory table[role=grid],
+#formSelectedResourceCategory tr[role=row],
+#formSelectedResourceCategory td[role=gridcell] {
 	border:none;	
 }
-#formSelectedResource .bottom-toolboxes tr,
-#formSelectedResource .bottom-toolboxes td {
+#formSelectedResourceCategory .resourceLogo {
+	vertical-align:bottom;
+	margin-left:1em;
+}
+#formSelectedResourceCategory .bottom-toolboxes tr,
+#formSelectedResourceCategory .bottom-toolboxes td {
 	border: none;
 	background-color:white;
 	padding:0;
 	width:50%;
+	vertical-align:top;
 }
-#formSelectedResource .favoriteResource {
-	margin-left:2em;
+#formSelectedResourceCategory .favoriteResource {
+	margin-left:4em;
 }
-#formSelectedResource .favoriteResourceCheckbox {
+#formSelectedResourceCategory .favoriteResourceCheckbox {
 	vertical-align:middle;
 	margin-left:0.5em;
 }
-#formSelectedResource .bottom-toolboxes td:first-of-type {
+#formSelectedResourceCategory .bottom-toolboxes td:first-of-type {
 	padding-right:0.5em;
 }
-#formSelectedResource .bottom-toolboxes td:last-child {
+#formSelectedResourceCategory .bottom-toolboxes td:last-child {
 	padding-left:0.5em;
 }

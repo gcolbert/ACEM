@@ -57,8 +57,10 @@ public class EquipementNode extends RessourceNode implements Equipement {
 	public EquipementNode() {
 	}
 
-	public EquipementNode(String name) {
+	public EquipementNode(String name, String iconFileName) {
+		this();
 		setName(name);
+		setIconFileName(iconFileName);
 	}
 	
 	@Override

@@ -22,6 +22,7 @@ import org.esupportail.commons.utils.Assert;
 import org.springframework.stereotype.Component;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
  * An abstract class inherited by all the beans for them to get:
@@ -86,6 +87,10 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 		return sessionController.getCurrentUser();
 	}
 
+	protected PersonViewBean getCurrentUserViewBean() {
+		return sessionController.getCurrentUserViewBean();
+	}
+	
 	/**
 	 * @param sessionController
 	 *            the sessionController to set

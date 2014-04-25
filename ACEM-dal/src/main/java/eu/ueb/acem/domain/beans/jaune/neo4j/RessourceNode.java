@@ -52,6 +52,8 @@ public abstract class RessourceNode implements Ressource {
 	private Long id;
 
 	private String name;
+
+	private String iconFileName;
 	
 	private String description;
 	
@@ -105,6 +107,16 @@ public abstract class RessourceNode implements Ressource {
 		this.description = description;
 	}
 	
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
+	}
+
 	@Override
 	public Set<? extends ModaliteUtilisation> getUseModes() {
 		return useModes;

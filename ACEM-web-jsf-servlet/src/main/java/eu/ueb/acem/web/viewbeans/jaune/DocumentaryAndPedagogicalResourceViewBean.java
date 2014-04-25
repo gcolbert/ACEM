@@ -40,6 +40,10 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 
 	private Boolean favoriteResource;
 	
+	private String description;
+	
+	private String iconFileName;
+	
 	public DocumentaryAndPedagogicalResourceViewBean() {
 	}
 
@@ -66,6 +70,8 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 		this.documentaryAndPedagogicalResource = documentaryAndPedagogicalResource;
 		setId(documentaryAndPedagogicalResource.getId());
 		setName(documentaryAndPedagogicalResource.getName());
+		setIconFileName(documentaryAndPedagogicalResource.getIconFileName());
+		setDescription(documentaryAndPedagogicalResource.getDescription());
 	}
 
 	@Override
@@ -94,6 +100,26 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 	@Override
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
+	}
+
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
+	}
+	
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	@Override

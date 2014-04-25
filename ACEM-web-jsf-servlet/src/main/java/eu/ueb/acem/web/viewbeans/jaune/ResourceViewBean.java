@@ -40,4 +40,12 @@ public interface ResourceViewBean extends Pickable {
 	
 	void setFavoriteResource(Boolean favoriteResource);
 
+	String getIconFileName();
+	
+	void setIconFileName(String iconFileName);
+	
+	String getDescription();
+	
+	void setDescription(String description);
+
 }
