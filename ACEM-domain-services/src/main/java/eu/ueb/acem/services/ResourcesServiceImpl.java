@@ -305,4 +305,13 @@ public class ResourcesServiceImpl implements ResourcesService {
 		return scenarios;
 	}
 
+	@Override
+	public Set<Long> retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(Long resourceCategoryId) {
+		Set<Long> idsOfPedagogicalNodes = new HashSet<Long>();
+		// TODO : déplacer cette requête dans ResourcesDAO
+		// MATCH (r:ResourceCategory)<-[:answeredUsingResourceCategory]-(answer)<-[:needAnsweredBy]-(need)-[:hasParentNeed*]->(need2)
+		// WHERE id(r)=41 return r,answer,need,need2;
+		return idsOfPedagogicalNodes;
+	}
+
 }

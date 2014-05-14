@@ -30,8 +30,8 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
 
@@ -46,9 +46,9 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "hasFavoriteResource", direction = OUTGOING)
+	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "hasFavoriteToolCategory", direction = OUTGOING)
 	@Fetch
-	private Set<RessourceNode> favoriteResources;
+	private Set<ResourceCategoryNode> favoriteToolCategories;
 
 	@RelatedTo(elementClass = SeanceDeCoursNode.class, type = "leadsClass", direction = OUTGOING)
 	@Fetch
@@ -65,6 +65,7 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 		super(name, login);
 	}
 
+	/*-
 	@Override
 	public Set<? extends Ressource> getFavoriteResources() {
 		return favoriteResources;
@@ -91,7 +92,35 @@ public class EnseignantNode extends PersonneNode implements Enseignant {
 		}
 		return ! favoriteResources.contains(resource);
 	}
+	*/
 
+	@Override
+	public Set<? extends ResourceCategory> getFavoriteToolCategories() {
+		return favoriteToolCategories;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setFavoriteToolCategories(Set<? extends ResourceCategory> favoriteToolCategories) {
+		this.favoriteToolCategories = (Set<ResourceCategoryNode>) favoriteToolCategories;
+	}
+	
+	@Override
+	public Boolean addFavoriteToolCategory(ResourceCategory toolCategory) {
+		if (! favoriteToolCategories.contains(toolCategory)) {
+			favoriteToolCategories.add((ResourceCategoryNode) toolCategory);
+		}
+		return favoriteToolCategories.contains(toolCategory);
+	}
+
+	@Override
+	public Boolean removeFavoriteToolCategory(ResourceCategory toolCategory) {
+		if (favoriteToolCategories.contains(toolCategory)) {
+			favoriteToolCategories.remove(toolCategory);
+		}
+		return ! favoriteToolCategories.contains(toolCategory);
+	}
+	
 	@Override
 	public Set<? extends Scenario> getScenarios() {
 		return scenarios;

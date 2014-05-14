@@ -66,7 +66,7 @@ public class EditableTreeBean implements Serializable {
 		allNodes = new HashMap<Long, TreeNode>();
 	}
 
-	public void reset() {
+	public void clear() {
 		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
 		visibleRoots = new ArrayList<TreeNode>();
 	}

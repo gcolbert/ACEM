@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.gris;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
@@ -31,10 +32,24 @@ import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
  */
 public interface Enseignant extends Personne {
 
+	/*-
 	Set<? extends Ressource> getFavoriteResources();
 
 	void setFavoriteResources(Set<? extends Ressource> favoriteResources);
 
+	Boolean addFavoriteResource(Ressource ressourceNode);
+
+	Boolean removeFavoriteResource(Ressource ressourceNode);
+	*/
+
+	Set<? extends ResourceCategory> getFavoriteToolCategories();
+	
+	void setFavoriteToolCategories(Set<? extends ResourceCategory> favoriteToolCategories);
+
+	Boolean addFavoriteToolCategory(ResourceCategory toolCategory);
+
+	Boolean removeFavoriteToolCategory(ResourceCategory toolCategory);
+	
 	Set<? extends SeanceDeCours> getTeachingClasses();
 
 	void setTeachingClasses(Set<? extends SeanceDeCours> teachingClasses);
@@ -46,9 +61,5 @@ public interface Enseignant extends Personne {
 	void addAuthor(Scenario scenario);
 
 	void removeAuthor(Scenario scenario);
-
-	Boolean addFavoriteResource(Ressource ressourceNode);
-
-	Boolean removeFavoriteResource(Ressource ressourceNode);
 
 }

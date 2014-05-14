@@ -22,8 +22,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -34,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
@@ -76,24 +79,29 @@ public class ResourcesController extends AbstractContextAwareController {
 	@Autowired
 	private EditableTreeBean resourcesTreeBean;
 	private static final String TREE_NODE_TYPE_CATEGORY = "CategoryNode";
-	private static final String TREE_NODE_TYPE_RESOURCE = "ResourceNode";
+	//private static final String TREE_NODE_TYPE_RESOURCE = "ResourceNode";
 	private TreeNode resourcesTreeSelectedNode;
+
+	private Map<Long, ToolCategoryViewBean> toolCategoryViewBeans;
+	private Long selectedToolCategoryId;
+	private ToolCategoryViewBean selectedToolCategoryViewBean;
+
+	private Map<Long, ResourceViewBean> resourceViewBeans;
+	private Long selectedResourceId;
+	private ResourceViewBean selectedResourceViewBean;
 
 	private static final String[] RESOURCE_TYPES = { "software", "softwareDocumentation", "equipment",
 			"pedagogicalAndDocumentaryResources", "professionalTraining" };
 	private String selectedResourceType; // One of RESOURCE_TYPES
 	private Map<String, List<ToolCategoryViewBean>> categoryViewBeansByResourceType;
-	private List<ToolCategoryViewBean> allCategoryViewBeans;
-
-	private Long selectedResourceId;
-	private Map<Long, ResourceViewBean> resourceViewBeans;
-	private ResourceViewBean selectedResourceViewBean;
-
+	
 	// @Autowired
 	private EditableTreeBean pedagogicalUsesTreeBean;
 
 	public ResourcesController() {
+		toolCategoryViewBeans = new HashMap<Long, ToolCategoryViewBean>();
 		resourceViewBeans = new HashMap<Long, ResourceViewBean>();
+		categoryViewBeansByResourceType = new HashMap<String, List<ToolCategoryViewBean>>();
 	}
 
 	@PostConstruct
@@ -101,7 +109,6 @@ public class ResourcesController extends AbstractContextAwareController {
 		logger.info("entering initResourcesController");
 		pedagogicalUsesTreeBean = needsAndAnswersTreeController.getNeedsAndAnswersTreeBean();
 
-		categoryViewBeansByResourceType = new HashMap<String, List<ToolCategoryViewBean>>();
 		for (String resourceType : RESOURCE_TYPES) {
 			categoryViewBeansByResourceType.put(resourceType, new ArrayList<ToolCategoryViewBean>());
 			for (ResourceCategory resourceCategory : resourcesService.retrieveCategoriesForResourceType(resourceType)) {
@@ -110,11 +117,9 @@ public class ResourcesController extends AbstractContextAwareController {
 			Collections.sort(categoryViewBeansByResourceType.get(resourceType));
 		}
 
-		allCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 		for (ResourceCategory resourceCategory : resourcesService.retrieveAllCategories()) {
-			allCategoryViewBeans.add(new ToolCategoryViewBean(resourceCategory));
+			toolCategoryViewBeans.put(resourceCategory.getId(), new ToolCategoryViewBean(resourceCategory));
 		}
-		Collections.sort(allCategoryViewBeans);
 
 		logger.info("leaving initResourcesController");
 		logger.info("------");
@@ -124,78 +129,114 @@ public class ResourcesController extends AbstractContextAwareController {
 		return TREE_NODE_TYPE_CATEGORY;
 	}
 
+	/*-
 	public String getTreeNodeType_RESOURCE() {
 		return TREE_NODE_TYPE_RESOURCE;
 	}
+	*/
 
 	@SuppressWarnings("unchecked")
 	public void prepareTree(String resourceType) {
 		logger.info("prepareTree for resourceType={}", resourceType);
-		if (selectedResourceType != resourceType) {
-			selectedResourceType = resourceType;
-			resourcesTreeBean.reset();
+		this.selectedResourceType = resourceType;
+		resourcesTreeBean.clear();
+		switch (resourceType) {
+		case "software":
+			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL"));
+			break;
+		case "softwareDocumentation":
+			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL"));
+			break;
+		case "equipment":
+			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL"));
+			break;
+		case "pedagogicalAndDocumentaryResources":
+			resourcesTreeBean
+					.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL"));
+			break;
+		case "professionalTraining":
+			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
+			break;
+		default:
+			logger.error("Unknown resourceType '{}'", resourceType);
+			break;
+		}
+		for (ToolCategoryViewBean category : categoryViewBeansByResourceType.get(resourceType)) {
+			logger.info("category = {}", category.getName());
+			TreeNode categoryNode = resourcesTreeBean.addChild(getTreeNodeType_CATEGORY(), resourcesTreeBean
+					.getVisibleRoots().get(0), category.getId(), category.getName(), "category");
+			Collection<Ressource> entriesForCategory = null;
 			switch (resourceType) {
 			case "software":
-				resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL"));
+				entriesForCategory = (Collection<Ressource>) resourcesService.retrieveSoftwaresWithCategory(category
+						.getDomainBean());
 				break;
 			case "softwareDocumentation":
-				resourcesTreeBean
-						.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL"));
+				entriesForCategory = (Collection<Ressource>) resourcesService
+						.retrieveSoftwareDocumentationsWithCategory(category.getDomainBean());
 				break;
 			case "equipment":
-				resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL"));
+				entriesForCategory = (Collection<Ressource>) resourcesService.retrieveEquipmentWithCategory(category
+						.getDomainBean());
 				break;
 			case "pedagogicalAndDocumentaryResources":
-				resourcesTreeBean
-						.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL"));
+				entriesForCategory = (Collection<Ressource>) resourcesService
+						.retrievePedagogicalAndDocumentaryResourcesWithCategory(category.getDomainBean());
 				break;
 			case "professionalTraining":
-				resourcesTreeBean
-						.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
+				entriesForCategory = (Collection<Ressource>) resourcesService
+						.retrieveProfessionalTrainingsWithCategory(category.getDomainBean());
 				break;
 			default:
 				logger.error("Unknown resourceType '{}'", resourceType);
 				break;
 			}
-			for (ToolCategoryViewBean category : categoryViewBeansByResourceType.get(resourceType)) {
-				logger.info("category = {}", category.getName());
-				TreeNode categoryNode = resourcesTreeBean.addChild(getTreeNodeType_CATEGORY(), resourcesTreeBean
-						.getVisibleRoots().get(0), category.getId(), category.getName(), "category");
-				Collection<Ressource> entriesForCategory = null;
-				switch (resourceType) {
-				case "software":
-					entriesForCategory = (Collection<Ressource>) resourcesService
-							.retrieveSoftwaresWithCategory(category.getDomainBean());
-					break;
-				case "softwareDocumentation":
-					entriesForCategory = (Collection<Ressource>) resourcesService
-							.retrieveSoftwareDocumentationsWithCategory(category.getDomainBean());
-					break;
-				case "equipment":
-					entriesForCategory = (Collection<Ressource>) resourcesService
-							.retrieveEquipmentWithCategory(category.getDomainBean());
-					break;
-				case "pedagogicalAndDocumentaryResources":
-					entriesForCategory = (Collection<Ressource>) resourcesService
-							.retrievePedagogicalAndDocumentaryResourcesWithCategory(category.getDomainBean());
-					break;
-				case "professionalTraining":
-					entriesForCategory = (Collection<Ressource>) resourcesService
-							.retrieveProfessionalTrainingsWithCategory(category.getDomainBean());
-					break;
-				default:
-					logger.error("Unknown resourceType '{}'", resourceType);
-					break;
-				}
-				for (Ressource entity : entriesForCategory) {
-					resourcesTreeBean.addChild(getTreeNodeType_RESOURCE(), categoryNode, entity.getId(),
-							entity.getName(), resourceType);
-				}
+			/*-
+			for (Ressource entity : entriesForCategory) {
+				resourcesTreeBean.addChild(getTreeNodeType_RESOURCE(), categoryNode, entity.getId(), entity.getName(),
+						resourceType);
 			}
-			resourcesTreeBean.getVisibleRoots().get(0).setExpanded(true);
+			*/
 		}
+		resourcesTreeBean.getVisibleRoots().get(0).setExpanded(true);
 	}
 
+	public Long getSelectedToolCategoryId() {
+		return selectedToolCategoryId;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void setSelectedToolCategoryId(Long toolCategoryId) {
+		logger.info("Entering setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
+		ToolCategoryViewBean toolCategoryViewBean = getToolCategoryViewBean(toolCategoryId);
+		if (toolCategoryViewBean != null) {
+			selectedToolCategoryId = toolCategoryId;
+			selectedToolCategoryViewBean = toolCategoryViewBean;
+			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(toolCategoryId);
+			for (Ressource tool : (Set<Ressource>) toolCategory.getResources()) {
+				logger.info("tool = {}", tool);
+			}
+			//setPedagogicalUsesTreeRoot(toolCategory);
+
+			// We initialize the "favoriteToolCategory" attribute of the
+			// toolCategoryViewBean
+			if (getCurrentUserViewBean() instanceof TeacherViewBean) {
+				TeacherViewBean teacherViewBean = (TeacherViewBean) getCurrentUserViewBean();
+				if (teacherViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
+					toolCategoryViewBean.setFavoriteToolCategory(true);
+				}
+				else {
+					toolCategoryViewBean.setFavoriteToolCategory(false);
+				}
+			}
+		}
+		logger.info("Leaving setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
+	}
+
+	public ToolCategoryViewBean getSelectedToolCategoryViewBean() {
+		return selectedToolCategoryViewBean;
+	}
+	
 	public Long getSelectedResourceId() {
 		return selectedResourceId;
 	}
@@ -205,21 +246,22 @@ public class ResourcesController extends AbstractContextAwareController {
 		ResourceViewBean resourceViewBean = getResourceViewBean(resourceId);
 		if (resourceViewBean != null) {
 			selectedResourceId = resourceId;
+			selectedResourceViewBean = resourceViewBean;
 
 			// We prepare the tree according to the selected resource type
-			if (resourceViewBean.getDomainBean() instanceof Applicatif) {
+			if (resourceViewBean instanceof SoftwareViewBean) {
 				prepareTree("software");
 			}
-			else if (resourceViewBean.getDomainBean() instanceof DocumentationApplicatif) {
+			else if (resourceViewBean instanceof SoftwareDocumentationViewBean) {
 				prepareTree("softwareDocumentation");
 			}
-			else if (resourceViewBean.getDomainBean() instanceof Equipement) {
+			else if (resourceViewBean instanceof EquipmentViewBean) {
 				prepareTree("equipment");
 			}
-			else if (resourceViewBean.getDomainBean() instanceof RessourcePedagogiqueEtDocumentaire) {
+			else if (resourceViewBean instanceof DocumentaryAndPedagogicalResourceViewBean) {
 				prepareTree("pedagogicalAndDocumentaryResources");
 			}
-			else if (resourceViewBean.getDomainBean() instanceof FormationProfessionnelle) {
+			else if (resourceViewBean instanceof ProfessionalTrainingViewBean) {
 				prepareTree("professionalTraining");
 			}
 
@@ -235,8 +277,9 @@ public class ResourcesController extends AbstractContextAwareController {
 			// resourceViewBean (it is not available on the domainBean,
 			// because having a Ressource.getUsersHavingThisAsFavoriteResource
 			// could potentially lead to a huge set).
+			/*-
 			if (getCurrentUserViewBean() instanceof TeacherViewBean) {
-				TeacherViewBean teacherViewBean = (TeacherViewBean)getCurrentUserViewBean();
+				TeacherViewBean teacherViewBean = (TeacherViewBean) getCurrentUserViewBean();
 				if (teacherViewBean.getFavoriteResourceViewBeans().contains(resourceViewBean)) {
 					resourceViewBean.setFavoriteResource(true);
 				}
@@ -244,7 +287,17 @@ public class ResourcesController extends AbstractContextAwareController {
 					resourceViewBean.setFavoriteResource(false);
 				}
 			}
-			selectedResourceViewBean = resourceViewBean;
+			*/
+
+			/*-
+			Set<Long> idsOfPedagogicalAnswers = new HashSet<Long>();
+			for (ResourceCategory resourceCategory : resourceViewBean.getDomainBean().getCategories()) {
+				for (Reponse answer : resourceCategory.getAnswers()) {
+					idsOfPedagogicalAnswers.add(answer.getId());
+				}
+				pedagogicalUsesTreeBean.retainLeavesAndParents(idsOfPedagogicalAnswers);
+			}
+			*/
 		}
 		else {
 			logger.error("Could not find the resource with id = {}", resourceId);
@@ -273,6 +326,8 @@ public class ResourcesController extends AbstractContextAwareController {
 	}
 
 	public List<ToolCategoryViewBean> getAllCategoryViewBeans() {
+		List<ToolCategoryViewBean> allCategoryViewBeans = new ArrayList<ToolCategoryViewBean>(toolCategoryViewBeans.values());
+		Collections.sort(allCategoryViewBeans);
 		return allCategoryViewBeans;
 	}
 
@@ -298,24 +353,30 @@ public class ResourcesController extends AbstractContextAwareController {
 
 	public void onNodeSelect() {
 		logger.info("Entering onNodeSelect");
-		setSelectedResourceId(((TreeNodeData) resourcesTreeSelectedNode.getData()).getId());
+		//setSelectedResourceId(((TreeNodeData) resourcesTreeSelectedNode.getData()).getId());
+		setSelectedToolCategoryId(((TreeNodeData) resourcesTreeSelectedNode.getData()).getId());
 		logger.info("Leaving onNodeSelect");
 	}
 
 	public TreeNode getPedagogicalUsesTreeRoot() {
-		// TODO : trouver comment faire la requête :
-		// MATCH
-		// (r:Resource)<-[:categoryContains]-()<-[:answeredUsingResourceCategory]-(answer)<-[*]-(need)
-		// where id(r)=151 RETURN r,answer,need;
-		// pedagogicalUsesTreeBean.retainAll(selectedResourceId);
 		return pedagogicalUsesTreeBean.getRoot();
+	}
+
+	private void setPedagogicalUsesTreeRoot(ResourceCategory resourceCategory) {
+		// Set<Long> idsOfLeavesToKeep =
+		// resourcesService.retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(resourceCategory.getId());
+		Set<Long> idsOfLeavesToKeep = new HashSet<Long>();
+		for (Reponse answer : resourceCategory.getAnswers()) {
+			idsOfLeavesToKeep.add(answer.getId());
+		}
+		pedagogicalUsesTreeBean.retainLeavesAndParents(idsOfLeavesToKeep);
 	}
 
 	public List<Scenario> getScenariosUsingSelectedTool() {
 		return new ArrayList<Scenario>(resourcesService.retrieveScenariosAssociatedWithRessource(selectedResourceId));
 	}
 
-	public ResourceViewBean getResourceViewBean(Long id) {
+	private ResourceViewBean getResourceViewBean(Long id) {
 		ResourceViewBean resourceViewBean = null;
 		if (resourceViewBeans.containsKey(id)) {
 			logger.info("resourceViewBean found in resourceViewBeans map, so we don't reload it.");
@@ -346,10 +407,28 @@ public class ResourcesController extends AbstractContextAwareController {
 				resourceViewBeans.put(id, resourceViewBean);
 			}
 			else {
-				logger.error("Unknown resource with id={}", id);
+				logger.error("There is no resource with id={}", id);
 			}
 		}
 		return resourceViewBean;
 	}
 
+	public ToolCategoryViewBean getToolCategoryViewBean(Long id) {
+		ToolCategoryViewBean toolCategoryViewBean = null;
+		if (toolCategoryViewBeans.containsKey(id)) {
+			logger.info("toolCategoryViewBean found in toolCategoryViewBeans map, so we don't reload it.");
+			toolCategoryViewBean = toolCategoryViewBeans.get(id);
+		}
+		else {
+			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(id);
+			if (toolCategory != null) {
+				toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
+				toolCategoryViewBeans.put(id, toolCategoryViewBean);
+			}
+			else {
+				logger.error("There is no category with id={}", id);
+			}
+		}
+		return toolCategoryViewBean;
+	}	
 }

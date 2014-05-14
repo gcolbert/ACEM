@@ -32,7 +32,6 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
-import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
@@ -69,9 +68,11 @@ public abstract class RessourceNode implements Ressource {
 	@Fetch
 	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
 
+	/*-
 	@RelatedTo(elementClass = EnseignantNode.class, type="hasFavoriteResource", direction = INCOMING)
 	@Fetch
 	private Set<EnseignantNode> teachersHavingThisAsFavoriteResource;
+	*/
 	
 	public RessourceNode() {
 		categories = new HashSet<ResourceCategoryNode>();

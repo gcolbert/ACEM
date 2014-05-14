@@ -19,7 +19,7 @@
 	</url-mapping>
 
 	<url-mapping id="my-tools-param">
-		<pattern value="/my-tools/{resourceId}" />
+		<pattern value="/my-tools/{resourceCategoryId}" />
 		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
 

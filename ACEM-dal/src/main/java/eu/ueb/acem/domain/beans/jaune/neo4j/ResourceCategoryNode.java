@@ -51,6 +51,8 @@ public class ResourceCategoryNode implements ResourceCategory {
 	
 	@Indexed
 	private String name;
+	
+	private String iconFileName;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "answeredUsingResourceCategory", direction = INCOMING)
 	@Fetch
@@ -142,6 +144,16 @@ public class ResourceCategoryNode implements ResourceCategory {
 		if (answer.getResourceCategories().contains(this)) {
 			answer.removeResourceCategory(this);
 		}
+	}
+
+	@Override
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	@Override
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 
 	private String name;
 
-	private Boolean favoriteResource;
+	//private Boolean favoriteResource;
 	
 	private String iconFileName;
 	
@@ -98,6 +98,7 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		this.name = name;
 	}
 
+	/*-
 	@Override
 	public Boolean getFavoriteResource() {
 		return favoriteResource;
@@ -107,6 +108,7 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
 	}
+	*/
 
 	@Override
 	public String getIconFileName() {

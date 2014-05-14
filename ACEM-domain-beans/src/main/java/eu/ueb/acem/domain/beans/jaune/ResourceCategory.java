@@ -52,6 +52,10 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 	
 	void removeAnswer(Reponse answer);
 
+	String getIconFileName();
+	
+	void setIconFileName(String iconFileName);
+	
 	int compareTo(ResourceCategory o);
 
 }

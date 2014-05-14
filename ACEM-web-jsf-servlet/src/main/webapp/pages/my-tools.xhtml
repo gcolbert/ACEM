@@ -6,8 +6,8 @@
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<f:metadata>
-		<f:viewParam name="resourceId"
-			value="#{resourcesController.selectedResourceId}" />
+		<f:viewParam name="toolCategoryId"
+			value="#{resourcesController.selectedToolCategoryId}" />
 	</f:metadata>
 	<ui:define name="content">
 		<ui:debug hotkey="1"
@@ -26,7 +26,7 @@
 						<p:resetInput target=":formCreateResource" />
 					</p:menuitem>
 				</p:contextMenu>
-				<p:contextMenu for="resourcesTree" nodeType="category">
+				<p:contextMenu for="resourcesTree" nodeType="CategoryNode">
 					<p:menuitem
 						value="#{msgs['RESOURCES.TREE.CONTEXT_MENU.CREATE_RESOURCE']}"
 						update=":formCreateResource"
@@ -35,7 +35,7 @@
 					</p:menuitem>
 				</p:contextMenu>
 				<!-- 
-				<p:contextMenu for="resourcesTree" nodeType="resource">
+				<p:contextMenu for="resourcesTree" nodeType="ResourceNode">
 					<p:menuitem
 						value="#{msgs['RESOURCES.TREE.CONTEXT_MENU.ASSOCIATE_USE_MODE']}"
 						update=":formAssociateUseMode"
@@ -102,10 +102,10 @@
 					datakey="#{treeNodeData.id}"
 					value="#{resourcesController.resourcesTreeRoot}" var="treeNodeData"
 					selectionMode="single"
-					onNodeClick="if ( (node.attr('data-nodetype')!='default') &amp;&amp; (node.attr('data-nodetype')!='category') ) { history.pushState('','','my-tools?resourceId='+node.attr('data-datakey')); }"
+					onNodeClick="if ( (node.attr('data-nodetype')!='default') &amp;&amp; (node.attr('data-nodetype')!='category') ) { history.pushState('','','my-tools?toolCategoryId='+node.attr('data-datakey')); }"
 					selection="#{resourcesController.selectedNode}">
 					<p:ajax event="select"
-						update=":formSelectedResourceCategory:selectedResourceCategoryPanel :formResources:messagesDisplayer"
+						update=":formSelectedToolCategory:selectedToolCategoryPanel :formResources:messagesDisplayer"
 						listener="#{resourcesController.onNodeSelect}" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
@@ -122,33 +122,44 @@
 			</p:panel>
 		</h:form>
 
-		<h:form id="formSelectedResourceCategory">
+		<h:form id="formSelectedToolCategory">
 			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.HEADER']}"
-				id="selectedResourceCategoryPanel">
+				id="selectedToolCategoryPanel">
 				<p:panelGrid columns="1"
-					rendered="#{resourcesController.selectedResourceViewBean != null}">
+					rendered="#{resourcesController.selectedToolCategoryViewBean != null}">
 
 					<p:row>
 						<h:outputText styleClass="title"
-							value="#{resourcesController.selectedResourceViewBean.name}" />
+							value="#{resourcesController.selectedToolCategoryViewBean.name}" />
 						<p:graphicImage id="resourceIcon"
-							rendered="#{not empty resourcesController.selectedResourceViewBean.iconFileName}"
-							styleClass="resourceLogo" alt="#{resourcesController.selectedResourceViewBean.name}"
+							rendered="#{not empty resourcesController.selectedToolCategoryViewBean.iconFileName}"
+							styleClass="resourceLogo" alt="#{resourcesController.selectedToolCategoryViewBean.name}"
 							cache="false" width="80"
 							value="#{imagesController.getImage()}">
 							<f:param name="imageFileName"
-								value="#{resourcesController.selectedResourceViewBean.iconFileName}" />
+								value="#{resourcesController.selectedToolCategoryViewBean.iconFileName}" />
 						</p:graphicImage>
-						<h:panelGroup styleClass="favoriteResource">
-							<p:outputLabel for="favoriteResourceCheckbox"
+						<h:panelGroup styleClass="favoriteToolCategory">
+							<p:outputLabel for="favoriteToolCategoryCheckbox"
 								value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
-							<p:selectBooleanCheckbox id="favoriteResourceCheckbox"  styleClass="favoriteResourceCheckbox"
-								value="#{resourcesController.selectedResourceViewBean.favoriteResource}">
-								<p:ajax update="@this :formSelectedResourceCategory:favoriteResourcesPanel :formResources:messagesDisplayer"
-									listener="#{usersController.toggleFavoriteResourceForCurrentUser(resourcesController.selectedResourceViewBean)}" />
+							<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox"  styleClass="favoriteToolCategoryCheckbox"
+								value="#{resourcesController.selectedToolCategoryViewBean.favoriteToolCategory}">
+								<p:ajax update="@this :formSelectedToolCategory:favoriteToolCategoriesPanel :formResources:messagesDisplayer"
+									listener="#{usersController.toggleFavoriteToolCategoryForCurrentUser(resourcesController.selectedToolCategoryViewBean)}" />
 							</p:selectBooleanCheckbox>
 						</h:panelGroup>
 					</p:row>
+					
+					<p:dataTable var="toolViewBean" value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}">
+						<p:column
+							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_NAME']}">
+							<h:outputText value="#{toolViewBean.name}"/>
+						</p:column>
+						<p:column
+							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATION_NAME']}">
+							<h:outputText value="Exemple : Rennes1/Droit (pré-requis : lier un outil et une organisation)"/>
+						</p:column>
+					</p:dataTable>
 
 					<p:outputLabel
 						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}"
@@ -181,6 +192,7 @@
 						</p:treeNode>
 					</p:tree>
 
+					<!-- 
 					<p:outputLabel
 						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS_USING_SELECTED_TOOL_LABEL']}"
 						for="scenariosUsingSelectedToolTable" />
@@ -201,6 +213,7 @@
 							<h:outputText value="#{scenario.author}" />
 						</p:column>
 					</p:dataTable>
+					-->
 
 				</p:panelGrid>
 			</p:panel>
@@ -208,21 +221,21 @@
 			<p:panelGrid styleClass="bottom-toolboxes">
 				<p:row>
 					<p:column width="100%">
-						<p:panel id="favoriteResourcesPanel"
-							header="#{msgs['RESOURCES.MY_FAVORITE_RESOURCES.HEADER']}">
-							<ui:repeat id="favoriteResources"
-								value="#{sessionController.currentUserViewBean.favoriteResourceViewBeans}"
-								var="resourceViewBean">
+						<p:panel id="favoriteToolCategoriesPanel"
+							header="#{msgs['RESOURCES.MY_FAVORITE_TOOL_CATEGORIES.HEADER']}">
+							<ui:repeat id="favoriteToolCategories"
+								value="#{sessionController.currentUserViewBean.favoriteToolCategoryViewBeans}"
+								var="toolCategoryViewBean">
 								<h:link id="goToResourceBtn" outcome="my-tools">
-									<f:param name="resourceId" value="#{resourceViewBean.id}" />
-									<h:outputText value="#{resourceViewBean.name}" rendered="#{empty resourceViewBean.iconFileName}"/>
-									<p:graphicImage id="favoriteResourceIcon"
-										rendered="#{not empty resourceViewBean.iconFileName}"
-										styleClass="resourceLogo" alt="#{resourceViewBean.name}"
+									<f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
+									<h:outputText value="#{toolCategoryViewBean.name}" rendered="#{empty toolCategoryViewBean.iconFileName}"/>
+									<p:graphicImage id="favoriteToolCategoryIcon"
+										rendered="#{not empty toolCategoryViewBean.iconFileName}"
+										styleClass="toolCategoryLogo" alt="#{toolCategoryViewBean.name}"
 										cache="false" width="50"
 										value="#{imagesController.getImage()}">
 										<f:param name="imageFileName"
-											value="#{resourceViewBean.iconFileName}" />
+											value="#{toolCategoryViewBean.iconFileName}" />
 									</p:graphicImage>
 								</h:link>
 							</ui:repeat>
@@ -230,7 +243,7 @@
 					</p:column>
 					<p:column width="50%">
 						<p:panel
-							header="#{msgs['RESOURCES.LAST_VIEWED_RESOURCES.HEADER']}">
+							header="#{msgs['RESOURCES.LAST_VIEWED_TOOL_CATEGORIES.HEADER']}">
 						</p:panel>
 					</p:column>
 				</p:row>

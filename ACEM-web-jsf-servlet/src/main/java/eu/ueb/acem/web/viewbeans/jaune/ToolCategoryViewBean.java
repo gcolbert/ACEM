@@ -47,34 +47,38 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 	private Long id;
 
 	private String name;
+	
+	private Boolean favoriteToolCategory;
+	
+	private String iconFileName;
 
 	public ToolCategoryViewBean() {
 		resourceViewBeans = new ArrayList<ResourceViewBean>();
 	}
 
-	public ToolCategoryViewBean(ResourceCategory resourceCategory) {
+	public ToolCategoryViewBean(ResourceCategory toolCategory) {
 		this();
-		setResourceCategory(resourceCategory);
+		setResourceCategory(toolCategory);
 	}
 
 	public ResourceCategory getDomainBean() {
 		return resourceCategory;
 	}
 	
-	public void setDomainBean(ResourceCategory resourceCategory) {
-		setResourceCategory((ResourceCategory) resourceCategory);
+	public void setDomainBean(ResourceCategory toolCategory) {
+		setResourceCategory((ResourceCategory) toolCategory);
 	}
 
 	public ResourceCategory getResourceCategory() {
 		return resourceCategory;
 	}
 
-	public void setResourceCategory(ResourceCategory resourceCategory) {
-		this.resourceCategory = resourceCategory;
-		setId(resourceCategory.getId());
-		setName(resourceCategory.getName());
+	public void setResourceCategory(ResourceCategory toolCategory) {
+		this.resourceCategory = toolCategory;
+		setId(toolCategory.getId());
+		setName(toolCategory.getName());
 		resourceViewBeans.clear();
-		for (Ressource resource : resourceCategory.getResources()) {
+		for (Ressource resource : toolCategory.getResources()) {
 			if (resource instanceof Applicatif) {
 				addResourceViewBean(new SoftwareViewBean((Applicatif)resource));
 			}
@@ -91,6 +95,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 				addResourceViewBean(new DocumentaryAndPedagogicalResourceViewBean((RessourcePedagogiqueEtDocumentaire)resource));
 			}
 		}
+		setIconFileName(toolCategory.getIconFileName());
 	}
 	
 	public List<ResourceViewBean> getResourceViewBeans() {
@@ -122,9 +127,60 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 		this.name = name;
 	}
 
+	public Boolean getFavoriteToolCategory() {
+		return favoriteToolCategory;
+	}
+
+	public void setFavoriteToolCategory(Boolean favoriteToolCategory) {
+		this.favoriteToolCategory = favoriteToolCategory;
+	}
+
+	public String getIconFileName() {
+		return iconFileName;
+	}
+
+	public void setIconFileName(String iconFileName) {
+		this.iconFileName = iconFileName;
+	}
+	
 	@Override
 	public int compareTo(ToolCategoryViewBean o) {
 		return name.compareTo(o.getName());
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ToolCategoryViewBean other = (ToolCategoryViewBean) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		}
+		else
+			if (!id.equals(other.id))
+				return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		}
+		else
+			if (!name.equals(other.name))
+				return false;
+		return true;
+	}
+	
 }

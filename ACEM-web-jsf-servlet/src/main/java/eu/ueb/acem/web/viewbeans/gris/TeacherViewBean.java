@@ -25,18 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.jaune.Applicatif;
-import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
-import eu.ueb.acem.domain.beans.jaune.Equipement;
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
-import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.ProfessionalTrainingViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.SoftwareDocumentationViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -52,11 +42,13 @@ public class TeacherViewBean extends PersonViewBean {
 	
 	private Enseignant domainBean;
 	
-	private List<ResourceViewBean> favoriteResourceViewBeans;
+	//private List<ResourceViewBean> favoriteResourceViewBeans;
+	private List<ToolCategoryViewBean> favoriteToolCategoryViewBeans;
 	
 	public TeacherViewBean() {
 		super();
-		this.favoriteResourceViewBeans = new ArrayList<ResourceViewBean>();
+		//this.favoriteResourceViewBeans = new ArrayList<ResourceViewBean>();
+		favoriteToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
 	
 	public TeacherViewBean(Enseignant teacher) {
@@ -71,6 +63,12 @@ public class TeacherViewBean extends PersonViewBean {
 	public void setDomainBean(Enseignant teacher) {
 		super.setDomainBean(teacher);
 		this.domainBean = teacher;
+		for (ResourceCategory toolCategory : teacher.getFavoriteToolCategories()) {
+			logger.info("TeacherViewBean.setDomainBean : we add the toolCategory {} as favorite", toolCategory);
+			addFavoriteToolCategoryViewBean(new ToolCategoryViewBean(toolCategory));
+		}
+		
+		/*-
 		for (Ressource resource : teacher.getFavoriteResources()) {
 			if (resource instanceof Equipement) {
 				addFavoriteResourceViewBean(new EquipmentViewBean((Equipement)resource));
@@ -88,8 +86,10 @@ public class TeacherViewBean extends PersonViewBean {
 				addFavoriteResourceViewBean(new DocumentaryAndPedagogicalResourceViewBean((RessourcePedagogiqueEtDocumentaire)resource));
 			}
 		}
+		*/
 	}
 
+	/*-
 	public List<ResourceViewBean> getFavoriteResourceViewBeans() {
 		return favoriteResourceViewBeans;
 	}
@@ -103,5 +103,20 @@ public class TeacherViewBean extends PersonViewBean {
 		favoriteResourceViewBeans.remove(resourceViewBean);
 		resourceViewBean.setFavoriteResource(false);
 	}
+	*/
 	
+	public List<ToolCategoryViewBean> getFavoriteToolCategoryViewBeans() {
+		return favoriteToolCategoryViewBeans;
+	}
+
+	public void addFavoriteToolCategoryViewBean(ToolCategoryViewBean toolCategoryViewBean) {
+		favoriteToolCategoryViewBeans.add(toolCategoryViewBean);
+		toolCategoryViewBean.setFavoriteToolCategory(true);
+	}
+	
+	public void removeFavoriteToolCategoryViewBean(ToolCategoryViewBean toolCategoryViewBean) {
+		favoriteToolCategoryViewBeans.remove(toolCategoryViewBean);
+		toolCategoryViewBean.setFavoriteToolCategory(false);
+	}
+
 }

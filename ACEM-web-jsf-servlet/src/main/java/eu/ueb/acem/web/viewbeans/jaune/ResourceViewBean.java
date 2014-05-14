@@ -27,7 +27,7 @@ import eu.ueb.acem.web.viewbeans.Pickable;
  * 
  */
 public interface ResourceViewBean extends Pickable {
-	
+
 	Long getId();
 
 	String getName();
@@ -36,16 +36,18 @@ public interface ResourceViewBean extends Pickable {
 
 	void setDomainBean(Ressource resource);
 
+	/*-
 	Boolean getFavoriteResource();
-	
+
 	void setFavoriteResource(Boolean favoriteResource);
+	*/
+
+	String getDescription();
+
+	void setDescription(String description);
 
 	String getIconFileName();
-	
+
 	void setIconFileName(String iconFileName);
-	
-	String getDescription();
-	
-	void setDescription(String description);
 
 }

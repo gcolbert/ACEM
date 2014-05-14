@@ -38,7 +38,7 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 
 	private String name;
 
-	private Boolean favoriteResource;
+	//private Boolean favoriteResource;
 	
 	private String description;
 	
@@ -92,6 +92,7 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 		this.name = name;
 	}
 
+	/*-
 	@Override
 	public Boolean getFavoriteResource() {
 		return favoriteResource;
@@ -101,6 +102,7 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
 	}
+	*/
 
 	@Override
 	public String getIconFileName() {

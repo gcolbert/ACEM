@@ -62,8 +62,14 @@ public interface UsersService {
 
 	Boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
 
+	/*-
 	Boolean addFavoriteResourceForTeacher(Long idTeacher, Long idResource);
 
 	Boolean removeFavoriteResourceForTeacher(Long idTeacher, Long idResource);
+	*/
+
+	Boolean addFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory);
+	
+	Boolean removeFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory);
 
 }

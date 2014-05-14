@@ -92,6 +92,7 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 		this.name = name;
 	}
 
+	/*-
 	@Override
 	public Boolean getFavoriteResource() {
 		return favoriteResource;
@@ -101,6 +102,7 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 	public void setFavoriteResource(Boolean favoriteResource) {
 		this.favoriteResource = favoriteResource;
 	}
+	*/
 	
 	@Override
 	public String getIconFileName() {

@@ -33,6 +33,7 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.UsersService;
@@ -40,6 +41,7 @@ import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 @Controller("usersController")
@@ -70,6 +72,7 @@ public class UsersController extends AbstractContextAwareController {
 		personViewBeans = new ArrayList<PersonViewBean>();
 	}
 
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void initUsersController() {
 		logger.debug("initUsersController");
@@ -81,11 +84,19 @@ public class UsersController extends AbstractContextAwareController {
 			if (person instanceof Enseignant) {
 				Enseignant teacher = (Enseignant)person;
 				personViewBean = new TeacherViewBean(teacher);
+				/*-
 				for (Ressource resource : teacher.getFavoriteResources()) {
 					logger.info("We add the resource {} as favorite for user {}", resource.getName(), teacher.getLogin());
 					ResourceViewBean resourceViewBean = resourcesController.getResourceViewBean(resource.getId());
 					teacher.addFavoriteResource(resourceViewBean.getDomainBean());
 					((TeacherViewBean)personViewBean).addFavoriteResourceViewBean(resourceViewBean);
+				}
+				*/
+				for (ResourceCategory toolCategory : (Set<ResourceCategory>)teacher.getFavoriteToolCategories()) {
+					logger.info("We add the tool category {} as favorite for user {}", toolCategory.getName(), teacher.getLogin());
+					ToolCategoryViewBean toolCategoryViewBean = resourcesController.getToolCategoryViewBean(toolCategory.getId());
+					teacher.addFavoriteToolCategory(toolCategoryViewBean.getDomainBean());
+					((TeacherViewBean)personViewBean).addFavoriteToolCategoryViewBean(toolCategoryViewBean);
 				}
 			}
 			else {
@@ -140,21 +151,21 @@ public class UsersController extends AbstractContextAwareController {
 		personViewBean.setDomainBean(usersService.updatePerson(personViewBean.getDomainBean()));
 	}
 
-	public void toggleFavoriteResourceForCurrentUser(ResourceViewBean resourceViewBean) {
-		logger.info("toggleFavoriteResourceForCurrentUser, resource name = {}", resourceViewBean.getName());
+	public void toggleFavoriteToolCategoryForCurrentUser(ToolCategoryViewBean toolCategoryViewBean) {
+		logger.info("Entering toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
 		if (getCurrentUserViewBean() instanceof TeacherViewBean) {
 			TeacherViewBean currentUserViewBean = (TeacherViewBean)getCurrentUserViewBean();
-			if (currentUserViewBean.getFavoriteResourceViewBeans().contains(resourceViewBean)) {
-				logger.info("user has resource as favorite, we should remove it");
-				if (usersService.removeFavoriteResourceForTeacher(currentUserViewBean.getId(), resourceViewBean.getId())) {
-					currentUserViewBean.removeFavoriteResourceViewBean(resourceViewBean);
+			if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
+				logger.info("user has tool category as favorite, we should remove it");
+				if (usersService.removeFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
+					currentUserViewBean.removeFavoriteToolCategoryViewBean(toolCategoryViewBean);
 					//currentUserViewBean.getDomainBean().removeFavoriteResource(resourceViewBean.getDomainBean());
 				}
 			}
 			else {
-				logger.info("user has not resource as favorite, we should add it");
-				if (usersService.addFavoriteResourceForTeacher(currentUserViewBean.getId(), resourceViewBean.getId())) {
-					currentUserViewBean.addFavoriteResourceViewBean(resourceViewBean);
+				logger.info("user doesn't have tool category as favorite, we should add it");
+				if (usersService.addFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
+					currentUserViewBean.addFavoriteToolCategoryViewBean(toolCategoryViewBean);
 					//currentUserViewBean.getDomainBean().addFavoriteResource(resourceViewBean.getDomainBean());
 				}
 			}
@@ -176,6 +187,7 @@ public class UsersController extends AbstractContextAwareController {
 			}
 			*/
 		}
+		logger.info("Leaving toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
 	}
 	
 	public void onTransfer(TransferEvent event) {

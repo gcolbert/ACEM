@@ -209,7 +209,15 @@
 						var="toolCategoryViewBean">
 						<p:column
 							headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY']}">
-							<h:outputText value="#{toolCategoryViewBean.name}" />
+							<h:link id="goToToolCategoryBtn" outcome="my-tools">
+								<f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
+								<h:outputText value="#{toolCategoryViewBean.name}" />
+								<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+									style="display:inline-block; vertical-align:middle;" />
+								<p:tooltip
+									value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_TOOL_CATEGORY']}"
+									for="goToToolCategoryBtn" />
+									</h:link>
 						</p:column>
 						<p:column
 							headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOLS']}">
@@ -219,6 +227,8 @@
 								var="resourceViewBean">
 								<p:column
 									headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_NAME']}">
+									<h:outputText value="#{resourceViewBean.name}" />
+									<!-- 
 									<h:link id="goToResourceBtn" outcome="my-tools">
 										<f:param name="resourceId" value="#{resourceViewBean.id}" />
 										<h:outputText value="#{resourceViewBean.name}" />
@@ -228,6 +238,7 @@
 											value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_RESOURCE']}"
 											for="goToResourceBtn" />
 									</h:link>
+									-->
 								</p:column>
 								<p:column
 									headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.ORGANISATION_NAME']}">

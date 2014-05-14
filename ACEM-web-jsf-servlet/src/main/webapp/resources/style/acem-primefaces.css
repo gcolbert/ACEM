@@ -256,33 +256,33 @@
 	margin:auto;
 }
 
-#formSelectedResourceCategory table[role=grid],
-#formSelectedResourceCategory tr[role=row],
-#formSelectedResourceCategory td[role=gridcell] {
+#formSelectedToolCategory table[role=grid],
+#formSelectedToolCategory tr[role=row],
+#formSelectedToolCategory td[role=gridcell] {
 	border:none;	
 }
-#formSelectedResourceCategory .resourceLogo {
+#formSelectedToolCategory .resourceLogo {
 	vertical-align:bottom;
 	margin-left:1em;
 }
-#formSelectedResourceCategory .bottom-toolboxes tr,
-#formSelectedResourceCategory .bottom-toolboxes td {
+#formSelectedToolCategory .bottom-toolboxes tr,
+#formSelectedToolCategory .bottom-toolboxes td {
 	border: none;
 	background-color:white;
 	padding:0;
 	width:50%;
 	vertical-align:top;
 }
-#formSelectedResourceCategory .favoriteResource {
+#formSelectedToolCategory .favoriteToolCategory {
 	margin-left:4em;
 }
-#formSelectedResourceCategory .favoriteResourceCheckbox {
+#formSelectedToolCategory .favoriteToolCategoryCheckbox {
 	vertical-align:middle;
 	margin-left:0.5em;
 }
-#formSelectedResourceCategory .bottom-toolboxes td:first-of-type {
+#formSelectedToolCategory .bottom-toolboxes td:first-of-type {
 	padding-right:0.5em;
 }
-#formSelectedResourceCategory .bottom-toolboxes td:last-child {
+#formSelectedToolCategory .bottom-toolboxes td:last-child {
 	padding-left:0.5em;
 }

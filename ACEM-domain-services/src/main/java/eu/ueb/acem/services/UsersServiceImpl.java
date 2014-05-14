@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -194,6 +194,7 @@ public class UsersServiceImpl implements UsersService {
 		return success;
 	}
 
+	/*-
 	@Override
 	public Boolean addFavoriteResourceForTeacher(Long idTeacher, Long idResource) {
 		logger.info("addFavoriteResourceForTeacher");
@@ -219,6 +220,39 @@ public class UsersServiceImpl implements UsersService {
 			Ressource resource = resourcesService.retrieveResource(idResource);
 			if (resource != null) {
 				teacher.removeFavoriteResource(resource);
+				teacher = teacherDAO.update(teacher);
+				success = true;
+			}
+		}
+		return success;
+	}
+	*/
+
+	@Override
+	public Boolean addFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory) {
+		logger.info("addFavoriteResourceForTeacher");
+		Boolean success = false;
+		if (personDAO.exists(idTeacher)) {
+			Enseignant teacher = teacherDAO.retrieveById(idTeacher);
+			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory);
+			if (toolCategory != null) {
+				teacher.addFavoriteToolCategory(toolCategory);
+				teacher = teacherDAO.update(teacher);
+				success = true;
+			}
+		}
+		return success;
+	}
+
+	@Override
+	public Boolean removeFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory) {
+		logger.info("removeFavoriteResourceForTeacher");
+		Boolean success = false;
+		if (personDAO.exists(idTeacher)) {
+			Enseignant teacher = teacherDAO.retrieveById(idTeacher);
+			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory);
+			if (toolCategory != null) {
+				teacher.removeFavoriteToolCategory(toolCategory);
 				teacher = teacherDAO.update(teacher);
 				success = true;
 			}
