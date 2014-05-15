@@ -128,9 +128,10 @@
 				<p:panelGrid columns="1"
 					rendered="#{resourcesController.selectedToolCategoryViewBean != null}">
 
-					<p:row>
-						<h:outputText styleClass="title"
-							value="#{resourcesController.selectedToolCategoryViewBean.name}" />
+					<h:outputText styleClass="title"
+						value="#{resourcesController.selectedToolCategoryViewBean.name}" />
+					
+					<p:panelGrid columns="2">
 						<p:graphicImage id="resourceIcon"
 							rendered="#{not empty resourcesController.selectedToolCategoryViewBean.iconFileName}"
 							styleClass="resourceLogo" alt="#{resourcesController.selectedToolCategoryViewBean.name}"
@@ -139,44 +140,42 @@
 							<f:param name="imageFileName"
 								value="#{resourcesController.selectedToolCategoryViewBean.iconFileName}" />
 						</p:graphicImage>
-						<h:panelGroup styleClass="favoriteToolCategory">
-							<p:outputLabel for="favoriteToolCategoryCheckbox"
-								value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
-							<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox" styleClass="favoriteToolCategoryCheckbox"
-								value="#{resourcesController.selectedToolCategoryViewBean.favoriteToolCategory}">
-								<p:ajax update="@this :formSelectedToolCategory:favoriteToolCategoriesPanel :formResources:messagesDisplayer"
-									listener="#{usersController.toggleFavoriteToolCategoryForCurrentUser(resourcesController.selectedToolCategoryViewBean)}" />
-							</p:selectBooleanCheckbox>
-						</h:panelGroup>
-					</p:row>
-					
-					<p:panel>
-						<p:panelGrid columns="2">
-							<h:outputLabel for="selectedToolCategoryDescription"
-								value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.DESCRIPTION']}"
-								styleClass="label" />
-							<p:inplace id="selectedToolCategoryDescription" editor="true">
-								<p:ajax event="save" listener="#{resourcesController.onSelectedToolCategorySave}" update="@this" />
-								<p:ajax event="cancel" update="@this" />
-								<h:inputText id="selectedScenarioName"
-									value="#{resourcesController.selectedToolCategoryViewBean.domainBean.description}"
-									required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
-							</p:inplace>
-						</p:panelGrid>
+						<p:column>
+							<p:row>
+								<p:inplace id="selectedToolCategoryDescription" editor="true">
+									<p:ajax event="save" listener="#{resourcesController.onSelectedToolCategorySave}" update="@this" />
+									<p:ajax event="cancel" update="@this" />
+									<h:inputText id="selectedScenarioName"
+										value="#{resourcesController.selectedToolCategoryViewBean.domainBean.description}"
+										required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
+								</p:inplace>
+							</p:row>
+							<p:row>
+								<h:panelGroup styleClass="favoriteToolCategory">
+									<p:outputLabel for="favoriteToolCategoryCheckbox"
+										value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
+									<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox" styleClass="favoriteToolCategoryCheckbox"
+										value="#{resourcesController.selectedToolCategoryViewBean.favoriteToolCategory}">
+										<p:ajax update="@this :formSelectedToolCategory:favoriteToolCategoriesPanel :formResources:messagesDisplayer"
+											listener="#{usersController.toggleFavoriteToolCategoryForCurrentUser(resourcesController.selectedToolCategoryViewBean)}" />
+									</p:selectBooleanCheckbox>
+								</h:panelGroup>
+							</p:row>
+						</p:column>
+					</p:panelGrid>
 
-						<!--
-						<h:outputText id="selectedToolCategoryDescription" value="#{resourcesController.selectedToolCategoryViewBean.description}" />
-						-->
-						<!-- 
-						<p:commandButton 
-							value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.DESCRIPTION.MODIFY_DESCRIPTION_LABEL']}"
-							icon="ui-icon-check" validateClient="true"
-							action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value, fileUploadController.uploadedFileName)}"
-							process="@this"
-							update="@form :formResources:resourcesTree"
-							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
-						 -->
-					</p:panel>
+					<!--
+					<h:outputText id="selectedToolCategoryDescription" value="#{resourcesController.selectedToolCategoryViewBean.description}" />
+					-->
+					<!-- 
+					<p:commandButton 
+						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.DESCRIPTION.MODIFY_DESCRIPTION_LABEL']}"
+						icon="ui-icon-check" validateClient="true"
+						action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value, fileUploadController.uploadedFileName)}"
+						process="@this"
+						update="@form :formResources:resourcesTree"
+						oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
+					 -->
 					
 					<p:dataTable var="toolViewBean" value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}">
 						<p:column

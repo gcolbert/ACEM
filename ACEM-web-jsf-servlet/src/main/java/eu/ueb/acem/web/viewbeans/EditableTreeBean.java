@@ -42,7 +42,6 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class EditableTreeBean implements Serializable {
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(EditableTreeBean.class);
 
 	private static final long serialVersionUID = -7640100553743316532L;
@@ -104,7 +103,6 @@ public class EditableTreeBean implements Serializable {
 	 */
 	public TreeNode addChild(String nodeType, TreeNode parent, Long id, String label, String concept) {
 		TreeNode child = new DefaultTreeNode(nodeType, new TreeNodeData(id, label, concept), parent);
-		parent.setExpanded(true);
 		allNodes.put(id, child);
 		return child;
 	}

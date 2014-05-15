@@ -46,7 +46,7 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
-import eu.ueb.acem.web.utils.MessageDisplayer;
+import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
@@ -72,10 +72,10 @@ public class ResourcesController extends AbstractContextAwareController {
 	private static final Logger logger = LoggerFactory.getLogger(ResourcesController.class);
 
 	@Autowired
-	private ResourcesService resourcesService;
-
+	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
+	
 	@Autowired
-	private NeedsAndAnswersController needsAndAnswersTreeController;
+	private ResourcesService resourcesService;
 
 	@Autowired
 	private EditableTreeBean resourcesTreeBean;
@@ -108,7 +108,7 @@ public class ResourcesController extends AbstractContextAwareController {
 	@PostConstruct
 	public void initResourcesController() {
 		logger.info("entering initResourcesController");
-		pedagogicalUsesTreeBean = needsAndAnswersTreeController.getNeedsAndAnswersTreeBean();
+		pedagogicalUsesTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(null);
 
 		for (String resourceType : RESOURCE_TYPES) {
 			categoryViewBeansByResourceType.put(resourceType, new ArrayList<ToolCategoryViewBean>());

@@ -276,7 +276,8 @@
 	vertical-align:top;
 }
 #formSelectedToolCategory .favoriteToolCategory {
-	margin-left:4em;
+	display:block;
+	margin-top:0.5em;
 }
 #formSelectedToolCategory .favoriteToolCategoryCheckbox {
 	vertical-align:middle;

@@ -21,7 +21,6 @@ package eu.ueb.acem.web.controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -44,6 +43,7 @@ import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
+import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -65,11 +65,6 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersController.class);
 
-	private static final String TREE_NODE_TYPE_NEED_LEAF = "NeedLeaf";
-	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS = "NeedWithAssociatedNeeds";
-	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS = "NeedWithAssociatedAnswers";
-	private static final String TREE_NODE_TYPE_ANSWER_LEAF = "AnswerLeaf";
-
 	@Autowired
 	private NeedsAndAnswersService needsAndAnswersService;
 
@@ -81,6 +76,9 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 	@Autowired
 	private EditableTreeBean needsAndAnswersTreeBean;
+
+	@Autowired
+	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
 
 	@Autowired
 	private PickListBean pickListBean;
@@ -103,19 +101,19 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	private List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeansForSelectedAnswer;
 
 	public String getTreeNodeType_NEED_LEAF() {
-		return TREE_NODE_TYPE_NEED_LEAF;
+		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_LEAF();
 	}
 
 	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
-		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS;
+		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS();
 	}
 
 	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
-		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS;
+		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS();
 	}
 
 	public String getTreeNodeType_ANSWER_LEAF() {
-		return TREE_NODE_TYPE_ANSWER_LEAF;
+		return needsAndAnswersTreeGenerator.getTreeNodeType_ANSWER_LEAF();
 	}
 
 	public NeedsAndAnswersController() {
@@ -132,7 +130,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	@PostConstruct
 	public void initNeedsAndAnswersController() {
 		logger.debug("entering initNeedsAndAnswersTreeController");
-		initTree(needsAndAnswersTreeBean, getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
+		needsAndAnswersTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
 
 		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
 		logger.debug("found {} tool categories", toolCategories.size());
@@ -165,89 +163,6 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	
 	public EditableTreeBean getNeedsAndAnswersTreeBean() {
 		return needsAndAnswersTreeBean;
-	}
-
-	/**
-	 * Fills the given {@link EditableTreeBean} with the Pedagogical Advice
-	 * nodes returned by the {@link NeedsAndAnswersService} implementation
-	 * defined in this controller.
-	 * 
-	 * @param treeBean
-	 *            the treeBean to initialize.
-	 * @param singleTreeRootLabel
-	 *            is an optional string, that, if not null, will be the label of
-	 *            a special unique node at the root of the tree. Even if the
-	 *            data returned from the service have multiple roots, it can be
-	 *            useful to force the creation of an ancestor node, for example
-	 *            if the creation of a child node requires the user to
-	 *            right-click on an existing node. That way, the user will be
-	 *            able to start creating nodes even if there is no node returned
-	 *            from the service.
-	 */
-	public void initTree(EditableTreeBean treeBean, String singleVisibleTreeRootLabel) {
-		if (singleVisibleTreeRootLabel != null) {
-			treeBean.addVisibleRoot(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
-		}
-		Collection<Besoin> needs = needsAndAnswersService.retrieveNeedsAtRoot();
-		logger.info("Found {} needs at root of tree.", needs.size());
-		for (Besoin need : needs) {
-			logger.info("need = {}", need.getName());
-			TreeNode currentVisibleRoot = null;
-			if (singleVisibleTreeRootLabel != null) {
-				// If the function was called with the
-				// "singleVisibleTreeRootLabel" set,
-				// we add the real roots of the tree as children of this
-				// "artificial" root.
-				currentVisibleRoot = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(),
-						need.getName(), "Need"), treeBean.getVisibleRoots().get(0));
-				if (need.getChildren().size() > 0) {
-					((DefaultTreeNode) currentVisibleRoot).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
-				}
-				else if (need.getAnswers().size() > 0) {
-					((DefaultTreeNode) currentVisibleRoot).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
-				}
-			}
-			else {
-				// otherwise, we add the current node as a visible root by
-				// itself (thus allowing many visible roots)
-				currentVisibleRoot = treeBean.addVisibleRoot(need.getName());
-			}
-			for (Besoin child : need.getChildren()) {
-				createTree(treeBean, child, currentVisibleRoot);
-			}
-		}
-		if (singleVisibleTreeRootLabel != null) {
-			treeBean.getVisibleRoots().get(0).setExpanded(true);
-		}
-	}
-
-	/**
-	 * Recursive function to construct Tree
-	 */
-	private void createTree(EditableTreeBean treeBean, Besoin need, TreeNode rootNode) {
-		// We create the root node for this branch
-		//TreeNode newNode = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(), need.getName(), "Need"), rootNode);
-		TreeNode newNode = treeBean.addChild(getTreeNodeType_NEED_LEAF(), rootNode, need.getId(), need.getName(), "Need");
-		// We look for children and recursively create them too
-		@SuppressWarnings("unchecked")
-		Collection<Besoin> associatedNeeds = (Collection<Besoin>) need.getChildren();
-		if (associatedNeeds.size() > 0) {
-			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
-			for (Besoin besoinChild : associatedNeeds) {
-				createTree(treeBean, besoinChild, newNode);
-			}
-		}
-
-		@SuppressWarnings("unchecked")
-		Collection<Reponse> answers = (Collection<Reponse>) need.getAnswers();
-		if (answers.size() > 0) {
-			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
-			need.setAnswers((Set<Reponse>) answers);
-			for (Reponse answer : answers) {
-				//new DefaultTreeNode(getTreeNodeType_ANSWER_LEAF(), new TreeNodeData(answer.getId(), answer.getName(), "Answer"), newNode);
-				treeBean.addChild(getTreeNodeType_ANSWER_LEAF(), newNode, answer.getId(), answer.getName(), "Answer");
-			}
-		}
 	}
 
 	public TreeNode getTreeRoot() {
@@ -293,7 +208,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 					if (selectedNode.getParent().getChildCount() == 1) {
 						if ((selectedNode.getParent().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS()))
 								|| (selectedNode.getParent().getType()
-										.equals(TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS))) {
+										.equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS()))) {
 							((DefaultTreeNode) selectedNode.getParent()).setType(getTreeNodeType_NEED_LEAF());
 						}
 					}
