@@ -30,7 +30,9 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
@@ -53,6 +55,8 @@ public class ResourceCategoryNode implements ResourceCategory {
 	private String name;
 	
 	private String iconFileName;
+	
+	private String description;
 
 	@RelatedTo(elementClass = ReponseNode.class, type = "answeredUsingResourceCategory", direction = INCOMING)
 	@Fetch
@@ -62,6 +66,10 @@ public class ResourceCategoryNode implements ResourceCategory {
 	@Fetch
 	private Set<RessourceNode> resources;
 	
+	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type="activityRequiringResourceFromCategory", direction = INCOMING)
+	@Fetch
+	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
+
 	public ResourceCategoryNode() {
 	}
 
@@ -84,6 +92,16 @@ public class ResourceCategoryNode implements ResourceCategory {
 		this.name = name;
 	}
 
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
+	}		
+	
 	@Override
 	public Set<? extends Reponse> getAnswers() {
 		return answers;
@@ -157,6 +175,17 @@ public class ResourceCategoryNode implements ResourceCategory {
 	}
 
 	@Override
+	public Set<? extends ActivitePedagogique> getPedagogicalActivities() {
+		return pedagogicalActivities;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities) {
+		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>)pedagogicalActivities;
+	}
+	
+	@Override
 	public int compareTo(ResourceCategory o) {
 		return getName().compareTo(o.getName());
 	}
@@ -194,6 +223,6 @@ public class ResourceCategoryNode implements ResourceCategory {
 			if (!getName().equals(other.getName()))
 				return false;
 		return true;
-	}	
+	}
 	
 }

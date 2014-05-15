@@ -142,13 +142,41 @@
 						<h:panelGroup styleClass="favoriteToolCategory">
 							<p:outputLabel for="favoriteToolCategoryCheckbox"
 								value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
-							<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox"  styleClass="favoriteToolCategoryCheckbox"
+							<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox" styleClass="favoriteToolCategoryCheckbox"
 								value="#{resourcesController.selectedToolCategoryViewBean.favoriteToolCategory}">
 								<p:ajax update="@this :formSelectedToolCategory:favoriteToolCategoriesPanel :formResources:messagesDisplayer"
 									listener="#{usersController.toggleFavoriteToolCategoryForCurrentUser(resourcesController.selectedToolCategoryViewBean)}" />
 							</p:selectBooleanCheckbox>
 						</h:panelGroup>
 					</p:row>
+					
+					<p:panel>
+						<p:panelGrid columns="2">
+							<h:outputLabel for="selectedToolCategoryDescription"
+								value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.DESCRIPTION']}"
+								styleClass="label" />
+							<p:inplace id="selectedToolCategoryDescription" editor="true">
+								<p:ajax event="save" listener="#{resourcesController.onSelectedToolCategorySave}" update="@this" />
+								<p:ajax event="cancel" update="@this" />
+								<h:inputText id="selectedScenarioName"
+									value="#{resourcesController.selectedToolCategoryViewBean.domainBean.description}"
+									required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
+							</p:inplace>
+						</p:panelGrid>
+
+						<!--
+						<h:outputText id="selectedToolCategoryDescription" value="#{resourcesController.selectedToolCategoryViewBean.description}" />
+						-->
+						<!-- 
+						<p:commandButton 
+							value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.DESCRIPTION.MODIFY_DESCRIPTION_LABEL']}"
+							icon="ui-icon-check" validateClient="true"
+							action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value, fileUploadController.uploadedFileName)}"
+							process="@this"
+							update="@form :formResources:resourcesTree"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
+						 -->
+					</p:panel>
 					
 					<p:dataTable var="toolViewBean" value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}">
 						<p:column
@@ -192,13 +220,12 @@
 						</p:treeNode>
 					</p:tree>
 
-					<!-- 
 					<p:outputLabel
-						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS_USING_SELECTED_TOOL_LABEL']}"
-						for="scenariosUsingSelectedToolTable" />
+						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS_USING_SELECTED_TOOL_CATEGORY_LABEL']}"
+						for="scenariosUsingSelectedToolCategoryTable" />
 
-					<p:dataTable id="scenariosUsingSelectedToolTable"
-						value="#{resourcesController.scenariosUsingSelectedTool}"
+					<p:dataTable id="scenariosUsingSelectedToolCategoryTable"
+						value="#{resourcesController.scenariosUsingSelectedToolCategory}"
 						var="scenario">
 						<p:column
 							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.TITLE']}">
@@ -213,7 +240,6 @@
 							<h:outputText value="#{scenario.author}" />
 						</p:column>
 					</p:dataTable>
-					-->
 
 				</p:panelGrid>
 			</p:panel>
@@ -226,7 +252,7 @@
 							<ui:repeat id="favoriteToolCategories"
 								value="#{sessionController.currentUserViewBean.favoriteToolCategoryViewBeans}"
 								var="toolCategoryViewBean">
-								<h:link id="goToResourceBtn" outcome="my-tools">
+								<h:outputLink id="goToToolCategoryBtn" outcome="my-tools">
 									<f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
 									<h:outputText value="#{toolCategoryViewBean.name}" rendered="#{empty toolCategoryViewBean.iconFileName}"/>
 									<p:graphicImage id="favoriteToolCategoryIcon"
@@ -237,7 +263,8 @@
 										<f:param name="imageFileName"
 											value="#{toolCategoryViewBean.iconFileName}" />
 									</p:graphicImage>
-								</h:link>
+								</h:outputLink>
+								<p:tooltip for="goToToolCategoryBtn" value="#{toolCategoryViewBean.name}"/>
 							</ui:repeat>
 						</p:panel>
 					</p:column>

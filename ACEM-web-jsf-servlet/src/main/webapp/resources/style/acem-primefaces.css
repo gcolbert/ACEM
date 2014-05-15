@@ -108,6 +108,8 @@
 
 .label {
 	text-decoration: underline;
+	display:block;
+	width:160px;
 }
 
 .ui-panel {

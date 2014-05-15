@@ -36,7 +36,6 @@ import eu.ueb.acem.domain.beans.bleu.Besoin;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
@@ -179,10 +178,8 @@ public class ReponseNode implements Reponse {
 	public Set<Scenario> getScenariosRelatedToAnswer() {
 		Set<Scenario> scenarios = new HashSet<Scenario>();
 		for (ResourceCategory resourceCategory : resourceCategories) {
-			for (Ressource resource : resourceCategory.getResources()) {
-				for (ActivitePedagogique pedagogicalActivity : resource.getPedagogicalActivities()) {
-					scenarios.addAll(pedagogicalActivity.getScenarios());
-				}
+			for (ActivitePedagogique pedagogicalActivity : resourceCategory.getPedagogicalActivities()) {
+				scenarios.addAll(pedagogicalActivity.getScenarios());
 			}
 		}
 		return scenarios;

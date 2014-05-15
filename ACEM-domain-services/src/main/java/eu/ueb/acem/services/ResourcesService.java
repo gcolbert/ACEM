@@ -19,7 +19,6 @@
 package eu.ueb.acem.services;
 
 import java.util.Collection;
-import java.util.Set;
 
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -36,9 +35,13 @@ public interface ResourcesService {
 
 	ResourceCategory retrieveResourceCategory(Long id);
 
+	ResourceCategory updateResourceCategory(ResourceCategory resourceCategory);
+	
 	Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType);
 
 	Collection<ResourceCategory> retrieveAllCategories();
+
+	Collection<Scenario> retrieveScenariosAssociatedWithResourceCategory(Long id);
 	
 	Ressource createResource(String resourceType, ResourceCategory resourceCategory, String name, String iconFileName);
 
@@ -57,9 +60,7 @@ public interface ResourcesService {
 	Collection<? extends Ressource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category);
 
 	void saveResourceName(String resourceType, Long id, String label);
-	
-	Collection<Scenario> retrieveScenariosAssociatedWithRessource(Long id);
 
-	Set<Long> retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(Long id);
+	//Set<Long> retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(Long id);
 
 }

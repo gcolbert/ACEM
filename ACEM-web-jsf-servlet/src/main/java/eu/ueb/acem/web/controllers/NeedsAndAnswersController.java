@@ -213,7 +213,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 				currentVisibleRoot = treeBean.addVisibleRoot(need.getName());
 			}
 			for (Besoin child : need.getChildren()) {
-				createTree(child, currentVisibleRoot);
+				createTree(treeBean, child, currentVisibleRoot);
 			}
 		}
 		if (singleVisibleTreeRootLabel != null) {
@@ -224,17 +224,17 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	/**
 	 * Recursive function to construct Tree
 	 */
-	private void createTree(Besoin need, TreeNode rootNode) {
-		// We create the root node
-		TreeNode newNode = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(),
-				need.getName(), "Need"), rootNode);
+	private void createTree(EditableTreeBean treeBean, Besoin need, TreeNode rootNode) {
+		// We create the root node for this branch
+		//TreeNode newNode = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(), need.getName(), "Need"), rootNode);
+		TreeNode newNode = treeBean.addChild(getTreeNodeType_NEED_LEAF(), rootNode, need.getId(), need.getName(), "Need");
 		// We look for children and recursively create them too
 		@SuppressWarnings("unchecked")
 		Collection<Besoin> associatedNeeds = (Collection<Besoin>) need.getChildren();
 		if (associatedNeeds.size() > 0) {
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 			for (Besoin besoinChild : associatedNeeds) {
-				createTree(besoinChild, newNode);
+				createTree(treeBean, besoinChild, newNode);
 			}
 		}
 
@@ -244,8 +244,8 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 			need.setAnswers((Set<Reponse>) answers);
 			for (Reponse answer : answers) {
-				new DefaultTreeNode(getTreeNodeType_ANSWER_LEAF(), new TreeNodeData(answer.getId(), answer.getName(),
-						"Answer"), newNode);
+				//new DefaultTreeNode(getTreeNodeType_ANSWER_LEAF(), new TreeNodeData(answer.getId(), answer.getName(), "Answer"), newNode);
+				treeBean.addChild(getTreeNodeType_ANSWER_LEAF(), newNode, answer.getId(), answer.getName(), "Answer");
 			}
 		}
 	}

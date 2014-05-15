@@ -46,6 +46,7 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
+import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
@@ -95,7 +96,7 @@ public class ResourcesController extends AbstractContextAwareController {
 	private String selectedResourceType; // One of RESOURCE_TYPES
 	private Map<String, List<ToolCategoryViewBean>> categoryViewBeansByResourceType;
 	
-	// @Autowired
+	//@Autowired
 	private EditableTreeBean pedagogicalUsesTreeBean;
 
 	public ResourcesController() {
@@ -213,10 +214,12 @@ public class ResourcesController extends AbstractContextAwareController {
 			selectedToolCategoryId = toolCategoryId;
 			selectedToolCategoryViewBean = toolCategoryViewBean;
 			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(toolCategoryId);
+			/*-
 			for (Ressource tool : (Set<Ressource>) toolCategory.getResources()) {
 				logger.info("tool = {}", tool);
 			}
-			//setPedagogicalUsesTreeRoot(toolCategory);
+			*/
+			setPedagogicalUsesTreeRoot(toolCategory);
 
 			// We initialize the "favoriteToolCategory" attribute of the
 			// toolCategoryViewBean
@@ -358,6 +361,11 @@ public class ResourcesController extends AbstractContextAwareController {
 		logger.info("Leaving onNodeSelect");
 	}
 
+	public void onSelectedToolCategorySave() {
+		logger.info("onSelectedToolCategorySave");
+		selectedToolCategoryViewBean.setResourceCategory(resourcesService.updateResourceCategory(selectedToolCategoryViewBean.getResourceCategory()));
+	}
+	
 	public TreeNode getPedagogicalUsesTreeRoot() {
 		return pedagogicalUsesTreeBean.getRoot();
 	}
@@ -368,12 +376,13 @@ public class ResourcesController extends AbstractContextAwareController {
 		Set<Long> idsOfLeavesToKeep = new HashSet<Long>();
 		for (Reponse answer : resourceCategory.getAnswers()) {
 			idsOfLeavesToKeep.add(answer.getId());
+			logger.info("answer found = {}",answer.getId());
 		}
 		pedagogicalUsesTreeBean.retainLeavesAndParents(idsOfLeavesToKeep);
 	}
 
-	public List<Scenario> getScenariosUsingSelectedTool() {
-		return new ArrayList<Scenario>(resourcesService.retrieveScenariosAssociatedWithRessource(selectedResourceId));
+	public List<Scenario> getScenariosUsingSelectedToolCategory() {
+		return new ArrayList<Scenario>(resourcesService.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryId));
 	}
 
 	private ResourceViewBean getResourceViewBean(Long id) {

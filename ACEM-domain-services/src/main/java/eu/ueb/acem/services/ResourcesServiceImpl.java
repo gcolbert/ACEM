@@ -237,10 +237,27 @@ public class ResourcesServiceImpl implements ResourcesService {
 	public ResourceCategory retrieveResourceCategory(Long id) {
 		return resourceCategoryDAO.retrieveById(id);
 	}
+
+	@Override
+	public ResourceCategory updateResourceCategory(ResourceCategory resourceCategory) {
+		return resourceCategoryDAO.update((ResourceCategory) resourceCategory);
+	}
 	
 	@Override
 	public Collection<ResourceCategory> retrieveAllCategories() {
 		return resourceCategoryDAO.retrieveAll();
+	}
+	
+	@Override
+	public Collection<Scenario> retrieveScenariosAssociatedWithResourceCategory(Long id) {
+		ResourceCategory toolCategory = retrieveResourceCategory(id);
+		Set<Scenario> scenarios = new HashSet<Scenario>();
+		if (toolCategory != null) {
+			for (ActivitePedagogique activity : toolCategory.getPedagogicalActivities()) {
+				scenarios.addAll(activity.getScenarios());
+			}
+		}
+		return scenarios;
 	}
 	
 	@Override
@@ -293,18 +310,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 		}
 	}
 
-	@Override
-	public Collection<Scenario> retrieveScenariosAssociatedWithRessource(Long id) {
-		Ressource resource = retrieveResource(id);
-		Set<Scenario> scenarios = new HashSet<Scenario>();
-		if (resource != null) {
-			for (ActivitePedagogique activity : resource.getPedagogicalActivities()) {
-				scenarios.addAll(activity.getScenarios());
-			}
-		}
-		return scenarios;
-	}
-
+	/*-
 	@Override
 	public Set<Long> retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(Long resourceCategoryId) {
 		Set<Long> idsOfPedagogicalNodes = new HashSet<Long>();
@@ -313,5 +319,6 @@ public class ResourcesServiceImpl implements ResourcesService {
 		// WHERE id(r)=41 return r,answer,need,need2;
 		return idsOfPedagogicalNodes;
 	}
+	*/
 
 }

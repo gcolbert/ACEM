@@ -51,6 +51,8 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 	private Boolean favoriteToolCategory;
 	
 	private String iconFileName;
+	
+	private String description;
 
 	public ToolCategoryViewBean() {
 		resourceViewBeans = new ArrayList<ResourceViewBean>();
@@ -96,6 +98,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 			}
 		}
 		setIconFileName(toolCategory.getIconFileName());
+		setDescription(toolCategory.getDescription());
 	}
 	
 	public List<ResourceViewBean> getResourceViewBeans() {
@@ -141,6 +144,15 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+		resourceCategory.setDescription(description);
 	}
 	
 	@Override

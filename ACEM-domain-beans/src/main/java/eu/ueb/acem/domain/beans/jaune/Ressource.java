@@ -21,8 +21,6 @@ package eu.ueb.acem.domain.beans.jaune;
 import java.io.Serializable;
 import java.util.Set;
 
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
@@ -55,10 +53,6 @@ public interface Ressource extends Serializable {
 	Set<? extends ModaliteUtilisation> getUseModes();
 
 	void setUseModes(Set<? extends ModaliteUtilisation> useModes);
-
-	Set<? extends ActivitePedagogique> getPedagogicalActivities();
-
-	void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities);
 
 	int compareTo(Ressource o);
 	

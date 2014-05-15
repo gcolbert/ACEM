@@ -30,8 +30,6 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
@@ -64,10 +62,6 @@ public abstract class RessourceNode implements Ressource {
 	@Fetch
 	private Set<ModaliteUtilisationNode> useModes;
 	
-	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type="activityRequiringResource", direction = INCOMING)
-	@Fetch
-	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
-
 	/*-
 	@RelatedTo(elementClass = EnseignantNode.class, type="hasFavoriteResource", direction = INCOMING)
 	@Fetch
@@ -130,17 +124,6 @@ public abstract class RessourceNode implements Ressource {
 	}
 
 	@Override
-	public Set<? extends ActivitePedagogique> getPedagogicalActivities() {
-		return pedagogicalActivities;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities) {
-		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>)pedagogicalActivities;
-	}
-
-	@Override
 	public Set<? extends ResourceCategory> getCategories() {
 		return categories;
 	}
@@ -171,7 +154,7 @@ public abstract class RessourceNode implements Ressource {
 		}
 	}
 	
-	/*
+	/*-
 	@Override
 	public Boolean getFavoriteResource(Enseignant teacher) {
 		return teachersHavingThisAsFavoriteResource.contains(teacher);

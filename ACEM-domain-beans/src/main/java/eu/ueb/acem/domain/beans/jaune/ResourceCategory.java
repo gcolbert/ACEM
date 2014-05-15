@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.jaune;
 import java.io.Serializable;
 import java.util.Set;
 
+import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 
 /**
@@ -36,6 +37,10 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 
 	void setName(String name);
 
+	String getDescription();
+	
+	void setDescription(String description);
+	
 	Set<? extends Ressource> getResources();
 
 	void setResources(Set<? extends Ressource> resources);
@@ -55,6 +60,10 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 	String getIconFileName();
 	
 	void setIconFileName(String iconFileName);
+	
+	Set<? extends ActivitePedagogique> getPedagogicalActivities();
+
+	void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities);
 	
 	int compareTo(ResourceCategory o);
 
