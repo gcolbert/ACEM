@@ -43,7 +43,6 @@ import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
-import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.PickListBean;

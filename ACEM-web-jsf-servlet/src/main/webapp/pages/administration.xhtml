@@ -718,15 +718,15 @@
 				<p:dataTable id="usersDataTable" var="personViewBean"
 					emptyMessage="#{msgs['ADMINISTRATION.USERS.LIST.NO_RECORDS_FOUND']}"
 					value="#{usersController.personViewBeans}">
-					<p:column
+					<p:column width="20%"
 						headerText="#{msgs['ADMINISTRATION.USERS.LIST.NAME.COLUMN_HEADER']}">
 						<h:outputText value="#{personViewBean.name}" />
 					</p:column>
-					<p:column
+					<p:column width="20%"
 						headerText="#{msgs['ADMINISTRATION.USERS.LIST.LOGIN.COLUMN_HEADER']}">
 						<h:outputText value="#{personViewBean.login}" />
 					</p:column>
-					<p:column
+					<p:column width="40%"
 						headerText="#{msgs['ADMINISTRATION.USERS.LIST.WORKS_FOR_ORGANISATION.COLUMN_HEADER']}">
 						<p:dataTable id="organisationsOfUserDataTable"
 							var="organisationViewBean"
@@ -746,7 +746,7 @@
 							update=":formUsers:idDialogAssociateOrganisationWithUser"
 							process="@this" />
 					</p:column>
-					<p:column width="20"
+					<p:column width="20%"
 						headerText="#{msgs['ADMINISTRATION.USERS.LIST.IS_ADMIN.COLUMN_HEADER']}">
 						<p:selectBooleanCheckbox value="#{personViewBean.administrator}">
 							<p:ajax update="@this :formUsers:messagesDisplayerFormUsers"

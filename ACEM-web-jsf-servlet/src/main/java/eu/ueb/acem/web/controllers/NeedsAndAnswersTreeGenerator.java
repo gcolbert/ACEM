@@ -1,4 +1,4 @@
-package eu.ueb.acem.web.utils;
+package eu.ueb.acem.web.controllers;
 
 import java.util.Collection;
 import java.util.Set;
@@ -19,7 +19,7 @@ import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 
 @Controller("needsAndAnswersTreeGenerator")
 @Scope("singleton")
-public class NeedsAndAnswersTreeGenerator {
+class NeedsAndAnswersTreeGenerator {
 
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeGenerator.class);
 	

@@ -46,7 +46,6 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
-import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
