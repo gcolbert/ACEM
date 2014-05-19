@@ -46,10 +46,15 @@ import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
+import eu.ueb.acem.domain.beans.rouge.Communaute;
+import eu.ueb.acem.domain.beans.rouge.Composante;
+import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
-import eu.ueb.acem.web.viewbeans.bleu.PedagogicalActivityViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
@@ -58,6 +63,11 @@ import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.SoftwareDocumentationViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -73,11 +83,12 @@ public class ResourcesController extends AbstractContextAwareController {
 	private static final Logger logger = LoggerFactory.getLogger(ResourcesController.class);
 
 	@Autowired
-	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
-	
-	@Autowired
 	private ResourcesService resourcesService;
 
+	@Autowired
+	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
+	private EditableTreeBean pedagogicalUsesTreeBean;
+	
 	@Autowired
 	private EditableTreeBean resourcesTreeBean;
 	private static final String TREE_NODE_TYPE_CATEGORY = "CategoryNode";
@@ -97,8 +108,9 @@ public class ResourcesController extends AbstractContextAwareController {
 	private String selectedResourceType; // One of RESOURCE_TYPES
 	private Map<String, List<ToolCategoryViewBean>> categoryViewBeansByResourceType;
 	
-	//@Autowired
-	private EditableTreeBean pedagogicalUsesTreeBean;
+	@Autowired
+	private OrganisationsService organisationsService;
+	List<OrganisationViewBean> allOrganisationViewBeans;
 
 	public ResourcesController() {
 		toolCategoryViewBeans = new HashMap<Long, ToolCategoryViewBean>();
@@ -230,6 +242,7 @@ public class ResourcesController extends AbstractContextAwareController {
 		return selectedToolCategoryViewBean;
 	}
 	
+	/*-
 	public Long getSelectedResourceId() {
 		return selectedResourceId;
 	}
@@ -271,6 +284,7 @@ public class ResourcesController extends AbstractContextAwareController {
 		}
 		logger.info("Leaving setSelectedResourceId, resourceId = {}", resourceId);
 	}
+	*/
 
 	public ResourceViewBean getSelectedResourceViewBean() {
 		return selectedResourceViewBean;
@@ -413,4 +427,25 @@ public class ResourcesController extends AbstractContextAwareController {
 		}
 		return toolCategoryViewBean;
 	}	
+	
+	public List<OrganisationViewBean> getAllOrganisationViewBeans() {
+		List<OrganisationViewBean> organisationViewBeans = new ArrayList<OrganisationViewBean>();
+		Collection<Organisation> organisations = organisationsService.retrieveAllOrganisations();
+		for (Organisation organisation : organisations) {
+			if (organisation instanceof Communaute) {
+				organisationViewBeans.add(new CommunityViewBean((Communaute) organisation));
+			}
+			else if (organisation instanceof Etablissement) {
+				organisationViewBeans.add(new InstitutionViewBean((Etablissement) organisation));
+			}
+			else if (organisation instanceof Service) {
+				organisationViewBeans.add(new AdministrativeDepartmentViewBean((Service) organisation));
+			}
+			else if (organisation instanceof Composante) {
+				organisationViewBeans.add(new TeachingDepartmentViewBean((Composante) organisation));
+			}
+		}
+		return organisationViewBeans;
+	}
+
 }

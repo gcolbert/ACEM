@@ -308,6 +308,7 @@
 								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
 								update="iconForTheNewResource :formResources:messagesDisplayer" />
 							<p:panel id="iconForTheNewResource">
+								<!-- 
 								<p:graphicImage
 									rendered="#{(not empty resourcesController.selectedResourceViewBean.iconFileName) and (empty fileUploadController.uploadedFileName)}"
 									alt="#{resourcesController.selectedResourceViewBean.name}"
@@ -315,6 +316,7 @@
 									<f:param name="imageFileName"
 										value="#{resourcesController.selectedResourceViewBean.iconFileName}" />
 								</p:graphicImage>
+								 -->
 								<p:graphicImage
 									rendered="#{not empty fileUploadController.uploadedFileName}"
 									alt="#{resourcesController.selectedResourceViewBean.name}"
@@ -326,30 +328,29 @@
 						</p:column>
 					</p:row>
 
-<!-- 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="supportService"
+							<h:outputLabel for="supportServiceForTheNewResource"
 								value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SUPPORT_SERVICE_LABEL']}" />
 						</p:column>
 						<p:column>
-							<p:selectOneMenu id="supportService" required="true"
+							<p:selectOneMenu id="supportServiceForTheNewResource" required="true"
 								requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false"
 								binding="#{input2}" converter="ResourceCategoryConverter">
 								<f:selectItem
-									itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY']}"
+									itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
 								<f:selectItems
 									value="#{resourcesController.allCategoryViewBeans}"
-									var="categoryViewBean" itemLabel="#{categoryViewBean.domainBean.name}"
+									var="categoryViewBean" itemLabel="#{categoryViewBean.name}"
 									itemValue="#{categoryViewBean.domainBean}" />
 							</p:selectOneMenu>
 						</p:column>
 						<p:column>
-							<p:message for="supportService" display="text" />
+							<p:message for="supportServiceForTheNewResource" display="text" />
 						</p:column>
 					</p:row>
- -->
+
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.VALIDATE']}"
@@ -365,7 +366,7 @@
 			header="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogModifyResource" modal="true" height="auto">
 			<h:form id="formModifyResource">
-				<p:panelGrid>
+				<p:panelGrid rendered="#{resourcesController.selectedResourceViewBean != null}">
 					<p:row>
 						<p:column>
 							<h:outputLabel for="categoryForTheExistingResource"
@@ -382,7 +383,7 @@
 								value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />
 						</p:column>
 						<p:column>
-							<p:inputText id="nameForTheExistingResource" required="true"
+							<p:inputText id="nameForTheExistingResource" required="true" value="#{resourcesController.selectedResourceViewBean.name}"
 								requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
 								binding="#{input3}" />
 						</p:column>
@@ -431,16 +432,14 @@
 						<p:column>
 							<p:selectOneMenu id="supportServiceForTheExistingResource" required="true"
 								requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false"
-								binding="#{input4}" converter="ResourceCategoryConverter">
-						<!-- 
+								binding="#{input4}" converter="OrganisationConverter">
 								<f:selectItem
-									itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY']}"
+									itemLabel="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
 								<f:selectItems
-									value="#{resourcesController.allCategoryViewBeans}"
-									var="categoryViewBean" itemLabel="#{categoryViewBean.domainBean.name}"
-									itemValue="#{categoryViewBean.domainBean}" />
- -->
+									value="#{resourcesController.allOrganisationViewBeans}"
+									var="organisationViewBean" itemLabel="#{organisationViewBean.name}"
+									itemValue="#{organisationViewBean.domainBean}" />
 							</p:selectOneMenu>
  						</p:column>
 						<p:column>
@@ -453,7 +452,7 @@
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{resourcesController.createResourceForSelectedResourceType(input3.value, input4.value, fileUploadController.uploadedFileName)}"
+					action="#{resourcesController.modifyResource(input3.value, input4.value, fileUploadController.uploadedFileName)}"
 					process="@this"
 					update="@form :formResources:resourcesTree"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogModifyResource.hide(); }" />
