@@ -18,33 +18,6 @@
 
 				<p:growl id="messagesDisplayer" showDetail="true" />
 
-				<p:contextMenu for="resourcesTree" nodeType="default">
-					<p:menuitem
-						value="#{msgs['RESOURCES.TREE.CONTEXT_MENU.CREATE_RESOURCE']}"
-						update=":formCreateResource"
-						oncomplete="PF('dialogCreateResource').show()" icon="ui-icon-plus">
-						<p:resetInput target=":formCreateResource" />
-					</p:menuitem>
-				</p:contextMenu>
-				<p:contextMenu for="resourcesTree" nodeType="CategoryNode">
-					<p:menuitem
-						value="#{msgs['RESOURCES.TREE.CONTEXT_MENU.CREATE_RESOURCE']}"
-						update=":formCreateResource"
-						oncomplete="PF('dialogCreateResource').show()" icon="ui-icon-plus">
-						<p:resetInput target=":formCreateResource" />
-					</p:menuitem>
-				</p:contextMenu>
-				<!-- 
-				<p:contextMenu for="resourcesTree" nodeType="ResourceNode">
-					<p:menuitem
-						value="#{msgs['RESOURCES.TREE.CONTEXT_MENU.ASSOCIATE_USE_MODE']}"
-						update=":formAssociateUseMode"
-						oncomplete="PF('dialogAssociateUseMode').show()" icon="ui-icon-plus">
-						<p:resetInput target=":formAssociateUseMode" />
-					</p:menuitem>
-				</p:contextMenu>
-				-->
-
 				<p:panelGrid styleClass="menu" columns="5">
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesController.prepareTree('equipment')}"
@@ -132,7 +105,7 @@
 						value="#{resourcesController.selectedToolCategoryViewBean.name}" />
 					
 					<p:panelGrid columns="2">
-						<p:graphicImage id="resourceIcon"
+						<p:graphicImage id="toolCategoryIcon"
 							rendered="#{not empty resourcesController.selectedToolCategoryViewBean.iconFileName}"
 							styleClass="resourceLogo" alt="#{resourcesController.selectedToolCategoryViewBean.name}"
 							cache="false" width="80"
@@ -146,7 +119,7 @@
 									<p:ajax event="save" listener="#{resourcesController.onSelectedToolCategorySave}" update="@this" />
 									<p:ajax event="cancel" update="@this" />
 									<h:inputText id="selectedScenarioName"
-										value="#{resourcesController.selectedToolCategoryViewBean.domainBean.description}"
+										value="#{resourcesController.selectedToolCategoryViewBean.description}"
 										required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
 								</p:inplace>
 							</p:row>
@@ -164,29 +137,43 @@
 						</p:column>
 					</p:panelGrid>
 
-					<!--
-					<h:outputText id="selectedToolCategoryDescription" value="#{resourcesController.selectedToolCategoryViewBean.description}" />
-					-->
-					<!-- 
-					<p:commandButton 
-						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.DESCRIPTION.MODIFY_DESCRIPTION_LABEL']}"
-						icon="ui-icon-check" validateClient="true"
-						action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value, fileUploadController.uploadedFileName)}"
-						process="@this"
-						update="@form :formResources:resourcesTree"
-						oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
-					 -->
-					
-					<p:dataTable var="toolViewBean" value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}">
+					<p:dataTable var="toolViewBean" value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}"
+									selectionMode="single" selection="#{resourcesController.selectedResourceViewBean}" rowKey="#{toolViewBean.id}">
+						<p:ajax event="rowSelect"
+							listener="#{resourcesController.onToolRowSelect}"
+							update=":formSelectedToolCategory:idModifyToolButton" />
 						<p:column
 							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_NAME']}">
 							<h:outputText value="#{toolViewBean.name}"/>
+							<p:graphicImage id="resourceIcon"
+								rendered="#{not empty toolViewBean.iconFileName}"
+								styleClass="resourceLogo" alt="#{toolViewBean.name}"
+								cache="false" width="40"
+								value="#{imagesController.getImage()}">
+								<f:param name="imageFileName"
+									value="#{toolViewBean.iconFileName}" />
+							</p:graphicImage>
 						</p:column>
 						<p:column
 							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATION_NAME']}">
 							<h:outputText value="Exemple : Rennes1/Droit (pré-requis : lier un outil et une organisation)"/>
 						</p:column>
 					</p:dataTable>
+					<p:row>
+						<p:commandButton
+							value="#{msgs['RESOURCES.CREATE_RESOURCE_LABEL']}"
+							icon="ui-icon-plusthick" update=":idDialogCreateResource"
+							oncomplete="PF('dialogCreateResource').show()">
+							<p:resetInput target=":idDialogCreateResource" />
+						</p:commandButton>
+						<p:commandButton id="idModifyToolButton"
+							value="#{msgs['RESOURCES.MODIFY_RESOURCE_LABEL']}"
+							icon="ui-icon-pencil" update=":idDialogModifyResource"
+							oncomplete="PF('dialogModifyResource').show()"
+							disabled="#{resourcesController.selectedResourceViewBean == null}">
+							<p:resetInput target=":idDialogModifyResource" />
+						</p:commandButton>
+					</p:row>
 
 					<p:outputLabel
 						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}"
@@ -281,65 +268,195 @@
 			header="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogCreateResource" modal="true" height="auto">
 			<h:form id="formCreateResource">
-				<p:panelGrid columns="3">
-					<h:outputLabel for="categoryForTheNewResource"
-						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
-					<p:selectOneMenu id="categoryForTheNewResource" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false"
-						binding="#{input1}" converter="ResourceCategoryConverter">
-						<f:selectItem
-							itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY']}"
-							itemValue="" itemDisabled="true" noSelectionOption="true" />
-						<f:selectItems
-							value="#{resourcesController.allCategoryViewBeans}"
-							var="categoryViewBean" itemLabel="#{categoryViewBean.domainBean.name}"
-							itemValue="#{categoryViewBean.domainBean}" />
-					</p:selectOneMenu>
-					<p:message for="categoryForTheNewResource" display="text" />
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<h:outputLabel for="categoryForTheNewResource"
+								value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
+						</p:column>
+						<p:column colspan="2">
+							<h:outputText id="categoryForTheNewResource" value="#{resourcesController.selectedToolCategoryViewBean.name}"/>
+						</p:column>
+					</p:row>
 
-					<h:outputLabel for="newSoftwareName"
-						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />
-					<p:inputText id="newSoftwareName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
-						binding="#{input2}" />
-					<p:message for="newSoftwareName" display="text" />
+					<p:row>
+						<p:column>
+							<h:outputLabel for="nameForTheNewResource"
+								value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />
+						</p:column>
+						<p:column>
+							<p:inputText id="nameForTheNewResource" required="true"
+								requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+								binding="#{input1}" />
+						</p:column>
+						<p:column>
+							<p:message for="nameForTheNewResource" display="text" />
+						</p:column>
+					</p:row>
 
-					<h:outputLabel
-						value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.ICON_LABEL']}"
-						for="icon" />
-					<p:column rowspan="2">
-						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
-							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
-							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
-							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
-							update="icon :formResources:messagesDisplayer" />
-						<p:panel id="icon">
-							<p:graphicImage
-								rendered="#{(not empty resourcesController.selectedResourceViewBean.iconFileName) and (empty fileUploadController.uploadedFileName)}"
-								alt="#{resourcesController.selectedResourceViewBean.name}"
-								cache="false" width="200" value="#{imagesController.image}">
-								<f:param name="imageFileName"
-									value="#{resourcesController.selectedResourceViewBean.iconFileName}" />
-							</p:graphicImage>
-							<p:graphicImage
-								rendered="#{not empty fileUploadController.uploadedFileName}"
-								alt="#{resourcesController.selectedResourceViewBean.name}"
-								cache="false" width="200" value="#{imagesController.image}">
-								<f:param name="imageFileName"
-									value="#{fileUploadController.uploadedFileName}" />
-							</p:graphicImage>
-						</p:panel>
-					</p:column>
+					<p:row>
+						<p:column>
+							<h:outputLabel
+								value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.ICON_LABEL']}"
+								for="iconForTheNewResource" />
+						</p:column>
+						<p:column colspan="2">
+							<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
+								sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
+								uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
+								cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
+								update="iconForTheNewResource :formResources:messagesDisplayer" />
+							<p:panel id="iconForTheNewResource">
+								<p:graphicImage
+									rendered="#{(not empty resourcesController.selectedResourceViewBean.iconFileName) and (empty fileUploadController.uploadedFileName)}"
+									alt="#{resourcesController.selectedResourceViewBean.name}"
+									cache="false" width="200" value="#{imagesController.image}">
+									<f:param name="imageFileName"
+										value="#{resourcesController.selectedResourceViewBean.iconFileName}" />
+								</p:graphicImage>
+								<p:graphicImage
+									rendered="#{not empty fileUploadController.uploadedFileName}"
+									alt="#{resourcesController.selectedResourceViewBean.name}"
+									cache="false" width="200" value="#{imagesController.image}">
+									<f:param name="imageFileName"
+										value="#{fileUploadController.uploadedFileName}" />
+								</p:graphicImage>
+							</p:panel>
+						</p:column>
+					</p:row>
 
+<!-- 
+					<p:row>
+						<p:column>
+							<h:outputLabel for="supportService"
+								value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SUPPORT_SERVICE_LABEL']}" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="supportService" required="true"
+								requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false"
+								binding="#{input2}" converter="ResourceCategoryConverter">
+								<f:selectItem
+									itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY']}"
+									itemValue="" itemDisabled="true" noSelectionOption="true" />
+								<f:selectItems
+									value="#{resourcesController.allCategoryViewBeans}"
+									var="categoryViewBean" itemLabel="#{categoryViewBean.domainBean.name}"
+									itemValue="#{categoryViewBean.domainBean}" />
+							</p:selectOneMenu>
+						</p:column>
+						<p:column>
+							<p:message for="supportService" display="text" />
+						</p:column>
+					</p:row>
+ -->
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['RESOURCES.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
+					value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value, fileUploadController.uploadedFileName)}"
 					process="@this"
 					update="@form :formResources:resourcesTree"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="idDialogModifyResource"
+			header="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.HEADER']}"
+			widgetVar="dialogModifyResource" modal="true" height="auto">
+			<h:form id="formModifyResource">
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<h:outputLabel for="categoryForTheExistingResource"
+								value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
+						</p:column>
+						<p:column colspan="2">
+							<h:outputText id="categoryForTheExistingResource" value="#{resourcesController.selectedToolCategoryViewBean.name}"/>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputLabel for="nameForTheExistingResource"
+								value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />
+						</p:column>
+						<p:column>
+							<p:inputText id="nameForTheExistingResource" required="true"
+								requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+								binding="#{input3}" />
+						</p:column>
+						<p:column>
+							<p:message for="nameForTheExistingResource" display="text" />
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputLabel
+								value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.ICON_LABEL']}"
+								for="iconForTheExistingResource" />
+						</p:column>
+						<p:column colspan="2">
+							<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
+								sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
+								uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
+								cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
+								update="iconForTheExistingResource :formResources:messagesDisplayer" />
+							<p:panel id="iconForTheExistingResource">
+								<p:graphicImage
+									rendered="#{(not empty resourcesController.selectedResourceViewBean.iconFileName) and (empty fileUploadController.uploadedFileName)}"
+									alt="#{resourcesController.selectedResourceViewBean.name}"
+									cache="false" width="200" value="#{imagesController.image}">
+									<f:param name="imageFileName"
+										value="#{resourcesController.selectedResourceViewBean.iconFileName}" />
+								</p:graphicImage>
+								<p:graphicImage
+									rendered="#{not empty fileUploadController.uploadedFileName}"
+									alt="#{resourcesController.selectedResourceViewBean.name}"
+									cache="false" width="200" value="#{imagesController.image}">
+									<f:param name="imageFileName"
+										value="#{fileUploadController.uploadedFileName}" />
+								</p:graphicImage>
+							</p:panel>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputLabel for="supportServiceForTheExistingResource"
+								value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SUPPORT_SERVICE_LABEL']}" />
+						</p:column>
+						<p:column>
+							<p:selectOneMenu id="supportServiceForTheExistingResource" required="true"
+								requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false"
+								binding="#{input4}" converter="ResourceCategoryConverter">
+						<!-- 
+								<f:selectItem
+									itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_CATEGORY']}"
+									itemValue="" itemDisabled="true" noSelectionOption="true" />
+								<f:selectItems
+									value="#{resourcesController.allCategoryViewBeans}"
+									var="categoryViewBean" itemLabel="#{categoryViewBean.domainBean.name}"
+									itemValue="#{categoryViewBean.domainBean}" />
+ -->
+							</p:selectOneMenu>
+ 						</p:column>
+						<p:column>
+							<p:message for="supportServiceForTheExistingResource" display="text" />
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{resourcesController.createResourceForSelectedResourceType(input3.value, input4.value, fileUploadController.uploadedFileName)}"
+					process="@this"
+					update="@form :formResources:resourcesTree"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogModifyResource.hide(); }" />
 			</h:form>
 		</p:dialog>
 

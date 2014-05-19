@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,7 @@ import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
+import eu.ueb.acem.web.viewbeans.bleu.PedagogicalActivityViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
@@ -129,12 +131,6 @@ public class ResourcesController extends AbstractContextAwareController {
 		return TREE_NODE_TYPE_CATEGORY;
 	}
 
-	/*-
-	public String getTreeNodeType_RESOURCE() {
-		return TREE_NODE_TYPE_RESOURCE;
-	}
-	*/
-
 	@SuppressWarnings("unchecked")
 	public void prepareTree(String resourceType) {
 		logger.info("prepareTree for resourceType={}", resourceType);
@@ -213,11 +209,6 @@ public class ResourcesController extends AbstractContextAwareController {
 			selectedToolCategoryId = toolCategoryId;
 			selectedToolCategoryViewBean = toolCategoryViewBean;
 			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(toolCategoryId);
-			/*-
-			for (Ressource tool : (Set<Ressource>) toolCategory.getResources()) {
-				logger.info("tool = {}", tool);
-			}
-			*/
 			setPedagogicalUsesTreeRoot(toolCategory);
 
 			// We initialize the "favoriteToolCategory" attribute of the
@@ -274,32 +265,6 @@ public class ResourcesController extends AbstractContextAwareController {
 				node.setSelected(true);
 				resourcesTreeBean.expandOnlyOneNode(node);
 			}
-
-			// We initialize the "favoriteResource" attribute of the
-			// resourceViewBean (it is not available on the domainBean,
-			// because having a Ressource.getUsersHavingThisAsFavoriteResource
-			// could potentially lead to a huge set).
-			/*-
-			if (getCurrentUserViewBean() instanceof TeacherViewBean) {
-				TeacherViewBean teacherViewBean = (TeacherViewBean) getCurrentUserViewBean();
-				if (teacherViewBean.getFavoriteResourceViewBeans().contains(resourceViewBean)) {
-					resourceViewBean.setFavoriteResource(true);
-				}
-				else {
-					resourceViewBean.setFavoriteResource(false);
-				}
-			}
-			*/
-
-			/*-
-			Set<Long> idsOfPedagogicalAnswers = new HashSet<Long>();
-			for (ResourceCategory resourceCategory : resourceViewBean.getDomainBean().getCategories()) {
-				for (Reponse answer : resourceCategory.getAnswers()) {
-					idsOfPedagogicalAnswers.add(answer.getId());
-				}
-				pedagogicalUsesTreeBean.retainLeavesAndParents(idsOfPedagogicalAnswers);
-			}
-			*/
 		}
 		else {
 			logger.error("Could not find the resource with id = {}", resourceId);
@@ -309,6 +274,10 @@ public class ResourcesController extends AbstractContextAwareController {
 
 	public ResourceViewBean getSelectedResourceViewBean() {
 		return selectedResourceViewBean;
+	}
+	
+	public void setSelectedResourceViewBean(ResourceViewBean resourceViewBean) {
+		this.selectedResourceViewBean = resourceViewBean;
 	}
 
 	public TreeNode getResourcesTreeRoot() {
@@ -363,6 +332,11 @@ public class ResourcesController extends AbstractContextAwareController {
 	public void onSelectedToolCategorySave() {
 		logger.info("onSelectedToolCategorySave");
 		selectedToolCategoryViewBean.setResourceCategory(resourcesService.updateResourceCategory(selectedToolCategoryViewBean.getResourceCategory()));
+	}
+	
+	public void onToolRowSelect(SelectEvent event) {
+		logger.info("onToolRowSelect");
+		setSelectedResourceViewBean((ResourceViewBean) event.getObject());
 	}
 	
 	public TreeNode getPedagogicalUsesTreeRoot() {

@@ -2,30 +2,29 @@
 	color:white;
 	background-image:url("../../resources/images/BandeauNumeriqueAccueil2013.png");
 	background-repeat: no-repeat;
-	height: 60px;
 	background-size: 100% 100%, auto auto;
 	padding:1em;
 }
 
 #header .logo {
 	display:inline-block;
-	width:40px;
+	width:60px;
+	border-right:1px solid white;
 }
 
 #header .logo img {
 	height:50px;
+	padding-right:1em;
 }
 
 #header .titreEtDescription {
 	display:inline-block;
 	vertical-align:top;
 	margin-left:1em;
-	border-left:1px solid white;
-	padding-left:1em;
 }
 
 #header .span_bigTitre {
-	font-size: 2em;
+	font-size:2em;
 	font-weight: bold;
 }
 
