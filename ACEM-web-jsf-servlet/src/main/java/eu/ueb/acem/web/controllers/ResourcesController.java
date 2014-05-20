@@ -43,6 +43,7 @@ import eu.ueb.acem.domain.beans.jaune.Applicatif;
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
 import eu.ueb.acem.domain.beans.jaune.Equipement;
 import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
@@ -325,6 +326,10 @@ public class ResourcesController extends AbstractContextAwareController {
 		resourcesService.createResource(selectedResourceType, category, name, iconFileName);
 	}
 
+	public void modifyResource(String name, String iconFileName, Organisation supportService, ModaliteUtilisation useMode) {
+		logger.info("modifyResource, supportService={}, useMode={}", supportService, useMode);
+	}
+	
 	/*-
 	public void onLabelSave(EditableTreeBean.TreeNodeData treeNodeData) {
 		if (treeNodeData.getConcept().equals("resource")) {
@@ -428,6 +433,12 @@ public class ResourcesController extends AbstractContextAwareController {
 		return toolCategoryViewBean;
 	}	
 	
+	/**
+	 * TODO : fill a setAllOrganisationViewBeans method,
+	 * or better, make a Helper class, shared with OrganisationsController
+	 * to get organisationViewBeans from various controllers
+	 * @return
+	 */
 	public List<OrganisationViewBean> getAllOrganisationViewBeans() {
 		List<OrganisationViewBean> organisationViewBeans = new ArrayList<OrganisationViewBean>();
 		Collection<Organisation> organisations = organisationsService.retrieveAllOrganisations();

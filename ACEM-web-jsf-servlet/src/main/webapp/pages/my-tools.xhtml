@@ -137,7 +137,7 @@
 						</p:column>
 					</p:panelGrid>
 
-					<p:dataTable var="toolViewBean" value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}"
+					<p:dataTable id="toolsDataTable" var="toolViewBean" value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}"
 									selectionMode="single" selection="#{resourcesController.selectedResourceViewBean}" rowKey="#{toolViewBean.id}">
 						<p:ajax event="rowSelect"
 							listener="#{resourcesController.onToolRowSelect}"
@@ -156,7 +156,9 @@
 						</p:column>
 						<p:column
 							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATION_NAME']}">
-							<h:outputText value="Exemple : Rennes1/Droit (pré-requis : lier un outil et une organisation)"/>
+							<h:outputText value="#{toolViewBean.organisationPossessingResourceViewBean}"/>
+						</p:column>
+						<p:column>
 						</p:column>
 					</p:dataTable>
 					<p:row>
@@ -336,14 +338,14 @@
 						<p:column>
 							<p:selectOneMenu id="supportServiceForTheNewResource" required="true"
 								requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false"
-								binding="#{input2}" converter="ResourceCategoryConverter">
+								binding="#{input2}" converter="OrganisationConverter">
 								<f:selectItem
-									itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
+									itemLabel="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
 								<f:selectItems
-									value="#{resourcesController.allCategoryViewBeans}"
-									var="categoryViewBean" itemLabel="#{categoryViewBean.name}"
-									itemValue="#{categoryViewBean.domainBean}" />
+									value="#{resourcesController.allOrganisationViewBeans}"
+									var="organisationViewBean" itemLabel="#{organisationViewBean.name}"
+									itemValue="#{organisationViewBean.domainBean}" />
 							</p:selectOneMenu>
 						</p:column>
 						<p:column>
@@ -452,9 +454,9 @@
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{resourcesController.modifyResource(input3.value, input4.value, fileUploadController.uploadedFileName)}"
+					action="#{resourcesController.modifyResource(input3.value, fileUploadController.uploadedFileName, input4.value, input5.value)}"
 					process="@this"
-					update="@form :formResources:resourcesTree"
+					update="@form"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogModifyResource.hide(); }" />
 			</h:form>
 		</p:dialog>
@@ -463,8 +465,7 @@
 			header="#{msgs['RESOURCES.ASSOCIATE_USE_MODE_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogAssociateUseMode" modal="true" height="auto">
 			<h:form id="formAssociateUseMode">
-			
-
+				
 			</h:form>
 		</p:dialog>
 

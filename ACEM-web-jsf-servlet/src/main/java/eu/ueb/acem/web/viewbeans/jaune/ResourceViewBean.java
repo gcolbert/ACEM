@@ -18,8 +18,11 @@
  */
 package eu.ueb.acem.web.viewbeans.jaune;
 
+import java.util.Set;
+
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.Pickable;
+import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -36,12 +39,6 @@ public interface ResourceViewBean extends Pickable {
 
 	void setDomainBean(Ressource resource);
 
-	/*-
-	Boolean getFavoriteResource();
-
-	void setFavoriteResource(Boolean favoriteResource);
-	*/
-
 	String getDescription();
 
 	void setDescription(String description);
@@ -49,5 +46,15 @@ public interface ResourceViewBean extends Pickable {
 	String getIconFileName();
 
 	void setIconFileName(String iconFileName);
+	
+	OrganisationViewBean getOrganisationPossessingResourceViewBean();
+	
+	void setOrganisationPossessingResource(OrganisationViewBean organisationViewBean);
 
+	Set<OrganisationViewBean> getOrganisationViewingResourceViewBeans();
+
+	void addOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean);
+
+	void removeOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean);
+	
 }

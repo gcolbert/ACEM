@@ -20,7 +20,6 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -59,13 +58,15 @@ public abstract class OrganisationNode implements Organisation {
 	@Fetch
 	private Set<RessourceNode> possessedResources;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "viewsResource", direction = OUTGOING)
+	@RelatedTo(elementClass = RessourceNode.class, type = "accessesResource", direction = OUTGOING)
 	@Fetch
 	private Set<RessourceNode> viewedResources;
 
 	public OrganisationNode() {
+		/*-
 		possessedResources = new HashSet<RessourceNode>();
 		viewedResources = new HashSet<RessourceNode>();
+		*/
 	}
 
 	public OrganisationNode(String name) {
@@ -133,6 +134,26 @@ public abstract class OrganisationNode implements Organisation {
 		this.viewedResources = (Set<RessourceNode>) viewedResources;
 	}
 
+	@Override
+	public void addViewedResource(Ressource resource) {
+		if (! viewedResources.contains(resource)) {
+			viewedResources.add((RessourceNode) resource);
+		}
+		if (! resource.getOrganisationsHavingAccessToResource().contains(this)) {
+			resource.addOrganisationHavingAccessToResource(this);
+		}
+	}
+
+	@Override
+	public void removeViewedResource(Ressource resource) {
+		if (viewedResources.contains(resource)) {
+			viewedResources.remove(resource);
+		}
+		if (resource.getOrganisationsHavingAccessToResource().contains(this)) {
+			resource.removeOrganisationHavingAccessToResource(this);
+		}
+	}
+	
 	@Override
 	public int compareTo(Organisation o) {
 		return this.getName().compareTo(o.getName());

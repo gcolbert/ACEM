@@ -19,12 +19,14 @@
 package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.Equipement;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -44,11 +46,13 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 
 	private String name;
 
-	//private Boolean favoriteResource;
-	
 	private String iconFileName;
 	
 	private String description;
+	
+	private OrganisationViewBean organisationPossedingResourceViewBean;
+	
+	private Set<OrganisationViewBean> organisationsViewingResourceViewBeans;
 	
 	public EquipmentViewBean() {
 	}
@@ -96,19 +100,8 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 
 	public void setName(String name) {
 		this.name = name;
+		getDomainBean().setName(name);
 	}
-
-	/*-
-	@Override
-	public Boolean getFavoriteResource() {
-		return favoriteResource;
-	}
-	
-	@Override
-	public void setFavoriteResource(Boolean favoriteResource) {
-		this.favoriteResource = favoriteResource;
-	}
-	*/
 
 	@Override
 	public String getIconFileName() {
@@ -118,6 +111,7 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 	@Override
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
+		getDomainBean().setIconFileName(iconFileName);
 	}
 	
 	@Override
@@ -128,8 +122,35 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 	@Override
 	public void setDescription(String description) {
 		this.description = description;
+		getDomainBean().setDescription(description);
 	}
 	
+	@Override
+	public OrganisationViewBean getOrganisationPossessingResourceViewBean() {
+		return organisationPossedingResourceViewBean;
+	}
+
+	@Override
+	public void setOrganisationPossessingResource(OrganisationViewBean organisationViewBean) {
+		this.organisationPossedingResourceViewBean = organisationViewBean;
+		getDomainBean().setOrganisationPossedingResource(organisationViewBean.getDomainBean());
+	}
+	
+	@Override
+	public Set<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
+		return organisationsViewingResourceViewBeans;
+	}
+	
+	@Override
+	public void addOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
+		organisationsViewingResourceViewBeans.add(organisationViewBean);
+	}
+
+	@Override
+	public void removeOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
+		organisationsViewingResourceViewBeans.remove(organisationViewBean);
+	}
+
 	@Override
 	public int compareTo(EquipmentViewBean o) {
 		return name.compareTo(o.getName());

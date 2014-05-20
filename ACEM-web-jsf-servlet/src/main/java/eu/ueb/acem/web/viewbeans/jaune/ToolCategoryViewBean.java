@@ -128,6 +128,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	public void setName(String name) {
 		this.name = name;
+		getDomainBean().setName(name);
 	}
 
 	public Boolean getFavoriteToolCategory() {
@@ -144,6 +145,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
+		getDomainBean().setIconFileName(iconFileName);
 	}
 	
 	public String getDescription() {
@@ -152,7 +154,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	public void setDescription(String description) {
 		this.description = description;
-		resourceCategory.setDescription(description);
+		getDomainBean().setDescription(description);
 	}
 	
 	@Override

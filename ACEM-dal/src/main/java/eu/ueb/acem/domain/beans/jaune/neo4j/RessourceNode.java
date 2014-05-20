@@ -33,6 +33,8 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
 
 /**
  * @author Grégoire Colbert
@@ -62,12 +64,14 @@ public abstract class RessourceNode implements Ressource {
 	@Fetch
 	private Set<ModaliteUtilisationNode> useModes;
 	
-	/*-
-	@RelatedTo(elementClass = EnseignantNode.class, type="hasFavoriteResource", direction = INCOMING)
+	@RelatedTo(elementClass = OrganisationNode.class, type = "possessesResource", direction = OUTGOING)
 	@Fetch
-	private Set<EnseignantNode> teachersHavingThisAsFavoriteResource;
-	*/
-	
+	private OrganisationNode organisationPossedingResource;
+
+	@RelatedTo(elementClass = OrganisationNode.class, type = "accessesResource", direction = OUTGOING)
+	@Fetch
+	private Set<OrganisationNode> organisationsHavingAccessToResource;
+
 	public RessourceNode() {
 		categories = new HashSet<ResourceCategoryNode>();
 	}
@@ -153,49 +157,47 @@ public abstract class RessourceNode implements Ressource {
 			category.removeResource(this);
 		}
 	}
-	
-	/*-
+
 	@Override
-	public Boolean getFavoriteResource(Enseignant teacher) {
-		return teachersHavingThisAsFavoriteResource.contains(teacher);
+	public Organisation getOrganisationPossedingResource() {
+		return organisationPossedingResource;
 	}
 	
 	@Override
-	public void setFavoriteResource(Enseignant teacher, Boolean favoriteResource) {
-		addTeacherHavingThisAsFavoriteResource(teacher);
+	public void setOrganisationPossedingResource(Organisation organisation) {
+		this.organisationPossedingResource = (OrganisationNode)organisation;
 	}
 
 	@Override
-	public Set<? extends Enseignant> getTeachersHavingThisAsFavoriteResource() {
-		return teachersHavingThisAsFavoriteResource;
+	public Set<? extends Organisation> getOrganisationsHavingAccessToResource() {
+		return organisationsHavingAccessToResource;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setTeachersHavingThisAsFavoriteResource(Set<? extends Enseignant> teachers) {
-		this.teachersHavingThisAsFavoriteResource = (Set<EnseignantNode>)teachers;
+	public void setOrganisationsHavingAccessToResource(Set<? extends Organisation> organisations) {
+		this.organisationsHavingAccessToResource = (Set<OrganisationNode>)organisations;
 	}
 
 	@Override
-	public void addTeacherHavingThisAsFavoriteResource(Enseignant teacher) {
-		if (! teachersHavingThisAsFavoriteResource.contains(teacher)) {
-			teachersHavingThisAsFavoriteResource.add((EnseignantNode) teacher);
+	public void addOrganisationHavingAccessToResource(Organisation organisation) {
+		if (! organisationsHavingAccessToResource.contains(organisation)) {
+			organisationsHavingAccessToResource.add((OrganisationNode) organisation);
 		}
-		if (! teacher.getFavoriteResources().contains(this)) {
-			teacher.addFavoriteResource(this);
+		if (! organisation.getViewedResources().contains(this)) {
+			organisation.addViewedResource(this);
 		}
 	}
 
 	@Override
-	public void removeTeacherHavingThisAsFavoriteResource(Enseignant teacher) {
-		if (teachersHavingThisAsFavoriteResource.contains(teacher)) {
-			teachersHavingThisAsFavoriteResource.remove(teacher);
+	public void removeOrganisationHavingAccessToResource(Organisation organisation) {
+		if (organisationsHavingAccessToResource.contains(organisation)) {
+			organisationsHavingAccessToResource.remove(organisation);
 		}
-		if (teacher.getFavoriteResources().contains(this)) {
-			teacher.removeFavoriteResource(this);
+		if (organisation.getViewedResources().contains(this)) {
+			organisation.removeViewedResource(this);
 		}
 	}
-	*/
 	
 	@Override
 	public int compareTo(Ressource o) {

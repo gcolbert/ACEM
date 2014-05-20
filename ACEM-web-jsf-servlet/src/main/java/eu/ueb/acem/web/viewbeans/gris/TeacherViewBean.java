@@ -37,7 +37,6 @@ public class TeacherViewBean extends PersonViewBean {
 
 	private static final long serialVersionUID = -7825115133733181852L;
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(TeacherViewBean.class);
 	
 	private Enseignant domainBean;

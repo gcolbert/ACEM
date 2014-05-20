@@ -21,6 +21,8 @@ package eu.ueb.acem.domain.beans.jaune;
 import java.io.Serializable;
 import java.util.Set;
 
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
@@ -54,6 +56,18 @@ public interface Ressource extends Serializable {
 
 	void setUseModes(Set<? extends ModaliteUtilisation> useModes);
 
-	int compareTo(Ressource o);
+	Organisation getOrganisationPossedingResource();
+
+	void setOrganisationPossedingResource(Organisation organisation);
+
+	Set<? extends Organisation> getOrganisationsHavingAccessToResource();
+
+	void setOrganisationsHavingAccessToResource(Set<? extends Organisation> organisations);
+
+	void addOrganisationHavingAccessToResource(Organisation organisation);
 	
+	void removeOrganisationHavingAccessToResource(Organisation organisation);
+
+	int compareTo(Ressource o);
+
 }
