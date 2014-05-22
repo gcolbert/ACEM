@@ -282,9 +282,13 @@
 	vertical-align:middle;
 	margin-left:0.5em;
 }
-#formSelectedToolCategory .bottom-toolboxes td:first-of-type {
+#formSelectedToolCategory .bottom-toolboxes td {
 	padding-right:0.5em;
+	padding-left:0.5em;
+}
+#formSelectedToolCategory .bottom-toolboxes td:first-of-type {
+	padding-left:0;
 }
 #formSelectedToolCategory .bottom-toolboxes td:last-child {
-	padding-left:0.5em;
+	padding-right:0;
 }

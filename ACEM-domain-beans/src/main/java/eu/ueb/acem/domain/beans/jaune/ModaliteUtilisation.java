@@ -27,11 +27,14 @@ import java.io.Serializable;
  */
 public interface ModaliteUtilisation extends Serializable {
 
-	/**
-	 * La catégorie permet de classer les modalités d'utilisation
-	 */
-	String getCategorie();
+	Long getId();
+	
+	String getName();
 
-	void setCategorie(String categorie);
-
+	void setName(String name);
+	
+	String getDescription();
+	
+	void setDescription(String description);
+	
 }

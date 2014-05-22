@@ -20,16 +20,17 @@ package eu.ueb.acem.web.controllers;
 
 import java.util.Locale;
 
-import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.services.DomainService;
+import javax.inject.Inject;
 
 import org.esupportail.commons.beans.AbstractJsfMessagesAwareBean;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.Assert;
 import org.esupportail.commons.web.controllers.Resettable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.services.DomainService;
 
 /**
  * An abstract class inherited by all the beans for them to get: - the domain
@@ -52,7 +53,7 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 	/**
 	 * see {@link DomainService}.
 	 */
-	@Autowired
+	@Inject
 	private DomainService domainService;
 
 	/**

@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.primefaces.event.TransferEvent;
 import org.primefaces.event.TreeDragDropEvent;
@@ -30,7 +31,6 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -64,29 +64,29 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersController.class);
 
-	@Autowired
+	@Inject
 	private NeedsAndAnswersService needsAndAnswersService;
 
-	@Autowired
+	@Inject
 	private ResourcesService resourcesService;
 
-	@Autowired
+	@Inject
 	private OrganisationsService organisationsService;
 
-	@Autowired
+	@Inject
 	private EditableTreeBean needsAndAnswersTreeBean;
 
-	@Autowired
+	@Inject
 	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
 
-	@Autowired
+	@Inject
 	private PickListBean pickListBean;
 
 	private TreeNode selectedNode;
 	
 	private Reponse selectedAnswer;
 
-	@Autowired
+	@Inject
 	private SortableTableBean<ScenarioViewBean> scenarioViewBeans;
 
 	private List<ScenarioViewBean> scenarioViewBeansForSelectedAnswer;
@@ -128,32 +128,32 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 	@PostConstruct
 	public void initNeedsAndAnswersController() {
-		logger.debug("entering initNeedsAndAnswersTreeController");
+		logger.info("entering initNeedsAndAnswersTreeController");
 		needsAndAnswersTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
 
 		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
-		logger.debug("found {} tool categories", toolCategories.size());
+		logger.info("found {} tool categories", toolCategories.size());
 		toolCategoryViewBeans.getTableEntries().clear();
 		for (ResourceCategory toolCategory : toolCategories) {
-			logger.debug("tool category = {}", toolCategory.getName());
+			logger.info("tool category = {}", toolCategory.getName());
 			ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
 			toolCategoryViewBeans.getTableEntries().add(toolCategoryViewBean);
 		}
 		toolCategoryViewBeans.sort();
 
 		Collection<Service> administrativeDepartments = organisationsService.retrieveAllAdministrativeDepartments();
-		logger.debug("found {} administrative departments", administrativeDepartments.size());
+		logger.info("found {} administrative departments", administrativeDepartments.size());
 		administrativeDepartmentViewBeans.getTableEntries().clear();
 		for (Service administrativeDepartment : administrativeDepartments) {
-			logger.debug("administrative department = {}", administrativeDepartment.getName());
+			logger.info("administrative department = {}", administrativeDepartment.getName());
 			AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
 					administrativeDepartment);
 			administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
 		}
 		administrativeDepartmentViewBeans.sort();
 		
-		logger.debug("leaving initNeedsAndAnswersTreeController");
-		logger.debug("------");
+		logger.info("leaving initNeedsAndAnswersTreeController");
+		logger.info("------");
 	}
 
 	public PickListBean getPickListBean() {
@@ -368,7 +368,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistToolCategoryViewBeansForSelectedAnswer() {
-		logger.debug("preparePicklistToolCategoryViewBeansForSelectedAnswer");
+		logger.info("preparePicklistToolCategoryViewBeansForSelectedAnswer");
 		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(toolCategoryViewBeans.getTableEntries());
@@ -387,7 +387,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistAdministrativeDepartmentViewBeansForSelectedAnswer() {
-		logger.debug("preparePicklistAdministrativeDepartmentViewBeansForSelectedAnswer");
+		logger.info("preparePicklistAdministrativeDepartmentViewBeansForSelectedAnswer");
 		if (selectedAnswer != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(administrativeDepartmentViewBeans.getTableEntries());

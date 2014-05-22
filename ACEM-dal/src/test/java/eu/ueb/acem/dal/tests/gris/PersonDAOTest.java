@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.tests.gris;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -26,12 +28,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.dal.gris.PersonDAO;
+import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
@@ -52,10 +53,10 @@ public class PersonDAOTest extends TestCase {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PersonDAOTest.class);
 
-	@Autowired
+	@Inject
 	private TeacherDAO teacherDAO;
 
-	@Autowired
+	@Inject
 	private PersonDAO personDAO;
 
 	public PersonDAOTest() {

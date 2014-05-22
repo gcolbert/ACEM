@@ -23,24 +23,21 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -56,23 +53,22 @@ public class UsersController extends AbstractContextAwareController {
 
 	private PersonViewBean selectedUserViewBean;
 
-	@Autowired
+	@Inject
 	private PickListBean pickListBean;
 	
-	@Autowired
+	@Inject
 	private UsersService usersService;
 	
-	@Autowired
+	@Inject
 	public OrganisationsController organisationsController;
 	
-	@Autowired
+	@Inject
 	public ResourcesController resourcesController;
 	
 	public UsersController() {
 		personViewBeans = new ArrayList<PersonViewBean>();
 	}
 
-	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void initUsersController() {
 		logger.debug("initUsersController");
@@ -84,20 +80,6 @@ public class UsersController extends AbstractContextAwareController {
 			if (person instanceof Enseignant) {
 				Enseignant teacher = (Enseignant)person;
 				personViewBean = new TeacherViewBean(teacher);
-				/*-
-				for (Ressource resource : teacher.getFavoriteResources()) {
-					logger.info("We add the resource {} as favorite for user {}", resource.getName(), teacher.getLogin());
-					ResourceViewBean resourceViewBean = resourcesController.getResourceViewBean(resource.getId());
-					teacher.addFavoriteResource(resourceViewBean.getDomainBean());
-					((TeacherViewBean)personViewBean).addFavoriteResourceViewBean(resourceViewBean);
-				}
-				*/
-				for (ResourceCategory toolCategory : (Set<ResourceCategory>)teacher.getFavoriteToolCategories()) {
-					logger.info("We add the tool category {} as favorite for user {}", toolCategory.getName(), teacher.getLogin());
-					ToolCategoryViewBean toolCategoryViewBean = resourcesController.getToolCategoryViewBean(toolCategory.getId());
-					teacher.addFavoriteToolCategory(toolCategoryViewBean.getDomainBean());
-					((TeacherViewBean)personViewBean).addFavoriteToolCategoryViewBean(toolCategoryViewBean);
-				}
 			}
 			else {
 				personViewBean = new PersonViewBean(person);
@@ -159,33 +141,14 @@ public class UsersController extends AbstractContextAwareController {
 				logger.info("user has tool category as favorite, we should remove it");
 				if (usersService.removeFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
 					currentUserViewBean.removeFavoriteToolCategoryViewBean(toolCategoryViewBean);
-					//currentUserViewBean.getDomainBean().removeFavoriteResource(resourceViewBean.getDomainBean());
 				}
 			}
 			else {
 				logger.info("user doesn't have tool category as favorite, we should add it");
 				if (usersService.addFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
 					currentUserViewBean.addFavoriteToolCategoryViewBean(toolCategoryViewBean);
-					//currentUserViewBean.getDomainBean().addFavoriteResource(resourceViewBean.getDomainBean());
 				}
 			}
-			//resourceViewBean.setFavoriteResource(currentUserViewBean.getDomainBean().getFavoriteResources().contains(resourceViewBean.getDomainBean()));
-			/*
-			if (usersService.toggleFavoriteResourceForTeacher(currentUserViewBean.getId(), resourceViewBean.getId())) {
-				if (currentUserViewBean.getFavoriteResourceViewBeans().contains(resourceViewBean)) {
-					currentUserViewBean.getDomainBean().removeFavoriteResource(resourceViewBean.getDomainBean());
-					currentUserViewBean.removeFavoriteResourceViewBean(resourceViewBean);
-				}
-				else {
-					currentUserViewBean.getDomainBean().addFavoriteResource(resourceViewBean.getDomainBean());
-					currentUserViewBean.addFavoriteResourceViewBean(resourceViewBean);
-				}
-				resourceViewBean.setFavoriteResource(currentUserViewBean.getDomainBean().getFavoriteResources().contains(resourceViewBean.getDomainBean()));
-			}
-			else {
-				logger.error("Couldn't toggle {} as a favorite resource of teacher {}", resourceViewBean.getName(), currentUserViewBean.getLogin());
-			}
-			*/
 		}
 		logger.info("Leaving toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
 	}

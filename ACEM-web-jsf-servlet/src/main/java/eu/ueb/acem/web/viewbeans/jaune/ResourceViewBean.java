@@ -18,7 +18,7 @@
  */
 package eu.ueb.acem.web.viewbeans.jaune;
 
-import java.util.Set;
+import java.util.List;
 
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.Pickable;
@@ -49,12 +49,15 @@ public interface ResourceViewBean extends Pickable {
 	
 	OrganisationViewBean getOrganisationPossessingResourceViewBean();
 	
-	void setOrganisationPossessingResource(OrganisationViewBean organisationViewBean);
+	void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean);
 
-	Set<OrganisationViewBean> getOrganisationViewingResourceViewBeans();
+	List<OrganisationViewBean> getOrganisationViewingResourceViewBeans();
 
 	void addOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean);
 
 	void removeOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean);
 	
+	List<UseModeViewBean> getUseModeViewBeans();
+	
+	void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans);
 }

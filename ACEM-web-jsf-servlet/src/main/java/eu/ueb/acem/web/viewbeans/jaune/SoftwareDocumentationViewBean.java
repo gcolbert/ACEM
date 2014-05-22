@@ -19,9 +19,14 @@
 package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -34,6 +39,8 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 
 	private static final long serialVersionUID = 2189588973638154852L;
 
+	private static final Logger logger = LoggerFactory.getLogger(SoftwareDocumentationViewBean.class);
+
 	private DocumentationApplicatif softwareDocumentation;
 
 	private Long id;
@@ -44,11 +51,14 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 	
 	private String description;
 	
-	private OrganisationViewBean organisationPossedingResourceViewBean;
+	private OrganisationViewBean organisationPossessingResourceViewBean;
 	
-	private Set<OrganisationViewBean> organisationsViewingResourceViewBeans;
+	private List<OrganisationViewBean> organisationsViewingResourceViewBeans;
+	
+	private List<UseModeViewBean> useModeViewBeans;
 	
 	public SoftwareDocumentationViewBean() {
+		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
 	public SoftwareDocumentationViewBean(DocumentationApplicatif softwareDocumentation) {
@@ -76,6 +86,11 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 		setName(softwareDocumentation.getName());
 		setIconFileName(softwareDocumentation.getIconFileName());
 		setDescription(softwareDocumentation.getDescription());
+		
+		for (ModaliteUtilisation useMode : softwareDocumentation.getUseModes()) {
+			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
+			useModeViewBeans.add(new UseModeViewBean(useMode));
+		}
 	}
 
 	@Override
@@ -121,17 +136,17 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 
 	@Override
 	public OrganisationViewBean getOrganisationPossessingResourceViewBean() {
-		return organisationPossedingResourceViewBean;
+		return organisationPossessingResourceViewBean;
 	}
 
 	@Override
-	public void setOrganisationPossessingResource(OrganisationViewBean organisationViewBean) {
-		this.organisationPossedingResourceViewBean = organisationViewBean;
-		getDomainBean().setOrganisationPossedingResource(organisationViewBean.getDomainBean());
+	public void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean) {
+		this.organisationPossessingResourceViewBean = organisationViewBean;
+		getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
 	}
 	
 	@Override
-	public Set<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
+	public List<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
 		return organisationsViewingResourceViewBeans;
 	}
 	
@@ -145,6 +160,16 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 		organisationsViewingResourceViewBeans.remove(organisationViewBean);
 	}
 
+	@Override
+	public List<UseModeViewBean> getUseModeViewBeans() {
+		return useModeViewBeans;
+	}
+	
+	@Override
+	public void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans) {
+		this.useModeViewBeans = useModeViewBeans;
+	}
+	
 	@Override
 	public int compareTo(SoftwareDocumentationViewBean o) {
 		return name.compareTo(o.getName());

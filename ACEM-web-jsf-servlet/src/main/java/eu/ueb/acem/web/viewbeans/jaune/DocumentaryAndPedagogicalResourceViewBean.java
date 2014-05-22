@@ -19,8 +19,13 @@
 package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
@@ -34,6 +39,8 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 
 	private static final long serialVersionUID = 2189588973638154852L;
 
+	private static final Logger logger = LoggerFactory.getLogger(DocumentaryAndPedagogicalResourceViewBean.class);
+
 	private RessourcePedagogiqueEtDocumentaire documentaryAndPedagogicalResource;
 
 	private Long id;
@@ -44,11 +51,14 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 	
 	private String iconFileName;
 	
-	private OrganisationViewBean organisationPossedingResourceViewBean;
+	private OrganisationViewBean organisationPossessingResourceViewBean;
 	
-	private Set<OrganisationViewBean> organisationsViewingResourceViewBeans;
+	private List<OrganisationViewBean> organisationsViewingResourceViewBeans;
+	
+	private List<UseModeViewBean> useModeViewBeans;
 	
 	public DocumentaryAndPedagogicalResourceViewBean() {
+		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
 	public DocumentaryAndPedagogicalResourceViewBean(RessourcePedagogiqueEtDocumentaire documentaryAndPedagogicalResource) {
@@ -76,6 +86,11 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 		setName(documentaryAndPedagogicalResource.getName());
 		setIconFileName(documentaryAndPedagogicalResource.getIconFileName());
 		setDescription(documentaryAndPedagogicalResource.getDescription());
+
+		for (ModaliteUtilisation useMode : documentaryAndPedagogicalResource.getUseModes()) {
+			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
+			useModeViewBeans.add(new UseModeViewBean(useMode));
+		}
 	}
 
 	@Override
@@ -121,17 +136,17 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 
 	@Override
 	public OrganisationViewBean getOrganisationPossessingResourceViewBean() {
-		return organisationPossedingResourceViewBean;
+		return organisationPossessingResourceViewBean;
 	}
 
 	@Override
-	public void setOrganisationPossessingResource(OrganisationViewBean organisationViewBean) {
-		this.organisationPossedingResourceViewBean = organisationViewBean;
-		getDomainBean().setOrganisationPossedingResource(organisationViewBean.getDomainBean());
+	public void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean) {
+		this.organisationPossessingResourceViewBean = organisationViewBean;
+		getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
 	}
 
 	@Override
-	public Set<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
+	public List<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
 		return organisationsViewingResourceViewBeans;
 	}
 	
@@ -145,6 +160,16 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 		organisationsViewingResourceViewBeans.remove(organisationViewBean);
 	}
 
+	@Override
+	public List<UseModeViewBean> getUseModeViewBeans() {
+		return useModeViewBeans;
+	}
+	
+	@Override
+	public void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans) {
+		this.useModeViewBeans = useModeViewBeans;
+	}
+	
 	@Override
 	public int compareTo(DocumentaryAndPedagogicalResourceViewBean o) {
 		return name.compareTo(o.getName());

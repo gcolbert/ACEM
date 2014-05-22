@@ -23,6 +23,7 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -122,4 +123,39 @@ public class InstitutionViewBean implements OrganisationViewBean, Serializable, 
 		return name.compareTo(o.getName());
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		InstitutionViewBean other = (InstitutionViewBean) obj;
+		if (getId() == null) {
+			if (other.getId() != null)
+				return false;
+		}
+		else
+			if (!getId().equals(other.getId()))
+				return false;
+		if (getName() == null) {
+			if (other.getName() != null)
+				return false;
+		}
+		else
+			if (!getName().equals(other.getName()))
+				return false;
+		return true;
+	}	
+	
 }

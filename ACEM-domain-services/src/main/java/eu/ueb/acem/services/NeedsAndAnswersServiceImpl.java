@@ -22,14 +22,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
+import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
 import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.domain.beans.bleu.Besoin;
@@ -50,16 +51,16 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
 
-	@Autowired
+	@Inject
 	private PedagogicalNeedDAO needDAO;
 
-	@Autowired
+	@Inject
 	private PedagogicalAnswerDAO answerDAO;
 	
-	@Autowired
+	@Inject
 	private ResourceCategoryDAO resourceCategoryDAO;
 	
-	@Autowired
+	@Inject
 	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 
 	public NeedsAndAnswersServiceImpl() {

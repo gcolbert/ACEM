@@ -22,9 +22,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -48,7 +49,7 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ScenarioDAO.class);
 
-	@Autowired
+	@Inject
 	private ScenarioRepository repository;
 
 	public ScenarioDAO() {

@@ -24,10 +24,10 @@ import java.io.IOException;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
+import javax.inject.Inject;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -42,7 +42,7 @@ import eu.ueb.acem.services.ImagesService;
 @Scope("singleton")
 public class ImagesController {
 
-	@Autowired
+	@Inject
 	private ImagesService imagesService;
 
 	public StreamedContent getImage() throws IOException {

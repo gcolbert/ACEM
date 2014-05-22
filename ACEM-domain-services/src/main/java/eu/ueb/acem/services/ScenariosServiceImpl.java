@@ -20,9 +20,10 @@ package eu.ueb.acem.services;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.bleu.PedagogicalActivityDAO;
@@ -45,13 +46,13 @@ public class ScenariosServiceImpl implements ScenariosService {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ScenariosServiceImpl.class);
 
-	@Autowired
+	@Inject
 	private ScenarioDAO scenarioDAO;
 
-	@Autowired
+	@Inject
 	private PedagogicalActivityDAO pedagogicalActivityDAO;
 
-	@Autowired
+	@Inject
 	private UsersService usersService;
 	
 	public ScenariosServiceImpl() {

@@ -21,6 +21,8 @@ package eu.ueb.acem.dal.tests.bleu;
 import java.util.Collection;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -29,7 +31,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +53,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(BesoinDAOTest.class);
 
-	@Autowired
+	@Inject
 	private PedagogicalNeedDAO needDAO;
 
 	public BesoinDAOTest() {

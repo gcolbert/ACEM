@@ -19,12 +19,14 @@
 package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.Equipement;
+import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -37,7 +39,6 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 
 	private static final long serialVersionUID = -116654020465612191L;
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(EquipmentViewBean.class);
 	
 	private Equipement equipment;
@@ -50,11 +51,14 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 	
 	private String description;
 	
-	private OrganisationViewBean organisationPossedingResourceViewBean;
+	private List<UseModeViewBean> useModeViewBeans;
 	
-	private Set<OrganisationViewBean> organisationsViewingResourceViewBeans;
+	private OrganisationViewBean organisationPossessingResourceViewBean;
+	
+	private List<OrganisationViewBean> organisationsViewingResourceViewBeans;
 	
 	public EquipmentViewBean() {
+		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
 	public EquipmentViewBean(Equipement equipment) {
@@ -82,6 +86,11 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		setName(equipment.getName());
 		setIconFileName(equipment.getIconFileName());
 		setDescription(equipment.getDescription());
+
+		for (ModaliteUtilisation useMode : equipment.getUseModes()) {
+			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
+			useModeViewBeans.add(new UseModeViewBean(useMode));
+		}
 	}
 
 	@Override
@@ -127,17 +136,17 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 	
 	@Override
 	public OrganisationViewBean getOrganisationPossessingResourceViewBean() {
-		return organisationPossedingResourceViewBean;
+		return organisationPossessingResourceViewBean;
 	}
 
 	@Override
-	public void setOrganisationPossessingResource(OrganisationViewBean organisationViewBean) {
-		this.organisationPossedingResourceViewBean = organisationViewBean;
-		getDomainBean().setOrganisationPossedingResource(organisationViewBean.getDomainBean());
+	public void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean) {
+		this.organisationPossessingResourceViewBean = organisationViewBean;
+		getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
 	}
 	
 	@Override
-	public Set<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
+	public List<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
 		return organisationsViewingResourceViewBeans;
 	}
 	
@@ -151,6 +160,16 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		organisationsViewingResourceViewBeans.remove(organisationViewBean);
 	}
 
+	@Override
+	public List<UseModeViewBean> getUseModeViewBeans() {
+		return useModeViewBeans;
+	}
+	
+	@Override
+	public void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans) {
+		this.useModeViewBeans = useModeViewBeans;
+	}
+	
 	@Override
 	public int compareTo(EquipmentViewBean o) {
 		return name.compareTo(o.getName());

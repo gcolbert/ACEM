@@ -29,10 +29,8 @@ import javax.faces.convert.FacesConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.services.ResourcesService;
+import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -44,9 +42,6 @@ public class OrganisationConverter implements Converter {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationConverter.class);
 	
-	@Autowired
-	private ResourcesService resourcesService;
-
     private static final String KEY = "eu.ueb.acem.web.utils.OrganisationConverter";
 	
     private Map<String, Object> getViewMap(FacesContext context) {
@@ -62,6 +57,7 @@ public class OrganisationConverter implements Converter {
 	
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
+		//logger.info("getAsObject, value (String)={}", value);
         if (value == null || value.isEmpty()) {
             return null;
         }
@@ -70,6 +66,7 @@ public class OrganisationConverter implements Converter {
             throw new ConverterException("The value is not a valid ID number: " + value);
         }
 
+		//logger.info("getAsObject, object found={}", getViewMap(context).get(value));
         return getViewMap(context).get(value);
 	}
 
@@ -79,8 +76,9 @@ public class OrganisationConverter implements Converter {
 			return null;
 		}
 		else {
-            getViewMap(context).put(((Organisation) value).getId().toString(), value);
-			return ((Organisation) value).getId().toString();
+			//logger.info("getAsString, value (Object)="+((OrganisationViewBean) value).getId().toString());
+            getViewMap(context).put(((OrganisationViewBean) value).getId().toString(), value);
+			return ((OrganisationViewBean) value).getId().toString();
 		}
 	}
 

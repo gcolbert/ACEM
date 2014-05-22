@@ -20,6 +20,8 @@ package eu.ueb.acem.dal.tests.jaune;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -28,7 +30,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,25 +60,25 @@ public class ResourceDAOTest extends TestCase {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ResourceDAOTest.class);
 
-	@Autowired
+	@Inject
 	private UseModeDAO useModeDAO;
 
-	@Autowired
+	@Inject
 	private ResourceCategoryDAO resourceCategoryDAO;
 
-	@Autowired
+	@Inject
 	private SoftwareDAO softwareDAO;
 
-	@Autowired
+	@Inject
 	private SoftwareDocumentationDAO softwareDocumentationDAO;
 
-	@Autowired
+	@Inject
 	private EquipmentDAO equipmentDAO;
 
-	@Autowired
+	@Inject
 	private PedagogicalAndDocumentaryResourcesDAO pedagogicalAndDocumentaryResourcesDAO;
 
-	@Autowired
+	@Inject
 	private ProfessionalTrainingDAO professionalTrainingDAO;
 
 	public ResourceDAOTest() {

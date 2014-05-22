@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.tests.rouge;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -26,14 +28,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import eu.ueb.acem.dal.rouge.CommunityDAO;
-import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
-import eu.ueb.acem.dal.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
+import eu.ueb.acem.dal.rouge.CommunityDAO;
+import eu.ueb.acem.dal.rouge.InstitutionDAO;
+import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
 import eu.ueb.acem.domain.beans.rouge.Service;
@@ -56,16 +57,16 @@ public class OrganisationDAOTest extends TestCase {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationDAOTest.class);
 
-	@Autowired
+	@Inject
 	private CommunityDAO communityDAO;
 
-	@Autowired
+	@Inject
 	private InstitutionDAO institutionDAO;
 
-	@Autowired
+	@Inject
 	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 
-	@Autowired
+	@Inject
 	private TeachingDepartmentDAO teachingDepartmentDAO;
 
 	public OrganisationDAOTest() {

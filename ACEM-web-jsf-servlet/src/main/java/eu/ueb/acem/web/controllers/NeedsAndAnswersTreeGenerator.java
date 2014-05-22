@@ -1,13 +1,32 @@
+/**
+ *     Copyright Grégoire COLBERT 2013
+ * 
+ *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
+ * 
+ *     ACEM is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     ACEM is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
+ */
 package eu.ueb.acem.web.controllers;
 
 import java.util.Collection;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +36,11 @@ import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 
+/**
+ * @author Grégoire Colbert
+ * @since 2014-05-26
+ * 
+ */
 @Component("needsAndAnswersTreeGenerator")
 @Scope("singleton")
 class NeedsAndAnswersTreeGenerator {
@@ -28,7 +52,7 @@ class NeedsAndAnswersTreeGenerator {
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS = "NeedWithAssociatedAnswers";
 	private static final String TREE_NODE_TYPE_ANSWER_LEAF = "AnswerLeaf";
 
-	@Autowired
+	@Inject
 	private NeedsAndAnswersService needsAndAnswersService;
 	
 	public String getTreeNodeType_NEED_LEAF() {
@@ -49,8 +73,7 @@ class NeedsAndAnswersTreeGenerator {
 	
 	/**
 	 * Returns a new {@link EditableTreeBean} containing the Pedagogical Advice
-	 * nodes returned by the {@link NeedsAndAnswersService} implementation
-	 * defined in this controller.
+	 * nodes returned by the {@link NeedsAndAnswersService}.
 	 * 
 	 * @param singleVisibleTreeRootLabel
 	 *            is an optional string, that, if not null, will be the label of

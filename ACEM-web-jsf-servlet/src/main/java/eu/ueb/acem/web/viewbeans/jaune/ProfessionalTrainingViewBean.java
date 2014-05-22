@@ -19,9 +19,14 @@
 package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -34,6 +39,8 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 
 	private static final long serialVersionUID = -884629268063400124L;
 
+	private static final Logger logger = LoggerFactory.getLogger(ProfessionalTrainingViewBean.class);
+
 	private FormationProfessionnelle professionalTraining;
 
 	private Long id;
@@ -44,11 +51,14 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 	
 	private String description;
 	
-	private OrganisationViewBean organisationPossedingResourceViewBean;
+	private List<UseModeViewBean> useModeViewBeans;
 	
-	private Set<OrganisationViewBean> organisationsViewingResourceViewBeans;
+	private OrganisationViewBean organisationPossessingResourceViewBean;
+	
+	private List<OrganisationViewBean> organisationsViewingResourceViewBeans;
 	
 	public ProfessionalTrainingViewBean() {
+		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
 	public ProfessionalTrainingViewBean(FormationProfessionnelle professionalTraining) {
@@ -76,6 +86,11 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 		setName(professionalTraining.getName());
 		setIconFileName(professionalTraining.getIconFileName());
 		setDescription(professionalTraining.getDescription());
+
+		for (ModaliteUtilisation useMode : professionalTraining.getUseModes()) {
+			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
+			useModeViewBeans.add(new UseModeViewBean(useMode));
+		}
 	}
 
 	@Override
@@ -121,17 +136,17 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 
 	@Override
 	public OrganisationViewBean getOrganisationPossessingResourceViewBean() {
-		return organisationPossedingResourceViewBean;
+		return organisationPossessingResourceViewBean;
 	}
 
 	@Override
-	public void setOrganisationPossessingResource(OrganisationViewBean organisationViewBean) {
-		this.organisationPossedingResourceViewBean = organisationViewBean;
-		getDomainBean().setOrganisationPossedingResource(organisationViewBean.getDomainBean());
+	public void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean) {
+		this.organisationPossessingResourceViewBean = organisationViewBean;
+		getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
 	}
 	
 	@Override
-	public Set<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
+	public List<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
 		return organisationsViewingResourceViewBeans;
 	}
 	
@@ -143,6 +158,16 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 	@Override
 	public void removeOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
 		organisationsViewingResourceViewBeans.remove(organisationViewBean);
+	}
+
+	@Override
+	public List<UseModeViewBean> getUseModeViewBeans() {
+		return useModeViewBeans;
+	}
+	
+	@Override
+	public void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans) {
+		this.useModeViewBeans = useModeViewBeans;
 	}
 	
 	@Override

@@ -19,9 +19,14 @@
 package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.Applicatif;
+import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -34,6 +39,8 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 
 	private static final long serialVersionUID = -116654020465612191L;
 
+	private static final Logger logger = LoggerFactory.getLogger(SoftwareViewBean.class);
+
 	private Applicatif software;
 
 	private Long id;
@@ -44,11 +51,14 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 	
 	private String description;
 	
-	private OrganisationViewBean organisationPossedingResourceViewBean;
+	private List<UseModeViewBean> useModeViewBeans;
 	
-	private Set<OrganisationViewBean> organisationsViewingResourceViewBeans;
+	private OrganisationViewBean organisationPossessingResourceViewBean;
+	
+	private List<OrganisationViewBean> organisationsViewingResourceViewBeans;
 	
 	public SoftwareViewBean() {
+		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
 	public SoftwareViewBean(Applicatif software) {
@@ -76,6 +86,11 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 		setName(software.getName());
 		setIconFileName(software.getIconFileName());
 		setDescription(software.getDescription());
+
+		for (ModaliteUtilisation useMode : software.getUseModes()) {
+			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
+			useModeViewBeans.add(new UseModeViewBean(useMode));
+		}
 	}
 	
 	@Override
@@ -121,17 +136,18 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 
 	@Override
 	public OrganisationViewBean getOrganisationPossessingResourceViewBean() {
-		return organisationPossedingResourceViewBean;
+		return organisationPossessingResourceViewBean;
 	}
 
 	@Override
-	public void setOrganisationPossessingResource(OrganisationViewBean organisationViewBean) {
-		this.organisationPossedingResourceViewBean = organisationViewBean;
-		getDomainBean().setOrganisationPossedingResource(organisationViewBean.getDomainBean());
+	public void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean) {
+		logger.info("setOrganisationPossessingResourceViewBean, organisationViewBean={}", organisationViewBean);
+		this.organisationPossessingResourceViewBean = organisationViewBean;
+		getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
 	}
 	
 	@Override
-	public Set<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
+	public List<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
 		return organisationsViewingResourceViewBeans;
 	}
 	
@@ -144,7 +160,17 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 	public void removeOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
 		organisationsViewingResourceViewBeans.remove(organisationViewBean);
 	}
-	
+
+	@Override
+	public List<UseModeViewBean> getUseModeViewBeans() {
+		return useModeViewBeans;
+	}
+
+	@Override
+	public void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans) {
+		this.useModeViewBeans = useModeViewBeans;
+	}
+
 	@Override
 	public int compareTo(SoftwareViewBean o) {
 		return name.compareTo(o.getName());

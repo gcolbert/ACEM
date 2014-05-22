@@ -156,7 +156,6 @@ public class EditableTreeBean implements Serializable {
 		Set<TreeNode> nodesToKeep = new HashSet<TreeNode>();
 		for (Long id : idsOfLeavesToKeep) {
 			TreeNode node = getNodeWithId(id);
-			logger.info("node={}", node);
 			if (node != null) {
 				nodesToKeep.add(node);
 				while (node.getParent() != null) {

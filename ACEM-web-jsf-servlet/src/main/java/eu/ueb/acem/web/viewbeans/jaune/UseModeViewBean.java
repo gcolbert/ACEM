@@ -16,35 +16,42 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.jaune.neo4j;
+package eu.ueb.acem.web.viewbeans.jaune;
 
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.Indexed;
-import org.springframework.data.neo4j.annotation.NodeEntity;
+import java.io.Serializable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
+import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-11-20
+ * @since 2014-05-22
  * 
  */
-@NodeEntity
-@TypeAlias("UseMode")
-public class ModaliteUtilisationNode implements ModaliteUtilisation {
+public class UseModeViewBean implements Serializable, Pickable, Comparable<UseModeViewBean> {
+	
+	private static final long serialVersionUID = 6232506617579076158L;
 
-	private static final long serialVersionUID = 465146117417875133L;
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(UseModeViewBean.class);
 
-	@GraphId
+	private ModaliteUtilisation useMode;
+	
 	private Long id;
 
-	@Indexed
 	private String name;
 	
 	private String description;
 
-	public ModaliteUtilisationNode() {
+	public UseModeViewBean() {
+	}
+
+	public UseModeViewBean(ModaliteUtilisation useMode) {
+		this();
+		setUseMode(useMode);
 	}
 
 	@Override
@@ -52,28 +59,51 @@ public class ModaliteUtilisationNode implements ModaliteUtilisation {
 		return id;
 	}
 
-	public ModaliteUtilisationNode(String name) {
-		this.setName(name);
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
 	public void setName(String name) {
 		this.name = name;
+		useMode.setName(name);
 	}
 
-	@Override
 	public String getDescription() {
 		return description;
 	}
 
-	@Override
 	public void setDescription(String description) {
 		this.description = description;
+		useMode.setDescription(description);
+	}
+	
+	public ModaliteUtilisation getDomainBean() {
+		return useMode;
+	}
+	
+	public void setDomainBean(ModaliteUtilisation useMode) {
+		setUseMode(useMode);
+	}
+	
+	public ModaliteUtilisation getUseMode() {
+		return useMode;
+	}
+
+	public void setUseMode(ModaliteUtilisation useMode) {
+		this.useMode = useMode;
+		setId(useMode.getId());
+		setName(useMode.getName());
+		setDescription(useMode.getDescription());
+	}
+	
+	@Override
+	public int compareTo(UseModeViewBean o) {
+		return name.compareTo(o.getName());
 	}
 
 }
+

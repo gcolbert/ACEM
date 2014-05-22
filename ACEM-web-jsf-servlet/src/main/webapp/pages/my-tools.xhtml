@@ -20,7 +20,7 @@
 
 				<p:panelGrid styleClass="menu" columns="5">
 					<p:commandLink styleClass="menu-entry"
-						action="#{resourcesController.prepareTree('equipment')}"
+						action="#{resourcesController.prepareToolCategoryTreeForResourceType('equipment')}"
 						update=":formResources:resourcesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.equipments.png"
@@ -30,7 +30,7 @@
 								value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}" /></span>
 					</p:commandLink>
 					<p:commandLink styleClass="menu-entry"
-						action="#{resourcesController.prepareTree('software')}"
+						action="#{resourcesController.prepareToolCategoryTreeForResourceType('software')}"
 						update=":formResources:resourcesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.softwares.png"
@@ -40,7 +40,7 @@
 								value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}" /></span>
 					</p:commandLink>
 					<p:commandLink styleClass="menu-entry"
-						action="#{resourcesController.prepareTree('softwareDocumentation')}"
+						action="#{resourcesController.prepareToolCategoryTreeForResourceType('softwareDocumentation')}"
 						update=":formResources:resourcesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.software-documentations.png"
@@ -50,7 +50,7 @@
 								value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}" /></span>
 					</p:commandLink>
 					<p:commandLink styleClass="menu-entry"
-						action="#{resourcesController.prepareTree('pedagogicalAndDocumentaryResources')}"
+						action="#{resourcesController.prepareToolCategoryTreeForResourceType('pedagogicalAndDocumentaryResources')}"
 						update=":formResources:resourcesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
@@ -60,7 +60,7 @@
 								value="#{msgs['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}" /></span>
 					</p:commandLink>
 					<p:commandLink styleClass="menu-entry"
-						action="#{resourcesController.prepareTree('professionalTraining')}"
+						action="#{resourcesController.prepareToolCategoryTreeForResourceType('professionalTraining')}"
 						update=":formResources:resourcesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.professional-trainings.png"
@@ -78,7 +78,8 @@
 					onNodeClick="if ( (node.attr('data-nodetype')!='default') &amp;&amp; (node.attr('data-nodetype')!='category') ) { history.pushState('','','my-tools?toolCategoryId='+node.attr('data-datakey')); }"
 					selection="#{resourcesController.selectedNode}">
 					<p:ajax event="select"
-						update=":formSelectedToolCategory:selectedToolCategoryPanel :formResources:messagesDisplayer"
+						oncomplete="PrimeFaces.scrollTo('formSelectedToolCategory:selectedToolCategoryOutputPanel')"
+						update=":formSelectedToolCategory:selectedToolCategoryOutputPanel :formResources:messagesDisplayer"
 						listener="#{resourcesController.onNodeSelect}" />
 					<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
@@ -87,182 +88,200 @@
 						styleClass="#{treeNodeData.styleClass}">
 						<h:outputText value="#{treeNodeData.label}" />
 					</p:treeNode>
-					<p:treeNode type="ResourceNode"
-						styleClass="#{treeNodeData.styleClass}">
-						<h:outputText value="#{treeNodeData.label}" />
-					</p:treeNode>
 				</p:tree>
 			</p:panel>
 		</h:form>
 
 		<h:form id="formSelectedToolCategory">
-			<p:panel header="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.HEADER']}"
-				id="selectedToolCategoryPanel">
-				<p:panelGrid columns="1"
+			<p:outputPanel id="selectedToolCategoryOutputPanel">
+				<p:panel
+					header="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.HEADER']}"
+					id="selectedToolCategoryPanel"
 					rendered="#{resourcesController.selectedToolCategoryViewBean != null}">
+					<p:panelGrid columns="1">
+						<h:outputText styleClass="title"
+							value="#{resourcesController.selectedToolCategoryViewBean.name}" />
 
-					<h:outputText styleClass="title"
-						value="#{resourcesController.selectedToolCategoryViewBean.name}" />
-					
-					<p:panelGrid columns="2">
-						<p:graphicImage id="toolCategoryIcon"
-							rendered="#{not empty resourcesController.selectedToolCategoryViewBean.iconFileName}"
-							styleClass="resourceLogo" alt="#{resourcesController.selectedToolCategoryViewBean.name}"
-							cache="false" width="80"
-							value="#{imagesController.getImage()}">
-							<f:param name="imageFileName"
-								value="#{resourcesController.selectedToolCategoryViewBean.iconFileName}" />
-						</p:graphicImage>
-						<p:column>
-							<p:row>
-								<p:inplace id="selectedToolCategoryDescription" editor="true">
-									<p:ajax event="save" listener="#{resourcesController.onSelectedToolCategorySave}" update="@this" />
-									<p:ajax event="cancel" update="@this" />
-									<h:inputText id="selectedScenarioName"
-										value="#{resourcesController.selectedToolCategoryViewBean.description}"
-										required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
-								</p:inplace>
-							</p:row>
-							<p:row>
-								<h:panelGroup styleClass="favoriteToolCategory">
-									<p:outputLabel for="favoriteToolCategoryCheckbox"
-										value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
-									<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox" styleClass="favoriteToolCategoryCheckbox"
-										value="#{resourcesController.selectedToolCategoryViewBean.favoriteToolCategory}">
-										<p:ajax update="@this :formSelectedToolCategory:favoriteToolCategoriesPanel :formResources:messagesDisplayer"
-											listener="#{usersController.toggleFavoriteToolCategoryForCurrentUser(resourcesController.selectedToolCategoryViewBean)}" />
-									</p:selectBooleanCheckbox>
-								</h:panelGroup>
-							</p:row>
-						</p:column>
-					</p:panelGrid>
-
-					<p:dataTable id="toolsDataTable" var="toolViewBean" value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}"
-									selectionMode="single" selection="#{resourcesController.selectedResourceViewBean}" rowKey="#{toolViewBean.id}">
-						<p:ajax event="rowSelect"
-							listener="#{resourcesController.onToolRowSelect}"
-							update=":formSelectedToolCategory:idModifyToolButton" />
-						<p:column
-							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_NAME']}">
-							<h:outputText value="#{toolViewBean.name}"/>
-							<p:graphicImage id="resourceIcon"
-								rendered="#{not empty toolViewBean.iconFileName}"
-								styleClass="resourceLogo" alt="#{toolViewBean.name}"
-								cache="false" width="40"
-								value="#{imagesController.getImage()}">
+						<p:panelGrid columns="2">
+							<p:graphicImage id="toolCategoryIcon"
+								rendered="#{not empty resourcesController.selectedToolCategoryViewBean.iconFileName}"
+								styleClass="resourceLogo"
+								alt="#{resourcesController.selectedToolCategoryViewBean.name}"
+								cache="false" width="80" value="#{imagesController.getImage()}">
 								<f:param name="imageFileName"
-									value="#{toolViewBean.iconFileName}" />
+									value="#{resourcesController.selectedToolCategoryViewBean.iconFileName}" />
 							</p:graphicImage>
-						</p:column>
-						<p:column
-							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATION_NAME']}">
-							<h:outputText value="#{toolViewBean.organisationPossessingResourceViewBean}"/>
-						</p:column>
-						<p:column>
-						</p:column>
-					</p:dataTable>
-					<p:row>
-						<p:commandButton
-							value="#{msgs['RESOURCES.CREATE_RESOURCE_LABEL']}"
-							icon="ui-icon-plusthick" update=":idDialogCreateResource"
-							oncomplete="PF('dialogCreateResource').show()">
-							<p:resetInput target=":idDialogCreateResource" />
-						</p:commandButton>
-						<p:commandButton id="idModifyToolButton"
-							value="#{msgs['RESOURCES.MODIFY_RESOURCE_LABEL']}"
-							icon="ui-icon-pencil" update=":idDialogModifyResource"
-							oncomplete="PF('dialogModifyResource').show()"
-							disabled="#{resourcesController.selectedResourceViewBean == null}">
-							<p:resetInput target=":idDialogModifyResource" />
-						</p:commandButton>
-					</p:row>
+							<p:column>
+								<p:row>
+									<p:inplace id="selectedToolCategoryDescription" editor="true">
+										<p:ajax event="save"
+											listener="#{resourcesController.onSelectedToolCategorySave}"
+											update="@this" />
+										<p:ajax event="cancel" update="@this" />
+										<h:inputText id="selectedScenarioName"
+											value="#{resourcesController.selectedToolCategoryViewBean.description}"
+											required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}" />
+									</p:inplace>
+								</p:row>
+								<p:row>
+									<h:panelGroup styleClass="favoriteToolCategory">
+										<p:outputLabel for="favoriteToolCategoryCheckbox"
+											value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
+										<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox"
+											styleClass="favoriteToolCategoryCheckbox"
+											value="#{resourcesController.selectedToolCategoryViewBean.favoriteToolCategory}">
+											<p:ajax
+												update="@this :formSelectedToolCategory:favoriteToolCategoriesPanel :formResources:messagesDisplayer"
+												listener="#{usersController.toggleFavoriteToolCategoryForCurrentUser(resourcesController.selectedToolCategoryViewBean)}" />
+										</p:selectBooleanCheckbox>
+									</h:panelGroup>
+								</p:row>
+							</p:column>
+						</p:panelGrid>
 
-					<p:outputLabel
-						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}"
-						for="pedagogicalUsesTree" />
-					<p:tree id="pedagogicalUsesTree" dynamic="true"
-						value="#{resourcesController.pedagogicalUsesTreeRoot}"
-						var="treeNodeData">
-						<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
-							<h:outputText value="#{treeNodeData.label}" />
-						</p:treeNode>
-						<p:treeNode
-							type="#{needsAndAnswersController.treeNodeType_NEED_LEAF}"
-							styleClass="#{treeNodeData.styleClass}">
-							<h:outputText value="#{treeNodeData.label}" />
-						</p:treeNode>
-						<p:treeNode
-							type="#{needsAndAnswersController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}"
-							styleClass="#{treeNodeData.styleClass}">
-							<h:outputText value="#{treeNodeData.label}" />
-						</p:treeNode>
-						<p:treeNode
-							type="#{needsAndAnswersController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}"
-							styleClass="#{treeNodeData.styleClass}">
-							<h:outputText value="#{treeNodeData.label}" />
-						</p:treeNode>
-						<p:treeNode
-							type="#{needsAndAnswersController.treeNodeType_ANSWER_LEAF}"
-							styleClass="#{treeNodeData.styleClass}">
-							<h:outputText value="#{treeNodeData.label}" />
-						</p:treeNode>
-					</p:tree>
+						<p:dataTable id="toolsDataTable" var="toolViewBean"
+							value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}"
+							selectionMode="single"
+							selection="#{resourcesController.selectedResourceViewBean}"
+							rowKey="#{toolViewBean.id}">
+							<p:ajax event="rowSelect"
+								listener="#{resourcesController.onToolRowSelect}"
+								update=":formSelectedToolCategory:idModifyToolButton" />
+							<p:column
+								headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_NAME']}">
+								<h:outputText value="#{toolViewBean.name}" />
+								<p:graphicImage id="resourceIcon"
+									rendered="#{not empty toolViewBean.iconFileName}"
+									styleClass="resourceLogo" alt="#{toolViewBean.name}"
+									cache="false" width="40" value="#{imagesController.getImage()}">
+									<f:param name="imageFileName"
+										value="#{toolViewBean.iconFileName}" />
+								</p:graphicImage>
+							</p:column>
+							<p:column
+								headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATION_NAME']}">
+								<h:link id="goToSupportServiceBtn" outcome="my-services" rendered="#{toolViewBean.organisationPossessingResourceViewBean != null}">
+									<f:param name="serviceId" value="#{toolViewBean.organisationPossessingResourceViewBean.id}" />
+									<h:outputText
+										value="#{toolViewBean.organisationPossessingResourceViewBean.name}" />
+									<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+										style="display:inline-block; vertical-align:middle;" />
+									<p:tooltip
+										value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.GO_TO_TOOL_SUPPORT_SERVICE']}"
+										for="goToSupportServiceBtn" />
+								</h:link>
+							</p:column>
+							<p:column>
+							</p:column>
+						</p:dataTable>
+						<p:row>
+							<p:commandButton
+								value="#{msgs['RESOURCES.CREATE_RESOURCE_LABEL']}"
+								icon="ui-icon-plusthick" update=":idDialogCreateResource"
+								oncomplete="PF('dialogCreateResource').show()">
+								<p:resetInput target=":idDialogCreateResource" />
+							</p:commandButton>
+							<p:commandButton id="idModifyToolButton"
+								value="#{msgs['RESOURCES.MODIFY_RESOURCE_LABEL']}"
+								icon="ui-icon-pencil" update=":idDialogModifyResource"
+								oncomplete="PF('dialogModifyResource').show()"
+								disabled="#{resourcesController.selectedResourceViewBean == null}">
+								<p:resetInput target=":idDialogModifyResource" />
+							</p:commandButton>
+						</p:row>
 
-					<p:outputLabel
-						value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS_USING_SELECTED_TOOL_CATEGORY_LABEL']}"
-						for="scenariosUsingSelectedToolCategoryTable" />
+						<p:outputLabel
+							value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}"
+							for="pedagogicalUsesTree" />
+						<p:tree id="pedagogicalUsesTree" dynamic="true"
+							value="#{resourcesController.pedagogicalUsesTreeRoot}"
+							var="treeNodeData">
+							<p:treeNode type="default"
+								styleClass="#{treeNodeData.styleClass}">
+								<h:outputText value="#{treeNodeData.label}" />
+							</p:treeNode>
+							<p:treeNode type="#{resourcesController.treeNodeType_NEED_LEAF}"
+								styleClass="#{treeNodeData.styleClass}">
+								<h:outputText value="#{treeNodeData.label}" />
+							</p:treeNode>
+							<p:treeNode
+								type="resourcesController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}"
+								styleClass="#{treeNodeData.styleClass}">
+								<h:outputText value="#{treeNodeData.label}" />
+							</p:treeNode>
+							<p:treeNode
+								type="#{resourcesController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}"
+								styleClass="#{treeNodeData.styleClass}">
+								<h:outputText value="#{treeNodeData.label}" />
+							</p:treeNode>
+							<p:treeNode
+								type="#{resourcesController.treeNodeType_ANSWER_LEAF}"
+								styleClass="#{treeNodeData.styleClass}">
+								<h:outputText value="#{treeNodeData.label}" />
+							</p:treeNode>
+						</p:tree>
 
-					<p:dataTable id="scenariosUsingSelectedToolCategoryTable"
-						value="#{resourcesController.scenariosUsingSelectedToolCategory}"
-						var="scenario">
-						<p:column
-							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.TITLE']}">
-							<h:outputText value="#{scenario.name}" />
-						</p:column>
-						<p:column
-							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.OBJECTIVE']}">
-							<h:outputText value="#{scenario.objective}" />
-						</p:column>
-						<p:column
-							headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.AUTHOR']}">
-							<h:outputText value="#{scenario.author}" />
-						</p:column>
-					</p:dataTable>
+						<p:outputLabel
+							value="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS_USING_SELECTED_TOOL_CATEGORY_LABEL']}"
+							for="scenariosUsingSelectedToolCategoryTable" />
 
-				</p:panelGrid>
-			</p:panel>
+						<p:dataTable id="scenariosUsingSelectedToolCategoryTable"
+							value="#{resourcesController.scenariosUsingSelectedToolCategory}"
+							var="scenario">
+							<p:column
+								headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.TITLE']}">
+								<h:outputText value="#{scenario.name}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.OBJECTIVE']}">
+								<h:outputText value="#{scenario.objective}" />
+							</p:column>
+							<p:column
+								headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.AUTHOR']}">
+								<h:outputText value="#{scenario.author}" />
+							</p:column>
+						</p:dataTable>
+
+					</p:panelGrid>
+				</p:panel>
+			</p:outputPanel>
 
 			<p:panelGrid styleClass="bottom-toolboxes">
 				<p:row>
-					<p:column width="100%">
+					<p:column>
 						<p:panel id="favoriteToolCategoriesPanel"
 							header="#{msgs['RESOURCES.MY_FAVORITE_TOOL_CATEGORIES.HEADER']}">
 							<ui:repeat id="favoriteToolCategories"
 								value="#{sessionController.currentUserViewBean.favoriteToolCategoryViewBeans}"
 								var="toolCategoryViewBean">
 								<h:outputLink id="goToToolCategoryBtn" outcome="my-tools">
-									<f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
-									<h:outputText value="#{toolCategoryViewBean.name}" rendered="#{empty toolCategoryViewBean.iconFileName}"/>
+									<f:param name="toolCategoryId"
+										value="#{toolCategoryViewBean.id}" />
+									<h:outputText value="#{toolCategoryViewBean.name}"
+										rendered="#{empty toolCategoryViewBean.iconFileName}" />
 									<p:graphicImage id="favoriteToolCategoryIcon"
 										rendered="#{not empty toolCategoryViewBean.iconFileName}"
-										styleClass="toolCategoryLogo" alt="#{toolCategoryViewBean.name}"
-										cache="false" width="50"
+										styleClass="toolCategoryLogo"
+										alt="#{toolCategoryViewBean.name}" cache="false" width="50"
 										value="#{imagesController.getImage()}">
 										<f:param name="imageFileName"
 											value="#{toolCategoryViewBean.iconFileName}" />
 									</p:graphicImage>
 								</h:outputLink>
-								<p:tooltip for="goToToolCategoryBtn" value="#{toolCategoryViewBean.name}"/>
+								<p:tooltip for="goToToolCategoryBtn"
+									value="#{toolCategoryViewBean.name}" />
 							</ui:repeat>
 						</p:panel>
 					</p:column>
-					<p:column width="50%">
+					<!-- 
+					<p:column>
 						<p:panel
 							header="#{msgs['RESOURCES.LAST_VIEWED_TOOL_CATEGORIES.HEADER']}">
 						</p:panel>
 					</p:column>
+					 -->
 				</p:row>
- 			</p:panelGrid>
+			</p:panelGrid>
 
 		</h:form>
 
@@ -277,7 +296,8 @@
 								value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<h:outputText id="categoryForTheNewResource" value="#{resourcesController.selectedToolCategoryViewBean.name}"/>
+							<h:outputText id="categoryForTheNewResource"
+								value="#{resourcesController.selectedToolCategoryViewBean.name}" />
 						</p:column>
 					</p:row>
 
@@ -330,6 +350,7 @@
 						</p:column>
 					</p:row>
 
+					<!-- 
 					<p:row>
 						<p:column>
 							<h:outputLabel for="supportServiceForTheNewResource"
@@ -352,14 +373,14 @@
 							<p:message for="supportServiceForTheNewResource" display="text" />
 						</p:column>
 					</p:row>
+					 -->
 
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{resourcesController.createResourceForSelectedResourceType(input1.value, input2.value, fileUploadController.uploadedFileName)}"
-					process="@this"
-					update="@form :formResources:resourcesTree"
+					action="#{resourcesController.onCreateResource(input1.value, input2.value, fileUploadController.uploadedFileName)}"
+					process="@this" update="@this"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
 			</h:form>
 		</p:dialog>
@@ -368,14 +389,16 @@
 			header="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogModifyResource" modal="true" height="auto">
 			<h:form id="formModifyResource">
-				<p:panelGrid rendered="#{resourcesController.selectedResourceViewBean != null}">
+				<p:panelGrid
+					rendered="#{resourcesController.selectedResourceViewBean != null}">
 					<p:row>
 						<p:column>
 							<h:outputLabel for="categoryForTheExistingResource"
 								value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<h:outputText id="categoryForTheExistingResource" value="#{resourcesController.selectedToolCategoryViewBean.name}"/>
+							<h:outputText id="categoryForTheExistingResource"
+								value="#{resourcesController.selectedToolCategoryViewBean.name}" />
 						</p:column>
 					</p:row>
 
@@ -385,7 +408,8 @@
 								value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />
 						</p:column>
 						<p:column>
-							<p:inputText id="nameForTheExistingResource" required="true" value="#{resourcesController.selectedResourceViewBean.name}"
+							<p:inputText id="nameForTheExistingResource" required="true"
+								value="#{resourcesController.selectedResourceViewBean.name}"
 								requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
 								binding="#{input3}" />
 						</p:column>
@@ -431,32 +455,45 @@
 							<h:outputLabel for="supportServiceForTheExistingResource"
 								value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SUPPORT_SERVICE_LABEL']}" />
 						</p:column>
-						<p:column>
-							<p:selectOneMenu id="supportServiceForTheExistingResource" required="true"
-								requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false"
-								binding="#{input4}" converter="OrganisationConverter">
+						<p:column colspan="2">
+							<p:selectOneMenu id="supportServiceForTheExistingResource"
+								required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}"
+								editable="false" immediate="true"
+								value="#{resourcesController.selectedResourceViewBean.organisationPossessingResourceViewBean}" 
+								converter="OrganisationConverter">
 								<f:selectItem
 									itemLabel="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
 								<f:selectItems
-									value="#{resourcesController.allOrganisationViewBeans}"
-									var="organisationViewBean" itemLabel="#{organisationViewBean.name}"
-									itemValue="#{organisationViewBean.domainBean}" />
+									value="#{resourcesController.allOrganisationViewBeansAsList}"
+									var="organisationViewBean"
+									itemLabel="#{organisationViewBean.name}"
+									itemValue="#{organisationViewBean}" />
 							</p:selectOneMenu>
- 						</p:column>
-						<p:column>
-							<p:message for="supportServiceForTheExistingResource" display="text" />
 						</p:column>
 					</p:row>
+					<!-- 
+					<p:row>
+						<p:column>
+							<h:outputLabel for="useModeForTheExistingResource"
+								value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.USE_MODE_LABEL']}" />
+						</p:column>
+						<p:column colspan="2">
+							<p:editor id="useModeForTheExistingResource"
+									value="#{resourcesController.selectedResourceViewBean.useModeViewBeans}"
+									controls="bold bullets numbering undo redo link unlink">
+							</p:editor>
+						</p:column>
+					</p:row>
+					 -->
 
 				</p:panelGrid>
 
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{resourcesController.modifyResource(input3.value, fileUploadController.uploadedFileName, input4.value, input5.value)}"
-					process="@this"
-					update="@form"
+					action="#{resourcesController.onModifySelectedResource(fileUploadController.uploadedFileName)}"
+					process="@form" update="@this :formSelectedToolCategory:toolsDataTable :formResources:messagesDisplayer"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogModifyResource.hide(); }" />
 			</h:form>
 		</p:dialog>
@@ -465,7 +502,7 @@
 			header="#{msgs['RESOURCES.ASSOCIATE_USE_MODE_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogAssociateUseMode" modal="true" height="auto">
 			<h:form id="formAssociateUseMode">
-				
+
 			</h:form>
 		</p:dialog>
 

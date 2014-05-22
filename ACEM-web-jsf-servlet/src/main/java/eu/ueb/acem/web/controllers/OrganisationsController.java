@@ -25,12 +25,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -42,7 +42,7 @@ import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.SortableTableBean;
-import eu.ueb.acem.web.viewbeans.TabViewBean;
+//import eu.ueb.acem.web.viewbeans.TabViewBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
@@ -63,7 +63,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	private static final long serialVersionUID = 3854588801358138982L;
 
-	@Autowired
+	@Inject
 	private OrganisationsService organisationsService;
 
 	private Map<Long, OrganisationViewBean> organisationViewBeans;
@@ -79,36 +79,35 @@ public class OrganisationsController extends AbstractContextAwareController {
 	private List<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeansForCurrentOrganisation;
 	private List<TeachingDepartmentViewBean> teachingDepartmentViewBeansForCurrentOrganisation;
 
-	@Autowired
+	@Inject
 	private PickListBean pickListBean;
 	
-	@Autowired
+	@Inject
 	private FileUploadController fileUploadController;
 
 	// TODO : choose whether we should keep this for correction of issue
 	// https://github.com/gcolbert/ACEM/issues/3
-	@Autowired
-	private TabViewBean tabViewBean;
+	//@Inject
+	//private TabViewBean tabViewBean;
 
 	/*-
 	 * TODO : enable those lines after correction of issue https://github.com/gcolbert/ACEM/issues/3
 	 * 
-	@Autowired
+	@Inject
 	private AccordionPanelBean communitiesAccordionPanelBean;
 
-	@Autowired
+	@Inject
 	private AccordionPanelBean institutionsAccordionPanelBean;
 
-	@Autowired
+	@Inject
 	private AccordionPanelBean administrativeDepartmentAccordionPanelBean;
 
-	@Autowired
+	@Inject
 	private AccordionPanelBean teachingDepartmentAccordionPanelBean;
 	 */
 
 	public OrganisationsController() {
-		// TODO : replace those hard-wired instanciations with @Autowired when
-		// Spring 4 will be used
+		// TODO : replace those hard-wired instanciations with @Inject when Spring 4 will be used
 		communityViewBeans = new SortableTableBean<CommunityViewBean>();
 		institutionViewBeans = new SortableTableBean<InstitutionViewBean>();
 		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
@@ -181,9 +180,11 @@ public class OrganisationsController extends AbstractContextAwareController {
 		return pickListBean;
 	}
 
+	/*-
 	public TabViewBean getTabViewBean() {
 		return tabViewBean;
 	}
+	*/
 
 	public OrganisationViewBean getOrganisationViewBeanFromId(Long id) {
 		return organisationViewBeans.get(id);

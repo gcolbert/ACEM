@@ -22,14 +22,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.dal.gris.PersonDAO;
+import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
@@ -47,16 +47,16 @@ public class UsersServiceImpl implements UsersService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 	
-	@Autowired
+	@Inject
 	private TeacherDAO teacherDAO;
 
-	@Autowired
+	@Inject
 	private PersonDAO personDAO;
 
-	@Autowired
+	@Inject
 	private OrganisationsService organisationsService;
 
-	@Autowired
+	@Inject
 	private ResourcesService resourcesService;
 	
 	private Set<Personne> persons;

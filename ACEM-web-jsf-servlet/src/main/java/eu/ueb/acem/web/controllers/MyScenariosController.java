@@ -23,12 +23,12 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -58,10 +58,10 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	private PedagogicalActivityViewBean selectedPedagogicalActivityViewBean;
 
-	@Autowired
+	@Inject
 	ScenariosService scenariosService;
 
-	@Autowired
+	@Inject
 	SortableTableBean<ScenarioViewBean> sortableTableBean;
 
 	public MyScenariosController() {

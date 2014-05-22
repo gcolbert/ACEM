@@ -64,11 +64,11 @@ public abstract class RessourceNode implements Ressource {
 	@Fetch
 	private Set<ModaliteUtilisationNode> useModes;
 	
-	@RelatedTo(elementClass = OrganisationNode.class, type = "possessesResource", direction = OUTGOING)
+	@RelatedTo(elementClass = OrganisationNode.class, type = "possessesResource", direction = INCOMING)
 	@Fetch
-	private OrganisationNode organisationPossedingResource;
+	private OrganisationNode organisationPossessingResource;
 
-	@RelatedTo(elementClass = OrganisationNode.class, type = "accessesResource", direction = OUTGOING)
+	@RelatedTo(elementClass = OrganisationNode.class, type = "accessesResource", direction = INCOMING)
 	@Fetch
 	private Set<OrganisationNode> organisationsHavingAccessToResource;
 
@@ -159,13 +159,13 @@ public abstract class RessourceNode implements Ressource {
 	}
 
 	@Override
-	public Organisation getOrganisationPossedingResource() {
-		return organisationPossedingResource;
+	public Organisation getOrganisationPossessingResource() {
+		return organisationPossessingResource;
 	}
 	
 	@Override
-	public void setOrganisationPossedingResource(Organisation organisation) {
-		this.organisationPossedingResource = (OrganisationNode)organisation;
+	public void setOrganisationPossessingResource(Organisation organisation) {
+		this.organisationPossessingResource = (OrganisationNode)organisation;
 	}
 
 	@Override

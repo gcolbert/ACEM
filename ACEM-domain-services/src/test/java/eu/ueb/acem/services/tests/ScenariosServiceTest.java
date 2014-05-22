@@ -1,12 +1,13 @@
 package eu.ueb.acem.services.tests;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +29,13 @@ import eu.ueb.acem.services.UsersService;
 @ContextConfiguration("/domain-services-test-context.xml")
 public class ScenariosServiceTest extends TestCase {
 
-	@Autowired
+	@Inject
 	private ScenariosService scenariosService;
 
-	@Autowired
+	@Inject
 	private UsersService usersService;
 
-	@Autowired
+	@Inject
 	private OrganisationsService organisationsService;
 
 	public ScenariosServiceTest() {

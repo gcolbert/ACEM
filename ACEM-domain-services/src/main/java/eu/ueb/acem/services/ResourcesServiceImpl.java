@@ -22,9 +22,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.jaune.EquipmentDAO;
@@ -60,25 +61,25 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ResourcesServiceImpl.class);
 
-	@Autowired
+	@Inject
 	private ResourceCategoryDAO resourceCategoryDAO;
 
-	@Autowired
+	@Inject
 	private UseModeDAO useModeDAO;
 
-	@Autowired
+	@Inject
 	private EquipmentDAO equipmentDAO;
 
-	@Autowired
+	@Inject
 	private PedagogicalAndDocumentaryResourcesDAO pedagogicalAndDocumentaryResourcesDAO;
 
-	@Autowired
+	@Inject
 	private ProfessionalTrainingDAO professionalTrainingDAO;
 
-	@Autowired
+	@Inject
 	private SoftwareDAO softwareDAO;
 
-	@Autowired
+	@Inject
 	private SoftwareDocumentationDAO softwareDocumentationDAO;
 
 	@Override

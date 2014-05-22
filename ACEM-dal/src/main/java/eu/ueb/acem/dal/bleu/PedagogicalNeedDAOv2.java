@@ -50,7 +50,7 @@ public class PedagogicalNeedDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> i
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalNeedDAOv2.class);
 
-	//@Autowired // Uncomment to use this class
+	//@Inject // Uncomment to use this class
 	private PedagogicalNeedRepository repository;
 
 	public PedagogicalNeedDAOv2() {

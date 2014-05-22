@@ -56,9 +56,9 @@ public interface Ressource extends Serializable {
 
 	void setUseModes(Set<? extends ModaliteUtilisation> useModes);
 
-	Organisation getOrganisationPossedingResource();
+	Organisation getOrganisationPossessingResource();
 
-	void setOrganisationPossedingResource(Organisation organisation);
+	void setOrganisationPossessingResource(Organisation organisation);
 
 	Set<? extends Organisation> getOrganisationsHavingAccessToResource();
 

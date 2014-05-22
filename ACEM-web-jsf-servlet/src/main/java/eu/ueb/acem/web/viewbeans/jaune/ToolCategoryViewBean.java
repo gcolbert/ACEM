@@ -22,13 +22,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.ueb.acem.domain.beans.jaune.Applicatif;
-import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
-import eu.ueb.acem.domain.beans.jaune.Equipement;
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -40,6 +37,9 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	private static final long serialVersionUID = -116654020465612191L;
 
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(ToolCategoryViewBean.class);
+	
 	private ResourceCategory resourceCategory;
 
 	private List<ResourceViewBean> resourceViewBeans;
@@ -79,24 +79,6 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 		this.resourceCategory = toolCategory;
 		setId(toolCategory.getId());
 		setName(toolCategory.getName());
-		resourceViewBeans.clear();
-		for (Ressource resource : toolCategory.getResources()) {
-			if (resource instanceof Applicatif) {
-				addResourceViewBean(new SoftwareViewBean((Applicatif)resource));
-			}
-			else if (resource instanceof Equipement) {
-				addResourceViewBean(new EquipmentViewBean((Equipement)resource));
-			}
-			else if (resource instanceof FormationProfessionnelle) {
-				addResourceViewBean(new ProfessionalTrainingViewBean((FormationProfessionnelle)resource));
-			}
-			else if (resource instanceof DocumentationApplicatif) {
-				addResourceViewBean(new SoftwareDocumentationViewBean((DocumentationApplicatif)resource));
-			}
-			else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
-				addResourceViewBean(new DocumentaryAndPedagogicalResourceViewBean((RessourcePedagogiqueEtDocumentaire)resource));
-			}
-		}
 		setIconFileName(toolCategory.getIconFileName());
 		setDescription(toolCategory.getDescription());
 	}

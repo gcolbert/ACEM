@@ -45,7 +45,7 @@ import org.springframework.stereotype.Repository;
 //@Repository("genericDAO") // Uncomment to use
 public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<Long, E> {
 
-	//@Autowired // Uncomment to use
+	//@Inject // Uncomment to use
 	protected GenericRepository<N> repository;
 
 	@Override

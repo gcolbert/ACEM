@@ -41,12 +41,10 @@ public class TeacherViewBean extends PersonViewBean {
 	
 	private Enseignant domainBean;
 	
-	//private List<ResourceViewBean> favoriteResourceViewBeans;
 	private List<ToolCategoryViewBean> favoriteToolCategoryViewBeans;
 	
 	public TeacherViewBean() {
 		super();
-		//this.favoriteResourceViewBeans = new ArrayList<ResourceViewBean>();
 		favoriteToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
 	
@@ -63,46 +61,10 @@ public class TeacherViewBean extends PersonViewBean {
 		super.setDomainBean(teacher);
 		this.domainBean = teacher;
 		for (ResourceCategory toolCategory : teacher.getFavoriteToolCategories()) {
-			logger.info("TeacherViewBean.setDomainBean : we add the toolCategory {} as favorite", toolCategory);
+			logger.info("TeacherViewBean.setDomainBean : we add the toolCategory '{}' as favorite", toolCategory.getName());
 			addFavoriteToolCategoryViewBean(new ToolCategoryViewBean(toolCategory));
 		}
-		
-		/*-
-		for (Ressource resource : teacher.getFavoriteResources()) {
-			if (resource instanceof Equipement) {
-				addFavoriteResourceViewBean(new EquipmentViewBean((Equipement)resource));
-			}
-			else if (resource instanceof Applicatif) {
-				addFavoriteResourceViewBean(new SoftwareViewBean((Applicatif)resource));
-			}
-			else if (resource instanceof DocumentationApplicatif) {
-				addFavoriteResourceViewBean(new SoftwareDocumentationViewBean((DocumentationApplicatif)resource));
-			}
-			else if (resource instanceof FormationProfessionnelle) {
-				addFavoriteResourceViewBean(new ProfessionalTrainingViewBean((FormationProfessionnelle)resource));
-			}
-			else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
-				addFavoriteResourceViewBean(new DocumentaryAndPedagogicalResourceViewBean((RessourcePedagogiqueEtDocumentaire)resource));
-			}
-		}
-		*/
 	}
-
-	/*-
-	public List<ResourceViewBean> getFavoriteResourceViewBeans() {
-		return favoriteResourceViewBeans;
-	}
-
-	public void addFavoriteResourceViewBean(ResourceViewBean resourceViewBean) {
-		favoriteResourceViewBeans.add(resourceViewBean);
-		resourceViewBean.setFavoriteResource(true);
-	}
-	
-	public void removeFavoriteResourceViewBean(ResourceViewBean resourceViewBean) {
-		favoriteResourceViewBeans.remove(resourceViewBean);
-		resourceViewBean.setFavoriteResource(false);
-	}
-	*/
 	
 	public List<ToolCategoryViewBean> getFavoriteToolCategoryViewBeans() {
 		return favoriteToolCategoryViewBeans;

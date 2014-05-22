@@ -21,14 +21,15 @@ package eu.ueb.acem.services;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import eu.ueb.acem.dal.rouge.CommunityDAO;
-import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
-import eu.ueb.acem.dal.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
+import eu.ueb.acem.dal.rouge.CommunityDAO;
+import eu.ueb.acem.dal.rouge.InstitutionDAO;
+import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
@@ -49,16 +50,16 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationsServiceImpl.class);
 
-	@Autowired
+	@Inject
 	private CommunityDAO communityDAO;
 
-	@Autowired
+	@Inject
 	private InstitutionDAO institutionDAO;
 
-	@Autowired
+	@Inject
 	private TeachingDepartmentDAO teachingDepartmentDAO;
 
-	@Autowired
+	@Inject
 	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 
 	@Override

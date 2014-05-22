@@ -29,10 +29,8 @@ import javax.faces.convert.FacesConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.services.ResourcesService;
 
 /**
  * @author Grégoire Colbert
@@ -43,9 +41,6 @@ public class ResourceCategoryConverter implements Converter {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ResourceCategoryConverter.class);
-	
-	@Autowired
-	private ResourcesService resourcesService;
 
     private static final String KEY = "eu.ueb.acem.web.utils.ResourceCategoryConverter";
 	
