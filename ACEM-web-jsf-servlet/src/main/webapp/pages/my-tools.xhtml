@@ -249,7 +249,7 @@
 			<p:panelGrid styleClass="bottom-toolboxes">
 				<p:row>
 					<p:column>
-						<p:panel id="favoriteToolCategoriesPanel"
+						<p:panel id="favoriteToolCategoriesPanel" rendered="sessionController.currentUserViewBean.isTeacher"
 							header="#{msgs['RESOURCES.MY_FAVORITE_TOOL_CATEGORIES.HEADER']}">
 							<ui:repeat id="favoriteToolCategories"
 								value="#{sessionController.currentUserViewBean.favoriteToolCategoryViewBeans}"

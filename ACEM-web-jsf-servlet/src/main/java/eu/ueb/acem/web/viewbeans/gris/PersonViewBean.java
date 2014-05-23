@@ -129,6 +129,10 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 	public void setAdministrator(Boolean administrator) {
 		this.administrator = administrator;
 	}
+	
+	public Boolean isTeacher(){
+		return this instanceof TeacherViewBean;
+	}
 
 	@Override
 	public int compareTo(PersonViewBean o) {
