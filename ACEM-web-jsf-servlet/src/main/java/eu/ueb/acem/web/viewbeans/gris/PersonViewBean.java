@@ -130,7 +130,7 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		this.administrator = administrator;
 	}
 	
-	public Boolean isTeacher(){
+	public Boolean getIsTeacher(){
 		return this instanceof TeacherViewBean;
 	}
 

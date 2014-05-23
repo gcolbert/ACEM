@@ -783,12 +783,30 @@
 			</p:dialog>
 		</h:form>
 
-		<h:form id="formResourceCategories">
-			<p:growl id="messagesDisplayerFormResourceCategories"
+		<h:form id="formToolCategories">
+			<p:growl id="messagesDisplayerFormToolCategories"
 				showDetail="true" />
 			<p:panel
-				header="#{msgs['ADMINISTRATION.RESOURCE_CATEGORIES.HEADER']}">
+				header="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.HEADER']}">
+				<p:commandButton
+					value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_LABEL']}"
+					icon="ui-icon-plusthick"
+					update=":formToolCategories:idDialogCreateToolCategory"
+					oncomplete="PF('dialogCreateToolCategory').show()" process="@this">
+					<p:resetInput target=":formToolCategories:idDialogCreateToolCategory" />
+				</p:commandButton>
 			</p:panel>
+			<p:dialog id="idDialogCreateToolCategory"
+				header="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogCreateToolCategory" modal="true"
+				height="auto">
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.CLOSE']}"
+					icon="ui-icon-check"
+					onclick="PF('dialogCreateToolCategory').hide()"
+					update="@none"
+					process="@this idDialogCreateToolCategory" />
+			</p:dialog>
 		</h:form>
 
 	</ui:define>
