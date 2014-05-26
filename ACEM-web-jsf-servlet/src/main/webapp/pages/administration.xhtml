@@ -800,12 +800,45 @@
 				header="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateToolCategory" modal="true"
 				height="auto">
+				<p:panelGrid columns="3">
+
+					<h:outputLabel for="newToolCategoryName"
+						value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.NAME_LABEL']}" />
+					<p:inputText id="newToolCategoryName" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						binding="#{input5}" />
+					<p:message for="newToolCategoryName" display="text" />
+
+					<h:outputLabel for="newToolCategoryDescription"
+						value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.DESCRIPTION_LABEL']}" />
+					<p:inputText id="newToolCategoryDescription" required="true"
+						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						binding="#{input5b}" />
+					<p:message for="newToolCategoryDescription" display="text" />
+
+					<h:outputLabel
+						value="#{msgs['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
+						for="newToolCategoryIcon" />
+					<p:column rowspan="2">
+						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
+							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
+							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
+							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
+							update="newToolCategoryIcon :formOrganisations:messagesDisplayerFormOrganisations" />
+						<p:graphicImage id="newToolCategoryIcon" cache="false"
+							width="200" value="#{fileUploadController.uploadedFile}" />
+					</p:column>
+
+				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
+					action="#{administrationController.createToolCategory(input5.value, input5b.value)}"
 					onclick="PF('dialogCreateToolCategory').hide()"
-					update="@none"
-					process="@this idDialogCreateToolCategory" />
+					update="@form :formToolCategories"
+					process="@this idDialogCreateToolCategory"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateToolCategory.hide(); }" />
 			</p:dialog>
 		</h:form>
 
