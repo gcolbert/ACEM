@@ -148,7 +148,7 @@
 							<p:ajax event="rowSelect"
 								listener="#{resourcesController.onToolRowSelect}"
 								update=":formSelectedToolCategory:idModifyToolButton" />
-							<p:column
+							<p:column width="50%"
 								headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_NAME']}">
 								<h:outputText value="#{toolViewBean.name}" />
 								<p:graphicImage id="resourceIcon"
@@ -159,7 +159,7 @@
 										value="#{toolViewBean.iconFileName}" />
 								</p:graphicImage>
 							</p:column>
-							<p:column
+							<p:column width="50%"
 								headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATION_NAME']}">
 								<h:link id="goToSupportServiceBtn" outcome="my-services" rendered="#{toolViewBean.organisationPossessingResourceViewBean != null}">
 									<f:param name="serviceId" value="#{toolViewBean.organisationPossessingResourceViewBean.id}" />
