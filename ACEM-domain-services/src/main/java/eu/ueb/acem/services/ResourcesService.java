@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.jaune.Ressource;
  */
 public interface ResourcesService {
 
-	ResourceCategory createResourceCategory(String name);
+	ResourceCategory createResourceCategory(String name, String description, String iconFileName);
 
 	ResourceCategory retrieveResourceCategory(Long id);
 

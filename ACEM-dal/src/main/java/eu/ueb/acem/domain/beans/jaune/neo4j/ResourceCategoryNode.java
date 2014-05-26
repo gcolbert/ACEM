@@ -75,8 +75,10 @@ public class ResourceCategoryNode implements ResourceCategory {
 		resources = new HashSet<RessourceNode>();
 	}
 
-	public ResourceCategoryNode(String name) {
+	public ResourceCategoryNode(String name, String description, String iconFileName) {
 		setName(name);
+		setDescription(description);
+		setIconFileName(iconFileName);
 	}
 
 	@Override

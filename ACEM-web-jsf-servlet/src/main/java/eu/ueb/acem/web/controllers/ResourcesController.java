@@ -19,6 +19,7 @@
 package eu.ueb.acem.web.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +55,10 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.Service;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
+import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
+import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
@@ -109,26 +113,45 @@ public class ResourcesController extends AbstractContextAwareController {
 	private static final String[] RESOURCE_TYPES = { "software", "softwareDocumentation", "equipment",
 			"pedagogicalAndDocumentaryResources", "professionalTraining" };
 	private String selectedResourceType; // One of RESOURCE_TYPES
-	private Map<String, List<ToolCategoryViewBean>> categoryViewBeansByResourceType;
-
+	private Map<String, List<ToolCategoryViewBean>> toolCategoryViewBeansByResourceType;
+	private static final String[] RESOURCE_TYPES_I18N_FR = { "Applicatif", "Documentation d'applicatif", "Équipement",
+		"Ressource documentaire et pédagogique", "Formation pour les personnels" };
+	private static final String[] RESOURCE_TYPES_I18N_EN = { "Software", "Software documentation", "Equipment",
+		"Pedagogical and documentary resource", "Professional training" };
+	private String newResourceType = "";
+	private String newResourceName = "";
+	
 	public ResourcesController() {
 		toolCategoryViewBeans = new HashMap<Long, ToolCategoryViewBean>();
 		resourceViewBeans = new HashMap<Long, ResourceViewBean>();
 		organisationViewBeans = new HashMap<Long, OrganisationViewBean>();
 		allOrganisationViewBeans = new ArrayList<OrganisationViewBean>();
-		categoryViewBeansByResourceType = new HashMap<String, List<ToolCategoryViewBean>>();
+		toolCategoryViewBeansByResourceType = new HashMap<String, List<ToolCategoryViewBean>>();
 	}
 
 	@PostConstruct
 	public void initResourcesController() {
 		logger.info("entering initResourcesController");
 
-		for (String resourceType : RESOURCE_TYPES) {
-			categoryViewBeansByResourceType.put(resourceType, new ArrayList<ToolCategoryViewBean>());
-			for (ResourceCategory resourceCategory : resourcesService.retrieveCategoriesForResourceType(resourceType)) {
-				categoryViewBeansByResourceType.get(resourceType).add(new ToolCategoryViewBean(resourceCategory));
+		for (ResourceCategory toolCategory : resourcesService.retrieveAllCategories()) {
+			ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
+			for (Ressource tool : toolCategory.getResources()) {
+				toolCategoryViewBean.addResourceViewBean(getResourceViewBean(tool.getId()));
 			}
-			Collections.sort(categoryViewBeansByResourceType.get(resourceType));
+
+			List<Scenario> scenarios = new ArrayList<Scenario>(resourcesService.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryId));
+			for (Scenario scenario : scenarios) {
+				toolCategoryViewBean.addScenarioViewBean(new ScenarioViewBean(scenario));
+			}
+			toolCategoryViewBeans.put(toolCategory.getId(), toolCategoryViewBean);
+		}
+		
+		for (String resourceType : RESOURCE_TYPES) {
+			toolCategoryViewBeansByResourceType.put(resourceType, new ArrayList<ToolCategoryViewBean>());
+			for (ResourceCategory resourceCategory : resourcesService.retrieveCategoriesForResourceType(resourceType)) {
+				toolCategoryViewBeansByResourceType.get(resourceType).add(new ToolCategoryViewBean(resourceCategory));
+			}
+			Collections.sort(toolCategoryViewBeansByResourceType.get(resourceType));
 		}
 
 		setAllOrganisationViewBeansAsList();
@@ -157,6 +180,14 @@ public class ResourcesController extends AbstractContextAwareController {
 		return TREE_NODE_TYPE_CATEGORY;
 	}
 
+	public List<String> getAllResourceTypes_i18n_fr() {
+		return Arrays.asList(RESOURCE_TYPES_I18N_FR);
+	}
+
+	public List<String> getAllResourceTypes_i18n_en() {
+		return Arrays.asList(RESOURCE_TYPES_I18N_EN);
+	}
+	
 	public void prepareToolCategoryTreeForResourceType(String resourceType) {
 		logger.info("Entering prepareToolCategoryTreeForResourceType for resourceType={}", resourceType);
 		this.selectedResourceType = resourceType;
@@ -182,7 +213,7 @@ public class ResourcesController extends AbstractContextAwareController {
 			logger.error("Unknown resourceType '{}'", resourceType);
 			break;
 		}
-		for (ToolCategoryViewBean categoryViewBean : categoryViewBeansByResourceType.get(resourceType)) {
+		for (ToolCategoryViewBean categoryViewBean : toolCategoryViewBeansByResourceType.get(resourceType)) {
 			resourcesTreeBean.addChild(getTreeNodeType_CATEGORY(), resourcesTreeBean.getVisibleRoots().get(0),
 					categoryViewBean.getId(), categoryViewBean.getName(), "category");
 		}
@@ -224,6 +255,10 @@ public class ResourcesController extends AbstractContextAwareController {
 		return selectedToolCategoryViewBean;
 	}
 
+	public void setSelectedToolCategoryViewBean(ToolCategoryViewBean toolCategoryViewBean) {
+		this.selectedToolCategoryViewBean = toolCategoryViewBean;
+	}
+	
 	private ToolCategoryViewBean getToolCategoryViewBean(Long id) {
 		ToolCategoryViewBean viewBean = null;
 		if (toolCategoryViewBeans.containsKey(id)) {
@@ -332,15 +367,15 @@ public class ResourcesController extends AbstractContextAwareController {
 		return resourcesTreeBean.getRoot();
 	}
 
-	public List<ToolCategoryViewBean> getAllCategoryViewBeans() {
-		List<ToolCategoryViewBean> allCategoryViewBeans = new ArrayList<ToolCategoryViewBean>(
+	public List<ToolCategoryViewBean> getAllToolCategoryViewBeans() {
+		List<ToolCategoryViewBean> allToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>(
 				toolCategoryViewBeans.values());
-		Collections.sort(allCategoryViewBeans);
-		return allCategoryViewBeans;
+		Collections.sort(allToolCategoryViewBeans);
+		return allToolCategoryViewBeans;
 	}
 
-	public List<ToolCategoryViewBean> getCategoryViewBeansForSelectedResourceType() {
-		return categoryViewBeansByResourceType.get(selectedResourceType);
+	public List<ToolCategoryViewBean> getToolCategoryViewBeansForSelectedResourceType() {
+		return toolCategoryViewBeansByResourceType.get(selectedResourceType);
 	}
 
 	public List<OrganisationViewBean> getAllOrganisationViewBeansAsList() {
@@ -385,11 +420,6 @@ public class ResourcesController extends AbstractContextAwareController {
 		logger.info("Leaving setPedagogicalUsesTreeRoot");
 	}
 
-	public List<Scenario> getScenariosUsingSelectedToolCategory() {
-		return new ArrayList<Scenario>(
-				resourcesService.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryId));
-	}
-
 	public TreeNode getSelectedNode() {
 		return resourcesTreeSelectedNode;
 	}
@@ -429,15 +459,43 @@ public class ResourcesController extends AbstractContextAwareController {
 		setSelectedResourceViewBean((ResourceViewBean) event.getObject());
 	}
 
-	public void onCreateResource(ResourceCategory category, String name, String iconFileName) {
+	public void onCreateResource(String newResourceType, ResourceCategory category, String newResourceName, String iconFileName) {
 		logger.info("onCreateResource");
-		resourcesService.createResource(selectedResourceType, category, name, iconFileName);
+		resourcesService.createResource(newResourceType, category, newResourceName, iconFileName);
 	}
 
+	public String getNewResourceName() {
+		return newResourceName;
+	}
+
+	public void setNewResourceName(String name) {
+		this.newResourceName = name;
+	}
+
+	public String getNewResourceType() {
+		return newResourceType;
+	}
+	
+	public void setNewResourceType(String type) {
+		this.newResourceType = type;
+	}
+	
 	public void onModifySelectedResource(String iconFileName) {
 		logger.info("onModifySelectedResource({})", iconFileName);
 		selectedResourceViewBean.setIconFileName(iconFileName);
 		resourcesService.updateResource(selectedResourceViewBean.getDomainBean());
 	}
 
+	public void onCreateToolCategory(String name, String description, String iconFileName) {
+		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
+		ResourceCategory toolCategory = resourcesService.createResourceCategory(name, description, iconFileName);
+		ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
+		toolCategoryViewBeans.put(toolCategoryViewBean.getId(), toolCategoryViewBean);
+	}
+	
+	public void onToolCategoryAccordionPanelTabChange(TabChangeEvent event) {
+		logger.info("onToolCategoryAccordionPanelTabChange, tab={}", event.getTab());
+		setSelectedToolCategoryViewBean((ToolCategoryViewBean) event.getData());
+	}
+	
 }

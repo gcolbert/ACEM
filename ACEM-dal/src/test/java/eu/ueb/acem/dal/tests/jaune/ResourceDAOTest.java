@@ -119,7 +119,7 @@ public class ResourceDAOTest extends TestCase {
 	@Test
 	@Transactional
 	public final void t01_TestDAOResourceAndResourceCategoryAssociation() {
-		ResourceCategory learningManagementSystem = new ResourceCategoryNode("Learning Management System");
+		ResourceCategory learningManagementSystem = new ResourceCategoryNode("Learning Management System", "A superb tool", null);
 		learningManagementSystem = resourceCategoryDAO.create(learningManagementSystem);
 		
 		Applicatif moodle = new ApplicatifNode("Moodle", null);

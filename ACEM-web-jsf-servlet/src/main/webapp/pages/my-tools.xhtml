@@ -143,6 +143,7 @@
 							value="#{resourcesController.selectedToolCategoryViewBean.resourceViewBeans}"
 							selectionMode="single"
 							selection="#{resourcesController.selectedResourceViewBean}"
+							emptyMessage="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.LIST.NO_RECORDS_FOUND']}"
 							rowKey="#{toolViewBean.id}">
 							<p:ajax event="rowSelect"
 								listener="#{resourcesController.onToolRowSelect}"
@@ -205,7 +206,7 @@
 								<h:outputText value="#{treeNodeData.label}" />
 							</p:treeNode>
 							<p:treeNode
-								type="resourcesController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}"
+								type="#{resourcesController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}"
 								styleClass="#{treeNodeData.styleClass}">
 								<h:outputText value="#{treeNodeData.label}" />
 							</p:treeNode>
@@ -226,7 +227,8 @@
 							for="scenariosUsingSelectedToolCategoryTable" />
 
 						<p:dataTable id="scenariosUsingSelectedToolCategoryTable"
-							value="#{resourcesController.scenariosUsingSelectedToolCategory}"
+							value="#{resourcesController.selectedToolCategoryViewBean.scenarioViewBeans}"
+							emptyMessage="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.LIST.NO_RECORDS_FOUND']}"
 							var="scenario">
 							<p:column
 								headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.TITLE']}">
@@ -303,13 +305,31 @@
 
 					<p:row>
 						<p:column>
+							<h:outputLabel for="typeForTheNewResource" value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.TYPE_LABEL']}"/>
+						</p:column>
+						<p:column colspan="2">
+							<p:selectOneMenu id="typeForTheNewResource"
+								required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}"
+								editable="false" immediate="true"
+								value="#{newResourceType}">
+								<f:selectItem
+									itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_TOOL_TYPE']}"
+									itemValue="" itemDisabled="true" noSelectionOption="true" />
+								<f:selectItems
+									value="#{resourcesController.allResourceTypes_i18n_fr}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
 							<h:outputLabel for="nameForTheNewResource"
 								value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />
 						</p:column>
 						<p:column>
 							<p:inputText id="nameForTheNewResource" required="true"
 								requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
-								binding="#{input1}" />
+								binding="#{newResourceName}" />
 						</p:column>
 						<p:column>
 							<p:message for="nameForTheNewResource" display="text" />
@@ -350,7 +370,6 @@
 						</p:column>
 					</p:row>
 
-					<!-- 
 					<p:row>
 						<p:column>
 							<h:outputLabel for="supportServiceForTheNewResource"
@@ -358,29 +377,27 @@
 						</p:column>
 						<p:column>
 							<p:selectOneMenu id="supportServiceForTheNewResource" required="true"
-								requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false"
-								binding="#{input2}" converter="OrganisationConverter">
+								requiredMessage="#{msgs['REQUIRED_FIELD']}" editable="false" immediate="true"
+								binding="#{newResourceSupportService}" converter="OrganisationConverter">
 								<f:selectItem
-									itemLabel="#{msgs['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
+									itemLabel="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
 								<f:selectItems
-									value="#{resourcesController.allOrganisationViewBeans}"
+									value="#{resourcesController.allOrganisationViewBeansAsList}"
 									var="organisationViewBean" itemLabel="#{organisationViewBean.name}"
-									itemValue="#{organisationViewBean.domainBean}" />
+									itemValue="#{organisationViewBean}" />
 							</p:selectOneMenu>
 						</p:column>
 						<p:column>
 							<p:message for="supportServiceForTheNewResource" display="text" />
 						</p:column>
 					</p:row>
-					 -->
-
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{resourcesController.onCreateResource(input1.value, input2.value, fileUploadController.uploadedFileName)}"
-					process="@this" update="@this"
+					action="#{resourcesController.onCreateResource(newResourceType.value, newResourceSupportService.value, newResourceName.value, fileUploadController.uploadedFileName)}"
+					process="@this" update="@this :formResources:messagesDisplayer"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateResource.hide(); }" />
 			</h:form>
 		</p:dialog>

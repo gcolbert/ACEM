@@ -22,7 +22,6 @@ import java.util.Set;
 
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.domain.beans.violet.SeanceDeCours;
 
 /**

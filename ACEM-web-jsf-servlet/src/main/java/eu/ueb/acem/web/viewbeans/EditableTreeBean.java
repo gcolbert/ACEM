@@ -42,6 +42,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class EditableTreeBean implements Serializable {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(EditableTreeBean.class);
 
 	private static final long serialVersionUID = -7640100553743316532L;

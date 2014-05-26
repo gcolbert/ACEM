@@ -230,8 +230,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public ResourceCategory createResourceCategory(String name) {
-		return resourceCategoryDAO.create(new ResourceCategoryNode(name));
+	public ResourceCategory createResourceCategory(String name, String description, String iconFileName) {
+		return resourceCategoryDAO.create(new ResourceCategoryNode(name, description, iconFileName));
 	}
 	
 	@Override

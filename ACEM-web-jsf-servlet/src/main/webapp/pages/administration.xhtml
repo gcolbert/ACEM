@@ -795,6 +795,71 @@
 					oncomplete="PF('dialogCreateToolCategory').show()" process="@this">
 					<p:resetInput target=":formToolCategories:idDialogCreateToolCategory" />
 				</p:commandButton>
+				<p:accordionPanel id="accordionPanelForToolCategories"
+					widgetVar="accordionPanelForToolCategoriesWidget"
+					value="#{resourcesController.allToolCategoryViewBeans}"
+					var="toolCategoryViewBean" activeIndex="-1" dynamic="true"
+					collapsible="true">
+					<p:ajax event="tabChange"
+						listener="#{resourcesController.onToolCategoryAccordionPanelTabChange}"
+						update="@this" />
+					<p:tab title="#{toolCategoryViewBean.name}">
+						<p:panelGrid columns="2">
+							<p:graphicImage id="toolCategoryIcon"
+								rendered="#{not empty toolCategoryViewBean.iconFileName}"
+								styleClass="organisationLogo" alt="#{toolCategoryViewBean.name}"
+								cache="false" width="150"
+								value="#{imagesController.getImage()}">
+								<f:param name="imageFileName"
+									value="#{toolCategoryViewBean.iconFileName}" />
+							</p:graphicImage>
+							<p:column>
+								<h:outputText value="#{toolCategoryViewBean.description}"/>
+							<!-- 
+								TODO : modify selected tool category + delete selected tool category
+								
+								<p:commandButton
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
+									icon="ui-icon-transferthick-e-w"
+									actionListener="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
+									action="#{organisationsController.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
+									oncomplete="PF('dialogAssociateInstitution').show()"
+									update=":formOrganisations:idDialogAssociateInstitution"
+									process="@this" />
+								<p:commandButton
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_COMMUNITY_LABEL']}"
+									icon="ui-icon-pencil"
+									actionListener="#{fileUploadController.reset()}"
+									action="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
+									update=":formOrganisations:idDialogRenameOrganisation"
+									oncomplete="PF('dialogRenameOrganisation').show()"
+									process="@this" />
+								<p:commandButton id="deleteCommunityButton"
+									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+									icon="ui-icon-trash"
+									actionListener="#{organisationsController.onDeleteOrganisation}"
+									action="#{usersController.onDeleteOrganisation}"
+									update="accordionPanelForCommunities :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+									process="@this">
+									<p:confirm
+										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+										icon="ui-icon-alert" />
+								</p:commandButton>
+								<p:dataTable id="dataTableInstitutionViewBeansForCommunity"
+									var="institutionViewBean"
+									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
+									value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
+									<p:column
+										headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
+										<h:outputText value="#{institutionViewBean.name}" />
+									</p:column>
+								</p:dataTable>
+								 -->
+							</p:column>
+						</p:panelGrid>
+					</p:tab>
+				</p:accordionPanel>
 			</p:panel>
 			<p:dialog id="idDialogCreateToolCategory"
 				header="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"
@@ -829,13 +894,11 @@
 						<p:graphicImage id="newToolCategoryIcon" cache="false"
 							width="200" value="#{fileUploadController.uploadedFile}" />
 					</p:column>
-
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
-					action="#{administrationController.createToolCategory(input5.value, input5b.value)}"
-					onclick="PF('dialogCreateToolCategory').hide()"
+					action="#{resourcesController.onCreateToolCategory(input5.value, input5b.value, fileUploadController.uploadedFileName)}"
 					update="@form :formToolCategories"
 					process="@this idDialogCreateToolCategory"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateToolCategory.hide(); }" />

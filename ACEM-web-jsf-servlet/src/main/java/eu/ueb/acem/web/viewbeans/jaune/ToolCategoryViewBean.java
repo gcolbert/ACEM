@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.web.viewbeans.Pickable;
+import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -44,6 +45,8 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	private List<ResourceViewBean> resourceViewBeans;
 	
+	private List<ScenarioViewBean> scenarioViewBeans;
+	
 	private Long id;
 
 	private String name;
@@ -56,6 +59,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	public ToolCategoryViewBean() {
 		resourceViewBeans = new ArrayList<ResourceViewBean>();
+		scenarioViewBeans = new ArrayList<ScenarioViewBean>();
 	}
 
 	public ToolCategoryViewBean(ResourceCategory toolCategory) {
@@ -93,6 +97,18 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	public void removeResourceViewBean(ResourceViewBean resourceViewBean) {
 		resourceViewBeans.remove(resourceViewBean);
+	}
+
+	public List<ScenarioViewBean> getScenarioViewBeans() {
+		return scenarioViewBeans;
+	}
+
+	public void addScenarioViewBean(ScenarioViewBean scenarioViewBean) {
+		scenarioViewBeans.add(scenarioViewBean);
+	}
+
+	public void removeScenarioViewBean(ScenarioViewBean scenarioViewBean) {
+		scenarioViewBeans.remove(scenarioViewBean);
 	}
 	
 	@Override
