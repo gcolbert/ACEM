@@ -17,6 +17,7 @@
 		<javax.validation-version>1.1.0.Final</javax.validation-version>
 		<junit-version>4.11</junit-version>
 		<cglib-version>2.2.2</cglib-version>
+		<javax.inject-version>1</javax.inject-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -60,6 +61,11 @@
 			<artifactId>esup-commons2-auth</artifactId>
 			<version>${esupcommons.version}</version>
 			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>${javax.inject-version}</version>
 		</dependency>
 
 		<!-- Test -->
