@@ -27,12 +27,16 @@ public class FileUploadController extends AbstractContextAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
-	private String destination = "D:/tmp/";
+	private String uploadToLocalPath = "D:/tmp/";
 
 	private DefaultStreamedContent uploadedFile;
 
 	private String uploadedFileName;
 
+	public void setUploadToLocalPath(String localPath) {
+		this.uploadToLocalPath = localPath;
+	}
+	
 	public void upload(FileUploadEvent event) {
 		logger.info("upload");
 		FacesMessage msg = new FacesMessage(getString("FILEUPLOAD.UPLOAD_SUCCESSFUL.TITLE"), getString(
@@ -41,7 +45,7 @@ public class FileUploadController extends AbstractContextAwareController {
 		// Do what you want with the file
 		try {
 			copyFile(event.getFile().getFileName(), event.getFile().getInputstream());
-			uploadedFile = new DefaultStreamedContent(new ByteArrayInputStream(Files.readAllBytes(Paths.get(destination
+			uploadedFile = new DefaultStreamedContent(new ByteArrayInputStream(Files.readAllBytes(Paths.get(uploadToLocalPath
 					+ event.getFile().getFileName()))));
 			uploadedFileName = event.getFile().getFileName();
 			logger.info("successful");
@@ -54,7 +58,7 @@ public class FileUploadController extends AbstractContextAwareController {
 	public void copyFile(String fileName, InputStream in) {
 		try {
 			// write the inputStream to a FileOutputStream
-			OutputStream out = new FileOutputStream(new File(destination + fileName));
+			OutputStream out = new FileOutputStream(new File(uploadToLocalPath + fileName));
 
 			int read = 0;
 			byte[] bytes = new byte[1024];
