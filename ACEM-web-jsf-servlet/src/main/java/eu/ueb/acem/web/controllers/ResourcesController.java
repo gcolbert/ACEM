@@ -480,6 +480,22 @@ public class ResourcesController extends AbstractContextAwareController {
 		resourcesService.updateResource(selectedResourceViewBean.getDomainBean());
 	}
 
+	// TODO : implement the deleteResource method in the resourcesServiceImpl
+	public void onDeleteSelectedResource() {
+		if (resourcesService.deleteResource(getSelectedResourceViewBean().getDomainBean().getId())) {
+			selectedToolCategoryViewBean.removeResourceViewBean(getSelectedResourceViewBean());
+			resourceViewBeans.remove(getSelectedResourceViewBean().getId());
+			MessageDisplayer.showMessageToUserWithSeverityInfo(
+					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE"),
+					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS"));
+		}
+		else {
+			MessageDisplayer.showMessageToUserWithSeverityError(
+					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.TITLE"),
+					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS"));
+		}
+	}
+	
 	public void onCreateToolCategory(String name, String description, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
 		ResourceCategory toolCategory = resourcesService.createResourceCategory(name, description, iconFileName);

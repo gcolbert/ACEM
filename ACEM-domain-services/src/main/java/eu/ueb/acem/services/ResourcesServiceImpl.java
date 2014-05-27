@@ -208,6 +208,40 @@ public class ResourcesServiceImpl implements ResourcesService {
 		return updatedResource;
 	}
 
+
+	@Override
+	public Boolean deleteResource(Long id) {
+		if (softwareDAO.exists(id)) {
+			Applicatif entity = softwareDAO.retrieveById(id);
+			softwareDAO.delete(entity);
+			return !softwareDAO.exists(id);
+		}
+		else if (softwareDocumentationDAO.exists(id)) {
+			DocumentationApplicatif entity = softwareDocumentationDAO.retrieveById(id);
+			softwareDocumentationDAO.delete(entity);
+			return !softwareDocumentationDAO.exists(id);
+		}
+		else if (equipmentDAO.exists(id)) {
+			Equipement entity = equipmentDAO.retrieveById(id);
+			equipmentDAO.delete(entity);
+			return !equipmentDAO.exists(id);
+		}
+		else if (pedagogicalAndDocumentaryResourcesDAO.exists(id)) {
+			RessourcePedagogiqueEtDocumentaire entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
+			pedagogicalAndDocumentaryResourcesDAO.delete(entity);
+			return !pedagogicalAndDocumentaryResourcesDAO.exists(id);
+		}
+		else if (professionalTrainingDAO.exists(id)) {
+			FormationProfessionnelle entity = professionalTrainingDAO.retrieveById(id);
+			professionalTrainingDAO.delete(entity);
+			return !professionalTrainingDAO.exists(id);
+		}
+		else {
+			logger.error("There is no resource with id='{}'", id);
+			return false;
+		}
+	}
+	
 	@Override
 	public void saveResourceName(String resourceType, Long id, String label) {
 		Ressource entity = null;

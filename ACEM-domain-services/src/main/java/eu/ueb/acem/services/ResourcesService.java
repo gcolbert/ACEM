@@ -49,6 +49,8 @@ public interface ResourcesService {
 
 	Ressource retrieveResource(Long id);
 
+	Boolean deleteResource(Long id);
+	
 	Collection<? extends Ressource> retrieveSoftwaresWithCategory(ResourceCategory category);
 
 	Collection<? extends Ressource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
@@ -60,9 +62,5 @@ public interface ResourcesService {
 	Collection<? extends Ressource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category);
 
 	void saveResourceName(String resourceType, Long id, String label);
-
-	// Set<Long>
-	// retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(Long
-	// id);
 
 }

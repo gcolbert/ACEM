@@ -18,6 +18,14 @@
 
 				<p:growl id="messagesDisplayer" showDetail="true" />
 
+				<p:confirmDialog global="true" showEffect="fade">
+					<p:commandButton value="#{msgs['CONFIRM_DIALOG.YES_LABEL']}"
+						type="button" styleClass="ui-confirmdialog-yes"
+						icon="ui-icon-check" />
+					<p:commandButton value="#{msgs['CONFIRM_DIALOG.NO_LABEL']}"
+						type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+
 				<p:panelGrid styleClass="menu" columns="5">
 					<p:commandLink styleClass="menu-entry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('equipment')}"
@@ -147,7 +155,7 @@
 							rowKey="#{toolViewBean.id}">
 							<p:ajax event="rowSelect"
 								listener="#{resourcesController.onToolRowSelect}"
-								update=":formSelectedToolCategory:idModifyToolButton" />
+								update=":formSelectedToolCategory:idModifyToolButton :formSelectedToolCategory:idDeleteToolButton" />
 							<p:column width="50%"
 								headerText="#{msgs['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_NAME']}">
 								<h:outputText value="#{toolViewBean.name}" />
@@ -178,18 +186,32 @@
 							</p:column>
 						</p:dataTable>
 						<p:row>
-							<p:commandButton
+							<p:commandButton rendered="#{sessionController.currentUserViewBean.administrator}"
 								value="#{msgs['RESOURCES.CREATE_RESOURCE_LABEL']}"
 								icon="ui-icon-plusthick" update=":idDialogCreateResource"
 								oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":idDialogCreateResource" />
 							</p:commandButton>
 							<p:commandButton id="idModifyToolButton"
+								rendered="#{sessionController.currentUserViewBean.administrator}"
 								value="#{msgs['RESOURCES.MODIFY_RESOURCE_LABEL']}"
 								icon="ui-icon-pencil" update=":idDialogModifyResource"
 								oncomplete="PF('dialogModifyResource').show()"
 								disabled="#{resourcesController.selectedResourceViewBean == null}">
 								<p:resetInput target=":idDialogModifyResource" />
+							</p:commandButton>
+							<p:commandButton id="idDeleteToolButton"
+								rendered="#{sessionController.currentUserViewBean.administrator}"
+								disabled="#{resourcesController.selectedResourceViewBean == null}"
+								value="#{msgs['RESOURCES.DELETE_RESOURCE_LABEL']}"
+								icon="ui-icon-trash"
+								action="#{resourcesController.onDeleteSelectedResource}"
+								update=":formSelectedToolCategory:toolsDataTable :formResources:messagesDisplayer"
+								process="@this">
+								<p:confirm
+									header="#{msgs['RESOURCES.DELETE_RESOURCE.CONFIRMATION_HEADER']}"
+									message="#{msgs['RESOURCES.DELETE_RESOURCE.CONFIRMATION_QUESTION']}"
+									icon="ui-icon-alert" />
 							</p:commandButton>
 						</p:row>
 
