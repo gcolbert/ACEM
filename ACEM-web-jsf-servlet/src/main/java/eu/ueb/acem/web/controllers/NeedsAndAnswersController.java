@@ -89,7 +89,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	@Inject
 	private SortableTableBean<ScenarioViewBean> scenarioViewBeans;
 
-	private List<ScenarioViewBean> scenarioViewBeansForSelectedAnswer;
+	//private List<ScenarioViewBean> scenarioViewBeansForSelectedAnswer;
 
 	private SortableTableBean<ToolCategoryViewBean> toolCategoryViewBeans;
 
@@ -122,7 +122,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		administrativeDepartmentViewBeansForSelectedAnswer = new ArrayList<AdministrativeDepartmentViewBean>();
 		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
 
-		scenarioViewBeansForSelectedAnswer = new ArrayList<ScenarioViewBean>();
+		//scenarioViewBeansForSelectedAnswer = new ArrayList<ScenarioViewBean>();
 		scenarioViewBeans = new SortableTableBean<ScenarioViewBean>();
 	}
 

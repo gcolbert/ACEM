@@ -35,6 +35,7 @@ import org.springframework.beans.factory.InitializingBean;
 import eu.ueb.acem.dal.gris.PersonDAO;
 import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 
 /**
@@ -126,7 +127,10 @@ public class AuthenticatorServiceImpl implements Serializable, InitializingBean,
 				if (user == null) {
 					user = personDAO.retrieveByLogin(authInfo.getId());
 					if (user == null) {
-						user = personDAO.create(new PersonneNode(authInfo.getId(), authInfo.getId()));
+						// TODO : change this to new PersonneNode(...)
+						// when we can get the real profile for users using Shibboleth
+						// and say if a new user is a teacher (or not)
+						user = personDAO.create(new EnseignantNode(authInfo.getId(), authInfo.getId()));
 					}
 				}
 				storeToSession(authInfo, user);

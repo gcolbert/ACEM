@@ -118,8 +118,6 @@ public class ResourcesController extends AbstractContextAwareController {
 		"Ressource documentaire et pédagogique", "Formation pour les personnels" };
 	private static final String[] RESOURCE_TYPES_I18N_EN = { "Software", "Software documentation", "Equipment",
 		"Pedagogical and documentary resource", "Professional training" };
-	private String newResourceType = "";
-	private String newResourceName = "";
 	
 	public ResourcesController() {
 		toolCategoryViewBeans = new HashMap<Long, ToolCategoryViewBean>();
@@ -180,11 +178,17 @@ public class ResourcesController extends AbstractContextAwareController {
 		return TREE_NODE_TYPE_CATEGORY;
 	}
 
+	public List<String> getAllResourceTypes() {
+		return Arrays.asList(RESOURCE_TYPES);
+	}
+
 	public List<String> getAllResourceTypes_i18n_fr() {
+		logger.info("getAllResourceTypes_i18n_fr");
 		return Arrays.asList(RESOURCE_TYPES_I18N_FR);
 	}
 
 	public List<String> getAllResourceTypes_i18n_en() {
+		logger.info("getAllResourceTypes_i18n_en");
 		return Arrays.asList(RESOURCE_TYPES_I18N_EN);
 	}
 	
@@ -192,26 +196,24 @@ public class ResourcesController extends AbstractContextAwareController {
 		logger.info("Entering prepareToolCategoryTreeForResourceType for resourceType={}", resourceType);
 		this.selectedResourceType = resourceType;
 		resourcesTreeBean.clear();
-		switch (resourceType) {
-		case "software":
+		if (resourceType.equals("software")) {
 			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL"));
-			break;
-		case "softwareDocumentation":
+		}
+		else if (resourceType.equals("softwareDocumentation")) {
 			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL"));
-			break;
-		case "equipment":
+		}
+		else if (resourceType.equals("equipment")) {
 			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL"));
-			break;
-		case "pedagogicalAndDocumentaryResources":
+		}
+		else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
 			resourcesTreeBean
 					.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL"));
-			break;
-		case "professionalTraining":
+		}
+		else if (resourceType.equals("professionalTraining")) {
 			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
-			break;
-		default:
+		}
+		else {
 			logger.error("Unknown resourceType '{}'", resourceType);
-			break;
 		}
 		for (ToolCategoryViewBean categoryViewBean : toolCategoryViewBeansByResourceType.get(resourceType)) {
 			resourcesTreeBean.addChild(getTreeNodeType_CATEGORY(), resourcesTreeBean.getVisibleRoots().get(0),
@@ -459,27 +461,19 @@ public class ResourcesController extends AbstractContextAwareController {
 		setSelectedResourceViewBean((ResourceViewBean) event.getObject());
 	}
 
-	public void onCreateResource(String newResourceType, ResourceCategory category, String newResourceName, String iconFileName) {
-		logger.info("onCreateResource");
-		resourcesService.createResource(newResourceType, category, newResourceName, iconFileName);
+	public void onCreateResource(String newResourceType, OrganisationViewBean newResourceSupportService, String newResourceName, String iconFileName) {
+		logger.info("onCreateResource, selectedToolCategoryViewBean.name={}", selectedToolCategoryViewBean.getName());
+		logger.info("onCreateResource, newResourceType={}, newResourceSupportService={}", newResourceType, newResourceSupportService);
+		logger.info("onCreateResource, newResourceName={}, iconFileName={}", newResourceName, iconFileName);
+		Ressource resource = resourcesService.createResource(selectedToolCategoryId, newResourceSupportService.getId(), newResourceType, newResourceName, iconFileName);
+		if (resource != null) {
+			ResourceViewBean resourceViewBean = getResourceViewBean(resource.getId());
+			if (resourceViewBean != null) {
+				selectedToolCategoryViewBean.addResourceViewBean(resourceViewBean);
+			}
+		}
 	}
 
-	public String getNewResourceName() {
-		return newResourceName;
-	}
-
-	public void setNewResourceName(String name) {
-		this.newResourceName = name;
-	}
-
-	public String getNewResourceType() {
-		return newResourceType;
-	}
-	
-	public void setNewResourceType(String type) {
-		this.newResourceType = type;
-	}
-	
 	public void onModifySelectedResource(String iconFileName) {
 		logger.info("onModifySelectedResource({})", iconFileName);
 		selectedResourceViewBean.setIconFileName(iconFileName);

@@ -57,6 +57,10 @@ public interface ResourceViewBean extends Pickable {
 
 	void removeOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean);
 	
+	UseModeViewBean getUseModeViewBean();
+	
+	void setUseModeViewBean(UseModeViewBean useModeViewBean);
+	
 	List<UseModeViewBean> getUseModeViewBeans();
 	
 	void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans);

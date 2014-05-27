@@ -36,19 +36,19 @@ public interface ResourcesService {
 	ResourceCategory retrieveResourceCategory(Long id);
 
 	ResourceCategory updateResourceCategory(ResourceCategory resourceCategory);
-	
+
 	Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType);
 
 	Collection<ResourceCategory> retrieveAllCategories();
 
 	Collection<Scenario> retrieveScenariosAssociatedWithResourceCategory(Long id);
-	
-	Ressource createResource(String resourceType, ResourceCategory resourceCategory, String name, String iconFileName);
+
+	Ressource createResource(Long toolCategoryId, Long supportServiceId, String resourceType, String name, String iconFileName);
 
 	Ressource updateResource(Ressource resource);
-	
+
 	Ressource retrieveResource(Long id);
-	
+
 	Collection<? extends Ressource> retrieveSoftwaresWithCategory(ResourceCategory category);
 
 	Collection<? extends Ressource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
@@ -61,6 +61,8 @@ public interface ResourcesService {
 
 	void saveResourceName(String resourceType, Long id, String label);
 
-	//Set<Long> retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(Long id);
+	// Set<Long>
+	// retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(Long
+	// id);
 
 }

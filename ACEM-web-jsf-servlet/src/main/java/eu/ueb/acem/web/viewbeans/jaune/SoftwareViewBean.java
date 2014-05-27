@@ -162,6 +162,21 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 	}
 
 	@Override
+	public UseModeViewBean getUseModeViewBean() {
+		if (useModeViewBeans.size() > 0) {
+			return useModeViewBeans.get(0);
+		}
+		else {
+			return null;
+		}
+	}
+
+	@Override
+	public void setUseModeViewBean(UseModeViewBean useModeViewBean) {
+		this.useModeViewBeans.set(0,useModeViewBean);
+	}
+	
+	@Override
 	public List<UseModeViewBean> getUseModeViewBeans() {
 		return useModeViewBeans;
 	}
