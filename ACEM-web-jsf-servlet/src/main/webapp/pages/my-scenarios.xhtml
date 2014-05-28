@@ -219,6 +219,16 @@
 								</p:cellEditor>
 							</p:column>
 							<p:column style="width:6%">
+								<!-- 
+								<p:commandButton 
+									value="#{msgs['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_PEDAGOGICAL_ACTIVITY_LABEL']}"
+									icon="ui-icon-pencil"
+									actionListener="#{myScenariosController.setCurrentPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
+									action="#{myScenariosController.preparePicklistToolCategoryViewBeansForCurrentPedagogicalActivity()}"
+									oncomplete="PF('dialogEditActivity').show()"
+									update=":formEditActivity"
+									process="@this" />
+								 -->
 								<p:rowEditor />
 							</p:column>
 						</p:dataTable>
@@ -280,6 +290,38 @@
 					action="#{myScenariosController.createScenario(input1.value, input2.value)}"
 					update="@form :formScenarios"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateScenario.hide(); }" />
+			</h:form>
+		</p:dialog>
+
+		<p:dialog id="dialogEditActivityId"
+			header="#{msgs['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.HEADER']}"
+			widgetVar="dialogEditActivity" modal="true" height="auto">
+			<h:form id="formEditActivity">
+			<!-- 
+				<p:pickList id="dialogAssociateToolCategoryPickList"
+					value="#{myScenariosController.pickListBean.pickListEntities}"
+					var="toolCategoryViewBean" itemValue="#{toolCategoryViewBean}"
+					itemLabel="#{toolCategoryViewBean.name}" converter="PickListConverter"
+					showSourceControls="false" showTargetControls="false"
+					showCheckbox="true" showSourceFilter="true" showTargetFilter="true"
+					filterMatchMode="contains" addLabel="#{msgs['PICKLIST.ADD_LABEL']}"
+					addAllLabel="#{msgs['PICKLIST.ADD_ALL_LABEL']}"
+					removeLabel="#{msgs['PICKLIST.REMOVE_LABEL']}"
+					removeAllLabel="#{msgs['PICKLIST.REMOVE_ALL_LABEL']}">
+					<f:facet name="sourceCaption">#{msgs['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msgs['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
+					<p:ajax event="transfer"
+						listener="#{myScenariosController.onToolCategoryTransfer}"
+						update="@this :formOrganisations:tabViewOrganisations :formScenarios:messagesDisplayer"
+						process="@this" />
+				</p:pickList>
+			 -->
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msgs['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{myScenariosController.onSavePedagogicalActivity()}"
+					update="@form :formScenarios"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogEditActivity.hide(); }" />
 			</h:form>
 		</p:dialog>
 

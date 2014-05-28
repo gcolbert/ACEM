@@ -20,6 +20,7 @@ package eu.ueb.acem.web.controllers;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -35,11 +36,18 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
+import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalActivityViewBean;
 import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -62,9 +70,16 @@ public class MyScenariosController extends AbstractContextAwareController {
 	ScenariosService scenariosService;
 
 	@Inject
-	SortableTableBean<ScenarioViewBean> sortableTableBean;
+	SortableTableBean<ScenarioViewBean> scenarioViewBeans;
 
+	@Inject
+	private PickListBean pickListBean;
+	
+	@Inject
+	private ToolCategoryViewBeanHandler toolCategoryViewBeanHandler;
+	
 	public MyScenariosController() {
+		scenarioViewBeans = new SortableTableBean<ScenarioViewBean>();
 	}
 
 	@PostConstruct
@@ -74,26 +89,31 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 			Collection<Scenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(getCurrentUser());
 			logger.info("found {} scenarios for author {}", scenariosOfCurrentUser.size(), getCurrentUser().getName());
-			sortableTableBean.getTableEntries().clear();
+			scenarioViewBeans.getTableEntries().clear();
 			for (Scenario scenario : scenariosOfCurrentUser) {
 				logger.info("scenario = {}", scenario.getName());
-				sortableTableBean.getTableEntries().add(new ScenarioViewBean(scenario));
+				scenarioViewBeans.getTableEntries().add(new ScenarioViewBean(scenario));
 			}
-			sortableTableBean.sortReverseOrder();
+			scenarioViewBeans.sortReverseOrder();
 		}
 		catch (Exception e) {
+			logger.error("Exception in initScenariosController!");
 			e.printStackTrace();
 		}
 	}
 
+	public PickListBean getPickListBean() {
+		return pickListBean;
+	}
+	
 	public void createScenario(String name, String objective) {
 		Scenario scenario;
 		try {
 			scenario = scenariosService.createScenario((Enseignant)getCurrentUser(), name, objective);
 			if (scenario != null) {
 				ScenarioViewBean scenarioViewBean = new ScenarioViewBean(scenario);
-				sortableTableBean.getTableEntries().add(scenarioViewBean);
-				sortableTableBean.sortReverseOrder();
+				scenarioViewBeans.getTableEntries().add(scenarioViewBean);
+				scenarioViewBeans.sortReverseOrder();
 				setSelectedScenarioViewBean(scenarioViewBean);
 				MessageDisplayer.showMessageToUserWithSeverityInfo(
 						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
@@ -115,7 +135,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 			logger.info("deleteSelectedScenario, id={}", selectedScenarioViewBean.getId());
 			try {
 				if (scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(selectedScenarioViewBean.getId(), getCurrentUser().getId())) {
-					sortableTableBean.getTableEntries().remove(selectedScenarioViewBean);
+					scenarioViewBeans.getTableEntries().remove(selectedScenarioViewBean);
 					MessageDisplayer.showMessageToUserWithSeverityInfo(
 							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE"),
 							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS"));
@@ -134,7 +154,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 
 	public List<ScenarioViewBean> getScenarioViewBeans() {
-		return sortableTableBean.getTableEntries();
+		return scenarioViewBeans.getTableEntries();
 	}
 
 	public ScenarioViewBean getSelectedScenarioViewBean() {
@@ -145,7 +165,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 		this.selectedScenarioViewBean = selectedScenarioViewBean;
 	}
 
-	public PedagogicalActivityViewBean getSelectedActivityViewBean() {
+	public PedagogicalActivityViewBean getSelectedPedagogicalActivityViewBean() {
 		return selectedPedagogicalActivityViewBean;
 	}
 
@@ -173,12 +193,35 @@ public class MyScenariosController extends AbstractContextAwareController {
 	public void onSave() {
 		logger.info("onSave");
 		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
-		sortableTableBean.sortReverseOrder();
+		scenarioViewBeans.sortReverseOrder();
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE"),
 				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS"));
 	}
 
+	public void onSavePedagogicalActivity() {
+		logger.info("onSavePedagogicalActivity");
+	}
+	
+	public void setCurrentPedagogicalActivityViewBean(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
+		logger.info("setCurrentPedagogicalActivityViewBean, pedagogicalActivityViewBean={}", pedagogicalActivityViewBean);
+	}
+	
+	public void preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity() {
+		logger.info("preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity");
+		if (getSelectedPedagogicalActivityViewBean() != null) {
+			pickListBean.getPickListEntities().getSource().clear();
+			pickListBean.getPickListEntities().getSource().addAll(toolCategoryViewBeanHandler.getToolCategoryViewBeansAsList());
+			pickListBean.getPickListEntities().getTarget().clear();
+			
+			for (ResourceCategory toolCategoryAssociatedWithSelectedActivity : getSelectedPedagogicalActivityViewBean().getPedagogicalActivity().getResourceCategories()) {
+				ToolCategoryViewBean toolCategoryViewBean = toolCategoryViewBeanHandler.getToolCategoryViewBean(toolCategoryAssociatedWithSelectedActivity.getId());
+				pickListBean.getPickListEntities().getSource().remove(toolCategoryViewBean);
+				pickListBean.getPickListEntities().getTarget().add(toolCategoryViewBean);
+			}
+		}
+	}
+	
 	public void onCreateActivity() {
 		ActivitePedagogique pedagogicalActivity = scenariosService
 				.createPedagogicalActivity(getString("MY_SCENARIOS.SELECTED_SCENARIO.NEW_ACTIVITY_DEFAULT_NAME"));
@@ -188,4 +231,8 @@ public class MyScenariosController extends AbstractContextAwareController {
 		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
 	}
 
+	public void onToolCategoryTransfer() {
+		logger.info("onToolCategoryTransfer");
+	}
+	
 }

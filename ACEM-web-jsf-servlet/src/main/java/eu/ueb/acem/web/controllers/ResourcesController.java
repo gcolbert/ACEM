@@ -41,13 +41,8 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.bleu.Reponse;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.jaune.Applicatif;
-import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
-import eu.ueb.acem.domain.beans.jaune.Equipement;
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.domain.beans.rouge.Composante;
 import eu.ueb.acem.domain.beans.rouge.Etablissement;
@@ -60,12 +55,7 @@ import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.ProfessionalTrainingViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.SoftwareDocumentationViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
@@ -94,7 +84,6 @@ public class ResourcesController extends AbstractContextAwareController {
 
 	@Inject
 	private OrganisationsService organisationsService;
-	private Map<Long, OrganisationViewBean> organisationViewBeans;
 	private List<OrganisationViewBean> allOrganisationViewBeans;
 
 	@Inject
@@ -110,7 +99,6 @@ public class ResourcesController extends AbstractContextAwareController {
 	private Long selectedToolCategoryId;
 	private ToolCategoryViewBean selectedToolCategoryViewBean;
 
-	private Map<Long, ResourceViewBean> resourceViewBeans;
 	private ResourceViewBean selectedResourceViewBean;
 
 	private static final String[] RESOURCE_TYPES = { "software", "softwareDocumentation", "equipment",
@@ -124,7 +112,6 @@ public class ResourcesController extends AbstractContextAwareController {
 	
 	public ResourcesController() {
 		toolCategoryViewBeans = new HashMap<Long, ToolCategoryViewBean>();
-		organisationViewBeans = new HashMap<Long, OrganisationViewBean>();
 		allOrganisationViewBeans = new ArrayList<OrganisationViewBean>();
 		toolCategoryViewBeansByResourceType = new HashMap<String, List<ToolCategoryViewBean>>();
 	}
