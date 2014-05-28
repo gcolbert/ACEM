@@ -95,16 +95,6 @@
 	padding:1em;
 }
 
-
-#formOrganisations .organisationLogo {
-	display:block;
-	margin:auto;
-}
-
-#formOrganisations .ui-accordion .ui-accordion-content {
-	padding:0;
-}
-
 .label {
 	text-decoration: underline;
 	display:block;
@@ -292,3 +282,23 @@
 #formSelectedToolCategory .bottom-toolboxes td:last-child {
 	padding-right:0;
 }
+
+/******************/
+/* ADMINISTRATION */
+/******************/
+#formOrganisations .organisationLogo,
+#formToolCategories .toolCategoryLogo {
+	display:block;
+	margin:auto;
+}
+#formToolCategories .toolCategoryDescriptionPanelGrid,
+#formToolCategories .toolCategoryDescriptionPanelGrid tr[role=row],
+#formToolCategories .toolCategoryDescriptionPanelGrid tr[role=row] td[role=gridcell] {
+	border:0;
+}
+
+#formOrganisations .ui-accordion .ui-accordion-content,
+#formToolCategories .ui-accordion .ui-accordion-content {
+	padding:0;
+}
+

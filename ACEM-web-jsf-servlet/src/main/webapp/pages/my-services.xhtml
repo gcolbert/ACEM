@@ -5,7 +5,13 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
-	<ui:define name="content">
+	<!-- 
+	<f:metadata>
+		<f:viewParam name="serviceId"
+			value="#{myServicesController.selectedServiceId}" />
+	</f:metadata>
+ -->
+ 	<ui:define name="content">
 		<ui:debug hotkey="1"
 			rendered="#{facesContext.application.projectStage == 'Development'}" />
 

@@ -88,6 +88,9 @@ public class ResourcesController extends AbstractContextAwareController {
 
 	@Inject
 	private ResourcesService resourcesService;
+	
+	@Inject
+	private ResourceViewBeanHandler resourceViewBeanHandler;
 
 	@Inject
 	private OrganisationsService organisationsService;
@@ -121,7 +124,6 @@ public class ResourcesController extends AbstractContextAwareController {
 	
 	public ResourcesController() {
 		toolCategoryViewBeans = new HashMap<Long, ToolCategoryViewBean>();
-		resourceViewBeans = new HashMap<Long, ResourceViewBean>();
 		organisationViewBeans = new HashMap<Long, OrganisationViewBean>();
 		allOrganisationViewBeans = new ArrayList<OrganisationViewBean>();
 		toolCategoryViewBeansByResourceType = new HashMap<String, List<ToolCategoryViewBean>>();
@@ -134,7 +136,7 @@ public class ResourcesController extends AbstractContextAwareController {
 		for (ResourceCategory toolCategory : resourcesService.retrieveAllCategories()) {
 			ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
 			for (Ressource tool : toolCategory.getResources()) {
-				toolCategoryViewBean.addResourceViewBean(getResourceViewBean(tool.getId()));
+				toolCategoryViewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(tool.getId()));
 			}
 
 			List<Scenario> scenarios = new ArrayList<Scenario>(resourcesService.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryId));
@@ -273,85 +275,12 @@ public class ResourcesController extends AbstractContextAwareController {
 			if (toolCategory != null) {
 				viewBean = new ToolCategoryViewBean(toolCategory);
 				for (Ressource resource : toolCategory.getResources()) {
-					viewBean.addResourceViewBean(getResourceViewBean(resource.getId()));
+					viewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(resource.getId()));
 				}
 				toolCategoryViewBeans.put(id, viewBean);
 			}
 			else {
 				logger.error("There is no category with id={} according to ResourcesService", id);
-			}
-		}
-		return viewBean;
-	}
-
-	private ResourceViewBean getResourceViewBean(Long id) {
-		ResourceViewBean viewBean = null;
-		if (resourceViewBeans.containsKey(id)) {
-			logger.info("resourceViewBean found in resourceViewBeans map, so we don't reload it.");
-			viewBean = resourceViewBeans.get(id);
-		}
-		else {
-			logger.info("resourceViewBean not found in resourceViewBeans map, we load it with ResourcesService.");
-			Ressource tool = resourcesService.retrieveResource(id);
-			if (tool != null) {
-				if (tool instanceof Applicatif) {
-					viewBean = new SoftwareViewBean((Applicatif) tool);
-				}
-				else if (tool instanceof RessourcePedagogiqueEtDocumentaire) {
-					viewBean = new DocumentaryAndPedagogicalResourceViewBean((RessourcePedagogiqueEtDocumentaire) tool);
-				}
-				else if (tool instanceof Equipement) {
-					viewBean = new EquipmentViewBean((Equipement) tool);
-				}
-				else if (tool instanceof DocumentationApplicatif) {
-					viewBean = new SoftwareDocumentationViewBean((DocumentationApplicatif) tool);
-				}
-				else if (tool instanceof FormationProfessionnelle) {
-					viewBean = new ProfessionalTrainingViewBean((FormationProfessionnelle) tool);
-				}
-
-				viewBean.setOrganisationPossessingResourceViewBean(getOrganisationViewBean(tool
-						.getOrganisationPossessingResource().getId()));
-
-				for (Organisation organisation : tool.getOrganisationsHavingAccessToResource()) {
-					viewBean.addOrganisationViewingResourceViewBean(getOrganisationViewBean(organisation.getId()));
-				}
-
-				resourceViewBeans.put(id, viewBean);
-			}
-			else {
-				logger.error("There is no tool with id={} according to ResourcesService", id);
-			}
-		}
-		return viewBean;
-	}
-
-	private OrganisationViewBean getOrganisationViewBean(Long id) {
-		OrganisationViewBean viewBean = null;
-		if (organisationViewBeans.containsKey(id)) {
-			logger.info("organisationViewBean found in organisationViewBeans map, so we don't reload it.");
-			viewBean = organisationViewBeans.get(id);
-		}
-		else {
-			logger.info("organisationViewBean not found in organisationViewBeans map, we load it with OrganisationsService.");
-			Organisation organisation = organisationsService.retrieveOrganisation(id);
-			if (organisation != null) {
-				if (organisation instanceof Communaute) {
-					viewBean = new CommunityViewBean((Communaute) organisation);
-				}
-				else if (organisation instanceof Etablissement) {
-					viewBean = new InstitutionViewBean((Etablissement) organisation);
-				}
-				else if (organisation instanceof Service) {
-					viewBean = new AdministrativeDepartmentViewBean((Service) organisation);
-				}
-				else if (organisation instanceof Composante) {
-					viewBean = new TeachingDepartmentViewBean((Composante) organisation);
-				}
-				organisationViewBeans.put(id, viewBean);
-			}
-			else {
-				logger.error("There is no organisation with id={} according to OrganisationsService", id);
 			}
 		}
 		return viewBean;
@@ -467,7 +396,7 @@ public class ResourcesController extends AbstractContextAwareController {
 		logger.info("onCreateResource, newResourceName={}, iconFileName={}", newResourceName, iconFileName);
 		Ressource resource = resourcesService.createResource(selectedToolCategoryId, newResourceSupportService.getId(), newResourceType, newResourceName, iconFileName);
 		if (resource != null) {
-			ResourceViewBean resourceViewBean = getResourceViewBean(resource.getId());
+			ResourceViewBean resourceViewBean = resourceViewBeanHandler.getResourceViewBean(resource.getId());
 			if (resourceViewBean != null) {
 				selectedToolCategoryViewBean.addResourceViewBean(resourceViewBean);
 			}
@@ -484,7 +413,7 @@ public class ResourcesController extends AbstractContextAwareController {
 	public void onDeleteSelectedResource() {
 		if (resourcesService.deleteResource(getSelectedResourceViewBean().getDomainBean().getId())) {
 			selectedToolCategoryViewBean.removeResourceViewBean(getSelectedResourceViewBean());
-			resourceViewBeans.remove(getSelectedResourceViewBean().getId());
+			resourceViewBeanHandler.removeResourceViewBean(getSelectedResourceViewBean().getId());
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
 					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE"),
 					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS"));

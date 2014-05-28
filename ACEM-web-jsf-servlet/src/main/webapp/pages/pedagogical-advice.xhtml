@@ -219,6 +219,7 @@
 									for="goToToolCategoryBtn" />
 									</h:link>
 						</p:column>
+						<!-- 
 						<p:column
 							headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOLS']}">
 							<p:dataTable id="toolsTable"
@@ -228,6 +229,7 @@
 								<p:column
 									headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_NAME']}">
 									<h:outputText value="#{resourceViewBean.name}" />
+						-->
 									<!-- 
 									<h:link id="goToResourceBtn" outcome="my-tools">
 										<f:param name="resourceId" value="#{resourceViewBean.id}" />
@@ -239,15 +241,18 @@
 											for="goToResourceBtn" />
 									</h:link>
 									-->
+						<!--
 								</p:column>
 								<p:column
 									headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.ORGANISATION_NAME']}">
 								</p:column>
 							</p:dataTable>
 						</p:column>
+						-->
 					</p:dataTable>
 					<p:commandButton
 						value="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATE_TOOL_CATEGORIES_LABEL']}"
+						rendered="#{sessionController.currentUserViewBean.administrator}"
 						icon="ui-icon-transferthick-e-w"
 						action="#{needsAndAnswersController.preparePicklistToolCategoryViewBeansForSelectedAnswer}"
 						oncomplete="PF('dialogAssociateResourceCategory').show()"
@@ -270,6 +275,7 @@
 					</p:dataTable>
 					<p:commandButton
 						value="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATE_ADMINISTRATIVE_DEPARTMENTS_LABEL']}"
+						rendered="#{sessionController.currentUserViewBean.administrator}"
 						icon="ui-icon-transferthick-e-w"
 						action="#{needsAndAnswersController.preparePicklistAdministrativeDepartmentViewBeansForSelectedAnswer}"
 						oncomplete="PF('dialogAssociateAdministrativeDepartment').show()"

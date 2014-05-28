@@ -807,14 +807,29 @@
 						<p:panelGrid columns="2">
 							<p:graphicImage id="toolCategoryIcon"
 								rendered="#{not empty toolCategoryViewBean.iconFileName}"
-								styleClass="organisationLogo" alt="#{toolCategoryViewBean.name}"
+								styleClass="toolCategoryLogo" alt="#{toolCategoryViewBean.name}"
 								cache="false" width="150"
 								value="#{imagesController.getImage()}">
 								<f:param name="imageFileName"
 									value="#{toolCategoryViewBean.iconFileName}" />
 							</p:graphicImage>
 							<p:column>
-								<h:outputText value="#{toolCategoryViewBean.description}"/>
+								<p:panelGrid columns="1" styleClass="toolCategoryDescriptionPanelGrid">
+									<h:outputText value="#{toolCategoryViewBean.description}"/>
+									
+									<h:link id="goToToolsBtn" outcome="my-tools">
+										<f:param name="toolCategoryId"
+											value="#{toolCategoryViewBean.id}" />
+										<h:outputText
+											value="#{toolCategoryViewBean.name}" />
+										<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+											style="display:inline-block; vertical-align:middle;" />
+										<p:tooltip
+											value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.GO_TO_TOOL_CATEGORY_IN_MY_TOOLS']}"
+											for="goToToolsBtn" />
+									</h:link>
+								</p:panelGrid>
+								
 							<!-- 
 								TODO : modify selected tool category + delete selected tool category
 								
