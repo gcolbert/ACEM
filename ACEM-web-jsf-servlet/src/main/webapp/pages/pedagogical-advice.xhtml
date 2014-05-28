@@ -217,7 +217,10 @@
 								<p:tooltip
 									value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_TOOL_CATEGORY']}"
 									for="goToToolCategoryBtn" />
-									</h:link>
+							</h:link>
+						</p:column>
+						<p:column headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY_DESCRIPTION']}">
+							<h:outputText value="#{toolCategoryViewBean.description}"/>
 						</p:column>
 						<!-- 
 						<p:column
