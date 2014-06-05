@@ -27,14 +27,17 @@ public class FileUploadController extends AbstractContextAwareController {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
-	private String uploadToLocalPath = "D:/tmp/";
-
 	private DefaultStreamedContent uploadedFile;
 
 	private String uploadedFileName;
 
-	public void setUploadToLocalPath(String localPath) {
-		this.uploadToLocalPath = localPath;
+	private String localPathToUploadFolder;
+
+	public void setLocalPathToUploadFolder(String localPath) {
+		if (! localPath.endsWith(File.separator)) {
+			localPath += File.separator;
+		}
+		this.localPathToUploadFolder = localPath;
 	}
 	
 	public void upload(FileUploadEvent event) {
@@ -45,7 +48,7 @@ public class FileUploadController extends AbstractContextAwareController {
 		// Do what you want with the file
 		try {
 			copyFile(event.getFile().getFileName(), event.getFile().getInputstream());
-			uploadedFile = new DefaultStreamedContent(new ByteArrayInputStream(Files.readAllBytes(Paths.get(uploadToLocalPath
+			uploadedFile = new DefaultStreamedContent(new ByteArrayInputStream(Files.readAllBytes(Paths.get(localPathToUploadFolder
 					+ event.getFile().getFileName()))));
 			uploadedFileName = event.getFile().getFileName();
 			logger.info("successful");
@@ -58,7 +61,7 @@ public class FileUploadController extends AbstractContextAwareController {
 	public void copyFile(String fileName, InputStream in) {
 		try {
 			// write the inputStream to a FileOutputStream
-			OutputStream out = new FileOutputStream(new File(uploadToLocalPath + fileName));
+			OutputStream out = new FileOutputStream(new File(localPathToUploadFolder + fileName));
 
 			int read = 0;
 			byte[] bytes = new byte[1024];

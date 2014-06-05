@@ -28,6 +28,9 @@ import javax.inject.Inject;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -40,11 +43,25 @@ import eu.ueb.acem.services.ImagesService;
  */
 @Controller("imagesController")
 @Scope("singleton")
-public class ImagesController {
+public class ImagesController extends AbstractContextAwareController {
+
+	private static final long serialVersionUID = 1161966320936390203L;
+
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(ImagesController.class);
 
 	@Inject
 	private ImagesService imagesService;
 
+	private String localPathToImagesFolder;
+
+	public void setLocalPathToImagesFolder(String localPath) {
+		if (! localPath.endsWith(File.separator)) {
+			localPath += File.separator;
+		}
+		this.localPathToImagesFolder = localPath;
+	}
+	
 	public StreamedContent getImage() throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
 
@@ -57,7 +74,8 @@ public class ImagesController {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
 			String imageFileName = context.getExternalContext().getRequestParameterMap().get("imageFileName");
-			File image = imagesService.getImage(imageFileName);
+			
+			File image = imagesService.getImage(localPathToImagesFolder, imageFileName);
 			return new DefaultStreamedContent(new FileInputStream(image));
 		}
 	}
