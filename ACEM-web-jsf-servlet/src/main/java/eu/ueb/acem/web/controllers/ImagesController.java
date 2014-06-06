@@ -30,7 +30,6 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -42,10 +41,10 @@ import eu.ueb.acem.services.ImagesService;
  * 
  */
 @Controller("imagesController")
-@Scope("singleton")
+@Scope("session")
 public class ImagesController extends AbstractContextAwareController {
 
-	private static final long serialVersionUID = 1161966320936390203L;
+	private static final long serialVersionUID = 6541923413899165659L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ImagesController.class);
