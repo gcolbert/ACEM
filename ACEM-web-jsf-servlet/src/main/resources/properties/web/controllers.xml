@@ -71,7 +71,13 @@
 	<bean id="fileUploadController" class="eu.ueb.acem.web.controllers.FileUploadController"
 		parent="abstractContextAwareController">
 		<description>A controller to upload files.</description>
-		<property name="uploadToLocalPath" value="${fileUploadController.uploadToLocalPath}"></property>
+		<property name="localPathToUploadFolder" value="${upload.localPathToUploadFolder}"></property>
+	</bean>
+
+	<bean id="imagesController" class="eu.ueb.acem.web.controllers.ImagesController"
+		parent="abstractContextAwareController">
+		<description>A controller to handle images.</description>
+		<property name="localPathToImagesFolder" value="${upload.localPathToUploadFolder}"></property>
 	</bean>
 
 </beans>

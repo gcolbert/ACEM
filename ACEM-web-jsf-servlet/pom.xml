@@ -49,11 +49,13 @@
 		</repository>
 	</repositories>
 	<dependencies>
+	    <!-- 
 		<dependency>
 			<groupId>org.tuckey</groupId>
 			<artifactId>urlrewritefilter</artifactId>
 			<version>${urlrewritefilter.version}</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-domain-services</artifactId>
