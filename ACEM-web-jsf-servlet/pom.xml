@@ -5,17 +5,21 @@
 	<parent>
 		<artifactId>ACEM</artifactId>
 		<groupId>eu.ueb</groupId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>ACEM-web-jsf-servlet</artifactId>
 	<packaging>war</packaging>
 	<description>Data access layer</description>
 	<properties>
-		<org.springframework-version>4.0.3.RELEASE</org.springframework-version>
+		<project.version>0.0.1-SNAPSHOT</project.version>
+		<org.springframework-version>4.1.2.RELEASE</org.springframework-version>
 		<javax.servlet.version>3.0.1</javax.servlet.version>
 		<javax.validation-version>1.1.0.Final</javax.validation-version>
 		<javax.inject-version>1</javax.inject-version>
+		<joda-time.version>2.3</joda-time.version>
+		<ocpsoft-rewrite.version>2.0.12.Final</ocpsoft-rewrite.version>
 		<primefaces.version>4.0</primefaces.version>
+		<primefaces-themes.version>1.0.10</primefaces-themes.version>
 		<urlrewritefilter.version>4.0.3</urlrewritefilter.version>
 		<junit-version>4.11</junit-version>
 		<cglib-version>2.2.2</cglib-version>
@@ -53,7 +57,7 @@
 		<dependency>
 			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-domain-services</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -69,7 +73,7 @@
 		<dependency>
 			<groupId>org.primefaces.themes</groupId>
 			<artifactId>all-themes</artifactId>
-			<version>1.0.10</version>
+			<version>${primefaces-themes.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.esupportail</groupId>
@@ -101,17 +105,17 @@
 		<dependency>
 			<groupId>org.ocpsoft.rewrite</groupId>
 			<artifactId>rewrite-servlet</artifactId>
-			<version>2.0.10.Final</version>
+			<version>${ocpsoft-rewrite.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.ocpsoft.rewrite</groupId>
 			<artifactId>rewrite-config-prettyfaces</artifactId>
-			<version>2.0.10.Final</version>
+			<version>${ocpsoft-rewrite.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.3</version>
+			<version>${joda-time.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -123,14 +127,14 @@
 		<dependency>
 			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-domain-services</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-dal</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
