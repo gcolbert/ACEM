@@ -33,10 +33,10 @@ import eu.ueb.acem.domain.beans.vert.Campus;
 @TypeAlias("Campus")
 public class CampusNode extends EspacePhysiqueNode implements Campus {
 
-	private static final long serialVersionUID = -7525107899854074242L;
-
-	//@GraphId
-	//private Long id;
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -6200928533285074013L;
 
 	@Indexed
 	private String name;

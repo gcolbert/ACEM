@@ -41,6 +41,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ModaliteUtilisationNode;
 @Repository("useModeDAO")
 public class UseModeDAO implements DAO<Long, ModaliteUtilisation> {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -1874254078249425495L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(UseModeDAO.class);
 

@@ -83,13 +83,13 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	private PickListBean pickListBean;
 
 	private TreeNode selectedNode;
-	
+
 	private Reponse selectedAnswer;
 
 	@Inject
 	private SortableTableBean<ScenarioViewBean> scenarioViewBeans;
 
-	//private List<ScenarioViewBean> scenarioViewBeansForSelectedAnswer;
+	// private List<ScenarioViewBean> scenarioViewBeansForSelectedAnswer;
 
 	private SortableTableBean<ToolCategoryViewBean> toolCategoryViewBeans;
 
@@ -122,14 +122,16 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		administrativeDepartmentViewBeansForSelectedAnswer = new ArrayList<AdministrativeDepartmentViewBean>();
 		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
 
-		//scenarioViewBeansForSelectedAnswer = new ArrayList<ScenarioViewBean>();
+		// scenarioViewBeansForSelectedAnswer = new
+		// ArrayList<ScenarioViewBean>();
 		scenarioViewBeans = new SortableTableBean<ScenarioViewBean>();
 	}
 
 	@PostConstruct
 	public void initNeedsAndAnswersController() {
 		logger.info("entering initNeedsAndAnswersTreeController");
-		needsAndAnswersTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(getString("NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL"));
+		needsAndAnswersTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(msgs.getMessage(
+				"NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL", null, getCurrentUserLocale()));
 
 		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
 		logger.info("found {} tool categories", toolCategories.size());
@@ -151,7 +153,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
 		}
 		administrativeDepartmentViewBeans.sort();
-		
+
 		logger.info("leaving initNeedsAndAnswersTreeController");
 		logger.info("------");
 	}
@@ -159,7 +161,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	public PickListBean getPickListBean() {
 		return pickListBean;
 	}
-	
+
 	public EditableTreeBean getNeedsAndAnswersTreeBean() {
 		return needsAndAnswersTreeBean;
 	}
@@ -216,16 +218,20 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 					setSelectedNode(null);
 				}
 				else {
-					MessageDisplayer.showMessageToUserWithSeverityError(
-							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE"),
-							getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS"));
+					MessageDisplayer.showMessageToUserWithSeverityError(msgs.getMessage(
+							"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE", null,
+							getCurrentUserLocale()), msgs.getMessage(
+							"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS", null,
+							getCurrentUserLocale()));
 					logger.info("The service failed to delete the node.");
 				}
 			}
 			else {
-				MessageDisplayer.showMessageToUserWithSeverityError(
-						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE"),
-						getString("NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS"));
+				MessageDisplayer.showMessageToUserWithSeverityError(msgs.getMessage(
+						"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE", null,
+						getCurrentUserLocale()), msgs.getMessage(
+						"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS", null,
+						getCurrentUserLocale()));
 				logger.info("The selected node has children, cannot delete!");
 			}
 		}
@@ -257,10 +263,11 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		logger.info("entering addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
 		Besoin newNeed = needsAndAnswersService.createOrUpdateNeed(null,
-				getString("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL"), ((TreeNodeData) selectedNode.getData()).getId());
+				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()),
+				((TreeNodeData) selectedNode.getData()).getId());
 
 		TreeNode newNode = needsAndAnswersTreeBean.addChild(getTreeNodeType_NEED_LEAF(), selectedNode, newNeed.getId(),
-				getString("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL"), "Need");
+				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()), "Need");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 		setSelectedNode(newNode);
 		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
@@ -272,10 +279,12 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		logger.info("entering associateAnswerToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
 		Reponse newAnswer = needsAndAnswersService.createOrUpdateAnswer(null,
-				getString("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL"), ((TreeNodeData) selectedNode.getData()).getId());
+				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()),
+				((TreeNodeData) selectedNode.getData()).getId());
 
 		TreeNode newNode = needsAndAnswersTreeBean.addChild(getTreeNodeType_ANSWER_LEAF(), selectedNode,
-				newAnswer.getId(), getString("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL"), "Answer");
+				newAnswer.getId(),
+				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()), "Answer");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 		setSelectedNode(newNode);
 		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
@@ -323,7 +332,8 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	private void setScenarioViewBeansRelatedToSelectedAnswer() {
 		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
 			logger.info("entering setScenarioViewBeansRelatedToSelectedAnswer");
-			Collection<Scenario> scenarios = needsAndAnswersService.getScenariosRelatedToAnswer(((TreeNodeData) selectedNode.getData()).getId());
+			Collection<Scenario> scenarios = needsAndAnswersService
+					.getScenariosRelatedToAnswer(((TreeNodeData) selectedNode.getData()).getId());
 			logger.info("Found {} scenarios related to selected answer.", scenarios.size());
 			scenarioViewBeans.getTableEntries().clear();
 			for (Scenario scenario : scenarios) {
@@ -359,8 +369,10 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	private void setAdministrativeDepartmentViewBeansForSelectedAnswer() {
 		if (selectedAnswer != null) {
 			administrativeDepartmentViewBeansForSelectedAnswer.clear();
-			for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans.getTableEntries()) {
-				if (selectedAnswer.getAdministrativeDepartments().contains(administrativeDepartmentViewBean.getAdministrativeDepartment())) {
+			for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
+					.getTableEntries()) {
+				if (selectedAnswer.getAdministrativeDepartments().contains(
+						administrativeDepartmentViewBean.getAdministrativeDepartment())) {
 					administrativeDepartmentViewBeansForSelectedAnswer.add(administrativeDepartmentViewBean);
 				}
 			}

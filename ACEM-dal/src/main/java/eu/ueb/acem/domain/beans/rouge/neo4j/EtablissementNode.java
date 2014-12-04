@@ -45,10 +45,13 @@ import eu.ueb.acem.domain.beans.rouge.Service;
 @TypeAlias("Institution")
 public class EtablissementNode extends OrganisationNode implements Etablissement {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 4218521116992739925L;
-	
-	@Indexed
-	private String name;
+
+//	@Indexed
+//	private String name;
 
 	@RelatedTo(elementClass = CommunauteNode.class, type = "institutionMemberOfCommunity", direction = OUTGOING)
 	@Fetch

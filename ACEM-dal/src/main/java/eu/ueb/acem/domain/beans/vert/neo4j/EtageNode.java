@@ -37,10 +37,10 @@ import eu.ueb.acem.domain.beans.vert.Etage;
 @TypeAlias("Floor")
 public class EtageNode extends EspacePhysiqueNode implements Etage {
 
-	private static final long serialVersionUID = -7525107899854074242L;
-
-	//@GraphId
-	//private Long id;
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 444689555923558074L;
 
 	@Indexed
 	private String name;

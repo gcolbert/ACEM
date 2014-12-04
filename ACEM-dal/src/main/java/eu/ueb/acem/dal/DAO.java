@@ -26,7 +26,7 @@ import java.util.Collection;
  * @since 2013-11-20
  * 
  */
-public interface DAO<ID extends Serializable, E> {
+public interface DAO<ID extends Serializable, E> extends Serializable {
 
 	Boolean exists(ID id);
 	

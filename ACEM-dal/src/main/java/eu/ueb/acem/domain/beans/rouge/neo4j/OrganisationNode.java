@@ -42,6 +42,9 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 @TypeAlias("Organisation")
 public abstract class OrganisationNode implements Organisation {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -4961037643458063514L;
 
 	@GraphId
@@ -49,9 +52,9 @@ public abstract class OrganisationNode implements Organisation {
 
 	@Indexed
 	private String name;
-	
+
 	private String shortname;
-	
+
 	private String iconFileName;
 
 	@RelatedTo(elementClass = RessourceNode.class, type = "possessesResource", direction = OUTGOING)
@@ -66,7 +69,7 @@ public abstract class OrganisationNode implements Organisation {
 		/*-
 		possessedResources = new HashSet<RessourceNode>();
 		viewedResources = new HashSet<RessourceNode>();
-		*/
+		 */
 	}
 
 	public OrganisationNode(String name) {
@@ -122,12 +125,12 @@ public abstract class OrganisationNode implements Organisation {
 	public void setPossessedResources(Set<? extends Ressource> possessedResources) {
 		this.possessedResources = (Set<RessourceNode>) possessedResources;
 	}
-	
+
 	@Override
 	public Set<? extends Ressource> getViewedResources() {
 		return viewedResources;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setViewedResources(Set<? extends Ressource> viewedResources) {
@@ -136,10 +139,10 @@ public abstract class OrganisationNode implements Organisation {
 
 	@Override
 	public void addViewedResource(Ressource resource) {
-		if (! viewedResources.contains(resource)) {
+		if (!viewedResources.contains(resource)) {
 			viewedResources.add((RessourceNode) resource);
 		}
-		if (! resource.getOrganisationsHavingAccessToResource().contains(this)) {
+		if (!resource.getOrganisationsHavingAccessToResource().contains(this)) {
 			resource.addOrganisationHavingAccessToResource(this);
 		}
 	}
@@ -153,7 +156,7 @@ public abstract class OrganisationNode implements Organisation {
 			resource.removeOrganisationHavingAccessToResource(this);
 		}
 	}
-	
+
 	@Override
 	public int compareTo(Organisation o) {
 		return this.getName().compareTo(o.getName());
@@ -163,8 +166,8 @@ public abstract class OrganisationNode implements Organisation {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
 		return result;
 	}
 
@@ -177,21 +180,24 @@ public abstract class OrganisationNode implements Organisation {
 		if (getClass() != obj.getClass())
 			return false;
 		OrganisationNode other = (OrganisationNode) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (getId() == null) {
+			if (other.getId() != null)
 				return false;
 		}
-		else
-			if (!id.equals(other.id))
-				return false;
-		if (name == null) {
-			if (other.getName() != null)
-				return false;
-		}
-		else
-			if (!name.equals(other.getName()))
-				return false;
+		else if (!getId().equals(other.getId()))
+			return false;
+//		if (getName() == null) {
+//			if (other.getName() != null)
+//				return false;
+//		}
+//		else if (!getName().equals(other.getName()))
+//			return false;
 		return true;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "OrganisationNode#" + hashCode() + "[id=[" + getId() + "], name=[" + getName() + "], shortname=["
+				+ shortname + "], iconFileName=[" + iconFileName + "]]";
+	}
 }

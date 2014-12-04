@@ -42,6 +42,11 @@ import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
 public class PersonDAO implements DAO<Long, Personne> {
 
 	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 1069286673672742458L;
+
+	/**
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")

@@ -33,7 +33,10 @@ import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
 @TypeAlias("PedagogicalAndDocumentaryResource")
 public class RessourcePedagogiqueEtDocumentaireNode extends RessourceNode implements RessourcePedagogiqueEtDocumentaire {
 
-	private static final long serialVersionUID = 795694384595044050L;
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -1556801309264837100L;
 
 	@Indexed
 	private String name;

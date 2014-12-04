@@ -42,6 +42,11 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
 @Repository("pedagogicalNeedDAO")
 public class PedagogicalNeedDAO implements DAO<Long, Besoin> {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -2890608278433660504L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalNeedDAO.class);
 

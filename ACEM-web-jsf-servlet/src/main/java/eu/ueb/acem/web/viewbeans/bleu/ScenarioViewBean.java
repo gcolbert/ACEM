@@ -43,10 +43,14 @@ import eu.ueb.acem.web.viewbeans.Pickable;
  */
 public class ScenarioViewBean implements Pickable, Serializable, Comparable<ScenarioViewBean> {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 2589803338943536893L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ScenarioViewBean.class);
 
-	private static final long serialVersionUID = -3164178023755035995L;
 
 	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
 	//private List<PersonViewBean> authorViewBeans;

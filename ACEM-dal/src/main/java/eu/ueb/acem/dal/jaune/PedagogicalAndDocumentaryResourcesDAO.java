@@ -43,6 +43,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNo
 @Repository("pedagogicalAndDocumentaryResourcesDAO")
 public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, RessourcePedagogiqueEtDocumentaire> {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 3560652375213346842L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalAndDocumentaryResourcesDAO.class);
 

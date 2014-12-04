@@ -1,5 +1,7 @@
 package eu.ueb.acem.web.tests;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -8,71 +10,61 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.esupportail.commons.context.ApplicationContextHolder;
-import org.esupportail.commons.exceptions.ConfigException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:web-test-context.xml"})
 public class TestBeansLoaded extends TestCase {
 
+	@Inject
+	ApplicationContext applicationContext;
+	
 	@After
 	public void after() {
 	}
 
 	@Before
 	public void before() {
-		if (ApplicationContextHolder.getContext() == null) {
-			throw new ConfigException("You must add the ApplicationContextHolder bean in your applicationContext.xml");
-		}
 	}
 
 	@Test
 	public void testEditableTreeBean() {
-		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Component editableTreeBean is not loaded", context.containsBean("editableTreeBean"));
+		assertTrue("Component editableTreeBean is not loaded", applicationContext.containsBean("editableTreeBean"));
 	}
 
 	@Test
 	public void testTableBean() {
-		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Component tableBean is not loaded", context.containsBean("tableBean"));
+		assertTrue("Component tableBean is not loaded", applicationContext.containsBean("tableBean"));
 	}
 	
 	@Test
 	public void testNonexistentBean() {
-		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertFalse(context.containsBean("testNonexistentBean"));
+		assertFalse(applicationContext.containsBean("testNonexistentBean"));
 	}
 
 	@Test
 	public void testNeedsAndAnswersController() {
-		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Controller needsAndAnswersController is not loaded", context.containsBean("needsAndAnswersController"));
+		assertTrue("Controller needsAndAnswersController is not loaded", applicationContext.containsBean("needsAndAnswersController"));
 	}
 
 	@Test
 	public void testNeedsAndAnswersService() {
-		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Service needsAndAnswersService is not loaded", context.containsBean("needsAndAnswersService"));
+		assertTrue("Service needsAndAnswersService is not loaded", applicationContext.containsBean("needsAndAnswersService"));
 	}
 
 	@Test
 	public void testMainMenuController() {
-		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Controller mainMenuController is not loaded", context.containsBean("mainMenuController"));
+		assertTrue("Controller mainMenuController is not loaded", applicationContext.containsBean("mainMenuController"));
 	}
 
 	@Test
 	public void testMyScenariosController() {
-		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Controller myScenariosController is not loaded", context.containsBean("myScenariosController"));
+		assertTrue("Controller myScenariosController is not loaded", applicationContext.containsBean("myScenariosController"));
 	}
 	
 	@Test
 	public void testScenariosService() {
-		ApplicationContext context = ApplicationContextHolder.getContext();
-		assertTrue("Controller scenariosService is not loaded", context.containsBean("scenariosService"));
+		assertTrue("Controller scenariosService is not loaded", applicationContext.containsBean("scenariosService"));
 	}
 	
 }

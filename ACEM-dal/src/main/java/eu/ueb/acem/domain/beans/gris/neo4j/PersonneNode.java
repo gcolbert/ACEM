@@ -61,6 +61,8 @@ public class PersonneNode implements Personne {
 	@Indexed(unique = true)
 	private String login;
 
+	private String password;
+	
 	private String language;
 
 	private Boolean administrator;
@@ -126,6 +128,16 @@ public class PersonneNode implements Personne {
 		this.login = login;
 	}
 
+	@Override
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 	@Override
 	public String getLanguage() {
 		return language;

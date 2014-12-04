@@ -3,7 +3,6 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
 		<ui:debug hotkey="1"
@@ -13,23 +12,23 @@
 
 		<h:form id="formPA">
 
-			<p:panel header="#{msgs['NEEDS_AND_ANSWERS.TREE.HEADER']}">
+			<p:panel header="#{msg['NEEDS_AND_ANSWERS.TREE.HEADER']}">
 
 				<p:growl id="messagesDisplayer" showDetail="true" />
 
 				<p:contextMenu for="needsAndAnswersTree" nodeType="default">
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.expandSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-plus" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.collapseSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-minus" />
@@ -38,23 +37,23 @@
 					nodeType="#{needsAndAnswersController.treeNodeType_NEED_LEAF}">
 					<!-- 
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update=":formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.displaySelectedNodeInfo}"
 						icon="ui-icon-search" />
 					 -->
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.deleteSelectedNode}"
 						icon="ui-icon-close" />
@@ -63,23 +62,23 @@
 					nodeType="#{needsAndAnswersController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
 					<!-- 
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update=":formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.displaySelectedNodeInfo}"
 						icon="ui-icon-search" />
 					 -->
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.expandSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-plus" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.collapseSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-minus" />
@@ -88,23 +87,23 @@
 					nodeType="#{needsAndAnswersController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
 					<!-- 
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update=":formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.displaySelectedNodeInfo}"
 						icon="ui-icon-search" />
 					 -->
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.expandSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-plus" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.collapseSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-minus" />
@@ -113,22 +112,22 @@
 					nodeType="#{needsAndAnswersController.treeNodeType_ANSWER_LEAF}">
 					<!-- 
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
 						update=":formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.displaySelectedNodeInfo}"
 						icon="ui-icon-search" />
 					 -->
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_RESOURCE_CATEGORY']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_RESOURCE_CATEGORY']}"
 						update=":formPA:needsAndAnswersTree" icon="ui-icon-link"
 						onclick="PF('dialogAssociateResourceCategory').show()"
 						type="button" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_SERVICE']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_SERVICE']}"
 						update=":formPA:needsAndAnswersTree" icon="ui-icon-link"
 						onclick="PF('dialogAssociateService').show()" type="button" />
 					<p:menuitem
-						value="#{msgs['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
+						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
 						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.deleteSelectedNode}"
 						icon="ui-icon-trash" />
@@ -200,37 +199,37 @@
 
 					<h2>
 						<h:outputText
-							value="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS_LABEL']}" />
+							value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS_LABEL']}" />
 					</h2>
 
 					<p:dataTable id="associatedToolCategoriesTable"
 						value="#{needsAndAnswersController.toolCategoryViewBeansForSelectedAnswer}"
-						emptyMessage="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOL_CATEGORIES.LIST.NO_RECORDS_FOUND']}"
+						emptyMessage="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOL_CATEGORIES.LIST.NO_RECORDS_FOUND']}"
 						var="toolCategoryViewBean">
 						<p:column
-							headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY']}">
+							headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY']}">
 							<h:link id="goToToolCategoryBtn" outcome="my-tools">
 								<f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
 								<h:outputText value="#{toolCategoryViewBean.name}" />
 								<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
 									style="display:inline-block; vertical-align:middle;" />
 								<p:tooltip
-									value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_TOOL_CATEGORY']}"
+									value="#{msg['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_TOOL_CATEGORY']}"
 									for="goToToolCategoryBtn" />
 							</h:link>
 						</p:column>
-						<p:column headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY_DESCRIPTION']}">
+						<p:column headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY_DESCRIPTION']}">
 							<h:outputText value="#{toolCategoryViewBean.description}"/>
 						</p:column>
 						<!-- 
 						<p:column
-							headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOLS']}">
+							headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOLS']}">
 							<p:dataTable id="toolsTable"
 								value="#{toolCategoryViewBean.resourceViewBeans}"
-								emptyMessage="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.LIST.NO_RECORDS_FOUND']}"
+								emptyMessage="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.LIST.NO_RECORDS_FOUND']}"
 								var="resourceViewBean">
 								<p:column
-									headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_NAME']}">
+									headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_NAME']}">
 									<h:outputText value="#{resourceViewBean.name}" />
 						-->
 									<!-- 
@@ -240,21 +239,21 @@
 										<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
 											style="display:inline-block; vertical-align:middle;" />
 										<p:tooltip
-											value="#{msgs['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_RESOURCE']}"
+											value="#{msg['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_RESOURCE']}"
 											for="goToResourceBtn" />
 									</h:link>
 									-->
 						<!--
 								</p:column>
 								<p:column
-									headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.ORGANISATION_NAME']}">
+									headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.ORGANISATION_NAME']}">
 								</p:column>
 							</p:dataTable>
 						</p:column>
 						-->
 					</p:dataTable>
 					<p:commandButton
-						value="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATE_TOOL_CATEGORIES_LABEL']}"
+						value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATE_TOOL_CATEGORIES_LABEL']}"
 						rendered="#{sessionController.currentUserViewBean.administrator}"
 						icon="ui-icon-transferthick-e-w"
 						action="#{needsAndAnswersController.preparePicklistToolCategoryViewBeansForSelectedAnswer}"
@@ -264,20 +263,20 @@
 
 					<h2>
 						<h:outputText
-							value="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_ADMINISTRATIVE_DEPARTMENTS_LABEL']}" />
+							value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_ADMINISTRATIVE_DEPARTMENTS_LABEL']}" />
 					</h2>
 
 					<p:dataTable id="associatedAdministrativeDepartmentsTable"
 						value="#{needsAndAnswersController.administrativeDepartmentViewBeansForSelectedAnswer}"
-						emptyMessage="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
+						emptyMessage="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
 						var="administrativeDepartment">
 						<p:column
-							headerText="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_ADMINISTRATIVE_DEPARTMENTS.COLUMNS.ADMINISTRATIVE_DEPARTMENT']}">
+							headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_ADMINISTRATIVE_DEPARTMENTS.COLUMNS.ADMINISTRATIVE_DEPARTMENT']}">
 							<h:outputText value="#{administrativeDepartment.name}" />
 						</p:column>
 					</p:dataTable>
 					<p:commandButton
-						value="#{msgs['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATE_ADMINISTRATIVE_DEPARTMENTS_LABEL']}"
+						value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATE_ADMINISTRATIVE_DEPARTMENTS_LABEL']}"
 						rendered="#{sessionController.currentUserViewBean.administrator}"
 						icon="ui-icon-transferthick-e-w"
 						action="#{needsAndAnswersController.preparePicklistAdministrativeDepartmentViewBeansForSelectedAnswer}"
@@ -287,28 +286,28 @@
 
 					<h2>
 						<h:outputText
-							value="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']}" />
+							value="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']}" />
 					</h2>
 
 					<p:dataTable id="examplesOfScenariosTable"
 						value="#{needsAndAnswersController.scenarioViewBeansRelatedToSelectedAnswer}"
-						emptyMessage="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.ASSOCIATED_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
+						emptyMessage="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.ASSOCIATED_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
 						var="scenario">
 						<p:column
-							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
+							headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
 							<h:outputText value="#{scenario.name}" />
 						</p:column>
 						<p:column
-							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.OBJECTIVE']}">
+							headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.OBJECTIVE']}">
 							<h:outputText value="#{scenario.objective}" />
 						</p:column>
 						<p:column
-							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.AUTHORS']}">
+							headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.AUTHORS']}">
 							<h:outputText value="#{scenario.author}" />
 						</p:column>
 						<!-- 
 						<p:column
-							headerText="#{msgs['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.RESOURCES']}">
+							headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.RESOURCES']}">
 							<h:outputText value="#{scenario.resources}" />
 						</p:column>
 						 -->
@@ -320,7 +319,7 @@
 
 		<h:form id="formAssociateResourceCategory">
 			<p:dialog id="idDialogAssociateResourceCategoryWithAnswer"
-				header="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.HEADER']}"
+				header="#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.HEADER']}"
 				widgetVar="dialogAssociateResourceCategory" modal="true"
 				height="auto">
 				<p:pickList id="dialogAssociateAnswerWithToolCategoryPickList"
@@ -330,19 +329,19 @@
 					converter="PickListConverter" showSourceControls="false"
 					showTargetControls="false" showCheckbox="true"
 					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msgs['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msgs['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msgs['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msgs['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.ASSOCIATED_WITH_SELECTED_ANSWER']}</f:facet>
+					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
+					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
+					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
+					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
+					<f:facet name="sourceCaption">#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.ASSOCIATED_WITH_SELECTED_ANSWER']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{needsAndAnswersController.onTransferToolCategory}"
 						update="@this :formPA:associatedToolCategoriesTable :formPA:messagesDisplayer"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.CLOSE']}"
+					value="#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateResourceCategory').hide()"
 					update="@none"
@@ -352,7 +351,7 @@
 
 		<h:form id="formAssociateAdministrativeDepartment">
 			<p:dialog id="idDialogAssociateAdministrativeDepartmentWithAnswer"
-				header="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.HEADER']}"
+				header="#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.HEADER']}"
 				widgetVar="dialogAssociateAdministrativeDepartment" modal="true"
 				height="auto">
 				<p:pickList
@@ -364,19 +363,19 @@
 					converter="PickListConverter" showSourceControls="false"
 					showTargetControls="false" showCheckbox="true"
 					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msgs['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msgs['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msgs['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msgs['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.PICKLIST_HEADER.ASSOCIATED_WITH_SELECTED_ANSWER']}</f:facet>
+					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
+					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
+					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
+					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
+					<f:facet name="sourceCaption">#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.PICKLIST_HEADER.ASSOCIATED_WITH_SELECTED_ANSWER']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{needsAndAnswersController.onTransferAdministrativeDepartment}"
 						update="@this :formPA:associatedAdministrativeDepartmentsTable :formPA:messagesDisplayer"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.CLOSE']}"
+					value="#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateAdministrativeDepartment').hide()"
 					update="@none"

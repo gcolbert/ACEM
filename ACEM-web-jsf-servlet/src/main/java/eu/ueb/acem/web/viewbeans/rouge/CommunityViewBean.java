@@ -33,7 +33,10 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  */
 public class CommunityViewBean implements OrganisationViewBean, Serializable, Comparable<CommunityViewBean> {
 
-	private static final long serialVersionUID = -116654020465612191L;
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -5804352947613671276L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CommunityViewBean.class);

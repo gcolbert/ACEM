@@ -31,7 +31,6 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 
 /**
  * @author Grégoire Colbert
- * @author Yves Deschamps (Universite de Lille 1) - 2010
  * @since 2013-11-25
  */
 @Service("domainService")

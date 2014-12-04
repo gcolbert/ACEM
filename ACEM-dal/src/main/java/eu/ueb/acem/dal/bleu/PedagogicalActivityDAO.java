@@ -43,6 +43,11 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
 public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
 
 	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -8533892314452651184L;
+
+	/**
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")

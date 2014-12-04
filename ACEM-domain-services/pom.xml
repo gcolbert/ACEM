@@ -5,20 +5,12 @@
 	<parent>
 		<artifactId>ACEM</artifactId>
 		<groupId>eu.ueb</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>ACEM-domain-services</artifactId>
 	<description>Domain Interface and Impl</description>
 	<properties>
-		<project.version>0.0.1-SNAPSHOT</project.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java-version>1.7</java-version>
-		<org.springframework-version>4.1.2.RELEASE</org.springframework-version>
-		<org.slf4j-version>1.7.1</org.slf4j-version>
-		<javax.validation-version>1.1.0.Final</javax.validation-version>
-		<junit-version>4.11</junit-version>
-		<cglib-version>2.2.2</cglib-version>
-		<javax.inject-version>1</javax.inject-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -36,32 +28,37 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>org.esupportail</groupId>
-			<artifactId>esup-commons2-auth</artifactId>
-			<version>${esupcommons.version}</version>
-			<type>jar</type>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring-security.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -80,7 +77,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -107,7 +104,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.2</version>
+				<version>${maven-jar-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
@@ -235,7 +236,8 @@ public class EditableTreeBean implements Serializable {
 
 		@Override
 		public String toString() {
-			return "Menu{ id=" + id + ", label=" + label + ", concept=" + concept + " }";
+			return ToStringBuilder.reflectionToString(this);
+			//return "Menu{ id=" + id + ", label=" + label + ", concept=" + concept + " }";
 		}
 
 	}

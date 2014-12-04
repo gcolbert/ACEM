@@ -13,7 +13,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context 
 						http://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -31,22 +31,17 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="app_context" class="org.esupportail.commons.context.ApplicationContextHolder"/>
 	
 	<import resource="classpath*:exceptionHandling/exceptionHandling.xml" />
 	<import resource="classpath*:cache/cache.xml"/>
-	<import resource="classpath*:smtp/smtp.xml" />
-	<import resource="classpath*:tags/tags.xml" />
 	<import resource="classpath*:web/controllers.xml" />
-	<import resource="classpath*:web/converters.xml" />
-	<import resource="classpath*:web/beans.xml" />
 	
 	<!-- Enables the @Scope("view") for Spring's components and controllers -->
 	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
 	    <property name="scopes">
 	        <map>
 	            <entry key="view">
-	                <bean class="eu.ueb.acem.spring.extensions.ViewScope" />
+	                <bean class="eu.ueb.acem.web.utils.spring.ViewScope" />
 	            </entry>
 	        </map>
 	    </property>

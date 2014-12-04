@@ -42,6 +42,11 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
 public class PedagogicalAnswerDAO implements DAO<Long, Reponse> {
 
 	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -4117462676183855035L;
+
+	/**
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")

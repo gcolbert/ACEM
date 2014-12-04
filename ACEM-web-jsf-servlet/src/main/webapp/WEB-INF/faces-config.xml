@@ -9,16 +9,14 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
 	version="2.0">
 
-	<application>
-		<el-resolver>org.esupportail.commons.jsf.ResourceBundleFacesELResolver</el-resolver>
-		<locale-config>
-			<default-locale>fr</default-locale>
-			<supported-locale>fr</supported-locale>
-			<supported-locale>en</supported-locale>
-		</locale-config>
-		<message-bundle>properties.i18n.bundles.JsfMessages</message-bundle>
-	</application>
 	<factory>
-		<exception-handler-factory>org.esupportail.commons.exceptions.ExceptionHandlerFactory</exception-handler-factory>
+    	<exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
 	</factory>
+
+	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+        <locale-config>   
+            <default-locale>fr</default-locale> 
+        </locale-config>          
+	</application>
 </faces-config>

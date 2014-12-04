@@ -186,20 +186,20 @@ public class ResourcesController extends AbstractContextAwareController {
 		this.selectedResourceType = resourceType;
 		resourcesTreeBean.clear();
 		if (resourceType.equals("software")) {
-			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL"));
+			resourcesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL",null,getCurrentUserLocale()));
 		}
 		else if (resourceType.equals("softwareDocumentation")) {
-			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL"));
+			resourcesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL",null,getCurrentUserLocale()));
 		}
 		else if (resourceType.equals("equipment")) {
-			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL"));
+			resourcesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL",null,getCurrentUserLocale()));
 		}
 		else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
 			resourcesTreeBean
-					.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL"));
+					.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL",null,getCurrentUserLocale()));
 		}
 		else if (resourceType.equals("professionalTraining")) {
-			resourcesTreeBean.addVisibleRoot(getString("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL"));
+			resourcesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL",null,getCurrentUserLocale()));
 		}
 		else {
 			logger.error("Unknown resourceType '{}'", resourceType);
@@ -402,13 +402,13 @@ public class ResourcesController extends AbstractContextAwareController {
 			selectedToolCategoryViewBean.removeResourceViewBean(getSelectedResourceViewBean());
 			resourceViewBeanHandler.removeResourceViewBean(getSelectedResourceViewBean().getId());
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
-					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE"),
-					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS"));
+					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 		}
 		else {
 			MessageDisplayer.showMessageToUserWithSeverityError(
-					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.TITLE"),
-					getString("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS"));
+					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.TITLE",null,getCurrentUserLocale()),
+					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS",null,getCurrentUserLocale()));
 		}
 	}
 	

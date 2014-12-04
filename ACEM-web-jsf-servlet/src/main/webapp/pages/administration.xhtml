@@ -3,7 +3,6 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:e="http://commons.esup-portail.org"
 	template="../templates/template.xhtml">
 	<ui:define name="content">
 		<ui:debug hotkey="1"
@@ -13,14 +12,14 @@
 			<p:growl id="messagesDisplayerFormOrganisations" showDetail="true" />
 
 			<p:confirmDialog global="true" showEffect="fade">
-				<p:commandButton value="#{msgs['CONFIRM_DIALOG.YES_LABEL']}"
+				<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
 					type="button" styleClass="ui-confirmdialog-yes"
 					icon="ui-icon-check" />
-				<p:commandButton value="#{msgs['CONFIRM_DIALOG.NO_LABEL']}"
+				<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
 					type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 			</p:confirmDialog>
 
-			<p:panel header="#{msgs['ADMINISTRATION.ORGANISATIONS.HEADER']}">
+			<p:panel header="#{msg['ADMINISTRATION.ORGANISATIONS.HEADER']}">
 				<p:tabView id="tabViewOrganisations" dynamic="true" cache="false">
 					<!--
 						There's a problem at the moment with the refresh of tabView's tabs after the association of organisations process.
@@ -42,9 +41,9 @@
 						update="@this" />
 					-->
 					<p:tab
-						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_COMMUNITIES_TITLE']}">
+						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_COMMUNITIES_TITLE']}">
 						<p:commandButton
-							value="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_LABEL']}"
+							value="#{msg['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_LABEL']}"
 							icon="ui-icon-plusthick"
 							actionListener="#{fileUploadController.reset()}"
 							update=":formOrganisations:idDialogCreateCommunity"
@@ -71,7 +70,7 @@
 									</p:graphicImage>
 									<p:column>
 										<p:commandButton
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
 											actionListener="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
 											action="#{organisationsController.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
@@ -79,7 +78,7 @@
 											update=":formOrganisations:idDialogAssociateInstitution"
 											process="@this" />
 										<p:commandButton
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_COMMUNITY_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_COMMUNITY_LABEL']}"
 											icon="ui-icon-pencil"
 											actionListener="#{fileUploadController.reset()}"
 											action="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
@@ -87,23 +86,23 @@
 											oncomplete="PF('dialogRenameOrganisation').show()"
 											process="@this" />
 										<p:commandButton id="deleteCommunityButton"
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 											icon="ui-icon-trash"
 											actionListener="#{organisationsController.onDeleteOrganisation}"
 											action="#{usersController.onDeleteOrganisation}"
 											update="accordionPanelForCommunities :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
 											process="@this">
 											<p:confirm
-												header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
-												message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+												message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 												icon="ui-icon-alert" />
 										</p:commandButton>
 										<p:dataTable id="dataTableInstitutionViewBeansForCommunity"
 											var="institutionViewBean"
-											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
+											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 											value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
 											<p:column
-												headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
+												headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
 												<h:outputText value="#{institutionViewBean.name}" />
 											</p:column>
 										</p:dataTable>
@@ -114,9 +113,9 @@
 					</p:tab>
 
 					<p:tab
-						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_INSTITUTIONS_TITLE']}">
+						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_INSTITUTIONS_TITLE']}">
 						<p:commandButton
-							value="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_LABEL']}"
+							value="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_LABEL']}"
 							icon="ui-icon-plusthick"
 							actionListener="#{fileUploadController.reset()}"
 							update=":formOrganisations:idDialogCreateInstitution"
@@ -144,7 +143,7 @@
 									</p:graphicImage>
 									<p:column>
 										<p:commandButton
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_INSTITUTION_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_INSTITUTION_LABEL']}"
 											icon="ui-icon-pencil"
 											actionListener="#{fileUploadController.reset()}"
 											action="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
@@ -152,20 +151,20 @@
 											oncomplete="PF('dialogRenameOrganisation').show()"
 											process="@this" />
 										<p:commandButton id="deleteInstitutionButton"
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 											icon="ui-icon-trash"
 											action="#{organisationsController.onDeleteOrganisation}"
 											update="accordionPanelForInstitutions :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
 											process="@this">
 											<p:confirm
-												header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
-												message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+												message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 												icon="ui-icon-alert" />
 										</p:commandButton>
 										<p:panelGrid columns="3">
 											<p:column>
 												<p:commandButton
-													value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_LABEL']}"
+													value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_LABEL']}"
 													icon="ui-icon-transferthick-e-w"
 													actionListener="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
 													action="#{organisationsController.preparePicklistCommunityViewBeansForCurrentOrganisation()}"
@@ -173,17 +172,17 @@
 													update=":formOrganisations:idDialogAssociateCommunity"
 													process="@this" />
 												<p:dataTable var="communityViewBean"
-													emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
+													emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
 													value="#{organisationsController.communityViewBeansForCurrentOrganisation}">
 													<p:column
-														headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.COLUMN_HEADER.NAME']}">
+														headerText="#{msg['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.COLUMN_HEADER.NAME']}">
 														<h:outputText value="#{communityViewBean.name}" />
 													</p:column>
 												</p:dataTable>
 											</p:column>
 											<p:column>
 												<p:commandButton
-													value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
+													value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 													icon="ui-icon-transferthick-e-w"
 													actionListener="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
 													action="#{organisationsController.preparePicklistAdministrativeDepartmentViewBeansForCurrentOrganisation()}"
@@ -191,10 +190,10 @@
 													update=":formOrganisations:idDialogAssociateAdministrativeDepartment"
 													process="@this" />
 												<p:dataTable var="administrativeDepartmentViewBean"
-													emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
+													emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
 													value="#{organisationsController.administrativeDepartmentViewBeansForCurrentOrganisation}">
 													<p:column
-														headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.COLUMN_HEADER.NAME']}">
+														headerText="#{msg['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.COLUMN_HEADER.NAME']}">
 														<h:outputText
 															value="#{administrativeDepartmentViewBean.name}" />
 													</p:column>
@@ -202,7 +201,7 @@
 											</p:column>
 											<p:column>
 												<p:commandButton
-													value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_LABEL']}"
+													value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_LABEL']}"
 													icon="ui-icon-transferthick-e-w"
 													actionListener="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
 													action="#{organisationsController.preparePicklistTeachingDepartmentViewBeansForCurrentOrganisation()}"
@@ -210,10 +209,10 @@
 													update=":formOrganisations:idDialogAssociateTeachingDepartment"
 													process="@this" />
 												<p:dataTable var="teachingDepartmentViewBean"
-													emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
+													emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
 													value="#{organisationsController.teachingDepartmentViewBeansForCurrentOrganisation}">
 													<p:column
-														headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.COLUMN_HEADER.NAME']}">
+														headerText="#{msg['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.COLUMN_HEADER.NAME']}">
 														<h:outputText value="#{teachingDepartmentViewBean.name}" />
 													</p:column>
 												</p:dataTable>
@@ -226,9 +225,9 @@
 					</p:tab>
 
 					<p:tab
-						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_ADMINISTRATIVE_DEPARTMENTS_TITLE']}">
+						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_ADMINISTRATIVE_DEPARTMENTS_TITLE']}">
 						<p:commandButton
-							value="#{msgs['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
+							value="#{msg['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 							icon="ui-icon-plusthick"
 							actionListener="#{fileUploadController.reset()}"
 							update=":formOrganisations:idDialogCreateAdministrativeDepartment"
@@ -256,7 +255,7 @@
 									</p:graphicImage>
 									<p:column>
 										<p:commandButton
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
 											actionListener="#{organisationsController.setCurrentOrganisationViewBean(administrativeDepartmentViewBean)}"
 											action="#{organisationsController.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
@@ -264,7 +263,7 @@
 											update=":formOrganisations:idDialogAssociateInstitution"
 											process="@this" />
 										<p:commandButton
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 											icon="ui-icon-pencil"
 											actionListener="#{fileUploadController.reset()}"
 											action="#{organisationsController.setCurrentOrganisationViewBean(administrativeDepartmentViewBean)}"
@@ -272,21 +271,21 @@
 											oncomplete="PF('dialogRenameOrganisation').show()"
 											process="@this" />
 										<p:commandButton id="deleteAdministrativeDepartmentButton"
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 											icon="ui-icon-trash"
 											action="#{organisationsController.onDeleteOrganisation}"
 											update="accordionPanelForAdministrativeDepartments :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
 											process="@this">
 											<p:confirm
-												header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
-												message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+												message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 												icon="ui-icon-alert" />
 										</p:commandButton>
 										<p:dataTable var="institutionViewBean"
-											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
+											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 											value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
 											<p:column
-												headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
+												headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
 												<h:outputText value="#{institutionViewBean.name}" />
 											</p:column>
 										</p:dataTable>
@@ -297,9 +296,9 @@
 					</p:tab>
 
 					<p:tab
-						title="#{msgs['ADMINISTRATION.ORGANISATIONS.TAB_TEACHING_DEPARTMENTS_TITLE']}">
+						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_TEACHING_DEPARTMENTS_TITLE']}">
 						<p:commandButton
-							value="#{msgs['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_LABEL']}"
+							value="#{msg['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_LABEL']}"
 							icon="ui-icon-plusthick"
 							actionListener="#{fileUploadController.reset()}"
 							update=":formOrganisations:idDialogCreateTeachingDepartment"
@@ -327,7 +326,7 @@
 									</p:graphicImage>
 									<p:column>
 										<p:commandButton
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 											icon="ui-icon-transferthick-e-w"
 											actionListener="#{organisationsController.setCurrentOrganisationViewBean(teachingDepartmentViewBean)}"
 											action="#{organisationsController.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
@@ -335,7 +334,7 @@
 											update=":formOrganisations:idDialogAssociateInstitution"
 											process="@this" />
 										<p:commandButton
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_TEACHING_DEPARTMENT_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_TEACHING_DEPARTMENT_LABEL']}"
 											icon="ui-icon-pencil"
 											actionListener="#{fileUploadController.reset()}"
 											action="#{organisationsController.setCurrentOrganisationViewBean(teachingDepartmentViewBean)}"
@@ -343,21 +342,21 @@
 											oncomplete="PF('dialogRenameOrganisation').show()"
 											process="@this" />
 										<p:commandButton id="deleteTeachingDepartmentButton"
-											value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 											icon="ui-icon-trash"
 											action="#{organisationsController.onDeleteOrganisation}"
 											update="accordionPanelForTeachingDepartments :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
 											process="@this">
 											<p:confirm
-												header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
-												message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+												message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 												icon="ui-icon-alert" />
 										</p:commandButton>
 										<p:dataTable var="institutionViewBean"
-											emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
+											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 											value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
 											<p:column
-												headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
+												headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
 												<h:outputText value="#{institutionViewBean.name}" />
 											</p:column>
 										</p:dataTable>
@@ -370,31 +369,31 @@
 			</p:panel>
 
 			<p:dialog id="idDialogCreateCommunity"
-				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateCommunity" modal="true" height="auto">
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newCommunityName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newCommunityName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input1}" />
 					<p:message for="newCommunityName" display="text" />
 
 					<h:outputLabel for="newCommunityShortName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
 					<p:inputText id="newCommunityShortName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="20"
 						binding="#{input1b}" />
 					<p:message for="newCommunityShortName" display="text" />
 
 					<h:outputLabel
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
 						for="newCommunityIcon" />
 					<p:column rowspan="2">
 						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
-							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
-							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+							sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
+							uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
+							cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
 							update="newCommunityIcon :formOrganisations:messagesDisplayerFormOrganisations" />
 						<p:graphicImage id="newCommunityIcon" cache="false" width="200"
@@ -402,7 +401,7 @@
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateCommunity(input1.value, input1b.value, fileUploadController.uploadedFileName)}"
 					process="@this idDialogCreateCommunity"
@@ -411,31 +410,31 @@
 			</p:dialog>
 
 			<p:dialog id="idDialogCreateInstitution"
-				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateInstitution" modal="true" height="auto">
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newInstitutionName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newInstitutionName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input2}" />
 					<p:message for="newInstitutionName" display="text" />
 
 					<h:outputLabel for="newInstitutionShortName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
 					<p:inputText id="newInstitutionShortName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="20"
 						binding="#{input2b}" />
 					<p:message for="newInstitutionShortName" display="text" />
 
 					<h:outputLabel
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
 						for="newInstitutionIcon" />
 					<p:column rowspan="2">
 						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
-							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
-							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+							sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
+							uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
+							cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
 							update="newInstitutionIcon :formOrganisations:messagesDisplayerFormOrganisations" />
 						<p:graphicImage id="newInstitutionIcon" cache="false" width="200"
@@ -443,7 +442,7 @@
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.VALIDATE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateInstitution(input2.value, input2b.value, fileUploadController.uploadedFileName)}"
 					process="@this idDialogCreateInstitution"
@@ -452,33 +451,33 @@
 			</p:dialog>
 
 			<p:dialog id="idDialogCreateAdministrativeDepartment"
-				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateAdministrativeDepartment" modal="true"
 				height="auto">
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newAdministrativeDepartmentName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newAdministrativeDepartmentName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input3}" />
 					<p:message for="newAdministrativeDepartmentName" display="text" />
 
 					<h:outputLabel for="newAdministrativeDepartmentShortName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
 					<p:inputText id="newAdministrativeDepartmentShortName"
-						required="true" requiredMessage="#{msgs['REQUIRED_FIELD']}"
+						required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
 						size="20" binding="#{input3b}" />
 					<p:message for="newAdministrativeDepartmentShortName"
 						display="text" />
 
 					<h:outputLabel
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
 						for="newAdministrativeDepartmentIcon" />
 					<p:column rowspan="2">
 						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
-							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
-							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+							sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
+							uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
+							cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
 							update="newAdministrativeDepartmentIcon :formOrganisations:messagesDisplayerFormOrganisations" />
 						<p:graphicImage id="newAdministrativeDepartmentIcon" cache="false"
@@ -486,7 +485,7 @@
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateAdministrativeDepartment(input3.value, input3b.value, fileUploadController.uploadedFileName)}"
 					process="@this idDialogCreateAdministrativeDepartment"
@@ -495,32 +494,32 @@
 			</p:dialog>
 
 			<p:dialog id="idDialogCreateTeachingDepartment"
-				header="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateTeachingDepartment" modal="true"
 				height="auto">
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newTeachingDepartmentName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newTeachingDepartmentName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input4}" />
 					<p:message for="newTeachingDepartmentName" display="text" />
 
 					<h:outputLabel for="newTeachingDepartmentShortName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
 					<p:inputText id="newTeachingDepartmentShortName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="20"
 						binding="#{input4b}" />
 					<p:message for="newTeachingDepartmentShortName" display="text" />
 
 					<h:outputLabel
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
 						for="newTeachingDepartmentIcon" />
 					<p:column rowspan="2">
 						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
-							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
-							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+							sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
+							uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
+							cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
 							update="newTeachingDepartmentIcon :formOrganisations:messagesDisplayerFormOrganisations" />
 						<p:graphicImage id="newTeachingDepartmentIcon" cache="false"
@@ -528,7 +527,7 @@
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateTeachingDepartment(input4.value, input4b.value, fileUploadController.uploadedFileName)}"
 					process="@this idDialogCreateTeachingDepartment"
@@ -537,32 +536,32 @@
 			</p:dialog>
 
 			<p:dialog id="idDialogRenameOrganisation"
-				header="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogRenameOrganisation" modal="true" height="auto">
 				<p:panelGrid columns="3"
 					rendered="#{organisationsController.currentOrganisationViewBean != null}">
 					<h:outputLabel for="newName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.NEW_NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.NEW_NAME_LABEL']}" />
 					<p:inputText id="newName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						value="#{organisationsController.currentOrganisationViewBean.name}" />
 					<p:message for="newName" display="text" />
 
 					<h:outputLabel for="newShortName"
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.NEW_SHORTNAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.NEW_SHORTNAME_LABEL']}" />
 					<p:inputText id="newShortName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="20"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="20"
 						value="#{organisationsController.currentOrganisationViewBean.shortname}" />
 					<p:message for="newShortName" display="text" />
 
 					<h:outputLabel
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
 						for="icon" />
 					<p:column rowspan="2">
 						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
-							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
-							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+							sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
+							uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
+							cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
 							update="icon :formOrganisations:messagesDisplayerFormOrganisations" />
 						<p:panel id="icon">
@@ -584,7 +583,7 @@
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					actionListener="#{organisationsController.currentOrganisationViewBean.setIconFileName(fileUploadController.uploadedFileName)}"
 					action="#{organisationsController.onRenameOrganisation}"
@@ -594,7 +593,7 @@
 			</p:dialog>
 
 			<p:dialog id="idDialogAssociateCommunity"
-				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogAssociateCommunity" modal="true" height="auto">
 				<p:pickList id="dialogAssociateCommunityPickList"
 					value="#{organisationsController.pickListBean.pickListEntities}"
@@ -602,26 +601,26 @@
 					itemLabel="#{communityViewBean.name}" converter="PickListConverter"
 					showSourceControls="false" showTargetControls="false"
 					showCheckbox="true" showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msgs['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msgs['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msgs['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msgs['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
+					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
+					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
+					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
+					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
+					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
 						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.CLOSE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateCommunity').hide()" update="@none"
 					process="@this idDialogAssociateCommunity" />
 			</p:dialog>
 
 			<p:dialog id="idDialogAssociateInstitution"
-				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogAssociateInstitution" modal="true" height="auto">
 				<p:pickList id="dialogAssociateInstitutionPickList"
 					value="#{organisationsController.pickListBean.pickListEntities}"
@@ -630,26 +629,26 @@
 					converter="PickListConverter" showSourceControls="false"
 					showTargetControls="false" showCheckbox="true"
 					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msgs['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msgs['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msgs['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msgs['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
+					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
+					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
+					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
+					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
+					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
 						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.CLOSE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateInstitution').hide()" update="@none"
 					process="@this idDialogAssociateInstitution" />
 			</p:dialog>
 
 			<p:dialog id="idDialogAssociateAdministrativeDepartment"
-				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogAssociateAdministrativeDepartment" modal="true"
 				height="auto">
 				<p:pickList id="dialogAssociateAdministrativeDepartmentPickList"
@@ -660,19 +659,19 @@
 					converter="PickListConverter" showSourceControls="false"
 					showTargetControls="false" showCheckbox="true"
 					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msgs['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msgs['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msgs['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msgs['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
+					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
+					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
+					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
+					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
+					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
 						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.CLOSE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateAdministrativeDepartment').hide()"
 					update="@none"
@@ -680,7 +679,7 @@
 			</p:dialog>
 
 			<p:dialog id="idDialogAssociateTeachingDepartment"
-				header="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogAssociateTeachingDepartment" modal="true"
 				height="auto">
 				<p:pickList id="dialogAssociateTeachingDepartmentPickList"
@@ -691,19 +690,19 @@
 					converter="PickListConverter" showSourceControls="false"
 					showTargetControls="false" showCheckbox="true"
 					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msgs['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msgs['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msgs['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msgs['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
+					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
+					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
+					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
+					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
+					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
 						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.CLOSE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateTeachingDepartment').hide()"
 					update="@none" process="@this idDialogAssociateTeachingDepartment" />
@@ -714,31 +713,31 @@
 		<h:form id="formUsers">
 			<p:growl id="messagesDisplayerFormUsers" showDetail="true" />
 
-			<p:panel header="#{msgs['ADMINISTRATION.USERS.HEADER']}">
+			<p:panel header="#{msg['ADMINISTRATION.USERS.HEADER']}">
 				<p:dataTable id="usersDataTable" var="personViewBean"
-					emptyMessage="#{msgs['ADMINISTRATION.USERS.LIST.NO_RECORDS_FOUND']}"
+					emptyMessage="#{msg['ADMINISTRATION.USERS.LIST.NO_RECORDS_FOUND']}"
 					value="#{usersController.personViewBeans}">
 					<p:column width="20%"
-						headerText="#{msgs['ADMINISTRATION.USERS.LIST.NAME.COLUMN_HEADER']}">
+						headerText="#{msg['ADMINISTRATION.USERS.LIST.NAME.COLUMN_HEADER']}">
 						<h:outputText value="#{personViewBean.name}" />
 					</p:column>
 					<p:column width="20%"
-						headerText="#{msgs['ADMINISTRATION.USERS.LIST.LOGIN.COLUMN_HEADER']}">
+						headerText="#{msg['ADMINISTRATION.USERS.LIST.LOGIN.COLUMN_HEADER']}">
 						<h:outputText value="#{personViewBean.login}" />
 					</p:column>
 					<p:column width="40%"
-						headerText="#{msgs['ADMINISTRATION.USERS.LIST.WORKS_FOR_ORGANISATION.COLUMN_HEADER']}">
+						headerText="#{msg['ADMINISTRATION.USERS.LIST.WORKS_FOR_ORGANISATION.COLUMN_HEADER']}">
 						<p:dataTable id="organisationsOfUserDataTable"
 							var="organisationViewBean"
-							emptyMessage="#{msgs['ADMINISTRATION.USERS.WORKS_FOR_ORGANISATIONS.LIST.NO_RECORDS_FOUND']}"
+							emptyMessage="#{msg['ADMINISTRATION.USERS.WORKS_FOR_ORGANISATIONS.LIST.NO_RECORDS_FOUND']}"
 							value="#{personViewBean.organisationViewBeans}">
 							<p:column
-								headerText="#{msgs['ADMINISTRATION.USERS.WORKS_FOR_ORGANISATIONS.LIST.COLUMN_HEADER.NAME']}">
+								headerText="#{msg['ADMINISTRATION.USERS.WORKS_FOR_ORGANISATIONS.LIST.COLUMN_HEADER.NAME']}">
 								<h:outputText value="#{organisationViewBean.name}" />
 							</p:column>
 						</p:dataTable>
 						<p:commandButton
-							value="#{msgs['ADMINISTRATION.USERS.WORKS_FOR_ORGANISATIONS.ASSOCIATE_ORGANISATION_FOR_USER_LABEL']}"
+							value="#{msg['ADMINISTRATION.USERS.WORKS_FOR_ORGANISATIONS.ASSOCIATE_ORGANISATION_FOR_USER_LABEL']}"
 							icon="ui-icon-transferthick-e-w"
 							actionListener="#{usersController.setSelectedUserViewBean(personViewBean)}"
 							action="#{usersController.preparePicklistOrganisationViewBeans()}"
@@ -747,7 +746,7 @@
 							process="@this" />
 					</p:column>
 					<p:column width="20%"
-						headerText="#{msgs['ADMINISTRATION.USERS.LIST.IS_ADMIN.COLUMN_HEADER']}">
+						headerText="#{msg['ADMINISTRATION.USERS.LIST.IS_ADMIN.COLUMN_HEADER']}">
 						<p:selectBooleanCheckbox value="#{personViewBean.administrator}">
 							<p:ajax update="@this :formUsers:messagesDisplayerFormUsers"
 								listener="#{usersController.setAdministrator(personViewBean)}" />
@@ -756,7 +755,7 @@
 				</p:dataTable>
 			</p:panel>
 			<p:dialog id="idDialogAssociateOrganisationWithUser"
-				header="#{msgs['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogAssociateOrganisationWithUser" modal="true"
 				height="auto">
 				<p:pickList id="dialogAssociateOrganisationsWithUserPickList"
@@ -768,14 +767,14 @@
 					showSourceFilter="true" showTargetFilter="true"
 					filterMatchMode="contains"
 					itemDisabled="#{usersController.isDisabledInPickList(organisationViewBean)}">
-					<f:facet name="sourceCaption">#{msgs['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msgs['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.WORKS_FOR']}</f:facet>
+					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msg['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.WORKS_FOR']}</f:facet>
 					<p:ajax event="transfer" listener="#{usersController.onTransfer}"
 						update="@this :formUsers:usersDataTable :formUsers:messagesDisplayerFormUsers"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_MODAL_WINDOW.CLOSE']}"
+					value="#{msg['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateOrganisationWithUser').hide()"
 					update="@none"
@@ -787,9 +786,9 @@
 			<p:growl id="messagesDisplayerFormToolCategories"
 				showDetail="true" />
 			<p:panel
-				header="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.HEADER']}">
+				header="#{msg['ADMINISTRATION.TOOL_CATEGORIES.HEADER']}">
 				<p:commandButton
-					value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_LABEL']}"
+					value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_LABEL']}"
 					icon="ui-icon-plusthick"
 					update=":formToolCategories:idDialogCreateToolCategory"
 					oncomplete="PF('dialogCreateToolCategory').show()" process="@this">
@@ -825,7 +824,7 @@
 										<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
 											style="display:inline-block; vertical-align:middle;" />
 										<p:tooltip
-											value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.GO_TO_TOOL_CATEGORY_IN_MY_TOOLS']}"
+											value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.GO_TO_TOOL_CATEGORY_IN_MY_TOOLS']}"
 											for="goToToolsBtn" />
 									</h:link>
 								</p:panelGrid>
@@ -834,7 +833,7 @@
 								TODO : modify selected tool category + delete selected tool category
 								
 								<p:commandButton
-									value="#{msgs['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
+									value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
 									icon="ui-icon-transferthick-e-w"
 									actionListener="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
 									action="#{organisationsController.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
@@ -842,7 +841,7 @@
 									update=":formOrganisations:idDialogAssociateInstitution"
 									process="@this" />
 								<p:commandButton
-									value="#{msgs['ADMINISTRATION.ORGANISATIONS.RENAME_COMMUNITY_LABEL']}"
+									value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_COMMUNITY_LABEL']}"
 									icon="ui-icon-pencil"
 									actionListener="#{fileUploadController.reset()}"
 									action="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
@@ -850,23 +849,23 @@
 									oncomplete="PF('dialogRenameOrganisation').show()"
 									process="@this" />
 								<p:commandButton id="deleteCommunityButton"
-									value="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+									value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 									icon="ui-icon-trash"
 									actionListener="#{organisationsController.onDeleteOrganisation}"
 									action="#{usersController.onDeleteOrganisation}"
 									update="accordionPanelForCommunities :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
 									process="@this">
 									<p:confirm
-										header="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
-										message="#{msgs['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+										header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+										message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 										icon="ui-icon-alert" />
 								</p:commandButton>
 								<p:dataTable id="dataTableInstitutionViewBeansForCommunity"
 									var="institutionViewBean"
-									emptyMessage="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
+									emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 									value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
 									<p:column
-										headerText="#{msgs['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
+										headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
 										<h:outputText value="#{institutionViewBean.name}" />
 									</p:column>
 								</p:dataTable>
@@ -877,33 +876,33 @@
 				</p:accordionPanel>
 			</p:panel>
 			<p:dialog id="idDialogCreateToolCategory"
-				header="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateToolCategory" modal="true"
 				height="auto">
 				<p:panelGrid columns="3">
 
 					<h:outputLabel for="newToolCategoryName"
-						value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.NAME_LABEL']}" />
 					<p:inputText id="newToolCategoryName" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input5}" />
 					<p:message for="newToolCategoryName" display="text" />
 
 					<h:outputLabel for="newToolCategoryDescription"
-						value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.DESCRIPTION_LABEL']}" />
+						value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.DESCRIPTION_LABEL']}" />
 					<p:inputText id="newToolCategoryDescription" required="true"
-						requiredMessage="#{msgs['REQUIRED_FIELD']}" size="50"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input5b}" />
 					<p:message for="newToolCategoryDescription" display="text" />
 
 					<h:outputLabel
-						value="#{msgs['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
 						for="newToolCategoryIcon" />
 					<p:column rowspan="2">
 						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-							sizeLimit="300000" label="#{msgs['FILEUPLOAD.CHOOSE_LABEL']}"
-							uploadLabel="#{msgs['FILEUPLOAD.UPLOAD_LABEL']}"
-							cancelLabel="#{msgs['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+							sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
+							uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
+							cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
 							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
 							update="newToolCategoryIcon :formOrganisations:messagesDisplayerFormOrganisations" />
 						<p:graphicImage id="newToolCategoryIcon" cache="false"
@@ -911,7 +910,7 @@
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msgs['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.CLOSE']}"
+					value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
 					action="#{resourcesController.onCreateToolCategory(input5.value, input5b.value, fileUploadController.uploadedFileName)}"
 					update="@form :formToolCategories"

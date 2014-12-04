@@ -42,6 +42,11 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
 public class TeacherDAO implements DAO<Long, Enseignant> {
 
 	/**
+	 * For serialization
+	 */
+	private static final long serialVersionUID = 920105894951436261L;
+
+	/**
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")

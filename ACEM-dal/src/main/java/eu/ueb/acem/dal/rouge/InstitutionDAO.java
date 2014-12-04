@@ -41,6 +41,11 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
 @Repository("institutionDAO")
 public class InstitutionDAO implements DAO<Long, Etablissement> {
 
+	/**
+	 * FOr serialization.
+	 */
+	private static final long serialVersionUID = -1248475351876837707L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(InstitutionDAO.class);
 

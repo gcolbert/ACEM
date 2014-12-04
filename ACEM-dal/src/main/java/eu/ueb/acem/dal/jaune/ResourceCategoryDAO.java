@@ -41,6 +41,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 @Repository("resourceCategoryDAO")
 public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -340108444569929110L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ResourceCategoryDAO.class);
 

@@ -55,7 +55,6 @@ public class ScenarioNode implements Scenario {
 
 	private static final Logger logger = LoggerFactory.getLogger(ScenarioNode.class);
 
-	private static final long serialVersionUID = -5248471016348742765L;
 
 	@GraphId
 	private Long id;

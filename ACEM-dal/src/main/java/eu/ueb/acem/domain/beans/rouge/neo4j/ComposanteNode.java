@@ -42,10 +42,13 @@ import eu.ueb.acem.domain.beans.rouge.Etablissement;
 @TypeAlias("TeachingDepartment")
 public class ComposanteNode extends OrganisationNode implements Composante {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -5662533287772515643L;
-	
-	@Indexed
-	private String name;
+
+//	@Indexed
+//	private String name;
 
 	@RelatedTo(elementClass = EtablissementNode.class, type = "teachingDepartmentPartOfInstitution", direction = OUTGOING)
 	@Fetch

@@ -37,7 +37,10 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  */
 public class SoftwareViewBean implements ResourceViewBean, Serializable, Comparable<SoftwareViewBean> {
 
-	private static final long serialVersionUID = -116654020465612191L;
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -4282575138784718297L;
 
 	private static final Logger logger = LoggerFactory.getLogger(SoftwareViewBean.class);
 

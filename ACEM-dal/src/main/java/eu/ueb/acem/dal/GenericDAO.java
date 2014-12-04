@@ -45,6 +45,11 @@ import org.springframework.stereotype.Repository;
 //@Repository("genericDAO") // Uncomment to use
 public class GenericDAO<ID extends Serializable, E, N extends E> implements DAO<Long, E> {
 
+	/**
+	 * For serizalization.
+	 */
+	private static final long serialVersionUID = -2603752470990407282L;
+
 	//@Inject // Uncomment to use
 	protected GenericRepository<N> repository;
 

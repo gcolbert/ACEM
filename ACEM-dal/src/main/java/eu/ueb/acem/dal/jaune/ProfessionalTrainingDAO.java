@@ -43,6 +43,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 @Repository("professionalTrainingDAO")
 public class ProfessionalTrainingDAO implements DAO<Long, FormationProfessionnelle> {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -4037963363836909614L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ProfessionalTrainingDAO.class);
 

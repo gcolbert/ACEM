@@ -24,6 +24,8 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -45,10 +47,19 @@ import eu.ueb.acem.domain.beans.rouge.Service;
 @TypeAlias("AdministrativeDepartment")
 public class ServiceNode extends OrganisationNode implements Service {
 
-	private static final long serialVersionUID = -5662533287772515643L;
+	/**
+	 * For logging.
+	 */
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(ServiceNode.class);
 
-	@Indexed
-	private String name;
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 3548058788461596320L;
+
+//	@Indexed
+//	private String name;
 
 	@RelatedTo(elementClass = EtablissementNode.class, type = "administrativeDepartmentPartOfInstitution", direction = OUTGOING)
 	@Fetch
@@ -134,5 +145,5 @@ public class ServiceNode extends OrganisationNode implements Service {
 			answer.removeAdministrativeDepartment(this);
 		}
 	}
-
+	
 }

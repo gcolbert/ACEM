@@ -5,25 +5,24 @@
 	<parent>
 		<artifactId>ACEM</artifactId>
 		<groupId>eu.ueb</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>ACEM-web-jsf-servlet</artifactId>
 	<packaging>war</packaging>
 	<description>Data access layer</description>
 	<properties>
-		<project.version>0.0.1-SNAPSHOT</project.version>
-		<org.springframework-version>4.1.2.RELEASE</org.springframework-version>
+		<apache-myfaces-tomahawk.version>1.1.14</apache-myfaces-tomahawk.version>
+		<commons-fileupload.version>1.3.1</commons-fileupload.version> 
+		<ehcache.version>2.9.0</ehcache.version>
 		<javax.servlet.version>3.0.1</javax.servlet.version>
-		<javax.validation-version>1.1.0.Final</javax.validation-version>
-		<javax.inject-version>1</javax.inject-version>
+		<apache-myfaces.version>2.2.5</apache-myfaces.version>
 		<joda-time.version>2.3</joda-time.version>
+		<maven-war-plugin.version>2.5</maven-war-plugin.version>
 		<ocpsoft-rewrite.version>2.0.12.Final</ocpsoft-rewrite.version>
+		<omnifaces.version>1.8.1</omnifaces.version>
 		<primefaces.version>4.0</primefaces.version>
 		<primefaces-themes.version>1.0.10</primefaces-themes.version>
-		<urlrewritefilter.version>4.0.3</urlrewritefilter.version>
-		<junit-version>4.11</junit-version>
-		<cglib-version>2.2.2</cglib-version>
-		<cas.url>https://sso-cas.univ-rennes1.fr</cas.url>
+
 		<tomcat.host>localhost</tomcat.host>
 		<tomcat.port.string>:8080</tomcat.port.string>
 		<log.level>INFO</log.level>
@@ -49,17 +48,25 @@
 		</repository>
 	</repositories>
 	<dependencies>
-	    <!-- 
-		<dependency>
-			<groupId>org.tuckey</groupId>
-			<artifactId>urlrewritefilter</artifactId>
-			<version>${urlrewritefilter.version}</version>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-domain-services</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+		   <groupId>commons-fileupload</groupId>
+		   <artifactId>commons-fileupload</artifactId>
+		   <version>${commons-fileupload.version}</version> 
+		</dependency>	
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-api</artifactId>
+			<version>${apache-myfaces.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-impl</artifactId>
+			<version>${apache-myfaces.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -78,20 +85,19 @@
 			<version>${primefaces-themes.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.esupportail</groupId>
-			<artifactId>esup-commons2-jsf2-exception</artifactId>
-			<version>${esupcommons.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-asm</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.apache.myfaces.tomahawk</groupId>
+			<artifactId>tomahawk20</artifactId>
+			<version>${apache-myfaces-tomahawk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.omnifaces</groupId>
+			<artifactId>omnifaces</artifactId>
+			<version>${omnifaces.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -124,6 +130,63 @@
 			<artifactId>javax.inject</artifactId>
 			<version>${javax.inject-version}</version>
 		</dependency>
+	    <dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-context</artifactId>
+	        <version>${spring.version}</version>
+	    </dependency>		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-cas</artifactId>
+			<version>${spring-security.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-lang</artifactId>
+					<groupId>commons-lang</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-ldap</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>net.sf.ehcache</groupId>
+		    <artifactId>ehcache</artifactId>
+		    <version>${ehcache.version}</version>
+		</dependency>			
 
 		<!-- Test -->
 		<dependency>
@@ -143,7 +206,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -164,7 +227,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1</version>
+				<version>${maven-war-plugin.version}</version>
 				<configuration>
 					<warName>${project.parent.artifactId}</warName>
 				</configuration>

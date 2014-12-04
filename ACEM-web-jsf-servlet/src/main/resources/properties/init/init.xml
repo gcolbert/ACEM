@@ -3,8 +3,7 @@
 <beans 
 	xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- 
 		/properties/init/init.xml
@@ -12,12 +11,29 @@
 		This file is referenced by /properties/applicationContext.xml.
 	-->
 
-	<bean 
-		id="versionningService"
-		class="org.esupportail.example.services.application.VersionningServiceImpl"
-		parent="abstractDomainAwareBean"
-		>
-		<property name="firstAdministratorId" value="${init.firstAdministratorId}" />
-	</bean>
+   <bean 
+    	id="applicationService"
+    	class="eu.ueb.acem.services.application.ApplicationService"
+    	>
+    	<description>
+    		This bean provides basic information (version) about 
+    		the application to all the other beans.
+    	</description>
+    	<property name="versionMajorNumber" value="0" >
+	    	<description>
+	    		The major number of the application (1 for version 1.2.3).
+	    	</description>
+    	</property>
+    	<property name="versionMinorNumber" value="0" >
+	    	<description>
+	    		The minor number of the application (2 for version 1.2.3).
+	    	</description>
+    	</property>
+    	<property name="versionUpdate" value="2" >
+	    	<description>
+	    		The update of the application (3 for version 1.2.3).
+	    	</description>
+    	</property>
+    </bean>
 
 </beans>

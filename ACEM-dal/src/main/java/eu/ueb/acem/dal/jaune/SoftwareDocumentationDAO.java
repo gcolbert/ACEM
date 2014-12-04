@@ -43,6 +43,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 @Repository("softwareDocumentationDAO")
 public class SoftwareDocumentationDAO implements DAO<Long, DocumentationApplicatif> {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 9174057115460081629L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(SoftwareDocumentationDAO.class);
 

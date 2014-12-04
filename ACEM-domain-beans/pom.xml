@@ -1,29 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
- *     Copyright Grégoire COLBERT 2013
- * 
- *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
- * 
- *     ACEM is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     ACEM is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- * 
- *     You should have received a copy of the GNU General Public License
- *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>ACEM</artifactId>
-        <groupId>eu.ueb</groupId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
-    <artifactId>ACEM-domain-beans</artifactId>
-    <description>The business objects</description>
+<!-- * Copyright Grégoire COLBERT 2013 * * This file is part of Atelier de 
+	Création d'Enseignement Multimodal (ACEM). * * ACEM is free software: you 
+	can redistribute it and/or modify * it under the terms of the GNU General 
+	Public License as published by * the Free Software Foundation, either version 
+	3 of the License, or * (at your option) any later version. * * ACEM is distributed 
+	in the hope that it will be useful, * but WITHOUT ANY WARRANTY; without even 
+	the implied warranty of * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+	See the * GNU General Public License for more details. * * You should have 
+	received a copy of the GNU General Public License * along with ACEM. If not, 
+	see <http://www.gnu.org/licenses/> -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>ACEM</artifactId>
+		<groupId>eu.ueb</groupId>
+		<version>0.0.2-SNAPSHOT</version>
+	</parent>
+	<artifactId>ACEM-domain-beans</artifactId>
+	<description>The business objects</description>
+	<dependencies>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>${commons-logging.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-web</artifactId>
+			<version>${log4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-1.2-api</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+	</dependencies>
 </project>

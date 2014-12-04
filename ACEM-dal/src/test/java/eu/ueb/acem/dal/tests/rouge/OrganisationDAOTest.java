@@ -121,6 +121,7 @@ public class OrganisationDAOTest extends TestCase {
 		institution = institutionDAO.create(institution);
 
 		Service administrativeDepartment = new ServiceNode("Department of Health Policy and Management", "HPM", null);
+		administrativeDepartment = administrativeDepartmentDAO.create(administrativeDepartment);
 		administrativeDepartment.addInstitution(institution);
 		administrativeDepartmentDAO.update(administrativeDepartment);
 

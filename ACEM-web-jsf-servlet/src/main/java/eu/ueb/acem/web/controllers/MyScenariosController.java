@@ -20,7 +20,6 @@ package eu.ueb.acem.web.controllers;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -37,7 +36,6 @@ import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
 import eu.ueb.acem.domain.beans.bleu.Scenario;
 import eu.ueb.acem.domain.beans.gris.Enseignant;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.rouge.Communaute;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -45,9 +43,6 @@ import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalActivityViewBean;
 import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -116,13 +111,13 @@ public class MyScenariosController extends AbstractContextAwareController {
 				scenarioViewBeans.sortReverseOrder();
 				setSelectedScenarioViewBean(scenarioViewBean);
 				MessageDisplayer.showMessageToUserWithSeverityInfo(
-						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE"),
-						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS"));
+						msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+						msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 			}
 			else {
 				MessageDisplayer.showMessageToUserWithSeverityError(
-						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.TITLE"),
-						getString("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.DETAILS"));
+						msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.TITLE",null,getCurrentUserLocale()),
+						msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.DETAILS",null,getCurrentUserLocale()));
 			}
 		}
 		catch (Exception e) {
@@ -137,13 +132,13 @@ public class MyScenariosController extends AbstractContextAwareController {
 				if (scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(selectedScenarioViewBean.getId(), getCurrentUser().getId())) {
 					scenarioViewBeans.getTableEntries().remove(selectedScenarioViewBean);
 					MessageDisplayer.showMessageToUserWithSeverityInfo(
-							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE"),
-							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS"));
+							msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+							msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 				}
 				else {
 					MessageDisplayer.showMessageToUserWithSeverityError(
-							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.TITLE"),
-							getString("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.DETAILS"));
+							msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
+							msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()));
 				}
 			}
 			catch (Exception e) {
@@ -185,7 +180,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	public void onActivityRowEdit(RowEditEvent event) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
-				getString("MY_SCENARIOS.SELECTED_SCENARIO.LIST.ACTIVITY_EDIT.TITLE"),
+				msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.LIST.ACTIVITY_EDIT.TITLE",null,getCurrentUserLocale()),
 				((PedagogicalActivityViewBean) event.getObject()).getName());
 		scenariosService.updatePedagogicalActivity(((PedagogicalActivityViewBean) event.getObject()).getPedagogicalActivity());
 	}
@@ -195,8 +190,8 @@ public class MyScenariosController extends AbstractContextAwareController {
 		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
 		scenarioViewBeans.sortReverseOrder();
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
-				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE"),
-				getString("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS"));
+				msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+				msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 	}
 
 	public void onSavePedagogicalActivity() {
@@ -224,7 +219,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	
 	public void onCreateActivity() {
 		ActivitePedagogique pedagogicalActivity = scenariosService
-				.createPedagogicalActivity(getString("MY_SCENARIOS.SELECTED_SCENARIO.NEW_ACTIVITY_DEFAULT_NAME"));
+				.createPedagogicalActivity(msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.NEW_ACTIVITY_DEFAULT_NAME",null,getCurrentUserLocale()));
 		selectedScenarioViewBean.getScenario().addPedagogicalActivity(pedagogicalActivity);
 		pedagogicalActivity = scenariosService.updatePedagogicalActivity(pedagogicalActivity);
 		Collections.sort(selectedScenarioViewBean.getPedagogicalActivityViewBeans());

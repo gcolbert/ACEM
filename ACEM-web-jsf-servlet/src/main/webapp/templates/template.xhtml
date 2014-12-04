@@ -6,16 +6,18 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-<f:view locale="#{sessionController.locale}">
+<f:view locale="#{sessionController.currentUserLocale}">
 	<h:head>
 		<title><h:outputText value="#{applicationService.name}" /></title>
-		<ui:repeat value="#{tagsConfigurator.stylesheets}" var="path">
-			<t:stylesheet path="#{path}" />
-		</ui:repeat>
-		<ui:repeat value="#{tagsConfigurator.scripts}" var="path">
-			<script type="text/javascript" src="#{path}" />
-		</ui:repeat>
-		<h:outputScript name="jsf.js" library="javax.faces" target="head" />
+	 	<f:facet name="last">
+			<h:outputStylesheet library="style" name="application.reset.css" />
+			<h:outputStylesheet library="style" name="application.layout.css" />
+			<h:outputStylesheet library="style" name="application.theme.css" />
+			<h:outputStylesheet library="style" name="acem-primefaces.css" />
+		</f:facet>
+ 		<h:outputScript name="js/functions.js" target="head" />
+ 		<h:outputScript name="js/navigation.js" target="head" />
+ 		<h:outputScript name="jsf.js" library="javax.faces" target="head" />
 	</h:head>
 	<h:body styleClass="fl-theme-app">
 		<ui:include src="_include/_header.xhtml" />

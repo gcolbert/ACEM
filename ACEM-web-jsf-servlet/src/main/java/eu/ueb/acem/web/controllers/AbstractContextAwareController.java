@@ -18,7 +18,10 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import org.esupportail.commons.utils.Assert;
+import javax.inject.Inject;
+
+import org.apache.commons.lang3.Validate;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
@@ -51,6 +54,12 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	 */
 	private SessionController sessionController;
 
+	/**
+	 * The reloadable resource bundle message source (for i18n strings).
+	 */
+	@Inject
+	protected ReloadableResourceBundleMessageSource msgs;
+
 	/*
 	 * ****************** INIT ********************
 	 */
@@ -67,7 +76,7 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	 */
 	@Override
 	public void afterPropertiesSetInternal() {
-		Assert.notNull(this.sessionController, "property sessionController of class " + this.getClass().getName()
+		Validate.notNull(this.sessionController, "property sessionController of class " + this.getClass().getName()
 				+ " can not be null");
 	}
 

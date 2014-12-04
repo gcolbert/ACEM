@@ -18,15 +18,15 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.io.Serializable;
 import java.util.Locale;
 
 import javax.inject.Inject;
 
-import org.esupportail.commons.beans.AbstractJsfMessagesAwareBean;
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.utils.Assert;
-import org.esupportail.commons.web.controllers.Resettable;
+import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import eu.ueb.acem.domain.beans.gris.Personne;
@@ -38,7 +38,7 @@ import eu.ueb.acem.services.DomainService;
  * the i18n service (i18nService).
  */
 @Component("abstractDomainAwareBean")
-public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBean implements Resettable {
+public abstract class AbstractDomainAwareBean implements InitializingBean, Serializable {
 
 	/**
 	 * serialVersionUID
@@ -48,7 +48,7 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 	/**
 	 * A logger.
 	 */
-	private final Logger logger = new LoggerImpl(this.getClass());
+	private final Logger logger = LoggerFactory.getLogger(AbstractDomainAwareBean.class);
 
 	/**
 	 * see {@link DomainService}.
@@ -68,8 +68,7 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 	 */
 	@Override
 	public final void afterPropertiesSet() {
-		super.afterPropertiesSet();
-		Assert.notNull(this.domainService, "property domainService of class " + this.getClass().getName()
+		Validate.notNull(this.domainService, "property domainService of class " + this.getClass().getName()
 				+ " can not be null");
 		afterPropertiesSetInternal();
 		reset();
@@ -83,12 +82,8 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 		// override this method
 	}
 
-	/**
-	 * @see org.esupportail.commons.web.controllers.Resettable#reset()
-	 */
 	public void reset() {
 		// nothing to reset
-
 	}
 
 	/**
@@ -102,7 +97,6 @@ public abstract class AbstractDomainAwareBean extends AbstractJsfMessagesAwareBe
 	/**
 	 * @return the current user's locale.
 	 */
-	@Override
 	public Locale getCurrentUserLocale() {
 		if (logger.isDebugEnabled()) {
 			logger.debug(this.getClass().getName() + ".getCurrentUserLocale()");

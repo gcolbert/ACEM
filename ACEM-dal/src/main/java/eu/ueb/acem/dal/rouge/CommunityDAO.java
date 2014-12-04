@@ -41,6 +41,11 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
 @Repository("communityDAO")
 public class CommunityDAO implements DAO<Long, Communaute> {
 
+	/**
+	 * FOr serialization.
+	 */
+	private static final long serialVersionUID = -6005681827386719691L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CommunityDAO.class);
 

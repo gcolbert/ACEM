@@ -41,6 +41,11 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
 @Repository("administrativeDepartmentDAO")
 public class AdministrativeDepartmentDAO implements DAO<Long, Service> {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 515628413371430770L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(AdministrativeDepartmentDAO.class);
 

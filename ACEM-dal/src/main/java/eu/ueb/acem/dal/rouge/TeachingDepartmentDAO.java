@@ -41,6 +41,11 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
 @Repository("teachingDepartmentDAO")
 public class TeachingDepartmentDAO implements DAO<Long, Composante> {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 1601784002431717278L;
+
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(TeachingDepartmentDAO.class);
 

@@ -44,6 +44,11 @@ import eu.ueb.acem.domain.beans.gris.Personne;
 public class ScenarioDAO implements DAO<Long, Scenario> {
 
 	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -8699683589186956566L;
+
+	/**
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")

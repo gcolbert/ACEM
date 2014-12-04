@@ -37,7 +37,10 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  */
 public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBean, Serializable, Comparable<DocumentaryAndPedagogicalResourceViewBean> {
 
-	private static final long serialVersionUID = 2189588973638154852L;
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 9043064613804072989L;
 
 	private static final Logger logger = LoggerFactory.getLogger(DocumentaryAndPedagogicalResourceViewBean.class);
 
