@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,31 +87,10 @@ public class ResourceDAOTest extends TestCase {
 
 	@Before
 	public void before() {
-		useModeDAO.deleteAll();
-		assertEquals(new Long(0), useModeDAO.count());
-
-		resourceCategoryDAO.deleteAll();
-		assertEquals(new Long(0), resourceCategoryDAO.count());
-
-		softwareDAO.deleteAll();
-		assertEquals(new Long(0), softwareDAO.count());
-
-		softwareDocumentationDAO.deleteAll();
-		assertEquals(new Long(0), softwareDocumentationDAO.count());
-
-		equipmentDAO.deleteAll();
-		assertEquals(new Long(0), equipmentDAO.count());
-
-		pedagogicalAndDocumentaryResourcesDAO.deleteAll();
-		assertEquals(new Long(0), pedagogicalAndDocumentaryResourcesDAO.count());
-
-		professionalTrainingDAO.deleteAll();
-		assertEquals(new Long(0), professionalTrainingDAO.count());
 	}
 
 	@After
 	public void after() {
-		before();
 	}
 
 	/**
@@ -118,6 +98,7 @@ public class ResourceDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@Rollback(true)
 	public final void t01_TestDAOResourceAndResourceCategoryAssociation() {
 		ResourceCategory learningManagementSystem = new ResourceCategoryNode("Learning Management System", "A superb tool", null);
 		learningManagementSystem = resourceCategoryDAO.create(learningManagementSystem);
@@ -143,6 +124,8 @@ public class ResourceDAOTest extends TestCase {
 	 * Test Resource creation and ResourceCategory association
 	 */
 	@Test
+	@Transactional
+	@Rollback(true)
 	public final void t02_TestAssociateSoftwareAndDocumentation() {
 		Applicatif software = new ApplicatifNode("Moodle", null);
 		software = softwareDAO.create(software);

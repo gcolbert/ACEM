@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,19 +62,18 @@ public class BesoinDAOTest extends TestCase {
 
 	@Before
 	public void before() {
-		needDAO.deleteAll();
-		assertEquals(new Long(0), needDAO.count());
 	}
 
 	@After
 	public void after() {
-		before();
 	}
 
 	/**
 	 * Create
 	 */
 	@Test
+	@Transactional
+	@Rollback(true)
 	public final void t01_TestBesoinDAOCreate() {
 		// We create a new object in the datastore
 		Besoin need1 = new BesoinNode("t01 need");
@@ -94,6 +94,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@Rollback(true)
 	public final void t02_TestBesoinDAORetrieve() {
 		// We create a new object in the datastore
 		Besoin need1 = needDAO.create(new BesoinNode("t02 need"));
@@ -117,6 +118,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@Rollback(true)
 	public final void t03_TestBesoinDAOUpdate() {
 		// Setting up
 		Besoin need1 = new BesoinNode("t03 need");
@@ -143,6 +145,8 @@ public class BesoinDAOTest extends TestCase {
 	 * Delete
 	 */
 	@Test
+	@Transactional
+	@Rollback(true)
 	public final void t04_TestBesoinDAODelete() {
 		Besoin need1 = new BesoinNode("t04 need");
 		need1 = needDAO.create(need1);
@@ -160,6 +164,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@Rollback(true)
 	@SuppressWarnings("unused")
 	public final void t05_TestBesoinDAORetrieveAll() {
 		Besoin need1 = needDAO.create(new BesoinNode("t05 need 1"));
@@ -187,6 +192,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@Rollback(true)
 	public final void t06_TestBesoinDAOCheckParentChildRelationship() {
 		// We check that addChild is sufficient to create the parent/child
 		// relationship
@@ -233,6 +239,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@Rollback(true)
 	@SuppressWarnings("unused")
 	public final void t07_TestBesoinDAORetrieveRootNeeds() {
 		Besoin need1 = needDAO.create(new BesoinNode("t07 need 1"));
@@ -266,6 +273,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@Rollback(true)
 	public final void t08_TestBesoinDAORetrieveChildren() {
 		Besoin need1 = needDAO.create(new BesoinNode("t08 need 1"));
 		Besoin need11 = needDAO.create(new BesoinNode("t08 need 1.1"));
@@ -303,6 +311,7 @@ public class BesoinDAOTest extends TestCase {
 	 */
 	@Test
 	@Transactional
+	@Rollback(true)
 	public final void t09_TestBesoinDAORetrieveChildrenAutomatically() {
 		Besoin need1 = needDAO.create(new BesoinNode("t09 need 1"));
 		Besoin need11 = needDAO.create(new BesoinNode("t09 need 1.1"));

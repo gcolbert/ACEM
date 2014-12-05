@@ -28,8 +28,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.dal.rouge.CommunityDAO;
@@ -75,28 +77,18 @@ public class OrganisationDAOTest extends TestCase {
 
 	@Before
 	public void before() {
-		communityDAO.deleteAll();
-		assertEquals(new Long(0), communityDAO.count());
-
-		institutionDAO.deleteAll();
-		assertEquals(new Long(0), institutionDAO.count());
-
-		administrativeDepartmentDAO.deleteAll();
-		assertEquals(new Long(0), administrativeDepartmentDAO.count());
-
-		teachingDepartmentDAO.deleteAll();
-		assertEquals(new Long(0), teachingDepartmentDAO.count());
 	}
 
 	@After
 	public void after() {
-		before();
 	}
 
 	/**
 	 * Create
 	 */
 	@Test
+	@Transactional
+	@Rollback(true)
 	public final void t01_TestCreateOrganisation() {
 		// We create a new object in the datastore
 		Communaute community = new CommunauteNode("University of California, Los Angeles", "UCLA", null);
@@ -116,7 +108,11 @@ public class OrganisationDAOTest extends TestCase {
 	 * AssociateInstitutionWithAdministrativeDepartment
 	 */
 	@Test
+	@Transactional
+	@Rollback(true)
 	public final void t02_TestAssociateInstitutionWithAdministrativeDepartment() {
+		assertEquals(new Long(0), institutionDAO.count());
+
 		Etablissement institution = new EtablissementNode("University of California, Los Angeles", "UCLA", null);
 		institution = institutionDAO.create(institution);
 
@@ -136,6 +132,8 @@ public class OrganisationDAOTest extends TestCase {
 	 * Exists
 	 */
 	@Test
+	@Transactional
+	@Rollback(true)
 	public final void t03_TestExists() {
 		// We create a new institution
 		Etablissement institution = new EtablissementNode("Université de Rennes 1", "UR1", null);

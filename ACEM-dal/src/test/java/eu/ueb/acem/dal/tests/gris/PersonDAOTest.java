@@ -28,8 +28,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.gris.PersonDAO;
 import eu.ueb.acem.dal.gris.TeacherDAO;
@@ -65,22 +67,18 @@ public class PersonDAOTest extends TestCase {
 
 	@Before
 	public void before() {
-		personDAO.deleteAll();
-		assertEquals(new Long(0), personDAO.count());
-		
-		teacherDAO.deleteAll();
-		assertEquals(new Long(0), teacherDAO.count());
 	}
 
 	@After
 	public void after() {
-		before();
 	}
 
 	/**
 	 * Create
 	 */
 	@Test
+	@Transactional
+	@Rollback(true)
 	public final void t01_TestCreateTeacher() {
 		// We create a new object in the datastore
 		Enseignant teacher1 = new EnseignantNode("Pr. John Doe", "jdoe");
@@ -100,6 +98,8 @@ public class PersonDAOTest extends TestCase {
 	 * RetrieveByLogin
 	 */
 	@Test
+	@Transactional
+	@Rollback(true)
 	public final void t02_TestRetrieveByLogin() {
 		// We create a new object in the datastore
 		Personne person1 = new PersonneNode("Grégoire Colbert", "gcolbert");
