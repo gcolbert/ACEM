@@ -30,9 +30,9 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.ProfessionalTrainingRepository;
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * 
  */
 @Repository("professionalTrainingDAO")
-public class ProfessionalTrainingDAO implements DAO<Long, FormationProfessionnelle> {
+public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> {
 
 	/**
 	 * For serialization.
@@ -70,31 +70,31 @@ public class ProfessionalTrainingDAO implements DAO<Long, FormationProfessionnel
 	}
 
 	@Override
-	public FormationProfessionnelle create(FormationProfessionnelle entity) {
-		return repository.save((FormationProfessionnelleNode) entity);
+	public ProfessionalTraining create(ProfessionalTraining entity) {
+		return repository.save((ProfessionalTrainingNode) entity);
 	}
 
 	@Override
-	public FormationProfessionnelle retrieveById(Long id) {
+	public ProfessionalTraining retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<FormationProfessionnelle> retrieveByName(String name) {
-		Iterable<FormationProfessionnelleNode> nodes = repository.findByName(name);
-		Collection<FormationProfessionnelle> entities = new HashSet<FormationProfessionnelle>();
-		for (FormationProfessionnelleNode node : nodes) {
+	public Collection<ProfessionalTraining> retrieveByName(String name) {
+		Iterable<ProfessionalTrainingNode> nodes = repository.findByName(name);
+		Collection<ProfessionalTraining> entities = new HashSet<ProfessionalTraining>();
+		for (ProfessionalTrainingNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<FormationProfessionnelle> retrieveAll() {
-		Iterable<FormationProfessionnelleNode> endResults = repository.findAll();
-		Collection<FormationProfessionnelle> collection = new HashSet<FormationProfessionnelle>();
+	public Collection<ProfessionalTraining> retrieveAll() {
+		Iterable<ProfessionalTrainingNode> endResults = repository.findAll();
+		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();
 		if (endResults.iterator() != null) {
-			Iterator<FormationProfessionnelleNode> iterator = endResults.iterator();
+			Iterator<ProfessionalTrainingNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -103,13 +103,13 @@ public class ProfessionalTrainingDAO implements DAO<Long, FormationProfessionnel
 	}
 
 	@Override
-	public FormationProfessionnelle update(FormationProfessionnelle entity) {
-		return repository.save((FormationProfessionnelleNode) entity);
+	public ProfessionalTraining update(ProfessionalTraining entity) {
+		return repository.save((ProfessionalTrainingNode) entity);
 	}
 
 	@Override
-	public void delete(FormationProfessionnelle entity) {
-		repository.delete((FormationProfessionnelleNode) entity);
+	public void delete(ProfessionalTraining entity) {
+		repository.delete((ProfessionalTrainingNode) entity);
 	}
 
 	@Override
@@ -134,11 +134,11 @@ public class ProfessionalTrainingDAO implements DAO<Long, FormationProfessionnel
 		return collection;
 	}
 	
-	public Collection<FormationProfessionnelle> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<FormationProfessionnelleNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<FormationProfessionnelle> collection = new HashSet<FormationProfessionnelle>();
+	public Collection<ProfessionalTraining> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<ProfessionalTrainingNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();
 		if (endResults.iterator() != null) {
-			Iterator<FormationProfessionnelleNode> iterator = endResults.iterator();
+			Iterator<ProfessionalTrainingNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}

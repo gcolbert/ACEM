@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.rouge.neo4j.TeachingDepartmentRepository;
-import eu.ueb.acem.domain.beans.rouge.Composante;
-import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
 
 /**
  * @author Grégoire Colbert
@@ -39,7 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
  * 
  */
 @Repository("teachingDepartmentDAO")
-public class TeachingDepartmentDAO implements DAO<Long, Composante> {
+public class TeachingDepartmentDAO implements DAO<Long, TeachingDepartment> {
 
 	/**
 	 * For serialization.
@@ -68,31 +68,31 @@ public class TeachingDepartmentDAO implements DAO<Long, Composante> {
 	}
 
 	@Override
-	public Composante create(Composante entity) {
-		return repository.save((ComposanteNode) entity);
+	public TeachingDepartment create(TeachingDepartment entity) {
+		return repository.save((TeachingDepartmentNode) entity);
 	}
 
 	@Override
-	public Composante retrieveById(Long id) {
+	public TeachingDepartment retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Composante> retrieveByName(String name) {
-		Iterable<ComposanteNode> nodes = repository.findByName(name);
-		Collection<Composante> entities = new HashSet<Composante>();
-		for (ComposanteNode node : nodes) {
+	public Collection<TeachingDepartment> retrieveByName(String name) {
+		Iterable<TeachingDepartmentNode> nodes = repository.findByName(name);
+		Collection<TeachingDepartment> entities = new HashSet<TeachingDepartment>();
+		for (TeachingDepartmentNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<Composante> retrieveAll() {
-		Iterable<ComposanteNode> endResults = repository.findAll();
-		Collection<Composante> collection = new HashSet<Composante>();
+	public Collection<TeachingDepartment> retrieveAll() {
+		Iterable<TeachingDepartmentNode> endResults = repository.findAll();
+		Collection<TeachingDepartment> collection = new HashSet<TeachingDepartment>();
 		if (endResults.iterator() != null) {
-			Iterator<ComposanteNode> iterator = endResults.iterator();
+			Iterator<TeachingDepartmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -101,13 +101,13 @@ public class TeachingDepartmentDAO implements DAO<Long, Composante> {
 	}
 
 	@Override
-	public Composante update(Composante entity) {
-		return repository.save((ComposanteNode) entity);
+	public TeachingDepartment update(TeachingDepartment entity) {
+		return repository.save((TeachingDepartmentNode) entity);
 	}
 
 	@Override
-	public void delete(Composante entity) {
-		repository.delete((ComposanteNode) entity);
+	public void delete(TeachingDepartment entity) {
+		repository.delete((TeachingDepartmentNode) entity);
 	}
 
 	@Override

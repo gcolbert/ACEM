@@ -24,7 +24,7 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
@@ -32,7 +32,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * @since 2013-11-20
  * 
  */
-public interface SoftwareRepository extends GenericRepository<ApplicatifNode> {
+public interface SoftwareRepository extends GenericRepository<SoftwareNode> {
 
 	@Query(value = "MATCH (n:Software) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
@@ -41,6 +41,6 @@ public interface SoftwareRepository extends GenericRepository<ApplicatifNode> {
 	Set<ResourceCategoryNode> getCategories();
 
 	@Query(value = "MATCH (n:Software)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
-	Set<ApplicatifNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
+	Set<SoftwareNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 	
 }

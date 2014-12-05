@@ -42,11 +42,11 @@ import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
 import eu.ueb.acem.dal.jaune.SoftwareDAO;
 import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
 import eu.ueb.acem.dal.jaune.UseModeDAO;
-import eu.ueb.acem.domain.beans.jaune.Applicatif;
-import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.Software;
+import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
@@ -103,20 +103,20 @@ public class ResourceDAOTest extends TestCase {
 		ResourceCategory learningManagementSystem = new ResourceCategoryNode("Learning Management System", "A superb tool", null);
 		learningManagementSystem = resourceCategoryDAO.create(learningManagementSystem);
 		
-		Applicatif moodle = new ApplicatifNode("Moodle", null);
+		Software moodle = new SoftwareNode("Moodle", null);
 		moodle = softwareDAO.create(moodle);
 
 		moodle.addCategory(learningManagementSystem);
 		moodle = softwareDAO.update(moodle);
 		learningManagementSystem = resourceCategoryDAO.update(learningManagementSystem);
 		
-		Applicatif moodleBis = softwareDAO.retrieveById(moodle.getId());
+		Software moodleBis = softwareDAO.retrieveById(moodle.getId());
 		ResourceCategory learningManagementSystemBis = resourceCategoryDAO.retrieveById(learningManagementSystem.getId());
 
 		assertTrue(learningManagementSystemBis.getResources().contains(moodleBis));
 		assertTrue(moodleBis.getCategories().contains(learningManagementSystemBis));
 		
-		Collection<Applicatif> softwares = softwareDAO.retrieveAllWithCategory(learningManagementSystemBis);
+		Collection<Software> softwares = softwareDAO.retrieveAllWithCategory(learningManagementSystemBis);
 		assertTrue(softwares.contains(moodleBis));
 	}
 
@@ -127,10 +127,10 @@ public class ResourceDAOTest extends TestCase {
 	@Transactional
 	@Rollback(true)
 	public final void t02_TestAssociateSoftwareAndDocumentation() {
-		Applicatif software = new ApplicatifNode("Moodle", null);
+		Software software = new SoftwareNode("Moodle", null);
 		software = softwareDAO.create(software);
 
-		DocumentationApplicatif softwareDocumentation = new DocumentationApplicatifNode("Tutorial for Moodle", null);
+		SoftwareDocumentation softwareDocumentation = new SoftwareDocumentationNode("Tutorial for Moodle", null);
 		softwareDocumentation = softwareDocumentationDAO.create(softwareDocumentation);
 
 		software.addDocumentation(softwareDocumentation);
@@ -138,10 +138,10 @@ public class ResourceDAOTest extends TestCase {
 		software = softwareDAO.update(software);
 		softwareDocumentation = softwareDocumentationDAO.update(softwareDocumentation);
 
-		Applicatif softwareBis = softwareDAO.retrieveById(software.getId());
+		Software softwareBis = softwareDAO.retrieveById(software.getId());
 		assertEquals(new Long(1), new Long(softwareBis.getDocumentations().size()));
 
-		DocumentationApplicatif softwareDocumentationBis = softwareDocumentationDAO.retrieveById(softwareDocumentation
+		SoftwareDocumentation softwareDocumentationBis = softwareDocumentationDAO.retrieveById(softwareDocumentation
 				.getId());
 		assertTrue(softwareBis.getDocumentations().contains(softwareDocumentationBis));
 

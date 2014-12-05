@@ -25,8 +25,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.jaune.Equipement;
-import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -44,7 +44,7 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 
 	private static final Logger logger = LoggerFactory.getLogger(EquipmentViewBean.class);
 	
-	private Equipement equipment;
+	private Equipment equipment;
 
 	private Long id;
 
@@ -64,33 +64,33 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
-	public EquipmentViewBean(Equipement equipment) {
+	public EquipmentViewBean(Equipment equipment) {
 		this();
 		setEquipment(equipment);
 	}
 
 	@Override
-	public Equipement getDomainBean() {
+	public Equipment getDomainBean() {
 		return equipment;
 	}
 	
 	@Override
 	public void setDomainBean(Ressource resource) {
-		setEquipment((Equipement) resource);
+		setEquipment((Equipment) resource);
 	}
 
-	public Equipement getEquipment() {
+	public Equipment getEquipment() {
 		return equipment;
 	}
 
-	public void setEquipment(Equipement equipment) {
+	public void setEquipment(Equipment equipment) {
 		this.equipment = equipment;
 		setId(equipment.getId());
 		setName(equipment.getName());
 		setIconFileName(equipment.getIconFileName());
 		setDescription(equipment.getDescription());
 
-		for (ModaliteUtilisation useMode : equipment.getUseModes()) {
+		for (UseMode useMode : equipment.getUseModes()) {
 			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
 			useModeViewBeans.add(new UseModeViewBean(useMode));
 		}

@@ -23,7 +23,7 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.rouge.Communaute;
+import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -41,7 +41,7 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CommunityViewBean.class);
 
-	private Communaute community;
+	private Community community;
 
 	private Long id;
 
@@ -54,7 +54,7 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 	public CommunityViewBean() {
 	}
 
-	public CommunityViewBean(Communaute community) {
+	public CommunityViewBean(Community community) {
 		this();
 		setCommunity(community);
 	}
@@ -66,14 +66,14 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 
 	@Override
 	public void setDomainBean(Organisation organisation) {
-		setCommunity((Communaute) organisation);
+		setCommunity((Community) organisation);
 	}
 
-	public Communaute getCommunity() {
+	public Community getCommunity() {
 		return community;
 	}
 
-	public void setCommunity(Communaute community) {
+	public void setCommunity(Community community) {
 		this.community = community;
 		setId(community.getId());
 		setName(community.getName());

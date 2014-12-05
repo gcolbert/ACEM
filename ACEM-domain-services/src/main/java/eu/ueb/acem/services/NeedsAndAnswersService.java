@@ -20,11 +20,11 @@ package eu.ueb.acem.services;
 
 import java.util.Collection;
 
-import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
-import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 
 /**
  * @author Grégoire Colbert
@@ -37,13 +37,13 @@ public interface NeedsAndAnswersService {
 	
 	Long countNeeds();
 
-	Besoin createNeed(String name);
+	PedagogicalNeed createNeed(String name);
 
-	Collection<Besoin> retrieveNeedsAtRoot();
+	Collection<PedagogicalNeed> retrieveNeedsAtRoot();
 
-	Besoin retrieveNeed(Long id);
+	PedagogicalNeed retrieveNeed(Long id);
 
-	Besoin updateNeed(Besoin need);
+	PedagogicalNeed updateNeed(PedagogicalNeed need);
 
 	Boolean deleteNeed(Long id);
 
@@ -51,29 +51,29 @@ public interface NeedsAndAnswersService {
 
 	Long countAnswers();
 
-	Reponse createAnswer(String name);
+	PedagogicalAnswer createAnswer(String name);
 
-	Reponse retrieveAnswer(Long id);
+	PedagogicalAnswer retrieveAnswer(Long id);
 
-	Reponse updateAnswer(Reponse answer);
+	PedagogicalAnswer updateAnswer(PedagogicalAnswer answer);
 
 	Boolean deleteAnswer(Long id);
 
 	void deleteAllAnswers();
 
-	Besoin createOrUpdateNeed(Long id, String name, Long idParent);
+	PedagogicalNeed createOrUpdateNeed(Long id, String name, Long idParent);
 
 	void saveNeedName(Long id, String newName);
 	
 	void changeParentOfNeed(Long id, Long idNewParent);
 
-	Reponse createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
+	PedagogicalAnswer createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
 
 	void saveAnswerName(Long id, String newName);
 
-	Collection<Scenario> getScenariosRelatedToAnswer(Long id);
+	Collection<PedagogicalScenario> getScenariosRelatedToAnswer(Long id);
 
-	Collection<Service> getAdministrativeDepartmentsRelatedToAnswer(Long id);
+	Collection<AdministrativeDepartment> getAdministrativeDepartmentsRelatedToAnswer(Long id);
 
 	Collection<Ressource> getResourcesRelatedToAnswer(Long id);
 

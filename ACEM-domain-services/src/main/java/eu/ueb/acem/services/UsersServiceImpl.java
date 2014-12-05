@@ -30,10 +30,10 @@ import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.gris.PersonDAO;
 import eu.ueb.acem.dal.gris.TeacherDAO;
-import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -60,11 +60,11 @@ public class UsersServiceImpl implements UsersService {
 	private ResourcesService resourcesService;
 	
 	private Set<Personne> persons;
-	private Set<Enseignant> teachers;
+	private Set<Teacher> teachers;
 
 	public UsersServiceImpl() {
 		persons = new HashSet<Personne>();
-		teachers = new HashSet<Enseignant>();
+		teachers = new HashSet<Teacher>();
 	}
 
 	@PostConstruct
@@ -94,7 +94,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Personne createPerson(String name, String login) {
-		return personDAO.create(new PersonneNode(name, login));
+		return personDAO.create(new PersonNode(name, login));
 	}
 
 	@Override
@@ -121,22 +121,22 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Set<Enseignant> getTeachers() {
+	public Set<Teacher> getTeachers() {
 		return teachers;
 	}
 	
 	@Override
-	public Enseignant createTeacher(String name, String login) {
-		return teacherDAO.create(new EnseignantNode(name, login));
+	public Teacher createTeacher(String name, String login) {
+		return teacherDAO.create(new TeacherNode(name, login));
 	}
 
 	@Override
-	public Enseignant retrieveTeacher(Long id) {
+	public Teacher retrieveTeacher(Long id) {
 		return teacherDAO.retrieveById(id);
 	}
 
 	@Override
-	public Enseignant updateTeacher(Enseignant teacher) {
+	public Teacher updateTeacher(Teacher teacher) {
 		return teacherDAO.update(teacher);
 	}
 
@@ -233,7 +233,7 @@ public class UsersServiceImpl implements UsersService {
 		logger.info("addFavoriteResourceForTeacher");
 		Boolean success = false;
 		if (personDAO.exists(idTeacher)) {
-			Enseignant teacher = teacherDAO.retrieveById(idTeacher);
+			Teacher teacher = teacherDAO.retrieveById(idTeacher);
 			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory);
 			if (toolCategory != null) {
 				teacher.addFavoriteToolCategory(toolCategory);
@@ -249,7 +249,7 @@ public class UsersServiceImpl implements UsersService {
 		logger.info("removeFavoriteResourceForTeacher");
 		Boolean success = false;
 		if (personDAO.exists(idTeacher)) {
-			Enseignant teacher = teacherDAO.retrieveById(idTeacher);
+			Teacher teacher = teacherDAO.retrieveById(idTeacher);
 			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory);
 			if (toolCategory != null) {
 				teacher.removeFavoriteToolCategory(toolCategory);

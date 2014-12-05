@@ -30,7 +30,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.neo4j.RessourceNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -57,13 +57,13 @@ public abstract class OrganisationNode implements Organisation {
 
 	private String iconFileName;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "possessesResource", direction = OUTGOING)
+	@RelatedTo(elementClass = ResourceNode.class, type = "possessesResource", direction = OUTGOING)
 	@Fetch
-	private Set<RessourceNode> possessedResources;
+	private Set<ResourceNode> possessedResources;
 
-	@RelatedTo(elementClass = RessourceNode.class, type = "accessesResource", direction = OUTGOING)
+	@RelatedTo(elementClass = ResourceNode.class, type = "accessesResource", direction = OUTGOING)
 	@Fetch
-	private Set<RessourceNode> viewedResources;
+	private Set<ResourceNode> viewedResources;
 
 	public OrganisationNode() {
 		/*-
@@ -123,7 +123,7 @@ public abstract class OrganisationNode implements Organisation {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setPossessedResources(Set<? extends Ressource> possessedResources) {
-		this.possessedResources = (Set<RessourceNode>) possessedResources;
+		this.possessedResources = (Set<ResourceNode>) possessedResources;
 	}
 
 	@Override
@@ -134,13 +134,13 @@ public abstract class OrganisationNode implements Organisation {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setViewedResources(Set<? extends Ressource> viewedResources) {
-		this.viewedResources = (Set<RessourceNode>) viewedResources;
+		this.viewedResources = (Set<ResourceNode>) viewedResources;
 	}
 
 	@Override
 	public void addViewedResource(Ressource resource) {
 		if (!viewedResources.contains(resource)) {
-			viewedResources.add((RessourceNode) resource);
+			viewedResources.add((ResourceNode) resource);
 		}
 		if (!resource.getOrganisationsHavingAccessToResource().contains(this)) {
 			resource.addOrganisationHavingAccessToResource(this);

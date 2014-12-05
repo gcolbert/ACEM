@@ -30,9 +30,9 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.SoftwareDocumentationRepository;
-import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
+import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * 
  */
 @Repository("softwareDocumentationDAO")
-public class SoftwareDocumentationDAO implements DAO<Long, DocumentationApplicatif> {
+public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation> {
 
 	/**
 	 * For serialization.
@@ -70,31 +70,31 @@ public class SoftwareDocumentationDAO implements DAO<Long, DocumentationApplicat
 	}
 
 	@Override
-	public DocumentationApplicatif create(DocumentationApplicatif entity) {
-		return repository.save((DocumentationApplicatifNode) entity);
+	public SoftwareDocumentation create(SoftwareDocumentation entity) {
+		return repository.save((SoftwareDocumentationNode) entity);
 	}
 
 	@Override
-	public DocumentationApplicatif retrieveById(Long id) {
+	public SoftwareDocumentation retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<DocumentationApplicatif> retrieveByName(String name) {
-		Iterable<DocumentationApplicatifNode> softwareNodes = repository.findByName(name);
-		Collection<DocumentationApplicatif> softwares = new HashSet<DocumentationApplicatif>();
-		for (DocumentationApplicatif software : softwareNodes) {
+	public Collection<SoftwareDocumentation> retrieveByName(String name) {
+		Iterable<SoftwareDocumentationNode> softwareNodes = repository.findByName(name);
+		Collection<SoftwareDocumentation> softwares = new HashSet<SoftwareDocumentation>();
+		for (SoftwareDocumentation software : softwareNodes) {
 			softwares.add(software);
 		}
 		return softwares;
 	}
 
 	@Override
-	public Collection<DocumentationApplicatif> retrieveAll() {
-		Iterable<DocumentationApplicatifNode> endResults = repository.findAll();
-		Collection<DocumentationApplicatif> collection = new HashSet<DocumentationApplicatif>();
+	public Collection<SoftwareDocumentation> retrieveAll() {
+		Iterable<SoftwareDocumentationNode> endResults = repository.findAll();
+		Collection<SoftwareDocumentation> collection = new HashSet<SoftwareDocumentation>();
 		if (endResults.iterator() != null) {
-			Iterator<DocumentationApplicatifNode> iterator = endResults.iterator();
+			Iterator<SoftwareDocumentationNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -103,13 +103,13 @@ public class SoftwareDocumentationDAO implements DAO<Long, DocumentationApplicat
 	}
 
 	@Override
-	public DocumentationApplicatif update(DocumentationApplicatif entity) {
-		return repository.save((DocumentationApplicatifNode) entity);
+	public SoftwareDocumentation update(SoftwareDocumentation entity) {
+		return repository.save((SoftwareDocumentationNode) entity);
 	}
 
 	@Override
-	public void delete(DocumentationApplicatif entity) {
-		repository.delete((DocumentationApplicatifNode) entity);
+	public void delete(SoftwareDocumentation entity) {
+		repository.delete((SoftwareDocumentationNode) entity);
 	}
 
 	@Override
@@ -134,11 +134,11 @@ public class SoftwareDocumentationDAO implements DAO<Long, DocumentationApplicat
 		return collection;
 	}
 
-	public Collection<DocumentationApplicatif> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<DocumentationApplicatifNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<DocumentationApplicatif> collection = new HashSet<DocumentationApplicatif>();
+	public Collection<SoftwareDocumentation> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<SoftwareDocumentationNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<SoftwareDocumentation> collection = new HashSet<SoftwareDocumentation>();
 		if (endResults.iterator() != null) {
-			Iterator<DocumentationApplicatifNode> iterator = endResults.iterator();
+			Iterator<SoftwareDocumentationNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}

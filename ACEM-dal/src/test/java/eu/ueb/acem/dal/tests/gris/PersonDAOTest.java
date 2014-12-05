@@ -35,10 +35,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.gris.PersonDAO;
 import eu.ueb.acem.dal.gris.TeacherDAO;
-import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
 
 /**
  * @author Grégoire Colbert
@@ -81,7 +81,7 @@ public class PersonDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t01_TestCreateTeacher() {
 		// We create a new object in the datastore
-		Enseignant teacher1 = new EnseignantNode("Pr. John Doe", "jdoe");
+		Teacher teacher1 = new TeacherNode("Pr. John Doe", "jdoe");
 
 		// We create our object
 		teacher1 = teacherDAO.create(teacher1);
@@ -102,7 +102,7 @@ public class PersonDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t02_TestRetrieveByLogin() {
 		// We create a new object in the datastore
-		Personne person1 = new PersonneNode("Grégoire Colbert", "gcolbert");
+		Personne person1 = new PersonNode("Grégoire Colbert", "gcolbert");
 		person1.setAdministrator(true);
 
 		// We save our object

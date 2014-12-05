@@ -25,8 +25,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.jaune.Applicatif;
-import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
+import eu.ueb.acem.domain.beans.jaune.Software;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -44,7 +44,7 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 
 	private static final Logger logger = LoggerFactory.getLogger(SoftwareViewBean.class);
 
-	private Applicatif software;
+	private Software software;
 
 	private Long id;
 
@@ -64,33 +64,33 @@ public class SoftwareViewBean implements ResourceViewBean, Serializable, Compara
 		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
-	public SoftwareViewBean(Applicatif software) {
+	public SoftwareViewBean(Software software) {
 		this();
 		setSoftware(software);
 	}
 
 	@Override
-	public Applicatif getDomainBean() {
+	public Software getDomainBean() {
 		return software;
 	}
 	
 	@Override
 	public void setDomainBean(Ressource resource) {
-		setSoftware((Applicatif) resource);
+		setSoftware((Software) resource);
 	}
 
-	public Applicatif getSoftware() {
+	public Software getSoftware() {
 		return software;
 	}
 
-	public void setSoftware(Applicatif software) {
+	public void setSoftware(Software software) {
 		this.software = software;
 		setId(software.getId());
 		setName(software.getName());
 		setIconFileName(software.getIconFileName());
 		setDescription(software.getDescription());
 
-		for (ModaliteUtilisation useMode : software.getUseModes()) {
+		for (UseMode useMode : software.getUseModes()) {
 			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
 			useModeViewBeans.add(new UseModeViewBean(useMode));
 		}

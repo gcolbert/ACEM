@@ -34,10 +34,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Composante;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
-import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -125,10 +125,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 	public void initOrganisationsController() {
 		logger.debug("initOrganisationsController");
 		try {
-			Collection<Communaute> communities = organisationsService.retrieveAllCommunities();
+			Collection<Community> communities = organisationsService.retrieveAllCommunities();
 			logger.debug("found {} communities", communities.size());
 			communityViewBeans.getTableEntries().clear();
-			for (Communaute community : communities) {
+			for (Community community : communities) {
 				logger.debug("community = {}", community.getName());
 				CommunityViewBean communityViewBean = new CommunityViewBean(community);
 				communityViewBeans.getTableEntries().add(communityViewBean);
@@ -136,10 +136,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 			}
 			communityViewBeans.sort();
 
-			Collection<Etablissement> institutions = organisationsService.retrieveAllInstitutions();
+			Collection<Institution> institutions = organisationsService.retrieveAllInstitutions();
 			logger.debug("found {} institutions", institutions.size());
 			institutionViewBeans.getTableEntries().clear();
-			for (Etablissement institution : institutions) {
+			for (Institution institution : institutions) {
 				logger.debug("institution = {}", institution.getName());
 				InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
 				institutionViewBeans.getTableEntries().add(institutionViewBean);
@@ -147,10 +147,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 			}
 			institutionViewBeans.sort();
 
-			Collection<Service> administrativeDepartments = organisationsService.retrieveAllAdministrativeDepartments();
+			Collection<AdministrativeDepartment> administrativeDepartments = organisationsService.retrieveAllAdministrativeDepartments();
 			logger.debug("found {} administrative departments", administrativeDepartments.size());
 			administrativeDepartmentViewBeans.getTableEntries().clear();
-			for (Service administrativeDepartment : administrativeDepartments) {
+			for (AdministrativeDepartment administrativeDepartment : administrativeDepartments) {
 				logger.debug("administrative department = {}", administrativeDepartment.getName());
 				AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
 						administrativeDepartment);
@@ -159,10 +159,10 @@ public class OrganisationsController extends AbstractContextAwareController {
 			}
 			administrativeDepartmentViewBeans.sort();
 
-			Collection<Composante> teachingDepartments = organisationsService.retrieveAllTeachingDepartments();
+			Collection<TeachingDepartment> teachingDepartments = organisationsService.retrieveAllTeachingDepartments();
 			logger.debug("found {} teaching departments", teachingDepartments.size());
 			teachingDepartmentViewBeans.getTableEntries().clear();
-			for (Composante teachingDepartment : teachingDepartments) {
+			for (TeachingDepartment teachingDepartment : teachingDepartments) {
 				logger.debug("teaching department = {}", teachingDepartment.getName());
 				TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(
 						teachingDepartment);
@@ -346,7 +346,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(communityViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
-			for (Communaute communityAssociatedWithSelectedInstitution : ((InstitutionViewBean) getCurrentOrganisationViewBean())
+			for (Community communityAssociatedWithSelectedInstitution : ((InstitutionViewBean) getCurrentOrganisationViewBean())
 					.getInstitution().getCommunities()) {
 				for (CommunityViewBean communityViewBean : communityViewBeans.getTableEntries()) {
 					if (communityAssociatedWithSelectedInstitution.getId().equals(communityViewBean.getId())) {
@@ -365,7 +365,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 			pickListBean.getPickListEntities().getSource().addAll(institutionViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
 			if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
-				for (Etablissement institution : ((CommunityViewBean) getCurrentOrganisationViewBean()).getCommunity()
+				for (Institution institution : ((CommunityViewBean) getCurrentOrganisationViewBean()).getCommunity()
 						.getInstitutions()) {
 					for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
 						if (institution.getId().equals(institutionViewBean.getId())) {
@@ -376,7 +376,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 				}
 			}
 			else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
-				for (Etablissement institution : ((AdministrativeDepartmentViewBean) getCurrentOrganisationViewBean())
+				for (Institution institution : ((AdministrativeDepartmentViewBean) getCurrentOrganisationViewBean())
 						.getAdministrativeDepartment().getInstitutions()) {
 					for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
 						if (institution.getId().equals(institutionViewBean.getId())) {
@@ -387,7 +387,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 				}
 			}
 			else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
-				for (Etablissement institution : ((TeachingDepartmentViewBean) getCurrentOrganisationViewBean())
+				for (Institution institution : ((TeachingDepartmentViewBean) getCurrentOrganisationViewBean())
 						.getTeachingDepartment().getInstitutions()) {
 					for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
 						if (institution.getId().equals(institutionViewBean.getId())) {
@@ -406,7 +406,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(administrativeDepartmentViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
-			for (Service administrativeDepartmentAssociatedWithSelectedInstitution : ((InstitutionViewBean) getCurrentOrganisationViewBean())
+			for (AdministrativeDepartment administrativeDepartmentAssociatedWithSelectedInstitution : ((InstitutionViewBean) getCurrentOrganisationViewBean())
 					.getInstitution().getAdministrativeDepartments()) {
 				for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
 						.getTableEntries()) {
@@ -426,7 +426,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(teachingDepartmentViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
-			for (Composante teachingDepartmentAssociatedWithSelectedInstitution : ((InstitutionViewBean) getCurrentOrganisationViewBean())
+			for (TeachingDepartment teachingDepartmentAssociatedWithSelectedInstitution : ((InstitutionViewBean) getCurrentOrganisationViewBean())
 					.getInstitution().getTeachingDepartments()) {
 				for (TeachingDepartmentViewBean teachingDepartmentViewBean : teachingDepartmentViewBeans
 						.getTableEntries()) {
@@ -442,7 +442,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	public void onCreateCommunity(String name, String shortname, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
-		Communaute community = organisationsService.createCommunity(name, shortname, iconFileName);
+		Community community = organisationsService.createCommunity(name, shortname, iconFileName);
 		CommunityViewBean communityViewBean = new CommunityViewBean(community);
 		communityViewBeans.getTableEntries().add(communityViewBean);
 		communityViewBeans.sort();
@@ -451,7 +451,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	public void onCreateInstitution(String name, String shortname, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateInstitution", name);
-		Etablissement institution = organisationsService.createInstitution(name, shortname, iconFileName);
+		Institution institution = organisationsService.createInstitution(name, shortname, iconFileName);
 		InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
 		institutionViewBeans.getTableEntries().add(institutionViewBean);
 		institutionViewBeans.sort();
@@ -460,7 +460,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	public void onCreateTeachingDepartment(String name, String shortname, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateTeachingDepartment", name);
-		Composante teachingDepartment = organisationsService.createTeachingDepartment(name, shortname, iconFileName);
+		TeachingDepartment teachingDepartment = organisationsService.createTeachingDepartment(name, shortname, iconFileName);
 		TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
 		teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
 		teachingDepartmentViewBeans.sort();
@@ -469,7 +469,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	public void onCreateAdministrativeDepartment(String name, String shortname, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateAdministrativeDepartment", name);
-		Service administrativeDepartment = organisationsService.createAdministrativeDepartment(name, shortname, iconFileName);
+		AdministrativeDepartment administrativeDepartment = organisationsService.createAdministrativeDepartment(name, shortname, iconFileName);
 		AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
 				administrativeDepartment);
 		administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);

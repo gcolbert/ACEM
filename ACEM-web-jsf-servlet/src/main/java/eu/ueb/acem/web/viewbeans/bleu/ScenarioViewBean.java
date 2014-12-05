@@ -30,9 +30,9 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.web.viewbeans.Pickable;
 //import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
@@ -55,7 +55,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
 	//private List<PersonViewBean> authorViewBeans;
 
-	private Scenario scenario;
+	private PedagogicalScenario scenario;
 
 	private Long id;
 	private String name;
@@ -71,7 +71,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		//authorViewBeans = new ArrayList<PersonViewBean>();
 	}
 
-	public ScenarioViewBean(Scenario scenario) {
+	public ScenarioViewBean(PedagogicalScenario scenario) {
 		this();
 		setScenario(scenario);
 	}
@@ -86,11 +86,11 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	}
 	*/
 
-	public Scenario getScenario() {
+	public PedagogicalScenario getScenario() {
 		return scenario;
 	}
 
-	public void setScenario(Scenario scenario) {
+	public void setScenario(PedagogicalScenario scenario) {
 		this.scenario = scenario;
 		setId(scenario.getId());
 		this.name = scenario.getName();
@@ -102,7 +102,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		setModificationDate(scenario.getModificationDate());
 
 		pedagogicalActivityViewBeans.clear();
-		for (ActivitePedagogique pedagogicalActivity : scenario.getPedagogicalActivities()) {
+		for (PedagogicalActivity pedagogicalActivity : scenario.getPedagogicalActivities()) {
 			pedagogicalActivityViewBeans.add(new PedagogicalActivityViewBean(pedagogicalActivity));
 		}
 		Collections.sort(pedagogicalActivityViewBeans);
@@ -147,9 +147,9 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		return authors;
 	}
 
-	public void setAuthors(Set<? extends Enseignant> authors) {
+	public void setAuthors(Set<? extends Teacher> authors) {
 		String authorsAsString = "";
-		for (Enseignant author : authors) {
+		for (Teacher author : authors) {
 			authorsAsString = authorsAsString.concat(author.getName().concat(", "));
 		}
 		if (authorsAsString.length() > 0) {

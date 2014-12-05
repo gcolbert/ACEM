@@ -31,8 +31,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalNeedRepository;
-import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 
 /**
  * @author Grégoire Colbert
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
  * 
  */
 @Repository("pedagogicalNeedDAO")
-public class PedagogicalNeedDAO implements DAO<Long, Besoin> {
+public class PedagogicalNeedDAO implements DAO<Long, PedagogicalNeed> {
 
 	/**
 	 * For serialization.
@@ -69,31 +69,31 @@ public class PedagogicalNeedDAO implements DAO<Long, Besoin> {
 	}
 
 	@Override
-	public Besoin create(Besoin need) {
-		return repository.save((BesoinNode) need);
+	public PedagogicalNeed create(PedagogicalNeed need) {
+		return repository.save((PedagogicalNeedNode) need);
 	}
 
 	@Override
-	public Besoin retrieveById(Long id) {
+	public PedagogicalNeed retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Besoin> retrieveByName(String name) {
-		Iterable<BesoinNode> needNodes = repository.findByName(name);
-		Collection<Besoin> needs = new HashSet<Besoin>();
-		for (Besoin need : needNodes) {
+	public Collection<PedagogicalNeed> retrieveByName(String name) {
+		Iterable<PedagogicalNeedNode> needNodes = repository.findByName(name);
+		Collection<PedagogicalNeed> needs = new HashSet<PedagogicalNeed>();
+		for (PedagogicalNeed need : needNodes) {
 			needs.add(need);
 		}
 		return needs;
 	}
 
 	@Override
-	public Collection<Besoin> retrieveAll() {
-		Iterable<BesoinNode> endResults = repository.findAll();
-		Collection<Besoin> collection = new HashSet<Besoin>();
+	public Collection<PedagogicalNeed> retrieveAll() {
+		Iterable<PedagogicalNeedNode> endResults = repository.findAll();
+		Collection<PedagogicalNeed> collection = new HashSet<PedagogicalNeed>();
 		if (endResults.iterator() != null) {
-			Iterator<BesoinNode> iterator = endResults.iterator();
+			Iterator<PedagogicalNeedNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -102,13 +102,13 @@ public class PedagogicalNeedDAO implements DAO<Long, Besoin> {
 	}
 
 	@Override
-	public Besoin update(Besoin need) {
-		return repository.save((BesoinNode) need);
+	public PedagogicalNeed update(PedagogicalNeed need) {
+		return repository.save((PedagogicalNeedNode) need);
 	}
 
 	@Override
-	public void delete(Besoin need) {
-		repository.delete((BesoinNode) need);
+	public void delete(PedagogicalNeed need) {
+		repository.delete((PedagogicalNeedNode) need);
 	}
 
 	@Override
@@ -121,10 +121,10 @@ public class PedagogicalNeedDAO implements DAO<Long, Besoin> {
 		return repository.count();
 	}
 
-	public Set<Besoin> retrieveNeedsAtRoot() {
-		Set<BesoinNode> nodes = repository.findRoots();
-		Set<Besoin> needs = new HashSet<Besoin>();
-		for (BesoinNode need : nodes) {
+	public Set<PedagogicalNeed> retrieveNeedsAtRoot() {
+		Set<PedagogicalNeedNode> nodes = repository.findRoots();
+		Set<PedagogicalNeed> needs = new HashSet<PedagogicalNeed>();
+		for (PedagogicalNeedNode need : nodes) {
 			needs.add(need);
 		}
 		return needs;

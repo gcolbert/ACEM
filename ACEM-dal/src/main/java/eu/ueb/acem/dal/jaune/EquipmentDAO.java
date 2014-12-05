@@ -30,9 +30,9 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.EquipmentRepository;
-import eu.ueb.acem.domain.beans.jaune.Equipement;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * 
  */
 @Repository("equipmentDAO")
-public class EquipmentDAO implements DAO<Long, Equipement> {
+public class EquipmentDAO implements DAO<Long, Equipment> {
 
 	/**
 	 * For serialization.
@@ -70,31 +70,31 @@ public class EquipmentDAO implements DAO<Long, Equipement> {
 	}
 
 	@Override
-	public Equipement create(Equipement entity) {
-		return repository.save((EquipementNode) entity);
+	public Equipment create(Equipment entity) {
+		return repository.save((EquipmentNode) entity);
 	}
 
 	@Override
-	public Equipement retrieveById(Long id) {
+	public Equipment retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Equipement> retrieveByName(String name) {
-		Iterable<EquipementNode> stationaryEquipmentNodes = repository.findByName(name);
-		Collection<Equipement> stationaryEquipments = new HashSet<Equipement>();
-		for (Equipement software : stationaryEquipmentNodes) {
+	public Collection<Equipment> retrieveByName(String name) {
+		Iterable<EquipmentNode> stationaryEquipmentNodes = repository.findByName(name);
+		Collection<Equipment> stationaryEquipments = new HashSet<Equipment>();
+		for (Equipment software : stationaryEquipmentNodes) {
 			stationaryEquipments.add(software);
 		}
 		return stationaryEquipments;
 	}
 
 	@Override
-	public Collection<Equipement> retrieveAll() {
-		Iterable<EquipementNode> endResults = repository.findAll();
-		Collection<Equipement> collection = new HashSet<Equipement>();
+	public Collection<Equipment> retrieveAll() {
+		Iterable<EquipmentNode> endResults = repository.findAll();
+		Collection<Equipment> collection = new HashSet<Equipment>();
 		if (endResults.iterator() != null) {
-			Iterator<EquipementNode> iterator = endResults.iterator();
+			Iterator<EquipmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -103,13 +103,13 @@ public class EquipmentDAO implements DAO<Long, Equipement> {
 	}
 
 	@Override
-	public Equipement update(Equipement entity) {
-		return repository.save((EquipementNode) entity);
+	public Equipment update(Equipment entity) {
+		return repository.save((EquipmentNode) entity);
 	}
 
 	@Override
-	public void delete(Equipement entity) {
-		repository.delete((EquipementNode) entity);
+	public void delete(Equipment entity) {
+		repository.delete((EquipmentNode) entity);
 	}
 
 	@Override
@@ -134,11 +134,11 @@ public class EquipmentDAO implements DAO<Long, Equipement> {
 		return collection;
 	}
 
-	public Collection<Equipement> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<EquipementNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<Equipement> collection = new HashSet<Equipement>();
+	public Collection<Equipment> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<EquipmentNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<Equipment> collection = new HashSet<Equipment>();
 		if (endResults.iterator() != null) {
-			Iterator<EquipementNode> iterator = endResults.iterator();
+			Iterator<EquipmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}

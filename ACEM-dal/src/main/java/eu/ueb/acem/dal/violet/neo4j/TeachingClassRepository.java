@@ -22,14 +22,14 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.violet.neo4j.SeanceDeCoursNode;
+import eu.ueb.acem.domain.beans.violet.neo4j.TeachingClassNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface TeachingClassRepository extends GenericRepository<SeanceDeCoursNode> {
+public interface TeachingClassRepository extends GenericRepository<TeachingClassNode> {
 
 	@Query(value = "MATCH (n:TeachingClass) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);

@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.rouge.neo4j.CommunityRepository;
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
 
 /**
  * @author Grégoire Colbert
@@ -39,7 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
  * 
  */
 @Repository("communityDAO")
-public class CommunityDAO implements DAO<Long, Communaute> {
+public class CommunityDAO implements DAO<Long, Community> {
 
 	/**
 	 * FOr serialization.
@@ -68,31 +68,31 @@ public class CommunityDAO implements DAO<Long, Communaute> {
 	}
 
 	@Override
-	public Communaute create(Communaute entity) {
-		return repository.save((CommunauteNode) entity);
+	public Community create(Community entity) {
+		return repository.save((CommunityNode) entity);
 	}
 
 	@Override
-	public Communaute retrieveById(Long id) {
+	public Community retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Communaute> retrieveByName(String name) {
-		Iterable<CommunauteNode> nodes = repository.findByName(name);
-		Collection<Communaute> entities = new HashSet<Communaute>();
-		for (CommunauteNode node : nodes) {
+	public Collection<Community> retrieveByName(String name) {
+		Iterable<CommunityNode> nodes = repository.findByName(name);
+		Collection<Community> entities = new HashSet<Community>();
+		for (CommunityNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<Communaute> retrieveAll() {
-		Iterable<CommunauteNode> endResults = repository.findAll();
-		Collection<Communaute> collection = new HashSet<Communaute>();
+	public Collection<Community> retrieveAll() {
+		Iterable<CommunityNode> endResults = repository.findAll();
+		Collection<Community> collection = new HashSet<Community>();
 		if (endResults.iterator() != null) {
-			Iterator<CommunauteNode> iterator = endResults.iterator();
+			Iterator<CommunityNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -101,13 +101,13 @@ public class CommunityDAO implements DAO<Long, Communaute> {
 	}
 
 	@Override
-	public Communaute update(Communaute entity) {
-		return repository.save((CommunauteNode) entity);
+	public Community update(Community entity) {
+		return repository.save((CommunityNode) entity);
 	}
 
 	@Override
-	public void delete(Communaute entity) {
-		repository.delete((CommunauteNode) entity);
+	public void delete(Community entity) {
+		repository.delete((CommunityNode) entity);
 	}
 
 	@Override

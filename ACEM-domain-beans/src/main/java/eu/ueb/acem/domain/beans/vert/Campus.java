@@ -23,7 +23,7 @@ package eu.ueb.acem.domain.beans.vert;
  * @since 2013-11-20
  * 
  */
-public interface Campus extends EspacePhysique {
+public interface Campus extends PhysicalSpace {
 
 	Double getLatitude();
 

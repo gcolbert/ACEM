@@ -24,7 +24,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
@@ -39,7 +39,7 @@ public class TeacherViewBean extends PersonViewBean {
 
 	private static final Logger logger = LoggerFactory.getLogger(TeacherViewBean.class);
 	
-	private Enseignant domainBean;
+	private Teacher domainBean;
 	
 	private List<ToolCategoryViewBean> favoriteToolCategoryViewBeans;
 	
@@ -48,16 +48,16 @@ public class TeacherViewBean extends PersonViewBean {
 		favoriteToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
 	
-	public TeacherViewBean(Enseignant teacher) {
+	public TeacherViewBean(Teacher teacher) {
 		this();
 		this.setDomainBean(teacher);
 	}
 
-	public Enseignant getDomainBean() {
+	public Teacher getDomainBean() {
 		return domainBean;
 	}
 
-	public void setDomainBean(Enseignant teacher) {
+	public void setDomainBean(Teacher teacher) {
 		super.setDomainBean(teacher);
 		this.domainBean = teacher;
 		for (ResourceCategory toolCategory : teacher.getFavoriteToolCategories()) {

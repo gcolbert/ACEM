@@ -24,22 +24,22 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface PedagogicalNeedRepository extends GenericRepository<BesoinNode> {
+public interface PedagogicalNeedRepository extends GenericRepository<PedagogicalNeedNode> {
 
 	@Query(value = "MATCH (n:PedagogicalNeed) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 	
 	@Query(value = "match (n:PedagogicalNeed) where not (n)-[:hasParentNeed]->() return n")
-	Set<BesoinNode> findRoots();
+	Set<PedagogicalNeedNode> findRoots();
 	
 	@Query(value = "match (n:PedagogicalNeed) where n.name=({name}) return n")
-	Iterable<BesoinNode> findByName(@Param("name") String name);
+	Iterable<PedagogicalNeedNode> findByName(@Param("name") String name);
 
 }

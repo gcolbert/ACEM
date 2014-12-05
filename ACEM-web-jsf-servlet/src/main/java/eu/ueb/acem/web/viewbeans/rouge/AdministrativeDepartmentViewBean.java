@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.services.ScenariosServiceImpl;
 
 /**
@@ -40,7 +40,7 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, S
 	
 	private static final long serialVersionUID = -5647852694643666952L;
 
-	private Service administrativeDepartment;
+	private AdministrativeDepartment administrativeDepartment;
 
 	private Long id;
 	
@@ -53,7 +53,7 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, S
 	public AdministrativeDepartmentViewBean() {
 	}
 
-	public AdministrativeDepartmentViewBean(Service service) {
+	public AdministrativeDepartmentViewBean(AdministrativeDepartment service) {
 		this();
 		setAdministrativeDepartment(service);
 	}
@@ -65,14 +65,14 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, S
 
 	@Override
 	public void setDomainBean(Organisation organisation) {
-		setAdministrativeDepartment((Service) organisation);
+		setAdministrativeDepartment((AdministrativeDepartment) organisation);
 	}
 
-	public Service getAdministrativeDepartment() {
+	public AdministrativeDepartment getAdministrativeDepartment() {
 		return administrativeDepartment;
 	}
 
-	public void setAdministrativeDepartment(Service administrativeDepartment) {
+	public void setAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
 		this.administrativeDepartment = administrativeDepartment;
 		setId(administrativeDepartment.getId());
 		setName(administrativeDepartment.getName());

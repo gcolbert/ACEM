@@ -31,10 +31,10 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 
@@ -59,20 +59,20 @@ public class ResourceCategoryNode implements ResourceCategory {
 	
 	private String description;
 
-	@RelatedTo(elementClass = ReponseNode.class, type = "answeredUsingResourceCategory", direction = INCOMING)
+	@RelatedTo(elementClass = PedagogicalAnswerNode.class, type = "answeredUsingResourceCategory", direction = INCOMING)
 	@Fetch
-	private Set<ReponseNode> answers;
+	private Set<PedagogicalAnswerNode> answers;
 	
-	@RelatedTo(elementClass = RessourceNode.class, type = "categoryContains", direction = OUTGOING)
+	@RelatedTo(elementClass = ResourceNode.class, type = "categoryContains", direction = OUTGOING)
 	@Fetch
-	private Set<RessourceNode> resources;
+	private Set<ResourceNode> resources;
 	
-	@RelatedTo(elementClass = ActivitePedagogiqueNode.class, type="activityRequiringResourceFromCategory", direction = INCOMING)
+	@RelatedTo(elementClass = PedagogicalActivityNode.class, type="activityRequiringResourceFromCategory", direction = INCOMING)
 	@Fetch
-	private Set<ActivitePedagogiqueNode> pedagogicalActivities;
+	private Set<PedagogicalActivityNode> pedagogicalActivities;
 
 	public ResourceCategoryNode() {
-		resources = new HashSet<RessourceNode>();
+		resources = new HashSet<ResourceNode>();
 	}
 
 	public ResourceCategoryNode(String name, String description, String iconFileName) {
@@ -107,14 +107,14 @@ public class ResourceCategoryNode implements ResourceCategory {
 	}		
 	
 	@Override
-	public Set<? extends Reponse> getAnswers() {
+	public Set<? extends PedagogicalAnswer> getAnswers() {
 		return answers;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setAnswers(Set<? extends Reponse> answers) {
-		this.answers = (Set<ReponseNode>) answers;
+	public void setAnswers(Set<? extends PedagogicalAnswer> answers) {
+		this.answers = (Set<PedagogicalAnswerNode>) answers;
 	}
 	
 	@Override
@@ -125,13 +125,13 @@ public class ResourceCategoryNode implements ResourceCategory {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setResources(Set<? extends Ressource> resources) {
-		this.resources = (Set<RessourceNode>) resources;
+		this.resources = (Set<ResourceNode>) resources;
 	}
 
 	@Override
 	public void addResource(Ressource resource) {
 		if (! resources.contains(resource)) {
-			resources.add((RessourceNode) resource);
+			resources.add((ResourceNode) resource);
 		}
 		if (! resource.getCategories().contains(this)) {
 			resource.addCategory(this);
@@ -149,9 +149,9 @@ public class ResourceCategoryNode implements ResourceCategory {
 	}
 
 	@Override
-	public void addAnswer(Reponse answer) {
+	public void addAnswer(PedagogicalAnswer answer) {
 		if (! answers.contains(answer)) {
-			answers.add((ReponseNode) answer);
+			answers.add((PedagogicalAnswerNode) answer);
 		}
 		if (! answer.getResourceCategories().contains(this)) {
 			answer.addResourceCategory(this);
@@ -159,7 +159,7 @@ public class ResourceCategoryNode implements ResourceCategory {
 	}
 
 	@Override
-	public void removeAnswer(Reponse answer) {
+	public void removeAnswer(PedagogicalAnswer answer) {
 		if (answers.contains(answer)) {
 			answers.remove(answer);
 		}
@@ -179,14 +179,14 @@ public class ResourceCategoryNode implements ResourceCategory {
 	}
 
 	@Override
-	public Set<? extends ActivitePedagogique> getPedagogicalActivities() {
+	public Set<? extends PedagogicalActivity> getPedagogicalActivities() {
 		return pedagogicalActivities;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities) {
-		this.pedagogicalActivities = (Set<ActivitePedagogiqueNode>)pedagogicalActivities;
+	public void setPedagogicalActivities(Set<? extends PedagogicalActivity> pedagogicalActivities) {
+		this.pedagogicalActivities = (Set<PedagogicalActivityNode>)pedagogicalActivities;
 	}
 	
 	@Override

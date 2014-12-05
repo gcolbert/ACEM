@@ -52,9 +52,9 @@ public interface Ressource extends Serializable {
 
 	void removeCategory(ResourceCategory category);
 
-	Set<? extends ModaliteUtilisation> getUseModes();
+	Set<? extends UseMode> getUseModes();
 
-	void setUseModes(Set<? extends ModaliteUtilisation> useModes);
+	void setUseModes(Set<? extends UseMode> useModes);
 
 	Organisation getOrganisationPossessingResource();
 

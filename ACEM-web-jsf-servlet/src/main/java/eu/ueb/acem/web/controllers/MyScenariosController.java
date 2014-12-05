@@ -32,9 +32,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
@@ -82,10 +82,10 @@ public class MyScenariosController extends AbstractContextAwareController {
 		try {
 			logger.info("initScenariosController, currentUser={}", getCurrentUser());
 
-			Collection<Scenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(getCurrentUser());
+			Collection<PedagogicalScenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(getCurrentUser());
 			logger.info("found {} scenarios for author {}", scenariosOfCurrentUser.size(), getCurrentUser().getName());
 			scenarioViewBeans.getTableEntries().clear();
-			for (Scenario scenario : scenariosOfCurrentUser) {
+			for (PedagogicalScenario scenario : scenariosOfCurrentUser) {
 				logger.info("scenario = {}", scenario.getName());
 				scenarioViewBeans.getTableEntries().add(new ScenarioViewBean(scenario));
 			}
@@ -102,9 +102,9 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 	
 	public void createScenario(String name, String objective) {
-		Scenario scenario;
+		PedagogicalScenario scenario;
 		try {
-			scenario = scenariosService.createScenario((Enseignant)getCurrentUser(), name, objective);
+			scenario = scenariosService.createScenario((Teacher)getCurrentUser(), name, objective);
 			if (scenario != null) {
 				ScenarioViewBean scenarioViewBean = new ScenarioViewBean(scenario);
 				scenarioViewBeans.getTableEntries().add(scenarioViewBean);
@@ -218,7 +218,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 	
 	public void onCreateActivity() {
-		ActivitePedagogique pedagogicalActivity = scenariosService
+		PedagogicalActivity pedagogicalActivity = scenariosService
 				.createPedagogicalActivity(msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.NEW_ACTIVITY_DEFAULT_NAME",null,getCurrentUserLocale()));
 		selectedScenarioViewBean.getScenario().addPedagogicalActivity(pedagogicalActivity);
 		pedagogicalActivity = scenariosService.updatePedagogicalActivity(pedagogicalActivity);

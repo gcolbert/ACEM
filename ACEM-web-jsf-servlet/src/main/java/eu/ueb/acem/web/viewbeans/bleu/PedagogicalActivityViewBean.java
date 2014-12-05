@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.web.viewbeans.Pickable;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 
@@ -35,7 +35,7 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 
 	private static final long serialVersionUID = 8190209757734229700L;
 
-	private ActivitePedagogique pedagogicalActivity;
+	private PedagogicalActivity pedagogicalActivity;
 
 	private Long id;
 	private Long positionInScenario;
@@ -45,16 +45,16 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 	private String duration;
 	private List<ResourceViewBean> resources;
 
-	public PedagogicalActivityViewBean(ActivitePedagogique pedagogicalActivity) {
+	public PedagogicalActivityViewBean(PedagogicalActivity pedagogicalActivity) {
 		setPedagogicalActivity(pedagogicalActivity);
 		resources = new ArrayList<ResourceViewBean>();
 	}
 
-	public ActivitePedagogique getPedagogicalActivity() {
+	public PedagogicalActivity getPedagogicalActivity() {
 		return pedagogicalActivity;
 	}
 
-	public void setPedagogicalActivity(ActivitePedagogique pedagogicalActivity) {
+	public void setPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
 		this.pedagogicalActivity = pedagogicalActivity;
 		setPositionInScenario(pedagogicalActivity.getPositionInScenario());
 		setName(pedagogicalActivity.getName());

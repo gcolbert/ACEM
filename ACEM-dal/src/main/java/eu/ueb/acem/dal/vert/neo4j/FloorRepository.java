@@ -22,14 +22,14 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.vert.neo4j.EtageNode;
+import eu.ueb.acem.domain.beans.vert.neo4j.FloorNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface FloorRepository extends GenericRepository<EtageNode> {
+public interface FloorRepository extends GenericRepository<FloorNode> {
 
 	@Query(value = "MATCH (n:Floor) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);

@@ -21,8 +21,8 @@ package eu.ueb.acem.domain.beans.jaune;
 import java.io.Serializable;
 import java.util.Set;
 
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 
 /**
  * @author Grégoire Colbert
@@ -49,21 +49,21 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 
 	void removeResource(Ressource ressource);
 
-	Set<? extends Reponse> getAnswers();
+	Set<? extends PedagogicalAnswer> getAnswers();
 
-	void setAnswers(Set<? extends Reponse> answers);
+	void setAnswers(Set<? extends PedagogicalAnswer> answers);
 
-	void addAnswer(Reponse answer);
+	void addAnswer(PedagogicalAnswer answer);
 	
-	void removeAnswer(Reponse answer);
+	void removeAnswer(PedagogicalAnswer answer);
 
 	String getIconFileName();
 	
 	void setIconFileName(String iconFileName);
 	
-	Set<? extends ActivitePedagogique> getPedagogicalActivities();
+	Set<? extends PedagogicalActivity> getPedagogicalActivities();
 
-	void setPedagogicalActivities(Set<? extends ActivitePedagogique> pedagogicalActivities);
+	void setPedagogicalActivities(Set<? extends PedagogicalActivity> pedagogicalActivities);
 	
 	int compareTo(ResourceCategory o);
 

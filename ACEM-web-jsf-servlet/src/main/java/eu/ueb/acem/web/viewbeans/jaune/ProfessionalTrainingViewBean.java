@@ -25,8 +25,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
-import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
+import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -41,7 +41,7 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 
 	private static final Logger logger = LoggerFactory.getLogger(ProfessionalTrainingViewBean.class);
 
-	private FormationProfessionnelle professionalTraining;
+	private ProfessionalTraining professionalTraining;
 
 	private Long id;
 
@@ -61,33 +61,33 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
-	public ProfessionalTrainingViewBean(FormationProfessionnelle professionalTraining) {
+	public ProfessionalTrainingViewBean(ProfessionalTraining professionalTraining) {
 		this();
 		setProfessionalTraining(professionalTraining);
 	}
 
 	@Override
-	public FormationProfessionnelle getDomainBean() {
+	public ProfessionalTraining getDomainBean() {
 		return professionalTraining;
 	}
 	
 	@Override
 	public void setDomainBean(Ressource resource) {
-		setProfessionalTraining((FormationProfessionnelle) resource);
+		setProfessionalTraining((ProfessionalTraining) resource);
 	}
 
-	public FormationProfessionnelle getProfessionalTraining() {
+	public ProfessionalTraining getProfessionalTraining() {
 		return professionalTraining;
 	}
 
-	public void setProfessionalTraining(FormationProfessionnelle professionalTraining) {
+	public void setProfessionalTraining(ProfessionalTraining professionalTraining) {
 		this.professionalTraining = professionalTraining;
 		setId(professionalTraining.getId());
 		setName(professionalTraining.getName());
 		setIconFileName(professionalTraining.getIconFileName());
 		setDescription(professionalTraining.getDescription());
 
-		for (ModaliteUtilisation useMode : professionalTraining.getUseModes()) {
+		for (UseMode useMode : professionalTraining.getUseModes()) {
 			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
 			useModeViewBeans.add(new UseModeViewBean(useMode));
 		}

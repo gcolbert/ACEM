@@ -28,11 +28,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Composante;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
@@ -70,17 +70,17 @@ public class OrganisationViewBeanHandler {
 			logger.info("organisationViewBean not found in organisationViewBeans map, we load it with OrganisationsService.");
 			Organisation organisation = organisationsService.retrieveOrganisation(id);
 			if (organisation != null) {
-				if (organisation instanceof Communaute) {
-					viewBean = new CommunityViewBean((Communaute) organisation);
+				if (organisation instanceof Community) {
+					viewBean = new CommunityViewBean((Community) organisation);
 				}
-				else if (organisation instanceof Etablissement) {
-					viewBean = new InstitutionViewBean((Etablissement) organisation);
+				else if (organisation instanceof Institution) {
+					viewBean = new InstitutionViewBean((Institution) organisation);
 				}
-				else if (organisation instanceof Service) {
-					viewBean = new AdministrativeDepartmentViewBean((Service) organisation);
+				else if (organisation instanceof AdministrativeDepartment) {
+					viewBean = new AdministrativeDepartmentViewBean((AdministrativeDepartment) organisation);
 				}
-				else if (organisation instanceof Composante) {
-					viewBean = new TeachingDepartmentViewBean((Composante) organisation);
+				else if (organisation instanceof TeachingDepartment) {
+					viewBean = new TeachingDepartmentViewBean((TeachingDepartment) organisation);
 				}
 				organisationViewBeans.put(id, viewBean);
 			}

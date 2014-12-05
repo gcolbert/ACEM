@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import eu.ueb.acem.domain.beans.gris.Enseignant;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.Personne;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
@@ -82,8 +82,8 @@ public class SessionController extends AbstractDomainAwareBean {
 		if (currentUserViewBean == null) {
 			try {
 				Personne user = getCurrentUser();
-				if (user instanceof Enseignant) {
-					currentUserViewBean = new TeacherViewBean((Enseignant) user);
+				if (user instanceof Teacher) {
+					currentUserViewBean = new TeacherViewBean((Teacher) user);
 				}
 				else {
 					currentUserViewBean = new PersonViewBean(user);

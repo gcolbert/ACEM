@@ -25,8 +25,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
-import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
+import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -41,7 +41,7 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 
 	private static final Logger logger = LoggerFactory.getLogger(SoftwareDocumentationViewBean.class);
 
-	private DocumentationApplicatif softwareDocumentation;
+	private SoftwareDocumentation softwareDocumentation;
 
 	private Long id;
 
@@ -61,33 +61,33 @@ public class SoftwareDocumentationViewBean implements ResourceViewBean, Serializ
 		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
-	public SoftwareDocumentationViewBean(DocumentationApplicatif softwareDocumentation) {
+	public SoftwareDocumentationViewBean(SoftwareDocumentation softwareDocumentation) {
 		this();
 		setSoftwareDocumentation(softwareDocumentation);
 	}
 
 	@Override
-	public DocumentationApplicatif getDomainBean() {
+	public SoftwareDocumentation getDomainBean() {
 		return softwareDocumentation;
 	}
 	
 	@Override
 	public void setDomainBean(Ressource resource) {
-		setSoftwareDocumentation((DocumentationApplicatif) resource);
+		setSoftwareDocumentation((SoftwareDocumentation) resource);
 	}
 
-	public DocumentationApplicatif getSoftwareDocumentation() {
+	public SoftwareDocumentation getSoftwareDocumentation() {
 		return softwareDocumentation;
 	}
 
-	public void setSoftwareDocumentation(DocumentationApplicatif softwareDocumentation) {
+	public void setSoftwareDocumentation(SoftwareDocumentation softwareDocumentation) {
 		this.softwareDocumentation = softwareDocumentation;
 		setId(softwareDocumentation.getId());
 		setName(softwareDocumentation.getName());
 		setIconFileName(softwareDocumentation.getIconFileName());
 		setDescription(softwareDocumentation.getDescription());
 		
-		for (ModaliteUtilisation useMode : softwareDocumentation.getUseModes()) {
+		for (UseMode useMode : softwareDocumentation.getUseModes()) {
 			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
 			useModeViewBeans.add(new UseModeViewBean(useMode));
 		}

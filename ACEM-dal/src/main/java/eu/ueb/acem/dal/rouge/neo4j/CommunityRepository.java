@@ -22,14 +22,14 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface CommunityRepository extends GenericRepository<CommunauteNode> {
+public interface CommunityRepository extends GenericRepository<CommunityNode> {
 
 	@Query(value = "MATCH (n:Community) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);

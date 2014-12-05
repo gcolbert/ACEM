@@ -34,11 +34,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
-import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
@@ -84,7 +84,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 	private TreeNode selectedNode;
 
-	private Reponse selectedAnswer;
+	private PedagogicalAnswer selectedAnswer;
 
 	@Inject
 	private SortableTableBean<ScenarioViewBean> scenarioViewBeans;
@@ -143,10 +143,10 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		}
 		toolCategoryViewBeans.sort();
 
-		Collection<Service> administrativeDepartments = organisationsService.retrieveAllAdministrativeDepartments();
+		Collection<AdministrativeDepartment> administrativeDepartments = organisationsService.retrieveAllAdministrativeDepartments();
 		logger.info("found {} administrative departments", administrativeDepartments.size());
 		administrativeDepartmentViewBeans.getTableEntries().clear();
-		for (Service administrativeDepartment : administrativeDepartments) {
+		for (AdministrativeDepartment administrativeDepartment : administrativeDepartments) {
 			logger.info("administrative department = {}", administrativeDepartment.getName());
 			AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
 					administrativeDepartment);
@@ -262,7 +262,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	public void associateNeedWithSelectedNode() {
 		logger.info("entering addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
-		Besoin newNeed = needsAndAnswersService.createOrUpdateNeed(null,
+		PedagogicalNeed newNeed = needsAndAnswersService.createOrUpdateNeed(null,
 				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()),
 				((TreeNodeData) selectedNode.getData()).getId());
 
@@ -278,7 +278,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	public void associateAnswerWithSelectedNode() {
 		logger.info("entering associateAnswerToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
-		Reponse newAnswer = needsAndAnswersService.createOrUpdateAnswer(null,
+		PedagogicalAnswer newAnswer = needsAndAnswersService.createOrUpdateAnswer(null,
 				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()),
 				((TreeNodeData) selectedNode.getData()).getId());
 
@@ -332,11 +332,11 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	private void setScenarioViewBeansRelatedToSelectedAnswer() {
 		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
 			logger.info("entering setScenarioViewBeansRelatedToSelectedAnswer");
-			Collection<Scenario> scenarios = needsAndAnswersService
+			Collection<PedagogicalScenario> scenarios = needsAndAnswersService
 					.getScenariosRelatedToAnswer(((TreeNodeData) selectedNode.getData()).getId());
 			logger.info("Found {} scenarios related to selected answer.", scenarios.size());
 			scenarioViewBeans.getTableEntries().clear();
-			for (Scenario scenario : scenarios) {
+			for (PedagogicalScenario scenario : scenarios) {
 				scenarioViewBeans.getTableEntries().add(new ScenarioViewBean(scenario));
 			}
 			logger.info("leaving setScenarioViewBeansRelatedToSelectedAnswer");
@@ -385,7 +385,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(toolCategoryViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
-			Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData())
+			PedagogicalAnswer selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData())
 					.getId()));
 			for (ResourceCategory toolCategoryForSelectedAnswer : selectedAnswer.getResourceCategories()) {
 				for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
@@ -404,9 +404,9 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(administrativeDepartmentViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
-			Reponse selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData())
+			PedagogicalAnswer selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData())
 					.getId()));
-			for (Service administrativeDepartmentForSelectedAnswer : selectedAnswer.getAdministrativeDepartments()) {
+			for (AdministrativeDepartment administrativeDepartmentForSelectedAnswer : selectedAnswer.getAdministrativeDepartments()) {
 				for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
 						.getTableEntries()) {
 					if (administrativeDepartmentForSelectedAnswer.getId().equals(

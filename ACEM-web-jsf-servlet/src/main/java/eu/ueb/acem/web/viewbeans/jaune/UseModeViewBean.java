@@ -23,7 +23,7 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.web.viewbeans.Pickable;
 
 /**
@@ -38,7 +38,7 @@ public class UseModeViewBean implements Serializable, Pickable, Comparable<UseMo
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(UseModeViewBean.class);
 
-	private ModaliteUtilisation useMode;
+	private UseMode useMode;
 	
 	private Long id;
 
@@ -49,7 +49,7 @@ public class UseModeViewBean implements Serializable, Pickable, Comparable<UseMo
 	public UseModeViewBean() {
 	}
 
-	public UseModeViewBean(ModaliteUtilisation useMode) {
+	public UseModeViewBean(UseMode useMode) {
 		this();
 		setUseMode(useMode);
 	}
@@ -81,19 +81,19 @@ public class UseModeViewBean implements Serializable, Pickable, Comparable<UseMo
 		useMode.setDescription(description);
 	}
 	
-	public ModaliteUtilisation getDomainBean() {
+	public UseMode getDomainBean() {
 		return useMode;
 	}
 	
-	public void setDomainBean(ModaliteUtilisation useMode) {
+	public void setDomainBean(UseMode useMode) {
 		setUseMode(useMode);
 	}
 	
-	public ModaliteUtilisation getUseMode() {
+	public UseMode getUseMode() {
 		return useMode;
 	}
 
-	public void setUseMode(ModaliteUtilisation useMode) {
+	public void setUseMode(UseMode useMode) {
 		this.useMode = useMode;
 		setId(useMode.getId());
 		setName(useMode.getName());

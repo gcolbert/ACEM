@@ -39,15 +39,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.bleu.Reponse;
-import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Composante;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
@@ -126,8 +126,8 @@ public class ResourcesController extends AbstractContextAwareController {
 				toolCategoryViewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(tool.getId()));
 			}
 
-			List<Scenario> scenarios = new ArrayList<Scenario>(resourcesService.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryId));
-			for (Scenario scenario : scenarios) {
+			List<PedagogicalScenario> scenarios = new ArrayList<PedagogicalScenario>(resourcesService.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryId));
+			for (PedagogicalScenario scenario : scenarios) {
 				toolCategoryViewBean.addScenarioViewBean(new ScenarioViewBean(scenario));
 			}
 			toolCategoryViewBeans.put(toolCategory.getId(), toolCategoryViewBean);
@@ -303,17 +303,17 @@ public class ResourcesController extends AbstractContextAwareController {
 	private void setAllOrganisationViewBeansAsList() {
 		Collection<Organisation> organisations = organisationsService.retrieveAllOrganisations();
 		for (Organisation organisation : organisations) {
-			if (organisation instanceof Communaute) {
-				allOrganisationViewBeans.add(new CommunityViewBean((Communaute) organisation));
+			if (organisation instanceof Community) {
+				allOrganisationViewBeans.add(new CommunityViewBean((Community) organisation));
 			}
-			else if (organisation instanceof Etablissement) {
-				allOrganisationViewBeans.add(new InstitutionViewBean((Etablissement) organisation));
+			else if (organisation instanceof Institution) {
+				allOrganisationViewBeans.add(new InstitutionViewBean((Institution) organisation));
 			}
-			else if (organisation instanceof Service) {
-				allOrganisationViewBeans.add(new AdministrativeDepartmentViewBean((Service) organisation));
+			else if (organisation instanceof AdministrativeDepartment) {
+				allOrganisationViewBeans.add(new AdministrativeDepartmentViewBean((AdministrativeDepartment) organisation));
 			}
-			else if (organisation instanceof Composante) {
-				allOrganisationViewBeans.add(new TeachingDepartmentViewBean((Composante) organisation));
+			else if (organisation instanceof TeachingDepartment) {
+				allOrganisationViewBeans.add(new TeachingDepartmentViewBean((TeachingDepartment) organisation));
 			}
 		}
 	}
@@ -331,7 +331,7 @@ public class ResourcesController extends AbstractContextAwareController {
 		logger.info("Entering setPedagogicalUsesTreeRoot");
 		pedagogicalUsesTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(null);
 		Set<Long> idsOfLeavesToKeep = new HashSet<Long>();
-		for (Reponse answer : resourceCategory.getAnswers()) {
+		for (PedagogicalAnswer answer : resourceCategory.getAnswers()) {
 			idsOfLeavesToKeep.add(answer.getId());
 		}
 		pedagogicalUsesTreeBean.retainLeavesAndParents(idsOfLeavesToKeep);

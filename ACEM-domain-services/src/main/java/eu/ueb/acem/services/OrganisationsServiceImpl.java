@@ -30,15 +30,15 @@ import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.dal.rouge.CommunityDAO;
 import eu.ueb.acem.dal.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Composante;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
-import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.ComposanteNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 
 /**
  * @author Grégoire Colbert
@@ -83,23 +83,23 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
-	public Communaute createCommunity(String name, String shortname, String iconFileName) {
-		return communityDAO.create(new CommunauteNode(name, shortname, iconFileName));
+	public Community createCommunity(String name, String shortname, String iconFileName) {
+		return communityDAO.create(new CommunityNode(name, shortname, iconFileName));
 	}
 
 	@Override
-	public Etablissement createInstitution(String name, String shortname, String iconFileName) {
-		return institutionDAO.create(new EtablissementNode(name, shortname, iconFileName));
+	public Institution createInstitution(String name, String shortname, String iconFileName) {
+		return institutionDAO.create(new InstitutionNode(name, shortname, iconFileName));
 	}
 
 	@Override
-	public Service createAdministrativeDepartment(String name, String shortname, String iconFileName) {
-		return administrativeDepartmentDAO.create(new ServiceNode(name, shortname, iconFileName));
+	public AdministrativeDepartment createAdministrativeDepartment(String name, String shortname, String iconFileName) {
+		return administrativeDepartmentDAO.create(new AdministrativeDepartmentNode(name, shortname, iconFileName));
 	}
 
 	@Override
-	public Composante createTeachingDepartment(String name, String shortname, String iconFileName) {
-		return teachingDepartmentDAO.create(new ComposanteNode(name, shortname, iconFileName));
+	public TeachingDepartment createTeachingDepartment(String name, String shortname, String iconFileName) {
+		return teachingDepartmentDAO.create(new TeachingDepartmentNode(name, shortname, iconFileName));
 	}
 
 	@Override
@@ -126,22 +126,22 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
-	public Communaute retrieveCommunity(Long id) {
+	public Community retrieveCommunity(Long id) {
 		return communityDAO.retrieveById(id);
 	}
 
 	@Override
-	public Etablissement retrieveInstitution(Long id) {
+	public Institution retrieveInstitution(Long id) {
 		return institutionDAO.retrieveById(id);
 	}
 
 	@Override
-	public Service retrieveAdministrativeDepartment(Long id) {
+	public AdministrativeDepartment retrieveAdministrativeDepartment(Long id) {
 		return administrativeDepartmentDAO.retrieveById(id);
 	}
 
 	@Override
-	public Composante retrieveTeachingDepartment(Long id) {
+	public TeachingDepartment retrieveTeachingDepartment(Long id) {
 		return teachingDepartmentDAO.retrieveById(id);
 	}
 
@@ -156,60 +156,60 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
-	public Collection<Communaute> retrieveAllCommunities() {
+	public Collection<Community> retrieveAllCommunities() {
 		return communityDAO.retrieveAll();
 	}
 
 	@Override
-	public Collection<Etablissement> retrieveAllInstitutions() {
+	public Collection<Institution> retrieveAllInstitutions() {
 		return institutionDAO.retrieveAll();
 	}
 
 	@Override
-	public Collection<Service> retrieveAllAdministrativeDepartments() {
+	public Collection<AdministrativeDepartment> retrieveAllAdministrativeDepartments() {
 		return administrativeDepartmentDAO.retrieveAll();
 	}
 
 	@Override
-	public Collection<Composante> retrieveAllTeachingDepartments() {
+	public Collection<TeachingDepartment> retrieveAllTeachingDepartments() {
 		return teachingDepartmentDAO.retrieveAll();
 	}
 
 	@Override
 	public Organisation updateOrganisation(Organisation organisation) {
 		Organisation updatedOrganisation = null;
-		if (organisation instanceof Communaute) {
-			updatedOrganisation = updateCommunity((Communaute) organisation);
+		if (organisation instanceof Community) {
+			updatedOrganisation = updateCommunity((Community) organisation);
 		}
-		else if (organisation instanceof Etablissement) {
-			updatedOrganisation = updateInstitution((Etablissement) organisation);
+		else if (organisation instanceof Institution) {
+			updatedOrganisation = updateInstitution((Institution) organisation);
 		}
-		else if (organisation instanceof Service) {
-			updatedOrganisation = updateAdministrativeDepartment((Service) organisation);
+		else if (organisation instanceof AdministrativeDepartment) {
+			updatedOrganisation = updateAdministrativeDepartment((AdministrativeDepartment) organisation);
 		}
-		else if (organisation instanceof Composante) {
-			updatedOrganisation = updateTeachingDepartment((Composante) organisation);
+		else if (organisation instanceof TeachingDepartment) {
+			updatedOrganisation = updateTeachingDepartment((TeachingDepartment) organisation);
 		}
 		return updatedOrganisation;
 	}
 
 	@Override
-	public Communaute updateCommunity(Communaute community) {
+	public Community updateCommunity(Community community) {
 		return communityDAO.update(community);
 	}
 
 	@Override
-	public Etablissement updateInstitution(Etablissement institution) {
+	public Institution updateInstitution(Institution institution) {
 		return institutionDAO.update(institution);
 	}
 
 	@Override
-	public Service updateAdministrativeDepartment(Service administrativeDepartment) {
+	public AdministrativeDepartment updateAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
 		return administrativeDepartmentDAO.update(administrativeDepartment);
 	}
 
 	@Override
-	public Composante updateTeachingDepartment(Composante teachingDepartment) {
+	public TeachingDepartment updateTeachingDepartment(TeachingDepartment teachingDepartment) {
 		return teachingDepartmentDAO.update(teachingDepartment);
 	}
 
@@ -286,8 +286,8 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Boolean associateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
 		logger.info("in associateCommunityAndInstitution");
-		Communaute community = communityDAO.retrieveById(idCommunity);
-		Etablissement institution = institutionDAO.retrieveById(idInstitution);
+		Community community = communityDAO.retrieveById(idCommunity);
+		Institution institution = institutionDAO.retrieveById(idInstitution);
 		community.addInstitution(institution);
 		community = communityDAO.update(community);
 		institution = institutionDAO.update(institution);
@@ -297,8 +297,8 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Boolean dissociateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
 		logger.info("in dissociateCommunityAndInstitution");
-		Communaute community = communityDAO.retrieveById(idCommunity);
-		Etablissement institution = institutionDAO.retrieveById(idInstitution);
+		Community community = communityDAO.retrieveById(idCommunity);
+		Institution institution = institutionDAO.retrieveById(idInstitution);
 		community.removeInstitution(institution);
 		community = communityDAO.update(community);
 		institution = institutionDAO.update(institution);
@@ -308,8 +308,8 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Boolean associateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment) {
 		logger.info("in associateInstitutionAndAdministrativeDepartment");
-		Etablissement institution = institutionDAO.retrieveById(idInstitution);
-		Service administrativeDepartment = administrativeDepartmentDAO.retrieveById(idAdministrativeDepartment);
+		Institution institution = institutionDAO.retrieveById(idInstitution);
+		AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(idAdministrativeDepartment);
 		institution.addAdministrativeDepartment(administrativeDepartment);
 		institution = institutionDAO.update(institution);
 		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
@@ -319,8 +319,8 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Boolean dissociateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment) {
 		logger.info("in dissociateInstitutionAndAdministrativeDepartment");
-		Etablissement institution = institutionDAO.retrieveById(idInstitution);
-		Service administrativeDepartment = administrativeDepartmentDAO.retrieveById(idAdministrativeDepartment);
+		Institution institution = institutionDAO.retrieveById(idInstitution);
+		AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(idAdministrativeDepartment);
 		institution.removeAdministrativeDepartment(administrativeDepartment);
 		institution = institutionDAO.update(institution);
 		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
@@ -330,8 +330,8 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Boolean associateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment) {
 		logger.info("in associateInstitutionAndTeachingDepartment");
-		Etablissement institution = institutionDAO.retrieveById(idInstitution);
-		Composante teachingDepartment = teachingDepartmentDAO.retrieveById(idTeachingDepartment);
+		Institution institution = institutionDAO.retrieveById(idInstitution);
+		TeachingDepartment teachingDepartment = teachingDepartmentDAO.retrieveById(idTeachingDepartment);
 		institution.addTeachingDepartment(teachingDepartment);
 		institution = institutionDAO.update(institution);
 		teachingDepartment = teachingDepartmentDAO.update(teachingDepartment);
@@ -341,8 +341,8 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Boolean dissociateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment) {
 		logger.info("in dissociateInstitutionAndTeachingDepartment");
-		Etablissement institution = institutionDAO.retrieveById(idInstitution);
-		Composante teachingDepartment = teachingDepartmentDAO.retrieveById(idTeachingDepartment);
+		Institution institution = institutionDAO.retrieveById(idInstitution);
+		TeachingDepartment teachingDepartment = teachingDepartmentDAO.retrieveById(idTeachingDepartment);
 		institution.removeTeachingDepartment(teachingDepartment);
 		institution = institutionDAO.update(institution);
 		teachingDepartment = teachingDepartmentDAO.update(teachingDepartment);
