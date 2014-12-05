@@ -47,8 +47,8 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 	 */
 	private static final long serialVersionUID = -5662533287772515643L;
 
-//	@Indexed
-//	private String name;
+	@Indexed
+	private String name;
 
 	@RelatedTo(elementClass = EtablissementNode.class, type = "teachingDepartmentPartOfInstitution", direction = OUTGOING)
 	@Fetch
@@ -65,6 +65,16 @@ public class ComposanteNode extends OrganisationNode implements Composante {
 		this.setIconFileName(iconFileName);
 	}
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public Set<? extends Etablissement> getInstitutions() {
 		return institutions;

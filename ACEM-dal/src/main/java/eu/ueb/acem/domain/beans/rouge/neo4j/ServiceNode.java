@@ -58,8 +58,8 @@ public class ServiceNode extends OrganisationNode implements Service {
 	 */
 	private static final long serialVersionUID = 3548058788461596320L;
 
-//	@Indexed
-//	private String name;
+	@Indexed
+	private String name;
 
 	@RelatedTo(elementClass = EtablissementNode.class, type = "administrativeDepartmentPartOfInstitution", direction = OUTGOING)
 	@Fetch
@@ -80,6 +80,16 @@ public class ServiceNode extends OrganisationNode implements Service {
 		this.setIconFileName(iconFileName);
 	}
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public Set<? extends Etablissement> getInstitutions() {
 		return institutions;

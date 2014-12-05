@@ -50,8 +50,8 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 	 */
 	private static final long serialVersionUID = 4218521116992739925L;
 
-//	@Indexed
-//	private String name;
+	@Indexed
+	private String name;
 
 	@RelatedTo(elementClass = CommunauteNode.class, type = "institutionMemberOfCommunity", direction = OUTGOING)
 	@Fetch
@@ -78,6 +78,16 @@ public class EtablissementNode extends OrganisationNode implements Etablissement
 		this.setIconFileName(iconFileName);
 	}
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public Set<? extends Communaute> getCommunities() {
 		return communities;
