@@ -28,12 +28,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.jaune.Applicatif;
-import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
-import eu.ueb.acem.domain.beans.jaune.Equipement;
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
+import eu.ueb.acem.domain.beans.jaune.Software;
+import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
+import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
@@ -74,22 +74,22 @@ class ResourceViewBeanHandler {
 		}
 		else {
 			logger.info("resourceViewBean not found in resourceViewBeans map, we load it with ResourcesService.");
-			Ressource tool = resourcesService.retrieveResource(id);
+			Resource tool = resourcesService.retrieveResource(id);
 			if (tool != null) {
-				if (tool instanceof Applicatif) {
-					viewBean = new SoftwareViewBean((Applicatif) tool);
+				if (tool instanceof Software) {
+					viewBean = new SoftwareViewBean((Software) tool);
 				}
-				else if (tool instanceof RessourcePedagogiqueEtDocumentaire) {
-					viewBean = new DocumentaryAndPedagogicalResourceViewBean((RessourcePedagogiqueEtDocumentaire) tool);
+				else if (tool instanceof PedagogicalAndDocumentaryResource) {
+					viewBean = new DocumentaryAndPedagogicalResourceViewBean((PedagogicalAndDocumentaryResource) tool);
 				}
-				else if (tool instanceof Equipement) {
-					viewBean = new EquipmentViewBean((Equipement) tool);
+				else if (tool instanceof Equipment) {
+					viewBean = new EquipmentViewBean((Equipment) tool);
 				}
-				else if (tool instanceof DocumentationApplicatif) {
-					viewBean = new SoftwareDocumentationViewBean((DocumentationApplicatif) tool);
+				else if (tool instanceof SoftwareDocumentation) {
+					viewBean = new SoftwareDocumentationViewBean((SoftwareDocumentation) tool);
 				}
-				else if (tool instanceof FormationProfessionnelle) {
-					viewBean = new ProfessionalTrainingViewBean((FormationProfessionnelle) tool);
+				else if (tool instanceof ProfessionalTraining) {
+					viewBean = new ProfessionalTrainingViewBean((ProfessionalTraining) tool);
 				}
 
 				viewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanHandler

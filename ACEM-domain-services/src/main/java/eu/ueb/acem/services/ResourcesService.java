@@ -20,9 +20,9 @@ package eu.ueb.acem.services;
 
 import java.util.Collection;
 
-import eu.ueb.acem.domain.beans.bleu.Scenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.Resource;
 
 /**
  * @author Grégoire Colbert
@@ -41,25 +41,25 @@ public interface ResourcesService {
 
 	Collection<ResourceCategory> retrieveAllCategories();
 
-	Collection<Scenario> retrieveScenariosAssociatedWithResourceCategory(Long id);
+	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(Long id);
 
-	Ressource createResource(Long toolCategoryId, Long supportServiceId, String resourceType, String name, String iconFileName);
+	Resource createResource(Long toolCategoryId, Long supportServiceId, String resourceType, String name, String iconFileName);
 
-	Ressource updateResource(Ressource resource);
+	Resource updateResource(Resource resource);
 
-	Ressource retrieveResource(Long id);
+	Resource retrieveResource(Long id);
 
 	Boolean deleteResource(Long id);
 	
-	Collection<? extends Ressource> retrieveSoftwaresWithCategory(ResourceCategory category);
+	Collection<? extends Resource> retrieveSoftwaresWithCategory(ResourceCategory category);
 
-	Collection<? extends Ressource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
+	Collection<? extends Resource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
 
-	Collection<? extends Ressource> retrieveEquipmentWithCategory(ResourceCategory category);
+	Collection<? extends Resource> retrieveEquipmentWithCategory(ResourceCategory category);
 
-	Collection<? extends Ressource> retrieveProfessionalTrainingsWithCategory(ResourceCategory category);
+	Collection<? extends Resource> retrieveProfessionalTrainingsWithCategory(ResourceCategory category);
 
-	Collection<? extends Ressource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category);
+	Collection<? extends Resource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category);
 
 	void saveResourceName(String resourceType, Long id, String label);
 

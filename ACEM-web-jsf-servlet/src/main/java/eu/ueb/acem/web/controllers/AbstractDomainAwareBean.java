@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.services.DomainService;
 
 /**
@@ -89,7 +89,7 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 	/**
 	 * @return the current user.
 	 */
-	protected Personne getCurrentUser() throws Exception {
+	protected Person getCurrentUser() throws Exception {
 		// this method should be overriden
 		return null;
 	}
@@ -101,7 +101,7 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 		if (logger.isDebugEnabled()) {
 			logger.debug(this.getClass().getName() + ".getCurrentUserLocale()");
 		}
-		Personne currentUser = null;
+		Person currentUser = null;
 		try {
 			currentUser = getCurrentUser();
 		} catch (Exception e) {

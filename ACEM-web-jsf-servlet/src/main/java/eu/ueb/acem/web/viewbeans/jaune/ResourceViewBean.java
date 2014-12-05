@@ -20,7 +20,7 @@ package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.util.List;
 
-import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.web.viewbeans.Pickable;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -35,9 +35,9 @@ public interface ResourceViewBean extends Pickable {
 
 	String getName();
 
-	Ressource getDomainBean();
+	Resource getDomainBean();
 
-	void setDomainBean(Ressource resource);
+	void setDomainBean(Resource resource);
 
 	String getDescription();
 

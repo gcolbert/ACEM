@@ -20,11 +20,11 @@ package eu.ueb.acem.services;
 
 import java.util.Collection;
 
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Composante;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.Service;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 
 /**
  * @author Grégoire Colbert
@@ -41,43 +41,43 @@ public interface OrganisationsService {
 
 	Long countTeachingDepartments();
 
-	Communaute createCommunity(String name, String shortname, String iconFileName);
+	Community createCommunity(String name, String shortname, String iconFileName);
 
-	Etablissement createInstitution(String name, String shortname, String iconFileName);
+	Institution createInstitution(String name, String shortname, String iconFileName);
 
-	Service createAdministrativeDepartment(String name, String shortname, String iconFileName);
+	AdministrativeDepartment createAdministrativeDepartment(String name, String shortname, String iconFileName);
 
-	Composante createTeachingDepartment(String name, String shortname, String iconFileName);
+	TeachingDepartment createTeachingDepartment(String name, String shortname, String iconFileName);
 
 	Organisation retrieveOrganisation(Long idOrganisation);
 
-	Communaute retrieveCommunity(Long id);
+	Community retrieveCommunity(Long id);
 
-	Etablissement retrieveInstitution(Long id);
+	Institution retrieveInstitution(Long id);
 
-	Service retrieveAdministrativeDepartment(Long id);
+	AdministrativeDepartment retrieveAdministrativeDepartment(Long id);
 
-	Composante retrieveTeachingDepartment(Long id);
+	TeachingDepartment retrieveTeachingDepartment(Long id);
 
 	Collection<Organisation> retrieveAllOrganisations();
 	
-	Collection<Communaute> retrieveAllCommunities();
+	Collection<Community> retrieveAllCommunities();
 	
-	Collection<Etablissement> retrieveAllInstitutions();
+	Collection<Institution> retrieveAllInstitutions();
 	
-	Collection<Service> retrieveAllAdministrativeDepartments();
+	Collection<AdministrativeDepartment> retrieveAllAdministrativeDepartments();
 	
-	Collection<Composante> retrieveAllTeachingDepartments();
+	Collection<TeachingDepartment> retrieveAllTeachingDepartments();
 	
 	Organisation updateOrganisation(Organisation organisation);
 
-	Communaute updateCommunity(Communaute community);
+	Community updateCommunity(Community community);
 
-	Etablissement updateInstitution(Etablissement institution);
+	Institution updateInstitution(Institution institution);
 
-	Service updateAdministrativeDepartment(Service administrativeDepartment);
+	AdministrativeDepartment updateAdministrativeDepartment(AdministrativeDepartment administrativeDepartment);
 
-	Composante updateTeachingDepartment(Composante teachingDepartment);
+	TeachingDepartment updateTeachingDepartment(TeachingDepartment teachingDepartment);
 
 	Boolean deleteOrganisation(Long id);
 

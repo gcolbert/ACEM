@@ -24,8 +24,8 @@ import org.slf4j.LoggerFactory;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericDAO;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalNeedRepository;
-import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 
 /**
  * TODO This class is not used for now, because Spring 3 doesn't allow the
@@ -43,7 +43,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.BesoinNode;
  */
 //@Repository("besoinDAOv2") // Uncomment to use this class
 @SuppressWarnings("unused")
-public class PedagogicalNeedDAOv2 extends GenericDAO<Long, Besoin, BesoinNode> implements DAO<Long, Besoin> {
+public class PedagogicalNeedDAOv2 extends GenericDAO<Long, PedagogicalNeed, PedagogicalNeedNode> implements DAO<Long, PedagogicalNeed> {
 
 	/**
 	 * For serialization.

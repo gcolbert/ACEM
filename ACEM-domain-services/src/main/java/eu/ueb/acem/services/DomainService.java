@@ -20,7 +20,7 @@ package eu.ueb.acem.services;
 
 import java.io.Serializable;
 
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Person;
 
 /**
  * @author Grégoire Colbert
@@ -32,6 +32,6 @@ public interface DomainService extends Serializable {
 	 * @param uid
 	 * @return a user.
 	 */
-	Personne getUser(String uid);
+	Person getUser(String uid);
 
 }

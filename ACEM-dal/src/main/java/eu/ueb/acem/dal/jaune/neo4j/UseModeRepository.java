@@ -22,14 +22,14 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ModaliteUtilisationNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface UseModeRepository extends GenericRepository<ModaliteUtilisationNode> {
+public interface UseModeRepository extends GenericRepository<UseModeNode> {
 
 	@Query(value = "MATCH (n:UseMode) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);

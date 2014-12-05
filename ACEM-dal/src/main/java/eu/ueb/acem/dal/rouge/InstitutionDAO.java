@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.rouge.neo4j.InstitutionRepository;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
-import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
+import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
 
 /**
  * @author Grégoire Colbert
@@ -39,7 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
  * 
  */
 @Repository("institutionDAO")
-public class InstitutionDAO implements DAO<Long, Etablissement> {
+public class InstitutionDAO implements DAO<Long, Institution> {
 
 	/**
 	 * FOr serialization.
@@ -68,31 +68,31 @@ public class InstitutionDAO implements DAO<Long, Etablissement> {
 	}
 
 	@Override
-	public Etablissement create(Etablissement entity) {
-		return repository.save((EtablissementNode) entity);
+	public Institution create(Institution entity) {
+		return repository.save((InstitutionNode) entity);
 	}
 
 	@Override
-	public Etablissement retrieveById(Long id) {
+	public Institution retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Etablissement> retrieveByName(String name) {
-		Iterable<EtablissementNode> nodes = repository.findByName(name);
-		Collection<Etablissement> entities = new HashSet<Etablissement>();
-		for (EtablissementNode node : nodes) {
+	public Collection<Institution> retrieveByName(String name) {
+		Iterable<InstitutionNode> nodes = repository.findByName(name);
+		Collection<Institution> entities = new HashSet<Institution>();
+		for (InstitutionNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<Etablissement> retrieveAll() {
-		Iterable<EtablissementNode> endResults = repository.findAll();
-		Collection<Etablissement> collection = new HashSet<Etablissement>();
+	public Collection<Institution> retrieveAll() {
+		Iterable<InstitutionNode> endResults = repository.findAll();
+		Collection<Institution> collection = new HashSet<Institution>();
 		if (endResults.iterator() != null) {
-			Iterator<EtablissementNode> iterator = endResults.iterator();
+			Iterator<InstitutionNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -101,13 +101,13 @@ public class InstitutionDAO implements DAO<Long, Etablissement> {
 	}
 
 	@Override
-	public Etablissement update(Etablissement entity) {
-		return repository.save((EtablissementNode) entity);
+	public Institution update(Institution entity) {
+		return repository.save((InstitutionNode) entity);
 	}
 
 	@Override
-	public void delete(Etablissement entity) {
-		repository.delete((EtablissementNode) entity);
+	public void delete(Institution entity) {
+		repository.delete((InstitutionNode) entity);
 	}
 
 	@Override

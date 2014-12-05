@@ -30,8 +30,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.bleu.Besoin;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
@@ -90,9 +90,9 @@ class NeedsAndAnswersTreeGenerator {
 		if (singleVisibleTreeRootLabel != null) {
 			treeBean.addVisibleRoot(singleVisibleTreeRootLabel);
 		}
-		Collection<Besoin> needs = needsAndAnswersService.retrieveNeedsAtRoot();
+		Collection<PedagogicalNeed> needs = needsAndAnswersService.retrieveNeedsAtRoot();
 		logger.info("Found {} needs at root of tree.", needs.size());
-		for (Besoin need : needs) {
+		for (PedagogicalNeed need : needs) {
 			logger.info("need = {}", need.getName());
 			TreeNode currentVisibleRoot = null;
 			if (singleVisibleTreeRootLabel != null) {
@@ -115,7 +115,7 @@ class NeedsAndAnswersTreeGenerator {
 				// to an invisible tree if the service returns 0 node)
 				currentVisibleRoot = treeBean.addVisibleRoot(need.getName());
 			}
-			for (Besoin child : need.getChildren()) {
+			for (PedagogicalNeed child : need.getChildren()) {
 				createChild(treeBean, child, currentVisibleRoot);
 			}
 		}
@@ -128,26 +128,26 @@ class NeedsAndAnswersTreeGenerator {
 	/**
 	 * Recursive function to construct Tree
 	 */
-	private void createChild(EditableTreeBean treeBean, Besoin need, TreeNode parentNode) {
+	private void createChild(EditableTreeBean treeBean, PedagogicalNeed need, TreeNode parentNode) {
 		// We create the root node for this branch
 		//TreeNode newNode = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(), need.getName(), "Need"), rootNode);
 		TreeNode newNode = treeBean.addChild(getTreeNodeType_NEED_LEAF(), parentNode, need.getId(), need.getName(), "Need");
 		// We look for children and recursively create them too
 		@SuppressWarnings("unchecked")
-		Collection<Besoin> associatedNeeds = (Collection<Besoin>) need.getChildren();
+		Collection<PedagogicalNeed> associatedNeeds = (Collection<PedagogicalNeed>) need.getChildren();
 		if (associatedNeeds.size() > 0) {
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
-			for (Besoin besoinChild : associatedNeeds) {
+			for (PedagogicalNeed besoinChild : associatedNeeds) {
 				createChild(treeBean, besoinChild, newNode);
 			}
 		}
 
 		@SuppressWarnings("unchecked")
-		Collection<Reponse> answers = (Collection<Reponse>) need.getAnswers();
+		Collection<PedagogicalAnswer> answers = (Collection<PedagogicalAnswer>) need.getAnswers();
 		if (answers.size() > 0) {
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
-			need.setAnswers((Set<Reponse>) answers);
-			for (Reponse answer : answers) {
+			need.setAnswers((Set<PedagogicalAnswer>) answers);
+			for (PedagogicalAnswer answer : answers) {
 				//new DefaultTreeNode(getTreeNodeType_ANSWER_LEAF(), new TreeNodeData(answer.getId(), answer.getName(), "Answer"), newNode);
 				treeBean.addChild(getTreeNodeType_ANSWER_LEAF(), newNode, answer.getId(), answer.getName(), "Answer");
 			}

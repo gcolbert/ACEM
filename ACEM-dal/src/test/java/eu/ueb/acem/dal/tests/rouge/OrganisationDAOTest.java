@@ -37,12 +37,12 @@ import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.dal.rouge.CommunityDAO;
 import eu.ueb.acem.dal.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
-import eu.ueb.acem.domain.beans.rouge.Service;
-import eu.ueb.acem.domain.beans.rouge.neo4j.CommunauteNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.EtablissementNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 
 /**
  * @author Grégoire Colbert
@@ -91,7 +91,7 @@ public class OrganisationDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t01_TestCreateOrganisation() {
 		// We create a new object in the datastore
-		Communaute community = new CommunauteNode("University of California, Los Angeles", "UCLA", null);
+		Community community = new CommunityNode("University of California, Los Angeles", "UCLA", null);
 
 		// We create our object
 		community = communityDAO.create(community);
@@ -113,15 +113,15 @@ public class OrganisationDAOTest extends TestCase {
 	public final void t02_TestAssociateInstitutionWithAdministrativeDepartment() {
 		assertEquals(new Long(0), institutionDAO.count());
 
-		Etablissement institution = new EtablissementNode("University of California, Los Angeles", "UCLA", null);
+		Institution institution = new InstitutionNode("University of California, Los Angeles", "UCLA", null);
 		institution = institutionDAO.create(institution);
 
-		Service administrativeDepartment = new ServiceNode("Department of Health Policy and Management", "HPM", null);
+		AdministrativeDepartment administrativeDepartment = new AdministrativeDepartmentNode("Department of Health Policy and Management", "HPM", null);
 		administrativeDepartment = administrativeDepartmentDAO.create(administrativeDepartment);
 		administrativeDepartment.addInstitution(institution);
 		administrativeDepartmentDAO.update(administrativeDepartment);
 
-		Etablissement institution2 = institutionDAO.retrieveById(institution.getId());
+		Institution institution2 = institutionDAO.retrieveById(institution.getId());
 
 		// There must exactly 1 object in the datastore
 		assertTrue("The administrative department is not associated with the institution", institution2
@@ -136,11 +136,11 @@ public class OrganisationDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t03_TestExists() {
 		// We create a new institution
-		Etablissement institution = new EtablissementNode("Université de Rennes 1", "UR1", null);
+		Institution institution = new InstitutionNode("Université de Rennes 1", "UR1", null);
 		institution = institutionDAO.create(institution);
 
 		// We create a new community
-		Communaute community = new CommunauteNode("Université européenne de Bretagne", "UEB", null);
+		Community community = new CommunityNode("Université européenne de Bretagne", "UEB", null);
 		community = communityDAO.create(community);
 
 		// There must exactly 1 object in the community repository

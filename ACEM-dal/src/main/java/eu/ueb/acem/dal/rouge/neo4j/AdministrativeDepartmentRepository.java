@@ -22,14 +22,14 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface AdministrativeDepartmentRepository extends GenericRepository<ServiceNode> {
+public interface AdministrativeDepartmentRepository extends GenericRepository<AdministrativeDepartmentNode> {
 
 	@Query(value = "MATCH (n:AdministrativeDepartment) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);

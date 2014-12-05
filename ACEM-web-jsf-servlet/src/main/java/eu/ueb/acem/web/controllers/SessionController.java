@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 
@@ -81,9 +81,9 @@ public class SessionController extends AbstractDomainAwareBean {
 	public PersonViewBean getCurrentUserViewBean() {
 		if (currentUserViewBean == null) {
 			try {
-				Personne user = getCurrentUser();
-				if (user instanceof Enseignant) {
-					currentUserViewBean = new TeacherViewBean((Enseignant) user);
+				Person user = getCurrentUser();
+				if (user instanceof Teacher) {
+					currentUserViewBean = new TeacherViewBean((Teacher) user);
 				}
 				else {
 					currentUserViewBean = new PersonViewBean(user);
@@ -101,12 +101,12 @@ public class SessionController extends AbstractDomainAwareBean {
 	 * @throws Exception
 	 */
 	@Override
-	public Personne getCurrentUser() throws Exception {
+	public Person getCurrentUser() throws Exception {
 		if (this.auth == null) {
 			this.auth = SecurityContextHolder.getContext().getAuthentication();
 		}
 		logger.debug("****** auth={}",auth);
-		Personne user = getDomainService().getUser(auth.getName());
+		Person user = getDomainService().getUser(auth.getName());
 		
 		return user;
 	}

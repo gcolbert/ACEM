@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.gris.neo4j.PersonRepository;
-import eu.ueb.acem.domain.beans.gris.Personne;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
+import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
 
 /**
  * @author Grégoire Colbert
@@ -39,7 +39,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
  * 
  */
 @Repository("personDAO")
-public class PersonDAO implements DAO<Long, Personne> {
+public class PersonDAO implements DAO<Long, Person> {
 
 	/**
 	 * For serialization.
@@ -71,31 +71,31 @@ public class PersonDAO implements DAO<Long, Personne> {
 	}
 
 	@Override
-	public Personne create(Personne entity) {
-		return repository.save((PersonneNode) entity);
+	public Person create(Person entity) {
+		return repository.save((PersonNode) entity);
 	}
 
 	@Override
-	public Collection<Personne> retrieveByName(String name) {
-		Iterable<PersonneNode> nodes = repository.findByName(name);
-		Collection<Personne> entities = new HashSet<Personne>();
-		for (PersonneNode node : nodes) {
+	public Collection<Person> retrieveByName(String name) {
+		Iterable<PersonNode> nodes = repository.findByName(name);
+		Collection<Person> entities = new HashSet<Person>();
+		for (PersonNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Personne retrieveById(Long id) {
+	public Person retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Personne> retrieveAll() {
-		Iterable<PersonneNode> endResults = repository.findAll();
-		Collection<Personne> collection = new HashSet<Personne>();
+	public Collection<Person> retrieveAll() {
+		Iterable<PersonNode> endResults = repository.findAll();
+		Collection<Person> collection = new HashSet<Person>();
 		if (endResults.iterator() != null) {
-			Iterator<PersonneNode> iterator = endResults.iterator();
+			Iterator<PersonNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -104,14 +104,14 @@ public class PersonDAO implements DAO<Long, Personne> {
 	}
 
 	@Override
-	public Personne update(Personne entity) {
-		PersonneNode personNode = (PersonneNode) entity;
+	public Person update(Person entity) {
+		PersonNode personNode = (PersonNode) entity;
 		return repository.save(personNode);
 	}
 
 	@Override
-	public void delete(Personne entity) {
-		PersonneNode personNode = (PersonneNode) entity;
+	public void delete(Person entity) {
+		PersonNode personNode = (PersonNode) entity;
 		repository.delete(personNode);
 	}
 
@@ -125,7 +125,7 @@ public class PersonDAO implements DAO<Long, Personne> {
 		return repository.count();
 	}
 
-	public Personne retrieveByLogin(String id) {
+	public Person retrieveByLogin(String id) {
 		return repository.findByLogin(id);
 	}
 

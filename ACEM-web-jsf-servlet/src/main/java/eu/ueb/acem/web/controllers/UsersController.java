@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -74,11 +74,11 @@ public class UsersController extends AbstractContextAwareController {
 		logger.debug("initUsersController");
 
 		personViewBeans.clear();
-		Set<Personne> persons = usersService.getPersons();
-		for (Personne person : persons) {
+		Set<Person> persons = usersService.getPersons();
+		for (Person person : persons) {
 			PersonViewBean personViewBean;
-			if (person instanceof Enseignant) {
-				Enseignant teacher = (Enseignant)person;
+			if (person instanceof Teacher) {
+				Teacher teacher = (Teacher)person;
 				personViewBean = new TeacherViewBean(teacher);
 			}
 			else {

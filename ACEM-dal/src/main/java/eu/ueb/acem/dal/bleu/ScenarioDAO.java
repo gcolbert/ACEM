@@ -31,9 +31,9 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.TimeTicker;
 import eu.ueb.acem.dal.bleu.neo4j.ScenarioRepository;
-import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
+import eu.ueb.acem.domain.beans.gris.Person;
 
 /**
  * @author Grégoire Colbert
@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.gris.Personne;
  * 
  */
 @Repository("scenarioDAO")
-public class ScenarioDAO implements DAO<Long, Scenario> {
+public class ScenarioDAO implements DAO<Long, PedagogicalScenario> {
 
 	/**
 	 * For serialization.
@@ -72,32 +72,32 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 	}
 
 	@Override
-	public Scenario create(Scenario scenario) {
+	public PedagogicalScenario create(PedagogicalScenario scenario) {
 		scenario.setCreationDate(TimeTicker.tick());
-		return repository.save((ScenarioNode) scenario);
+		return repository.save((PedagogicalScenarioNode) scenario);
 	}
 
 	@Override
-	public Scenario retrieveById(Long id) {
+	public PedagogicalScenario retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Scenario> retrieveByName(String name) {
-		Iterable<ScenarioNode> nodes = repository.findByName(name);
-		Collection<Scenario> entities = new HashSet<Scenario>();
-		for (ScenarioNode node : nodes) {
+	public Collection<PedagogicalScenario> retrieveByName(String name) {
+		Iterable<PedagogicalScenarioNode> nodes = repository.findByName(name);
+		Collection<PedagogicalScenario> entities = new HashSet<PedagogicalScenario>();
+		for (PedagogicalScenarioNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<Scenario> retrieveAll() {
-		Iterable<ScenarioNode> endResults = repository.findAll();
-		Collection<Scenario> collection = new HashSet<Scenario>();
+	public Collection<PedagogicalScenario> retrieveAll() {
+		Iterable<PedagogicalScenarioNode> endResults = repository.findAll();
+		Collection<PedagogicalScenario> collection = new HashSet<PedagogicalScenario>();
 		if (endResults.iterator() != null) {
-			Iterator<ScenarioNode> iterator = endResults.iterator();
+			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -106,14 +106,14 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 	}
 
 	@Override
-	public Scenario update(Scenario scenario) {
+	public PedagogicalScenario update(PedagogicalScenario scenario) {
 		scenario.setModificationDate(TimeTicker.tick());
-		return repository.save((ScenarioNode) scenario);
+		return repository.save((PedagogicalScenarioNode) scenario);
 	}
 
 	@Override
-	public void delete(Scenario scenario) {
-		repository.delete((ScenarioNode) scenario);
+	public void delete(PedagogicalScenario scenario) {
+		repository.delete((PedagogicalScenarioNode) scenario);
 	}
 
 	@Override
@@ -126,11 +126,11 @@ public class ScenarioDAO implements DAO<Long, Scenario> {
 		return repository.count();
 	}
 
-	public Collection<Scenario> retrieveScenariosWithAuthor(Personne author) {
-		Iterable<ScenarioNode> endResults = repository.findScenariosWithAuthor(author.getId());
-		Collection<Scenario> collection = new HashSet<Scenario>();
+	public Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author) {
+		Iterable<PedagogicalScenarioNode> endResults = repository.findScenariosWithAuthor(author.getId());
+		Collection<PedagogicalScenario> collection = new HashSet<PedagogicalScenario>();
 		if (endResults.iterator() != null) {
-			Iterator<ScenarioNode> iterator = endResults.iterator();
+			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}

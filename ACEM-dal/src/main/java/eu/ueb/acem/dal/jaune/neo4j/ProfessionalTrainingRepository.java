@@ -24,7 +24,7 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
@@ -32,7 +32,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * @since 2013-11-20
  * 
  */
-public interface ProfessionalTrainingRepository extends GenericRepository<FormationProfessionnelleNode> {
+public interface ProfessionalTrainingRepository extends GenericRepository<ProfessionalTrainingNode> {
 
 	@Query(value = "MATCH (n:ProfessionalTraining) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
@@ -41,6 +41,6 @@ public interface ProfessionalTrainingRepository extends GenericRepository<Format
 	Set<ResourceCategoryNode> getCategories();
 
 	@Query(value = "MATCH (n:ProfessionalTraining)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
-	Set<FormationProfessionnelleNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
+	Set<ProfessionalTrainingNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 	
 }

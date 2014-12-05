@@ -22,19 +22,19 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonneNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-03-03
  * 
  */
-public interface PersonRepository extends GenericRepository<PersonneNode> {
+public interface PersonRepository extends GenericRepository<PersonNode> {
 
 	@Query(value = "MATCH (n:Person) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
 	@Query(value = "match (n:Person) where n.login=({login}) return n")
-	PersonneNode findByLogin(@Param("login") String login);
+	PersonNode findByLogin(@Param("login") String login);
 
 }

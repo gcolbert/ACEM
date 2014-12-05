@@ -20,10 +20,10 @@ package eu.ueb.acem.services;
 
 import java.util.Collection;
 
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.gris.Person;
 
 /**
  * @author Grégoire Colbert
@@ -34,11 +34,11 @@ public interface ScenariosService {
 
 	Long countScenarios();
 
-	Scenario createScenario(Enseignant author, String name, String objective);
+	PedagogicalScenario createScenario(Teacher author, String name, String objective);
 
-	Scenario retrieveScenario(Long id);
+	PedagogicalScenario retrieveScenario(Long id);
 	
-	Scenario updateScenario(Scenario scenario);
+	PedagogicalScenario updateScenario(PedagogicalScenario scenario);
 
 	Boolean deleteScenario(Long id);
 
@@ -48,16 +48,16 @@ public interface ScenariosService {
 
 	Long countPedagogicalActivities();
 
-	ActivitePedagogique createPedagogicalActivity(String name);
+	PedagogicalActivity createPedagogicalActivity(String name);
 
-	ActivitePedagogique retrievePedagogicalActivity(Long id);
+	PedagogicalActivity retrievePedagogicalActivity(Long id);
 
-	ActivitePedagogique updatePedagogicalActivity(ActivitePedagogique pedagogicalActivity);
+	PedagogicalActivity updatePedagogicalActivity(PedagogicalActivity pedagogicalActivity);
 
 	Boolean deletePedagogicalActivity(Long id);
 
 	void deleteAllPedagogicalActivities();
 
-	Collection<Scenario> retrieveScenariosWithAuthor(Personne author);
+	Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author);
 
 }

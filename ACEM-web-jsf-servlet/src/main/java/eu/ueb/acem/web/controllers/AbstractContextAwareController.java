@@ -24,7 +24,7 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
@@ -92,7 +92,7 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	 * @see eu.ueb.acem.web.controllers.AbstractDomainAwareBean#getCurrentUser()
 	 */
 	@Override
-	protected Personne getCurrentUser() throws Exception {
+	protected Person getCurrentUser() throws Exception {
 		return sessionController.getCurrentUser();
 	}
 

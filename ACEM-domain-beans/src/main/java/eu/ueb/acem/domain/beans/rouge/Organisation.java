@@ -21,7 +21,7 @@ package eu.ueb.acem.domain.beans.rouge;
 import java.io.Serializable;
 import java.util.Set;
 
-import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.Resource;
 
 /**
  * @author Grégoire Colbert
@@ -44,17 +44,17 @@ public interface Organisation extends Serializable {
 
 	void setIconFileName(String iconFileName);
 
-	Set<? extends Ressource> getPossessedResources();
+	Set<? extends Resource> getPossessedResources();
 
-	void setPossessedResources(Set<? extends Ressource> possessedResources);
+	void setPossessedResources(Set<? extends Resource> possessedResources);
 
-	Set<? extends Ressource> getViewedResources();
+	Set<? extends Resource> getViewedResources();
 
-	void setViewedResources(Set<? extends Ressource> viewedResources);
+	void setViewedResources(Set<? extends Resource> viewedResources);
 
-	void addViewedResource(Ressource resource);
+	void addViewedResource(Resource resource);
 
-	void removeViewedResource(Ressource resource);
+	void removeViewedResource(Resource resource);
 	
 	int compareTo(Organisation o);
 

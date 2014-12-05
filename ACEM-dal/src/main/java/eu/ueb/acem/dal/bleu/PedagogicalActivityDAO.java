@@ -31,8 +31,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalActivityRepository;
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
 
 /**
  * @author Grégoire Colbert
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ActivitePedagogiqueNode;
  * 
  */
 @Repository("pedagogicalActivityDAO")
-public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
+public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 
 	/**
 	 * For serialization.
@@ -72,31 +72,31 @@ public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
 	}
 
 	@Override
-	public ActivitePedagogique create(ActivitePedagogique entity) {
-		return repository.save((ActivitePedagogiqueNode) entity);
+	public PedagogicalActivity create(PedagogicalActivity entity) {
+		return repository.save((PedagogicalActivityNode) entity);
 	}
 
 	@Override
-	public ActivitePedagogique retrieveById(Long id) {
+	public PedagogicalActivity retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<ActivitePedagogique> retrieveByName(String name) {
-		Iterable<ActivitePedagogiqueNode> nodes = repository.findByName(name);
-		Collection<ActivitePedagogique> entities = new HashSet<ActivitePedagogique>();
-		for (ActivitePedagogiqueNode node : nodes) {
+	public Collection<PedagogicalActivity> retrieveByName(String name) {
+		Iterable<PedagogicalActivityNode> nodes = repository.findByName(name);
+		Collection<PedagogicalActivity> entities = new HashSet<PedagogicalActivity>();
+		for (PedagogicalActivityNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Set<ActivitePedagogique> retrieveAll() {
-		Iterable<ActivitePedagogiqueNode> endResults = repository.findAll();
-		Set<ActivitePedagogique> collection = new HashSet<ActivitePedagogique>();
+	public Set<PedagogicalActivity> retrieveAll() {
+		Iterable<PedagogicalActivityNode> endResults = repository.findAll();
+		Set<PedagogicalActivity> collection = new HashSet<PedagogicalActivity>();
 		if (endResults.iterator() != null) {
-			Iterator<ActivitePedagogiqueNode> iterator = endResults.iterator();
+			Iterator<PedagogicalActivityNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -105,13 +105,13 @@ public class PedagogicalActivityDAO implements DAO<Long, ActivitePedagogique> {
 	}
 
 	@Override
-	public ActivitePedagogique update(ActivitePedagogique entity) {
-		return repository.save((ActivitePedagogiqueNode) entity);
+	public PedagogicalActivity update(PedagogicalActivity entity) {
+		return repository.save((PedagogicalActivityNode) entity);
 	}
 
 	@Override
-	public void delete(ActivitePedagogique entity) {
-		repository.delete((ActivitePedagogiqueNode) entity);
+	public void delete(PedagogicalActivity entity) {
+		repository.delete((PedagogicalActivityNode) entity);
 	}
 
 	@Override

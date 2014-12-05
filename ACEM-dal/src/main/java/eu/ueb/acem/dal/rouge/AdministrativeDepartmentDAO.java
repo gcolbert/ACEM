@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.rouge.neo4j.AdministrativeDepartmentRepository;
-import eu.ueb.acem.domain.beans.rouge.Service;
-import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 
 /**
  * @author Grégoire Colbert
@@ -39,7 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.ServiceNode;
  * 
  */
 @Repository("administrativeDepartmentDAO")
-public class AdministrativeDepartmentDAO implements DAO<Long, Service> {
+public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepartment> {
 
 	/**
 	 * For serialization.
@@ -68,31 +68,31 @@ public class AdministrativeDepartmentDAO implements DAO<Long, Service> {
 	}
 
 	@Override
-	public Service create(Service entity) {
-		return repository.save((ServiceNode) entity);
+	public AdministrativeDepartment create(AdministrativeDepartment entity) {
+		return repository.save((AdministrativeDepartmentNode) entity);
 	}
 
 	@Override
-	public Service retrieveById(Long id) {
+	public AdministrativeDepartment retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Service> retrieveByName(String name) {
-		Iterable<ServiceNode> nodes = repository.findByName(name);
-		Collection<Service> entities = new HashSet<Service>();
-		for (ServiceNode node : nodes) {
+	public Collection<AdministrativeDepartment> retrieveByName(String name) {
+		Iterable<AdministrativeDepartmentNode> nodes = repository.findByName(name);
+		Collection<AdministrativeDepartment> entities = new HashSet<AdministrativeDepartment>();
+		for (AdministrativeDepartmentNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<Service> retrieveAll() {
-		Iterable<ServiceNode> endResults = repository.findAll();
-		Collection<Service> collection = new HashSet<Service>();
+	public Collection<AdministrativeDepartment> retrieveAll() {
+		Iterable<AdministrativeDepartmentNode> endResults = repository.findAll();
+		Collection<AdministrativeDepartment> collection = new HashSet<AdministrativeDepartment>();
 		if (endResults.iterator() != null) {
-			Iterator<ServiceNode> iterator = endResults.iterator();
+			Iterator<AdministrativeDepartmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -101,13 +101,13 @@ public class AdministrativeDepartmentDAO implements DAO<Long, Service> {
 	}
 
 	@Override
-	public Service update(Service entity) {
-		return repository.save((ServiceNode) entity);
+	public AdministrativeDepartment update(AdministrativeDepartment entity) {
+		return repository.save((AdministrativeDepartmentNode) entity);
 	}
 
 	@Override
-	public void delete(Service entity) {
-		repository.delete((ServiceNode) entity);
+	public void delete(AdministrativeDepartment entity) {
+		repository.delete((AdministrativeDepartmentNode) entity);
 	}
 
 	@Override

@@ -35,21 +35,21 @@ import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
 import eu.ueb.acem.dal.jaune.SoftwareDAO;
 import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
 import eu.ueb.acem.dal.jaune.UseModeDAO;
-import eu.ueb.acem.domain.beans.bleu.ActivitePedagogique;
-import eu.ueb.acem.domain.beans.bleu.Scenario;
-import eu.ueb.acem.domain.beans.jaune.Applicatif;
-import eu.ueb.acem.domain.beans.jaune.DocumentationApplicatif;
-import eu.ueb.acem.domain.beans.jaune.Equipement;
-import eu.ueb.acem.domain.beans.jaune.FormationProfessionnelle;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.jaune.Software;
+import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationApplicatifNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.EquipementNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.FormationProfessionnelleNode;
+import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -111,24 +111,24 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Ressource createResource(Long toolCategoryId, Long supportServiceId, String resourceType, String name, String iconFileName) {
+	public Resource createResource(Long toolCategoryId, Long supportServiceId, String resourceType, String name, String iconFileName) {
 		Organisation supportService = organisationsService.retrieveOrganisation(supportServiceId);
 		if (supportService != null) {
-			Ressource entity = null;
+			Resource entity = null;
 			if (resourceType.equals("software")) {
-				entity = new ApplicatifNode(name, iconFileName);
+				entity = new SoftwareNode(name, iconFileName);
 			}
 			else if (resourceType.equals("softwareDocumentation")) {
-				entity = new DocumentationApplicatifNode(name, iconFileName);
+				entity = new SoftwareDocumentationNode(name, iconFileName);
 			}
 			else if (resourceType.equals("equipment")) {
-				entity = new EquipementNode(name, iconFileName);
+				entity = new EquipmentNode(name, iconFileName);
 			}
 			else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
-				entity = new RessourcePedagogiqueEtDocumentaireNode(name, iconFileName);
+				entity = new PedagogicalAndDocumentaryResourceNode(name, iconFileName);
 			}
 			else if (resourceType.equals("professionalTraining")) {
-				entity = new FormationProfessionnelleNode(name, iconFileName);
+				entity = new ProfessionalTrainingNode(name, iconFileName);
 			}
 			else {
 				logger.error("Unknown resourceType '{}'", resourceType);
@@ -142,19 +142,19 @@ public class ResourcesServiceImpl implements ResourcesService {
 			supportService = organisationsService.updateOrganisation(supportService);
 
 			if (resourceType.equals("software")) {
-				entity = softwareDAO.create((Applicatif)entity);
+				entity = softwareDAO.create((Software)entity);
 			}
 			else if (resourceType.equals("softwareDocumentation")) {
-				entity = softwareDocumentationDAO.create((DocumentationApplicatif)entity);
+				entity = softwareDocumentationDAO.create((SoftwareDocumentation)entity);
 			}
 			else if (resourceType.equals("equipment")) {
-				entity = equipmentDAO.create((Equipement)entity);
+				entity = equipmentDAO.create((Equipment)entity);
 			}
 			else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
-				entity = pedagogicalAndDocumentaryResourcesDAO.create((RessourcePedagogiqueEtDocumentaire)entity);
+				entity = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource)entity);
 			}
 			else if (resourceType.equals("professionalTraining")) {
-				entity = professionalTrainingDAO.create((FormationProfessionnelle)entity);
+				entity = professionalTrainingDAO.create((ProfessionalTraining)entity);
 			}
 			else {
 				logger.error("Unknown resourceType '{}'", resourceType);
@@ -167,8 +167,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Ressource retrieveResource(Long id) {
-		Ressource entity = null;
+	public Resource retrieveResource(Long id) {
+		Resource entity = null;
 		if (softwareDAO.exists(id)) {
 			entity = softwareDAO.retrieveById(id);
 		}
@@ -191,19 +191,19 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Ressource updateResource(Ressource resource) {
-		Ressource updatedResource = null;
-		if (resource instanceof Applicatif) {
-			resource = softwareDAO.update((Applicatif) resource);
+	public Resource updateResource(Resource resource) {
+		Resource updatedResource = null;
+		if (resource instanceof Software) {
+			resource = softwareDAO.update((Software) resource);
 		}
-		else if (resource instanceof DocumentationApplicatif) {
-			resource = softwareDocumentationDAO.update((DocumentationApplicatif) resource);
+		else if (resource instanceof SoftwareDocumentation) {
+			resource = softwareDocumentationDAO.update((SoftwareDocumentation) resource);
 		}
-		else if (resource instanceof Equipement) {
-			resource = equipmentDAO.update((Equipement) resource);
+		else if (resource instanceof Equipment) {
+			resource = equipmentDAO.update((Equipment) resource);
 		}
-		else if (resource instanceof RessourcePedagogiqueEtDocumentaire) {
-			resource = pedagogicalAndDocumentaryResourcesDAO.update((RessourcePedagogiqueEtDocumentaire) resource);
+		else if (resource instanceof PedagogicalAndDocumentaryResource) {
+			resource = pedagogicalAndDocumentaryResourcesDAO.update((PedagogicalAndDocumentaryResource) resource);
 		}
 		return updatedResource;
 	}
@@ -212,27 +212,27 @@ public class ResourcesServiceImpl implements ResourcesService {
 	@Override
 	public Boolean deleteResource(Long id) {
 		if (softwareDAO.exists(id)) {
-			Applicatif entity = softwareDAO.retrieveById(id);
+			Software entity = softwareDAO.retrieveById(id);
 			softwareDAO.delete(entity);
 			return !softwareDAO.exists(id);
 		}
 		else if (softwareDocumentationDAO.exists(id)) {
-			DocumentationApplicatif entity = softwareDocumentationDAO.retrieveById(id);
+			SoftwareDocumentation entity = softwareDocumentationDAO.retrieveById(id);
 			softwareDocumentationDAO.delete(entity);
 			return !softwareDocumentationDAO.exists(id);
 		}
 		else if (equipmentDAO.exists(id)) {
-			Equipement entity = equipmentDAO.retrieveById(id);
+			Equipment entity = equipmentDAO.retrieveById(id);
 			equipmentDAO.delete(entity);
 			return !equipmentDAO.exists(id);
 		}
 		else if (pedagogicalAndDocumentaryResourcesDAO.exists(id)) {
-			RessourcePedagogiqueEtDocumentaire entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
+			PedagogicalAndDocumentaryResource entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
 			pedagogicalAndDocumentaryResourcesDAO.delete(entity);
 			return !pedagogicalAndDocumentaryResourcesDAO.exists(id);
 		}
 		else if (professionalTrainingDAO.exists(id)) {
-			FormationProfessionnelle entity = professionalTrainingDAO.retrieveById(id);
+			ProfessionalTraining entity = professionalTrainingDAO.retrieveById(id);
 			professionalTrainingDAO.delete(entity);
 			return !professionalTrainingDAO.exists(id);
 		}
@@ -244,7 +244,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	
 	@Override
 	public void saveResourceName(String resourceType, Long id, String label) {
-		Ressource entity = null;
+		Resource entity = null;
 		if (resourceType.equals("software")) {
 			entity = softwareDAO.retrieveById(id);
 		}
@@ -289,11 +289,11 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 	
 	@Override
-	public Collection<Scenario> retrieveScenariosAssociatedWithResourceCategory(Long id) {
+	public Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(Long id) {
 		ResourceCategory toolCategory = retrieveResourceCategory(id);
-		Set<Scenario> scenarios = new HashSet<Scenario>();
+		Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>();
 		if (toolCategory != null) {
-			for (ActivitePedagogique activity : toolCategory.getPedagogicalActivities()) {
+			for (PedagogicalActivity activity : toolCategory.getPedagogicalActivities()) {
 				scenarios.addAll(activity.getScenarios());
 			}
 		}
@@ -301,7 +301,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 	
 	@Override
-	public Collection<? extends Ressource> retrieveSoftwaresWithCategory(ResourceCategory category) {
+	public Collection<? extends Resource> retrieveSoftwaresWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return softwareDAO.retrieveAllWithCategory(category);
 		}
@@ -311,7 +311,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Ressource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category) {
+	public Collection<? extends Resource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return softwareDocumentationDAO.retrieveAllWithCategory(category);
 		}
@@ -321,7 +321,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Ressource> retrieveEquipmentWithCategory(ResourceCategory category) {
+	public Collection<? extends Resource> retrieveEquipmentWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return equipmentDAO.retrieveAllWithCategory(category);
 		}
@@ -331,7 +331,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Ressource> retrieveProfessionalTrainingsWithCategory(ResourceCategory category) {
+	public Collection<? extends Resource> retrieveProfessionalTrainingsWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return professionalTrainingDAO.retrieveAllWithCategory(category);
 		}
@@ -341,7 +341,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Ressource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category) {
+	public Collection<? extends Resource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return pedagogicalAndDocumentaryResourcesDAO.retrieveAllWithCategory(category);
 		}

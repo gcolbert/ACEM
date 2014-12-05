@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.vert.Campus;
  */
 @NodeEntity
 @TypeAlias("Campus")
-public class CampusNode extends EspacePhysiqueNode implements Campus {
+public class CampusNode extends PhysicalSpaceNode implements Campus {
 
 	/**
 	 * For serialization.

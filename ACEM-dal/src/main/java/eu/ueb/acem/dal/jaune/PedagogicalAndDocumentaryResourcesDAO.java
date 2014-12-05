@@ -31,9 +31,9 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.PedagogicalAndDocumentaryResourcesRepository;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
 
 /**
  * @author Grégoire Colbert
@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.RessourcePedagogiqueEtDocumentaireNo
  * 
  */
 @Repository("pedagogicalAndDocumentaryResourcesDAO")
-public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, RessourcePedagogiqueEtDocumentaire> {
+public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, PedagogicalAndDocumentaryResource> {
 
 	/**
 	 * For serialization.
@@ -70,31 +70,31 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Ressourc
 	}
 
 	@Override
-	public RessourcePedagogiqueEtDocumentaire create(RessourcePedagogiqueEtDocumentaire entity) {
-		return repository.save((RessourcePedagogiqueEtDocumentaireNode) entity);
+	public PedagogicalAndDocumentaryResource create(PedagogicalAndDocumentaryResource entity) {
+		return repository.save((PedagogicalAndDocumentaryResourceNode) entity);
 	}
 
 	@Override
-	public RessourcePedagogiqueEtDocumentaire retrieveById(Long id) {
+	public PedagogicalAndDocumentaryResource retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<RessourcePedagogiqueEtDocumentaire> retrieveByName(String name) {
-		Iterable<RessourcePedagogiqueEtDocumentaireNode> pedagogicalAndDocumentaryResourceNodes = repository.findByName(name);
-		Collection<RessourcePedagogiqueEtDocumentaire> pedagogicalAndDocumentaryResources = new HashSet<RessourcePedagogiqueEtDocumentaire>();
-		for (RessourcePedagogiqueEtDocumentaire pedagogicalAndDocumentaryResource : pedagogicalAndDocumentaryResourceNodes) {
+	public Collection<PedagogicalAndDocumentaryResource> retrieveByName(String name) {
+		Iterable<PedagogicalAndDocumentaryResourceNode> pedagogicalAndDocumentaryResourceNodes = repository.findByName(name);
+		Collection<PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResources = new HashSet<PedagogicalAndDocumentaryResource>();
+		for (PedagogicalAndDocumentaryResource pedagogicalAndDocumentaryResource : pedagogicalAndDocumentaryResourceNodes) {
 			pedagogicalAndDocumentaryResources.add(pedagogicalAndDocumentaryResource);
 		}
 		return pedagogicalAndDocumentaryResources;
 	}
 
 	@Override
-	public Collection<RessourcePedagogiqueEtDocumentaire> retrieveAll() {
-		Iterable<RessourcePedagogiqueEtDocumentaireNode> endResults = repository.findAll();
-		Collection<RessourcePedagogiqueEtDocumentaire> collection = new HashSet<RessourcePedagogiqueEtDocumentaire>();
+	public Collection<PedagogicalAndDocumentaryResource> retrieveAll() {
+		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.findAll();
+		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
 		if (endResults.iterator() != null) {
-			Iterator<RessourcePedagogiqueEtDocumentaireNode> iterator = endResults.iterator();
+			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -103,13 +103,13 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Ressourc
 	}
 
 	@Override
-	public RessourcePedagogiqueEtDocumentaire update(RessourcePedagogiqueEtDocumentaire entity) {
-		return repository.save((RessourcePedagogiqueEtDocumentaireNode) entity);
+	public PedagogicalAndDocumentaryResource update(PedagogicalAndDocumentaryResource entity) {
+		return repository.save((PedagogicalAndDocumentaryResourceNode) entity);
 	}
 
 	@Override
-	public void delete(RessourcePedagogiqueEtDocumentaire entity) {
-		repository.delete((RessourcePedagogiqueEtDocumentaireNode) entity);
+	public void delete(PedagogicalAndDocumentaryResource entity) {
+		repository.delete((PedagogicalAndDocumentaryResourceNode) entity);
 	}
 
 	@Override
@@ -134,11 +134,11 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Ressourc
 		return collection;
 	}
 
-	public Collection<RessourcePedagogiqueEtDocumentaire> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<RessourcePedagogiqueEtDocumentaireNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<RessourcePedagogiqueEtDocumentaire> collection = new HashSet<RessourcePedagogiqueEtDocumentaire>();
+	public Collection<PedagogicalAndDocumentaryResource> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
 		if (endResults.iterator() != null) {
-			Iterator<RessourcePedagogiqueEtDocumentaireNode> iterator = endResults.iterator();
+			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}

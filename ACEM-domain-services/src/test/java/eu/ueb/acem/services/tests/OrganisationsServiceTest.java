@@ -12,8 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.domain.beans.rouge.Communaute;
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.services.OrganisationsService;
 
 /**
@@ -56,12 +56,12 @@ public class OrganisationsServiceTest extends TestCase {
 	 */
 	@Test
 	public final void t01_TestAssociateCommunityAndInstitution() {
-		Communaute community1 = organisationsService.createCommunity("my community", "mc", null);
-		Etablissement institution1 = organisationsService.createInstitution("my institution", "mi", null);
+		Community community1 = organisationsService.createCommunity("my community", "mc", null);
+		Institution institution1 = organisationsService.createInstitution("my institution", "mi", null);
 		assertTrue(organisationsService.associateCommunityAndInstitution(community1.getId(), institution1.getId()));
 
-		Communaute community1bis = organisationsService.retrieveCommunity(community1.getId());
-		Etablissement institution1bis = organisationsService.retrieveInstitution(institution1.getId());
+		Community community1bis = organisationsService.retrieveCommunity(community1.getId());
+		Institution institution1bis = organisationsService.retrieveInstitution(institution1.getId());
 		assertTrue(community1bis.getInstitutions().contains(institution1bis));
 	}
 
@@ -71,9 +71,9 @@ public class OrganisationsServiceTest extends TestCase {
 	@Test
 	@Transactional
 	public final void t02_TestDissociateCommunityAndInstitution() {
-		Communaute community1 = organisationsService.createCommunity("my community", "mc", null);
+		Community community1 = organisationsService.createCommunity("my community", "mc", null);
 
-		Etablissement institution1 = organisationsService.createInstitution("my institution", "mi", null);
+		Institution institution1 = organisationsService.createInstitution("my institution", "mi", null);
 
 		assertTrue(organisationsService.associateCommunityAndInstitution(community1.getId(), institution1.getId()));
 		

@@ -25,9 +25,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
-import eu.ueb.acem.domain.beans.jaune.RessourcePedagogiqueEtDocumentaire;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
+import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
@@ -44,7 +44,7 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 
 	private static final Logger logger = LoggerFactory.getLogger(DocumentaryAndPedagogicalResourceViewBean.class);
 
-	private RessourcePedagogiqueEtDocumentaire documentaryAndPedagogicalResource;
+	private PedagogicalAndDocumentaryResource documentaryAndPedagogicalResource;
 
 	private Long id;
 
@@ -64,33 +64,33 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
 
-	public DocumentaryAndPedagogicalResourceViewBean(RessourcePedagogiqueEtDocumentaire documentaryAndPedagogicalResource) {
+	public DocumentaryAndPedagogicalResourceViewBean(PedagogicalAndDocumentaryResource documentaryAndPedagogicalResource) {
 		this();
 		setDocumentaryAndPedagogicalResource(documentaryAndPedagogicalResource);
 	}
 
 	@Override
-	public RessourcePedagogiqueEtDocumentaire getDomainBean() {
+	public PedagogicalAndDocumentaryResource getDomainBean() {
 		return documentaryAndPedagogicalResource;
 	}
 	
 	@Override
-	public void setDomainBean(Ressource resource) {
-		setDocumentaryAndPedagogicalResource((RessourcePedagogiqueEtDocumentaire) resource);
+	public void setDomainBean(Resource resource) {
+		setDocumentaryAndPedagogicalResource((PedagogicalAndDocumentaryResource) resource);
 	}
 
-	public RessourcePedagogiqueEtDocumentaire getDocumentaryAndPedagogical() {
+	public PedagogicalAndDocumentaryResource getDocumentaryAndPedagogical() {
 		return documentaryAndPedagogicalResource;
 	}
 
-	public void setDocumentaryAndPedagogicalResource(RessourcePedagogiqueEtDocumentaire documentaryAndPedagogicalResource) {
+	public void setDocumentaryAndPedagogicalResource(PedagogicalAndDocumentaryResource documentaryAndPedagogicalResource) {
 		this.documentaryAndPedagogicalResource = documentaryAndPedagogicalResource;
 		setId(documentaryAndPedagogicalResource.getId());
 		setName(documentaryAndPedagogicalResource.getName());
 		setIconFileName(documentaryAndPedagogicalResource.getIconFileName());
 		setDescription(documentaryAndPedagogicalResource.getDescription());
 
-		for (ModaliteUtilisation useMode : documentaryAndPedagogicalResource.getUseModes()) {
+		for (UseMode useMode : documentaryAndPedagogicalResource.getUseModes()) {
 			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
 			useModeViewBeans.add(new UseModeViewBean(useMode));
 		}

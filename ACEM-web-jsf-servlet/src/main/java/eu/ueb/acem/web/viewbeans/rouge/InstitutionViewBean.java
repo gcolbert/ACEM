@@ -23,7 +23,7 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.rouge.Etablissement;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -38,7 +38,7 @@ public class InstitutionViewBean implements OrganisationViewBean, Serializable, 
 
 	private static final long serialVersionUID = 6170498010377898612L;
 
-	private Etablissement institution;
+	private Institution institution;
 
 	private Long id;
 
@@ -51,16 +51,16 @@ public class InstitutionViewBean implements OrganisationViewBean, Serializable, 
 	public InstitutionViewBean() {
 	}
 
-	public InstitutionViewBean(Etablissement institution) {
+	public InstitutionViewBean(Institution institution) {
 		this();
 		setInstitution(institution);
 	}
 
-	public Etablissement getInstitution() {
+	public Institution getInstitution() {
 		return institution;
 	}
 
-	public void setInstitution(Etablissement institution) {
+	public void setInstitution(Institution institution) {
 		this.institution = institution;
 		setId(institution.getId());
 		setName(institution.getName());
@@ -75,7 +75,7 @@ public class InstitutionViewBean implements OrganisationViewBean, Serializable, 
 
 	@Override
 	public void setDomainBean(Organisation organisation) {
-		setInstitution((Etablissement) organisation);
+		setInstitution((Institution) organisation);
 	}
 
 	@Override

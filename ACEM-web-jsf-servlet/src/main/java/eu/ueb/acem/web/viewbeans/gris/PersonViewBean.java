@@ -25,7 +25,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.web.viewbeans.Pickable;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -41,7 +41,7 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PersonViewBean.class);
 	
-	private Personne domainBean;
+	private Person domainBean;
 	
 	private List<OrganisationViewBean> organisationViewBeans;
 	
@@ -59,16 +59,16 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		this.organisationViewBeans = new ArrayList<OrganisationViewBean>();
 	}
 	
-	public PersonViewBean(Personne person) {
+	public PersonViewBean(Person person) {
 		this();
 		setDomainBean(person);
 	}
 
-	public Personne getDomainBean() {
+	public Person getDomainBean() {
 		return domainBean;
 	}
 
-	public void setDomainBean(Personne person) {
+	public void setDomainBean(Person person) {
 		this.domainBean = person;
 		setId(person.getId());
 		setName(person.getName());

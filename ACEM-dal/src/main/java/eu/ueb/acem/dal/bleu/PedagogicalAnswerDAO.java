@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalAnswerRepository;
-import eu.ueb.acem.domain.beans.bleu.Reponse;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
 
 /**
  * @author Grégoire Colbert
@@ -39,7 +39,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
  * 
  */
 @Repository("pedagogicalAnswerDAO")
-public class PedagogicalAnswerDAO implements DAO<Long, Reponse> {
+public class PedagogicalAnswerDAO implements DAO<Long, PedagogicalAnswer> {
 
 	/**
 	 * For serialization.
@@ -71,31 +71,31 @@ public class PedagogicalAnswerDAO implements DAO<Long, Reponse> {
 	}
 
 	@Override
-	public Reponse create(Reponse reponse) {
-		return repository.save((ReponseNode) reponse);
+	public PedagogicalAnswer create(PedagogicalAnswer reponse) {
+		return repository.save((PedagogicalAnswerNode) reponse);
 	}
 
 	@Override
-	public Reponse retrieveById(Long id) {
+	public PedagogicalAnswer retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Reponse> retrieveByName(String name) {
-		Iterable<ReponseNode> nodes = repository.findByName(name);
-		Collection<Reponse> entities = new HashSet<Reponse>();
-		for (ReponseNode node : nodes) {
+	public Collection<PedagogicalAnswer> retrieveByName(String name) {
+		Iterable<PedagogicalAnswerNode> nodes = repository.findByName(name);
+		Collection<PedagogicalAnswer> entities = new HashSet<PedagogicalAnswer>();
+		for (PedagogicalAnswerNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<Reponse> retrieveAll() {
-		Iterable<ReponseNode> endResults = repository.findAll();
-		Collection<Reponse> collection = new HashSet<Reponse>();
+	public Collection<PedagogicalAnswer> retrieveAll() {
+		Iterable<PedagogicalAnswerNode> endResults = repository.findAll();
+		Collection<PedagogicalAnswer> collection = new HashSet<PedagogicalAnswer>();
 		if (endResults.iterator() != null) {
-			Iterator<ReponseNode> iterator = endResults.iterator();
+			Iterator<PedagogicalAnswerNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -104,13 +104,13 @@ public class PedagogicalAnswerDAO implements DAO<Long, Reponse> {
 	}
 
 	@Override
-	public Reponse update(Reponse reponse) {
-		return repository.save((ReponseNode) reponse);
+	public PedagogicalAnswer update(PedagogicalAnswer reponse) {
+		return repository.save((PedagogicalAnswerNode) reponse);
 	}
 
 	@Override
-	public void delete(Reponse reponse) {
-		repository.delete((ReponseNode) reponse);
+	public void delete(PedagogicalAnswer reponse) {
+		repository.delete((PedagogicalAnswerNode) reponse);
 	}
 
 	@Override

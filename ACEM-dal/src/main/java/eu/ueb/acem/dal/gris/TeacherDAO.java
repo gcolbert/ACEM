@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.gris.neo4j.TeacherRepository;
-import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
+import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 
 /**
  * @author Grégoire Colbert
@@ -39,7 +39,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.EnseignantNode;
  * 
  */
 @Repository("teacherDAO")
-public class TeacherDAO implements DAO<Long, Enseignant> {
+public class TeacherDAO implements DAO<Long, Teacher> {
 
 	/**
 	 * For serialization
@@ -71,31 +71,31 @@ public class TeacherDAO implements DAO<Long, Enseignant> {
 	}
 
 	@Override
-	public Enseignant create(Enseignant entity) {
-		return repository.save((EnseignantNode) entity);
+	public Teacher create(Teacher entity) {
+		return repository.save((TeacherNode) entity);
 	}
 
 	@Override
-	public Enseignant retrieveById(Long id) {
+	public Teacher retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Set<Enseignant> retrieveByName(String name) {
-		Iterable<EnseignantNode> nodes = repository.findByName(name);
-		Set<Enseignant> entities = new HashSet<Enseignant>();
-		for (EnseignantNode node : nodes) {
+	public Set<Teacher> retrieveByName(String name) {
+		Iterable<TeacherNode> nodes = repository.findByName(name);
+		Set<Teacher> entities = new HashSet<Teacher>();
+		for (TeacherNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Set<Enseignant> retrieveAll() {
-		Iterable<EnseignantNode> endResults = repository.findAll();
-		Set<Enseignant> collection = new HashSet<Enseignant>();
+	public Set<Teacher> retrieveAll() {
+		Iterable<TeacherNode> endResults = repository.findAll();
+		Set<Teacher> collection = new HashSet<Teacher>();
 		if (endResults.iterator() != null) {
-			Iterator<EnseignantNode> iterator = endResults.iterator();
+			Iterator<TeacherNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -104,13 +104,13 @@ public class TeacherDAO implements DAO<Long, Enseignant> {
 	}
 
 	@Override
-	public Enseignant update(Enseignant entity) {
-		return repository.save((EnseignantNode) entity);
+	public Teacher update(Teacher entity) {
+		return repository.save((TeacherNode) entity);
 	}
 
 	@Override
-	public void delete(Enseignant entity) {
-		repository.delete((EnseignantNode) entity);
+	public void delete(Teacher entity) {
+		repository.delete((TeacherNode) entity);
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class TeacherDAO implements DAO<Long, Enseignant> {
 		return repository.count();
 	}
 
-	public Enseignant retrieveByLogin(String id) {
+	public Teacher retrieveByLogin(String id) {
 		return repository.findByLogin(id);
 	}
 

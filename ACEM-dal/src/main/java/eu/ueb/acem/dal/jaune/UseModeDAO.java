@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.UseModeRepository;
-import eu.ueb.acem.domain.beans.jaune.ModaliteUtilisation;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ModaliteUtilisationNode;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
 
 /**
  * @author Grégoire Colbert
@@ -39,7 +39,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ModaliteUtilisationNode;
  * 
  */
 @Repository("useModeDAO")
-public class UseModeDAO implements DAO<Long, ModaliteUtilisation> {
+public class UseModeDAO implements DAO<Long, UseMode> {
 
 	/**
 	 * For serialization.
@@ -68,31 +68,31 @@ public class UseModeDAO implements DAO<Long, ModaliteUtilisation> {
 	}
 
 	@Override
-	public ModaliteUtilisation create(ModaliteUtilisation entity) {
-		return repository.save((ModaliteUtilisationNode) entity);
+	public UseMode create(UseMode entity) {
+		return repository.save((UseModeNode) entity);
 	}
 
 	@Override
-	public ModaliteUtilisation retrieveById(Long id) {
+	public UseMode retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<ModaliteUtilisation> retrieveByName(String name) {
-		Iterable<ModaliteUtilisationNode> useModeNodes = repository.findByName(name);
-		Collection<ModaliteUtilisation> useModes = new HashSet<ModaliteUtilisation>();
-		for (ModaliteUtilisation useMode : useModeNodes) {
+	public Collection<UseMode> retrieveByName(String name) {
+		Iterable<UseModeNode> useModeNodes = repository.findByName(name);
+		Collection<UseMode> useModes = new HashSet<UseMode>();
+		for (UseMode useMode : useModeNodes) {
 			useModes.add(useMode);
 		}
 		return useModes;
 	}
 
 	@Override
-	public Collection<ModaliteUtilisation> retrieveAll() {
-		Iterable<ModaliteUtilisationNode> endResults = repository.findAll();
-		Collection<ModaliteUtilisation> collection = new HashSet<ModaliteUtilisation>();
+	public Collection<UseMode> retrieveAll() {
+		Iterable<UseModeNode> endResults = repository.findAll();
+		Collection<UseMode> collection = new HashSet<UseMode>();
 		if (endResults.iterator() != null) {
-			Iterator<ModaliteUtilisationNode> iterator = endResults.iterator();
+			Iterator<UseModeNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -101,13 +101,13 @@ public class UseModeDAO implements DAO<Long, ModaliteUtilisation> {
 	}
 
 	@Override
-	public ModaliteUtilisation update(ModaliteUtilisation entity) {
-		return repository.save((ModaliteUtilisationNode) entity);
+	public UseMode update(UseMode entity) {
+		return repository.save((UseModeNode) entity);
 	}
 
 	@Override
-	public void delete(ModaliteUtilisation entity) {
-		repository.delete((ModaliteUtilisationNode) entity);
+	public void delete(UseMode entity) {
+		repository.delete((UseModeNode) entity);
 	}
 
 	@Override

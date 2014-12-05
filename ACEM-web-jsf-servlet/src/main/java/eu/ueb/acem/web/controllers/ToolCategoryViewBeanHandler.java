@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.Ressource;
+import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
@@ -83,7 +83,7 @@ class ToolCategoryViewBeanHandler {
 			if (toolCategory != null) {
 				viewBean = new ToolCategoryViewBean(toolCategory);
 				
-				for (Ressource resource : toolCategory.getResources()) {
+				for (Resource resource : toolCategory.getResources()) {
 					viewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(resource.getId()));
 				}
 

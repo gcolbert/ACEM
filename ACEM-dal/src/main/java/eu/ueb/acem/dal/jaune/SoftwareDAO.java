@@ -30,9 +30,9 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.SoftwareRepository;
-import eu.ueb.acem.domain.beans.jaune.Applicatif;
+import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ApplicatifNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * 
  */
 @Repository("softwareDAO")
-public class SoftwareDAO implements DAO<Long, Applicatif> {
+public class SoftwareDAO implements DAO<Long, Software> {
 
 	/**
 	 * For serialization.
@@ -70,31 +70,31 @@ public class SoftwareDAO implements DAO<Long, Applicatif> {
 	}
 
 	@Override
-	public Applicatif create(Applicatif entity) {
-		return repository.save((ApplicatifNode) entity);
+	public Software create(Software entity) {
+		return repository.save((SoftwareNode) entity);
 	}
 
 	@Override
-	public Applicatif retrieveById(Long id) {
+	public Software retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Collection<Applicatif> retrieveByName(String name) {
-		Iterable<ApplicatifNode> softwareNodes = repository.findByName(name);
-		Collection<Applicatif> softwares = new HashSet<Applicatif>();
-		for (Applicatif software : softwareNodes) {
+	public Collection<Software> retrieveByName(String name) {
+		Iterable<SoftwareNode> softwareNodes = repository.findByName(name);
+		Collection<Software> softwares = new HashSet<Software>();
+		for (Software software : softwareNodes) {
 			softwares.add(software);
 		}
 		return softwares;
 	}
 
 	@Override
-	public Collection<Applicatif> retrieveAll() {
-		Iterable<ApplicatifNode> endResults = repository.findAll();
-		Collection<Applicatif> collection = new HashSet<Applicatif>();
+	public Collection<Software> retrieveAll() {
+		Iterable<SoftwareNode> endResults = repository.findAll();
+		Collection<Software> collection = new HashSet<Software>();
 		if (endResults.iterator() != null) {
-			Iterator<ApplicatifNode> iterator = endResults.iterator();
+			Iterator<SoftwareNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -103,13 +103,13 @@ public class SoftwareDAO implements DAO<Long, Applicatif> {
 	}
 
 	@Override
-	public Applicatif update(Applicatif entity) {
-		return repository.save((ApplicatifNode) entity);
+	public Software update(Software entity) {
+		return repository.save((SoftwareNode) entity);
 	}
 
 	@Override
-	public void delete(Applicatif entity) {
-		repository.delete((ApplicatifNode) entity);
+	public void delete(Software entity) {
+		repository.delete((SoftwareNode) entity);
 	}
 
 	@Override
@@ -134,11 +134,11 @@ public class SoftwareDAO implements DAO<Long, Applicatif> {
 		return collection;
 	}
 
-	public Collection<Applicatif> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<ApplicatifNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<Applicatif> collection = new HashSet<Applicatif>();
+	public Collection<Software> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<SoftwareNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<Software> collection = new HashSet<Software>();
 		if (endResults.iterator() != null) {
-			Iterator<ApplicatifNode> iterator = endResults.iterator();
+			Iterator<SoftwareNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}

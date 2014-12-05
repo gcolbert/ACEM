@@ -24,20 +24,20 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ReponseNode;
-import eu.ueb.acem.domain.beans.bleu.neo4j.ScenarioNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface PedagogicalAnswerRepository extends GenericRepository<ReponseNode> {
+public interface PedagogicalAnswerRepository extends GenericRepository<PedagogicalAnswerNode> {
 
 	@Query(value = "MATCH (n:PedagogicalAnswer) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
 	@Query(value = "start answer=node({answerId}) match (answer)-[:answeredUsingRessource]->(resource)<-[:stepRequiringResource]-(scenarioStep)-[:isPartOfScenario]->scenario return scenario")
-	Set<ScenarioNode> findScenariosRelatedToAnswer(@Param("answerId") Long id);
+	Set<PedagogicalScenarioNode> findScenariosRelatedToAnswer(@Param("answerId") Long id);
 
 }

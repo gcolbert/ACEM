@@ -20,8 +20,8 @@ package eu.ueb.acem.services;
 
 import java.util.Set;
 
-import eu.ueb.acem.domain.beans.gris.Enseignant;
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.gris.Person;
 
 /**
  * @author Grégoire Colbert
@@ -34,29 +34,29 @@ public interface UsersService {
 	
 	Long countPersons();
 	
-	Personne createPerson(String name, String login);
+	Person createPerson(String name, String login);
 
-	Personne retrievePerson(Long id);
+	Person retrievePerson(Long id);
 	
-	Personne updatePerson(Personne person);
+	Person updatePerson(Person person);
 
 	Boolean deletePerson(Long id);
 
 	void deleteAllPersons();
 	
-	Set<Personne> getPersons();
+	Set<Person> getPersons();
 
-	Enseignant createTeacher(String name, String login);
+	Teacher createTeacher(String name, String login);
 	
-	Enseignant retrieveTeacher(Long id);
+	Teacher retrieveTeacher(Long id);
 	
-	Enseignant updateTeacher(Enseignant teacher);
+	Teacher updateTeacher(Teacher teacher);
 
 	Boolean deleteTeacher(Long id);
 
 	void deleteAllTeachers();
 	
-	Set<? extends Enseignant> getTeachers();
+	Set<? extends Teacher> getTeachers();
 
 	Boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
 

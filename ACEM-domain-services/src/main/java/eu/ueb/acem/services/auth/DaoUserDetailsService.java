@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import eu.ueb.acem.domain.beans.gris.Personne;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.services.DomainService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,7 +38,7 @@ public class DaoUserDetailsService implements UserDetailsService {
 		 * @return userDetail for Spring
 		 * @throws UsernameNotFoundException
 		 */
-		public UserDetails loadUserByUser(Personne targetUser)
+		public UserDetails loadUserByUser(Person targetUser)
 				throws UsernameNotFoundException {
 
 			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
@@ -66,7 +66,7 @@ public class DaoUserDetailsService implements UserDetailsService {
 		public UserDetails loadUserByUsername(String arg0)
 				throws UsernameNotFoundException {
 			UserDetails d = null;
-			Personne user = null;
+			Person user = null;
 			try {
 				user = getDomainService().getUser(arg0);
 			} catch(Exception e) {
