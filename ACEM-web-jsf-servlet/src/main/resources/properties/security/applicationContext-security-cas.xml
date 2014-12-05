@@ -31,16 +31,16 @@
 
     <!-- HTTP security configurations -->
     <http entry-point-ref="casEntryPoint" use-expressions="true">
-        <intercept-url access="permitAll" pattern="/pages/exceptions/**"/>
-        <intercept-url access="permitAll" pattern="/javax.faces.resource/**"/>
-        <intercept-url access="permitAll" pattern="/resources/**"/>
-        <intercept-url access="permitAll" pattern="/templates/**"/>
-		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration" />
+		<intercept-url pattern="/home" access="permitAll"/>
+		<intercept-url pattern="/login" access="permitAll"/>
+		<intercept-url pattern="/administration*" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/pages/exceptions/**" access="permitAll"/>
+        <intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
+        <intercept-url pattern="/resources/**" access="permitAll"/>
+        <intercept-url pattern="/templates/**" access="permitAll"/>
         <!-- 
-        <intercept-url access="hasRole('ROLE_ADMIN')" pattern="/stylesheets/admin/**" />
-        <intercept-url access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" pattern="/stylesheets/user/**" />
-		<intercept-url access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" pattern="/stylesheets/admin/projet.xhtml" />
-        <intercept-url access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" pattern="/stylesheets/project/**" />
+        When the user is authentificated by CAS, but doesn't exist in the application database
         <intercept-url access="isAuthenticated()" pattern="/**"/>
         -->
         <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
