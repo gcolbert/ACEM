@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,32 +44,18 @@ public class ScenariosServiceTest extends TestCase {
 
 	@Before
 	public void before() {
-		organisationsService.deleteAllInstitutions();
-		assertEquals(new Long(0), organisationsService.countInstitutions());
-
-		usersService.deleteAllPersons();
-		assertEquals(new Long(0), usersService.countPersons());
-
-		usersService.deleteAllTeachers();
-		assertEquals(new Long(0), usersService.countTeachers());
-
-		scenariosService.deleteAllScenarios();
-		assertEquals(new Long(0), scenariosService.countScenarios());
-
-		scenariosService.deleteAllPedagogicalActivities();
-		assertEquals(new Long(0), scenariosService.countPedagogicalActivities());
 	}
 
 	@After
 	public void after() {
-		before();
 	}
 
 	/**
 	 * GetScenariosWithAuthor
 	 */
-	@Transactional
 	@Test
+	@Transactional
+	@Rollback(true)
 	public final void t01_TestGetScenariosWithAuthor() {
 		Institution institution = organisationsService.createInstitution("University of Music", "UoM", null);
 		
