@@ -46,8 +46,8 @@
         <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
         <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
         <custom-filter ref="casFilter" position="CAS_FILTER" />
-        <logout logout-success-url="/cas-logout.xhtml"/>
-        <session-management invalid-session-url="/faces/timeout.xhtml">  
+        <logout logout-success-url="/pages/logout.xhtml"/>
+        <session-management invalid-session-url="/pages/timeout.xhtml">  
             <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />  
         </session-management> 
     </http>
