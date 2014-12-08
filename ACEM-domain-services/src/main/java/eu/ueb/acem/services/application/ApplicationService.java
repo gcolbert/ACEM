@@ -1,14 +1,17 @@
-package eu.ueb.acem.services.application;
+﻿package eu.ueb.acem.services.application;
 
 import java.io.Serializable;
-import org.apache.commons.lang3.Validate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 /**
  * A bean to manage ChainEdit Version.
  */
+@Service("applicationService")
 public class ApplicationService implements InitializingBean, Serializable {
 
 	/**
@@ -31,18 +34,12 @@ public class ApplicationService implements InitializingBean, Serializable {
 	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(ApplicationService.class);
+
 	/**
-	 * The version major number.
+	 * The version as a string.
 	 */
-	private Integer versionMajorNumber;
-	/**
-	 * The version minor number.
-	 */
-	private Integer versionMinorNumber;
-	/**
-	 * The version update.
-	 */
-	private Integer versionUpdate;
+	@Value("${project.version}")
+	private String version;
 
 	/**
 	 * Bean constructor.
@@ -52,69 +49,14 @@ public class ApplicationService implements InitializingBean, Serializable {
 
 	@Override
 	public void afterPropertiesSet() {
-		Validate.notNull(this.versionMajorNumber,
-				"property versionMajorNumber of class "
-						+ this.getClass().getName() + " can not be null");
-		Validate.notNull(this.versionMinorNumber,
-				"property versionMinorNumber of class "
-						+ this.getClass().getName() + " can not be null");
-		Validate.notNull(this.versionUpdate,
-				"property versionUpdateNumber of class "
-						+ this.getClass().getName() + " can not be null");
-		logger.info("Starting Chainedit version " + getVersion() + "...");
+		logger.info("Starting version " + getVersion() + "...");
 	}
 
 	/**
 	 * @return The composed version
 	 */
 	public String getVersion() {
-		return versionMajorNumber + "." + versionMinorNumber + "."
-				+ versionUpdate;
-	}
-
-	/**
-	 * @return The versionMajorNumber
-	 */
-	public Integer getVersionMajorNumber() {
-		return versionMajorNumber;
-	}
-
-	/**
-	 * @return The versionMinorNumber
-	 */
-	public Integer getVersionMinorNumber() {
-		return versionMinorNumber;
-	}
-
-	/**
-	 * @return The versionUpdate
-	 */
-	public Integer getVersionUpdate() {
-		return versionUpdate;
-	}
-
-	/**
-	 * @param versionMajorNumber
-	 *            The versionMajorNumber to set.
-	 */
-	public void setVersionMajorNumber(final int versionMajorNumber) {
-		this.versionMajorNumber = Integer.valueOf(versionMajorNumber);
-	}
-
-	/**
-	 * @param versionMinorNumber
-	 *            The versionMinorNumber to set.
-	 */
-	public void setVersionMinorNumber(final int versionMinorNumber) {
-		this.versionMinorNumber = Integer.valueOf(versionMinorNumber);
-	}
-
-	/**
-	 * @param versionUpdate
-	 *            The versionUpdate to set.
-	 */
-	public void setVersionUpdate(final int versionUpdate) {
-		this.versionUpdate = Integer.valueOf(versionUpdate);
+		return version;
 	}
 
 }

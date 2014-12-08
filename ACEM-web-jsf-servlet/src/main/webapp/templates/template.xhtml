@@ -8,7 +8,7 @@
 	xmlns:p="http://primefaces.org/ui">
 <f:view locale="#{sessionController.currentUserLocale}">
 	<h:head>
-		<title><h:outputText value="#{applicationService.name}" /></title>
+		<title><h:outputText value="#{msg['APPLICATION.NAME']}" /></title>
 	 	<f:facet name="last">
 			<h:outputStylesheet library="style" name="application.reset.css" />
 			<h:outputStylesheet library="style" name="application.layout.css" />
@@ -20,14 +20,12 @@
  		<h:outputScript name="jsf.js" library="javax.faces" target="head" />
 	</h:head>
 	<h:body styleClass="fl-theme-app">
-		<ui:include src="_include/_header.xhtml" />
-		<div id="body">
-			<div class="app-body">
-				<ui:include src="menu.xhtml" />
-				<div class="app-content">
-				<ui:insert name="content" /></div>
-				<div style="clear: both;" />
-			</div>
+		<ui:include src="include/header.xhtml" />
+		<div class="app-body">
+			<ui:include src="menu.xhtml" />
+			<div class="app-content">
+			<ui:insert name="content" /></div>
+			<div style="clear: both;" />
 		</div>
 	</h:body>
 </f:view>

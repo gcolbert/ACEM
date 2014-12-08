@@ -16,24 +16,24 @@
 
 				<p:growl id="messagesDisplayer" showDetail="true" />
 
-				<p:contextMenu for="needsAndAnswersTree" nodeType="default">
+				<p:contextMenu for="pedagogicalAdviceTree" nodeType="default">
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.expandSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-plus" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.collapseSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-minus" />
 				</p:contextMenu>
-				<p:contextMenu for="needsAndAnswersTree"
+				<p:contextMenu for="pedagogicalAdviceTree"
 					nodeType="#{needsAndAnswersController.treeNodeType_NEED_LEAF}">
 					<!-- 
 					<p:menuitem
@@ -44,21 +44,21 @@
 					 -->
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.deleteSelectedNode}"
 						icon="ui-icon-close" />
 				</p:contextMenu>
-				<p:contextMenu for="needsAndAnswersTree"
+				<p:contextMenu for="pedagogicalAdviceTree"
 					nodeType="#{needsAndAnswersController.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
 					<!-- 
 					<p:menuitem
@@ -69,21 +69,21 @@
 					 -->
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateNeedWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.expandSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-plus" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.collapseSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-minus" />
 				</p:contextMenu>
-				<p:contextMenu for="needsAndAnswersTree"
+				<p:contextMenu for="pedagogicalAdviceTree"
 					nodeType="#{needsAndAnswersController.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
 					<!-- 
 					<p:menuitem
@@ -94,21 +94,21 @@
 					 -->
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.associateAnswerWithSelectedNode}"
 						icon="ui-icon-plus" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.EXPAND_ALL']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.expandSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-plus" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.COLLAPSE_ALL']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.collapseSelectedNodeIncludingChildren}"
 						icon="ui-icon-circlesmall-minus" />
 				</p:contextMenu>
-				<p:contextMenu for="needsAndAnswersTree"
+				<p:contextMenu for="pedagogicalAdviceTree"
 					nodeType="#{needsAndAnswersController.treeNodeType_ANSWER_LEAF}">
 					<!-- 
 					<p:menuitem
@@ -119,21 +119,21 @@
 					 -->
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_RESOURCE_CATEGORY']}"
-						update=":formPA:needsAndAnswersTree" icon="ui-icon-link"
+						update=":formPA:pedagogicalAdviceTree" icon="ui-icon-link"
 						onclick="PF('dialogAssociateResourceCategory').show()"
 						type="button" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_SERVICE']}"
-						update=":formPA:needsAndAnswersTree" icon="ui-icon-link"
+						update=":formPA:pedagogicalAdviceTree" icon="ui-icon-link"
 						onclick="PF('dialogAssociateService').show()" type="button" />
 					<p:menuitem
 						value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer"
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer"
 						action="#{needsAndAnswersController.deleteSelectedNode}"
 						icon="ui-icon-trash" />
 				</p:contextMenu>
 
-				<p:tree id="needsAndAnswersTree" dynamic="true"
+				<p:tree id="pedagogicalAdviceTree" styleClass="pedagogicalAdviceTree" dynamic="true"
 					value="#{needsAndAnswersController.treeRoot}" var="treeNodeData"
 					selectionMode="single"
 					selection="#{needsAndAnswersController.selectedNode}"
@@ -141,7 +141,7 @@
 					update="contextMenuForNeeds">
 					<p:ajax event="dragdrop"
 						listener="#{needsAndAnswersController.onDragDrop}"
-						update=":formPA:needsAndAnswersTree :formPA:messagesDisplayer" />
+						update=":formPA:pedagogicalAdviceTree :formPA:messagesDisplayer" />
 					<p:ajax event="select"
 						oncomplete="PrimeFaces.scrollTo('formPA:selectedNodeDetailsOutputPanel')"
 						listener="#{needsAndAnswersController.onNodeSelect}"

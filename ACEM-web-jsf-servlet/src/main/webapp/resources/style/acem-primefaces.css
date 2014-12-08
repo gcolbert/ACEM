@@ -1,4 +1,7 @@
-#header {
+/**********/
+/* COMMON */
+/**********/
+.app-header {
 	color:white;
 	background-image:url("../resources/images/BandeauNumeriqueAccueil2013.png");
 	background-repeat: no-repeat;
@@ -6,46 +9,46 @@
 	padding:1em;
 }
 
-#header .logo {
+.app-header .logo {
 	display:inline-block;
 	width:60px;
 	border-right:1px solid white;
 }
 
-#header .logo img {
+.app-header .logo img {
 	height:50px;
 	padding-right:1em;
 }
 
-#header .titreEtDescription {
+.app-header .titreEtDescription {
 	display:inline-block;
 	vertical-align:top;
 	margin-left:1em;
 }
 
-#header .span_bigTitre {
+.app-header .span_bigTitre {
 	font-size:2em;
 	font-weight: bold;
 }
 
-#header .span_titre {
+.app-header .span_titre {
 	font-style: italic;
 }
 
-#header .span_version {
+.app-header .span_version {
 	font-size: 0.8em;
 }
 
-#header .descriptionAppli {
+.app-header .descriptionAppli {
 }
 
-#header .span_currentUser {
+.app-header .span_currentUser {
 	float: right;
 	font-weight: bold;
 }
 
-#body {
-	padding:1em;
+.app-body {
+	padding:1em !important; /* We want to have a padding for the content under the page header */
 }
 
 .title {
@@ -53,41 +56,55 @@
 	font-weight:bold;
 }
 
+/***********/
+/* DIALOGS */
+/***********/
+.dialogValidationButton {
+	float: right;
+}
+
+.confirmDialog {
+	text-align: right !important;
+}
+
 /********/
 /* HOME */
 /********/
-#home {
-	
+.presentationPanelGrid {
+	border:0;
 }
-#presentation td[role=gridcell] {
+
+.presentationPanelGrid tr[role=row] {
+	border:0;
+}
+
+.presentationPanelGrid td[role=gridcell] {
 	vertical-align:top;
 	border:0;
 }
-#presentation .description-column {
+
+.pagesDescriptionsPanelGrid {
 	width:400px;
 }
-#presentation .description-column tr[role=row] {
+
+.pagesDescriptionsPanelGrid * {
 	border:0;
-	background:none;
 	background-color:white;
 }
-#presentation .description-column td[role=gridcell] {
-	vertical-align:middle;	
-}
-#presentation .description-column td[role=gridcell] table {
-	border:0;
-}
-#presentation .section-title {
+
+.presentationPanelGrid .section-title {
 	font-weight:bold;
 	color:#a3c3ea;
 	font-size:1.1em;
 }
-#presentation .introduction_text {
+
+.presentationPanelGrid .introduction_text {
 	display:block;
 	padding-top:8px;
 	font-size:1.3em;
 }
-#circular-explanation-image {
+
+.circularExplanationImg {
 	max-width:635px;
 	width:90%;
 	display:block;
@@ -99,10 +116,6 @@
 	text-decoration: underline;
 	display:block;
 	width:160px;
-}
-
-.ui-panel {
-	margin-top: 1em;
 }
 
 .ui-tabs .ui-tabs-nav {
@@ -122,183 +135,174 @@
 	font-weight:bold;
 }
 
-/* p:tree */
-.ui-tree {
-	width: 100%;
-}
-
 /* p:contextMenu */
 .ui-menu {
 	min-width: 18em;
 	margin-bottom:1em;
 }
 
-/* p:confirmDialog */
-.ui-dialog-buttonpane {
-	text-align: right !important;
-}
-
-/**********************/
-/* PEDAGOGICAL ADVICE */
-/**********************/
+/***************************/
+/* PEDAGOGICAL ADVICE TREE */
+/***************************/
 .Need {
-	
 }
 
 .Answer {
 	color: #2779AA;
 }
 
-.Resource {
-	
+.pedagogicalAdviceTree {
+	width:100% !important; /* The pedagogical tree must fill its container horizontally */
 }
 
 /****************/
 /* MY SCENARIOS */
 /****************/
-.ui-layout-unit-content {
-	padding: 0;
+.allScenariosPanel .ui-widget-content[role=row],
+.allScenariosPanel .ui-panelgrid-cell[role=gridcell] {
+	border:0 !important;  /* The panel grid containing the list of all scenarios and create/delete buttons should not have any border */
 }
 
-.ui-layout-center {
-	width:auto !important;
+.allScenariosScrollPanel {
+	min-height: 300px; /* The scroll panel of all scenarios should have a minimum height */
 }
 
-.ui-layout-pane {
-	min-width: 250px;
-	width: 100%;
+.allScenariosScrollPanelColumn {
+	border:0px !important; /* The list of all scenarios has only one column so the column doesn't need a border */
 }
 
-.ui-layout-pane .ui-panel {
-	border: 0;
-	padding: 0;
-	margin:0;
+.selectedScenarioLayoutUnit {
+	width:auto !important; /* The selected scenario should adapt its width when the window is resized */
+
+	border:0; /* The selected scenario layout unit should take zero space, so that the list of scenarios and the selected scenario are vertically aligned on top */
+	padding:0 !important; /* same reason */
+	margin:0 !important; /* same reason */
 }
 
-.ui-button {
-	margin: 4px 0;
-	background-color:#878786;
-	margin-right: 0.3em !important;
+.selectedScenarioLayoutUnit .ui-layout-unit-content {
+	height:auto !important; /* The selected scenario must not have a vertical scrollbar */
+	padding-top:0 !important; /* The selected scenario layout unit and list of scenarios must be vertically aligned, so we have to remove the default padding */
 }
 
-.ui-panelgrid {
-	width: 100%;
+.selectedScenarioPropertiesPanelGrid {
+	width:100%; /* The panel grid containing the selected scenario properties must fill its container horizontally */
 }
 
-.ui-scrollpanel {
-	width: 100%;
+.selectedScenarioPropertiesPanelGrid .ui-widget-content,
+.selectedScenarioPropertiesPanelGrid .ui-panelgrid-cell {
+	border:0 !important; /* The panel grid containing the selected scenario properties should not have any border */
 }
 
-.ui-layout-center {
-	width: 100%;
+.selectedScenarioPropertyInplace input {
+	width:90%; /* The inplace editor should extend horizontally (we cannot use 100% because of the two buttons) */
 }
 
-.ui-scrollpanel {
-	width: 100%;
-	height: 300px;
-}
-
-.dialogValidationButton {
-	float: right;
-}
-
-.ui-inplace-content input {
-	width: 400px;
-}
-
-.ui-editor iframe {
-	width: 100% !important;
-}
-
-.ui-datatable .ui-datatable-header {
-	text-align: left;	
+.selectedScenarioActivitiesDataTable .ui-datatable-header {
+	text-align:left !important; /* The header of the activities datatable must be aligned left */
 }
 
 /************/
 /* MY TOOLS */
 /************/
-#formResources .menu tr[role=row],
-#formResources .ui-tree,
-#formSelectedResource .ui-tree {
-	border:none;
+.toolCategoriesPanelGrid {
+	width:100%; /* The categories should use all the page width */
 }
-#formResources .menu td[role=gridcell] {
-	width:100px;
+
+.toolCategoriesPanelGrid tr[role=row] {
+	border:0; /* The categories should not be separated by a border */
+}
+
+.toolCategoriesPanelGrid td[role=gridcell] {
+	width:100px; /* Each category is 100px wide */
 	text-align:center;
 	background-color:white;
-	border:none;
+	border:0;
 	vertical-align:top;
 }
-#formResources .menu-entry {
+
+.toolCategoryMenuEntry {
 	text-decoration:none;
 	text-align:center;
 }
-#formResources .menu-entry-text {
+
+.toolCategoryLabel {
 	display:block;
 	font-weight:bold;
 	padding:0.5em 0;
 	width:180px;
 	margin:auto;
 }
-#formResources .menu-entry-image {
+
+.toolCategoryIcon {
 	width:100%;
 	max-width:130px;
 	display:block;
 	margin:auto;
 }
 
-#formSelectedToolCategory table[role=grid],
-#formSelectedToolCategory tr[role=row],
-#formSelectedToolCategory td[role=gridcell] {
+.subCategoriesTree {
+	border:0;
+}
+
+.selectedToolCategoryPanel table[role=grid],
+.selectedToolCategoryPanel tr[role=row],
+.selectedToolCategoryPanel td[role=gridcell] {
 	border:none;	
 }
-#formSelectedToolCategory .resourceLogo {
+
+.toolImg {
 	vertical-align:bottom;
 	margin-left:1em;
 }
-#formSelectedToolCategory .bottom-toolboxes tr,
-#formSelectedToolCategory .bottom-toolboxes td {
-	border: none;
-	background-color:white;
-	padding:0;
-	width:50%;
-	vertical-align:top;
-}
-#formSelectedToolCategory .favoriteToolCategory {
+
+.favoriteToolCategory {
 	display:block;
 	margin-top:0.5em;
+	width:100%;
 }
-#formSelectedToolCategory .favoriteToolCategoryCheckbox {
+
+.favoriteToolCategoriesPanel {
+	padding:0;
+	margin:0;
+	border:0;
+}
+
+.favoriteToolCategoryCheckbox {
 	vertical-align:middle;
 	margin-left:0.5em;
 }
-#formSelectedToolCategory .bottom-toolboxes td {
-	padding-right:0.5em;
-	padding-left:0.5em;
+
+.bottomToolboxesPanelGrid {
+	width:100%;
 }
-#formSelectedToolCategory .bottom-toolboxes td:first-of-type {
+
+.bottomToolboxesPanelGrid td[role=gridcell] {
+	padding:0;
+}
+
+.bottomToolboxesPanelGrid td:first-of-type {
 	padding-left:0;
 }
-#formSelectedToolCategory .bottom-toolboxes td:last-child {
+
+.bottomToolboxesPanelGrid td:last-child {
 	padding-right:0;
 }
 
 /******************/
 /* ADMINISTRATION */
 /******************/
-#formOrganisations .organisationLogo,
-#formToolCategories .toolCategoryLogo {
+.organisationLogo,
+.toolCategoryLogo {
 	display:block;
 	margin:auto;
 }
-#formToolCategories .toolCategoryDescriptionPanelGrid,
-#formToolCategories .toolCategoryDescriptionPanelGrid tr[role=row],
-#formToolCategories .toolCategoryDescriptionPanelGrid tr[role=row] td[role=gridcell] {
+
+.toolCategoryDescriptionPanelGrid,
+.toolCategoryDescriptionPanelGrid tr[role=row],
+.toolCategoryDescriptionPanelGrid tr[role=row] td[role=gridcell] {
 	border:0;
 }
 
-#formOrganisations .ui-accordion .ui-accordion-content,
-#formToolCategories .ui-accordion .ui-accordion-content {
+.administrationAccordionPanel .ui-accordion-content {
 	padding:0;
 }
-

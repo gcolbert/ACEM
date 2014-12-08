@@ -48,4 +48,14 @@
 		<view-id value="/pages/administration.xhtml" />
 	</url-mapping>
 
+	<url-mapping id="timeout">
+		<pattern value="/timeout" />
+		<view-id value="/pages/timeout.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="logout">
+		<pattern value="/logout" />
+		<view-id value="/pages/logout.xhtml" />
+	</url-mapping>
+
 </pretty-config>

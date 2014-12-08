@@ -17,7 +17,7 @@
 
 				<p:growl id="messagesDisplayer" showDetail="true" />
 
-				<p:confirmDialog global="true" showEffect="fade">
+				<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
 					<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
 						type="button" styleClass="ui-confirmdialog-yes"
 						icon="ui-icon-check" />
@@ -25,60 +25,60 @@
 						type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 				</p:confirmDialog>
 
-				<p:panelGrid styleClass="menu" columns="5">
-					<p:commandLink styleClass="menu-entry"
+				<p:panelGrid styleClass="toolCategoriesPanelGrid" columns="5">
+					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('equipment')}"
-						update=":formResources:resourcesTree">
+						update="subCategoriesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.equipments.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}"
-							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText
+							styleClass="toolCategoryIcon" />
+						<span class="toolCategoryLabel"><h:outputText
 								value="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}" /></span>
 					</p:commandLink>
-					<p:commandLink styleClass="menu-entry"
+					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('software')}"
-						update=":formResources:resourcesTree">
+						update="subCategoriesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.softwares.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}"
-							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText
+							styleClass="toolCategoryIcon" />
+						<span class="toolCategoryLabel"><h:outputText
 								value="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}" /></span>
 					</p:commandLink>
-					<p:commandLink styleClass="menu-entry"
+					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('softwareDocumentation')}"
-						update=":formResources:resourcesTree">
+						update="subCategoriesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.software-documentations.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}"
-							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText
+							styleClass="toolCategoryIcon" />
+						<span class="toolCategoryLabel"><h:outputText
 								value="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}" /></span>
 					</p:commandLink>
-					<p:commandLink styleClass="menu-entry"
+					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('pedagogicalAndDocumentaryResources')}"
-						update=":formResources:resourcesTree">
+						update="subCategoriesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}"
-							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText
+							styleClass="toolCategoryIcon" />
+						<span class="toolCategoryLabel"><h:outputText
 								value="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}" /></span>
 					</p:commandLink>
-					<p:commandLink styleClass="menu-entry"
+					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('professionalTraining')}"
-						update=":formResources:resourcesTree">
+						update="subCategoriesTree">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.professional-trainings.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"
-							styleClass="menu-entry-image" />
-						<span class="menu-entry-text"><h:outputText
+							styleClass="toolCategoryIcon" />
+						<span class="toolCategoryLabel"><h:outputText
 								value="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}" /></span>
 					</p:commandLink>
 				</p:panelGrid>
 
-				<p:tree id="resourcesTree" dynamic="true"
+				<p:tree id="subCategoriesTree" styleClass="subCategoriesTree" dynamic="true"
 					datakey="#{treeNodeData.id}"
 					value="#{resourcesController.resourcesTreeRoot}" var="treeNodeData"
 					selectionMode="single"
@@ -101,7 +101,7 @@
 
 		<h:form id="formSelectedToolCategory">
 			<p:outputPanel id="selectedToolCategoryOutputPanel">
-				<p:panel
+				<p:panel styleClass="selectedToolCategoryPanel"
 					header="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.HEADER']}"
 					id="selectedToolCategoryPanel"
 					rendered="#{resourcesController.selectedToolCategoryViewBean != null}">
@@ -112,7 +112,7 @@
 						<p:panelGrid columns="2">
 							<p:graphicImage id="toolCategoryIcon"
 								rendered="#{not empty resourcesController.selectedToolCategoryViewBean.iconFileName}"
-								styleClass="resourceLogo"
+								styleClass="toolImg"
 								alt="#{resourcesController.selectedToolCategoryViewBean.name}"
 								cache="false" width="80" value="#{imagesController.getImage()}">
 								<f:param name="imageFileName"
@@ -217,7 +217,7 @@
 						<p:outputLabel
 							value="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}"
 							for="pedagogicalUsesTree" />
-						<p:tree id="pedagogicalUsesTree" dynamic="true"
+						<p:tree id="pedagogicalUsesTree" styleClass="pedagogicalAdviceTree" dynamic="true"
 							value="#{resourcesController.pedagogicalUsesTreeRoot}"
 							var="treeNodeData">
 							<p:treeNode type="default"
@@ -271,10 +271,10 @@
 				</p:panel>
 			</p:outputPanel>
 
-			<p:panelGrid styleClass="bottom-toolboxes">
+			<p:panelGrid styleClass="bottomToolboxesPanelGrid">
 				<p:row>
 					<p:column>
-						<p:panel id="favoriteToolCategoriesPanel"
+						<p:panel id="favoriteToolCategoriesPanel" styleClass="favoriteToolCategoriesPanel"
 							rendered="#{sessionController.currentUserViewBean.isTeacher}"
 							header="#{msg['RESOURCES.MY_FAVORITE_TOOL_CATEGORIES.HEADER']}">
 							<ui:repeat id="favoriteToolCategories"

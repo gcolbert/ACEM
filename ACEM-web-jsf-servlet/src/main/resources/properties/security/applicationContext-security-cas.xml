@@ -33,12 +33,12 @@
     <http entry-point-ref="casEntryPoint" use-expressions="true">
 		<intercept-url pattern="/home" access="permitAll"/>
 		<intercept-url pattern="/login" access="permitAll"/>
-		<intercept-url pattern="/administration*" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/pages/exceptions/**" access="permitAll"/>
         <intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
         <intercept-url pattern="/resources/**" access="permitAll"/>
         <intercept-url pattern="/templates/**" access="permitAll"/>
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/administration*" access="hasRole('ROLE_ADMIN')"/>
         <!-- 
         When the user is authentificated by CAS, but doesn't exist in the application database
         <intercept-url access="isAuthenticated()" pattern="/**"/>
@@ -46,8 +46,8 @@
         <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
         <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
         <custom-filter ref="casFilter" position="CAS_FILTER" />
-        <logout logout-success-url="/pages/logout.xhtml"/>
-        <session-management invalid-session-url="/pages/timeout.xhtml">  
+        <logout logout-success-url="/logout"/>
+        <session-management invalid-session-url="/timeout">  
             <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />  
         </session-management> 
     </http>

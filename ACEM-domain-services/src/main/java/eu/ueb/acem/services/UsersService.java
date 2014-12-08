@@ -18,8 +18,6 @@
  */
 package eu.ueb.acem.services;
 
-import java.util.Set;
-
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.Person;
 
@@ -42,10 +40,6 @@ public interface UsersService {
 
 	Boolean deletePerson(Long id);
 
-	void deleteAllPersons();
-	
-	Set<Person> getPersons();
-
 	Teacher createTeacher(String name, String login);
 	
 	Teacher retrieveTeacher(Long id);
@@ -53,10 +47,6 @@ public interface UsersService {
 	Teacher updateTeacher(Teacher teacher);
 
 	Boolean deleteTeacher(Long id);
-
-	void deleteAllTeachers();
-	
-	Set<? extends Teacher> getTeachers();
 
 	Boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
 

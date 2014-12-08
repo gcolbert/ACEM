@@ -11,7 +11,7 @@
 		<h:form id="formOrganisations" enctype="multipart/form-data">
 			<p:growl id="messagesDisplayerFormOrganisations" showDetail="true" />
 
-			<p:confirmDialog global="true" showEffect="fade">
+			<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
 				<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
 					type="button" styleClass="ui-confirmdialog-yes"
 					icon="ui-icon-check" />
@@ -50,7 +50,7 @@
 							oncomplete="PF('dialogCreateCommunity').show()" process="@this">
 							<p:resetInput target=":formOrganisations:idDialogCreateCommunity" />
 						</p:commandButton>
-						<p:accordionPanel id="accordionPanelForCommunities"
+						<p:accordionPanel id="accordionPanelForCommunities" styleClass="administrationAccordionPanel"
 							widgetVar="accordionPanelForCommunitiesWidget"
 							value="#{organisationsController.communityViewBeans.tableEntries}"
 							var="communityViewBean" activeIndex="-1" dynamic="true"
@@ -123,7 +123,7 @@
 							<p:resetInput
 								target=":formOrganisations:idDialogCreateInstitution" />
 						</p:commandButton>
-						<p:accordionPanel id="accordionPanelForInstitutions"
+						<p:accordionPanel id="accordionPanelForInstitutions" styleClass="administrationAccordionPanel"
 							widgetVar="accordionPanelForInstitutionsWidget"
 							value="#{organisationsController.institutionViewBeans.tableEntries}"
 							var="institutionViewBean" activeIndex="-1" dynamic="true"
@@ -236,7 +236,7 @@
 							<p:resetInput
 								target=":formOrganisations:idDialogCreateAdministrativeDepartment" />
 						</p:commandButton>
-						<p:accordionPanel id="accordionPanelForAdministrativeDepartments"
+						<p:accordionPanel id="accordionPanelForAdministrativeDepartments" styleClass="administrationAccordionPanel"
 							value="#{organisationsController.administrativeDepartmentViewBeans.tableEntries}"
 							var="administrativeDepartmentViewBean" activeIndex="-1"
 							dynamic="true" collapsible="true">
@@ -307,7 +307,7 @@
 							<p:resetInput
 								target=":formOrganisations:idDialogCreateTeachingDepartment" />
 						</p:commandButton>
-						<p:accordionPanel id="accordionPanelForTeachingDepartments"
+						<p:accordionPanel id="accordionPanelForTeachingDepartments" styleClass="administrationAccordionPanel"
 							value="#{organisationsController.teachingDepartmentViewBeans.tableEntries}"
 							var="teachingDepartmentViewBean" activeIndex="-1" dynamic="true"
 							collapsible="true">
@@ -794,7 +794,7 @@
 					oncomplete="PF('dialogCreateToolCategory').show()" process="@this">
 					<p:resetInput target=":formToolCategories:idDialogCreateToolCategory" />
 				</p:commandButton>
-				<p:accordionPanel id="accordionPanelForToolCategories"
+				<p:accordionPanel id="accordionPanelForToolCategories" styleClass="administrationAccordionPanel"
 					widgetVar="accordionPanelForToolCategoriesWidget"
 					value="#{resourcesController.allToolCategoryViewBeans}"
 					var="toolCategoryViewBean" activeIndex="-1" dynamic="true"

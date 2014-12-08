@@ -18,9 +18,9 @@
 
 			<p:layoutUnit position="center"
 				header="#{msg['HOME.PRESENTATION.HEADER']}">
-				<p:panelGrid id="presentation" columns="2">
+				<p:panelGrid styleClass="presentationPanelGrid" columns="2">
 					<p:column>
-						<p:panelGrid columns="1" styleClass="description-column">
+						<p:panelGrid columns="1" styleClass="pagesDescriptionsPanelGrid">
 							<p:panelGrid columns="2">
 								<h:graphicImage url="resources/images/my-teachings.png"
 									alt="#{msg['MENU.MY_TEACHINGS']}" />
@@ -89,7 +89,7 @@
 							value="#{msg['HOME.PRESENTATION.INTRODUCTION_TEXT']}" />
 						<h:graphicImage
 							url="resources/images/ACEM-circular-explanation.png" alt="ACEM"
-							id="circular-explanation-image" />
+							styleClass="circularExplanationImg" />
 					</p:column>
 				</p:panelGrid>
 			</p:layoutUnit>

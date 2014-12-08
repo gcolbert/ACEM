@@ -98,9 +98,7 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 	 * @return the current user's locale.
 	 */
 	public Locale getCurrentUserLocale() {
-		if (logger.isDebugEnabled()) {
-			logger.debug(this.getClass().getName() + ".getCurrentUserLocale()");
-		}
+		logger.debug(this.getClass().getName() + ".getCurrentUserLocale()");
 		Person currentUser = null;
 		try {
 			currentUser = getCurrentUser();
@@ -108,22 +106,16 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 			e.printStackTrace();
 		}
 		if (currentUser == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("no current user, return null");
-			}
+			logger.debug("no current user, return null");
 			return null;
 		}
 		String lang = currentUser.getLanguage();
 		if (lang == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("language not set for user '" + currentUser.getLogin() + "', return null");
-			}
+			logger.debug("language not set for user '" + currentUser.getLogin() + "', return null");
 			return null;
 		}
 		Locale locale = new Locale(lang);
-		if (logger.isDebugEnabled()) {
-			logger.debug("language for user '" + currentUser.getLogin() + "' is '" + locale + "'");
-		}
+		logger.debug("language for user '" + currentUser.getLogin() + "' is '" + locale + "'");
 		return locale;
 	}
 

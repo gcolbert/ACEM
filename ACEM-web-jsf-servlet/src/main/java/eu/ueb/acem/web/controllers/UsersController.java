@@ -18,9 +18,7 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -31,9 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
@@ -48,8 +43,6 @@ public class UsersController extends AbstractContextAwareController {
 	private static final long serialVersionUID = -977386846045010683L;
 
 	private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
-
-	private List<PersonViewBean> personViewBeans;
 
 	private PersonViewBean selectedUserViewBean;
 
@@ -66,43 +59,33 @@ public class UsersController extends AbstractContextAwareController {
 	public ResourcesController resourcesController;
 	
 	public UsersController() {
-		personViewBeans = new ArrayList<PersonViewBean>();
 	}
 
 	@PostConstruct
 	public void initUsersController() {
-		logger.debug("initUsersController");
-
-		personViewBeans.clear();
-		Set<Person> persons = usersService.getPersons();
-		for (Person person : persons) {
-			PersonViewBean personViewBean;
-			if (person instanceof Teacher) {
-				Teacher teacher = (Teacher)person;
-				personViewBean = new TeacherViewBean(teacher);
-			}
-			else {
-				personViewBean = new PersonViewBean(person);
-			}
-			for (Organisation organisation : person.getWorksForOrganisations()) {
-				personViewBean.addOrganisationViewBean(organisationsController.getOrganisationViewBeanFromId(organisation.getId()));
-			}
-			personViewBeans.add(personViewBean);
-		}
+//
+//		personViewBeans.clear();
+//		Set<Person> persons = usersService.getPersons();
+//		for (Person person : persons) {
+//			PersonViewBean personViewBean;
+//			if (person instanceof Teacher) {
+//				Teacher teacher = (Teacher)person;
+//				personViewBean = new TeacherViewBean(teacher);
+//			}
+//			else {
+//				personViewBean = new PersonViewBean(person);
+//			}
+//			for (Organisation organisation : person.getWorksForOrganisations()) {
+//				personViewBean.addOrganisationViewBean(organisationsController.getOrganisationViewBeanFromId(organisation.getId()));
+//			}
+//			personViewBeans.add(personViewBean);
+//		}
 	}
 	
 	public PickListBean getPickListBean() {
 		return pickListBean;
 	}
 	
-	public List<PersonViewBean> getPersonViewBeans() {
-		return personViewBeans;
-	}
-
-	public void setPersonViewBeans(List<PersonViewBean> personViewBeans) {
-		this.personViewBeans = personViewBeans;
-	}
-
 	public PersonViewBean getSelectedUserViewBean() {
 		return selectedUserViewBean;
 	}
@@ -212,14 +195,6 @@ public class UsersController extends AbstractContextAwareController {
 			}
 		}
 		*/
-	}
-	
-	public void onDeleteOrganisation() {
-		logger.info("onDeleteOrganisation, organisation={}",organisationsController.getCurrentOrganisationViewBean().getDomainBean().getName());
-		for (PersonViewBean personViewBean : personViewBeans) {
-			personViewBean.removeOrganisationViewBean(organisationsController.getCurrentOrganisationViewBean());
-			personViewBean.getDomainBean().removeWorksForOrganisations(organisationsController.getCurrentOrganisationViewBean().getDomainBean());
-		}
 	}
 	
 }

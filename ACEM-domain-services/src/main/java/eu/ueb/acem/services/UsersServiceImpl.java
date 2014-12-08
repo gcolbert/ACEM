@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.services;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -58,28 +55,13 @@ public class UsersServiceImpl implements UsersService {
 
 	@Inject
 	private ResourcesService resourcesService;
-	
-	private Set<Person> persons;
-	private Set<Teacher> teachers;
 
 	public UsersServiceImpl() {
-		persons = new HashSet<Person>();
-		teachers = new HashSet<Teacher>();
 	}
 
 	@PostConstruct
 	public void initUsersService() {
 		logger.info("initUsersService");
-		persons.clear();
-		persons.addAll(personDAO.retrieveAll());
-
-		teachers.clear();
-		teachers.addAll(teacherDAO.retrieveAll());
-	}
-
-	@Override
-	public Set<Person> getPersons() {
-		return persons;
 	}
 
 	@Override
@@ -116,16 +98,6 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public void deleteAllPersons() {
-		personDAO.deleteAll();
-	}
-
-	@Override
-	public Set<Teacher> getTeachers() {
-		return teachers;
-	}
-	
-	@Override
 	public Teacher createTeacher(String name, String login) {
 		return teacherDAO.create(new TeacherNode(name, login));
 	}
@@ -146,11 +118,6 @@ public class UsersServiceImpl implements UsersService {
 			teacherDAO.delete(teacherDAO.retrieveById(id));
 		}
 		return (!teacherDAO.exists(id));
-	}
-
-	@Override
-	public void deleteAllTeachers() {
-		teacherDAO.deleteAll();
 	}
 
 	@Override

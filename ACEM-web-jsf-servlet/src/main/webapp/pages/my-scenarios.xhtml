@@ -11,7 +11,7 @@
 		<h:form id="formScenarios">
 			<p:growl id="messagesDisplayer" showDetail="true" />
 
-			<p:confirmDialog global="true" showEffect="fade">
+			<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
 				<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
 					type="button" styleClass="ui-confirmdialog-yes"
 					icon="ui-icon-check" />
@@ -21,15 +21,15 @@
 
 			<p:layout id="layout">
 
-				<p:layoutUnit position="west" resizable="false"  collapsible="true" header="#{msg['MY_SCENARIOS.HEADER']}">
-					<p:panelGrid columns="1">
+				<p:layoutUnit position="west" resizable="true" collapsible="true" header="#{msg['MY_SCENARIOS.HEADER']}" size="250">
+					<p:panelGrid columns="1" styleClass="allScenariosPanel">
 						<p:commandButton
 							value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
 							icon="ui-icon-plusthick" update=":dialogCreateScenarioId"
 							oncomplete="PF('dialogCreateScenario').show()">
 							<p:resetInput target=":dialogCreateScenarioId" />
 						</p:commandButton>
-						<p:scrollPanel mode="native">
+						<p:scrollPanel mode="native" styleClass="allScenariosScrollPanel">
 							<p:dataTable id="scenariosDataTable"
 								emptyMessage="#{msg['MY_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
 								value="#{myScenariosController.scenarioViewBeans}"
@@ -44,7 +44,7 @@
 									listener="#{myScenariosController.onRowUnselect}"
 									update="@form" />
 									 -->
-								<p:column
+								<p:column styleClass="allScenariosScrollPanelColumn"
 									headerText="#{msg['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
 									<h:outputText id="scenario" value="#{scenarioViewBean.name}" />
 									<p:tooltip for="scenario" value="#{scenarioViewBean.objective}" />  
@@ -65,16 +65,16 @@
 					</p:panelGrid>
 				</p:layoutUnit>
 
-				<p:layoutUnit position="center">
+				<p:layoutUnit position="center" styleClass="selectedScenarioLayoutUnit">
 					<p:panel header="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}"
 						rendered="#{myScenariosController.selectedScenarioViewBean != null}">
 
-						<p:panelGrid columns="2">
+						<p:panelGrid columns="2" styleClass="selectedScenarioPropertiesPanelGrid">
 							<h:outputLabel for="selectedScenarioName"
 								value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.NAME_LABEL']}"
 								styleClass="label" />
 							<p:panel>
-								<p:inplace id="selectedScenarioNameInplace" editor="true">
+								<p:inplace styleClass="selectedScenarioPropertyInplace" editor="true">
 									<p:ajax event="save" listener="#{myScenariosController.onSave}"
 										update="@form" />
 									<p:ajax event="cancel" update="@this" />
@@ -88,7 +88,7 @@
 								value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.OBJECTIVE_LABEL']}"
 								styleClass="label" />
 							<p:panel>
-								<p:inplace id="selectedScenarioObjectiveInplace" editor="true">
+								<p:inplace styleClass="selectedScenarioPropertyInplace" editor="true">
 									<p:ajax event="save" listener="#{myScenariosController.onSave}"
 										update="@form" />
 									<p:ajax event="cancel" update="@this" />
@@ -135,7 +135,7 @@
 
 						</p:panelGrid>
 
-						<p:dataTable id="selectedScenarioActivitiesDataTable"
+						<p:dataTable styleClass="selectedScenarioActivitiesDataTable"
 							editable="true"
 							emptyMessage="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
 							value="#{myScenariosController.selectedScenarioViewBean.pedagogicalActivityViewBeans}"
