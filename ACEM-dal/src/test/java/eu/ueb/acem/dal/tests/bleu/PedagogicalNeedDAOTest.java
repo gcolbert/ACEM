@@ -47,17 +47,17 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/dal-test-context.xml")
-public class BesoinDAOTest extends TestCase {
+public class PedagogicalNeedDAOTest extends TestCase {
 
 	/**
 	 * For Logging.
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(BesoinDAOTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(PedagogicalNeedDAOTest.class);
 
 	@Inject
 	private PedagogicalNeedDAO needDAO;
 
-	public BesoinDAOTest() {
+	public PedagogicalNeedDAOTest() {
 	}
 
 	@Before
