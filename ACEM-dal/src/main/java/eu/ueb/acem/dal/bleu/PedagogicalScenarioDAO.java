@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.TimeTicker;
-import eu.ueb.acem.dal.bleu.neo4j.ScenarioRepository;
+import eu.ueb.acem.dal.bleu.neo4j.PedagogicalScenarioRepository;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Person;
@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.gris.Person;
  * 
  */
 @Repository("scenarioDAO")
-public class ScenarioDAO implements DAO<Long, PedagogicalScenario> {
+public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 
 	/**
 	 * For serialization.
@@ -52,12 +52,12 @@ public class ScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ScenarioDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(PedagogicalScenarioDAO.class);
 
 	@Inject
-	private ScenarioRepository repository;
+	private PedagogicalScenarioRepository repository;
 
-	public ScenarioDAO() {
+	public PedagogicalScenarioDAO() {
 	}
 
 	@Override

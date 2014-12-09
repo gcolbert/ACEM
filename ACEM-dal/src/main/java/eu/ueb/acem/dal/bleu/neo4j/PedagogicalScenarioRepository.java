@@ -31,7 +31,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
  * @since 2013-11-20
  * 
  */
-public interface ScenarioRepository extends GenericRepository<PedagogicalScenarioNode> {
+public interface PedagogicalScenarioRepository extends GenericRepository<PedagogicalScenarioNode> {
 
 	@Query(value = "MATCH (n:PedagogicalScenario) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
