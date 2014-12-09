@@ -74,7 +74,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t01_TestBesoinDAOCreate() {
+	public final void t01_TestPedagogicalNeedDAOCreate() {
 		// We create a new object in the datastore
 		PedagogicalNeed need1 = new PedagogicalNeedNode("t01 need");
 
@@ -95,7 +95,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t02_TestBesoinDAORetrieve() {
+	public final void t02_TestPedagogicalNeedDAORetrieve() {
 		// We create a new object in the datastore
 		PedagogicalNeed need1 = needDAO.create(new PedagogicalNeedNode("t02 need"));
 		assertEquals(new Long(1), needDAO.count());
@@ -119,7 +119,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t03_TestBesoinDAOUpdate() {
+	public final void t03_TestPedagogicalNeedDAOUpdate() {
 		// Setting up
 		PedagogicalNeed need1 = new PedagogicalNeedNode("t03 need");
 		need1 = needDAO.create(need1);
@@ -147,7 +147,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t04_TestBesoinDAODelete() {
+	public final void t04_TestPedagogicalNeedDAODelete() {
 		PedagogicalNeed need1 = new PedagogicalNeedNode("t04 need");
 		need1 = needDAO.create(need1);
 		assertEquals(new Long(1), needDAO.count());
@@ -166,7 +166,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Transactional
 	@Rollback(true)
 	@SuppressWarnings("unused")
-	public final void t05_TestBesoinDAORetrieveAll() {
+	public final void t05_TestPedagogicalNeedDAORetrieveAll() {
 		PedagogicalNeed need1 = needDAO.create(new PedagogicalNeedNode("t05 need 1"));
 		PedagogicalNeed need11 = needDAO.create(new PedagogicalNeedNode("t05 need 1.1"));
 		need1.addChild(need11);
@@ -193,7 +193,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t06_TestBesoinDAOCheckParentChildRelationship() {
+	public final void t06_TestPedagogicalNeedDAOCheckParentChildRelationship() {
 		// We check that addChild is sufficient to create the parent/child
 		// relationship
 		PedagogicalNeed need1 = needDAO.create(new PedagogicalNeedNode("t06 need 1"));
@@ -234,14 +234,14 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	}
 
 	/**
-	 * Check that we can retrieve the BesoinNodes that don't have any parent
+	 * Check that we can retrieve the PedagogicalNeedNodes that don't have any parent
 	 * (roots of the tree)
 	 */
 	@Test
 	@Transactional
 	@Rollback(true)
 	@SuppressWarnings("unused")
-	public final void t07_TestBesoinDAORetrieveRootNeeds() {
+	public final void t07_TestPedagogicalNeedDAORetrieveRootNeeds() {
 		PedagogicalNeed need1 = needDAO.create(new PedagogicalNeedNode("t07 need 1"));
 
 		PedagogicalNeed need11 = needDAO.create(new PedagogicalNeedNode("t07 need 1.1"));
@@ -263,7 +263,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 		need3 = needDAO.update(need3);
 		need32 = needDAO.update(need32);
 
-		logger.info("t07_TestBesoinDAORetrieveRootNeeds calling besoinDAO.retrieveNeedsAtRoot()");
+		logger.info("t07_TestPedagogicalNeedDAORetrieveRootNeeds calling PedagogicalNeedDAO.retrieveNeedsAtRoot()");
 		Set<PedagogicalNeed> rootNeeds = needDAO.retrieveNeedsAtRoot();
 		assertEquals(new Long(3), new Long(rootNeeds.size()));
 	}
@@ -274,7 +274,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t08_TestBesoinDAORetrieveChildren() {
+	public final void t08_TestPedagogicalNeedDAORetrieveChildren() {
 		PedagogicalNeed need1 = needDAO.create(new PedagogicalNeedNode("t08 need 1"));
 		PedagogicalNeed need11 = needDAO.create(new PedagogicalNeedNode("t08 need 1.1"));
 		need1.addChild(need11);
@@ -312,7 +312,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t09_TestBesoinDAORetrieveChildrenAutomatically() {
+	public final void t09_TestPedagogicalNeedDAORetrieveChildrenAutomatically() {
 		PedagogicalNeed need1 = needDAO.create(new PedagogicalNeedNode("t09 need 1"));
 		PedagogicalNeed need11 = needDAO.create(new PedagogicalNeedNode("t09 need 1.1"));
 		need1.addChild(need11);
