@@ -62,6 +62,7 @@ public class ResourceDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(ResourceDAOTest.class);
 
 	@Inject
+	@SuppressWarnings("unused")
 	private UseModeDAO useModeDAO;
 
 	@Inject
@@ -74,12 +75,15 @@ public class ResourceDAOTest extends TestCase {
 	private SoftwareDocumentationDAO softwareDocumentationDAO;
 
 	@Inject
+	@SuppressWarnings("unused")
 	private EquipmentDAO equipmentDAO;
 
 	@Inject
+	@SuppressWarnings("unused")
 	private PedagogicalAndDocumentaryResourcesDAO pedagogicalAndDocumentaryResourcesDAO;
 
 	@Inject
+	@SuppressWarnings("unused")
 	private ProfessionalTrainingDAO professionalTrainingDAO;
 
 	public ResourceDAOTest() {
@@ -106,12 +110,13 @@ public class ResourceDAOTest extends TestCase {
 		Software moodle = new SoftwareNode("Moodle", null);
 		moodle = softwareDAO.create(moodle);
 
-		moodle.addCategory(learningManagementSystem);
+		moodle.getCategories().add(learningManagementSystem);
+		learningManagementSystem.getResources().add(moodle);
 		moodle = softwareDAO.update(moodle);
 		learningManagementSystem = resourceCategoryDAO.update(learningManagementSystem);
 		
-		Software moodleBis = softwareDAO.retrieveById(moodle.getId());
-		ResourceCategory learningManagementSystemBis = resourceCategoryDAO.retrieveById(learningManagementSystem.getId());
+		Software moodleBis = softwareDAO.retrieveById(moodle.getId(), true);
+		ResourceCategory learningManagementSystemBis = resourceCategoryDAO.retrieveById(learningManagementSystem.getId(), true);
 
 		assertTrue(learningManagementSystemBis.getResources().contains(moodleBis));
 		assertTrue(moodleBis.getCategories().contains(learningManagementSystemBis));
@@ -133,19 +138,21 @@ public class ResourceDAOTest extends TestCase {
 		SoftwareDocumentation softwareDocumentation = new SoftwareDocumentationNode("Tutorial for Moodle", null);
 		softwareDocumentation = softwareDocumentationDAO.create(softwareDocumentation);
 
-		software.addDocumentation(softwareDocumentation);
+		software.getDocumentations().add(softwareDocumentation);
+		softwareDocumentation.getSoftwares().add(software);
 
 		software = softwareDAO.update(software);
 		softwareDocumentation = softwareDocumentationDAO.update(softwareDocumentation);
 
-		Software softwareBis = softwareDAO.retrieveById(software.getId());
+		Software softwareBis = softwareDAO.retrieveById(software.getId(), true);
 		assertEquals(new Long(1), new Long(softwareBis.getDocumentations().size()));
 
 		SoftwareDocumentation softwareDocumentationBis = softwareDocumentationDAO.retrieveById(softwareDocumentation
-				.getId());
+				.getId(), true);
 		assertTrue(softwareBis.getDocumentations().contains(softwareDocumentationBis));
 
-		softwareBis.removeDocumentation(softwareDocumentationBis);
+		softwareBis.getDocumentations().remove(softwareDocumentationBis);
+		softwareDocumentationBis.getSoftwares().remove(softwareBis);
 		assertEquals(new Long(0), new Long(softwareBis.getDocumentations().size()));
 
 		softwareBis = softwareDAO.update(softwareBis);

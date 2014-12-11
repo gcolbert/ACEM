@@ -49,15 +49,15 @@ public interface OrganisationsService {
 
 	TeachingDepartment createTeachingDepartment(String name, String shortname, String iconFileName);
 
-	Organisation retrieveOrganisation(Long idOrganisation);
+	Organisation retrieveOrganisation(Long idOrganisation, boolean initialize);
 
-	Community retrieveCommunity(Long id);
+	Community retrieveCommunity(Long id, boolean initialize);
 
-	Institution retrieveInstitution(Long id);
+	Institution retrieveInstitution(Long id, boolean initialize);
 
-	AdministrativeDepartment retrieveAdministrativeDepartment(Long id);
+	AdministrativeDepartment retrieveAdministrativeDepartment(Long id, boolean initialize);
 
-	TeachingDepartment retrieveTeachingDepartment(Long id);
+	TeachingDepartment retrieveTeachingDepartment(Long id, boolean initialize);
 
 	Collection<Organisation> retrieveAllOrganisations();
 	
@@ -108,5 +108,11 @@ public interface OrganisationsService {
 	Boolean associateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment);
 
 	Boolean dissociateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment);
+
+	Boolean associatePedagogicalAnswerAndAdministrativeDepartment(Long idPedagogicalAnswer,
+			Long idAdministrativeDepartment);
+
+	Boolean dissociatePedagogicalAnswerAndAdministrativeDepartment(Long idPedagogicalAnswer,
+			Long idAdministrativeDepartment);
 
 }

@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -55,6 +56,9 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalScenarioDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private PedagogicalScenarioRepository repository;
 
 	public PedagogicalScenarioDAO() {
@@ -62,6 +66,7 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -72,14 +77,25 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	}
 
 	@Override
-	public PedagogicalScenario create(PedagogicalScenario scenario) {
-		scenario.setCreationDate(TimeTicker.tick());
-		return repository.save((PedagogicalScenarioNode) scenario);
+	public PedagogicalScenario create(PedagogicalScenario entity) {
+		entity.setCreationDate(TimeTicker.tick());
+		return repository.save((PedagogicalScenarioNode) entity);
 	}
 
 	@Override
 	public PedagogicalScenario retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public PedagogicalScenario retrieveById(Long id, boolean initialize) {
+		PedagogicalScenario entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getPedagogicalActivities());
+			neo4jOperations.fetch(entity.getAuthors());
+			neo4jOperations.fetch(entity.getTeachingClasses());
+		}
+		return entity;
 	}
 
 	@Override
@@ -106,14 +122,15 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	}
 
 	@Override
-	public PedagogicalScenario update(PedagogicalScenario scenario) {
-		scenario.setModificationDate(TimeTicker.tick());
-		return repository.save((PedagogicalScenarioNode) scenario);
+	public PedagogicalScenario update(PedagogicalScenario entity) {
+		entity.setModificationDate(TimeTicker.tick());
+		PedagogicalScenario updatedEntity = repository.save((PedagogicalScenarioNode) entity);
+		return retrieveById(updatedEntity.getId(),true);
 	}
 
 	@Override
-	public void delete(PedagogicalScenario scenario) {
-		repository.delete((PedagogicalScenarioNode) scenario);
+	public void delete(PedagogicalScenario entity) {
+		repository.delete((PedagogicalScenarioNode) entity);
 	}
 
 	@Override
@@ -132,7 +149,7 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				collection.add(retrieveById(iterator.next().getId(),true));
 			}
 		}
 		return collection;

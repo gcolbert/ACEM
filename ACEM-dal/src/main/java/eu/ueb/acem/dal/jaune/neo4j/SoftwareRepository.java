@@ -24,8 +24,8 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 
 /**
  * @author Grégoire Colbert
@@ -36,7 +36,10 @@ public interface SoftwareRepository extends GenericRepository<SoftwareNode> {
 
 	@Query(value = "MATCH (n:Software) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:Software) WHERE n.name=({name}) RETURN n")
+	Iterable<SoftwareNode> findByName(@Param("name") String name);
+
 	@Query(value = "MATCH (n:Software)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 

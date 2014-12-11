@@ -33,10 +33,10 @@ import eu.ueb.acem.domain.beans.vert.Room;
 @TypeAlias("Room")
 public class RoomNode extends PhysicalSpaceNode implements Room {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -7525107899854074242L;
-
-	//@GraphId
-	//private Long id;
 
 	@Indexed
 	private String name;

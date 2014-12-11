@@ -53,30 +53,22 @@ public interface PedagogicalScenario extends Serializable, Comparable<Pedagogica
 	
 	void setEvaluationModes(String evaluationModes);
 	
-	Set<? extends Teacher> getAuthors();
+	Set<Teacher> getAuthors();
 
-	void setAuthors(Set<? extends Teacher> authors);
+	void setAuthors(Set<Teacher> authors);
 
 	Boolean isPublished();
 
 	void setPublished(Boolean published);
 
-	Set<? extends PedagogicalActivity> getPedagogicalActivities();
+	Set<PedagogicalActivity> getPedagogicalActivities();
 
-	void setPedagogicalActivities(Set<? extends PedagogicalActivity> pedagogicalActivities);
+	void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities);
 
-	Set<? extends TeachingClass> getTeachingClasses();
+	Set<TeachingClass> getTeachingClasses();
 
-	void setTeachingClasses(Set<? extends TeachingClass> teachingClasses);
+	void setTeachingClasses(Set<TeachingClass> teachingClasses);
 	
-	void addPedagogicalActivity(PedagogicalActivity pedagogicalActivity);
-
-	void removePedagogicalActivity(PedagogicalActivity pedagogicalActivity);
-
-	void addAuthor(Teacher author);
-	
-	void removeAuthor(Teacher author);
-
 	int compareTo(PedagogicalScenario o);
 	
 }

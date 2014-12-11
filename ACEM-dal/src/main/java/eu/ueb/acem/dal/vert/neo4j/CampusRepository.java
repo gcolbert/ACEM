@@ -33,5 +33,8 @@ public interface CampusRepository extends GenericRepository<CampusNode> {
 
 	@Query(value = "MATCH (n:Campus) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:Campus) WHERE n.name=({name}) RETURN n")
+	Iterable<CampusNode> findByName(@Param("name") String name);
+
 }

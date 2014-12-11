@@ -20,10 +20,10 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -40,14 +40,16 @@ import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 @TypeAlias("SoftwareDocumentation")
 public class SoftwareDocumentationNode extends ResourceNode implements SoftwareDocumentation {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -2471928076966986715L;
 
 	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = SoftwareNode.class, type = "documentsSoftware", direction = OUTGOING)
-	@Fetch
-	private Set<SoftwareNode> softwares;
+	private Set<Software> softwares = new HashSet<Software>(0);
 
 	public SoftwareDocumentationNode() {
 	}
@@ -59,14 +61,13 @@ public class SoftwareDocumentationNode extends ResourceNode implements SoftwareD
 	}
 
 	@Override
-	public Set<? extends Software> getApplicatifs() {
+	public Set<Software> getSoftwares() {
 		return softwares;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setApplicatifs(Set<? extends Software> softwares) {
-		this.softwares = (Set<SoftwareNode>)softwares;
+	public void setSoftwares(Set<Software> softwares) {
+		this.softwares = softwares;
 	}
 
 	@Override
@@ -79,24 +80,4 @@ public class SoftwareDocumentationNode extends ResourceNode implements SoftwareD
 		this.name = name;
 	}
 
-	@Override
-	public void addApplicatif(Software software) {
-		if (! softwares.contains(software)) {
-			softwares.add((SoftwareNode)software);
-		}
-		if (! software.getDocumentations().contains(this)) {
-			software.addDocumentation(this);
-		}
-	}
-
-	@Override
-	public void removeApplicatif(Software software) {
-		if (softwares.contains(software)) {
-			softwares.remove(software);
-		}
-		if (software.getDocumentations().contains(this)) {
-			software.removeDocumentation(this);
-		}
-	}
-	
 }

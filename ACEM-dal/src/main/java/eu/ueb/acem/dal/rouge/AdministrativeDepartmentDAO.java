@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -50,6 +51,9 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 	private static final Logger logger = LoggerFactory.getLogger(AdministrativeDepartmentDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private AdministrativeDepartmentRepository repository;
 
 	public AdministrativeDepartmentDAO() {
@@ -58,6 +62,7 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -75,6 +80,18 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 	@Override
 	public AdministrativeDepartment retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public AdministrativeDepartment retrieveById(Long id, boolean initialize) {
+		AdministrativeDepartment entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getPossessedResources());
+			neo4jOperations.fetch(entity.getViewedResources());
+			neo4jOperations.fetch(entity.getInstitutions());
+			neo4jOperations.fetch(entity.getPedagogicalAnswers());
+		}
+		return entity;
 	}
 
 	@Override
@@ -102,7 +119,8 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 
 	@Override
 	public AdministrativeDepartment update(AdministrativeDepartment entity) {
-		return repository.save((AdministrativeDepartmentNode) entity);
+		AdministrativeDepartment updatedEntity = repository.save((AdministrativeDepartmentNode) entity);
+		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override

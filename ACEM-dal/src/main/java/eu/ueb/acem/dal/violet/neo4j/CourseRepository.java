@@ -33,5 +33,8 @@ public interface CourseRepository extends GenericRepository<CourseNode> {
 
 	@Query(value = "MATCH (n:Course) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:Course) WHERE n.name=({name}) RETURN n")
+	Iterable<CourseNode> findByName(@Param("name") String name);
+
 }

@@ -33,5 +33,8 @@ public interface BuildingRepository extends GenericRepository<BuildingNode> {
 
 	@Query(value = "MATCH (n:Building) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:Building) WHERE n.name=({name}) RETURN n")
+	Iterable<BuildingNode> findByName(@Param("name") String name);
+
 }

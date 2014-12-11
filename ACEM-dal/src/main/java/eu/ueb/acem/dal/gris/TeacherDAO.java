@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -53,6 +54,9 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 	private static final Logger logger = LoggerFactory.getLogger(TeacherDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private TeacherRepository repository;
 
 	public TeacherDAO() {
@@ -61,6 +65,7 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -78,6 +83,18 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 	@Override
 	public Teacher retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public Teacher retrieveById(Long id, boolean initialize) {
+		Teacher entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getFavoriteToolCategories());
+			neo4jOperations.fetch(entity.getScenarios());
+			neo4jOperations.fetch(entity.getTeachingClasses());
+			neo4jOperations.fetch(entity.getWorksForOrganisations());
+		}
+		return entity;
 	}
 
 	@Override
@@ -105,7 +122,8 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 
 	@Override
 	public Teacher update(Teacher entity) {
-		return repository.save((TeacherNode) entity);
+		Teacher updatedEntity = repository.save((TeacherNode) entity);
+		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override

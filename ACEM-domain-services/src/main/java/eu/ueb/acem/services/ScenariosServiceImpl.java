@@ -27,13 +27,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.bleu.PedagogicalActivityDAO;
-import eu.ueb.acem.dal.bleu.ScenarioDAO;
+import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
-import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 
 /**
  * @author Grégoire Colbert
@@ -47,7 +47,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 	private static final Logger logger = LoggerFactory.getLogger(ScenariosServiceImpl.class);
 
 	@Inject
-	private ScenarioDAO scenarioDAO;
+	private PedagogicalScenarioDAO pedagogicalScenarioDAO;
 
 	@Inject
 	private PedagogicalActivityDAO pedagogicalActivityDAO;
@@ -60,40 +60,44 @@ public class ScenariosServiceImpl implements ScenariosService {
 
 	@Override
 	public Long countScenarios() {
-		return scenarioDAO.count();
+		return pedagogicalScenarioDAO.count();
 	}
 
 	@Override
 	public PedagogicalScenario createScenario(Teacher author, String name, String objective) {
 		PedagogicalScenario scenario = new PedagogicalScenarioNode(name, objective);
-		scenario.addAuthor(author);
-		return scenarioDAO.create(scenario);
+		scenario.getAuthors().add(author);
+		author.getScenarios().add(scenario);
+		author = usersService.updateTeacher(author);
+		return pedagogicalScenarioDAO.create(scenario);
 	}
 
 	@Override
-	public PedagogicalScenario retrieveScenario(Long id) {
-		return scenarioDAO.retrieveById(id);
+	public PedagogicalScenario retrievePedagogicalScenario(Long id, boolean initialize) {
+		return pedagogicalScenarioDAO.retrieveById(id, initialize);
 	}
 
 	@Override
 	public Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author) {
-		return scenarioDAO.retrieveScenariosWithAuthor(author);
+		return pedagogicalScenarioDAO.retrieveScenariosWithAuthor(author);
 	}
 
 	@Override
-	public PedagogicalScenario updateScenario(PedagogicalScenario scenario) {
-		return scenarioDAO.update(scenario);
+	public PedagogicalScenario updateScenario(PedagogicalScenario pedagogicalScenario) {
+		PedagogicalScenario updatedEntity = pedagogicalScenarioDAO.update(pedagogicalScenario);
+		return retrievePedagogicalScenario(updatedEntity.getId(), true);
 	}
 
 	@Override
 	public Boolean dissociateAuthorOrDeleteScenarioIfLastAuthor(Long idScenario, Long idAuthor) {
-		if (scenarioDAO.exists(idScenario)) {
-			PedagogicalScenario scenario = scenarioDAO.retrieveById(idScenario);
+		if (pedagogicalScenarioDAO.exists(idScenario)) {
+			PedagogicalScenario scenario = pedagogicalScenarioDAO.retrieveById(idScenario);
 			if (scenario.getAuthors().size() > 1) {
 				// It's not the last author, we just want to dissociate the author from the scenario
 				Teacher author = usersService.retrieveTeacher(idAuthor);
-				scenario.removeAuthor(author);
-				scenario = scenarioDAO.update(scenario);
+				scenario.getAuthors().remove(author);
+				author.getScenarios().remove(scenario);
+				scenario = pedagogicalScenarioDAO.update(scenario);
 				return true;
 			}
 			else {
@@ -108,19 +112,19 @@ public class ScenariosServiceImpl implements ScenariosService {
 	
 	@Override
 	public Boolean deleteScenario(Long id) {
-		if (scenarioDAO.exists(id)) {
-			PedagogicalScenario scenario = scenarioDAO.retrieveById(id);
+		if (pedagogicalScenarioDAO.exists(id)) {
+			PedagogicalScenario scenario = pedagogicalScenarioDAO.retrieveById(id);
 			for (PedagogicalActivity pedagogicalActivity : scenario.getPedagogicalActivities()) {
 				pedagogicalActivityDAO.delete(pedagogicalActivity);
 			}
-			scenarioDAO.delete(scenario);
+			pedagogicalScenarioDAO.delete(scenario);
 		}
-		return (!scenarioDAO.exists(id));
+		return (!pedagogicalScenarioDAO.exists(id));
 	}
 
 	@Override
 	public void deleteAllScenarios() {
-		scenarioDAO.deleteAll();
+		pedagogicalScenarioDAO.deleteAll();
 	}
 
 	@Override
@@ -134,13 +138,14 @@ public class ScenariosServiceImpl implements ScenariosService {
 	}
 
 	@Override
-	public PedagogicalActivity retrievePedagogicalActivity(Long id) {
-		return pedagogicalActivityDAO.retrieveById(id);
+	public PedagogicalActivity retrievePedagogicalActivity(Long id, boolean initialize) {
+		return pedagogicalActivityDAO.retrieveById(id, initialize);
 	}
 
 	@Override
 	public PedagogicalActivity updatePedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		return pedagogicalActivityDAO.update(pedagogicalActivity);
+		PedagogicalActivity updatedEntity = pedagogicalActivityDAO.update(pedagogicalActivity);
+		return retrievePedagogicalActivity(updatedEntity.getId(), true);
 	}
 
 	@Override

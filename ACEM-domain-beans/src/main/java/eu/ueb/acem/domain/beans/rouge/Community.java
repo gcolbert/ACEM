@@ -27,12 +27,8 @@ import java.util.Set;
  */
 public interface Community extends Organisation {
 
-	Set<? extends Institution> getInstitutions();
+	Set<Institution> getInstitutions();
 
-	void setInstitutions(Set<? extends Institution> institutions);
-
-	void addInstitution(Institution institution);
-
-	void removeInstitution(Institution institution);
+	void setInstitutions(Set<Institution> institutions);
 	
 }

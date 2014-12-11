@@ -20,20 +20,19 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
-import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 
 /**
  * @author Grégoire Colbert
@@ -42,23 +41,21 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  */
 @NodeEntity
 @TypeAlias("PedagogicalActivity")
-public class PedagogicalActivityNode implements PedagogicalActivity {
+public class PedagogicalActivityNode extends AbstractNode implements PedagogicalActivity {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -5248471016348742765L;
-
-	@GraphId
-	private Long id;
 
 	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "activityForScenario", direction = OUTGOING)
-	@Fetch
-	private Set<PedagogicalScenarioNode> scenarios;
+	private Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>(0);
 
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "activityRequiringResourceFromCategory", direction = OUTGOING)
-	@Fetch
-	private Set<ResourceCategoryNode> resourceCategories;
+	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
 	private Long positionInScenario;
 	private String objective;
@@ -70,47 +67,17 @@ public class PedagogicalActivityNode implements PedagogicalActivity {
 
 	public PedagogicalActivityNode(String name) {
 		this();
-		this.name = name;
+		setName(name);
 	}
 
 	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Override
-	public Set<? extends PedagogicalScenario> getScenarios() {
+	public Set<PedagogicalScenario> getScenarios() {
 		return scenarios;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setScenarios(Set<? extends PedagogicalScenario> scenarios) {
-		this.scenarios = (Set<PedagogicalScenarioNode>) scenarios;
-	}
-	
-	@Override
-	@Transactional
-	public void addScenario(PedagogicalScenario scenario) {
-		if (scenario != null) {
-			if (!scenarios.contains(scenario)) {
-				scenarios.add((PedagogicalScenarioNode)scenario);
-			}
-			if (!scenario.getPedagogicalActivities().contains(this)) {
-				scenario.addPedagogicalActivity(this);
-			}
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeScenario(PedagogicalScenario scenario) {
-		scenarios.remove(scenario);
-		scenario.removePedagogicalActivity(this);
+	public void setScenarios(Set<PedagogicalScenario> scenarios) {
+		this.scenarios = scenarios;
 	}
 
 	@Override
@@ -164,14 +131,13 @@ public class PedagogicalActivityNode implements PedagogicalActivity {
 	}
 
 	@Override
-	public Set<? extends ResourceCategory> getResourceCategories() {
+	public Set<ResourceCategory> getResourceCategories() {
 		return resourceCategories;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setResourceCategories(Set<? extends ResourceCategory> resourceCategories) {
-		this.resourceCategories = (Set<ResourceCategoryNode>)resourceCategories;
+	public void setResourceCategories(Set<ResourceCategory> resourceCategories) {
+		this.resourceCategories = resourceCategories;
 	}
 
 	@Override
@@ -179,38 +145,4 @@ public class PedagogicalActivityNode implements PedagogicalActivity {
 		return (int) (positionInScenario - o.getPositionInScenario());
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PedagogicalActivityNode other = (PedagogicalActivityNode) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		}
-		else
-			if (!getId().equals(other.getId()))
-				return false;
-		if (getName() == null) {
-			if (other.getName() != null)
-				return false;
-		}
-		else
-			if (!getName().equals(other.getName()))
-				return false;
-		return true;
-	}	
 }

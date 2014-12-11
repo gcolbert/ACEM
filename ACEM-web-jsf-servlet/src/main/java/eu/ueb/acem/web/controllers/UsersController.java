@@ -95,13 +95,13 @@ public class UsersController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistOrganisationViewBeans() {
-		logger.info("preparePicklistOrganisationViewBeans");
+		logger.debug("preparePicklistOrganisationViewBeans");
 		if (getSelectedUserViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(organisationsController.getOrganisationViewBeans().values());
 			pickListBean.getPickListEntities().getTarget().clear();
 			for (OrganisationViewBean organisationViewBean : organisationsController.getOrganisationViewBeans().values()) {
-				logger.info("organisationViewBean={}",organisationViewBean.getDomainBean().getName());
+				logger.debug("organisationViewBean={}",organisationViewBean.getDomainBean().getName());
 				if (getSelectedUserViewBean().getDomainBean().getWorksForOrganisations().contains(organisationViewBean.getDomainBean())) {
 					pickListBean.getPickListEntities().getSource().remove(organisationViewBean);
 					pickListBean.getPickListEntities().getTarget().add(organisationViewBean);
@@ -117,7 +117,7 @@ public class UsersController extends AbstractContextAwareController {
 	}
 
 	public void toggleFavoriteToolCategoryForCurrentUser(ToolCategoryViewBean toolCategoryViewBean) {
-		logger.info("Entering toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
+		logger.debug("Entering toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
 		if (getCurrentUserViewBean() instanceof TeacherViewBean) {
 			TeacherViewBean currentUserViewBean = (TeacherViewBean)getCurrentUserViewBean();
 			if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
@@ -127,7 +127,7 @@ public class UsersController extends AbstractContextAwareController {
 				}
 			}
 			else {
-				logger.info("user doesn't have tool category as favorite, we should add it");
+				logger.debug("user doesn't have tool category as favorite, we should add it");
 				if (usersService.addFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
 					currentUserViewBean.addFavoriteToolCategoryViewBean(toolCategoryViewBean);
 				}
@@ -137,22 +137,22 @@ public class UsersController extends AbstractContextAwareController {
 	}
 	
 	public void onTransfer(TransferEvent event) {
-		logger.info("onTransfer");
+		logger.debug("onTransfer");
 		@SuppressWarnings("unchecked")
 		List<OrganisationViewBean> listOfMovedViewBeans = (List<OrganisationViewBean>) event.getItems();
 		try {
 			for (OrganisationViewBean movedOrganisationViewBean : listOfMovedViewBeans) {
 				if (event.isAdd()) {
-					logger.info("We should associate {} and {}", movedOrganisationViewBean.getName(), getSelectedUserViewBean()
+					logger.debug("We should associate {} and {}", movedOrganisationViewBean.getName(), getSelectedUserViewBean()
 							.getName());
 					if (usersService.associateUserWorkingForOrganisation(getSelectedUserViewBean().getId(),
 							movedOrganisationViewBean.getId())) {
-						selectedUserViewBean.getDomainBean().addWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
+						selectedUserViewBean.getDomainBean().getWorksForOrganisations().add(movedOrganisationViewBean.getDomainBean());
 						selectedUserViewBean.addOrganisationViewBean(movedOrganisationViewBean);
-						logger.info("association successful");
+						logger.debug("association successful");
 					}
 					else {
-						logger.info("association failed");
+						logger.debug("association failed");
 					}
 				}
 				else {
@@ -160,12 +160,12 @@ public class UsersController extends AbstractContextAwareController {
 							.getName());
 					if (usersService.dissociateUserWorkingForOrganisation(getSelectedUserViewBean().getId(),
 							movedOrganisationViewBean.getId())) {
-						selectedUserViewBean.getDomainBean().removeWorksForOrganisations(movedOrganisationViewBean.getDomainBean());
+						selectedUserViewBean.getDomainBean().getWorksForOrganisations().remove(movedOrganisationViewBean.getDomainBean());
 						selectedUserViewBean.removeOrganisationViewBean(movedOrganisationViewBean);
-						logger.info("dissociation successful");
+						logger.debug("dissociation successful");
 					}
 					else {
-						logger.info("dissociation failed");
+						logger.debug("dissociation failed");
 					}
 				}
 			}

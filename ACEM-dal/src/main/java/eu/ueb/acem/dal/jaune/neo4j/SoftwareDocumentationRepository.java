@@ -36,7 +36,10 @@ public interface SoftwareDocumentationRepository extends GenericRepository<Softw
 
 	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE n.name=({name}) RETURN n")
+	Iterable<SoftwareDocumentationNode> findByName(@Param("name") String name);
+
 	@Query(value = "MATCH (n:SoftwareDocumentation)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 

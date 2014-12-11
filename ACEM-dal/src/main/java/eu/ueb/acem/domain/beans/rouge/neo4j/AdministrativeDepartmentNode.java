@@ -27,16 +27,14 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
-import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
-import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 
 /**
  * @author Grégoire Colbert
@@ -62,22 +60,19 @@ public class AdministrativeDepartmentNode extends OrganisationNode implements Ad
 	private String name;
 
 	@RelatedTo(elementClass = InstitutionNode.class, type = "administrativeDepartmentPartOfInstitution", direction = OUTGOING)
-	@Fetch
-	private Set<InstitutionNode> institutions;
+	private Set<Institution> institutions = new HashSet<Institution>(0);
 
 	@RelatedTo(elementClass = PedagogicalAnswerNode.class, type="answeredByAdministrativeDepartment", direction = INCOMING)
-	@Fetch
-	private Set<PedagogicalAnswerNode> pedagogicalAnswers;
+	private Set<PedagogicalAnswer> pedagogicalAnswers = new HashSet<PedagogicalAnswer>(0);
 	
 	public AdministrativeDepartmentNode() {
-		institutions = new HashSet<InstitutionNode>();
 	}
 
 	public AdministrativeDepartmentNode(String name, String shortname, String iconFileName) {
 		this();
-		this.setName(name);
-		this.setShortname(shortname);
-		this.setIconFileName(iconFileName);
+		setName(name);
+		setShortname(shortname);
+		setIconFileName(iconFileName);
 	}
 
 	@Override
@@ -91,69 +86,23 @@ public class AdministrativeDepartmentNode extends OrganisationNode implements Ad
 	}
 	
 	@Override
-	public Set<? extends Institution> getInstitutions() {
+	public Set<Institution> getInstitutions() {
 		return institutions;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setInstitutions(Set<? extends Institution> institutions) {
-		this.institutions = (Set<InstitutionNode>) institutions;
+	public void setInstitutions(Set<Institution> institutions) {
+		this.institutions = institutions;
 	}
 
 	@Override
-	@Transactional
-	public void addInstitution(Institution institution) {
-		if (! institutions.contains(institution)) {
-			institutions.add((InstitutionNode)institution);
-		}
-		if (! institution.getAdministrativeDepartments().contains(this)) {
-			institution.addAdministrativeDepartment(this);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeInstitution(Institution institution) {
-		if (institutions.contains(institution)) {
-			institutions.remove(institution);
-		}
-		if (institution.getAdministrativeDepartments().contains(this)) {
-			institution.removeAdministrativeDepartment(this);
-		}
-	}
-
-	@Override
-	public Set<? extends PedagogicalAnswer> getPedagogicalAnswers() {
+	public Set<PedagogicalAnswer> getPedagogicalAnswers() {
 		return pedagogicalAnswers;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setPedagogicalAnswers(Set<? extends PedagogicalAnswer> pedagogicalAnswers) {
-		this.pedagogicalAnswers = (Set<PedagogicalAnswerNode>) pedagogicalAnswers;
+	public void setPedagogicalAnswers(Set<PedagogicalAnswer> pedagogicalAnswers) {
+		this.pedagogicalAnswers = pedagogicalAnswers;
 	}
 
-	@Override
-	@Transactional
-	public void addPedagogicalAnswer(PedagogicalAnswer answer) {
-		if (! pedagogicalAnswers.contains(answer)) {
-			pedagogicalAnswers.add((PedagogicalAnswerNode)answer);
-		}
-		if (! answer.getAdministrativeDepartments().contains(this)) {
-			answer.addAdministrativeDepartment(this);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removePedagogicalAnswer(PedagogicalAnswer answer) {
-		if (pedagogicalAnswers.contains(answer)) {
-			pedagogicalAnswers.remove(answer);
-		}
-		if (answer.getAdministrativeDepartments().contains(this)) {
-			answer.removeAdministrativeDepartment(this);
-		}
-	}
-	
 }

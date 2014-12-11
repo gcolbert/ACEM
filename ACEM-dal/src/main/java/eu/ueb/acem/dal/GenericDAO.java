@@ -23,10 +23,8 @@
 //import java.util.HashSet;
 //import java.util.Iterator;
 //
-//import javax.annotation.Resource;
+//import javax.inject.Inject;
 //
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Qualifier;
 //import org.springframework.stereotype.Repository;
 //
 ///**
@@ -55,7 +53,14 @@
 //
 //	@Override
 //	public Boolean exists(Long id) {
-//		return (id != null) ? repository.exists(id) : false;
+//		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
+//		//return (id != null) ? repository.exists(id) : false;
+//		if (id == null) {
+//			return false;
+//		}
+//		else {
+//			return repository.count(id) > 0 ? true : false;
+//		}
 //	}
 //
 //	@SuppressWarnings("unchecked")

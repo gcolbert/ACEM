@@ -21,18 +21,16 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.jaune.UseMode;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
 
@@ -43,57 +41,35 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
  */
 @NodeEntity
 @TypeAlias("Resource")
-public abstract class ResourceNode implements Resource {
+public abstract class ResourceNode extends AbstractNode implements Resource {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -7922906613944705977L;
-
-	@GraphId
-	private Long id;
-
-	private String name;
 
 	private String iconFileName;
 	
 	private String description;
 	
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "categoryContains", direction = INCOMING)
-	@Fetch
-	private Set<ResourceCategoryNode> categories;
+	private Set<ResourceCategory> categories;
 	
 	@RelatedTo(elementClass = UseModeNode.class, type = "resourceHasUseMode", direction = OUTGOING)
-	@Fetch
-	private Set<UseModeNode> useModes;
+	private Set<UseMode> useModes;
 	
 	@RelatedTo(elementClass = OrganisationNode.class, type = "possessesResource", direction = INCOMING)
-	@Fetch
-	private OrganisationNode organisationPossessingResource;
+	private Organisation organisationPossessingResource;
 
 	@RelatedTo(elementClass = OrganisationNode.class, type = "accessesResource", direction = INCOMING)
-	@Fetch
-	private Set<OrganisationNode> organisationsHavingAccessToResource;
+	private Set<Organisation> organisationsHavingAccessToResource;
 
 	public ResourceNode() {
-		categories = new HashSet<ResourceCategoryNode>();
 	}
 
 	public ResourceNode(String name) {
 		this();
 		setName(name);
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-	
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	@Override
@@ -117,45 +93,23 @@ public abstract class ResourceNode implements Resource {
 	}
 
 	@Override
-	public Set<? extends UseMode> getUseModes() {
+	public Set<UseMode> getUseModes() {
 		return useModes;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setUseModes(Set<? extends UseMode> useModes) {
-		this.useModes = (Set<UseModeNode>) useModes;
+	public void setUseModes(Set<UseMode> useModes) {
+		this.useModes = useModes;
 	}
 
 	@Override
-	public Set<? extends ResourceCategory> getCategories() {
+	public Set<ResourceCategory> getCategories() {
 		return categories;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setCategories(Set<? extends ResourceCategory> categories) {
-		this.categories = (Set<ResourceCategoryNode>) categories;
-	}
-
-	@Override
-	public void addCategory(ResourceCategory category) {
-		if (! categories.contains(category)) {
-			categories.add((ResourceCategoryNode) category);
-		}
-		if (! category.getResources().contains(this)) {
-			category.addResource(this);
-		}
-	}
-
-	@Override
-	public void removeCategory(ResourceCategory category) {
-		if (categories.contains(category)) {
-			categories.remove(category);
-		}
-		if (category.getResources().contains(this)) {
-			category.removeResource(this);
-		}
+	public void setCategories(Set<ResourceCategory> categories) {
+		this.categories = categories;
 	}
 
 	@Override
@@ -169,74 +123,18 @@ public abstract class ResourceNode implements Resource {
 	}
 
 	@Override
-	public Set<? extends Organisation> getOrganisationsHavingAccessToResource() {
+	public Set<Organisation> getOrganisationsHavingAccessToResource() {
 		return organisationsHavingAccessToResource;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setOrganisationsHavingAccessToResource(Set<? extends Organisation> organisations) {
-		this.organisationsHavingAccessToResource = (Set<OrganisationNode>)organisations;
+	public void setOrganisationsHavingAccessToResource(Set<Organisation> organisations) {
+		this.organisationsHavingAccessToResource = organisations;
 	}
 
-	@Override
-	public void addOrganisationHavingAccessToResource(Organisation organisation) {
-		if (! organisationsHavingAccessToResource.contains(organisation)) {
-			organisationsHavingAccessToResource.add((OrganisationNode) organisation);
-		}
-		if (! organisation.getViewedResources().contains(this)) {
-			organisation.addViewedResource(this);
-		}
-	}
-
-	@Override
-	public void removeOrganisationHavingAccessToResource(Organisation organisation) {
-		if (organisationsHavingAccessToResource.contains(organisation)) {
-			organisationsHavingAccessToResource.remove(organisation);
-		}
-		if (organisation.getViewedResources().contains(this)) {
-			organisation.removeViewedResource(this);
-		}
-	}
-	
 	@Override
 	public int compareTo(Resource o) {
 		return getName().compareTo(o.getName());
 	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ResourceNode other = (ResourceNode) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		}
-		else
-			if (!getId().equals(other.getId()))
-				return false;
-		if (getName() == null) {
-			if (other.getName() != null)
-				return false;
-		}
-		else
-			if (!getName().equals(other.getName()))
-				return false;
-		return true;
-	}
-	
 }

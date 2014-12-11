@@ -36,10 +36,10 @@ public interface PedagogicalNeedRepository extends GenericRepository<Pedagogical
 	@Query(value = "MATCH (n:PedagogicalNeed) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 	
-	@Query(value = "match (n:PedagogicalNeed) where not (n)-[:hasParentNeed]->() return n")
-	Set<PedagogicalNeedNode> findRoots();
-	
-	@Query(value = "match (n:PedagogicalNeed) where n.name=({name}) return n")
+	@Query(value = "MATCH (n:PedagogicalNeed) WHERE n.name=({name}) RETURN n")
 	Iterable<PedagogicalNeedNode> findByName(@Param("name") String name);
+
+	@Query(value = "MATCH (n:PedagogicalNeed) WHERE not (n)-[:hasParentNeed]->() RETURN n")
+	Set<PedagogicalNeedNode> findRoots();
 
 }

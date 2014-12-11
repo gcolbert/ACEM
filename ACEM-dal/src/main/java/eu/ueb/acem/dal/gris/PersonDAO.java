@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -53,6 +54,9 @@ public class PersonDAO implements DAO<Long, Person> {
 	private static final Logger logger = LoggerFactory.getLogger(PersonDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private PersonRepository repository;
 
 	public PersonDAO() {
@@ -61,6 +65,7 @@ public class PersonDAO implements DAO<Long, Person> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -91,6 +96,15 @@ public class PersonDAO implements DAO<Long, Person> {
 	}
 
 	@Override
+	public Person retrieveById(Long id, boolean initialize) {
+		Person entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getWorksForOrganisations());
+		}
+		return entity;
+	}
+
+	@Override
 	public Collection<Person> retrieveAll() {
 		Iterable<PersonNode> endResults = repository.findAll();
 		Collection<Person> collection = new HashSet<Person>();
@@ -105,8 +119,8 @@ public class PersonDAO implements DAO<Long, Person> {
 
 	@Override
 	public Person update(Person entity) {
-		PersonNode personNode = (PersonNode) entity;
-		return repository.save(personNode);
+		Person updatedEntity = repository.save((PersonNode) entity);
+		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override

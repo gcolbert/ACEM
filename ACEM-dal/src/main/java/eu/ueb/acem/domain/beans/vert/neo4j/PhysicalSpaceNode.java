@@ -19,10 +19,9 @@
 package eu.ueb.acem.domain.beans.vert.neo4j;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
@@ -32,15 +31,12 @@ import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
  */
 @NodeEntity
 @TypeAlias("PhysicalSpace")
-public abstract class PhysicalSpaceNode implements PhysicalSpace {
+public abstract class PhysicalSpaceNode extends AbstractNode implements PhysicalSpace {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -1689641655515811666L;
-
-	@GraphId
-	private Long id;
-
-	@Indexed
-	private String name;
 
 	public PhysicalSpaceNode() {
 	}

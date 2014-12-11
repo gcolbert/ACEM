@@ -25,18 +25,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 
@@ -47,49 +46,31 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
  */
 @NodeEntity
 @TypeAlias("PedagogicalAnswer")
-public class PedagogicalAnswerNode implements PedagogicalAnswer {
+public class PedagogicalAnswerNode extends AbstractNode implements PedagogicalAnswer {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 3066979121350858816L;
-
-	@GraphId
-	private Long id;
 
 	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = PedagogicalNeedNode.class, type = "needAnsweredBy", direction = INCOMING)
-	@Fetch
-	private Set<PedagogicalNeedNode> needs;
-
-	/*
-	@RelatedTo(elementClass = RessourceNode.class, type = "answeredUsingResource", direction = OUTGOING)
-	@Fetch
-	private Set<RessourceNode> resources;
-	*/
+	private Set<PedagogicalNeed> pedagogicalNeeds = new HashSet<PedagogicalNeed>(0);
 
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "answeredUsingResourceCategory", direction = OUTGOING)
-	@Fetch
-	private Set<ResourceCategoryNode> resourceCategories;
+	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
 	@RelatedTo(elementClass = AdministrativeDepartmentNode.class, type = "answeredByAdministrativeDepartment", direction = OUTGOING)
-	@Fetch
-	private Set<AdministrativeDepartmentNode> administrativeDepartments;
-	
+	private Set<AdministrativeDepartment> administrativeDepartments = new HashSet<AdministrativeDepartment>(0);
+
 	public PedagogicalAnswerNode() {
 	}
 
 	public PedagogicalAnswerNode(String name) {
 		this();
 		setName(name);
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	@Override
@@ -103,75 +84,18 @@ public class PedagogicalAnswerNode implements PedagogicalAnswer {
 	}
 
 	@Override
-	public Set<? extends PedagogicalNeed> getNeeds() {
-		return needs;
-	}
-
-	/*
-	@Override
-	public Set<? extends Ressource> getResources() {
-		return resources;
-	}
-	*/
-
-	@Override
-	public void addNeed(PedagogicalNeed need) {
-		needs.add((PedagogicalNeedNode)need);
+	public Set<PedagogicalNeed> getNeeds() {
+		return pedagogicalNeeds;
 	}
 
 	@Override
-	public void removeNeed(PedagogicalNeed need) {
-		needs.remove(need);
-	}
-
-	@Override
-	public Set<? extends ResourceCategory> getResourceCategories() {
+	public Set<ResourceCategory> getResourceCategories() {
 		return resourceCategories;
 	}
 	
 	@Override
-	public void addResourceCategory(ResourceCategory resourceCategory) {
-		if (!resourceCategories.contains(resourceCategory)) {
-			resourceCategories.add((ResourceCategoryNode)resourceCategory);
-		}
-		if (!resourceCategory.getAnswers().contains(this)) {
-			resourceCategory.addAnswer(this);
-		}
-	}
-
-	@Override
-	public void removeResourceCategory(ResourceCategory resourceCategory) {
-		if (resourceCategories.contains(resourceCategory)) {
-			resourceCategories.remove(resourceCategory);
-		}
-		if (resourceCategory.getAnswers().contains(this)) {
-			resourceCategory.removeAnswer(this);
-		}
-	}
-
-	@Override
-	public Set<? extends AdministrativeDepartment> getAdministrativeDepartments() {
+	public Set<AdministrativeDepartment> getAdministrativeDepartments() {
 		return administrativeDepartments;
-	}
-	
-	@Override
-	public void addAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
-		if (!administrativeDepartments.contains(administrativeDepartment)) {
-			administrativeDepartments.add((AdministrativeDepartmentNode)administrativeDepartment);
-		}
-		if (!administrativeDepartment.getPedagogicalAnswers().contains(this)) {
-			administrativeDepartment.addPedagogicalAnswer(this);
-		}
-	}
-
-	@Override
-	public void removeAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
-		if (administrativeDepartments.contains(administrativeDepartment)) {
-			administrativeDepartments.remove(administrativeDepartment);
-		}
-		if (administrativeDepartment.getPedagogicalAnswers().contains(this)) {
-			administrativeDepartment.removePedagogicalAnswer(this);
-		}
 	}
 	
 	@Override
@@ -187,42 +111,7 @@ public class PedagogicalAnswerNode implements PedagogicalAnswer {
 
 	@Override
 	public int compareTo(PedagogicalAnswer o) {
-		return getName().compareTo(o.getName());
+		return this.compareTo(o);
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PedagogicalAnswerNode other = (PedagogicalAnswerNode) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		}
-		else
-			if (!getId().equals(other.getId()))
-				return false;
-		if (getName() == null) {
-			if (other.getName() != null)
-				return false;
-		}
-		else
-			if (!getName().equals(other.getName()))
-				return false;
-		return true;
-	}
-	
 }

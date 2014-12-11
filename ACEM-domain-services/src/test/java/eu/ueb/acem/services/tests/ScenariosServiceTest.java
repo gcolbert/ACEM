@@ -4,8 +4,6 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
@@ -42,14 +40,6 @@ public class ScenariosServiceTest extends TestCase {
 	public ScenariosServiceTest() {
 	}
 
-	@Before
-	public void before() {
-	}
-
-	@After
-	public void after() {
-	}
-
 	/**
 	 * GetScenariosWithAuthor
 	 */
@@ -60,7 +50,7 @@ public class ScenariosServiceTest extends TestCase {
 		Institution institution = organisationsService.createInstitution("University of Music", "UoM", null);
 		
 		Teacher teacher = usersService.createTeacher("Grégoire COLBERT", "gcolbert");
-		teacher.addWorksForOrganisations(institution);
+		teacher.getWorksForOrganisations().add(institution);
 		teacher = usersService.updateTeacher(teacher);
 
 		PedagogicalScenario scenario1 = scenariosService.createScenario(teacher, "Study of the G-clef",
@@ -68,23 +58,23 @@ public class ScenariosServiceTest extends TestCase {
 
 		PedagogicalActivity pedagogicalActivity1 = scenariosService
 				.createPedagogicalActivity("Introduction to the western musical notation");
-		scenario1.addPedagogicalActivity(pedagogicalActivity1);
+		scenario1.getPedagogicalActivities().add(pedagogicalActivity1);
 
 		PedagogicalActivity pedagogicalActivity2 = scenariosService
 				.createPedagogicalActivity("Reading a sequence of D and E");
-		scenario1.addPedagogicalActivity(pedagogicalActivity2);
+		scenario1.getPedagogicalActivities().add(pedagogicalActivity2);
 
 		PedagogicalActivity pedagogicalActivity3 = scenariosService
 				.createPedagogicalActivity("Reading a sequence of E and F");
-		scenario1.addPedagogicalActivity(pedagogicalActivity3);
+		scenario1.getPedagogicalActivities().add(pedagogicalActivity3);
 
 		PedagogicalActivity pedagogicalActivity4 = scenariosService
 				.createPedagogicalActivity("Reading a sequence of F and G");
-		scenario1.addPedagogicalActivity(pedagogicalActivity4);
+		scenario1.getPedagogicalActivities().add(pedagogicalActivity4);
 
 		scenario1 = scenariosService.updateScenario(scenario1);
 
-		PedagogicalScenario scenario1bis = scenariosService.retrieveScenario(scenario1.getId());
+		PedagogicalScenario scenario1bis = scenariosService.retrievePedagogicalScenario(scenario1.getId(), false);
 		
 		assertEquals(4, scenario1bis.getPedagogicalActivities().size());
 

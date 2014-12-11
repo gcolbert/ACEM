@@ -36,8 +36,8 @@ public interface Credit extends Serializable {
 
 	void setDuration(String duration);
 	
-	Set<? extends Diploma> getDiplomas();
+	Set<Diploma> getDiplomas();
 	
-	void setDiplomas(Set<? extends Diploma> diplomas);
+	void setDiplomas(Set<Diploma> diplomas);
 
 }

@@ -34,7 +34,10 @@ public interface PersonRepository extends GenericRepository<PersonNode> {
 	@Query(value = "MATCH (n:Person) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
-	@Query(value = "match (n:Person) where n.login=({login}) return n")
+	@Query(value = "MATCH (n:Person) WHERE n.name=({name}) RETURN n")
+	Iterable<PersonNode> findByName(@Param("name") String name);
+
+	@Query(value = "MATCH (n:Person) WHERE n.login=({login}) RETURN n")
 	PersonNode findByLogin(@Param("login") String login);
 
 }

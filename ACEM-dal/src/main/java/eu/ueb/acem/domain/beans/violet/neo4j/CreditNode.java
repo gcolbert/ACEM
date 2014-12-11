@@ -20,16 +20,17 @@ package eu.ueb.acem.domain.beans.violet.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.violet.Diploma;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.violet.Credit;
+import eu.ueb.acem.domain.beans.violet.Diploma;
 
 /**
  * @author Grégoire Colbert
@@ -38,20 +39,20 @@ import eu.ueb.acem.domain.beans.violet.Credit;
  */
 @NodeEntity
 @TypeAlias("Credit")
-public class CreditNode implements Credit {
+public class CreditNode extends AbstractNode implements Credit {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 8179710397691380136L;
-
-	@GraphId
-	private Long id;
 
 	@Indexed
 	private String name;
 
-	private String duree;
+	private String duration;
 
 	@RelatedTo(elementClass = DiplomaNode.class, type = "isPartOfDiploma", direction = OUTGOING)
-	private Set<DiplomaNode> diplomas;
+	private Set<Diploma> diplomas = new HashSet<Diploma>(0);
 
 	public CreditNode() {
 	}
@@ -60,31 +61,34 @@ public class CreditNode implements Credit {
 		this.name = name;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String getDuration() {
-		return duree;
-	}
-
-	public void setDuration(String duration) {
-		this.duree = duration;
+		return duration;
 	}
 
 	@Override
-	public Set<? extends Diploma> getDiplomas() {
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	@Override
+	public Set<Diploma> getDiplomas() {
 		return diplomas;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setDiplomas(Set<? extends Diploma> diplomas) {
-		this.diplomas = (Set<DiplomaNode>)diplomas;
+	public void setDiplomas(Set<Diploma> diplomas) {
+		this.diplomas = diplomas;
 	}
 
 }

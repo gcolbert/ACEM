@@ -52,17 +52,13 @@ public interface PedagogicalActivity extends Serializable, Comparable<Pedagogica
 
 	void setDuration(String duree);
 
-	Set<? extends PedagogicalScenario> getScenarios();
+	Set<PedagogicalScenario> getScenarios();
 
-	void setScenarios(Set<? extends PedagogicalScenario> scenarios);
+	void setScenarios(Set<PedagogicalScenario> scenarios);
 
-	void addScenario(PedagogicalScenario scenario);
-	
-	void removeScenario(PedagogicalScenario scenario);
+	Set<ResourceCategory> getResourceCategories();
 
-	Set<? extends ResourceCategory> getResourceCategories();
-
-	void setResourceCategories(Set<? extends ResourceCategory> resourceCategories);
+	void setResourceCategories(Set<ResourceCategory> resourceCategories);
 	
 	int compareTo(PedagogicalActivity o);
 

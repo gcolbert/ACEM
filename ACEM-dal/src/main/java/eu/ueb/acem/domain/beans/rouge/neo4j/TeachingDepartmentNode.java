@@ -24,14 +24,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
-import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
  * @author Grégoire Colbert
@@ -51,18 +49,16 @@ public class TeachingDepartmentNode extends OrganisationNode implements Teaching
 	private String name;
 
 	@RelatedTo(elementClass = InstitutionNode.class, type = "teachingDepartmentPartOfInstitution", direction = OUTGOING)
-	@Fetch
-	private Set<InstitutionNode> institutions;
+	private Set<Institution> institutions = new HashSet<Institution>(0);
 
 	public TeachingDepartmentNode() {
-		institutions = new HashSet<InstitutionNode>();
 	}
 
 	public TeachingDepartmentNode(String name, String shortname, String iconFileName) {
 		this();
-		this.setName(name);
-		this.setShortname(shortname);
-		this.setIconFileName(iconFileName);
+		setName(name);
+		setShortname(shortname);
+		setIconFileName(iconFileName);
 	}
 
 	@Override
@@ -76,36 +72,13 @@ public class TeachingDepartmentNode extends OrganisationNode implements Teaching
 	}
 	
 	@Override
-	public Set<? extends Institution> getInstitutions() {
+	public Set<Institution> getInstitutions() {
 		return institutions;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setInstitutions(Set<? extends Institution> institutions) {
-		this.institutions = (Set<InstitutionNode>) institutions;
-	}
-
-	@Override
-	@Transactional
-	public void addInstitution(Institution institution) {
-		if (! institutions.contains(institution)) {
-			institutions.add((InstitutionNode)institution);
-		}
-		if (! institution.getTeachingDepartments().contains(this)) {
-			institution.addTeachingDepartment(this);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeInstitution(Institution institution) {
-		if (institutions.contains(institution)) {
-			institutions.remove(institution);
-		}
-		if (institution.getTeachingDepartments().contains(this)) {
-			institution.removeTeachingDepartment(this);
-		}
+	public void setInstitutions(Set<Institution> institutions) {
+		this.institutions = institutions;
 	}
 
 }

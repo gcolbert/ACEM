@@ -21,26 +21,21 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
-import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.violet.TeachingClass;
 import eu.ueb.acem.domain.beans.violet.neo4j.TeachingClassNode;
 
@@ -51,17 +46,15 @@ import eu.ueb.acem.domain.beans.violet.neo4j.TeachingClassNode;
  */
 @NodeEntity
 @TypeAlias("PedagogicalScenario")
-public class PedagogicalScenarioNode implements PedagogicalScenario {
+public class PedagogicalScenarioNode extends AbstractNode implements PedagogicalScenario {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -1233433427413840564L;
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalScenarioNode.class);
-
-	@GraphId
-	private Long id;
 
 	private Long creationDate;
 
@@ -75,16 +68,13 @@ public class PedagogicalScenarioNode implements PedagogicalScenario {
 	private Boolean published;
 
 	@RelatedTo(elementClass = TeachingClassNode.class, type = "scenarioUsedForClass", direction = OUTGOING)
-	@Fetch
-	private Set<TeachingClassNode> teachingClasses;
+	private Set<TeachingClass> teachingClasses = new HashSet<TeachingClass>(0);
 
 	@RelatedTo(elementClass = PedagogicalActivityNode.class, type = "activityForScenario", direction = INCOMING)
-	@Fetch
-	private Set<PedagogicalActivityNode> pedagogicalActivities;
+	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
 	@RelatedTo(elementClass = TeacherNode.class, type = "authorsScenario", direction = INCOMING)
-	@Fetch
-	private Set<TeacherNode> authors;
+	private Set<Teacher> authors = new HashSet<Teacher>(0);
 
 	public PedagogicalScenarioNode() {
 		published = false;
@@ -92,18 +82,8 @@ public class PedagogicalScenarioNode implements PedagogicalScenario {
 
 	public PedagogicalScenarioNode(String name, String objective) {
 		this();
-		this.name = name;
+		setName(name);
 		this.objective = objective;
-		this.authors = new HashSet<TeacherNode>(); // TODO : find why we need to initialize this Set
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	@Override
@@ -155,79 +135,54 @@ public class PedagogicalScenarioNode implements PedagogicalScenario {
 	public void setEvaluationModes(String evaluationModes) {
 		this.evaluationModes = evaluationModes;
 	}
-	
-	@Override
-	@Transactional
-	public void addPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		if (!pedagogicalActivities.contains(pedagogicalActivity)) {
-			pedagogicalActivities.add((PedagogicalActivityNode) pedagogicalActivity);
-			pedagogicalActivity.setPositionInScenario(new Long(this.pedagogicalActivities.size() + 1));
-		}
-		if (!pedagogicalActivity.getScenarios().contains(this)) {
-			pedagogicalActivity.addScenario(this);
-		}
-		renumberPedagogicalActivities();
-	}
+
+//	@Override
+//	public void addPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
+//		if (!pedagogicalActivities.contains(pedagogicalActivity)) {
+//			pedagogicalActivities.add(pedagogicalActivity);
+//			pedagogicalActivity.setPositionInScenario(new Long(this.pedagogicalActivities.size() + 1));
+//		}
+//		if (!pedagogicalActivity.getScenarios().contains(this)) {
+//			pedagogicalActivity.addScenario(this);
+//		}
+//		renumberPedagogicalActivities();
+//	}
+//
+//	@Override
+//	public void removePedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
+//		pedagogicalActivities.remove(pedagogicalActivity);
+//		pedagogicalActivity.removeScenario(this);
+//		renumberPedagogicalActivities();
+//	}
+//
+//	private void renumberPedagogicalActivities() {
+//		Long i = new Long(1);
+//		List<PedagogicalActivity> list = new ArrayList<PedagogicalActivity>(pedagogicalActivities);
+//		Collections.sort(list);
+//		for (PedagogicalActivity pedagogicalActivity : list) {
+//			pedagogicalActivity.setPositionInScenario(i);
+//			i++;
+//		}
+//	}
 
 	@Override
-	@Transactional
-	public void removePedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		pedagogicalActivities.remove(pedagogicalActivity);
-		pedagogicalActivity.removeScenario(this);
-		renumberPedagogicalActivities();
-	}
-
-	private void renumberPedagogicalActivities() {
-		Long i = new Long(1);
-		List<PedagogicalActivityNode> list = new ArrayList<PedagogicalActivityNode>(pedagogicalActivities);
-		Collections.sort(list);
-		for (PedagogicalActivityNode pedagogicalActivity : list) {
-			pedagogicalActivity.setPositionInScenario(i);
-			i++;
-		}
-	}
-
-	@Override
-	public Set<? extends PedagogicalActivity> getPedagogicalActivities() {
+	public Set<PedagogicalActivity> getPedagogicalActivities() {
 		return pedagogicalActivities;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setPedagogicalActivities(Set<? extends PedagogicalActivity> pedagogicalActivities) {
-		this.pedagogicalActivities = (Set<PedagogicalActivityNode>) pedagogicalActivities;
+	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
+		this.pedagogicalActivities = pedagogicalActivities;
 	}
 
 	@Override
-	public Set<? extends Teacher> getAuthors() {
+	public Set<Teacher> getAuthors() {
 		return authors;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setAuthors(Set<? extends Teacher> authors) {
-		this.authors = (Set<TeacherNode>) authors;
-	}
-
-	@Override
-	public void addAuthor(Teacher teacher) {
-		logger.info("addAuthor, teacher = {}", teacher);
-		if (! authors.contains(teacher)) {
-			authors.add((TeacherNode) teacher);
-		}
-		if (! teacher.getScenarios().contains(this)) {
-			teacher.addAuthor(this);
-		}
-	}
-
-	@Override
-	public void removeAuthor(Teacher teacher) {
-		if (authors.contains(teacher)) {
-			authors.remove(teacher);
-		}
-		if (teacher.getScenarios().contains(this)) {
-			teacher.removeAuthor(this);
-		}
+	public void setAuthors(Set<Teacher> authors) {
+		this.authors = authors;
 	}
 
 	@Override
@@ -241,14 +196,13 @@ public class PedagogicalScenarioNode implements PedagogicalScenario {
 	}
 
 	@Override
-	public Set<? extends TeachingClass> getTeachingClasses() {
+	public Set<TeachingClass> getTeachingClasses() {
 		return teachingClasses;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setTeachingClasses(Set<? extends TeachingClass> teachingClasses) {
-		this.teachingClasses = (Set<TeachingClassNode>)teachingClasses;
+	public void setTeachingClasses(Set<TeachingClass> teachingClasses) {
+		this.teachingClasses = teachingClasses;
 	}
 	
 	@Override
@@ -273,39 +227,4 @@ public class PedagogicalScenarioNode implements PedagogicalScenario {
 		return returnValue;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PedagogicalScenarioNode other = (PedagogicalScenarioNode) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		}
-		else
-			if (!getId().equals(other.getId()))
-				return false;
-		if (getName() == null) {
-			if (other.getName() != null)
-				return false;
-		}
-		else
-			if (!getName().equals(other.getName()))
-				return false;
-		return true;
-	}
-	
 }

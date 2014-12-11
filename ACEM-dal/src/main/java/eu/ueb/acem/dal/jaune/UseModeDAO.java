@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -50,6 +51,10 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 	private static final Logger logger = LoggerFactory.getLogger(UseModeDAO.class);
 
 	@Inject
+	@SuppressWarnings("unused")
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private UseModeRepository repository;
 
 	public UseModeDAO() {
@@ -58,6 +63,7 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -75,6 +81,14 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 	@Override
 	public UseMode retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public UseMode retrieveById(Long id, boolean initialize) {
+		UseMode entity = retrieveById(id);
+		if (initialize) {
+		}
+		return entity;
 	}
 
 	@Override
@@ -102,7 +116,8 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 
 	@Override
 	public UseMode update(UseMode entity) {
-		return repository.save((UseModeNode) entity);
+		UseMode updatedEntity = repository.save((UseModeNode) entity);
+		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override

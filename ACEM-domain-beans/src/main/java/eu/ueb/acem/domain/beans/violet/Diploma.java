@@ -30,10 +30,10 @@ public interface Diploma extends Serializable {
 
 	String getName();
 
-	void setName(String intitule);
+	void setName(String name);
 
-	Set<? extends Credit> getCredits();
+	Set<Credit> getCredits();
 	
-	void setCredits(Set<? extends Credit> credits);
+	void setCredits(Set<Credit> credits);
 
 }

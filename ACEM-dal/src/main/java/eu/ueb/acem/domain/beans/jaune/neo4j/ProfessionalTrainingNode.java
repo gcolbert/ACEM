@@ -34,6 +34,9 @@ import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 @TypeAlias("ProfessionalTraining")
 public class ProfessionalTrainingNode extends ResourceNode implements ProfessionalTraining {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 1012212357185877701L;
 
 	@Indexed

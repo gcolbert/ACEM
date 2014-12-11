@@ -19,7 +19,9 @@
 package eu.ueb.acem.domain.beans.violet;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
@@ -28,6 +30,10 @@ import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
  * 
  */
 public interface TeachingClass extends Serializable {
+
+	String getName();
+
+	void setName(String name);
 
 	String getDate();
 
@@ -51,6 +57,14 @@ public interface TeachingClass extends Serializable {
 
 	Course getCourse();
 
+	void setCourse(Course course);
+
 	PhysicalSpace getLocation();
 
+	void setLocation(PhysicalSpace location);
+
+	Set<PedagogicalScenario> getPedagogicalScenarios();
+
+	void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios);
+	
 }

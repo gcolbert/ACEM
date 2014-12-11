@@ -27,6 +27,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -51,6 +52,9 @@ public class PedagogicalNeedDAO implements DAO<Long, PedagogicalNeed> {
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalNeedDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private PedagogicalNeedRepository repository;
 
 	public PedagogicalNeedDAO() {
@@ -59,6 +63,7 @@ public class PedagogicalNeedDAO implements DAO<Long, PedagogicalNeed> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -69,13 +74,24 @@ public class PedagogicalNeedDAO implements DAO<Long, PedagogicalNeed> {
 	}
 
 	@Override
-	public PedagogicalNeed create(PedagogicalNeed need) {
-		return repository.save((PedagogicalNeedNode) need);
+	public PedagogicalNeed create(PedagogicalNeed entity) {
+		return repository.save((PedagogicalNeedNode) entity);
 	}
 
 	@Override
 	public PedagogicalNeed retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public PedagogicalNeed retrieveById(Long id, boolean initialize) {
+		PedagogicalNeed entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getChildren());
+			neo4jOperations.fetch(entity.getAnswers());
+			neo4jOperations.fetch(entity.getParents());
+		}
+		return entity;
 	}
 
 	@Override
@@ -102,13 +118,14 @@ public class PedagogicalNeedDAO implements DAO<Long, PedagogicalNeed> {
 	}
 
 	@Override
-	public PedagogicalNeed update(PedagogicalNeed need) {
-		return repository.save((PedagogicalNeedNode) need);
+	public PedagogicalNeed update(PedagogicalNeed entity) {
+		PedagogicalNeed updatedEntity = repository.save((PedagogicalNeedNode) entity);
+		return retrieveById(updatedEntity.getId(),true);
 	}
 
 	@Override
-	public void delete(PedagogicalNeed need) {
-		repository.delete((PedagogicalNeedNode) need);
+	public void delete(PedagogicalNeed entity) {
+		repository.delete((PedagogicalNeedNode) entity);
 	}
 
 	@Override

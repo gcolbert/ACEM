@@ -59,16 +59,16 @@ public class OrganisationViewBeanHandler {
 	public OrganisationViewBeanHandler() {
 		organisationViewBeans = new HashMap<Long, OrganisationViewBean>();
 	}
-	
+
 	public OrganisationViewBean getOrganisationViewBean(Long id) {
 		OrganisationViewBean viewBean = null;
 		if (organisationViewBeans.containsKey(id)) {
-			logger.info("organisationViewBean found in organisationViewBeans map, so we don't reload it.");
+			logger.debug("organisationViewBean found in organisationViewBeans map, so we don't reload it.");
 			viewBean = organisationViewBeans.get(id);
 		}
 		else {
-			logger.info("organisationViewBean not found in organisationViewBeans map, we load it with OrganisationsService.");
-			Organisation organisation = organisationsService.retrieveOrganisation(id);
+			logger.debug("organisationViewBean not found in organisationViewBeans map, we load it with OrganisationsService.");
+			Organisation organisation = organisationsService.retrieveOrganisation(id, true); // TODO : do we need to set initialize to true here?
 			if (organisation != null) {
 				if (organisation instanceof Community) {
 					viewBean = new CommunityViewBean((Community) organisation);

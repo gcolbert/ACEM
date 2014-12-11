@@ -44,18 +44,14 @@ public interface Organisation extends Serializable {
 
 	void setIconFileName(String iconFileName);
 
-	Set<? extends Resource> getPossessedResources();
+	Set<Resource> getPossessedResources();
 
-	void setPossessedResources(Set<? extends Resource> possessedResources);
+	void setPossessedResources(Set<Resource> possessedResources);
 
-	Set<? extends Resource> getViewedResources();
+	Set<Resource> getViewedResources();
 
-	void setViewedResources(Set<? extends Resource> viewedResources);
+	void setViewedResources(Set<Resource> viewedResources);
 
-	void addViewedResource(Resource resource);
-
-	void removeViewedResource(Resource resource);
-	
 	int compareTo(Organisation o);
 
 }

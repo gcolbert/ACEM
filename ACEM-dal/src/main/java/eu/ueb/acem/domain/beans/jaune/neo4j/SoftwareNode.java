@@ -20,10 +20,10 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import static org.neo4j.graphdb.Direction.INCOMING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -40,14 +40,16 @@ import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 @TypeAlias("Software")
 public class SoftwareNode extends ResourceNode implements Software {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 7058882707584224446L;
 
 	@Indexed
 	private String name;
 	
 	@RelatedTo(elementClass = SoftwareDocumentationNode.class, type = "documentsSoftware", direction = INCOMING)
-	@Fetch
-	private Set<SoftwareDocumentationNode> documentations;
+	private Set<SoftwareDocumentation> documentations = new HashSet<SoftwareDocumentation>(0);
 	
 	public SoftwareNode() {
 	}
@@ -69,34 +71,13 @@ public class SoftwareNode extends ResourceNode implements Software {
 	}
 
 	@Override
-	public void addDocumentation(SoftwareDocumentation documentation) {
-		if (! documentations.contains(documentation)) {
-			documentations.add((SoftwareDocumentationNode) documentation);
-		}
-		if (! documentation.getApplicatifs().contains(this)) {
-			documentation.addApplicatif(this);
-		}
-	}
-
-	@Override
-	public void removeDocumentation(SoftwareDocumentation documentation) {
-		if (documentations.contains(documentation)) {
-			documentations.remove(documentation);
-		}
-		if (documentation.getApplicatifs().contains(this)) {
-			documentation.removeApplicatif(this);
-		}
-	}
-
-	@Override
-	public Set<? extends SoftwareDocumentation> getDocumentations() {
+	public Set<SoftwareDocumentation> getDocumentations() {
 		return documentations;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setDocumentations(Set<? extends SoftwareDocumentation> softwareDocumentations) {
-		this.documentations = (Set<SoftwareDocumentationNode>) softwareDocumentations;
+	public void setDocumentations(Set<SoftwareDocumentation> softwareDocumentations) {
+		this.documentations = softwareDocumentations;
 	}
 	
 }

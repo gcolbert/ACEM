@@ -183,7 +183,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 		selectedAnswer = null;
 		if ((this.selectedNode != null) && (this.selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
-			selectedAnswer = needsAndAnswersService.retrieveAnswer(((TreeNodeData) selectedNode.getData()).getId());
+			selectedAnswer = needsAndAnswersService.retrievePedagogicalAnswer(((TreeNodeData) selectedNode.getData()).getId(), true);
 			setToolCategoryViewBeansForSelectedAnswer();
 			setAdministrativeDepartmentViewBeansForSelectedAnswer();
 			setScenarioViewBeansRelatedToSelectedAnswer();
@@ -385,8 +385,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(toolCategoryViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
-			PedagogicalAnswer selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData())
-					.getId()));
+			PedagogicalAnswer selectedAnswer = needsAndAnswersService.retrievePedagogicalAnswer(((TreeNodeData) selectedNode.getData()).getId(), true);
 			for (ResourceCategory toolCategoryForSelectedAnswer : selectedAnswer.getResourceCategories()) {
 				for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
 					if (toolCategoryForSelectedAnswer.getId().equals(toolCategoryViewBean.getId())) {
@@ -404,8 +403,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(administrativeDepartmentViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
-			PedagogicalAnswer selectedAnswer = needsAndAnswersService.retrieveAnswer((((TreeNodeData) selectedNode.getData())
-					.getId()));
+			PedagogicalAnswer selectedAnswer = needsAndAnswersService.retrievePedagogicalAnswer(((TreeNodeData) selectedNode.getData()).getId(), true);
 			for (AdministrativeDepartment administrativeDepartmentForSelectedAnswer : selectedAnswer.getAdministrativeDepartments()) {
 				for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
 						.getTableEntries()) {
@@ -474,7 +472,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 					logger.info("association failed");
 				}
 				movedAdministrativeDepartmentViewBean.setDomainBean(organisationsService
-						.retrieveOrganisation(movedAdministrativeDepartmentViewBean.getId()));
+						.retrieveOrganisation(movedAdministrativeDepartmentViewBean.getId(), false));
 			}
 			else {
 				logger.info("We should dissociate answer {} and administrative department {}",
@@ -489,7 +487,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 					logger.info("dissociation failed");
 				}
 				movedAdministrativeDepartmentViewBean.setDomainBean(organisationsService
-						.retrieveOrganisation(movedAdministrativeDepartmentViewBean.getId()));
+						.retrieveOrganisation(movedAdministrativeDepartmentViewBean.getId(), false));
 			}
 		}
 	}

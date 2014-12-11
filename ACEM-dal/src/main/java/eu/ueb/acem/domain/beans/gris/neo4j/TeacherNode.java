@@ -20,10 +20,10 @@ package eu.ueb.acem.domain.beans.gris.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
@@ -44,19 +44,19 @@ import eu.ueb.acem.domain.beans.violet.neo4j.TeachingClassNode;
 @TypeAlias("Teacher")
 public class TeacherNode extends PersonNode implements Teacher {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -3193454107919543890L;
 
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "hasFavoriteToolCategory", direction = OUTGOING)
-	@Fetch
-	private Set<ResourceCategoryNode> favoriteToolCategories;
+	private Set<ResourceCategory> favoriteToolCategories = new HashSet<ResourceCategory>(0);
 
 	@RelatedTo(elementClass = TeachingClassNode.class, type = "leadsClass", direction = OUTGOING)
-	@Fetch
-	private Set<TeachingClassNode> teachingClasses;
+	private Set<TeachingClass> teachingClasses = new HashSet<TeachingClass>(0);
 
 	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "authorsScenario", direction = OUTGOING)
-	@Fetch
-	private Set<PedagogicalScenarioNode> scenarios;
+	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
 
 	public TeacherNode() {
 	}
@@ -65,92 +65,34 @@ public class TeacherNode extends PersonNode implements Teacher {
 		super(name, login);
 	}
 
-	/*-
 	@Override
-	public Set<? extends Ressource> getFavoriteResources() {
-		return favoriteResources;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void setFavoriteResources(Set<? extends Ressource> favoriteResources) {
-		this.favoriteResources = (Set<RessourceNode>) favoriteResources;
-	}
-	
-	@Override
-	public Boolean addFavoriteResource(Ressource resource) {
-		if (! favoriteResources.contains(resource)) {
-			favoriteResources.add((RessourceNode) resource);
-		}
-		return favoriteResources.contains(resource);
-	}
-
-	@Override
-	public Boolean removeFavoriteResource(Ressource resource) {
-		if (favoriteResources.contains(resource)) {
-			favoriteResources.remove(resource);
-		}
-		return ! favoriteResources.contains(resource);
-	}
-	*/
-
-	@Override
-	public Set<? extends ResourceCategory> getFavoriteToolCategories() {
+	public Set<ResourceCategory> getFavoriteToolCategories() {
 		return favoriteToolCategories;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setFavoriteToolCategories(Set<? extends ResourceCategory> favoriteToolCategories) {
-		this.favoriteToolCategories = (Set<ResourceCategoryNode>) favoriteToolCategories;
+	public void setFavoriteToolCategories(Set<ResourceCategory> favoriteToolCategories) {
+		this.favoriteToolCategories = favoriteToolCategories;
 	}
 	
 	@Override
-	public Boolean addFavoriteToolCategory(ResourceCategory toolCategory) {
-		if (! favoriteToolCategories.contains(toolCategory)) {
-			favoriteToolCategories.add((ResourceCategoryNode) toolCategory);
-		}
-		return favoriteToolCategories.contains(toolCategory);
+	public Set<PedagogicalScenario> getScenarios() {
+		return pedagogicalScenarios;
 	}
 
 	@Override
-	public Boolean removeFavoriteToolCategory(ResourceCategory toolCategory) {
-		if (favoriteToolCategories.contains(toolCategory)) {
-			favoriteToolCategories.remove(toolCategory);
-		}
-		return ! favoriteToolCategories.contains(toolCategory);
+	public void setScenarios(Set<PedagogicalScenario> pedagogicalScenarios) {
+		this.pedagogicalScenarios = pedagogicalScenarios;
 	}
 	
 	@Override
-	public Set<? extends PedagogicalScenario> getScenarios() {
-		return scenarios;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void setScenarios(Set<? extends PedagogicalScenario> scenarios) {
-		this.scenarios = (Set<PedagogicalScenarioNode>) scenarios;
-	}
-	
-	@Override
-	public void addAuthor(PedagogicalScenario scenario) {
-		scenarios.add((PedagogicalScenarioNode)scenario);
-	}
-
-	@Override
-	public void removeAuthor(PedagogicalScenario scenario) {
-		scenarios.remove(scenario);
-	}
-
-	@Override
-	public Set<? extends TeachingClass> getTeachingClasses() {
+	public Set<TeachingClass> getTeachingClasses() {
 		return teachingClasses;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setTeachingClasses(Set<? extends TeachingClass> teachingClasses) {
-		this.teachingClasses = (Set<TeachingClassNode>) teachingClasses;
+	public void setTeachingClasses(Set<TeachingClass> teachingClasses) {
+		this.teachingClasses = teachingClasses;
 	}
 
 }

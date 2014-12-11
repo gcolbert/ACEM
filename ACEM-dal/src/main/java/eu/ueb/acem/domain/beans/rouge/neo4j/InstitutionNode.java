@@ -24,17 +24,17 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
-import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.domain.beans.rouge.Community;
-import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
-import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
  * @author Grégoire Colbert
@@ -50,34 +50,31 @@ public class InstitutionNode extends OrganisationNode implements Institution {
 	 */
 	private static final long serialVersionUID = 4218521116992739925L;
 
+	@SuppressWarnings("unused")
+	private static Logger logger = LoggerFactory.getLogger(InstitutionNode.class);
+
 	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = CommunityNode.class, type = "institutionMemberOfCommunity", direction = OUTGOING)
-	@Fetch
-	private Set<CommunityNode> communities;
+	private Set<Community> communities;
 
 	@RelatedTo(elementClass = TeachingDepartmentNode.class, type = "teachingDepartmentPartOfInstitution", direction = INCOMING)
-	@Fetch
-	private Set<TeachingDepartmentNode> teachingDepartments;
+	private Set<TeachingDepartment> teachingDepartments = new HashSet<TeachingDepartment>(0);
 
 	@RelatedTo(elementClass = AdministrativeDepartmentNode.class, type = "administrativeDepartmentPartOfInstitution", direction = INCOMING)
-	@Fetch
-	private Set<AdministrativeDepartmentNode> administrativeDepartments;
+	private Set<AdministrativeDepartment> administrativeDepartments = new HashSet<AdministrativeDepartment>(0);
 
 	public InstitutionNode() {
-		communities = new HashSet<CommunityNode>();
-		teachingDepartments = new HashSet<TeachingDepartmentNode>();
-		administrativeDepartments = new HashSet<AdministrativeDepartmentNode>();
 	}
 
 	public InstitutionNode(String name, String shortname, String iconFileName) {
 		this();
-		this.setName(name);
-		this.setShortname(shortname);
-		this.setIconFileName(iconFileName);
+		setName(name);
+		setShortname(shortname);
+		setIconFileName(iconFileName);
 	}
-
+	
 	@Override
 	public String getName() {
 		return name;
@@ -89,101 +86,33 @@ public class InstitutionNode extends OrganisationNode implements Institution {
 	}
 	
 	@Override
-	public Set<? extends Community> getCommunities() {
+	public Set<Community> getCommunities() {
 		return communities;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setCommunities(Set<? extends Community> communities) {
-		this.communities = (Set<CommunityNode>) communities;
+	public void setCommunities(Set<Community> communities) {
+		this.communities = communities;
 	}
 
 	@Override
-	public Set<? extends TeachingDepartment> getTeachingDepartments() {
+	public Set<TeachingDepartment> getTeachingDepartments() {
 		return teachingDepartments;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setTeachingDepartments(Set<? extends TeachingDepartment> teachingDepartments) {
-		this.teachingDepartments = (Set<TeachingDepartmentNode>) teachingDepartments;
+	public void setTeachingDepartments(Set<TeachingDepartment> teachingDepartments) {
+		this.teachingDepartments = teachingDepartments;
 	}
 
 	@Override
-	public Set<? extends AdministrativeDepartment> getAdministrativeDepartments() {
+	public Set<AdministrativeDepartment> getAdministrativeDepartments() {
 		return administrativeDepartments;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setAdministrativeDepartments(Set<? extends AdministrativeDepartment> administrativeDepartments) {
-		this.administrativeDepartments = (Set<AdministrativeDepartmentNode>) administrativeDepartments;
-	}
-
-	@Override
-	public void addCommunity(Community community) {
-		if (! communities.contains(community)) {
-			communities.add((CommunityNode)community);
-		}
-		if (! community.getInstitutions().contains(this)) {
-			community.addInstitution(this);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeCommunity(Community community) {
-		if (communities.contains(community)) {
-			communities.remove(community);
-		}
-		if (community.getInstitutions().contains(this)) {
-			community.removeInstitution(this);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void addAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
-		if (! administrativeDepartments.contains(administrativeDepartment)) {
-			administrativeDepartments.add((AdministrativeDepartmentNode)administrativeDepartment);
-		}
-		if (! administrativeDepartment.getInstitutions().contains(this)) {
-			administrativeDepartment.addInstitution(this);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
-		if (administrativeDepartments.contains(administrativeDepartment)) {
-			administrativeDepartments.remove(administrativeDepartment);
-		}
-		if (administrativeDepartment.getInstitutions().contains(this)) {
-			administrativeDepartment.removeInstitution(this);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void addTeachingDepartment(TeachingDepartment teachingDepartment) {
-		if (! teachingDepartments.contains(teachingDepartment)) {
-			teachingDepartments.add((TeachingDepartmentNode)teachingDepartment);
-		}
-		if (! teachingDepartment.getInstitutions().contains(this)) {
-			teachingDepartment.addInstitution(this);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeTeachingDepartment(TeachingDepartment teachingDepartment) {
-		if (teachingDepartments.contains(teachingDepartment)) {
-			teachingDepartments.remove(teachingDepartment);
-		}
-		if (teachingDepartment.getInstitutions().contains(this)) {
-			teachingDepartment.removeInstitution(this);
-		}
+	public void setAdministrativeDepartments(Set<AdministrativeDepartment> administrativeDepartments) {
+		this.administrativeDepartments = administrativeDepartments;
 	}
 
 }

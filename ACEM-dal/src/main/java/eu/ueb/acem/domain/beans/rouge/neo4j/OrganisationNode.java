@@ -20,17 +20,18 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
-import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceNode;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -40,59 +41,31 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  */
 @NodeEntity
 @TypeAlias("Organisation")
-public abstract class OrganisationNode implements Organisation {
+public abstract class OrganisationNode extends AbstractNode implements Organisation {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -4961037643458063514L;
 
-	@GraphId
-	private Long id;
-
-	@Indexed
-	private String name;
+	@SuppressWarnings("unused")
+	private static Logger logger = LoggerFactory.getLogger(OrganisationNode.class);
 
 	private String shortname;
 
 	private String iconFileName;
 
 	@RelatedTo(elementClass = ResourceNode.class, type = "possessesResource", direction = OUTGOING)
-	@Fetch
-	private Set<ResourceNode> possessedResources;
+	private Set<Resource> possessedResources = new HashSet<Resource>(0);
 
 	@RelatedTo(elementClass = ResourceNode.class, type = "accessesResource", direction = OUTGOING)
-	@Fetch
-	private Set<ResourceNode> viewedResources;
+	private Set<Resource> viewedResources = new HashSet<Resource>(0);
 
 	public OrganisationNode() {
-		/*-
-		possessedResources = new HashSet<RessourceNode>();
-		viewedResources = new HashSet<RessourceNode>();
-		 */
 	}
 
 	public OrganisationNode(String name) {
 		this.setName(name);
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	@Override
@@ -116,45 +89,23 @@ public abstract class OrganisationNode implements Organisation {
 	}
 
 	@Override
-	public Set<? extends Resource> getPossessedResources() {
+	public Set<Resource> getPossessedResources() {
 		return possessedResources;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setPossessedResources(Set<? extends Resource> possessedResources) {
-		this.possessedResources = (Set<ResourceNode>) possessedResources;
+	public void setPossessedResources(Set<Resource> possessedResources) {
+		this.possessedResources = possessedResources;
 	}
 
 	@Override
-	public Set<? extends Resource> getViewedResources() {
+	public Set<Resource> getViewedResources() {
 		return viewedResources;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setViewedResources(Set<? extends Resource> viewedResources) {
-		this.viewedResources = (Set<ResourceNode>) viewedResources;
-	}
-
-	@Override
-	public void addViewedResource(Resource resource) {
-		if (!viewedResources.contains(resource)) {
-			viewedResources.add((ResourceNode) resource);
-		}
-		if (!resource.getOrganisationsHavingAccessToResource().contains(this)) {
-			resource.addOrganisationHavingAccessToResource(this);
-		}
-	}
-
-	@Override
-	public void removeViewedResource(Resource resource) {
-		if (viewedResources.contains(resource)) {
-			viewedResources.remove(resource);
-		}
-		if (resource.getOrganisationsHavingAccessToResource().contains(this)) {
-			resource.removeOrganisationHavingAccessToResource(this);
-		}
+	public void setViewedResources(Set<Resource> viewedResources) {
+		this.viewedResources = viewedResources;
 	}
 
 	@Override
@@ -162,42 +113,4 @@ public abstract class OrganisationNode implements Organisation {
 		return this.getName().compareTo(o.getName());
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OrganisationNode other = (OrganisationNode) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		}
-		else if (!getId().equals(other.getId()))
-			return false;
-//		if (getName() == null) {
-//			if (other.getName() != null)
-//				return false;
-//		}
-//		else if (!getName().equals(other.getName()))
-//			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "OrganisationNode#" + hashCode() + "[id=[" + getId() + "], name=[" + getName() + "], shortname=["
-				+ shortname + "], iconFileName=[" + iconFileName + "]]";
-	}
 }

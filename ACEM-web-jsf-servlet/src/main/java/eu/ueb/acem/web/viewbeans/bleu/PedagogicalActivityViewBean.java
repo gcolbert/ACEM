@@ -124,7 +124,7 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 
 	public void setResources(List<ResourceViewBean> resources) {
 		this.resources = resources;
-		//pedagogicalActivity.setResources(resources.); // TODO ajouter les ressources
+		//pedagogicalActivity.setResources(resources.); // TODO ajouter les ressources (ou supprimer cette ligne?)
 	}
 
 	@Override

@@ -25,27 +25,29 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.dal.rouge.CommunityDAO;
 import eu.ueb.acem.dal.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
-import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
-import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-@org.springframework.stereotype.Service("organisationsService")
+@Service("organisationsService")
 public class OrganisationsServiceImpl implements OrganisationsService {
 
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationsServiceImpl.class);
@@ -61,6 +63,9 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	@Inject
 	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
+	
+	@Inject
+	private NeedsAndAnswersService needsAndAnswersService;
 
 	@Override
 	public Long countCommunities() {
@@ -103,46 +108,46 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
-	public Organisation retrieveOrganisation(Long idOrganisation) {
-		logger.info("retrieveOrganisation({})", idOrganisation);
+	public Organisation retrieveOrganisation(Long idOrganisation, boolean initialize) {
+		logger.debug("retrieveOrganisation({},{})", idOrganisation, initialize);
 		Organisation organisation = null;
 		if (communityDAO.exists(idOrganisation)) {
-			logger.info("organisation found using communityDAO");
-			organisation = communityDAO.retrieveById(idOrganisation);
+			logger.debug("organisation found using communityDAO");
+			organisation = communityDAO.retrieveById(idOrganisation, initialize);
 		}
 		else if (institutionDAO.exists(idOrganisation)) {
-			logger.info("organisation found using institutionDAO");
-			organisation = institutionDAO.retrieveById(idOrganisation);
+			logger.debug("organisation found using institutionDAO");
+			organisation = institutionDAO.retrieveById(idOrganisation, initialize);
 		}
 		else if (administrativeDepartmentDAO.exists(idOrganisation)) {
-			logger.info("organisation found using administrativeDepartmentDAO");
-			organisation = administrativeDepartmentDAO.retrieveById(idOrganisation);
+			logger.debug("organisation found using administrativeDepartmentDAO");
+			organisation = administrativeDepartmentDAO.retrieveById(idOrganisation, initialize);
 		}
 		else if (teachingDepartmentDAO.exists(idOrganisation)) {
-			logger.info("organisation found using teachingDepartmentDAO");
-			organisation = teachingDepartmentDAO.retrieveById(idOrganisation);
+			logger.debug("organisation found using teachingDepartmentDAO");
+			organisation = teachingDepartmentDAO.retrieveById(idOrganisation, initialize);
 		}
 		return organisation;
 	}
 
 	@Override
-	public Community retrieveCommunity(Long id) {
-		return communityDAO.retrieveById(id);
+	public Community retrieveCommunity(Long id, boolean initialize) {
+		return communityDAO.retrieveById(id, initialize);
 	}
 
 	@Override
-	public Institution retrieveInstitution(Long id) {
-		return institutionDAO.retrieveById(id);
+	public Institution retrieveInstitution(Long id, boolean initialize) {
+		return institutionDAO.retrieveById(id, initialize);
 	}
 
 	@Override
-	public AdministrativeDepartment retrieveAdministrativeDepartment(Long id) {
-		return administrativeDepartmentDAO.retrieveById(id);
+	public AdministrativeDepartment retrieveAdministrativeDepartment(Long id, boolean initialize) {
+		return administrativeDepartmentDAO.retrieveById(id, initialize);
 	}
 
 	@Override
-	public TeachingDepartment retrieveTeachingDepartment(Long id) {
-		return teachingDepartmentDAO.retrieveById(id);
+	public TeachingDepartment retrieveTeachingDepartment(Long id, boolean initialize) {
+		return teachingDepartmentDAO.retrieveById(id, initialize);
 	}
 
 	@Override
@@ -177,40 +182,44 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	@Override
 	public Organisation updateOrganisation(Organisation organisation) {
-		Organisation updatedOrganisation = null;
+		Organisation updatedEntity = null;
 		if (organisation instanceof Community) {
-			updatedOrganisation = updateCommunity((Community) organisation);
+			updatedEntity = updateCommunity((Community) organisation);
 		}
 		else if (organisation instanceof Institution) {
-			updatedOrganisation = updateInstitution((Institution) organisation);
+			updatedEntity = updateInstitution((Institution) organisation);
 		}
 		else if (organisation instanceof AdministrativeDepartment) {
-			updatedOrganisation = updateAdministrativeDepartment((AdministrativeDepartment) organisation);
+			updatedEntity = updateAdministrativeDepartment((AdministrativeDepartment) organisation);
 		}
 		else if (organisation instanceof TeachingDepartment) {
-			updatedOrganisation = updateTeachingDepartment((TeachingDepartment) organisation);
+			updatedEntity = updateTeachingDepartment((TeachingDepartment) organisation);
 		}
-		return updatedOrganisation;
+		return updatedEntity;
 	}
 
 	@Override
 	public Community updateCommunity(Community community) {
-		return communityDAO.update(community);
+		Community updatedEntity = communityDAO.update(community);
+		return retrieveCommunity(updatedEntity.getId(), true);
 	}
 
 	@Override
 	public Institution updateInstitution(Institution institution) {
-		return institutionDAO.update(institution);
+		Institution updatedEntity = institutionDAO.update(institution);
+		return retrieveInstitution(updatedEntity.getId(), true);
 	}
 
 	@Override
 	public AdministrativeDepartment updateAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
-		return administrativeDepartmentDAO.update(administrativeDepartment);
+		AdministrativeDepartment updatedAdministrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
+		return retrieveAdministrativeDepartment(updatedAdministrativeDepartment.getId(), true);
 	}
 
 	@Override
 	public TeachingDepartment updateTeachingDepartment(TeachingDepartment teachingDepartment) {
-		return teachingDepartmentDAO.update(teachingDepartment);
+		TeachingDepartment updatedEntity = teachingDepartmentDAO.update(teachingDepartment);
+		return retrieveTeachingDepartment(updatedEntity.getId(), true);
 	}
 
 	@Override
@@ -285,68 +294,114 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	@Override
 	public Boolean associateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
-		logger.info("in associateCommunityAndInstitution");
-		Community community = communityDAO.retrieveById(idCommunity);
-		Institution institution = institutionDAO.retrieveById(idInstitution);
-		community.addInstitution(institution);
-		community = communityDAO.update(community);
-		institution = institutionDAO.update(institution);
-		return (community.getInstitutions().contains(institution));
+		Community community = retrieveCommunity(idCommunity, false);
+		Institution institution = retrieveInstitution(idInstitution, false);
+
+		community.getInstitutions().add(institution);
+		institution.getCommunities().add(community);
+
+		institution = updateInstitution(institution);
+		community = updateCommunity(community);
+
+		return ((community.getInstitutions().contains(institution)) && (institution.getCommunities().contains(community)));
 	}
 
 	@Override
 	public Boolean dissociateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
-		logger.info("in dissociateCommunityAndInstitution");
-		Community community = communityDAO.retrieveById(idCommunity);
-		Institution institution = institutionDAO.retrieveById(idInstitution);
-		community.removeInstitution(institution);
-		community = communityDAO.update(community);
-		institution = institutionDAO.update(institution);
-		return (!community.getInstitutions().contains(institution));
+		Community community = retrieveCommunity(idCommunity, true);
+		Institution institution = retrieveInstitution(idInstitution, true);
+
+		institution.getCommunities().remove(community);
+		community.getInstitutions().remove(institution);
+
+		community = updateCommunity(community);
+		institution = updateInstitution(institution);
+
+		return ((!community.getInstitutions().contains(institution)) && (!institution.getCommunities().contains(community)));
 	}
 
 	@Override
 	public Boolean associateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment) {
-		logger.info("in associateInstitutionAndAdministrativeDepartment");
-		Institution institution = institutionDAO.retrieveById(idInstitution);
-		AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(idAdministrativeDepartment);
-		institution.addAdministrativeDepartment(administrativeDepartment);
-		institution = institutionDAO.update(institution);
-		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
-		return (institution.getAdministrativeDepartments().contains(administrativeDepartment));
+		Institution institution = retrieveInstitution(idInstitution, true);
+		AdministrativeDepartment administrativeDepartment = retrieveAdministrativeDepartment(idAdministrativeDepartment, true);
+
+		institution.getAdministrativeDepartments().add(administrativeDepartment);
+		administrativeDepartment.getInstitutions().add(institution);
+		
+		institution = updateInstitution(institution);
+		administrativeDepartment = updateAdministrativeDepartment(administrativeDepartment);
+
+		return ((institution.getAdministrativeDepartments().contains(administrativeDepartment)) && (administrativeDepartment.getInstitutions().contains(institution)));
 	}
 
 	@Override
 	public Boolean dissociateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment) {
-		logger.info("in dissociateInstitutionAndAdministrativeDepartment");
-		Institution institution = institutionDAO.retrieveById(idInstitution);
-		AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(idAdministrativeDepartment);
-		institution.removeAdministrativeDepartment(administrativeDepartment);
-		institution = institutionDAO.update(institution);
-		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
-		return (!institution.getAdministrativeDepartments().contains(administrativeDepartment));
+		Institution institution = retrieveInstitution(idInstitution, true);
+		AdministrativeDepartment administrativeDepartment = retrieveAdministrativeDepartment(idAdministrativeDepartment, true);
+
+		institution.getAdministrativeDepartments().remove(administrativeDepartment);
+		administrativeDepartment.getInstitutions().remove(institution);
+
+		institution = updateInstitution(institution);
+		administrativeDepartment = updateAdministrativeDepartment(administrativeDepartment);
+
+		return ((!institution.getAdministrativeDepartments().contains(administrativeDepartment)) && (!administrativeDepartment.getInstitutions().contains(institution)));
 	}
 
 	@Override
+	public Boolean associatePedagogicalAnswerAndAdministrativeDepartment(Long idPedagogicalAnswer, Long idAdministrativeDepartment) {
+		PedagogicalAnswer pedagogicalAnswer = needsAndAnswersService.retrievePedagogicalAnswer(idPedagogicalAnswer, true);
+		AdministrativeDepartment administrativeDepartment = retrieveAdministrativeDepartment(idAdministrativeDepartment, true);
+
+		pedagogicalAnswer.getAdministrativeDepartments().add(administrativeDepartment);
+		administrativeDepartment.getPedagogicalAnswers().add(pedagogicalAnswer);
+		
+		pedagogicalAnswer = needsAndAnswersService.updatePedagogicalAnswer(pedagogicalAnswer);
+		administrativeDepartment = updateAdministrativeDepartment(administrativeDepartment);
+
+		return ((pedagogicalAnswer.getAdministrativeDepartments().contains(administrativeDepartment)) && (administrativeDepartment.getPedagogicalAnswers().contains(pedagogicalAnswer)));
+	}
+
+	@Override
+	public Boolean dissociatePedagogicalAnswerAndAdministrativeDepartment(Long idPedagogicalAnswer, Long idAdministrativeDepartment) {
+		PedagogicalAnswer pedagogicalAnswer = needsAndAnswersService.retrievePedagogicalAnswer(idPedagogicalAnswer, true);
+		AdministrativeDepartment administrativeDepartment = retrieveAdministrativeDepartment(idAdministrativeDepartment, true);
+
+		pedagogicalAnswer.getAdministrativeDepartments().remove(administrativeDepartment);
+		administrativeDepartment.getPedagogicalAnswers().remove(pedagogicalAnswer);
+
+		pedagogicalAnswer = needsAndAnswersService.updatePedagogicalAnswer(pedagogicalAnswer);
+		administrativeDepartment = updateAdministrativeDepartment(administrativeDepartment);
+
+		return ((!pedagogicalAnswer.getAdministrativeDepartments().contains(administrativeDepartment)) && (!administrativeDepartment.getPedagogicalAnswers().contains(pedagogicalAnswer)));
+	}
+	
+	@Override
 	public Boolean associateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment) {
-		logger.info("in associateInstitutionAndTeachingDepartment");
-		Institution institution = institutionDAO.retrieveById(idInstitution);
-		TeachingDepartment teachingDepartment = teachingDepartmentDAO.retrieveById(idTeachingDepartment);
-		institution.addTeachingDepartment(teachingDepartment);
-		institution = institutionDAO.update(institution);
-		teachingDepartment = teachingDepartmentDAO.update(teachingDepartment);
-		return (institution.getTeachingDepartments().contains(teachingDepartment));
+		Institution institution = retrieveInstitution(idInstitution, true);
+		TeachingDepartment teachingDepartment = retrieveTeachingDepartment(idTeachingDepartment, true);
+
+		teachingDepartment.getInstitutions().add(institution);
+		institution.getTeachingDepartments().add(teachingDepartment);
+
+		institution = updateInstitution(institution);
+		teachingDepartment = updateTeachingDepartment(teachingDepartment);
+
+		return ((institution.getTeachingDepartments().contains(teachingDepartment)) && (teachingDepartment.getInstitutions().contains(institution)));
 	}
 
 	@Override
 	public Boolean dissociateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment) {
-		logger.info("in dissociateInstitutionAndTeachingDepartment");
-		Institution institution = institutionDAO.retrieveById(idInstitution);
-		TeachingDepartment teachingDepartment = teachingDepartmentDAO.retrieveById(idTeachingDepartment);
-		institution.removeTeachingDepartment(teachingDepartment);
-		institution = institutionDAO.update(institution);
-		teachingDepartment = teachingDepartmentDAO.update(teachingDepartment);
-		return (!institution.getTeachingDepartments().contains(teachingDepartment));
+		Institution institution = retrieveInstitution(idInstitution, true);
+		TeachingDepartment teachingDepartment = retrieveTeachingDepartment(idTeachingDepartment, true);
+
+		teachingDepartment.getInstitutions().remove(institution);
+		institution.getTeachingDepartments().remove(teachingDepartment);
+
+		institution = updateInstitution(institution);
+		teachingDepartment = updateTeachingDepartment(teachingDepartment);
+
+		return ((! institution.getTeachingDepartments().contains(teachingDepartment)) && (!teachingDepartment.getInstitutions().contains(institution)));
 	}
 
 }

@@ -33,5 +33,8 @@ public interface UseModeRepository extends GenericRepository<UseModeNode> {
 
 	@Query(value = "MATCH (n:UseMode) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:UseMode) WHERE n.name=({name}) RETURN n")
+	Iterable<UseModeNode> findByName(@Param("name") String name);
+
 }

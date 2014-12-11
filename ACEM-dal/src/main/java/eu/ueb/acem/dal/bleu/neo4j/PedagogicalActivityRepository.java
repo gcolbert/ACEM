@@ -33,5 +33,8 @@ public interface PedagogicalActivityRepository extends GenericRepository<Pedagog
 
 	@Query(value = "MATCH (n:PedagogicalActivity) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:PedagogicalActivity) WHERE n.name=({name}) RETURN n")
+	Iterable<PedagogicalActivityNode> findByName(@Param("name") String name);
+
 }

@@ -34,29 +34,17 @@ public interface PedagogicalNeed extends Serializable, Comparable<PedagogicalNee
 
 	void setName(String name);
 
-	Set<? extends PedagogicalNeed> getParents();
+	Set<PedagogicalNeed> getParents();
 
-	void setParents(Set<? extends PedagogicalNeed> parents);
+	void setParents(Set<PedagogicalNeed> parents);
 
-	Set<? extends PedagogicalNeed> getChildren();
+	Set<PedagogicalNeed> getChildren();
 
-	void setChildren(Set<? extends PedagogicalNeed> children);
+	void setChildren(Set<PedagogicalNeed> children);
 
-	Set<? extends PedagogicalAnswer> getAnswers();
+	Set<PedagogicalAnswer> getAnswers();
 
-	void setAnswers(Set<? extends PedagogicalAnswer> reponses);
-
-	void addParent(PedagogicalNeed parent);
-
-	void addChild(PedagogicalNeed need);
-
-	void addAnswer(PedagogicalAnswer answer);
-
-	void removeParent(PedagogicalNeed need);
-
-	void removeChild(PedagogicalNeed need);
-
-	void removeAnswer(PedagogicalAnswer answer);
+	void setAnswers(Set<PedagogicalAnswer> answers);
 
 	int compareTo(PedagogicalNeed o);
 

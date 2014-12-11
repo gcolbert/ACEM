@@ -29,13 +29,13 @@ import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
  */
 public interface Equipment extends Resource {
 
-	Set<? extends PhysicalSpace> getStorageLocations();
+	Set<PhysicalSpace> getStorageLocations();
 
 	Integer getQuantity();
 
 	void setQuantity(Integer quantity);
 
-	void setStorageLocations(Set<? extends PhysicalSpace> storageLocations);
+	void setStorageLocations(Set<PhysicalSpace> storageLocations);
 	
 	Boolean isMobile();
 	

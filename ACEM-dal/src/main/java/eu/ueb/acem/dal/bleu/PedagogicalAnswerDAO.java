@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -53,6 +54,9 @@ public class PedagogicalAnswerDAO implements DAO<Long, PedagogicalAnswer> {
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalAnswerDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+	
+	@Inject
 	private PedagogicalAnswerRepository repository;
 
 	public PedagogicalAnswerDAO() {
@@ -61,6 +65,7 @@ public class PedagogicalAnswerDAO implements DAO<Long, PedagogicalAnswer> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -71,13 +76,24 @@ public class PedagogicalAnswerDAO implements DAO<Long, PedagogicalAnswer> {
 	}
 
 	@Override
-	public PedagogicalAnswer create(PedagogicalAnswer reponse) {
-		return repository.save((PedagogicalAnswerNode) reponse);
+	public PedagogicalAnswer create(PedagogicalAnswer entity) {
+		return repository.save((PedagogicalAnswerNode) entity);
 	}
 
 	@Override
 	public PedagogicalAnswer retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public PedagogicalAnswer retrieveById(Long id, boolean initialize) {
+		PedagogicalAnswer entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getResourceCategories());
+			neo4jOperations.fetch(entity.getNeeds());
+			neo4jOperations.fetch(entity.getScenariosRelatedToAnswer());
+		}
+		return entity;
 	}
 
 	@Override
@@ -104,13 +120,14 @@ public class PedagogicalAnswerDAO implements DAO<Long, PedagogicalAnswer> {
 	}
 
 	@Override
-	public PedagogicalAnswer update(PedagogicalAnswer reponse) {
-		return repository.save((PedagogicalAnswerNode) reponse);
+	public PedagogicalAnswer update(PedagogicalAnswer entity) {
+		PedagogicalAnswer updatedEntity = repository.save((PedagogicalAnswerNode) entity);
+		return retrieveById(updatedEntity.getId(),true);
 	}
 
 	@Override
-	public void delete(PedagogicalAnswer reponse) {
-		repository.delete((PedagogicalAnswerNode) reponse);
+	public void delete(PedagogicalAnswer entity) {
+		repository.delete((PedagogicalAnswerNode) entity);
 	}
 
 	@Override

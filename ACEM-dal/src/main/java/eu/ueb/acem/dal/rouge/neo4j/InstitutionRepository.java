@@ -33,5 +33,7 @@ public interface InstitutionRepository extends GenericRepository<InstitutionNode
 	
 	@Query(value = "MATCH (n:Institution) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:Institution) WHERE n.name=({name}) RETURN n")
+	Iterable<InstitutionNode> findByName(@Param("name") String name);
 }

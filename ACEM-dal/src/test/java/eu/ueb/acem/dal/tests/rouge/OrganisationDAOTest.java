@@ -22,8 +22,6 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -37,12 +35,12 @@ import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.dal.rouge.CommunityDAO;
 import eu.ueb.acem.dal.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 
 /**
  * @author Grégoire Colbert
@@ -69,18 +67,11 @@ public class OrganisationDAOTest extends TestCase {
 	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 
 	@Inject
+	@SuppressWarnings("unused")
 	private TeachingDepartmentDAO teachingDepartmentDAO;
 
 	public OrganisationDAOTest() {
 
-	}
-
-	@Before
-	public void before() {
-	}
-
-	@After
-	public void after() {
 	}
 
 	/**
@@ -91,7 +82,9 @@ public class OrganisationDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t01_TestCreateOrganisation() {
 		// We create a new object in the datastore
-		Community community = new CommunityNode("University of California, Los Angeles", "UCLA", null);
+		String name = "University of California, Los Angeles";
+		String shortname = "UCLA";
+		Community community = new CommunityNode(name, shortname, null);
 
 		// We create our object
 		community = communityDAO.create(community);
@@ -101,7 +94,17 @@ public class OrganisationDAOTest extends TestCase {
 		community = communityDAO.create(community);
 
 		// There must exactly 1 object in the datastore
-		assertEquals("There are more than one object in the datastore", new Long(1), communityDAO.count());
+		assertEquals("There should be exactly one object in the datastore", new Long(1), communityDAO.count());
+
+		Community communityReloaded = communityDAO.retrieveById(community.getId());
+		assertNotNull("The reloaded community is null", communityReloaded);
+
+		assertEquals("RetrieveByName didn't return the correct number of Community", new Long(1),  new Long(communityDAO
+				.retrieveByName(community.getName()).size()));
+
+		// The name and shortname must be good
+		assertEquals("The reloaded name is not good", name, communityReloaded.getName());
+		assertEquals("The reloaded shortname is not good", shortname, communityReloaded.getShortname());
 	}
 
 	/**
@@ -116,14 +119,16 @@ public class OrganisationDAOTest extends TestCase {
 		Institution institution = new InstitutionNode("University of California, Los Angeles", "UCLA", null);
 		institution = institutionDAO.create(institution);
 
-		AdministrativeDepartment administrativeDepartment = new AdministrativeDepartmentNode("Department of Health Policy and Management", "HPM", null);
+		AdministrativeDepartment administrativeDepartment = new AdministrativeDepartmentNode(
+				"Department of Health Policy and Management", "HPM", null);
 		administrativeDepartment = administrativeDepartmentDAO.create(administrativeDepartment);
-		administrativeDepartment.addInstitution(institution);
+
+		administrativeDepartment.getInstitutions().add(institution);
+		institution.getAdministrativeDepartments().add(administrativeDepartment);
 		administrativeDepartmentDAO.update(administrativeDepartment);
 
-		Institution institution2 = institutionDAO.retrieveById(institution.getId());
-
-		// There must exactly 1 object in the datastore
+		// The administrative department must be associated with the institution
+		Institution institution2 = institutionDAO.retrieveById(institution.getId(), true);
 		assertTrue("The administrative department is not associated with the institution", institution2
 				.getAdministrativeDepartments().contains(administrativeDepartment));
 	}

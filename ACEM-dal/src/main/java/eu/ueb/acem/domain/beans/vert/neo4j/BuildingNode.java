@@ -37,10 +37,10 @@ import eu.ueb.acem.domain.beans.vert.Campus;
 @TypeAlias("Building")
 public class BuildingNode extends PhysicalSpaceNode implements Building {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 7469182359332815932L;
-
-	//@GraphId
-	//private Long id;
 
 	@Indexed
 	private String name;

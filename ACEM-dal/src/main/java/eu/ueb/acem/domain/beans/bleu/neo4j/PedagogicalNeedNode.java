@@ -21,20 +21,19 @@ package eu.ueb.acem.domain.beans.bleu.neo4j;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
-import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 
 /**
  * @author Grégoire Colbert
@@ -43,46 +42,34 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
  */
 @NodeEntity
 @TypeAlias("PedagogicalNeed")
-public class PedagogicalNeedNode implements PedagogicalNeed {
+public class PedagogicalNeedNode extends AbstractNode implements PedagogicalNeed {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -774562771501521566L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalNeedNode.class);
 
-	@GraphId
-	private Long id;
-
 	@Indexed
 	private String name;
 
 	@RelatedTo(elementClass = PedagogicalNeedNode.class, type = "hasParentNeed", direction = OUTGOING)
-	@Fetch
-	private Set<PedagogicalNeedNode> parents;
+	private Set<PedagogicalNeed> parents = new HashSet<PedagogicalNeed>(0);
 
 	@RelatedTo(elementClass = PedagogicalNeedNode.class, type = "hasParentNeed", direction = INCOMING)
-	@Fetch
-	private Set<PedagogicalNeedNode> children;
+	private Set<PedagogicalNeed> children = new HashSet<PedagogicalNeed>(0);
 
 	@RelatedTo(elementClass = PedagogicalAnswerNode.class, type = "needAnsweredBy", direction = OUTGOING)
-	@Fetch
-	private Set<PedagogicalAnswerNode> answers;
+	private Set<PedagogicalAnswer> answers = new HashSet<PedagogicalAnswer>(0);
 
 	public PedagogicalNeedNode() {
 	}
 
 	public PedagogicalNeedNode(String name) {
 		this();
-		this.name = name;
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+		setName(name);
 	}
 
 	@Override
@@ -96,138 +83,38 @@ public class PedagogicalNeedNode implements PedagogicalNeed {
 	}
 
 	@Override
-	public Set<? extends PedagogicalNeed> getParents() {
+	public Set<PedagogicalNeed> getParents() {
 		return parents;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setParents(Set<? extends PedagogicalNeed> parents) {
-		this.parents = (Set<PedagogicalNeedNode>) parents;
+	public void setParents(Set<PedagogicalNeed> parents) {
+		this.parents = parents;
 	}
 
 	@Override
-	@Transactional
-	public void addParent(PedagogicalNeed parent) {
-		if (parent != null) {
-			if (!parents.contains(parent)) {
-				parents.add((PedagogicalNeedNode) parent);
-			}
-			if (!parent.getChildren().contains(this)) {
-				parent.addChild(this);
-			}
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeParent(PedagogicalNeed need) {
-		parents.remove(need);
-		need.removeChild(this);
-	}
-
-	@Override
-	public Set<? extends PedagogicalNeed> getChildren() {
+	public Set<PedagogicalNeed> getChildren() {
 		return children;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setChildren(Set<? extends PedagogicalNeed> children) {
-		this.children = (Set<PedagogicalNeedNode>) children;
+	public void setChildren(Set<PedagogicalNeed> children) {
+		this.children = children;
 	}
 
 	@Override
-	@Transactional
-	public void addChild(PedagogicalNeed need) {
-		if (need != null) {
-			if (!children.contains(need)) {
-				children.add((PedagogicalNeedNode) need);
-			}
-			if (!need.getParents().contains(this)) {
-				need.addParent(this);
-			}
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeChild(PedagogicalNeed need) {
-		children.remove(need);
-		need.removeParent(this);
-	}
-
-	@Override
-	public Set<? extends PedagogicalAnswer> getAnswers() {
+	public Set<PedagogicalAnswer> getAnswers() {
 		return answers;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setAnswers(Set<? extends PedagogicalAnswer> answers) {
-		this.answers = (Set<PedagogicalAnswerNode>) answers;
-	}
-
-	@Override
-	@Transactional
-	public void addAnswer(PedagogicalAnswer answer) {
-		if (answer != null) {
-			if (!answers.contains(answer)) {
-				answers.add((PedagogicalAnswerNode) answer);
-			}
-			if (!answer.getNeeds().contains(this)) {
-				answer.addNeed(this);
-			}
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeAnswer(PedagogicalAnswer answer) {
-		if (answer != null) {
-			answers.remove(answer);
-			answer.removeNeed(this);
-		}
+	public void setAnswers(Set<PedagogicalAnswer> answers) {
+		this.answers = answers;
 	}
 
 	@Override
 	public int compareTo(PedagogicalNeed o) {
 		return getName().compareTo(o.getName());
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PedagogicalNeedNode other = (PedagogicalNeedNode) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		}
-		else
-			if (!id.equals(other.id))
-				return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		}
-		else
-			if (!name.equals(other.name))
-				return false;
-		return true;
 	}
 
 }

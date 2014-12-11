@@ -34,4 +34,7 @@ public interface FloorRepository extends GenericRepository<FloorNode> {
 	@Query(value = "MATCH (n:Floor) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Query(value = "MATCH (n:Floor) WHERE n.name=({name}) RETURN n")
+	Iterable<FloorNode> findByName(@Param("name") String name);
+
 }

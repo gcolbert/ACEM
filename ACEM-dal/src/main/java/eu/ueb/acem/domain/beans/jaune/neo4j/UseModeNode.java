@@ -19,11 +19,11 @@
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
 import eu.ueb.acem.domain.beans.jaune.UseMode;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 
 /**
  * @author Grégoire Colbert
@@ -32,12 +32,12 @@ import eu.ueb.acem.domain.beans.jaune.UseMode;
  */
 @NodeEntity
 @TypeAlias("UseMode")
-public class UseModeNode implements UseMode {
+public class UseModeNode extends AbstractNode implements UseMode {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 465146117417875133L;
-
-	@GraphId
-	private Long id;
 
 	@Indexed
 	private String name;
@@ -45,11 +45,6 @@ public class UseModeNode implements UseMode {
 	private String description;
 
 	public UseModeNode() {
-	}
-
-	@Override
-	public Long getId() {
-		return id;
 	}
 
 	public UseModeNode(String name) {

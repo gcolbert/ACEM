@@ -26,14 +26,15 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.neo4j.SoftwareRepository;
-import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
+import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 
 /**
  * @author Grégoire Colbert
@@ -52,6 +53,9 @@ public class SoftwareDAO implements DAO<Long, Software> {
 	private static final Logger logger = LoggerFactory.getLogger(SoftwareDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private SoftwareRepository repository;
 
 	public SoftwareDAO() {
@@ -60,6 +64,7 @@ public class SoftwareDAO implements DAO<Long, Software> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -77,6 +82,19 @@ public class SoftwareDAO implements DAO<Long, Software> {
 	@Override
 	public Software retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public Software retrieveById(Long id, boolean initialize) {
+		Software entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getCategories());
+			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
+			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+			neo4jOperations.fetch(entity.getUseModes());
+			neo4jOperations.fetch(entity.getDocumentations());
+		}
+		return entity;
 	}
 
 	@Override
@@ -104,7 +122,8 @@ public class SoftwareDAO implements DAO<Long, Software> {
 
 	@Override
 	public Software update(Software entity) {
-		return repository.save((SoftwareNode) entity);
+		Software updatedEntity = repository.save((SoftwareNode) entity);
+		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override

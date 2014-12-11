@@ -1,13 +1,21 @@
-/*******************************************************************************
- * Copyright (c) 2013 gcolbert.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl.html
+/**
+ *     Copyright Grégoire COLBERT 2013
  * 
- * Contributors:
- *     gcolbert - initial API and implementation
- ******************************************************************************/
+ *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
+ * 
+ *     ACEM is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     ACEM is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
+ */
 package eu.ueb.acem.dal.gris.neo4j;
 
 import org.springframework.data.neo4j.annotation.Query;
@@ -25,8 +33,11 @@ public interface TeacherRepository extends GenericRepository<TeacherNode> {
 
 	@Query(value = "MATCH (n:Teacher) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
-	@Query(value = "match (n:Teacher) where n.login=({login}) return n")
+
+	@Query(value = "MATCH (n:Teacher) WHERE n.name=({name}) RETURN n")
+	Iterable<TeacherNode> findByName(@Param("name") String name);
+
+	@Query(value = "MATCH (n:Teacher) WHERE n.login=({login}) RETURN n")
 	TeacherNode findByLogin(@Param("login") String login);
 
 }

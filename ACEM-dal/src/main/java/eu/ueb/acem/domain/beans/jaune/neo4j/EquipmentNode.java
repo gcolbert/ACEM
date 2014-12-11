@@ -20,10 +20,10 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -41,6 +41,9 @@ import eu.ueb.acem.domain.beans.vert.neo4j.PhysicalSpaceNode;
 @TypeAlias("Equipment")
 public class EquipmentNode extends ResourceNode implements Equipment {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 795694384595044050L;
 
 	@Indexed
@@ -51,8 +54,7 @@ public class EquipmentNode extends ResourceNode implements Equipment {
 	private Boolean mobile;
 
 	@RelatedTo(elementClass = PhysicalSpaceNode.class, type = "isStoredIn", direction = OUTGOING)
-	@Fetch
-	private Set<PhysicalSpaceNode> storageLocations;
+	private Set<PhysicalSpace> storageLocations = new HashSet<PhysicalSpace>(0);
 	
 	public EquipmentNode() {
 	}
@@ -62,16 +64,25 @@ public class EquipmentNode extends ResourceNode implements Equipment {
 		setName(name);
 		setIconFileName(iconFileName);
 	}
-	
+
 	@Override
-	public Set<? extends PhysicalSpace> getStorageLocations() {
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public Set<PhysicalSpace> getStorageLocations() {
 		return storageLocations;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setStorageLocations(Set<? extends PhysicalSpace> storageLocations) {
-		this.storageLocations = (Set<PhysicalSpaceNode>) storageLocations;
+	public void setStorageLocations(Set<PhysicalSpace> storageLocations) {
+		this.storageLocations = storageLocations;
 	}
 	
 	@Override

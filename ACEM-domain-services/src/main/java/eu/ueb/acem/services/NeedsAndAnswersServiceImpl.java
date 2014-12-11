@@ -40,6 +40,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 
 /**
  * @author Grégoire Colbert
@@ -86,7 +87,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public PedagogicalNeed createNeed(String name) {
+	public PedagogicalNeed createPedagogicalNeed(String name) {
 		return needDAO.create(new PedagogicalNeedNode(name));
 	}
 
@@ -96,13 +97,14 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public PedagogicalNeed retrieveNeed(Long id) {
-		return needDAO.retrieveById(id);
+	public PedagogicalNeed retrievePedagogicalNeed(Long id, boolean initialize) {
+		return needDAO.retrieveById(id, initialize);
 	}
 
 	@Override
-	public PedagogicalNeed updateNeed(PedagogicalNeed need) {
-		return needDAO.update(need);
+	public PedagogicalNeed updatePedagogicalNeed(PedagogicalNeed pedagogicalNeed) {
+		PedagogicalNeed updatedEntity = needDAO.update(pedagogicalNeed);
+		return retrievePedagogicalNeed(updatedEntity.getId(), true);
 	}
 
 	@Override
@@ -125,18 +127,19 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public PedagogicalAnswer createAnswer(String name) {
+	public PedagogicalAnswer createPedagogicalAnswer(String name) {
 		return answerDAO.create(new PedagogicalAnswerNode(name));
 	}
 
 	@Override
-	public PedagogicalAnswer retrieveAnswer(Long id) {
-		return answerDAO.retrieveById(id);
+	public PedagogicalAnswer retrievePedagogicalAnswer(Long id, boolean initialize) {
+		return answerDAO.retrieveById(id, initialize);
 	}
 
 	@Override
-	public PedagogicalAnswer updateAnswer(PedagogicalAnswer answer) {
-		return answerDAO.update(answer);
+	public PedagogicalAnswer updatePedagogicalAnswer(PedagogicalAnswer pedagogicalAnswer) {
+		PedagogicalAnswer updatedEntity = answerDAO.update(pedagogicalAnswer);
+		return retrievePedagogicalAnswer(updatedEntity.getId(), true);
 	}
 
 	@Override
@@ -169,7 +172,8 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		if (needDAO.exists(idParent)) {
 			PedagogicalNeed parent = needDAO.retrieveById(idParent);
 			if (!parent.getChildren().contains(need)) {
-				need.addParent(parent);
+				need.getParents().add(parent);
+				parent.getChildren().add(need);
 				need = needDAO.update(need);
 				parent = needDAO.update(parent);
 			}
@@ -197,8 +201,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 			logger.info("Need is retrieved");
 			if (need != null) {
 				logger.info("Need is not null");
-				@SuppressWarnings("unchecked")
-				Collection<PedagogicalNeed> parents = (Collection<PedagogicalNeed>)need.getParents();
+				Collection<PedagogicalNeed> parents = need.getParents();
 				if (parents != null) {
 					logger.info("Need.getParents() is not null");
 					Iterator<PedagogicalNeed> iterator = parents.iterator();
@@ -219,7 +222,8 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 				PedagogicalNeed newParent = needDAO.retrieveById(idNewParent);
 				logger.info("Service changeParentOfNeed, newParent={}", newParent);
 				if (newParent != null) {
-					newParent.addChild(need);
+					newParent.getChildren().add(need);
+					need.getParents().add(newParent);
 					newParent = needDAO.update(newParent);
 					need = needDAO.update(need);
 				}
@@ -241,7 +245,8 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		}
 		if (needDAO.exists(idAssociatedNeed)) {
 			PedagogicalNeed associatedNeed = needDAO.retrieveById(idAssociatedNeed);
-			associatedNeed.addAnswer(answer);
+			associatedNeed.getAnswers().add(answer);
+			answer.getNeeds().add(associatedNeed);
 			needDAO.update(associatedNeed);
 			answerDAO.update(answer);
 		}
@@ -263,11 +268,10 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		return answer.getScenariosRelatedToAnswer();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment> getAdministrativeDepartmentsRelatedToAnswer(Long id) {
+	public Collection<AdministrativeDepartment> getAdministrativeDepartmentsRelatedToAnswer(Long id) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(id);
-		return (Collection<eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment>)answer.getAdministrativeDepartments();
+		return answer.getAdministrativeDepartments();
 	}
 
 	@Override
@@ -284,40 +288,51 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	public Boolean associateAnswerWithToolCategory(Long answerId, Long toolCategoryId) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(answerId);
 		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
-		answer.addResourceCategory(resourceCategory);
+
+		answer.getResourceCategories().add(resourceCategory);
+		resourceCategory.getAnswers().add(answer);
+
 		answer = answerDAO.update(answer);
 		resourceCategory = resourceCategoryDAO.update(resourceCategory);
-		return answer.getResourceCategories().contains(resourceCategory);
+		return ((answer.getResourceCategories().contains(resourceCategory)) && (resourceCategory.getAnswers().contains(resourceCategory)));
 	}
 
 	@Override
 	public Boolean dissociateAnswerWithToolCategory(Long answerId, Long toolCategoryId) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(answerId);
 		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
-		answer.removeResourceCategory(resourceCategory);
+
+		answer.getResourceCategories().remove(resourceCategory);
+		resourceCategory.getAnswers().remove(answer);
+
 		answer = answerDAO.update(answer);
 		resourceCategory = resourceCategoryDAO.update(resourceCategory);
-		return ! answer.getResourceCategories().contains(resourceCategory);
+		return ((!answer.getResourceCategories().contains(resourceCategory)) && (!resourceCategory.getAnswers().contains(resourceCategory)));
 	}
-	
 
 	@Override
-	public Boolean associateAnswerWithAdministrativeDepartment(Long answerId, Long administrativeDepartmentId) {
-		PedagogicalAnswer answer = answerDAO.retrieveById(answerId);
-		eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(administrativeDepartmentId);
-		answer.addAdministrativeDepartment(administrativeDepartment);
-		answer = answerDAO.update(answer);
+	public Boolean associateAnswerWithAdministrativeDepartment(Long pedagogicalAnswerId, Long administrativeDepartmentId) {
+		PedagogicalAnswer pedagogicalAnswer = answerDAO.retrieveById(pedagogicalAnswerId);
+		AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(administrativeDepartmentId);
+
+		pedagogicalAnswer.getAdministrativeDepartments().add(administrativeDepartment);
+		administrativeDepartment.getPedagogicalAnswers().add(pedagogicalAnswer);
+
+		pedagogicalAnswer = answerDAO.update(pedagogicalAnswer);
 		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
-		return answer.getAdministrativeDepartments().contains(administrativeDepartment);
+		return ((pedagogicalAnswer.getAdministrativeDepartments().contains(administrativeDepartment)) && (administrativeDepartment.getPedagogicalAnswers().contains(pedagogicalAnswer)));
 	}
 
 	@Override
 	public Boolean dissociateAnswerWithAdministrativeDepartment(Long answerId, Long administrativeDepartmentId) {
-		PedagogicalAnswer answer = answerDAO.retrieveById(answerId);
-		eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(administrativeDepartmentId);
-		answer.removeAdministrativeDepartment(administrativeDepartment);
-		answer = answerDAO.update(answer);
+		PedagogicalAnswer pedagogicalAnswer = answerDAO.retrieveById(answerId);
+		AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(administrativeDepartmentId);
+
+		pedagogicalAnswer.getAdministrativeDepartments().remove(administrativeDepartment);
+		administrativeDepartment.getPedagogicalAnswers().remove(pedagogicalAnswer);
+
+		pedagogicalAnswer = answerDAO.update(pedagogicalAnswer);
 		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
-		return ! answer.getAdministrativeDepartments().contains(administrativeDepartment);
+		return ((! pedagogicalAnswer.getAdministrativeDepartments().contains(administrativeDepartment)) && (! administrativeDepartment.getPedagogicalAnswers().contains(pedagogicalAnswer)));
 	}	
 }

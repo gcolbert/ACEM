@@ -29,20 +29,12 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
  */
 public interface AdministrativeDepartment extends Organisation {
 
-	Set<? extends Institution> getInstitutions();
+	Set<Institution> getInstitutions();
 
-	void setInstitutions(Set<? extends Institution> institutions);
+	void setInstitutions(Set<Institution> institutions);
 
-	void addInstitution(Institution etablissementNode);
+	Set<PedagogicalAnswer> getPedagogicalAnswers();
+	
+	void setPedagogicalAnswers(Set<PedagogicalAnswer> pedagogicalAnswers);
 
-	void removeInstitution(Institution etablissementNode);
-	
-	Set<? extends PedagogicalAnswer> getPedagogicalAnswers();
-	
-	void setPedagogicalAnswers(Set<? extends PedagogicalAnswer> pedagogicalAnswers);
-
-	void addPedagogicalAnswer(PedagogicalAnswer answer);
-	
-	void removePedagogicalAnswer(PedagogicalAnswer answer);
-	
 }

@@ -20,15 +20,14 @@ package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.INCOMING;
 
-import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
-import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -47,22 +46,23 @@ public class CommunityNode extends OrganisationNode implements Community {
 	 */
 	private static final long serialVersionUID = 1861762804925897713L;
 
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(CommunityNode.class);
+
 	@Indexed
 	private String name;
-
+	
 	@RelatedTo(elementClass = InstitutionNode.class, type = "institutionMemberOfCommunity", direction = INCOMING)
-	@Fetch
-	private Set<InstitutionNode> institutions;
+	private Set<Institution> institutions;
 
 	public CommunityNode() {
-		institutions = new HashSet<InstitutionNode>();
 	}
 
 	public CommunityNode(String name, String shortname, String iconFileName) {
 		this();
-		this.setName(name);
-		this.setShortname(shortname);
-		this.setIconFileName(iconFileName);
+		setName(name);
+		setShortname(shortname);
+		setIconFileName(iconFileName);
 	}
 
 	@Override
@@ -76,36 +76,13 @@ public class CommunityNode extends OrganisationNode implements Community {
 	}
 
 	@Override
-	public Set<? extends Institution> getInstitutions() {
+	public Set<Institution> getInstitutions() {
 		return institutions;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setInstitutions(Set<? extends Institution> institutions) {
-		this.institutions = (Set<InstitutionNode>) institutions;
-	}
-
-	@Override
-	@Transactional
-	public void addInstitution(Institution institution) {
-		if (!institutions.contains(institution)) {
-			institutions.add((InstitutionNode) institution);
-		}
-		if (!institution.getCommunities().contains(this)) {
-			institution.addCommunity(this);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void removeInstitution(Institution institution) {
-		if (this.getInstitutions().contains(institution)) {
-			institutions.remove((InstitutionNode) institution);
-		}
-		if (institution.getCommunities().contains(this)) {
-			institution.removeCommunity(this);
-		}
+	public void setInstitutions(Set<Institution> institutions) {
+		this.institutions = institutions;
 	}
 
 }

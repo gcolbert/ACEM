@@ -33,5 +33,8 @@ public interface DiplomaRepository extends GenericRepository<DiplomaNode> {
 
 	@Query(value = "MATCH (n:Diploma) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:Diploma) WHERE n.name=({name}) RETURN n")
+	Iterable<DiplomaNode> findByName(@Param("name") String name);
+
 }

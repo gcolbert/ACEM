@@ -69,6 +69,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	private OrganisationsService organisationsService;
 	
 	@Inject
+	@SuppressWarnings("unused")
 	private UseModeDAO useModeDAO;
 
 	@Inject
@@ -112,7 +113,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	@Override
 	public Resource createResource(Long toolCategoryId, Long supportServiceId, String resourceType, String name, String iconFileName) {
-		Organisation supportService = organisationsService.retrieveOrganisation(supportServiceId);
+		Organisation supportService = organisationsService.retrieveOrganisation(supportServiceId, true);
 		if (supportService != null) {
 			Resource entity = null;
 			if (resourceType.equals("software")) {
@@ -135,7 +136,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 			}
 
 			ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
-			entity.addCategory(resourceCategory);
+			entity.getCategories().add(resourceCategory);
+			resourceCategory.getResources().add(entity);
 			resourceCategory = resourceCategoryDAO.update(resourceCategory);
 			
 			entity.setOrganisationPossessingResource(supportService);
@@ -354,7 +356,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	@Override
 	public Set<Long> retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(Long resourceCategoryId) {
 		Set<Long> idsOfPedagogicalNodes = new HashSet<Long>();
-		// TODO : déplacer cette requête dans ResourcesDAO
+		// TODO : déplacer cette requête dans ResourceCategoryDAO (ou la supprimer carrément?)
 		// MATCH (r:ResourceCategory)<-[:answeredUsingResourceCategory]-(answer)<-[:needAnsweredBy]-(need)-[:hasParentNeed*]->(need2)
 		// WHERE id(r)=41 return r,answer,need,need2;
 		return idsOfPedagogicalNodes;

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.ueb</groupId>
 	<artifactId>ACEM</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<description>Atelier de Création d'Enseignement Multimodal</description>
 	<properties>
@@ -44,57 +44,59 @@
 	</dependencies>
 	<build>
 		<defaultGoal>install</defaultGoal>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>${maven-javadoc-plugin.version}</version>
-				<configuration>
-					<minmemory>128m</minmemory>
-					<maxmemory>512m</maxmemory>
-					<goal>javadoc:javadoc</goal>
-					<reportOutputDirectory>docs/javadoc</reportOutputDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin.version}</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>${maven-eclipse-plugin.version}</version>
-				<configuration>
-					<useProjectReferences>true</useProjectReferences>
-					<additionalConfig>
-						<file>
-							<name>.checkstyle</name>
-							<url>http://subversion.cru.fr/esup-commons/utils/checkstyle/checkstyle.xml</url>
-						</file>
-					</additionalConfig>
-					<additionalProjectFacets>
-						<jst.jstl>2.0</jst.jstl>
-					</additionalProjectFacets>
-					<additionalProjectnatures>
-						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-					</additionalProjectnatures>
-					<additionalBuildcommands>
-						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
-					</additionalBuildcommands>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
-					<wtpversion>2.0</wtpversion>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.version}</version>
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${maven-javadoc-plugin.version}</version>
+					<configuration>
+						<minmemory>128m</minmemory>
+						<maxmemory>512m</maxmemory>
+						<goal>javadoc:javadoc</goal>
+						<reportOutputDirectory>docs/javadoc</reportOutputDirectory>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>${maven-eclipse-plugin.version}</version>
+					<configuration>
+						<useProjectReferences>true</useProjectReferences>
+						<additionalConfig>
+							<file>
+								<name>.checkstyle</name>
+								<url>http://subversion.cru.fr/esup-commons/utils/checkstyle/checkstyle.xml</url>
+							</file>
+						</additionalConfig>
+						<additionalProjectFacets>
+							<jst.jstl>2.0</jst.jstl>
+						</additionalProjectFacets>
+						<additionalProjectnatures>
+							<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+						</additionalProjectnatures>
+						<additionalBuildcommands>
+							<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+						</additionalBuildcommands>
+						<downloadSources>true</downloadSources>
+						<downloadJavadocs>true</downloadJavadocs>
+						<wtpversion>2.0</wtpversion>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>${jetty.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<modules>
 		<module>ACEM-dal</module>

@@ -133,8 +133,7 @@ class NeedsAndAnswersTreeGenerator {
 		//TreeNode newNode = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(), need.getName(), "Need"), rootNode);
 		TreeNode newNode = treeBean.addChild(getTreeNodeType_NEED_LEAF(), parentNode, need.getId(), need.getName(), "Need");
 		// We look for children and recursively create them too
-		@SuppressWarnings("unchecked")
-		Collection<PedagogicalNeed> associatedNeeds = (Collection<PedagogicalNeed>) need.getChildren();
+		Collection<PedagogicalNeed> associatedNeeds = need.getChildren();
 		if (associatedNeeds.size() > 0) {
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 			for (PedagogicalNeed besoinChild : associatedNeeds) {
@@ -142,8 +141,7 @@ class NeedsAndAnswersTreeGenerator {
 			}
 		}
 
-		@SuppressWarnings("unchecked")
-		Collection<PedagogicalAnswer> answers = (Collection<PedagogicalAnswer>) need.getAnswers();
+		Collection<PedagogicalAnswer> answers = need.getAnswers();
 		if (answers.size() > 0) {
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 			need.setAnswers((Set<PedagogicalAnswer>) answers);

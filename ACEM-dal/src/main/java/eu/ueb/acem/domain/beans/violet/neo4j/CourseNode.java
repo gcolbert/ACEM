@@ -21,12 +21,11 @@ package eu.ueb.acem.domain.beans.violet.neo4j;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Credit;
 
@@ -37,12 +36,12 @@ import eu.ueb.acem.domain.beans.violet.Credit;
  */
 @NodeEntity
 @TypeAlias("Course")
-public class CourseNode implements Course {
+public class CourseNode extends AbstractNode implements Course {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -4467389921550574916L;
-
-	@GraphId
-	private Long id;
 
 	@Indexed
 	private String name;
@@ -50,8 +49,7 @@ public class CourseNode implements Course {
 	private String duree;
 
 	@RelatedTo(elementClass = CreditNode.class, type = "isPartOfCredit", direction = OUTGOING)
-	@Fetch
-	private CreditNode credit;
+	private Credit credit;
 
 	public CourseNode() {
 	}

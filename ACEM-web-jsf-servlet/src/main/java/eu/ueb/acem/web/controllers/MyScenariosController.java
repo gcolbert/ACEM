@@ -80,13 +80,13 @@ public class MyScenariosController extends AbstractContextAwareController {
 	@PostConstruct
 	public void initScenariosController() {
 		try {
-			logger.info("initScenariosController, currentUser={}", getCurrentUser());
+			logger.debug("initScenariosController, currentUser={}", getCurrentUser());
 
 			Collection<PedagogicalScenario> scenariosOfCurrentUser = scenariosService.retrieveScenariosWithAuthor(getCurrentUser());
-			logger.info("found {} scenarios for author {}", scenariosOfCurrentUser.size(), getCurrentUser().getName());
+			logger.debug("found {} scenarios for author {}", scenariosOfCurrentUser.size(), getCurrentUser().getName());
 			scenarioViewBeans.getTableEntries().clear();
 			for (PedagogicalScenario scenario : scenariosOfCurrentUser) {
-				logger.info("scenario = {}", scenario.getName());
+				logger.debug("scenario = {}", scenario.getName());
 				scenarioViewBeans.getTableEntries().add(new ScenarioViewBean(scenario));
 			}
 			scenarioViewBeans.sortReverseOrder();
@@ -127,7 +127,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 
 	public void deleteSelectedScenario() {
 		if (selectedScenarioViewBean != null) {
-			logger.info("deleteSelectedScenario, id={}", selectedScenarioViewBean.getId());
+			logger.debug("deleteSelectedScenario, id={}", selectedScenarioViewBean.getId());
 			try {
 				if (scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(selectedScenarioViewBean.getId(), getCurrentUser().getId())) {
 					scenarioViewBeans.getTableEntries().remove(selectedScenarioViewBean);
@@ -169,12 +169,12 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 
 	public void onScenarioRowSelect(SelectEvent event) {
-		logger.info("onScenarioRowSelect");
+		logger.debug("onScenarioRowSelect");
 		setSelectedScenarioViewBean((ScenarioViewBean) event.getObject());
 	}
 
 	public void onStepRowSelect(SelectEvent event) {
-		logger.info("onStepRowSelect");
+		logger.debug("onStepRowSelect");
 		setSelectedActivityViewBean((PedagogicalActivityViewBean) event.getObject());
 	}
 
@@ -186,7 +186,7 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 
 	public void onSave() {
-		logger.info("onSave");
+		logger.debug("onSave");
 		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
 		scenarioViewBeans.sortReverseOrder();
 		MessageDisplayer.showMessageToUserWithSeverityInfo(
@@ -195,15 +195,15 @@ public class MyScenariosController extends AbstractContextAwareController {
 	}
 
 	public void onSavePedagogicalActivity() {
-		logger.info("onSavePedagogicalActivity");
+		logger.debug("onSavePedagogicalActivity : we do nothing for now");
 	}
 	
 	public void setCurrentPedagogicalActivityViewBean(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
-		logger.info("setCurrentPedagogicalActivityViewBean, pedagogicalActivityViewBean={}", pedagogicalActivityViewBean);
+		logger.debug("setCurrentPedagogicalActivityViewBean, pedagogicalActivityViewBean={}", pedagogicalActivityViewBean);
 	}
 	
 	public void preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity() {
-		logger.info("preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity");
+		logger.debug("preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity");
 		if (getSelectedPedagogicalActivityViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(toolCategoryViewBeanHandler.getToolCategoryViewBeansAsList());
@@ -220,14 +220,17 @@ public class MyScenariosController extends AbstractContextAwareController {
 	public void onCreateActivity() {
 		PedagogicalActivity pedagogicalActivity = scenariosService
 				.createPedagogicalActivity(msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.NEW_ACTIVITY_DEFAULT_NAME",null,getCurrentUserLocale()));
-		selectedScenarioViewBean.getScenario().addPedagogicalActivity(pedagogicalActivity);
+		PedagogicalScenario pedagogicalScenario = selectedScenarioViewBean.getScenario();
+		pedagogicalScenario.getPedagogicalActivities().add(pedagogicalActivity);
+		pedagogicalActivity.getScenarios().add(pedagogicalScenario);
+		pedagogicalScenario = scenariosService.updateScenario(pedagogicalScenario);
 		pedagogicalActivity = scenariosService.updatePedagogicalActivity(pedagogicalActivity);
 		Collections.sort(selectedScenarioViewBean.getPedagogicalActivityViewBeans());
 		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
 	}
 
 	public void onToolCategoryTransfer() {
-		logger.info("onToolCategoryTransfer");
+		logger.debug("onToolCategoryTransfer : we do nothing for now");
 	}
 	
 }

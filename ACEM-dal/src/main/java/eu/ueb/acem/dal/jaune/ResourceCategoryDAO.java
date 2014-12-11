@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -50,6 +51,9 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 	private static final Logger logger = LoggerFactory.getLogger(ResourceCategoryDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private ResourceCategoryRepository repository;
 
 	public ResourceCategoryDAO() {
@@ -58,6 +62,7 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -75,6 +80,17 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 	@Override
 	public ResourceCategory retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public ResourceCategory retrieveById(Long id, boolean initialize) {
+		ResourceCategory entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getAnswers());
+			neo4jOperations.fetch(entity.getPedagogicalActivities());
+			neo4jOperations.fetch(entity.getResources());
+		}
+		return entity;
 	}
 
 	@Override
@@ -102,7 +118,8 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 
 	@Override
 	public ResourceCategory update(ResourceCategory entity) {
-		return repository.save((ResourceCategoryNode) entity);
+		ResourceCategory updatedEntity = repository.save((ResourceCategoryNode) entity);
+		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override

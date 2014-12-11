@@ -20,17 +20,17 @@ package eu.ueb.acem.domain.beans.violet.neo4j;
 
 import static org.neo4j.graphdb.Direction.INCOMING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.violet.Diploma;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.violet.Credit;
+import eu.ueb.acem.domain.beans.violet.Diploma;
 
 /**
  * @author Grégoire Colbert
@@ -39,16 +39,15 @@ import eu.ueb.acem.domain.beans.violet.Credit;
  */
 @NodeEntity
 @TypeAlias("Diploma")
-public class DiplomaNode implements Diploma {
+public class DiplomaNode extends AbstractNode implements Diploma {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 3007792198756655816L;
 
-	@GraphId
-	private Long id;
-
 	@RelatedTo(elementClass = CreditNode.class, type = "isPartOfDiploma", direction = INCOMING)
-	@Fetch
-	private Set<CreditNode> credits;
+	private Set<Credit> credits = new HashSet<Credit>(0);
 	
 	@Indexed
 	private String name;
@@ -60,23 +59,24 @@ public class DiplomaNode implements Diploma {
 		this.name = name;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 	
 	@Override
-	public Set<? extends CreditNode> getCredits() {
+	public Set<Credit> getCredits() {
 		return credits;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setCredits(Set<? extends Credit> credits) {
-		this.credits = (Set<CreditNode>) credits;
+	public void setCredits(Set<Credit> credits) {
+		this.credits = credits;
 	}
 	
 }

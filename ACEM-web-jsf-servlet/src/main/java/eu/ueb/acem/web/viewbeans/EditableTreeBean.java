@@ -237,7 +237,6 @@ public class EditableTreeBean implements Serializable {
 		@Override
 		public String toString() {
 			return ToStringBuilder.reflectionToString(this);
-			//return "Menu{ id=" + id + ", label=" + label + ", concept=" + concept + " }";
 		}
 
 	}

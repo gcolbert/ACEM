@@ -44,29 +44,21 @@ public interface Resource extends Serializable {
 	
 	void setIconFileName(String iconFileName);
 	
-	Set<? extends ResourceCategory> getCategories();
+	Set<ResourceCategory> getCategories();
 
-	void setCategories(Set<? extends ResourceCategory> categories);
+	void setCategories(Set<ResourceCategory> categories);
 
-	void addCategory(ResourceCategory category);
+	Set<UseMode> getUseModes();
 
-	void removeCategory(ResourceCategory category);
-
-	Set<? extends UseMode> getUseModes();
-
-	void setUseModes(Set<? extends UseMode> useModes);
+	void setUseModes(Set<UseMode> useModes);
 
 	Organisation getOrganisationPossessingResource();
 
 	void setOrganisationPossessingResource(Organisation organisation);
 
-	Set<? extends Organisation> getOrganisationsHavingAccessToResource();
+	Set<Organisation> getOrganisationsHavingAccessToResource();
 
-	void setOrganisationsHavingAccessToResource(Set<? extends Organisation> organisations);
-
-	void addOrganisationHavingAccessToResource(Organisation organisation);
-	
-	void removeOrganisationHavingAccessToResource(Organisation organisation);
+	void setOrganisationsHavingAccessToResource(Set<Organisation> organisations);
 
 	int compareTo(Resource o);
 

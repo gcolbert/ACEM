@@ -18,15 +18,13 @@
  */
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
-import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.neo4j.annotation.Fetch;
-import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -35,8 +33,9 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 
 /**
  * @author Grégoire Colbert
@@ -45,13 +44,13 @@ import eu.ueb.acem.domain.beans.jaune.Resource;
  */
 @NodeEntity
 @TypeAlias("ResourceCategory")
-public class ResourceCategoryNode implements ResourceCategory {
+public class ResourceCategoryNode extends AbstractNode implements ResourceCategory {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -9101136355869813825L;
 
-	@GraphId
-	private Long id;
-	
 	@Indexed
 	private String name;
 	
@@ -60,19 +59,15 @@ public class ResourceCategoryNode implements ResourceCategory {
 	private String description;
 
 	@RelatedTo(elementClass = PedagogicalAnswerNode.class, type = "answeredUsingResourceCategory", direction = INCOMING)
-	@Fetch
-	private Set<PedagogicalAnswerNode> answers;
+	private Set<PedagogicalAnswer> answers = new HashSet<PedagogicalAnswer>(0);
 	
 	@RelatedTo(elementClass = ResourceNode.class, type = "categoryContains", direction = OUTGOING)
-	@Fetch
-	private Set<ResourceNode> resources;
+	private Set<Resource> resources = new HashSet<Resource>(0);
 	
 	@RelatedTo(elementClass = PedagogicalActivityNode.class, type="activityRequiringResourceFromCategory", direction = INCOMING)
-	@Fetch
-	private Set<PedagogicalActivityNode> pedagogicalActivities;
+	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
 	public ResourceCategoryNode() {
-		resources = new HashSet<ResourceNode>();
 	}
 
 	public ResourceCategoryNode(String name, String description, String iconFileName) {
@@ -81,11 +76,6 @@ public class ResourceCategoryNode implements ResourceCategory {
 		setIconFileName(iconFileName);
 	}
 
-	@Override
-	public Long getId() {
-		return id;
-	}
-	
 	@Override
 	public String getName() {
 		return name;
@@ -107,65 +97,23 @@ public class ResourceCategoryNode implements ResourceCategory {
 	}		
 	
 	@Override
-	public Set<? extends PedagogicalAnswer> getAnswers() {
+	public Set<PedagogicalAnswer> getAnswers() {
 		return answers;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setAnswers(Set<? extends PedagogicalAnswer> answers) {
-		this.answers = (Set<PedagogicalAnswerNode>) answers;
+	public void setAnswers(Set<PedagogicalAnswer> answers) {
+		this.answers = answers;
 	}
 	
 	@Override
-	public Set<? extends Resource> getResources() {
+	public Set<Resource> getResources() {
 		return resources;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setResources(Set<? extends Resource> resources) {
-		this.resources = (Set<ResourceNode>) resources;
-	}
-
-	@Override
-	public void addResource(Resource resource) {
-		if (! resources.contains(resource)) {
-			resources.add((ResourceNode) resource);
-		}
-		if (! resource.getCategories().contains(this)) {
-			resource.addCategory(this);
-		}
-	}
-
-	@Override
-	public void removeResource(Resource resource) {
-		if (resources.contains(resource)) {
-			resources.remove(resource);
-		}
-		if (resource.getCategories().contains(this)) {
-			resource.removeCategory(this);
-		}
-	}
-
-	@Override
-	public void addAnswer(PedagogicalAnswer answer) {
-		if (! answers.contains(answer)) {
-			answers.add((PedagogicalAnswerNode) answer);
-		}
-		if (! answer.getResourceCategories().contains(this)) {
-			answer.addResourceCategory(this);
-		}
-	}
-
-	@Override
-	public void removeAnswer(PedagogicalAnswer answer) {
-		if (answers.contains(answer)) {
-			answers.remove(answer);
-		}
-		if (answer.getResourceCategories().contains(this)) {
-			answer.removeResourceCategory(this);
-		}
+	public void setResources(Set<Resource> resources) {
+		this.resources = resources;
 	}
 
 	@Override
@@ -179,54 +127,18 @@ public class ResourceCategoryNode implements ResourceCategory {
 	}
 
 	@Override
-	public Set<? extends PedagogicalActivity> getPedagogicalActivities() {
+	public Set<PedagogicalActivity> getPedagogicalActivities() {
 		return pedagogicalActivities;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setPedagogicalActivities(Set<? extends PedagogicalActivity> pedagogicalActivities) {
-		this.pedagogicalActivities = (Set<PedagogicalActivityNode>)pedagogicalActivities;
+	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
+		this.pedagogicalActivities = pedagogicalActivities;
 	}
 	
 	@Override
 	public int compareTo(ResourceCategory o) {
 		return getName().compareTo(o.getName());
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ResourceCategoryNode other = (ResourceCategoryNode) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		}
-		else
-			if (!getId().equals(other.getId()))
-				return false;
-		if (getName() == null) {
-			if (other.getName() != null)
-				return false;
-		}
-		else
-			if (!getName().equals(other.getName()))
-				return false;
-		return true;
 	}
 	
 }

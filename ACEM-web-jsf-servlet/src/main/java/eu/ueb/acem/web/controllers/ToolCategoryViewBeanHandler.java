@@ -19,7 +19,6 @@
 package eu.ueb.acem.web.controllers;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,12 +62,14 @@ class ToolCategoryViewBeanHandler {
 	
 	@PostConstruct
 	public void initToolCategoryViewBeanHandler() {
+		/*
 		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
 		logger.info("found {} tool categories", toolCategories.size());
 		for (ResourceCategory toolCategory : toolCategories) {
 			logger.info("toolCategory = {}", toolCategory.getName());
 			getToolCategoryViewBean(toolCategory.getId());
 		}
+		*/
 	}
 
 	public ToolCategoryViewBean getToolCategoryViewBean(Long id) {

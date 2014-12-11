@@ -147,7 +147,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		return authors;
 	}
 
-	public void setAuthors(Set<? extends Teacher> authors) {
+	public void setAuthors(Set<Teacher> authors) {
 		String authorsAsString = "";
 		for (Teacher author : authors) {
 			authorsAsString = authorsAsString.concat(author.getName().concat(", "));

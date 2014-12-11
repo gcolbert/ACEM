@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -50,6 +51,9 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 	private static final Logger logger = LoggerFactory.getLogger(InstitutionDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private InstitutionRepository repository;
 
 	public InstitutionDAO() {
@@ -58,6 +62,7 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -75,6 +80,19 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 	@Override
 	public Institution retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public Institution retrieveById(Long id, boolean initialize) {
+		Institution entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getPossessedResources());
+			neo4jOperations.fetch(entity.getViewedResources());
+			neo4jOperations.fetch(entity.getCommunities());
+			neo4jOperations.fetch(entity.getAdministrativeDepartments());
+			neo4jOperations.fetch(entity.getTeachingDepartments());
+		}
+		return entity;
 	}
 
 	@Override
@@ -102,7 +120,8 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 
 	@Override
 	public Institution update(Institution entity) {
-		return repository.save((InstitutionNode) entity);
+		Institution updatedEntity = repository.save((InstitutionNode) entity);
+		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override

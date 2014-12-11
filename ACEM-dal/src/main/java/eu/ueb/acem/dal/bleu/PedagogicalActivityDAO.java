@@ -27,6 +27,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -54,6 +55,9 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalActivityDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+	
+	@Inject
 	private PedagogicalActivityRepository repository;
 
 	public PedagogicalActivityDAO() {
@@ -62,6 +66,7 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -79,6 +84,16 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 	@Override
 	public PedagogicalActivity retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public PedagogicalActivity retrieveById(Long id, boolean initialize) {
+		PedagogicalActivity entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getResourceCategories());
+			neo4jOperations.fetch(entity.getScenarios());
+		}
+		return entity;
 	}
 
 	@Override
@@ -106,7 +121,8 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 
 	@Override
 	public PedagogicalActivity update(PedagogicalActivity entity) {
-		return repository.save((PedagogicalActivityNode) entity);
+		PedagogicalActivity updatedEntity = repository.save((PedagogicalActivityNode) entity);
+		return retrieveById(updatedEntity.getId(),true);
 	}
 
 	@Override

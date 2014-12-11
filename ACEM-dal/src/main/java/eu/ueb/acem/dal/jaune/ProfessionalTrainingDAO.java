@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
@@ -52,6 +53,9 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 	private static final Logger logger = LoggerFactory.getLogger(ProfessionalTrainingDAO.class);
 
 	@Inject
+	private Neo4jOperations neo4jOperations;
+
+	@Inject
 	private ProfessionalTrainingRepository repository;
 
 	public ProfessionalTrainingDAO() {
@@ -60,6 +64,7 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 
 	@Override
 	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
 		//return (id != null) ? repository.exists(id) : false;
 		if (id == null) {
 			return false;
@@ -77,6 +82,18 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 	@Override
 	public ProfessionalTraining retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
+	}
+
+	@Override
+	public ProfessionalTraining retrieveById(Long id, boolean initialize) {
+		ProfessionalTraining entity = retrieveById(id);
+		if (initialize) {
+			neo4jOperations.fetch(entity.getCategories());
+			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
+			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+			neo4jOperations.fetch(entity.getUseModes());
+		}
+		return entity;
 	}
 
 	@Override
@@ -104,7 +121,8 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 
 	@Override
 	public ProfessionalTraining update(ProfessionalTraining entity) {
-		return repository.save((ProfessionalTrainingNode) entity);
+		ProfessionalTraining updatedEntity = repository.save((ProfessionalTrainingNode) entity);
+		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override

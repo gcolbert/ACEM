@@ -31,34 +31,16 @@ import eu.ueb.acem.domain.beans.violet.TeachingClass;
  */
 public interface Teacher extends Person {
 
-	/*-
-	Set<? extends Ressource> getFavoriteResources();
-
-	void setFavoriteResources(Set<? extends Ressource> favoriteResources);
-
-	Boolean addFavoriteResource(Ressource ressourceNode);
-
-	Boolean removeFavoriteResource(Ressource ressourceNode);
-	*/
-
-	Set<? extends ResourceCategory> getFavoriteToolCategories();
+	Set<ResourceCategory> getFavoriteToolCategories();
 	
-	void setFavoriteToolCategories(Set<? extends ResourceCategory> favoriteToolCategories);
+	void setFavoriteToolCategories(Set<ResourceCategory> favoriteToolCategories);
 
-	Boolean addFavoriteToolCategory(ResourceCategory toolCategory);
+	Set<TeachingClass> getTeachingClasses();
 
-	Boolean removeFavoriteToolCategory(ResourceCategory toolCategory);
-	
-	Set<? extends TeachingClass> getTeachingClasses();
+	void setTeachingClasses(Set<TeachingClass> teachingClasses);
 
-	void setTeachingClasses(Set<? extends TeachingClass> teachingClasses);
+	Set<PedagogicalScenario> getScenarios();
 
-	Set<? extends PedagogicalScenario> getScenarios();
-
-	void setScenarios(Set<? extends PedagogicalScenario> scenarios);
-
-	void addAuthor(PedagogicalScenario scenario);
-
-	void removeAuthor(PedagogicalScenario scenario);
+	void setScenarios(Set<PedagogicalScenario> scenarios);
 
 }

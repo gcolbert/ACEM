@@ -34,4 +34,7 @@ public interface CreditRepository extends GenericRepository<CreditNode> {
 	@Query(value = "MATCH (n:Credit) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Query(value = "MATCH (n:Credit) WHERE n.name=({name}) RETURN n")
+	Iterable<CreditNode> findByName(@Param("name") String name);
+
 }

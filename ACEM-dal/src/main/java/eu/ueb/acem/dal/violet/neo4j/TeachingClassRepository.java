@@ -33,5 +33,8 @@ public interface TeachingClassRepository extends GenericRepository<TeachingClass
 
 	@Query(value = "MATCH (n:TeachingClass) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
+	@Query(value = "MATCH (n:TeachingClass) WHERE n.name=({name}) RETURN n")
+	Iterable<TeachingClassNode> findByName(@Param("name") String name);
+
 }

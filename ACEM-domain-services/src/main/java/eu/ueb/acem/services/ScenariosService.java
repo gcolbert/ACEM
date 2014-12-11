@@ -36,9 +36,9 @@ public interface ScenariosService {
 
 	PedagogicalScenario createScenario(Teacher author, String name, String objective);
 
-	PedagogicalScenario retrieveScenario(Long id);
+	PedagogicalScenario retrievePedagogicalScenario(Long id, boolean initialize);
 	
-	PedagogicalScenario updateScenario(PedagogicalScenario scenario);
+	PedagogicalScenario updateScenario(PedagogicalScenario pedagogicalScenario);
 
 	Boolean deleteScenario(Long id);
 
@@ -50,7 +50,7 @@ public interface ScenariosService {
 
 	PedagogicalActivity createPedagogicalActivity(String name);
 
-	PedagogicalActivity retrievePedagogicalActivity(Long id);
+	PedagogicalActivity retrievePedagogicalActivity(Long id, boolean initialize);
 
 	PedagogicalActivity updatePedagogicalActivity(PedagogicalActivity pedagogicalActivity);
 

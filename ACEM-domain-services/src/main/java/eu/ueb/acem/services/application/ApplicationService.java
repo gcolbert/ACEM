@@ -1,4 +1,4 @@
-﻿package eu.ueb.acem.services.application;
+package eu.ueb.acem.services.application;
 
 import java.io.Serializable;
 
@@ -18,16 +18,6 @@ public class ApplicationService implements InitializingBean, Serializable {
 	 * The serialization id.
 	 */
 	private static final long serialVersionUID = -5370486400815436620L;
-
-	/**
-	 * The default copyright.
-	 */
-	private static final String DEFAULT_COPYRIGHT = "Copyright (c) 2014 Université Européenne de Bretagne";
-
-	/**
-	 * The default vendor.
-	 */
-	private static final String DEFAULT_VENDOR = "G.Colbert";
 
 	/**
 	 * A logger.

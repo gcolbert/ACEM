@@ -37,27 +37,14 @@ public interface PedagogicalAnswer extends Serializable, Comparable<PedagogicalA
 
 	void setName(String name);
 
-	Set<? extends PedagogicalNeed> getNeeds();
+	Set<PedagogicalNeed> getNeeds();
 
-	void addNeed(PedagogicalNeed need);
+	Set<ResourceCategory> getResourceCategories();
 
-	void removeNeed(PedagogicalNeed need);
+	Set<AdministrativeDepartment> getAdministrativeDepartments();
 
-	Set<? extends ResourceCategory> getResourceCategories();
-
-	void addResourceCategory(ResourceCategory resourceCategory);
-
-	void removeResourceCategory(ResourceCategory resourceCategory);
-
-	Set<? extends AdministrativeDepartment> getAdministrativeDepartments();
-
-	void addAdministrativeDepartment(AdministrativeDepartment administrativeDepartment);
-
-	void removeAdministrativeDepartment(AdministrativeDepartment administrativeDepartment);
-	
 	Set<PedagogicalScenario> getScenariosRelatedToAnswer();
 
 	int compareTo(PedagogicalAnswer o);
 
-	
 }

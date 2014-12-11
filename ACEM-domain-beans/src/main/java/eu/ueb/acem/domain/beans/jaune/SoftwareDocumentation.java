@@ -27,12 +27,8 @@ import java.util.Set;
  */
 public interface SoftwareDocumentation extends Resource {
 
-	Set<? extends Software> getApplicatifs();
+	Set<Software> getSoftwares();
 
-	void setApplicatifs(Set<? extends Software> softwares);
-
-	void addApplicatif(Software software);
-
-	void removeApplicatif(Software software);
+	void setSoftwares(Set<Software> softwares);
 
 }

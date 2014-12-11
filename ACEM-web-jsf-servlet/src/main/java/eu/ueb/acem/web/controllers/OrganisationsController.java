@@ -535,7 +535,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 						logger.debug("association failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
-							.retrieveCommunity(movedOrganisationViewBean.getId()));
+							.retrieveCommunity(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof InstitutionViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
@@ -582,7 +582,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 						logger.info("currentOrganisationViewBean instanceof {}", currentOrganisationViewBean.getClass());
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
-							.retrieveInstitution(movedOrganisationViewBean.getId()));
+							.retrieveInstitution(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof AdministrativeDepartmentViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
@@ -598,7 +598,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 						logger.debug("association failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
-							.retrieveAdministrativeDepartment(movedOrganisationViewBean.getId()));
+							.retrieveAdministrativeDepartment(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof TeachingDepartmentViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
@@ -613,7 +613,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 						logger.debug("association failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
-							.retrieveTeachingDepartment(movedOrganisationViewBean.getId()));
+							.retrieveTeachingDepartment(movedOrganisationViewBean.getId(), false));
 				}
 			}
 			else {
@@ -631,7 +631,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 						logger.debug("dissociation failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
-							.retrieveCommunity(movedOrganisationViewBean.getId()));
+							.retrieveCommunity(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof InstitutionViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
@@ -676,7 +676,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 								currentOrganisationViewBean.getClass());
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
-							.retrieveInstitution(movedOrganisationViewBean.getId()));
+							.retrieveInstitution(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof AdministrativeDepartmentViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
@@ -691,7 +691,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 						logger.debug("dissociation failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
-							.retrieveAdministrativeDepartment(movedOrganisationViewBean.getId()));
+							.retrieveAdministrativeDepartment(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof TeachingDepartmentViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
@@ -706,12 +706,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 						logger.debug("dissociated failed");
 					}
 					movedOrganisationViewBean.setDomainBean(organisationsService
-							.retrieveTeachingDepartment(movedOrganisationViewBean.getId()));
+							.retrieveTeachingDepartment(movedOrganisationViewBean.getId(), false));
 				}
 			}
 		}
 		getCurrentOrganisationViewBean().setDomainBean(
-				organisationsService.retrieveOrganisation(getCurrentOrganisationViewBean().getDomainBean().getId()));
+				organisationsService.retrieveOrganisation(getCurrentOrganisationViewBean().getDomainBean().getId(), false));
 	}
 
 	public void onAccordionPanelTabChange(TabChangeEvent event) {

@@ -34,4 +34,7 @@ public interface CommunityRepository extends GenericRepository<CommunityNode> {
 	@Query(value = "MATCH (n:Community) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Query(value = "MATCH (n:Community) WHERE n.name=({name}) RETURN n")
+	Iterable<CommunityNode> findByName(@Param("name") String name);
+	
 }

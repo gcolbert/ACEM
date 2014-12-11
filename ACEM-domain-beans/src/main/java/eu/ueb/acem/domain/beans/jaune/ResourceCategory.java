@@ -41,29 +41,21 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 	
 	void setDescription(String description);
 	
-	Set<? extends Resource> getResources();
+	Set<Resource> getResources();
 
-	void setResources(Set<? extends Resource> resources);
+	void setResources(Set<Resource> resources);
 
-	void addResource(Resource ressource);
+	Set<PedagogicalAnswer> getAnswers();
 
-	void removeResource(Resource ressource);
-
-	Set<? extends PedagogicalAnswer> getAnswers();
-
-	void setAnswers(Set<? extends PedagogicalAnswer> answers);
-
-	void addAnswer(PedagogicalAnswer answer);
-	
-	void removeAnswer(PedagogicalAnswer answer);
+	void setAnswers(Set<PedagogicalAnswer> answers);
 
 	String getIconFileName();
 	
 	void setIconFileName(String iconFileName);
 	
-	Set<? extends PedagogicalActivity> getPedagogicalActivities();
+	Set<PedagogicalActivity> getPedagogicalActivities();
 
-	void setPedagogicalActivities(Set<? extends PedagogicalActivity> pedagogicalActivities);
+	void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities);
 	
 	int compareTo(ResourceCategory o);
 

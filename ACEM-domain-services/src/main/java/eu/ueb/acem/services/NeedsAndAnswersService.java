@@ -37,13 +37,13 @@ public interface NeedsAndAnswersService {
 	
 	Long countNeeds();
 
-	PedagogicalNeed createNeed(String name);
+	PedagogicalNeed createPedagogicalNeed(String name);
 
 	Collection<PedagogicalNeed> retrieveNeedsAtRoot();
 
-	PedagogicalNeed retrieveNeed(Long id);
+	PedagogicalNeed retrievePedagogicalNeed(Long id, boolean initialize);
 
-	PedagogicalNeed updateNeed(PedagogicalNeed need);
+	PedagogicalNeed updatePedagogicalNeed(PedagogicalNeed need);
 
 	Boolean deleteNeed(Long id);
 
@@ -51,11 +51,11 @@ public interface NeedsAndAnswersService {
 
 	Long countAnswers();
 
-	PedagogicalAnswer createAnswer(String name);
+	PedagogicalAnswer createPedagogicalAnswer(String name);
 
-	PedagogicalAnswer retrieveAnswer(Long id);
+	PedagogicalAnswer retrievePedagogicalAnswer(Long id, boolean initialize);
 
-	PedagogicalAnswer updateAnswer(PedagogicalAnswer answer);
+	PedagogicalAnswer updatePedagogicalAnswer(PedagogicalAnswer answer);
 
 	Boolean deleteAnswer(Long id);
 

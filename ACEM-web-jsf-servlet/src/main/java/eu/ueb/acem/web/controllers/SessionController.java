@@ -20,6 +20,7 @@ package eu.ueb.acem.web.controllers;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -38,12 +39,13 @@ public class SessionController extends AbstractDomainAwareBean {
 	/**
 	 * Logger
 	 */
+	@SuppressWarnings("unused")
 	private final Logger logger = LoggerFactory.getLogger(SessionController.class);
 
 	/**
 	 * The serialization id.
 	 */
-	private static final long serialVersionUID = -5936434246704000653L;
+	static final long serialVersionUID = -5936434246704000653L;
 	
 	/*
 	 * ****************** PROPERTIES ********************
@@ -105,7 +107,6 @@ public class SessionController extends AbstractDomainAwareBean {
 		if (this.auth == null) {
 			this.auth = SecurityContextHolder.getContext().getAuthentication();
 		}
-		logger.debug("****** auth={}",auth);
 		Person user = getDomainService().getUser(auth.getName());
 		
 		return user;
@@ -116,7 +117,7 @@ public class SessionController extends AbstractDomainAwareBean {
 	 */
 	@Override
 	public String toString() {
-		return getClass().getName() + "#" + hashCode();
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 	/**

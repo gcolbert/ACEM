@@ -61,7 +61,6 @@ public class UsersServiceImpl implements UsersService {
 
 	@PostConstruct
 	public void initUsersService() {
-		logger.info("initUsersService");
 	}
 
 	@Override
@@ -122,20 +121,20 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
-		logger.info("associateUserWorkingForOrganisation");
+		logger.debug("associateUserWorkingForOrganisation");
 		boolean success = false;
 		if (personDAO.exists(idPerson)) {
 			Person person = personDAO.retrieveById(idPerson);
-			Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation);
+			Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation, true);
 			if (organisation != null) {
-				person.addWorksForOrganisations(organisation);
+				person.getWorksForOrganisations().add(organisation);
 				person = personDAO.update(person);
 				organisation = organisationsService.updateOrganisation(organisation);
 				success = true;
-				logger.info("association successful");
+				logger.debug("association successful");
 			}
 			else {
-				logger.info("association failed");
+				logger.debug("association failed");
 			}
 		}
 		return success;
@@ -143,57 +142,23 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
-		logger.info("dissociateUserWorkingForOrganisation");
+		logger.debug("dissociateUserWorkingForOrganisation");
 		boolean success = false;
 		if (personDAO.exists(idPerson)) {
 			Person person = personDAO.retrieveById(idPerson);
-			Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation);
+			Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation, true);
 			if (organisation != null) {
-				person.removeWorksForOrganisations(organisation);
+				person.getWorksForOrganisations().remove(organisation);
 				person = personDAO.update(person);
 				success = true;
-				logger.info("dissociation successful");
+				logger.debug("dissociation successful");
 			}
 		}
 		if (!success) {
-			logger.info("dissociation failed");
+			logger.debug("dissociation failed");
 		}
 		return success;
 	}
-
-	/*-
-	@Override
-	public Boolean addFavoriteResourceForTeacher(Long idTeacher, Long idResource) {
-		logger.info("addFavoriteResourceForTeacher");
-		boolean success = false;
-		if (personDAO.exists(idTeacher)) {
-			Enseignant teacher = teacherDAO.retrieveById(idTeacher);
-			Ressource resource = resourcesService.retrieveResource(idResource);
-			if (resource != null) {
-				teacher.addFavoriteResource(resource);
-				teacher = teacherDAO.update(teacher);
-				success = true;
-			}
-		}
-		return success;
-	}
-
-	@Override
-	public Boolean removeFavoriteResourceForTeacher(Long idTeacher, Long idResource) {
-		logger.info("removeFavoriteResourceForTeacher");
-		boolean success = false;
-		if (personDAO.exists(idTeacher)) {
-			Enseignant teacher = teacherDAO.retrieveById(idTeacher);
-			Ressource resource = resourcesService.retrieveResource(idResource);
-			if (resource != null) {
-				teacher.removeFavoriteResource(resource);
-				teacher = teacherDAO.update(teacher);
-				success = true;
-			}
-		}
-		return success;
-	}
-	*/
 
 	@Override
 	public Boolean addFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory) {
@@ -203,7 +168,7 @@ public class UsersServiceImpl implements UsersService {
 			Teacher teacher = teacherDAO.retrieveById(idTeacher);
 			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory);
 			if (toolCategory != null) {
-				teacher.addFavoriteToolCategory(toolCategory);
+				teacher.getFavoriteToolCategories().add(toolCategory);
 				teacher = teacherDAO.update(teacher);
 				success = true;
 			}
@@ -219,7 +184,7 @@ public class UsersServiceImpl implements UsersService {
 			Teacher teacher = teacherDAO.retrieveById(idTeacher);
 			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory);
 			if (toolCategory != null) {
-				teacher.removeFavoriteToolCategory(toolCategory);
+				teacher.getFavoriteToolCategories().remove(toolCategory);
 				teacher = teacherDAO.update(teacher);
 				success = true;
 			}

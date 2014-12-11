@@ -37,6 +37,9 @@ public interface EquipmentRepository extends GenericRepository<EquipmentNode> {
 	@Query(value = "MATCH (n:Equipment) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Query(value = "MATCH (n:Equipment) WHERE n.name=({name}) RETURN n")
+	Iterable<EquipmentNode> findByName(@Param("name") String name);
+	
 	@Query(value = "MATCH (n:Equipment)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 

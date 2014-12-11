@@ -27,28 +27,16 @@ import java.util.Set;
  */
 public interface Institution extends Organisation {
 
-	Set<? extends Community> getCommunities();
+	Set<Community> getCommunities();
 
-	void setCommunities(Set<? extends Community> communities);
+	void setCommunities(Set<Community> communities);
 
-	Set<? extends TeachingDepartment> getTeachingDepartments();
+	Set<TeachingDepartment> getTeachingDepartments();
 
-	void setTeachingDepartments(Set<? extends TeachingDepartment> teachingDepartments);
+	void setTeachingDepartments(Set<TeachingDepartment> teachingDepartments);
 
-	Set<? extends AdministrativeDepartment> getAdministrativeDepartments();
+	Set<AdministrativeDepartment> getAdministrativeDepartments();
 
-	void setAdministrativeDepartments(Set<? extends AdministrativeDepartment> administrativeDepartments);
+	void setAdministrativeDepartments(Set<AdministrativeDepartment> administrativeDepartments);
 
-	void addCommunity(Community community);
-	
-	void removeCommunity(Community community);
-
-	void addAdministrativeDepartment(AdministrativeDepartment administrativeDepartment);
-
-	void removeAdministrativeDepartment(AdministrativeDepartment administrativeDepartment);
-
-	void addTeachingDepartment(TeachingDepartment teachingDepartment);
-
-	void removeTeachingDepartment(TeachingDepartment teachingDepartment);
-	
 }
