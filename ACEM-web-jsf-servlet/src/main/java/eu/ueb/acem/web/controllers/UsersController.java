@@ -53,17 +53,18 @@ public class UsersController extends AbstractContextAwareController {
 	private UsersService usersService;
 	
 	@Inject
-	public OrganisationsController organisationsController;
+	private OrganisationsController organisationsController;
 	
-	@Inject
-	public ResourcesController resourcesController;
-	
+//	@Inject
+//	private ResourcesController resourcesController;
+//
+//	private Set<Person> personViewBeans;
+
 	public UsersController() {
 	}
 
 	@PostConstruct
 	public void initUsersController() {
-//
 //		personViewBeans.clear();
 //		Set<Person> persons = usersService.getPersons();
 //		for (Person person : persons) {

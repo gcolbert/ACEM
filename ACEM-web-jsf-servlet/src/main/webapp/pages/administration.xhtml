@@ -20,27 +20,11 @@
 			</p:confirmDialog>
 
 			<p:panel header="#{msg['ADMINISTRATION.ORGANISATIONS.HEADER']}">
-				<p:tabView id="tabViewOrganisations" dynamic="true" cache="false">
-					<!--
-						There's a problem at the moment with the refresh of tabView's tabs after the association of organisations process.
-						For example :
-						1) open the "Communities" tab, then open the first community accordion panel,
-						2) go to the "Institutions" tab, then open the first institution accordion panel,
-						3) change the associated communities, it should update the "institutions" tab
-						4) but not the "communities" tab.
-						A solution could be to force the user to reopen the accordion panels on the first tab.
-						So we would need a way to collapse the accordion when the outer tab changes.
-						Unfortunately there's a bug with PrimeFaces 4 (see https://code.google.com/p/primefaces/issues/detail?id=3876)
-						that prevent us to put a listener on the outer tabview.
-					    TODO : enable this event handler when PF 5 will be used. Then code the onTabViewTabChange method to collapse
-					    the accordionPanel before tab switching.
-					-->
-					<!-- 
+				<p:tabView id="tabViewOrganisations" dynamic="false" cache="false">
 					<p:ajax event="tabChange"
-						listener="#{organisationsController.onTabViewTabChange}"
-						update="@this" />
-					-->
-					<p:tab
+							listener="#{organisationsController.onOrganisationsTabViewTabChange}"
+							update="@this" />
+					<p:tab id="tabCommunities"
 						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_COMMUNITIES_TITLE']}">
 						<p:commandButton
 							value="#{msg['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_LABEL']}"
@@ -56,7 +40,7 @@
 							var="communityViewBean" activeIndex="-1" dynamic="true"
 							collapsible="true">
 							<p:ajax event="tabChange"
-								listener="#{organisationsController.onAccordionPanelTabChange}"
+								listener="#{organisationsController.onCommunitiesAccordionPanelTabChange}"
 								update="@this" />
 							<p:tab title="#{communityViewBean.name}">
 								<p:panelGrid columns="2">
@@ -85,12 +69,26 @@
 											update=":formOrganisations:idDialogRenameOrganisation"
 											oncomplete="PF('dialogRenameOrganisation').show()"
 											process="@this" />
+<!-- 
 										<p:commandButton id="deleteCommunityButton"
 											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 											icon="ui-icon-trash"
 											actionListener="#{organisationsController.onDeleteOrganisation}"
 											action="#{usersController.onDeleteOrganisation}"
 											update="accordionPanelForCommunities :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+											process="@this">
+											<p:confirm
+												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+												message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+ -->
+										<p:commandButton id="deleteCommunityButton"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+											icon="ui-icon-trash"
+											actionListener="#{organisationsController.onDeleteOrganisation}"
+											action="#{usersController.onDeleteOrganisation}"
+											update="accordionPanelForCommunities :formOrganisations:messagesDisplayerFormOrganisations"
 											process="@this">
 											<p:confirm
 												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
@@ -112,7 +110,7 @@
 						</p:accordionPanel>
 					</p:tab>
 
-					<p:tab
+					<p:tab id="tabInstitutions"
 						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_INSTITUTIONS_TITLE']}">
 						<p:commandButton
 							value="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_LABEL']}"
@@ -129,7 +127,7 @@
 							var="institutionViewBean" activeIndex="-1" dynamic="true"
 							collapsible="true">
 							<p:ajax event="tabChange"
-								listener="#{organisationsController.onAccordionPanelTabChange}"
+								listener="#{organisationsController.onInstitutionsAccordionPanelTabChange}"
 								update="@this" />
 							<p:tab title="#{institutionViewBean.name}">
 								<p:panelGrid columns="2">
@@ -150,11 +148,24 @@
 											update=":formOrganisations:idDialogRenameOrganisation"
 											oncomplete="PF('dialogRenameOrganisation').show()"
 											process="@this" />
+<!-- 
 										<p:commandButton id="deleteInstitutionButton"
 											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 											icon="ui-icon-trash"
 											action="#{organisationsController.onDeleteOrganisation}"
 											update="accordionPanelForInstitutions :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+											process="@this">
+											<p:confirm
+												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+												message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+ -->
+										<p:commandButton id="deleteInstitutionButton"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+											icon="ui-icon-trash"
+											action="#{organisationsController.onDeleteOrganisation}"
+											update="accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations"
 											process="@this">
 											<p:confirm
 												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
@@ -224,7 +235,7 @@
 						</p:accordionPanel>
 					</p:tab>
 
-					<p:tab
+					<p:tab id="tabAdministrativeDepartments"
 						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_ADMINISTRATIVE_DEPARTMENTS_TITLE']}">
 						<p:commandButton
 							value="#{msg['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
@@ -241,7 +252,7 @@
 							var="administrativeDepartmentViewBean" activeIndex="-1"
 							dynamic="true" collapsible="true">
 							<p:ajax event="tabChange"
-								listener="#{organisationsController.onAccordionPanelTabChange}"
+								listener="#{organisationsController.onAdministrativeDepartmentsAccordionPanelTabChange}"
 								update="@this" />
 							<p:tab title="#{administrativeDepartmentViewBean.name}">
 								<p:panelGrid columns="2">
@@ -270,11 +281,24 @@
 											update=":formOrganisations:idDialogRenameOrganisation"
 											oncomplete="PF('dialogRenameOrganisation').show()"
 											process="@this" />
+<!-- 
 										<p:commandButton id="deleteAdministrativeDepartmentButton"
 											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 											icon="ui-icon-trash"
 											action="#{organisationsController.onDeleteOrganisation}"
 											update="accordionPanelForAdministrativeDepartments :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
+											process="@this">
+											<p:confirm
+												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+												message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+ -->
+										<p:commandButton id="deleteAdministrativeDepartmentButton"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+											icon="ui-icon-trash"
+											action="#{organisationsController.onDeleteOrganisation}"
+											update="accordionPanelForAdministrativeDepartments :formOrganisations:messagesDisplayerFormOrganisations"
 											process="@this">
 											<p:confirm
 												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
@@ -295,7 +319,7 @@
 						</p:accordionPanel>
 					</p:tab>
 
-					<p:tab
+					<p:tab id="tabTeachingDepartments"
 						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_TEACHING_DEPARTMENTS_TITLE']}">
 						<p:commandButton
 							value="#{msg['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_LABEL']}"
@@ -312,7 +336,7 @@
 							var="teachingDepartmentViewBean" activeIndex="-1" dynamic="true"
 							collapsible="true">
 							<p:ajax event="tabChange"
-								listener="#{organisationsController.onAccordionPanelTabChange}"
+								listener="#{organisationsController.onTeachingDepartmentsAccordionPanelTabChange}"
 								update="@this" />
 							<p:tab title="#{teachingDepartmentViewBean.name}">
 								<p:panelGrid columns="2">
@@ -341,6 +365,7 @@
 											update=":formOrganisations:idDialogRenameOrganisation"
 											oncomplete="PF('dialogRenameOrganisation').show()"
 											process="@this" />
+<!-- 
 										<p:commandButton id="deleteTeachingDepartmentButton"
 											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 											icon="ui-icon-trash"
@@ -352,7 +377,19 @@
 												message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 												icon="ui-icon-alert" />
 										</p:commandButton>
-										<p:dataTable var="institutionViewBean"
+ -->
+										<p:commandButton id="deleteTeachingDepartmentButton"
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
+											icon="ui-icon-trash"
+											action="#{organisationsController.onDeleteOrganisation}"
+											update="accordionPanelForTeachingDepartments :formOrganisations:messagesDisplayerFormOrganisations"
+											process="@this">
+											<p:confirm
+												header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
+												message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
+												icon="ui-icon-alert" />
+										</p:commandButton>
+ 										<p:dataTable var="institutionViewBean"
 											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
 											value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
 											<p:column
@@ -441,12 +478,21 @@
 							value="#{fileUploadController.uploadedFile}" />
 					</p:column>
 				</p:panelGrid>
+<!-- 
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{organisationsController.onCreateInstitution(input2.value, input2b.value, fileUploadController.uploadedFileName)}"
 					process="@this idDialogCreateInstitution"
 					update=":formOrganisations:idDialogCreateInstitution :formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formUsers:dialogAssociateOrganisationsWithUserPickList :formOrganisations:messagesDisplayerFormOrganisations"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
+ -->
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					action="#{organisationsController.onCreateInstitution(input2.value, input2b.value, fileUploadController.uploadedFileName)}"
+					process="@this idDialogCreateInstitution"
+					update=":formOrganisations:idDialogCreateInstitution :formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateInstitution.hide(); }" />
 			</p:dialog>
 
@@ -582,6 +628,7 @@
 						</p:panel>
 					</p:column>
 				</p:panelGrid>
+				<!-- 
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
@@ -590,7 +637,16 @@
 					process="@this idDialogRenameOrganisation"
 					update=":formOrganisations:idDialogRenameOrganisation :formOrganisations:tabViewOrganisations :formUsers:usersDataTable :formOrganisations:messagesDisplayerFormOrganisations"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogRenameOrganisation.hide(); }" />
-			</p:dialog>
+ -->
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="true"
+					actionListener="#{organisationsController.currentOrganisationViewBean.setIconFileName(fileUploadController.uploadedFileName)}"
+					action="#{organisationsController.onRenameOrganisation}"
+					process="@this idDialogRenameOrganisation"
+					update=":formOrganisations:idDialogRenameOrganisation :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogRenameOrganisation.hide(); }" />
+ 			</p:dialog>
 
 			<p:dialog id="idDialogAssociateCommunity"
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
@@ -609,7 +665,7 @@
 					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
-						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
+						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations :formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -637,7 +693,7 @@
 					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
-						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
+						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations :formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -667,8 +723,7 @@
 					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
-						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
-						process="@this" />
+						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations :formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments"						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.CLOSE']}"
@@ -698,8 +753,7 @@
 					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
 						listener="#{organisationsController.onTransfer}"
-						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations"
-						process="@this" />
+						update="@this :formOrganisations:tabViewOrganisations :formOrganisations:messagesDisplayerFormOrganisations :formOrganisations:tabViewOrganisations:accordionPanelForCommunities :formOrganisations:tabViewOrganisations:accordionPanelForInstitutions :formOrganisations:tabViewOrganisations:accordionPanelForAdministrativeDepartments :formOrganisations:tabViewOrganisations:accordionPanelForTeachingDepartments"						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.CLOSE']}"
@@ -710,6 +764,7 @@
 
 		</h:form>
 
+<!-- 
 		<h:form id="formUsers">
 			<p:growl id="messagesDisplayerFormUsers" showDetail="true" />
 
@@ -781,7 +836,7 @@
 					process="@this idDialogAssociateOrganisationWithUser" />
 			</p:dialog>
 		</h:form>
-
+ -->
 		<h:form id="formToolCategories">
 			<p:growl id="messagesDisplayerFormToolCategories"
 				showDetail="true" />
