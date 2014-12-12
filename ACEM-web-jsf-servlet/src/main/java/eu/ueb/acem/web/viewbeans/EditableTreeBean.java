@@ -56,8 +56,6 @@ public class EditableTreeBean implements Serializable {
 
 	public EditableTreeBean() {
 		// For some reason, the root of the tree is not visible
-		// root = new DefaultTreeNode(new TreeNodeData(null, "Root", null),
-		// null);
 		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
 
 		// Therefore, we add a list of visible roots, so that it is possible to

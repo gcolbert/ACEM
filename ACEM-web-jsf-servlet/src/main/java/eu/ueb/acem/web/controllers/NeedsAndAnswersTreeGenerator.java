@@ -116,6 +116,7 @@ class NeedsAndAnswersTreeGenerator {
 				currentVisibleRoot = treeBean.addVisibleRoot(need.getName());
 			}
 			for (PedagogicalNeed child : need.getChildren()) {
+				child = needsAndAnswersService.retrievePedagogicalNeed(child.getId(), true);
 				createChild(treeBean, child, currentVisibleRoot);
 			}
 		}
