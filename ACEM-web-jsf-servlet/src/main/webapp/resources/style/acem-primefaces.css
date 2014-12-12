@@ -306,3 +306,7 @@
 .administrationAccordionPanel .ui-accordion-content {
 	padding:0;
 }
+
+.organisationPanelGrid .ui-panelgrid-cell {
+	vertical-align:top;
+}
