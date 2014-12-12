@@ -29,6 +29,8 @@ public interface Room extends PhysicalSpace {
 
 	void setNumber(String numero);
 
+	Floor getFloor();
+	
 	Integer getRoomCapacity();
 
 	void setRoomCapacity(Integer capaciteAccueil);

@@ -45,7 +45,7 @@ public class BuildingNode extends PhysicalSpaceNode implements Building {
 	@Indexed
 	private String name;
 
-	@RelatedTo(elementClass = CampusNode.class, type = "estContenuDans", direction = OUTGOING)
+	@RelatedTo(elementClass = CampusNode.class, type = "isInCampus", direction = OUTGOING)
 	private Campus campus;
 
 	private Double latitude;

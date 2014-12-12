@@ -28,6 +28,8 @@ import java.util.Set;
  */
 public interface Credit extends Serializable, Comparable<Credit> {
 
+	Long getId();
+	
 	String getName();
 
 	void setName(String name);
@@ -39,5 +41,9 @@ public interface Credit extends Serializable, Comparable<Credit> {
 	Set<Diploma> getDiplomas();
 	
 	void setDiplomas(Set<Diploma> diplomas);
+
+	Set<Course> getCourses();
+
+	void setCourses(Set<Course> courses);
 
 }

@@ -18,10 +18,14 @@
  */
 package eu.ueb.acem.domain.beans.vert.neo4j;
 
+import static org.neo4j.graphdb.Direction.OUTGOING;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.vert.Floor;
 import eu.ueb.acem.domain.beans.vert.Room;
 
 /**
@@ -40,7 +44,10 @@ public class RoomNode extends PhysicalSpaceNode implements Room {
 
 	@Indexed
 	private String name;
-	
+
+	@RelatedTo(elementClass = FloorNode.class, type = "isPartOfFloor", direction = OUTGOING)
+	private Floor floor;
+
 	private String number;
 	private Boolean hasWifiAccess;
 	private Integer roomCapacity;
@@ -48,10 +55,10 @@ public class RoomNode extends PhysicalSpaceNode implements Room {
 	public RoomNode() {
 	}
 
-	public RoomNode(String numero, Integer capaciteAccueil, Boolean accesWifi) {
-		this.number = numero;
-		this.roomCapacity = capaciteAccueil;
-		this.hasWifiAccess = accesWifi;
+	public RoomNode(String number, Integer roomCapacity, Boolean hasWifiAccess) {
+		this.number = number;
+		this.roomCapacity = roomCapacity;
+		this.hasWifiAccess = hasWifiAccess;
 	}
 
 	@Override
@@ -74,6 +81,11 @@ public class RoomNode extends PhysicalSpaceNode implements Room {
 		this.number = number;
 	}
 
+	@Override
+	public Floor getFloor() {
+		return floor;
+	}
+	
 	@Override
 	public Integer getRoomCapacity() {
 		return roomCapacity;

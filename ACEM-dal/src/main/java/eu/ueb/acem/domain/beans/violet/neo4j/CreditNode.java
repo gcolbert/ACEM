@@ -19,6 +19,7 @@
 package eu.ueb.acem.domain.beans.violet.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +30,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
+import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Credit;
 import eu.ueb.acem.domain.beans.violet.Diploma;
 
@@ -53,6 +55,9 @@ public class CreditNode extends AbstractNode implements Credit {
 
 	@RelatedTo(elementClass = DiplomaNode.class, type = "isPartOfDiploma", direction = OUTGOING)
 	private Set<Diploma> diplomas = new HashSet<Diploma>(0);
+
+	@RelatedTo(elementClass = CourseNode.class, type = "isPartOfCredit", direction = INCOMING)
+	private Set<Course> courses;
 
 	public CreditNode() {
 	}
@@ -89,6 +94,16 @@ public class CreditNode extends AbstractNode implements Credit {
 	@Override
 	public void setDiplomas(Set<Diploma> diplomas) {
 		this.diplomas = diplomas;
+	}
+
+	@Override
+	public Set<Course> getCourses() {
+		return courses;
+	}
+
+	@Override
+	public void setCourses(Set<Course> courses) {
+		this.courses = courses;
 	}
 
 	@Override

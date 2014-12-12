@@ -31,6 +31,8 @@ import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
  */
 public interface TeachingClass extends Serializable, Comparable<TeachingClass> {
 
+	Long getId();
+	
 	String getName();
 
 	void setName(String name);

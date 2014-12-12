@@ -28,6 +28,8 @@ import java.util.Set;
  */
 public interface Diploma extends Serializable, Comparable<Diploma> {
 
+	Long getId();
+	
 	String getName();
 
 	void setName(String name);

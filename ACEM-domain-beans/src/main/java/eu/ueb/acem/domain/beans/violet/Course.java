@@ -27,6 +27,8 @@ import java.io.Serializable;
  */
 public interface Course extends Serializable, Comparable<Course> {
 
+	Long getId();
+
 	String getName();
 
 	void setName(String name);
