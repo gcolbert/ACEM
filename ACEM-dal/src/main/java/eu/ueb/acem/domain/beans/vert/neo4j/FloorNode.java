@@ -44,7 +44,7 @@ public class FloorNode extends PhysicalSpaceNode implements Floor {
 
 	@Indexed
 	private String name;
-	
+
 	private Integer number;
 
 	@RelatedTo(elementClass = BuildingNode.class, type = "estUnePartieDe", direction = OUTGOING)
@@ -54,6 +54,16 @@ public class FloorNode extends PhysicalSpaceNode implements Floor {
 		this.number = number;
 	}
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public Integer getNumber() {
 		return number;

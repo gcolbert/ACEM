@@ -162,4 +162,9 @@ public class TeachingClassNode extends AbstractNode implements TeachingClass {
 		this.pedagogicalScenarios = scenarios;
 	}
 
+	@Override
+	public int compareTo(TeachingClass o) {
+		return this.getName().compareTo(o.getName());
+	}
+
 }

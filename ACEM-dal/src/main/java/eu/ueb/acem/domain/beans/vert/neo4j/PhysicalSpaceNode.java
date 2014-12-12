@@ -41,4 +41,9 @@ public abstract class PhysicalSpaceNode extends AbstractNode implements Physical
 	public PhysicalSpaceNode() {
 	}
 
+	@Override
+	public int compareTo(PhysicalSpace o) {
+		return this.getName().compareTo(o.getName());
+	}
+
 }

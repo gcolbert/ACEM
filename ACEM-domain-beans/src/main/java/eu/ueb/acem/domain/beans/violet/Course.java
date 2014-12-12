@@ -25,7 +25,7 @@ import java.io.Serializable;
  * @since 2013-11-20
  * 
  */
-public interface Course extends Serializable {
+public interface Course extends Serializable, Comparable<Course> {
 
 	String getName();
 

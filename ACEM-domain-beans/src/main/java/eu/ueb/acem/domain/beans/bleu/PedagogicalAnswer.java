@@ -45,6 +45,4 @@ public interface PedagogicalAnswer extends Serializable, Comparable<PedagogicalA
 
 	Set<PedagogicalScenario> getScenariosRelatedToAnswer();
 
-	int compareTo(PedagogicalAnswer o);
-
 }

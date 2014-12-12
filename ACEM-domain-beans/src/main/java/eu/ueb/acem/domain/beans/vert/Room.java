@@ -25,16 +25,16 @@ package eu.ueb.acem.domain.beans.vert;
  */
 public interface Room extends PhysicalSpace {
 
-	String getNumero();
+	String getNumber();
 
-	void setNumero(String numero);
+	void setNumber(String numero);
 
-	Integer getCapaciteAccueil();
+	Integer getRoomCapacity();
 
-	void setCapaciteAccueil(Integer capaciteAccueil);
+	void setRoomCapacity(Integer capaciteAccueil);
 
-	Boolean getAccesWifi();
+	Boolean getHasWifiAccess();
 
-	void setAccesWifi(Boolean accesWifi);
+	void setHasWifiAccess(Boolean accesWifi);
 
 }

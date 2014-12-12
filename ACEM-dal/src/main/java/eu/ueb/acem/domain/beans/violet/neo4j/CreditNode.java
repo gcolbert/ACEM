@@ -91,4 +91,9 @@ public class CreditNode extends AbstractNode implements Credit {
 		this.diplomas = diplomas;
 	}
 
+	@Override
+	public int compareTo(Credit o) {
+		return this.getName().compareTo(o.getName());
+	}
+	
 }

@@ -57,6 +57,4 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 
 	void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities);
 	
-	int compareTo(ResourceCategory o);
-
 }

@@ -46,6 +46,4 @@ public interface PedagogicalNeed extends Serializable, Comparable<PedagogicalNee
 
 	void setAnswers(Set<PedagogicalAnswer> answers);
 
-	int compareTo(PedagogicalNeed o);
-
 }

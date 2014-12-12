@@ -25,6 +25,12 @@ import java.io.Serializable;
  * @since 2013-11-20
  * 
  */
-public interface PhysicalSpace extends Serializable {
+public interface PhysicalSpace extends Serializable, Comparable<PhysicalSpace> {
+
+	Long getId();
+
+	String getName();
+
+	void setName(String name);
 
 }

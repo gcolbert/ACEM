@@ -41,41 +41,57 @@ public class RoomNode extends PhysicalSpaceNode implements Room {
 	@Indexed
 	private String name;
 	
-	private String numero;
-	private Boolean accesWifi;
-	private Integer capaciteAccueil;
+	private String number;
+	private Boolean hasWifiAccess;
+	private Integer roomCapacity;
 
 	public RoomNode() {
 	}
 
 	public RoomNode(String numero, Integer capaciteAccueil, Boolean accesWifi) {
-		this.numero = numero;
-		this.capaciteAccueil = capaciteAccueil;
-		this.accesWifi = accesWifi;
+		this.number = numero;
+		this.roomCapacity = capaciteAccueil;
+		this.hasWifiAccess = accesWifi;
 	}
 
-	public String getNumero() {
-		return numero;
+	@Override
+	public String getName() {
+		return name;
 	}
 
-	public void setNumero(String numero) {
-		this.numero = numero;
+	@Override
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Integer getCapaciteAccueil() {
-		return capaciteAccueil;
+	@Override
+	public String getNumber() {
+		return number;
 	}
 
-	public void setCapaciteAccueil(Integer capaciteAccueil) {
-		this.capaciteAccueil = capaciteAccueil;
+	@Override
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
-	public Boolean getAccesWifi() {
-		return accesWifi;
+	@Override
+	public Integer getRoomCapacity() {
+		return roomCapacity;
 	}
 
-	public void setAccesWifi(Boolean accesWifi) {
-		this.accesWifi = accesWifi;
+	@Override
+	public void setRoomCapacity(Integer roomCapacity) {
+		this.roomCapacity = roomCapacity;
+	}
+
+	@Override
+	public Boolean getHasWifiAccess() {
+		return hasWifiAccess;
+	}
+
+	@Override
+	public void setHasWifiAccess(Boolean hasWifiAccess) {
+		this.hasWifiAccess = hasWifiAccess;
 	}
 
 }

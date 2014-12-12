@@ -29,7 +29,7 @@ import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
  * @since 2013-11-20
  * 
  */
-public interface TeachingClass extends Serializable {
+public interface TeachingClass extends Serializable, Comparable<TeachingClass> {
 
 	String getName();
 

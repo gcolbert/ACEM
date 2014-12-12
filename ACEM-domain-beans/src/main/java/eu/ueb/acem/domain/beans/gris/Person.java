@@ -32,8 +32,6 @@ public interface Person extends Serializable, Comparable<Person> {
 
 	Long getId();
 
-	Set<Organisation> getWorksForOrganisations();
-
 	String getName();
 
 	void setName(String name);
@@ -54,6 +52,6 @@ public interface Person extends Serializable, Comparable<Person> {
 	
 	void setAdministrator(Boolean isAdministrator);
 
-	int compareTo(Person person);
-
+	Set<Organisation> getWorksForOrganisations();
+	
 }

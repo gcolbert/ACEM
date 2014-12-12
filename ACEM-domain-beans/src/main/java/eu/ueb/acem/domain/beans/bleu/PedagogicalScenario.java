@@ -69,6 +69,4 @@ public interface PedagogicalScenario extends Serializable, Comparable<Pedagogica
 
 	void setTeachingClasses(Set<TeachingClass> teachingClasses);
 	
-	int compareTo(PedagogicalScenario o);
-	
 }

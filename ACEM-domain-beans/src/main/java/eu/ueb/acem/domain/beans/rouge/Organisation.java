@@ -28,7 +28,7 @@ import eu.ueb.acem.domain.beans.jaune.Resource;
  * @since 2013-11-20
  * 
  */
-public interface Organisation extends Serializable {
+public interface Organisation extends Serializable, Comparable<Organisation> {
 
 	Long getId();
 
@@ -51,7 +51,5 @@ public interface Organisation extends Serializable {
 	Set<Resource> getViewedResources();
 
 	void setViewedResources(Set<Resource> viewedResources);
-
-	int compareTo(Organisation o);
 
 }

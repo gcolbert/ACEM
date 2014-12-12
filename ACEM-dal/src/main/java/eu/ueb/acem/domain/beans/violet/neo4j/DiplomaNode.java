@@ -78,5 +78,10 @@ public class DiplomaNode extends AbstractNode implements Diploma {
 	public void setCredits(Set<Credit> credits) {
 		this.credits = credits;
 	}
-	
+
+	@Override
+	public int compareTo(Diploma o) {
+		return this.getName().compareTo(o.getName());
+	}
+
 }

@@ -46,7 +46,7 @@ public class CourseNode extends AbstractNode implements Course {
 	@Indexed
 	private String name;
 
-	private String duree;
+	private String duration;
 
 	@RelatedTo(elementClass = CreditNode.class, type = "isPartOfCredit", direction = OUTGOING)
 	private Credit credit;
@@ -58,24 +58,34 @@ public class CourseNode extends AbstractNode implements Course {
 		this.name = name;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String getDuration() {
-		return duree;
+		return duration;
 	}
 
+	@Override
 	public void setDuration(String duration) {
-		this.duree = duration;
+		this.duration = duration;
 	}
 
+	@Override
 	public Credit getCredit() {
 		return credit;
 	}
 
+	@Override
+	public int compareTo(Course o) {
+		return this.getName().compareTo(o.getName());
+	}
+	
 }

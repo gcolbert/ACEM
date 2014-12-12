@@ -26,7 +26,7 @@ import java.util.Set;
  * @since 2013-11-20
  * 
  */
-public interface Diploma extends Serializable {
+public interface Diploma extends Serializable, Comparable<Diploma> {
 
 	String getName();
 

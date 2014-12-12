@@ -26,7 +26,7 @@ import java.util.Set;
  * @since 2013-11-20
  * 
  */
-public interface Credit extends Serializable {
+public interface Credit extends Serializable, Comparable<Credit> {
 
 	String getName();
 

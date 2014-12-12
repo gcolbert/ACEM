@@ -55,22 +55,37 @@ public class BuildingNode extends PhysicalSpaceNode implements Building {
 		this.name = name;
 	}
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
 	public Campus getCampus() {
 		return campus;
 	}
 
+	@Override
 	public Double getLatitude() {
 		return latitude;
 	}
 
+	@Override
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
+	@Override
 	public Double getLongitude() {
 		return longitude;
 	}
 
+	@Override
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
