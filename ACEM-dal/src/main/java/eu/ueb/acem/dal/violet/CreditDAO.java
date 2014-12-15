@@ -45,7 +45,7 @@ public class CreditDAO implements DAO<Long, Credit> {
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 515628413371430770L;
+	private static final long serialVersionUID = -7183456920407343870L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CreditDAO.class);

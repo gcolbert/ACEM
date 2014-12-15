@@ -46,7 +46,7 @@ public class RoomDAO implements DAO<Long, Room> {
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 515628413371430770L;
+	private static final long serialVersionUID = 8372049333627234514L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(RoomDAO.class);

@@ -45,7 +45,7 @@ public class TeachingClassDAO implements DAO<Long, TeachingClass> {
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 515628413371430770L;
+	private static final long serialVersionUID = 3463144134744279313L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(TeachingClassDAO.class);

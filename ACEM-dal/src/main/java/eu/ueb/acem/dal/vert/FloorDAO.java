@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.dal.vert;
 
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,7 +45,7 @@ public class FloorDAO implements DAO<Long, Floor> {
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 515628413371430770L;
+	private static final long serialVersionUID = -916181043585068038L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(FloorDAO.class);

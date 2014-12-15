@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.dal.vert;
 
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,7 +45,7 @@ public class BuildingDAO implements DAO<Long, Building> {
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 515628413371430770L;
+	private static final long serialVersionUID = -8261719192237944983L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(BuildingDAO.class);

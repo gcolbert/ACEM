@@ -45,7 +45,7 @@ public class DiplomaDAO implements DAO<Long, Diploma> {
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 515628413371430770L;
+	private static final long serialVersionUID = 20097765170954629L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(DiplomaDAO.class);

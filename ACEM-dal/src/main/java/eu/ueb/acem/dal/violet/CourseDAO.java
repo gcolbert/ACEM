@@ -45,7 +45,7 @@ public class CourseDAO implements DAO<Long, Course> {
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 515628413371430770L;
+	private static final long serialVersionUID = 5716802262936318251L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CourseDAO.class);
