@@ -24,7 +24,6 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.Resource;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 
 /**
  * @author Grégoire Colbert
@@ -73,16 +72,10 @@ public interface NeedsAndAnswersService {
 
 	Collection<PedagogicalScenario> getScenariosRelatedToAnswer(Long id);
 
-	Collection<AdministrativeDepartment> getAdministrativeDepartmentsRelatedToAnswer(Long id);
-
 	Collection<Resource> getResourcesRelatedToAnswer(Long id);
 
-	Boolean associateAnswerWithToolCategory(Long answerId, Long toolCategoryId);
+	Boolean associateAnswerWithResourceCategory(Long answerId, Long toolCategoryId);
 
-	Boolean dissociateAnswerWithToolCategory(Long answerId, Long toolCategoryId);
+	Boolean dissociateAnswerWithResourceCategory(Long answerId, Long toolCategoryId);
 
-	Boolean associateAnswerWithAdministrativeDepartment(Long answerId, Long administrativeDepartmentId);
-
-	Boolean dissociateAnswerWithAdministrativeDepartment(Long answerId, Long administrativeDepartmentId);
-	
 }

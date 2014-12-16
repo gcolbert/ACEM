@@ -88,6 +88,7 @@ public class CommunityDAO implements DAO<Long, Community> {
 		if (initialize) {
 			neo4jOperations.fetch(entity.getPossessedResources());
 			neo4jOperations.fetch(entity.getViewedResources());
+			neo4jOperations.fetch(entity.getUseModes());
 			neo4jOperations.fetch(entity.getInstitutions());
 		}
 		return entity;
@@ -136,5 +137,5 @@ public class CommunityDAO implements DAO<Long, Community> {
 	public Long count() {
 		return repository.count();
 	}
-	
+
 }

@@ -23,6 +23,7 @@ import java.util.Collection;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 
 /**
  * @author Grégoire Colbert
@@ -47,10 +48,10 @@ public interface ResourcesService {
 
 	Resource updateResource(Resource resource);
 
-	Resource retrieveResource(Long id);
+	Resource retrieveResource(Long id, boolean initialize);
 
 	Boolean deleteResource(Long id);
-	
+
 	Collection<? extends Resource> retrieveSoftwaresWithCategory(ResourceCategory category);
 
 	Collection<? extends Resource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
@@ -63,4 +64,12 @@ public interface ResourcesService {
 
 	void saveResourceName(String resourceType, Long id, String label);
 
+	UseMode createUseMode(String name);
+
+	UseMode updateUseMode(UseMode resource);
+
+	UseMode retrieveUseMode(Long idUseMode, boolean initialize);
+
+	Boolean deleteUseMode(Long id);
+	
 }

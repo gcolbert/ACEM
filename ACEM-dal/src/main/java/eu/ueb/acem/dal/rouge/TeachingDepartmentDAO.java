@@ -88,6 +88,7 @@ public class TeachingDepartmentDAO implements DAO<Long, TeachingDepartment> {
 		if (initialize) {
 			neo4jOperations.fetch(entity.getPossessedResources());
 			neo4jOperations.fetch(entity.getViewedResources());
+			neo4jOperations.fetch(entity.getUseModes());
 			neo4jOperations.fetch(entity.getInstitutions());
 		}
 		return entity;

@@ -265,7 +265,7 @@
 						<h:outputText
 							value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_ADMINISTRATIVE_DEPARTMENTS_LABEL']}" />
 					</h2>
-
+<!-- 
 					<p:dataTable id="associatedAdministrativeDepartmentsTable"
 						value="#{needsAndAnswersController.administrativeDepartmentViewBeansForSelectedAnswer}"
 						emptyMessage="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
@@ -283,7 +283,7 @@
 						oncomplete="PF('dialogAssociateAdministrativeDepartment').show()"
 						update=":formAssociateAdministrativeDepartment:idDialogAssociateAdministrativeDepartmentWithAnswer"
 						process="@this" />
-
+ -->
 					<h2>
 						<h:outputText
 							value="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']}" />
@@ -348,7 +348,7 @@
 					process="@this idDialogAssociateResourceCategoryWithAnswer" />
 			</p:dialog>
 		</h:form>
-
+<!-- 
 		<h:form id="formAssociateAdministrativeDepartment">
 			<p:dialog id="idDialogAssociateAdministrativeDepartmentWithAnswer"
 				header="#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_DIALOG.HEADER']}"
@@ -382,6 +382,6 @@
 					process="@this idDialogAssociateAdministrativeDepartmentWithAnswer" />
 			</p:dialog>
 		</h:form>
-
+ -->
 	</ui:define>
 </ui:composition>

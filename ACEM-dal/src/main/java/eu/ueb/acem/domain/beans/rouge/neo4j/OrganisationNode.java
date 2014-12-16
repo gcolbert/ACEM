@@ -19,6 +19,7 @@
 package eu.ueb.acem.domain.beans.rouge.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,9 +31,13 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
+import eu.ueb.acem.domain.beans.vert.neo4j.PhysicalSpaceNode;
 
 /**
  * @author Grégoire Colbert
@@ -55,12 +60,20 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 
 	private String iconFileName;
 
+	private String contactMode;
+	
 	@RelatedTo(elementClass = ResourceNode.class, type = "possessesResource", direction = OUTGOING)
 	private Set<Resource> possessedResources = new HashSet<Resource>(0);
 
 	@RelatedTo(elementClass = ResourceNode.class, type = "accessesResource", direction = OUTGOING)
 	private Set<Resource> viewedResources = new HashSet<Resource>(0);
 
+	@RelatedTo(elementClass = UseModeNode.class, type = "referredOrganisations", direction = INCOMING)
+	private Set<UseMode> referringUseModes = new HashSet<UseMode>(0);
+	
+	@RelatedTo(elementClass = PhysicalSpaceNode.class, type = "occupies", direction = OUTGOING)
+	private Set<PhysicalSpace> occupiedPhysicalSpaces = new HashSet<PhysicalSpace>(0);
+	
 	public OrganisationNode() {
 	}
 
@@ -89,6 +102,16 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	}
 
 	@Override
+	public String getContactMode() {
+		return contactMode;
+	}
+
+	@Override
+	public void setContactMode(String contactMode) {
+		this.contactMode = contactMode;
+	}
+
+	@Override
 	public Set<Resource> getPossessedResources() {
 		return possessedResources;
 	}
@@ -106,6 +129,26 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	@Override
 	public void setViewedResources(Set<Resource> viewedResources) {
 		this.viewedResources = viewedResources;
+	}
+
+	@Override
+	public Set<UseMode> getUseModes() {
+		return referringUseModes;
+	}
+
+	@Override
+	public void setUseModes(Set<UseMode> referringUseModes) {
+		this.referringUseModes = referringUseModes;
+	}
+
+	@Override
+	public Set<PhysicalSpace> getOccupiedPhysicalSpaces() {
+		return occupiedPhysicalSpaces;
+	}
+
+	@Override
+	public void setOccupiedPhysicalSpaces(Set<PhysicalSpace> occupiedPhysicalSpaces) {
+		this.occupiedPhysicalSpaces = occupiedPhysicalSpaces;
 	}
 
 	@Override

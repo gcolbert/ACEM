@@ -19,6 +19,9 @@
 package eu.ueb.acem.domain.beans.jaune;
 
 import java.io.Serializable;
+import java.util.Set;
+
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
@@ -36,5 +39,9 @@ public interface UseMode extends Serializable {
 	String getDescription();
 	
 	void setDescription(String description);
+
+	Set<Organisation> getReferredOrganisations();
+
+	void setReferredOrganisations(Set<Organisation> organisations);
 	
 }

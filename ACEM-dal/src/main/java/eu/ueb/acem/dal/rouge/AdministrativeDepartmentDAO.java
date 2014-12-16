@@ -88,8 +88,8 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 		if (initialize) {
 			neo4jOperations.fetch(entity.getPossessedResources());
 			neo4jOperations.fetch(entity.getViewedResources());
+			neo4jOperations.fetch(entity.getUseModes());
 			neo4jOperations.fetch(entity.getInstitutions());
-			neo4jOperations.fetch(entity.getPedagogicalAnswers());
 		}
 		return entity;
 	}

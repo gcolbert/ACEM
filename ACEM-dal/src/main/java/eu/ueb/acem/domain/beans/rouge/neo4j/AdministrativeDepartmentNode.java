@@ -95,14 +95,4 @@ public class AdministrativeDepartmentNode extends OrganisationNode implements Ad
 		this.institutions = institutions;
 	}
 
-	@Override
-	public Set<PedagogicalAnswer> getPedagogicalAnswers() {
-		return pedagogicalAnswers;
-	}
-
-	@Override
-	public void setPedagogicalAnswers(Set<PedagogicalAnswer> pedagogicalAnswers) {
-		this.pedagogicalAnswers = pedagogicalAnswers;
-	}
-
 }

@@ -18,12 +18,20 @@
  */
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
+import static org.neo4j.graphdb.Direction.OUTGOING;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
 
 /**
  * @author Grégoire Colbert
@@ -41,8 +49,11 @@ public class UseModeNode extends AbstractNode implements UseMode {
 
 	@Indexed
 	private String name;
-	
+
 	private String description;
+
+	@RelatedTo(elementClass = OrganisationNode.class, type = "refersToOrganisation", direction = OUTGOING)
+	private Set<Organisation> referredOrganisations = new HashSet<Organisation>(0);
 
 	public UseModeNode() {
 	}
@@ -71,4 +82,14 @@ public class UseModeNode extends AbstractNode implements UseMode {
 		this.description = description;
 	}
 
+	@Override
+	public Set<Organisation> getReferredOrganisations() {
+		return referredOrganisations;
+	}
+
+	@Override
+	public void setReferredOrganisations(Set<Organisation> organisations) {
+		this.referredOrganisations = organisations;
+	}
+	
 }

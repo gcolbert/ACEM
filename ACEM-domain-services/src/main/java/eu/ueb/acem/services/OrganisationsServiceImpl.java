@@ -31,7 +31,7 @@ import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.dal.rouge.CommunityDAO;
 import eu.ueb.acem.dal.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -65,7 +65,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 	
 	@Inject
-	private NeedsAndAnswersService needsAndAnswersService;
+	private ResourcesService resourcesService;
 
 	@Override
 	public Long countCommunities() {
@@ -349,31 +349,31 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
-	public Boolean associatePedagogicalAnswerAndAdministrativeDepartment(Long idPedagogicalAnswer, Long idAdministrativeDepartment) {
-		PedagogicalAnswer pedagogicalAnswer = needsAndAnswersService.retrievePedagogicalAnswer(idPedagogicalAnswer, true);
-		AdministrativeDepartment administrativeDepartment = retrieveAdministrativeDepartment(idAdministrativeDepartment, true);
+	public Boolean associateUseModeAndOrganisation(Long idUseMode, Long idOrganisation) {
+		UseMode useMode = resourcesService.retrieveUseMode(idUseMode, true);
+		Organisation referredOrganisation = retrieveOrganisation(idOrganisation, true);
 
-		pedagogicalAnswer.getAdministrativeDepartments().add(administrativeDepartment);
-		administrativeDepartment.getPedagogicalAnswers().add(pedagogicalAnswer);
+		useMode.getReferredOrganisations().add(referredOrganisation);
+		referredOrganisation.getUseModes().add(useMode);
 		
-		pedagogicalAnswer = needsAndAnswersService.updatePedagogicalAnswer(pedagogicalAnswer);
-		administrativeDepartment = updateAdministrativeDepartment(administrativeDepartment);
+		useMode = resourcesService.updateUseMode(useMode);
+		referredOrganisation = updateOrganisation(referredOrganisation);
 
-		return ((pedagogicalAnswer.getAdministrativeDepartments().contains(administrativeDepartment)) && (administrativeDepartment.getPedagogicalAnswers().contains(pedagogicalAnswer)));
+		return ((useMode.getReferredOrganisations().contains(referredOrganisation)) && (referredOrganisation.getUseModes().contains(useMode)));
 	}
 
 	@Override
-	public Boolean dissociatePedagogicalAnswerAndAdministrativeDepartment(Long idPedagogicalAnswer, Long idAdministrativeDepartment) {
-		PedagogicalAnswer pedagogicalAnswer = needsAndAnswersService.retrievePedagogicalAnswer(idPedagogicalAnswer, true);
-		AdministrativeDepartment administrativeDepartment = retrieveAdministrativeDepartment(idAdministrativeDepartment, true);
+	public Boolean dissociateUseModeAndOrganisation(Long idUseMode, Long idOrganisation) {
+		UseMode useMode = resourcesService.retrieveUseMode(idUseMode, true);
+		AdministrativeDepartment referredOrganisation = retrieveAdministrativeDepartment(idOrganisation, true);
 
-		pedagogicalAnswer.getAdministrativeDepartments().remove(administrativeDepartment);
-		administrativeDepartment.getPedagogicalAnswers().remove(pedagogicalAnswer);
+		useMode.getReferredOrganisations().remove(referredOrganisation);
+		referredOrganisation.getUseModes().remove(useMode);
 
-		pedagogicalAnswer = needsAndAnswersService.updatePedagogicalAnswer(pedagogicalAnswer);
-		administrativeDepartment = updateAdministrativeDepartment(administrativeDepartment);
+		useMode = resourcesService.updateUseMode(useMode);
+		referredOrganisation = updateAdministrativeDepartment(referredOrganisation);
 
-		return ((!pedagogicalAnswer.getAdministrativeDepartments().contains(administrativeDepartment)) && (!administrativeDepartment.getPedagogicalAnswers().contains(pedagogicalAnswer)));
+		return ((!useMode.getReferredOrganisations().contains(referredOrganisation)) && (!referredOrganisation.getUseModes().contains(useMode)));
 	}
 	
 	@Override

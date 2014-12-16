@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 
 /**
  * @author Grégoire Colbert
@@ -40,8 +39,6 @@ public interface PedagogicalAnswer extends Serializable, Comparable<PedagogicalA
 	Set<PedagogicalNeed> getNeeds();
 
 	Set<ResourceCategory> getResourceCategories();
-
-	Set<AdministrativeDepartment> getAdministrativeDepartments();
 
 	Set<PedagogicalScenario> getScenariosRelatedToAnswer();
 

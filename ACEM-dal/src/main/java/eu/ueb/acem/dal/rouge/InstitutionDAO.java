@@ -88,6 +88,7 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 		if (initialize) {
 			neo4jOperations.fetch(entity.getPossessedResources());
 			neo4jOperations.fetch(entity.getViewedResources());
+			neo4jOperations.fetch(entity.getUseModes());
 			neo4jOperations.fetch(entity.getCommunities());
 			neo4jOperations.fetch(entity.getAdministrativeDepartments());
 			neo4jOperations.fetch(entity.getTeachingDepartments());

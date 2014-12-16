@@ -74,7 +74,7 @@ class ResourceViewBeanHandler {
 		}
 		else {
 			logger.info("resourceViewBean not found in resourceViewBeans map, we load it with ResourcesService.");
-			Resource tool = resourcesService.retrieveResource(id);
+			Resource tool = resourcesService.retrieveResource(id, true);
 			if (tool != null) {
 				if (tool instanceof Software) {
 					viewBean = new SoftwareViewBean((Software) tool);

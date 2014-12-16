@@ -22,6 +22,8 @@ import java.io.Serializable;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
+import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
  * @author Grégoire Colbert
@@ -44,6 +46,10 @@ public interface Organisation extends Serializable, Comparable<Organisation> {
 
 	void setIconFileName(String iconFileName);
 
+	String getContactMode();
+	
+	void setContactMode(String contactMode);
+	
 	Set<Resource> getPossessedResources();
 
 	void setPossessedResources(Set<Resource> possessedResources);
@@ -51,5 +57,13 @@ public interface Organisation extends Serializable, Comparable<Organisation> {
 	Set<Resource> getViewedResources();
 
 	void setViewedResources(Set<Resource> viewedResources);
+
+	Set<UseMode> getUseModes();
+
+	void setUseModes(Set<UseMode> useModes);
+	
+	Set<PhysicalSpace> getOccupiedPhysicalSpaces();
+
+	void setOccupiedPhysicalSpaces(Set<PhysicalSpace> occupiedPhysicalSpaces);
 
 }

@@ -44,12 +44,14 @@ import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -69,7 +71,6 @@ public class ResourcesServiceImpl implements ResourcesService {
 	private OrganisationsService organisationsService;
 	
 	@Inject
-	@SuppressWarnings("unused")
 	private UseModeDAO useModeDAO;
 
 	@Inject
@@ -169,22 +170,22 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Resource retrieveResource(Long id) {
+	public Resource retrieveResource(Long id, boolean initialize) {
 		Resource entity = null;
 		if (softwareDAO.exists(id)) {
-			entity = softwareDAO.retrieveById(id);
+			entity = softwareDAO.retrieveById(id, initialize);
 		}
 		else if (softwareDocumentationDAO.exists(id)) {
-			entity = softwareDocumentationDAO.retrieveById(id);
+			entity = softwareDocumentationDAO.retrieveById(id, initialize);
 		}
 		else if (equipmentDAO.exists(id)) {
-			entity = equipmentDAO.retrieveById(id);
+			entity = equipmentDAO.retrieveById(id, initialize);
 		}
 		else if (pedagogicalAndDocumentaryResourcesDAO.exists(id)) {
-			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
+			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id, initialize);
 		}
 		else if (professionalTrainingDAO.exists(id)) {
-			entity = professionalTrainingDAO.retrieveById(id);
+			entity = professionalTrainingDAO.retrieveById(id, initialize);
 		}
 		else {
 			logger.error("There is no resource with id='{}'", id);
@@ -352,15 +353,28 @@ public class ResourcesServiceImpl implements ResourcesService {
 		}
 	}
 
-	/*-
 	@Override
-	public Set<Long> retrievePedagogicalNeedsAndAnswersAssociatedWithResourceCategory(Long resourceCategoryId) {
-		Set<Long> idsOfPedagogicalNodes = new HashSet<Long>();
-		// TODO : déplacer cette requête dans ResourceCategoryDAO (ou la supprimer carrément?)
-		// MATCH (r:ResourceCategory)<-[:answeredUsingResourceCategory]-(answer)<-[:needAnsweredBy]-(need)-[:hasParentNeed*]->(need2)
-		// WHERE id(r)=41 return r,answer,need,need2;
-		return idsOfPedagogicalNodes;
+	public UseMode createUseMode(String name) {
+		return useModeDAO.create(new UseModeNode(name));
 	}
-	*/
+
+	@Override
+	public UseMode updateUseMode(UseMode resource) {
+		return useModeDAO.update(resource);
+	}
+
+	@Override
+	public UseMode retrieveUseMode(Long idUseMode, boolean initialize) {
+		return useModeDAO.retrieveById(idUseMode, initialize);
+	}
+
+	@Override
+	public Boolean deleteUseMode(Long id) {
+		if (useModeDAO.exists(id)) {
+			UseMode entity = useModeDAO.retrieveById(id);
+			useModeDAO.delete(entity);
+		}
+		return !useModeDAO.exists(id);
+	}
 
 }

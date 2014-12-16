@@ -32,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
 import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
-import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
@@ -40,7 +39,6 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 
 /**
  * @author Grégoire Colbert
@@ -60,9 +58,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	
 	@Inject
 	private ResourceCategoryDAO resourceCategoryDAO;
-	
-	@Inject
-	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 
 	public NeedsAndAnswersServiceImpl() {
 
@@ -269,12 +264,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public Collection<AdministrativeDepartment> getAdministrativeDepartmentsRelatedToAnswer(Long id) {
-		PedagogicalAnswer answer = answerDAO.retrieveById(id);
-		return answer.getAdministrativeDepartments();
-	}
-
-	@Override
 	public Collection<Resource> getResourcesRelatedToAnswer(Long id) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(id);
 		Collection<Resource> resources = new HashSet<Resource>();
@@ -285,7 +274,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public Boolean associateAnswerWithToolCategory(Long answerId, Long toolCategoryId) {
+	public Boolean associateAnswerWithResourceCategory(Long answerId, Long toolCategoryId) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(answerId);
 		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
 
@@ -298,7 +287,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public Boolean dissociateAnswerWithToolCategory(Long answerId, Long toolCategoryId) {
+	public Boolean dissociateAnswerWithResourceCategory(Long answerId, Long toolCategoryId) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(answerId);
 		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
 
@@ -310,29 +299,4 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		return ((!answer.getResourceCategories().contains(resourceCategory)) && (!resourceCategory.getAnswers().contains(resourceCategory)));
 	}
 
-	@Override
-	public Boolean associateAnswerWithAdministrativeDepartment(Long pedagogicalAnswerId, Long administrativeDepartmentId) {
-		PedagogicalAnswer pedagogicalAnswer = answerDAO.retrieveById(pedagogicalAnswerId);
-		AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(administrativeDepartmentId);
-
-		pedagogicalAnswer.getAdministrativeDepartments().add(administrativeDepartment);
-		administrativeDepartment.getPedagogicalAnswers().add(pedagogicalAnswer);
-
-		pedagogicalAnswer = answerDAO.update(pedagogicalAnswer);
-		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
-		return ((pedagogicalAnswer.getAdministrativeDepartments().contains(administrativeDepartment)) && (administrativeDepartment.getPedagogicalAnswers().contains(pedagogicalAnswer)));
-	}
-
-	@Override
-	public Boolean dissociateAnswerWithAdministrativeDepartment(Long answerId, Long administrativeDepartmentId) {
-		PedagogicalAnswer pedagogicalAnswer = answerDAO.retrieveById(answerId);
-		AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.retrieveById(administrativeDepartmentId);
-
-		pedagogicalAnswer.getAdministrativeDepartments().remove(administrativeDepartment);
-		administrativeDepartment.getPedagogicalAnswers().remove(pedagogicalAnswer);
-
-		pedagogicalAnswer = answerDAO.update(pedagogicalAnswer);
-		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
-		return ((! pedagogicalAnswer.getAdministrativeDepartments().contains(administrativeDepartment)) && (! administrativeDepartment.getPedagogicalAnswers().contains(pedagogicalAnswer)));
-	}	
 }

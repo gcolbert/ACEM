@@ -13,13 +13,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
-import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.services.OrganisationsService;
+import eu.ueb.acem.services.ResourcesService;
 
 /**
  * @author Grégoire Colbert
@@ -34,8 +34,8 @@ public class OrganisationsServiceTest extends TestCase {
 	private OrganisationsService organisationsService;
 
 	@Inject
-	private NeedsAndAnswersService needsAndAnswersService;
-	
+	private ResourcesService resourcesService;
+
 	public OrganisationsServiceTest() {
 	}
 	
@@ -159,40 +159,40 @@ public class OrganisationsServiceTest extends TestCase {
 	}
 
 	/**
-	 * AssociateAdministrativeDepartmentAndPedagogicalAnswer
+	 * AssociateOrganisationWithUseMode
 	 */
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t01_TestAssociateAdministrativeDepartmentAndPedagogicalAnswer() {
-		AdministrativeDepartment administrativeDepartment1 = organisationsService.createAdministrativeDepartment("my administrativeDepartment", "mc", null);
-		PedagogicalAnswer pedagogicalAnswer1 = needsAndAnswersService.createPedagogicalAnswer("my pedagogicalAnswer");
-		assertTrue("The association of the PedagogicalAnswer and AdministrativeDepartment failed", organisationsService.associatePedagogicalAnswerAndAdministrativeDepartment(pedagogicalAnswer1.getId(), administrativeDepartment1.getId()));
+	public final void t07_TestAssociateOrganisationAndUseMode() {
+		AdministrativeDepartment administrativeDepartment1 = organisationsService.createAdministrativeDepartment("my administrativeDepartment", "ad", null);
+		UseMode useMode1 = resourcesService.createUseMode("this is a use mode referring an administrative department");
+		assertTrue("The association of the Organisation and UseMode failed", organisationsService.associateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
 
 		AdministrativeDepartment administrativeDepartment1bis = organisationsService.retrieveAdministrativeDepartment(administrativeDepartment1.getId(), true);
-		PedagogicalAnswer pedagogicalAnswer1bis = needsAndAnswersService.retrievePedagogicalAnswer(pedagogicalAnswer1.getId(), true);
-		assertTrue("The administrativeDepartment doesn't reference the pedagogicalAnswer.", administrativeDepartment1bis.getPedagogicalAnswers().contains(pedagogicalAnswer1bis));
-		assertTrue("The pedagogicalAnswer doesn't reference the administrativeDepartment.", pedagogicalAnswer1bis.getAdministrativeDepartments().contains(administrativeDepartment1bis));
+		UseMode useMode1bis = resourcesService.retrieveUseMode(useMode1.getId(), true);
+		assertTrue("The administrative department doesn't reference the use mode.", administrativeDepartment1bis.getUseModes().contains(useMode1bis));
+		assertTrue("The use mode doesn't reference the administrative department.", useMode1bis.getReferredOrganisations().contains(administrativeDepartment1bis));
 	}
 
 	/**
-	 * DissociateAdministrativeDepartmentAndPedagogicalAnswer
+	 * DissociateOrganisationWithUseMode
 	 */
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t02_TestDissociateAdministrativeDepartmentAndPedagogicalAnswer() {
-		AdministrativeDepartment administrativeDepartment1 = organisationsService.createAdministrativeDepartment("my administrativeDepartment", "mc", null);
-		PedagogicalAnswer pedagogicalAnswer1 = needsAndAnswersService.createPedagogicalAnswer("my pedagogicalAnswer");
+	public final void t08_TestDissociateOrganisationAndUseMode() {
+		AdministrativeDepartment administrativeDepartment1 = organisationsService.createAdministrativeDepartment("my administrativeDepartment", "ad", null);
+		UseMode useMode1 = resourcesService.createUseMode("this is a use mode referring an administrative department");
 
-		assertTrue("The association of the PedagogicalAnswer and AdministrativeDepartment failed", organisationsService.associatePedagogicalAnswerAndAdministrativeDepartment(pedagogicalAnswer1.getId(), administrativeDepartment1.getId()));
+		assertTrue("The association of the administrative department and use mode failed", organisationsService.associateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
 
-		assertTrue("The dissociation of the PedagogicalAnswer and AdministrativeDepartment failed", organisationsService.dissociatePedagogicalAnswerAndAdministrativeDepartment(pedagogicalAnswer1.getId(), administrativeDepartment1.getId()));
+		assertTrue("The dissociation of the administrative department and use mode failed", organisationsService.dissociateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
 
 		AdministrativeDepartment administrativeDepartment1bis = organisationsService.retrieveAdministrativeDepartment(administrativeDepartment1.getId(), true);
-		PedagogicalAnswer pedagogicalAnswer1bis = needsAndAnswersService.retrievePedagogicalAnswer(pedagogicalAnswer1.getId(), true);
-		assertFalse("The administrativeDepartment still references the pedagogicalAnswer.",administrativeDepartment1bis.getPedagogicalAnswers().contains(pedagogicalAnswer1bis));
-		assertFalse("The pedagogicalAnswer still references the administrativeDepartment.",pedagogicalAnswer1bis.getAdministrativeDepartments().contains(administrativeDepartment1bis));
+		UseMode useMode1bis = resourcesService.retrieveUseMode(useMode1.getId(), true);
+		assertFalse("The administrative department still references the use mode.",administrativeDepartment1bis.getUseModes().contains(useMode1bis));
+		assertFalse("The use mode still references the administrative department.",useMode1bis.getReferredOrganisations().contains(administrativeDepartment1bis));
 	}
 	
 }

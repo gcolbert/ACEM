@@ -36,8 +36,6 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
-import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 
 /**
  * @author Grégoire Colbert
@@ -61,9 +59,6 @@ public class PedagogicalAnswerNode extends AbstractNode implements PedagogicalAn
 
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "answeredUsingResourceCategory", direction = OUTGOING)
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
-
-	@RelatedTo(elementClass = AdministrativeDepartmentNode.class, type = "answeredByAdministrativeDepartment", direction = OUTGOING)
-	private Set<AdministrativeDepartment> administrativeDepartments = new HashSet<AdministrativeDepartment>(0);
 
 	public PedagogicalAnswerNode() {
 	}
@@ -91,11 +86,6 @@ public class PedagogicalAnswerNode extends AbstractNode implements PedagogicalAn
 	@Override
 	public Set<ResourceCategory> getResourceCategories() {
 		return resourceCategories;
-	}
-	
-	@Override
-	public Set<AdministrativeDepartment> getAdministrativeDepartments() {
-		return administrativeDepartments;
 	}
 	
 	@Override
