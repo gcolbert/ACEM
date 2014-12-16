@@ -116,7 +116,6 @@ class NeedsAndAnswersTreeGenerator {
 				currentVisibleRoot = treeBean.addVisibleRoot(need.getName());
 			}
 			for (PedagogicalNeed child : need.getChildren()) {
-				child = needsAndAnswersService.retrievePedagogicalNeed(child.getId(), true);
 				createChild(treeBean, child, currentVisibleRoot);
 			}
 		}
@@ -132,6 +131,7 @@ class NeedsAndAnswersTreeGenerator {
 	private void createChild(EditableTreeBean treeBean, PedagogicalNeed need, TreeNode parentNode) {
 		// We create the root node for this branch
 		//TreeNode newNode = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(), need.getName(), "Need"), rootNode);
+		need = needsAndAnswersService.retrievePedagogicalNeed(need.getId(), true);
 		TreeNode newNode = treeBean.addChild(getTreeNodeType_NEED_LEAF(), parentNode, need.getId(), need.getName(), "Need");
 		// We look for children and recursively create them too
 		Collection<PedagogicalNeed> associatedNeeds = need.getChildren();
