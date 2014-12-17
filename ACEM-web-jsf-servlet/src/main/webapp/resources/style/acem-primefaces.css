@@ -1,6 +1,15 @@
 /**********/
 /* COMMON */
 /**********/
+* {
+	padding:0;
+	margin:0;
+}
+
+html {
+	font-family: "lucida grande",tahoma,lucide,Arial,sans-serif;
+}
+
 .app-header {
 	color:white;
 	background-image:url("../resources/images/BandeauNumeriqueAccueil2013.png");
@@ -261,31 +270,33 @@
 	width:100%;
 }
 
-.favoriteToolCategoriesPanel {
-	padding:0;
-	margin:0;
-	border:0;
-}
-
 .favoriteToolCategoryCheckbox {
 	vertical-align:middle;
 	margin-left:0.5em;
 }
 
-.bottomToolboxesPanelGrid {
+.bottomToolboxPanel {
 	width:100%;
+	display:flex;
 }
 
-.bottomToolboxesPanelGrid td[role=gridcell] {
+.favoriteToolCategoriesPanel {
+	box-sizing: border-box;
 	padding:0;
+	margin:0;
+	width:50%;
+	padding-right:1em;
 }
 
-.bottomToolboxesPanelGrid td:first-of-type {
-	padding-left:0;
+.favoriteToolCategoriesPanel .ui-panel-content {
+	display:flex;
 }
 
-.bottomToolboxesPanelGrid td:last-child {
-	padding-right:0;
+.lastViewedToolCategoriesPanel {
+	box-sizing: border-box;
+	padding:0;
+	width:50%;
+	padding-left:1em;
 }
 
 /******************/

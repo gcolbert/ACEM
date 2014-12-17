@@ -271,43 +271,35 @@
 				</p:panel>
 			</p:outputPanel>
 
-			<p:panelGrid styleClass="bottomToolboxesPanelGrid">
-				<p:row>
-					<p:column>
-						<p:panel id="favoriteToolCategoriesPanel" styleClass="favoriteToolCategoriesPanel"
-							rendered="#{sessionController.currentUserViewBean.isTeacher}"
-							header="#{msg['RESOURCES.MY_FAVORITE_TOOL_CATEGORIES.HEADER']}">
-							<ui:repeat id="favoriteToolCategories"
-								value="#{sessionController.currentUserViewBean.favoriteToolCategoryViewBeans}"
-								var="toolCategoryViewBean">
-								<h:outputLink id="goToToolCategoryBtn" outcome="my-tools">
-									<f:param name="toolCategoryId"
-										value="#{toolCategoryViewBean.id}" />
-									<h:outputText value="#{toolCategoryViewBean.name}"
-										rendered="#{empty toolCategoryViewBean.iconFileName}" />
-									<p:graphicImage id="favoriteToolCategoryIcon"
-										rendered="#{not empty toolCategoryViewBean.iconFileName}"
-										styleClass="toolCategoryLogo"
-										alt="#{toolCategoryViewBean.name}" cache="false" width="50"
-										value="#{imagesController.getImage()}">
-										<f:param name="imageFileName"
-											value="#{toolCategoryViewBean.iconFileName}" />
-									</p:graphicImage>
-								</h:outputLink>
-								<p:tooltip for="goToToolCategoryBtn"
-									value="#{toolCategoryViewBean.name}" />
-							</ui:repeat>
-						</p:panel>
-					</p:column>
-					<!-- 
-					<p:column>
-						<p:panel
-							header="#{msg['RESOURCES.LAST_VIEWED_TOOL_CATEGORIES.HEADER']}">
-						</p:panel>
-					</p:column>
-					 -->
-				</p:row>
-			</p:panelGrid>
+			<p:outputPanel styleClass="bottomToolboxPanel">
+				<p:panel id="favoriteToolCategoriesPanel" styleClass="favoriteToolCategoriesPanel"
+					rendered="#{sessionController.currentUserViewBean.isTeacher}"
+					header="#{msg['RESOURCES.MY_FAVORITE_TOOL_CATEGORIES.HEADER']}">
+					<ui:repeat id="favoriteToolCategories"
+						value="#{sessionController.currentUserViewBean.favoriteToolCategoryViewBeans}"
+						var="toolCategoryViewBean">
+						<h:outputLink id="goToToolCategoryBtn" outcome="my-tools">
+							<f:param name="toolCategoryId"
+								value="#{toolCategoryViewBean.id}" />
+							<h:outputText value="#{toolCategoryViewBean.name}"
+								rendered="#{empty toolCategoryViewBean.iconFileName}" />
+							<p:graphicImage id="favoriteToolCategoryIcon"
+								rendered="#{not empty toolCategoryViewBean.iconFileName}"
+								styleClass="toolCategoryLogo"
+								alt="#{toolCategoryViewBean.name}" cache="false" width="50"
+								value="#{imagesController.getImage()}">
+								<f:param name="imageFileName"
+									value="#{toolCategoryViewBean.iconFileName}" />
+							</p:graphicImage>
+						</h:outputLink>
+						<p:tooltip for="goToToolCategoryBtn"
+							value="#{toolCategoryViewBean.name}" />
+					</ui:repeat>
+				</p:panel>
+	
+				<p:panel header="#{msg['RESOURCES.LAST_VIEWED_TOOL_CATEGORIES.HEADER']}" styleClass="lastViewedToolCategoriesPanel">
+				</p:panel>
+			</p:outputPanel>
 
 		</h:form>
 
