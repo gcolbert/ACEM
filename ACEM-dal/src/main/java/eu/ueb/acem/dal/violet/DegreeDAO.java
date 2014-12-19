@@ -30,33 +30,33 @@ import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.violet.neo4j.TeachingClassRepository;
-import eu.ueb.acem.domain.beans.violet.TeachingClass;
-import eu.ueb.acem.domain.beans.violet.neo4j.TeachingClassNode;
+import eu.ueb.acem.dal.violet.neo4j.DegreeRepository;
+import eu.ueb.acem.domain.beans.violet.Degree;
+import eu.ueb.acem.domain.beans.violet.neo4j.DegreeNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
-@Repository("teachingClassDAO")
-public class TeachingClassDAO implements DAO<Long, TeachingClass> {
+@Repository("diplomaDAO")
+public class DegreeDAO implements DAO<Long, Degree> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 3463144134744279313L;
+	private static final long serialVersionUID = 20097765170954629L;
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(TeachingClassDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(DegreeDAO.class);
 
 	@Inject
 	private Neo4jOperations neo4jOperations;
 
 	@Inject
-	private TeachingClassRepository repository;
+	private DegreeRepository repository;
 
-	public TeachingClassDAO() {
+	public DegreeDAO() {
 
 	}
 
@@ -73,42 +73,40 @@ public class TeachingClassDAO implements DAO<Long, TeachingClass> {
 	}
 
 	@Override
-	public TeachingClass create(TeachingClass entity) {
-		return repository.save((TeachingClassNode) entity);
+	public Degree create(Degree entity) {
+		return repository.save((DegreeNode) entity);
 	}
 
 	@Override
-	public TeachingClass retrieveById(Long id) {
+	public Degree retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public TeachingClass retrieveById(Long id, boolean initialize) {
-		TeachingClass entity = retrieveById(id);
+	public Degree retrieveById(Long id, boolean initialize) {
+		Degree entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCourse());
-			neo4jOperations.fetch(entity.getPedagogicalScenarios());
-			neo4jOperations.fetch(entity.getLocation());
+			neo4jOperations.fetch(entity.getCredits());
 		}
 		return entity;
 	}
 
 	@Override
-	public Collection<TeachingClass> retrieveByName(String name) {
-		Iterable<TeachingClassNode> nodes = repository.findByName(name);
-		Collection<TeachingClass> entities = new HashSet<TeachingClass>();
-		for (TeachingClassNode node : nodes) {
+	public Collection<Degree> retrieveByName(String name) {
+		Iterable<DegreeNode> nodes = repository.findByName(name);
+		Collection<Degree> entities = new HashSet<Degree>();
+		for (DegreeNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<TeachingClass> retrieveAll() {
-		Iterable<TeachingClassNode> endResults = repository.findAll();
-		Collection<TeachingClass> collection = new HashSet<TeachingClass>();
+	public Collection<Degree> retrieveAll() {
+		Iterable<DegreeNode> endResults = repository.findAll();
+		Collection<Degree> collection = new HashSet<Degree>();
 		if (endResults.iterator() != null) {
-			Iterator<TeachingClassNode> iterator = endResults.iterator();
+			Iterator<DegreeNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -117,14 +115,14 @@ public class TeachingClassDAO implements DAO<Long, TeachingClass> {
 	}
 
 	@Override
-	public TeachingClass update(TeachingClass entity) {
-		TeachingClass updatedEntity = repository.save((TeachingClassNode) entity);
+	public Degree update(Degree entity) {
+		Degree updatedEntity = repository.save((DegreeNode) entity);
 		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override
-	public void delete(TeachingClass entity) {
-		repository.delete((TeachingClassNode) entity);
+	public void delete(Degree entity) {
+		repository.delete((DegreeNode) entity);
 	}
 
 	@Override

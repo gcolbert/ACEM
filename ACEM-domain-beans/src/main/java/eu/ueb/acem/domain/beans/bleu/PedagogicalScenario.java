@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.violet.TeachingClass;
+import eu.ueb.acem.domain.beans.violet.Class;
 
 /**
  * @author Grégoire Colbert
@@ -65,8 +65,8 @@ public interface PedagogicalScenario extends Serializable, Comparable<Pedagogica
 
 	void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities);
 
-	Set<TeachingClass> getTeachingClasses();
+	Set<Class> getClasses();
 
-	void setTeachingClasses(Set<TeachingClass> teachingClasses);
+	void setClasses(Set<Class> classes);
 	
 }

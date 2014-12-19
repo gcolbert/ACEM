@@ -21,12 +21,15 @@ package eu.ueb.acem.domain.beans.violet;
 import java.io.Serializable;
 import java.util.Set;
 
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
+
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface Diploma extends Serializable, Comparable<Diploma> {
+public interface Class extends Serializable, Comparable<Class> {
 
 	Long getId();
 	
@@ -34,8 +37,36 @@ public interface Diploma extends Serializable, Comparable<Diploma> {
 
 	void setName(String name);
 
-	Set<Credit> getCredits();
-	
-	void setCredits(Set<Credit> credits);
+	String getDate();
 
+	void setDate(String date);
+
+	String getTime();
+
+	void setTime(String time);
+
+	String getDuration();
+
+	void setDuration(String duration);
+
+	String getTeachingMode();
+
+	void setTeachingMode(String teachingMode);
+
+	Integer getNumberOfLearners();
+
+	void setNumberOfLearners(Integer numberOfLearners);
+
+	Course getCourse();
+
+	void setCourse(Course course);
+
+	PhysicalSpace getLocation();
+
+	void setLocation(PhysicalSpace location);
+
+	Set<PedagogicalScenario> getPedagogicalScenarios();
+
+	void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios);
+	
 }

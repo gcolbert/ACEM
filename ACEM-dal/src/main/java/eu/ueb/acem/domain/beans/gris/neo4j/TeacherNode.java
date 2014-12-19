@@ -32,8 +32,8 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.violet.TeachingClass;
-import eu.ueb.acem.domain.beans.violet.neo4j.TeachingClassNode;
+import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
 
 /**
  * @author Grégoire Colbert
@@ -52,8 +52,8 @@ public class TeacherNode extends PersonNode implements Teacher {
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "hasFavoriteToolCategory", direction = OUTGOING)
 	private Set<ResourceCategory> favoriteToolCategories = new HashSet<ResourceCategory>(0);
 
-	@RelatedTo(elementClass = TeachingClassNode.class, type = "leadsClass", direction = OUTGOING)
-	private Set<TeachingClass> teachingClasses = new HashSet<TeachingClass>(0);
+	@RelatedTo(elementClass = ClassNode.class, type = "leadsClass", direction = OUTGOING)
+	private Set<Class> classes = new HashSet<Class>(0);
 
 	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "authorsScenario", direction = OUTGOING)
 	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
@@ -86,13 +86,13 @@ public class TeacherNode extends PersonNode implements Teacher {
 	}
 	
 	@Override
-	public Set<TeachingClass> getTeachingClasses() {
-		return teachingClasses;
+	public Set<Class> getClasses() {
+		return classes;
 	}
 
 	@Override
-	public void setTeachingClasses(Set<TeachingClass> teachingClasses) {
-		this.teachingClasses = teachingClasses;
+	public void setClasses(Set<Class> classes) {
+		this.classes = classes;
 	}
 
 }

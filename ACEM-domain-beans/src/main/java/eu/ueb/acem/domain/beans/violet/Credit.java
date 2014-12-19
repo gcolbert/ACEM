@@ -38,9 +38,9 @@ public interface Credit extends Serializable, Comparable<Credit> {
 
 	void setDuration(String duration);
 	
-	Set<Diploma> getDiplomas();
+	Set<Degree> getDegrees();
 	
-	void setDiplomas(Set<Diploma> diplomas);
+	void setDegrees(Set<Degree> degrees);
 
 	Set<Course> getCourses();
 

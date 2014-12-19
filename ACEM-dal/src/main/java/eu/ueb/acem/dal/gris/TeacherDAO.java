@@ -91,7 +91,7 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 		if (initialize) {
 			neo4jOperations.fetch(entity.getFavoriteToolCategories());
 			neo4jOperations.fetch(entity.getScenarios());
-			neo4jOperations.fetch(entity.getTeachingClasses());
+			neo4jOperations.fetch(entity.getClasses());
 			neo4jOperations.fetch(entity.getWorksForOrganisations());
 		}
 		return entity;

@@ -16,25 +16,26 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.violet.neo4j;
+package eu.ueb.acem.domain.beans.violet;
 
-import org.springframework.data.neo4j.annotation.Query;
-import org.springframework.data.repository.query.Param;
-
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.violet.neo4j.DiplomaNode;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface DiplomaRepository extends GenericRepository<DiplomaNode> {
+public interface Degree extends Serializable, Comparable<Degree> {
 
-	@Query(value = "MATCH (n:Diploma) WHERE id(n)=({id}) RETURN count(n)")
-	Long count(@Param("id") Long id);
+	Long getId();
+	
+	String getName();
 
-	@Query(value = "MATCH (n:Diploma) WHERE n.name=({name}) RETURN n")
-	Iterable<DiplomaNode> findByName(@Param("name") String name);
+	void setName(String name);
+
+	Set<Credit> getCredits();
+	
+	void setCredits(Set<Credit> credits);
 
 }

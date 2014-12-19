@@ -22,19 +22,19 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.violet.neo4j.TeachingClassNode;
+import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface TeachingClassRepository extends GenericRepository<TeachingClassNode> {
+public interface ClassRepository extends GenericRepository<ClassNode> {
 
-	@Query(value = "MATCH (n:TeachingClass) WHERE id(n)=({id}) RETURN count(n)")
+	@Query(value = "MATCH (n:Class) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
-	@Query(value = "MATCH (n:TeachingClass) WHERE n.name=({name}) RETURN n")
-	Iterable<TeachingClassNode> findByName(@Param("name") String name);
+	@Query(value = "MATCH (n:Class) WHERE n.name=({name}) RETURN n")
+	Iterable<ClassNode> findByName(@Param("name") String name);
 
 }

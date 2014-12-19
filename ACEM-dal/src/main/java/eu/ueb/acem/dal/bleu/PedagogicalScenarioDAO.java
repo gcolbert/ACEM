@@ -93,7 +93,7 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 		if (initialize) {
 			neo4jOperations.fetch(entity.getPedagogicalActivities());
 			neo4jOperations.fetch(entity.getAuthors());
-			neo4jOperations.fetch(entity.getTeachingClasses());
+			neo4jOperations.fetch(entity.getClasses());
 		}
 		return entity;
 	}

@@ -60,9 +60,12 @@ html {
 	padding:1em !important; /* We want to have a padding for the content under the page header */
 }
 
-.title {
-	font-size:1.5em;
-	font-weight:bold;
+.ui-datatable th[role=columnheader]{
+	text-align:left;
+}
+
+.ui-chkbox-box {
+	border:1px solid black !important; /* Increase the border on checkboxes (it may be better set inside the theme) */
 }
 
 /***********/
@@ -122,7 +125,7 @@ html {
 }
 
 .label {
-	text-decoration: underline;
+	text-decoration:underline;
 	display:block;
 	width:160px;
 }
@@ -157,7 +160,7 @@ html {
 }
 
 .Answer {
-	color: #2779AA;
+	color:#2779AA;
 }
 
 .pedagogicalAdviceTree {
@@ -173,7 +176,7 @@ html {
 }
 
 .allScenariosScrollPanel {
-	min-height: 300px; /* The scroll panel of all scenarios should have a minimum height */
+	min-height:300px; /* The scroll panel of all scenarios should have a minimum height */
 }
 
 .allScenariosScrollPanelColumn {
@@ -213,25 +216,35 @@ html {
 /************/
 /* MY TOOLS */
 /************/
-.toolCategoriesPanelGrid {
+.toolCategoriesOutputPanel {
 	width:100%; /* The categories should use all the page width */
-}
-
-.toolCategoriesPanelGrid tr[role=row] {
-	border:0; /* The categories should not be separated by a border */
-}
-
-.toolCategoriesPanelGrid td[role=gridcell] {
-	width:100px; /* Each category is 100px wide */
-	text-align:center;
-	background-color:white;
-	border:0;
-	vertical-align:top;
+	text-align:center; /* There should be the same amount of space left and right of the list of categories */
 }
 
 .toolCategoryMenuEntry {
 	text-decoration:none;
 	text-align:center;
+	display:inline-block;
+	vertical-align:top;
+}
+
+.toolCategoryMenuEntry:hover .toolCategoryIcon {
+	box-shadow:none;
+}
+
+.toolCategoryMenuEntry.ui-state-active {
+	border:0;
+	background:none;
+}
+
+.toolCategoryMenuEntry.ui-state-active .toolCategoryLabel {
+	background-color:#061C36;
+	border-radius:6px;
+}
+
+.toolCategoryMenuEntry.ui-state-active .toolCategoryIcon {
+	box-shadow:none;
+	width:110px;
 }
 
 .toolCategoryLabel {
@@ -239,14 +252,17 @@ html {
 	font-weight:bold;
 	padding:0.5em 0;
 	width:180px;
-	margin:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:5px;
 }
 
 .toolCategoryIcon {
-	width:100%;
+	width:80px;
 	max-width:130px;
 	display:block;
 	margin:auto;
+	box-shadow:3px 3px 3px #999;
 }
 
 .subCategoriesTree {
@@ -256,7 +272,7 @@ html {
 .selectedToolCategoryPanel table[role=grid],
 .selectedToolCategoryPanel tr[role=row],
 .selectedToolCategoryPanel td[role=gridcell] {
-	border:none;	
+	border:0;	
 }
 
 .toolImg {
@@ -268,6 +284,7 @@ html {
 	display:block;
 	margin-top:0.5em;
 	width:100%;
+	font-weight:bold;
 }
 
 .favoriteToolCategoryCheckbox {
@@ -320,4 +337,7 @@ html {
 
 .organisationPanelGrid .ui-panelgrid-cell {
 	vertical-align:top;
+}
+.organisationPanelGrid .ui-panelgrid-cell:first-of-type {
+	vertical-align:middle;
 }

@@ -266,14 +266,14 @@ public class ResourcesController extends AbstractContextAwareController {
 	public void setSelectedToolCategoryViewBean(ToolCategoryViewBean toolCategoryViewBean) {
 		this.selectedToolCategoryViewBean = toolCategoryViewBean;
 	}
-	
+
 	private ToolCategoryViewBean getToolCategoryViewBean(Long id) {
 		ToolCategoryViewBean viewBean = null;
-		if (toolCategoryViewBeans.containsKey(id)) {
-			logger.info("toolCategoryViewBean found in toolCategoryViewBeans map, so we don't reload it.");
-			viewBean = toolCategoryViewBeans.get(id);
-		}
-		else {
+//		if (toolCategoryViewBeans.containsKey(id)) {
+//			logger.info("toolCategoryViewBean found in toolCategoryViewBeans map, so we don't reload it.");
+//			viewBean = toolCategoryViewBeans.get(id);
+//		}
+//		else {
 			logger.info("toolCategoryViewBean not found in toolCategoryViewBeans map, we load it with ResourcesService.");
 			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(id);
 			if (toolCategory != null) {
@@ -281,12 +281,12 @@ public class ResourcesController extends AbstractContextAwareController {
 				for (Resource resource : toolCategory.getResources()) {
 					viewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(resource.getId()));
 				}
-				toolCategoryViewBeans.put(id, viewBean);
+//				toolCategoryViewBeans.put(id, viewBean);
 			}
 			else {
 				logger.error("There is no category with id={} according to ResourcesService", id);
 			}
-		}
+//		}
 		return viewBean;
 	}
 
@@ -429,11 +429,15 @@ public class ResourcesController extends AbstractContextAwareController {
 		}
 	}
 	
+	/**
+	 * TODO : move this inside the Administration/ToolCategory controller
+	 * 
+	 */
 	public void onCreateToolCategory(String name, String description, String iconFileName) {
 		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
 		ResourceCategory toolCategory = resourcesService.createResourceCategory(name, description, iconFileName);
-		ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
-		toolCategoryViewBeans.put(toolCategoryViewBean.getId(), toolCategoryViewBean);
+//		ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
+//		toolCategoryViewBeans.put(toolCategoryViewBean.getId(), toolCategoryViewBean);
 	}
 	
 	public void onToolCategoryAccordionPanelTabChange(TabChangeEvent event) {

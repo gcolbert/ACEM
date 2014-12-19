@@ -24,6 +24,8 @@
 					<p:ajax event="tabChange"
 							listener="#{organisationsController.onOrganisationsTabViewTabChange}"
 							update="@this" />
+
+					<!-- ********** COMMUNITIES ********************************************************************** -->
 					<p:tab id="tabCommunities"
 						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_COMMUNITIES_TITLE']}">
 						<p:commandButton
@@ -110,6 +112,7 @@
 						</p:accordionPanel>
 					</p:tab>
 
+					<!-- ********** INSTITUTIONS ********************************************************************** -->
 					<p:tab id="tabInstitutions"
 						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_INSTITUTIONS_TITLE']}">
 						<p:commandButton
@@ -235,6 +238,7 @@
 						</p:accordionPanel>
 					</p:tab>
 
+					<!-- ********** ADMINISTRATIVE DEPARTMENTS ********************************************************************** -->
 					<p:tab id="tabAdministrativeDepartments"
 						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_ADMINISTRATIVE_DEPARTMENTS_TITLE']}">
 						<p:commandButton
@@ -319,6 +323,7 @@
 						</p:accordionPanel>
 					</p:tab>
 
+					<!-- ********** TEACHING DEPARTMENTS ********************************************************************** -->
 					<p:tab id="tabTeachingDepartments"
 						title="#{msg['ADMINISTRATION.ORGANISATIONS.TAB_TEACHING_DEPARTMENTS_TITLE']}">
 						<p:commandButton

@@ -30,7 +30,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.violet.Credit;
-import eu.ueb.acem.domain.beans.violet.Diploma;
+import eu.ueb.acem.domain.beans.violet.Degree;
 
 /**
  * @author Grégoire Colbert
@@ -38,24 +38,24 @@ import eu.ueb.acem.domain.beans.violet.Diploma;
  * 
  */
 @NodeEntity
-@TypeAlias("Diploma")
-public class DiplomaNode extends AbstractNode implements Diploma {
+@TypeAlias("Degree")
+public class DegreeNode extends AbstractNode implements Degree {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 3007792198756655816L;
 
-	@RelatedTo(elementClass = CreditNode.class, type = "isPartOfDiploma", direction = INCOMING)
+	@RelatedTo(elementClass = CreditNode.class, type = "isPartOfDegree", direction = INCOMING)
 	private Set<Credit> credits = new HashSet<Credit>(0);
 	
 	@Indexed
 	private String name;
 
-	public DiplomaNode() {
+	public DegreeNode() {
 	}
 
-	public DiplomaNode(String name) {
+	public DegreeNode(String name) {
 		this.name = name;
 	}
 
@@ -80,7 +80,7 @@ public class DiplomaNode extends AbstractNode implements Diploma {
 	}
 
 	@Override
-	public int compareTo(Diploma o) {
+	public int compareTo(Degree o) {
 		return this.getName().compareTo(o.getName());
 	}
 

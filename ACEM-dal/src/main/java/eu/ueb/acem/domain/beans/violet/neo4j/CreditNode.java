@@ -32,7 +32,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Credit;
-import eu.ueb.acem.domain.beans.violet.Diploma;
+import eu.ueb.acem.domain.beans.violet.Degree;
 
 /**
  * @author Grégoire Colbert
@@ -53,8 +53,8 @@ public class CreditNode extends AbstractNode implements Credit {
 
 	private String duration;
 
-	@RelatedTo(elementClass = DiplomaNode.class, type = "isPartOfDiploma", direction = OUTGOING)
-	private Set<Diploma> diplomas = new HashSet<Diploma>(0);
+	@RelatedTo(elementClass = DegreeNode.class, type = "isPartOfDegree", direction = OUTGOING)
+	private Set<Degree> degrees = new HashSet<Degree>(0);
 
 	@RelatedTo(elementClass = CourseNode.class, type = "isPartOfCredit", direction = INCOMING)
 	private Set<Course> courses;
@@ -87,13 +87,13 @@ public class CreditNode extends AbstractNode implements Credit {
 	}
 
 	@Override
-	public Set<Diploma> getDiplomas() {
-		return diplomas;
+	public Set<Degree> getDegrees() {
+		return degrees;
 	}
 
 	@Override
-	public void setDiplomas(Set<Diploma> diplomas) {
-		this.diplomas = diplomas;
+	public void setDegrees(Set<Degree> degrees) {
+		this.degrees = degrees;
 	}
 
 	@Override

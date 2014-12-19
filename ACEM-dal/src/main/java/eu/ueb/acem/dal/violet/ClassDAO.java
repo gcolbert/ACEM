@@ -30,33 +30,33 @@ import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.violet.neo4j.DiplomaRepository;
-import eu.ueb.acem.domain.beans.violet.Diploma;
-import eu.ueb.acem.domain.beans.violet.neo4j.DiplomaNode;
+import eu.ueb.acem.dal.violet.neo4j.ClassRepository;
+import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
-@Repository("diplomaDAO")
-public class DiplomaDAO implements DAO<Long, Diploma> {
+@Repository("classDAO")
+public class ClassDAO implements DAO<Long, Class> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 20097765170954629L;
+	private static final long serialVersionUID = 3463144134744279313L;
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(DiplomaDAO.class);
+	private static final Logger logger = LoggerFactory.getLogger(ClassDAO.class);
 
 	@Inject
 	private Neo4jOperations neo4jOperations;
 
 	@Inject
-	private DiplomaRepository repository;
+	private ClassRepository repository;
 
-	public DiplomaDAO() {
+	public ClassDAO() {
 
 	}
 
@@ -73,40 +73,42 @@ public class DiplomaDAO implements DAO<Long, Diploma> {
 	}
 
 	@Override
-	public Diploma create(Diploma entity) {
-		return repository.save((DiplomaNode) entity);
+	public Class create(Class entity) {
+		return repository.save((ClassNode) entity);
 	}
 
 	@Override
-	public Diploma retrieveById(Long id) {
+	public Class retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
 
 	@Override
-	public Diploma retrieveById(Long id, boolean initialize) {
-		Diploma entity = retrieveById(id);
+	public Class retrieveById(Long id, boolean initialize) {
+		Class entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCredits());
+			neo4jOperations.fetch(entity.getCourse());
+			neo4jOperations.fetch(entity.getPedagogicalScenarios());
+			neo4jOperations.fetch(entity.getLocation());
 		}
 		return entity;
 	}
 
 	@Override
-	public Collection<Diploma> retrieveByName(String name) {
-		Iterable<DiplomaNode> nodes = repository.findByName(name);
-		Collection<Diploma> entities = new HashSet<Diploma>();
-		for (DiplomaNode node : nodes) {
+	public Collection<Class> retrieveByName(String name) {
+		Iterable<ClassNode> nodes = repository.findByName(name);
+		Collection<Class> entities = new HashSet<Class>();
+		for (ClassNode node : nodes) {
 			entities.add(node);
 		}
 		return entities;
 	}
 
 	@Override
-	public Collection<Diploma> retrieveAll() {
-		Iterable<DiplomaNode> endResults = repository.findAll();
-		Collection<Diploma> collection = new HashSet<Diploma>();
+	public Collection<Class> retrieveAll() {
+		Iterable<ClassNode> endResults = repository.findAll();
+		Collection<Class> collection = new HashSet<Class>();
 		if (endResults.iterator() != null) {
-			Iterator<DiplomaNode> iterator = endResults.iterator();
+			Iterator<ClassNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -115,14 +117,14 @@ public class DiplomaDAO implements DAO<Long, Diploma> {
 	}
 
 	@Override
-	public Diploma update(Diploma entity) {
-		Diploma updatedEntity = repository.save((DiplomaNode) entity);
+	public Class update(Class entity) {
+		Class updatedEntity = repository.save((ClassNode) entity);
 		return retrieveById(updatedEntity.getId(), true);
 	}
 
 	@Override
-	public void delete(Diploma entity) {
-		repository.delete((DiplomaNode) entity);
+	public void delete(Class entity) {
+		repository.delete((ClassNode) entity);
 	}
 
 	@Override

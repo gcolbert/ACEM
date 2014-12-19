@@ -35,7 +35,7 @@ import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 import eu.ueb.acem.domain.beans.vert.neo4j.PhysicalSpaceNode;
 import eu.ueb.acem.domain.beans.violet.Course;
-import eu.ueb.acem.domain.beans.violet.TeachingClass;
+import eu.ueb.acem.domain.beans.violet.Class;
 
 /**
  * @author Grégoire Colbert
@@ -43,8 +43,8 @@ import eu.ueb.acem.domain.beans.violet.TeachingClass;
  * 
  */
 @NodeEntity
-@TypeAlias("TeachingClass")
-public class TeachingClassNode extends AbstractNode implements TeachingClass {
+@TypeAlias("Class")
+public class ClassNode extends AbstractNode implements Class {
 
 	/**
 	 * For serialization.
@@ -69,7 +69,7 @@ public class TeachingClassNode extends AbstractNode implements TeachingClass {
 	private String teachingMode;
 	private Integer numberOfLearners;
 
-	public TeachingClassNode() {
+	public ClassNode() {
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public class TeachingClassNode extends AbstractNode implements TeachingClass {
 	}
 
 	@Override
-	public int compareTo(TeachingClass o) {
+	public int compareTo(Class o) {
 		return this.getName().compareTo(o.getName());
 	}
 

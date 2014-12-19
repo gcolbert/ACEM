@@ -16,31 +16,25 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.domain.beans.gris;
+package eu.ueb.acem.dal.violet.neo4j;
 
-import java.util.Set;
+import org.springframework.data.neo4j.annotation.Query;
+import org.springframework.data.repository.query.Param;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.dal.GenericRepository;
+import eu.ueb.acem.domain.beans.violet.neo4j.DegreeNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface Teacher extends Person {
+public interface DegreeRepository extends GenericRepository<DegreeNode> {
 
-	Set<ResourceCategory> getFavoriteToolCategories();
-	
-	void setFavoriteToolCategories(Set<ResourceCategory> favoriteToolCategories);
+	@Query(value = "MATCH (n:Degree) WHERE id(n)=({id}) RETURN count(n)")
+	Long count(@Param("id") Long id);
 
-	Set<Class> getClasses();
-
-	void setClasses(Set<Class> classes);
-
-	Set<PedagogicalScenario> getScenarios();
-
-	void setScenarios(Set<PedagogicalScenario> scenarios);
+	@Query(value = "MATCH (n:Degree) WHERE n.name=({name}) RETURN n")
+	Iterable<DegreeNode> findByName(@Param("name") String name);
 
 }

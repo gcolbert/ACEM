@@ -87,7 +87,7 @@ public class CreditDAO implements DAO<Long, Credit> {
 		Credit entity = retrieveById(id);
 		if (initialize) {
 			neo4jOperations.fetch(entity.getCourses());
-			neo4jOperations.fetch(entity.getDiplomas());
+			neo4jOperations.fetch(entity.getDegrees());
 		}
 		return entity;
 	}

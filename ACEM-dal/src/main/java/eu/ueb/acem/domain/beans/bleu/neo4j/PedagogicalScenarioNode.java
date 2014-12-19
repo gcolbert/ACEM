@@ -36,8 +36,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
-import eu.ueb.acem.domain.beans.violet.TeachingClass;
-import eu.ueb.acem.domain.beans.violet.neo4j.TeachingClassNode;
+import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
 
 /**
  * @author Grégoire Colbert
@@ -67,8 +67,8 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	private String evaluationModes;
 	private Boolean published;
 
-	@RelatedTo(elementClass = TeachingClassNode.class, type = "scenarioUsedForClass", direction = OUTGOING)
-	private Set<TeachingClass> teachingClasses = new HashSet<TeachingClass>(0);
+	@RelatedTo(elementClass = ClassNode.class, type = "scenarioUsedForClass", direction = OUTGOING)
+	private Set<Class> classes = new HashSet<Class>(0);
 
 	@RelatedTo(elementClass = PedagogicalActivityNode.class, type = "activityForScenario", direction = INCOMING)
 	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
@@ -196,13 +196,13 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	}
 
 	@Override
-	public Set<TeachingClass> getTeachingClasses() {
-		return teachingClasses;
+	public Set<Class> getClasses() {
+		return classes;
 	}
 
 	@Override
-	public void setTeachingClasses(Set<TeachingClass> teachingClasses) {
-		this.teachingClasses = teachingClasses;
+	public void setClasses(Set<Class> classes) {
+		this.classes = classes;
 	}
 	
 	@Override
