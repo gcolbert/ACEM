@@ -10,6 +10,13 @@ html {
 	font-family: "lucida grande",tahoma,lucide,Arial,sans-serif;
 }
 
+.ui-layout-toggler-west .ui-layout-unit-expand-icon .ui-icon-arrow-4-diag {
+	background-position:-32px 0; /* For west collapsed layout units : show a right arrow to expand */
+}
+.ui-layout-toggler-east .ui-layout-unit-expand-icon .ui-icon-arrow-4-diag {
+	background-position:-96px 0; /* For east collapsed layout units : show a left arrow to expand */
+}
+
 .app-header {
 	color:white;
 	background-image:url("../resources/images/BandeauNumeriqueAccueil2013.png");
