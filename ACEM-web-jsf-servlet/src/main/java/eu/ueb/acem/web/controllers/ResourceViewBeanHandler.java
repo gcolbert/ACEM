@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -28,12 +25,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.Resource;
-import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.domain.beans.jaune.Software;
+import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
@@ -54,8 +51,6 @@ class ResourceViewBeanHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(ResourceViewBeanHandler.class);
 
-	private Map<Long, ResourceViewBean> resourceViewBeans;
-
 	@Inject
 	private OrganisationViewBeanHandler organisationViewBeanHandler;
 	
@@ -63,53 +58,40 @@ class ResourceViewBeanHandler {
 	private ResourcesService resourcesService;
 
 	public ResourceViewBeanHandler() {
-		resourceViewBeans = new HashMap<Long, ResourceViewBean>();
 	}
 
 	public ResourceViewBean getResourceViewBean(Long id) {
 		ResourceViewBean viewBean = null;
-		if (resourceViewBeans.containsKey(id)) {
-			logger.info("resourceViewBean found in resourceViewBeans map, so we don't reload it.");
-			viewBean = resourceViewBeans.get(id);
+		Resource tool = resourcesService.retrieveResource(id, true);
+		if (tool != null) {
+			if (tool instanceof Software) {
+				viewBean = new SoftwareViewBean((Software) tool);
+			}
+			else if (tool instanceof PedagogicalAndDocumentaryResource) {
+				viewBean = new DocumentaryAndPedagogicalResourceViewBean((PedagogicalAndDocumentaryResource) tool);
+			}
+			else if (tool instanceof Equipment) {
+				viewBean = new EquipmentViewBean((Equipment) tool);
+			}
+			else if (tool instanceof SoftwareDocumentation) {
+				viewBean = new SoftwareDocumentationViewBean((SoftwareDocumentation) tool);
+			}
+			else if (tool instanceof ProfessionalTraining) {
+				viewBean = new ProfessionalTrainingViewBean((ProfessionalTraining) tool);
+			}
+
+			viewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanHandler
+					.getOrganisationViewBean(tool.getOrganisationPossessingResource().getId()));
+
+			for (Organisation organisation : tool.getOrganisationsHavingAccessToResource()) {
+				viewBean.addOrganisationViewingResourceViewBean(organisationViewBeanHandler
+						.getOrganisationViewBean(organisation.getId()));
+			}
+
 		}
 		else {
-			logger.info("resourceViewBean not found in resourceViewBeans map, we load it with ResourcesService.");
-			Resource tool = resourcesService.retrieveResource(id, true);
-			if (tool != null) {
-				if (tool instanceof Software) {
-					viewBean = new SoftwareViewBean((Software) tool);
-				}
-				else if (tool instanceof PedagogicalAndDocumentaryResource) {
-					viewBean = new DocumentaryAndPedagogicalResourceViewBean((PedagogicalAndDocumentaryResource) tool);
-				}
-				else if (tool instanceof Equipment) {
-					viewBean = new EquipmentViewBean((Equipment) tool);
-				}
-				else if (tool instanceof SoftwareDocumentation) {
-					viewBean = new SoftwareDocumentationViewBean((SoftwareDocumentation) tool);
-				}
-				else if (tool instanceof ProfessionalTraining) {
-					viewBean = new ProfessionalTrainingViewBean((ProfessionalTraining) tool);
-				}
-
-				viewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanHandler
-						.getOrganisationViewBean(tool.getOrganisationPossessingResource().getId()));
-
-				for (Organisation organisation : tool.getOrganisationsHavingAccessToResource()) {
-					viewBean.addOrganisationViewingResourceViewBean(organisationViewBeanHandler
-							.getOrganisationViewBean(organisation.getId()));
-				}
-
-				resourceViewBeans.put(id, viewBean);
-			}
-			else {
-				logger.error("There is no tool with id={} according to ResourcesService", id);
-			}
+			logger.error("There is no tool with id={} according to ResourcesService", id);
 		}
 		return viewBean;
-	}
-
-	public void removeResourceViewBean(Long id) {
-		resourceViewBeans.remove(id);
 	}
 }

@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.jaune.neo4j;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
@@ -53,16 +54,16 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 	private String description;
 	
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "categoryContains", direction = INCOMING)
-	private Set<ResourceCategory> categories;
+	private Set<ResourceCategory> categories = new HashSet<ResourceCategory>(0);
 	
 	@RelatedTo(elementClass = UseModeNode.class, type = "resourceHasUseMode", direction = OUTGOING)
-	private Set<UseMode> useModes;
+	private Set<UseMode> useModes = new HashSet<UseMode>(0);
 	
 	@RelatedTo(elementClass = OrganisationNode.class, type = "possessesResource", direction = INCOMING)
 	private Organisation organisationPossessingResource;
 
 	@RelatedTo(elementClass = OrganisationNode.class, type = "accessesResource", direction = INCOMING)
-	private Set<Organisation> organisationsHavingAccessToResource;
+	private Set<Organisation> organisationsHavingAccessToResource = new HashSet<Organisation>(0);
 
 	public ResourceNode() {
 	}

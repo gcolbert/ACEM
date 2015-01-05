@@ -91,9 +91,9 @@ public class ResourcesController extends AbstractContextAwareController {
 	private EditableTreeBean pedagogicalUsesTreeBean;
 
 	@Inject
-	private EditableTreeBean resourcesTreeBean;
+	private EditableTreeBean categoriesTreeBean;
 	private static final String TREE_NODE_TYPE_CATEGORY = "CategoryNode";
-	private TreeNode resourcesTreeSelectedNode;
+	private TreeNode categoriesTreeSelectedNode;
 
 	private Map<Long, ToolCategoryViewBean> toolCategoryViewBeans;
 	private Long selectedToolCategoryId;
@@ -184,42 +184,45 @@ public class ResourcesController extends AbstractContextAwareController {
 	public void prepareToolCategoryTreeForResourceType(String resourceType) {
 		logger.info("Entering prepareToolCategoryTreeForResourceType for resourceType={}", resourceType);
 		this.selectedResourceType = resourceType;
-		resourcesTreeBean.clear();
+		categoriesTreeBean.clear();
+		setSelectedToolCategoryId(null);
+		// When the category changes, we reset the selected category
+		setSelectedToolCategoryViewBean(null);
 
 		// TODO : check if we need to keep the "true" possibility
 		boolean repeatSelectedCategoryAsVisibleRootNode = false;
 		if (repeatSelectedCategoryAsVisibleRootNode) {
 			if (resourceType.equals("software")) {
-				resourcesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL",null,getCurrentUserLocale()));
+				categoriesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL",null,getCurrentUserLocale()));
 			}
 			else if (resourceType.equals("softwareDocumentation")) {
-				resourcesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL",null,getCurrentUserLocale()));
+				categoriesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL",null,getCurrentUserLocale()));
 			}
 			else if (resourceType.equals("equipment")) {
-				resourcesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL",null,getCurrentUserLocale()));
+				categoriesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL",null,getCurrentUserLocale()));
 			}
 			else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
-				resourcesTreeBean
+				categoriesTreeBean
 						.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL",null,getCurrentUserLocale()));
 			}
 			else if (resourceType.equals("professionalTraining")) {
-				resourcesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL",null,getCurrentUserLocale()));
+				categoriesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL",null,getCurrentUserLocale()));
 			}
 			else {
 				logger.error("Unknown resourceType '{}'", resourceType);
 			}
 			for (ToolCategoryViewBean categoryViewBean : toolCategoryViewBeansByResourceType.get(resourceType)) {
-				resourcesTreeBean.addChild(getTreeNodeType_CATEGORY(), resourcesTreeBean.getVisibleRoots().get(0),
+				categoriesTreeBean.addChild(getTreeNodeType_CATEGORY(), categoriesTreeBean.getVisibleRoots().get(0),
 						categoryViewBean.getId(), categoryViewBean.getName(), "category");
 			}
-			resourcesTreeBean.getVisibleRoots().get(0).setExpanded(true);
+			categoriesTreeBean.getVisibleRoots().get(0).setExpanded(true);
 		}
 		else {
 			for (ToolCategoryViewBean categoryViewBean : toolCategoryViewBeansByResourceType.get(resourceType)) {
-				resourcesTreeBean.addChild(getTreeNodeType_CATEGORY(), resourcesTreeBean.getRoot(),
+				categoriesTreeBean.addChild(getTreeNodeType_CATEGORY(), categoriesTreeBean.getRoot(),
 						categoryViewBean.getId(), categoryViewBean.getName(), "category");
 			}
-			resourcesTreeBean.getRoot().setExpanded(true);
+			categoriesTreeBean.getRoot().setExpanded(true);
 		}
 		logger.info("Leaving prepareToolCategoryTreeForResourceType for resourceType={}", resourceType);
 	}
@@ -230,33 +233,31 @@ public class ResourcesController extends AbstractContextAwareController {
 
 	public void setSelectedToolCategoryId(Long toolCategoryId) {
 		logger.info("Entering setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
-		if (selectedToolCategoryId != toolCategoryId) {
-			ToolCategoryViewBean toolCategoryViewBean = getToolCategoryViewBean(toolCategoryId);
-			if (toolCategoryViewBean != null) {
-				selectedToolCategoryId = toolCategoryId;
-				selectedToolCategoryViewBean = toolCategoryViewBean;
+		selectedToolCategoryId = toolCategoryId;
+		ToolCategoryViewBean toolCategoryViewBean = getToolCategoryViewBean(toolCategoryId);
+		setSelectedToolCategoryViewBean(toolCategoryViewBean);
 
-				// We initialize the "pedagogical advice" tree for the selected
-				// ToolCategoryViewBean
-				setPedagogicalUsesTreeRoot(toolCategoryViewBean.getDomainBean());
+		// When the category changes, we have to lose the current selected resource
+		// in the datatable of this category
+		setSelectedResourceViewBean(null);
 
-				// We initialize the "favoriteToolCategory" attribute of the
-				// selected ToolCategoryViewBean
-				if (getCurrentUserViewBean() instanceof TeacherViewBean) {
-					TeacherViewBean teacherViewBean = (TeacherViewBean) getCurrentUserViewBean();
-					if (teacherViewBean.getFavoriteToolCategoryViewBeans().contains(selectedToolCategoryViewBean)) {
-						selectedToolCategoryViewBean.setFavoriteToolCategory(true);
-					}
-					else {
-						selectedToolCategoryViewBean.setFavoriteToolCategory(false);
-					}
+		if (selectedToolCategoryViewBean != null) {
+			// We initialize the "pedagogical advice" tree for the selected
+			// ToolCategoryViewBean
+			setPedagogicalUsesTreeRoot(selectedToolCategoryViewBean.getDomainBean());
+
+			// Is the selected category a favorite for the current user?
+			if (getCurrentUserViewBean() instanceof TeacherViewBean) {
+				TeacherViewBean teacherViewBean = (TeacherViewBean) getCurrentUserViewBean();
+				if (teacherViewBean.getFavoriteToolCategoryViewBeans().contains(selectedToolCategoryViewBean)) {
+					selectedToolCategoryViewBean.setFavoriteToolCategory(true);
 				}
-				
-				// When the category changes, we have to lose the current selected resource which was from another category
-				setSelectedResourceViewBean(null);
+				else {
+					selectedToolCategoryViewBean.setFavoriteToolCategory(false);
+				}
 			}
-			logger.info("Leaving setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
 		}
+		logger.info("Leaving setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
 	}
 
 	public ToolCategoryViewBean getSelectedToolCategoryViewBean() {
@@ -269,24 +270,16 @@ public class ResourcesController extends AbstractContextAwareController {
 
 	private ToolCategoryViewBean getToolCategoryViewBean(Long id) {
 		ToolCategoryViewBean viewBean = null;
-//		if (toolCategoryViewBeans.containsKey(id)) {
-//			logger.info("toolCategoryViewBean found in toolCategoryViewBeans map, so we don't reload it.");
-//			viewBean = toolCategoryViewBeans.get(id);
-//		}
-//		else {
-			logger.info("toolCategoryViewBean not found in toolCategoryViewBeans map, we load it with ResourcesService.");
-			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(id);
-			if (toolCategory != null) {
-				viewBean = new ToolCategoryViewBean(toolCategory);
-				for (Resource resource : toolCategory.getResources()) {
-					viewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(resource.getId()));
-				}
-//				toolCategoryViewBeans.put(id, viewBean);
+		ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(id);
+		if (toolCategory != null) {
+			viewBean = new ToolCategoryViewBean(toolCategory);
+			for (Resource resource : toolCategory.getResources()) {
+				viewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(resource.getId()));
 			}
-			else {
-				logger.error("There is no category with id={} according to ResourcesService", id);
-			}
-//		}
+		}
+		else {
+			logger.error("There is no category with id={} according to ResourcesService, so we return null", id);
+		}
 		return viewBean;
 	}
 
@@ -298,8 +291,8 @@ public class ResourcesController extends AbstractContextAwareController {
 		selectedResourceViewBean = resourceViewBean;
 	}
 
-	public TreeNode getResourcesTreeRoot() {
-		return resourcesTreeBean.getRoot();
+	public TreeNode getCategoriesTreeRoot() {
+		return categoriesTreeBean.getRoot();
 	}
 
 	public List<ToolCategoryViewBean> getAllToolCategoryViewBeans() {
@@ -356,20 +349,20 @@ public class ResourcesController extends AbstractContextAwareController {
 	}
 
 	public TreeNode getSelectedNode() {
-		return resourcesTreeSelectedNode;
+		return categoriesTreeSelectedNode;
 	}
 
 	public void setSelectedNode(TreeNode selectedNode) {
-		if (resourcesTreeSelectedNode != null) {
-			resourcesTreeSelectedNode.setSelected(false);
+		if (categoriesTreeSelectedNode != null) {
+			categoriesTreeSelectedNode.setSelected(false);
 		}
-		resourcesTreeSelectedNode = selectedNode;
+		categoriesTreeSelectedNode = selectedNode;
 
-		resourcesTreeBean.expandOnlyOneNode(resourcesTreeSelectedNode);
+		categoriesTreeBean.expandOnlyOneNode(categoriesTreeSelectedNode);
 
-		if ((resourcesTreeSelectedNode != null)
-				&& (resourcesTreeSelectedNode.getType().equals(getTreeNodeType_CATEGORY()))) {
-			setSelectedToolCategoryId(((TreeNodeData) resourcesTreeSelectedNode.getData()).getId());
+		if ((categoriesTreeSelectedNode != null)
+				&& (categoriesTreeSelectedNode.getType().equals(getTreeNodeType_CATEGORY()))) {
+			setSelectedToolCategoryId(((TreeNodeData) categoriesTreeSelectedNode.getData()).getId());
 		}
 	}
 
@@ -417,7 +410,6 @@ public class ResourcesController extends AbstractContextAwareController {
 	public void onDeleteSelectedResource() {
 		if (resourcesService.deleteResource(getSelectedResourceViewBean().getDomainBean().getId())) {
 			selectedToolCategoryViewBean.removeResourceViewBean(getSelectedResourceViewBean());
-			resourceViewBeanHandler.removeResourceViewBean(getSelectedResourceViewBean().getId());
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
 					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
 					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
@@ -428,7 +420,7 @@ public class ResourcesController extends AbstractContextAwareController {
 					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS",null,getCurrentUserLocale()));
 		}
 	}
-	
+
 	/**
 	 * TODO : move this inside the Administration/ToolCategory controller
 	 * 

@@ -57,6 +57,7 @@ public class EquipmentNode extends ResourceNode implements Equipment {
 	private Set<PhysicalSpace> storageLocations = new HashSet<PhysicalSpace>(0);
 	
 	public EquipmentNode() {
+		super();
 	}
 
 	public EquipmentNode(String name, String iconFileName) {

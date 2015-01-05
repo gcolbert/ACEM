@@ -73,6 +73,6 @@ public class DegreeDAOTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t01_TestCreateOrganisation() {
+	public final void t01_TestCreateDegree() {
 	}
 }

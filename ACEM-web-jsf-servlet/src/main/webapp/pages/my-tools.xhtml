@@ -16,7 +16,7 @@
 
 			<p:growl id="messagesDisplayer" showDetail="true" />
 
-			<p:panel header="#{msg['RESOURCES.TREE.HEADER']}" toggleable="true">
+			<p:panel header="#{msg['RESOURCES.TREE.HEADER']}" toggleable="true" collapsed="#{resourcesController.selectedToolCategoryId!=null}">
 				<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
 					<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
 						type="button" styleClass="ui-confirmdialog-yes"
@@ -28,7 +28,8 @@
 				<p:outputPanel styleClass="toolCategoriesOutputPanel">
 					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('equipment')}"
-						update="subCategoriesTree" onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this)">
+						update="categoriesTree :formSelectedToolCategory:selectedToolCategoryOutputPanel"
+						onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.equipments.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}"
@@ -38,7 +39,8 @@
 					</p:commandLink>
 					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('software')}"
-						update="subCategoriesTree" onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this)">
+						update="categoriesTree :formSelectedToolCategory:selectedToolCategoryOutputPanel"
+						onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.softwares.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}"
@@ -48,7 +50,8 @@
 					</p:commandLink>
 					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('softwareDocumentation')}"
-						update="subCategoriesTree" onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this)">
+						update="categoriesTree :formSelectedToolCategory:selectedToolCategoryOutputPanel"
+						onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.software-documentations.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}"
@@ -58,7 +61,8 @@
 					</p:commandLink>
 					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('pedagogicalAndDocumentaryResources')}"
-						update="subCategoriesTree" onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this)">
+						update="categoriesTree :formSelectedToolCategory:selectedToolCategoryOutputPanel"
+						onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}"
@@ -68,7 +72,8 @@
 					</p:commandLink>
 					<p:commandLink styleClass="toolCategoryMenuEntry"
 						action="#{resourcesController.prepareToolCategoryTreeForResourceType('professionalTraining')}"
-						update="subCategoriesTree" onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this)">
+						update="categoriesTree :formSelectedToolCategory:selectedToolCategoryOutputPanel"
+						onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 						<h:graphicImage
 							url="resources/images/my-tools/my-tools.professional-trainings.png"
 							alt="#{msg['RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"
@@ -78,11 +83,10 @@
 					</p:commandLink>
 				</p:outputPanel>
 
-				<p:tree id="subCategoriesTree" styleClass="subCategoriesTree" dynamic="true"
+				<p:tree id="categoriesTree" styleClass="categoriesTree" dynamic="true"
 					datakey="#{treeNodeData.id}"
-					value="#{resourcesController.resourcesTreeRoot}" var="treeNodeData"
+					value="#{resourcesController.categoriesTreeRoot}" var="treeNodeData"
 					selectionMode="single"
-					onNodeClick="if ( (node.attr('data-nodetype')!='default') &amp;&amp; (node.attr('data-nodetype')!='category') ) { history.pushState('','','my-tools?toolCategoryId='+node.attr('data-datakey')); }"
 					selection="#{resourcesController.selectedNode}">
 					<p:ajax event="select"
 						oncomplete="PrimeFaces.scrollTo('formSelectedToolCategory:selectedToolCategoryOutputPanel')"
@@ -93,7 +97,10 @@
 					</p:treeNode>
 					<p:treeNode type="CategoryNode"
 						styleClass="#{treeNodeData.styleClass}">
-						<h:outputText value="#{treeNodeData.label}" />
+						<h:link id="goToToolCategoryBtn" outcome="my-tools">
+							<f:param name="toolCategoryId" value="#{treeNodeData.id}" />
+							<h:outputText value="#{treeNodeData.label}" />
+						</h:link>
 					</p:treeNode>
 				</p:tree>
 			</p:panel>
@@ -131,8 +138,6 @@
 							</p:row>
 							<p:row>
 								<h:panelGroup styleClass="favoriteToolCategory">
-									<p:outputLabel for="favoriteToolCategoryCheckbox"
-										value="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
 									<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox"
 										styleClass="favoriteToolCategoryCheckbox"
 										value="#{resourcesController.selectedToolCategoryViewBean.favoriteToolCategory}">
@@ -140,6 +145,8 @@
 											update="@this :formSelectedToolCategory:favoriteToolCategoriesPanel :formResources:messagesDisplayer"
 											listener="#{usersController.toggleFavoriteToolCategoryForCurrentUser(resourcesController.selectedToolCategoryViewBean)}" />
 									</p:selectBooleanCheckbox>
+									<p:outputLabel for="favoriteToolCategoryCheckbox"
+										value="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
 								</h:panelGroup>
 							</p:row>
 						</p:column>
