@@ -21,6 +21,7 @@ package eu.ueb.acem.dal.jaune;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -88,18 +89,15 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Pedagogi
 	public PedagogicalAndDocumentaryResource retrieveById(Long id, boolean initialize) {
 		PedagogicalAndDocumentaryResource entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCategories());
-			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
-			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
-			neo4jOperations.fetch(entity.getUseModes());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
 
 	@Override
-	public Collection<PedagogicalAndDocumentaryResource> retrieveByName(String name) {
+	public Set<PedagogicalAndDocumentaryResource> retrieveByName(String name) {
 		Iterable<PedagogicalAndDocumentaryResourceNode> pedagogicalAndDocumentaryResourceNodes = repository.findByName(name);
-		Collection<PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResources = new HashSet<PedagogicalAndDocumentaryResource>();
+		Set<PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResources = new HashSet<PedagogicalAndDocumentaryResource>();
 		for (PedagogicalAndDocumentaryResource pedagogicalAndDocumentaryResource : pedagogicalAndDocumentaryResourceNodes) {
 			pedagogicalAndDocumentaryResources.add(pedagogicalAndDocumentaryResource);
 		}
@@ -107,13 +105,34 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Pedagogi
 	}
 
 	@Override
-	public Collection<PedagogicalAndDocumentaryResource> retrieveAll() {
+	public Set<PedagogicalAndDocumentaryResource> retrieveByName(String name, boolean initialize) {
+		Set<PedagogicalAndDocumentaryResource> entities = retrieveByName(name);
+		if (initialize) {
+			for (PedagogicalAndDocumentaryResource entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
+	public void initializeCollections(PedagogicalAndDocumentaryResource entity) {
+		neo4jOperations.fetch(entity.getCategories());
+		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
+		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+		neo4jOperations.fetch(entity.getUseModes());
+	}
+
+	@Override
+	public Set<PedagogicalAndDocumentaryResource> retrieveAll() {
 		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.findAll();
-		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
+		Set<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				PedagogicalAndDocumentaryResource entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -122,7 +141,8 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Pedagogi
 	@Override
 	public PedagogicalAndDocumentaryResource update(PedagogicalAndDocumentaryResource entity) {
 		PedagogicalAndDocumentaryResource updatedEntity = repository.save((PedagogicalAndDocumentaryResourceNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override
@@ -158,7 +178,9 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Pedagogi
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				PedagogicalAndDocumentaryResource entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;

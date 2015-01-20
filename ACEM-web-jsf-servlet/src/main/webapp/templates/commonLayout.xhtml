@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{sessionController.currentUserLocale}">
+	<h:head>
+		<f:facet name="first">
+			<meta charset="UTF-8" />
+		</f:facet>
+		<title>#{pageTitle}</title>
+		<ui:include src="include/commonHead.xhtml"/>
+		<ui:insert name="header">
+		</ui:insert>
+		<ui:include src="include/commonHeadCSS.xhtml" />
+	</h:head>
+
+	<h:body>
+
+		<ui:debug hotkey="1" rendered="#{facesContext.application.projectStage == 'Development'}" />
+
+		<p:layout fullPage="true" id="layoutcontent">
+
+			<!-- Navigation and breadCrumb -->
+			<p:layoutUnit id="layoutNorth" position="north" header="Menu"
+				collapsible="#{northPanelCollapsible}"
+				collapsed="#{northPanelCollapsed}"
+				rendered="#{displayNorth}">
+			<h:form id="northForm">
+				<ui:insert name="header">
+					<ui:include src="include/commonHeader.xhtml">
+					</ui:include>
+				</ui:insert>
+				<ui:insert name="navigation">
+					<ui:include src="include/commonNavigation.xhtml">
+						<ui:param name="titlePageOne" value="#{titlePageOne}" />
+						<ui:param name="titlePageTwo" value="#{titlePageTwo}" />
+						<ui:param name="outcomePageOne" value="#{outcomePageOne}" />
+					</ui:include>
+				</ui:insert>
+			</h:form>
+			</p:layoutUnit>
+
+			<!-- Footer for validation toolbar -->
+			<p:layoutUnit id="layoutSouth" position="south" header="#{titleSouth}"
+				collapsible="#{southPanelCollapsible}"
+				collapsed="#{southPanelCollapsed}" size="100"
+				resizable="true" rendered="#{displaySouth}">
+				<h:form id="southForm">
+					<ui:insert name="footer"></ui:insert>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- West for detail edition when center needed elements list (see User) -->
+			<p:layoutUnit id="layoutWest" position="west" header="#{titleWest}"
+				collapsible="#{westPanelCollapsible}"
+				collapsed="#{westPanelCollapsed}" size="400"
+				resizable="true" rendered="#{displayWest}">
+				<h:form id="westForm">
+					<ui:insert name="west">
+					</ui:insert>
+				</h:form>
+			</p:layoutUnit>
+
+			<p:layoutUnit id="layoutEast" position="east" header="#{titleEast}"
+				collapsible="#{eastPanelCollapsible}"
+				collapsed="#{eastPanelCollapsed}" size="200"
+				resizable="true" rendered="#{displayEast}">
+				<h:form id="eastForm">
+					<ui:insert name="east">
+					</ui:insert>
+				</h:form>
+			</p:layoutUnit>
+
+			<!-- Center for detail edition (see skin) or elements list (see User) -->
+			<p:layoutUnit id="layoutCenter" position="center"
+				header="#{titleContent}">
+				<h:form id="contentForm">
+					<p:growl id="messagesDisplayer" autoUpdate="true" showSummary="true"
+						showDetail="true" />
+					<ui:insert name="content">
+						<ui:include src="include/commonContent.xhtml" />
+					</ui:insert>
+				</h:form>
+			</p:layoutUnit>
+
+		</p:layout>
+
+		<h:form id="defaultDialogForm">
+			<!-- About dialog -->
+			<p:dialog header="#{msg['NAVIGATION.TEXT.ABOUT']}" draggable="true"
+				modal="true" widgetVar="info" showEffect="fade" hideEffect="fade"
+				width="450">
+				<h:panelGrid columns="1" style="width:100%;text-align:center;">
+					<p:graphicImage value="/resources/images/logo-chainedit.png" />
+				</h:panelGrid>
+				<br />
+				<p:panelGrid columns="1" style="width:100%;text-align:center;">
+					<h:outputText value="#{msg['APPLICATION.TITLE']}"
+						style="font-weight:bold" />
+				</p:panelGrid>
+				<br />
+				<p:panelGrid columns="1" style="width:100%;text-align:center;">
+					<h:outputText value="#{msg['APPLICATION.DESCRIPTION']}" />
+				</p:panelGrid>
+				<br />
+				<p:panelGrid columns="2">
+					<h:outputText value="#{msg['ABOUT.VERSION']} : "
+						style="font-weight:bold" />
+					<h:outputText value="#{applicationService.version}" />
+					<h:outputText value="#{msg['ABOUT.AUTHOR']} : "
+						style="font-weight:bold" />
+					<h:outputText value="#{msg['ABOUT.AUTHOR.NAME']}" />
+					<h:outputText value="#{msg['ABOUT.SOCIETY']} : "
+						style="font-weight:bold" />
+					<h:outputText value="#{msg['ABOUT.SOCIETY.NAME']}" />
+					<h:outputText value="#{msg['ABOUT.SITE']} : "
+						style="font-weight:bold" />
+					<h:outputLink target="_blank" value="#{msg['ABOUT.SITE.NAME']}">#{msg['ABOUT.SITE.NAME']}</h:outputLink>						
+				</p:panelGrid>
+			</p:dialog>
+
+			<ui:insert name="defaultDialog">
+				<!-- Default delete dialog can be override (see skinList) -->
+				<p:outputPanel deferred="true" rendered="#{displayDialogDelete}">
+					<ui:include src="include/commonDeleteDialog.xhtml">
+						<ui:param name="associateBean" value="#{associateBean}" />
+					</ui:include>
+				</p:outputPanel>
+				<p:outputPanel deferred="true" rendered="#{displayDialogDownload}">
+					<ui:include src="include/commonDownloadZipDialog.xhtml">
+						<ui:param name="associateBean" value="#{associateBean}" />
+					</ui:include>
+				</p:outputPanel>
+			</ui:insert>
+
+			<!-- For custom purpose -->
+			<p:outputPanel id="customDialogPanel" deferred="true">
+				<ui:insert name="customDialog" />
+			</p:outputPanel>
+
+		</h:form>
+		<!-- For custom purpose -->
+		<h:form id="customDialogForm">
+			<p:outputPanel id="customDialogPanelOutForm" deferred="true">
+				<ui:insert name="customDialogOutForm" />
+			</p:outputPanel>
+		</h:form>
+		<p:outputPanel id="customDialogPanelOutFormWithoutForm" deferred="true">
+				<ui:insert name="customDialogOutFormWithoutForm" />
+		</p:outputPanel>
+		
+	</h:body>
+</f:view>
+</html>

@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -20,7 +20,6 @@ package eu.ueb.acem.web.viewbeans.bleu;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -30,11 +29,9 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.web.viewbeans.Pickable;
-//import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -53,7 +50,6 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 
 
 	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
-	//private List<PersonViewBean> authorViewBeans;
 
 	private PedagogicalScenario scenario;
 
@@ -68,7 +64,6 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 
 	public ScenarioViewBean() {
 		pedagogicalActivityViewBeans = new ArrayList<PedagogicalActivityViewBean>();
-		//authorViewBeans = new ArrayList<PersonViewBean>();
 	}
 
 	public ScenarioViewBean(PedagogicalScenario scenario) {
@@ -79,12 +74,6 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	public List<PedagogicalActivityViewBean> getPedagogicalActivityViewBeans() {
 		return pedagogicalActivityViewBeans;
 	}
-
-	/*
-	public List<PersonViewBean> getAuthorViewBeans() {
-		return authorViewBeans;
-	}
-	*/
 
 	public PedagogicalScenario getScenario() {
 		return scenario;
@@ -100,20 +89,6 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 		this.published = scenario.isPublished();
 		setCreationDate(scenario.getCreationDate());
 		setModificationDate(scenario.getModificationDate());
-
-		pedagogicalActivityViewBeans.clear();
-		for (PedagogicalActivity pedagogicalActivity : scenario.getPedagogicalActivities()) {
-			pedagogicalActivityViewBeans.add(new PedagogicalActivityViewBean(pedagogicalActivity));
-		}
-		Collections.sort(pedagogicalActivityViewBeans);
-		
-		/*
-		authorViewBeans.clear();
-		for (Enseignant author : scenario.getAuthors()) {
-			authorViewBeans.add(new PersonViewBean(author));
-		}
-		Collections.sort(authorViewBeans);
-		*/
 	}
 
 	@Override

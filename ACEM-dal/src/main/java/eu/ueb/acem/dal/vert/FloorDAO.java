@@ -83,10 +83,15 @@ public class FloorDAO implements DAO<Long, Floor> {
 	}
 
 	@Override
+	public void initializeCollections(Floor entity) {
+		neo4jOperations.fetch(entity.getBuilding());
+	}
+
+	@Override
 	public Floor retrieveById(Long id, boolean initialize) {
 		Floor entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getBuilding());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -102,13 +107,26 @@ public class FloorDAO implements DAO<Long, Floor> {
 	}
 
 	@Override
+	public Collection<Floor> retrieveByName(String name, boolean initialize) {
+		Collection<Floor> entities = retrieveByName(name);
+		if (initialize) {
+			for (Floor entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<Floor> retrieveAll() {
 		Iterable<FloorNode> endResults = repository.findAll();
 		Collection<Floor> collection = new HashSet<Floor>();
 		if (endResults.iterator() != null) {
 			Iterator<FloorNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Floor entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -117,7 +135,8 @@ public class FloorDAO implements DAO<Long, Floor> {
 	@Override
 	public Floor update(Floor entity) {
 		Floor updatedEntity = repository.save((FloorNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

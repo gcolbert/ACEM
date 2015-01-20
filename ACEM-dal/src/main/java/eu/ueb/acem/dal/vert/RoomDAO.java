@@ -84,10 +84,15 @@ public class RoomDAO implements DAO<Long, Room> {
 	}
 
 	@Override
+	public void initializeCollections(Room entity) {
+		neo4jOperations.fetch(entity.getFloor());
+	}
+
+	@Override
 	public Room retrieveById(Long id, boolean initialize) {
 		Room entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getFloor());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -103,22 +108,36 @@ public class RoomDAO implements DAO<Long, Room> {
 	}
 
 	@Override
+	public Collection<Room> retrieveByName(String name, boolean initialize) {
+		Collection<Room> entities = retrieveByName(name);
+		if (initialize) {
+			for (Room entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<Room> retrieveAll() {
 		Iterable<RoomNode> endResults = repository.findAll();
-		Collection<Room> collection = new HashSet<Room>();
+		Collection<Room> entities = new HashSet<Room>();
 		if (endResults.iterator() != null) {
 			Iterator<RoomNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Room entity = iterator.next();
+				initializeCollections(entity);
+				entities.add(entity);
 			}
 		}
-		return collection;
+		return entities;
 	}
 
 	@Override
 	public Room update(Room entity) {
 		Room updatedEntity = repository.save((RoomNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

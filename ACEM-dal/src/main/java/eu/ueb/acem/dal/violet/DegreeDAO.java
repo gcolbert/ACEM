@@ -83,10 +83,15 @@ public class DegreeDAO implements DAO<Long, Degree> {
 	}
 
 	@Override
+	public void initializeCollections(Degree entity) {
+		neo4jOperations.fetch(entity.getCredits());
+	}
+
+	@Override
 	public Degree retrieveById(Long id, boolean initialize) {
 		Degree entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCredits());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -102,13 +107,26 @@ public class DegreeDAO implements DAO<Long, Degree> {
 	}
 
 	@Override
+	public Collection<Degree> retrieveByName(String name, boolean initialize) {
+		Collection<Degree> entities = retrieveByName(name);
+		if (initialize) {
+			for (Degree entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+	
+	@Override
 	public Collection<Degree> retrieveAll() {
 		Iterable<DegreeNode> endResults = repository.findAll();
 		Collection<Degree> collection = new HashSet<Degree>();
 		if (endResults.iterator() != null) {
 			Iterator<DegreeNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Degree entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -117,7 +135,8 @@ public class DegreeDAO implements DAO<Long, Degree> {
 	@Override
 	public Degree update(Degree entity) {
 		Degree updatedEntity = repository.save((DegreeNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

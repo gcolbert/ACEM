@@ -87,9 +87,7 @@ public class PedagogicalNeedDAO implements DAO<Long, PedagogicalNeed> {
 	public PedagogicalNeed retrieveById(Long id, boolean initialize) {
 		PedagogicalNeed entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getChildren());
-			neo4jOperations.fetch(entity.getAnswers());
-			neo4jOperations.fetch(entity.getParents());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -105,13 +103,33 @@ public class PedagogicalNeedDAO implements DAO<Long, PedagogicalNeed> {
 	}
 
 	@Override
+	public Collection<PedagogicalNeed> retrieveByName(String name, boolean initialize) {
+		Collection<PedagogicalNeed> entities = retrieveByName(name);
+		if (initialize) {
+			for (PedagogicalNeed entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+	
+	@Override
+	public void initializeCollections(PedagogicalNeed entity) {
+		neo4jOperations.fetch(entity.getChildren());
+		neo4jOperations.fetch(entity.getAnswers());
+		neo4jOperations.fetch(entity.getParents());
+	}
+
+	@Override
 	public Collection<PedagogicalNeed> retrieveAll() {
 		Iterable<PedagogicalNeedNode> endResults = repository.findAll();
 		Collection<PedagogicalNeed> collection = new HashSet<PedagogicalNeed>();
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalNeedNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				PedagogicalNeed entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -120,7 +138,8 @@ public class PedagogicalNeedDAO implements DAO<Long, PedagogicalNeed> {
 	@Override
 	public PedagogicalNeed update(PedagogicalNeed entity) {
 		PedagogicalNeed updatedEntity = repository.save((PedagogicalNeedNode) entity);
-		return retrieveById(updatedEntity.getId(),true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override
@@ -142,6 +161,7 @@ public class PedagogicalNeedDAO implements DAO<Long, PedagogicalNeed> {
 		Set<PedagogicalNeedNode> nodes = repository.findRoots();
 		Set<PedagogicalNeed> needs = new HashSet<PedagogicalNeed>();
 		for (PedagogicalNeedNode need : nodes) {
+			initializeCollections(need);
 			needs.add(need);
 		}
 		return needs;

@@ -89,9 +89,7 @@ public class PedagogicalAnswerDAO implements DAO<Long, PedagogicalAnswer> {
 	public PedagogicalAnswer retrieveById(Long id, boolean initialize) {
 		PedagogicalAnswer entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getResourceCategories());
-			neo4jOperations.fetch(entity.getNeeds());
-			neo4jOperations.fetch(entity.getScenariosRelatedToAnswer());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -107,13 +105,33 @@ public class PedagogicalAnswerDAO implements DAO<Long, PedagogicalAnswer> {
 	}
 
 	@Override
+	public Collection<PedagogicalAnswer> retrieveByName(String name, boolean initialize) {
+		Collection<PedagogicalAnswer> entities = retrieveByName(name);
+		if (initialize) {
+			for (PedagogicalAnswer entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
+	public void initializeCollections(PedagogicalAnswer entity) {
+		neo4jOperations.fetch(entity.getResourceCategories());
+		neo4jOperations.fetch(entity.getNeeds());
+		neo4jOperations.fetch(entity.getScenariosRelatedToAnswer());
+	}
+
+	@Override
 	public Collection<PedagogicalAnswer> retrieveAll() {
 		Iterable<PedagogicalAnswerNode> endResults = repository.findAll();
 		Collection<PedagogicalAnswer> collection = new HashSet<PedagogicalAnswer>();
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalAnswerNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				PedagogicalAnswer entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -122,7 +140,8 @@ public class PedagogicalAnswerDAO implements DAO<Long, PedagogicalAnswer> {
 	@Override
 	public PedagogicalAnswer update(PedagogicalAnswer entity) {
 		PedagogicalAnswer updatedEntity = repository.save((PedagogicalAnswerNode) entity);
-		return retrieveById(updatedEntity.getId(),true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

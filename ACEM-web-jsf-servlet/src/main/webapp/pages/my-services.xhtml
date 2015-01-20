@@ -3,7 +3,19 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	template="../templates/template.xhtml">
+	template="../templates/commonLayout.xhtml">
+
+	<!-- Control display of the layouts -->
+	<ui:param name="displayNorth" value="true" />
+	<ui:param name="displayWest" value="false" />
+	<ui:param name="displayEast" value="false" />
+	<ui:param name="displaySouth" value="false" />
+
+	<ui:param name="titleContent" value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}" />
+
+	<!-- Controller associated with this view -->
+	<ui:param name="associateBean" value="" />
+
 	<!-- 
 	<f:metadata>
 		<f:viewParam name="serviceId"
@@ -11,11 +23,5 @@
 	</f:metadata>
  -->
  	<ui:define name="content">
-		<ui:debug hotkey="1"
-			rendered="#{facesContext.application.projectStage == 'Development'}" />
-
-		<h:form id="formServices">
-		
-		</h:form>
 	</ui:define>
 </ui:composition>

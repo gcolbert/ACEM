@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -21,8 +21,9 @@ package eu.ueb.acem.web.controllers;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.Validate;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
@@ -37,7 +38,8 @@ import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
  * <li>the i18n service (i18nService).
  * </ul>
  */
-@Component
+@Controller("abstractContextAwareController")
+@Scope("session")
 public abstract class AbstractContextAwareController extends AbstractDomainAwareBean {
 
 	/*
@@ -45,13 +47,14 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	 */
 
 	/**
-	 * The serialization id.
+	 * For serialization.
 	 */
 	private static final long serialVersionUID = -1826458262448752328L;
 
 	/**
 	 * The SessionController.
 	 */
+	@Inject
 	private SessionController sessionController;
 
 	/**

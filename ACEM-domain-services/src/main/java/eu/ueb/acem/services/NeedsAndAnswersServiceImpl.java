@@ -99,7 +99,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	@Override
 	public PedagogicalNeed updatePedagogicalNeed(PedagogicalNeed pedagogicalNeed) {
 		PedagogicalNeed updatedEntity = needDAO.update(pedagogicalNeed);
-		return retrievePedagogicalNeed(updatedEntity.getId(), true);
+		return updatedEntity;
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	@Override
 	public PedagogicalAnswer updatePedagogicalAnswer(PedagogicalAnswer pedagogicalAnswer) {
 		PedagogicalAnswer updatedEntity = answerDAO.update(pedagogicalAnswer);
-		return retrievePedagogicalAnswer(updatedEntity.getId(), true);
+		return updatedEntity;
 	}
 
 	@Override
@@ -187,44 +187,68 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	@Transactional
-	public void changeParentOfNeed(Long id, Long idNewParent) {
-		logger.info("entering changeParentOfNeed({}, {})", id, idNewParent);
+	public void changeParentOfNeedOrAnswer(Long id, Long idNewParent) {
+		logger.debug("entering changeParentOfNeed({}, {})", id, idNewParent);
 		// The "visible root node" has id=null, and we must not allow the user
 		// to move it
 		if (id != null) {
-			PedagogicalNeed need = needDAO.retrieveById(id);
-			logger.info("Need is retrieved");
-			if (need != null) {
-				logger.info("Need is not null");
-				Collection<PedagogicalNeed> parents = need.getParents();
+			PedagogicalNeed need = null;
+			PedagogicalAnswer answer = null;
+			if (needDAO.exists(id) || answerDAO.exists(id)) {
+				Collection<PedagogicalNeed> parents = null;
+				if (needDAO.exists(id)) {
+					need = needDAO.retrieveById(id);
+					parents = need.getParents();
+				}
+				else if (answerDAO.exists(id)) {
+					answer = answerDAO.retrieveById(id);
+					parents = answer.getNeeds();
+				}
 				if (parents != null) {
-					logger.info("Need.getParents() is not null");
+					logger.debug("The moved node has parents that we should unlink");
 					Iterator<PedagogicalNeed> iterator = parents.iterator();
 					if (iterator != null) {
 						while (iterator.hasNext()) {
 							iterator.next();
 							iterator.remove();
-							logger.info("Need has parent removed");
+							logger.info("parent is unlinked");
 						}
-						need = needDAO.update(need);
-						logger.info("Need is updated");
 					}
 				} else {
-					logger.info("need.getParents() is null");
+					logger.debug("The moved node has no parents (!?)");
+				}
+				if (idNewParent != null) {
+					if (needDAO.exists(idNewParent)) {
+						PedagogicalNeed newParent = needDAO.retrieveById(idNewParent);
+						logger.debug("newParent={}", newParent);
+						if (need != null) {
+							newParent.getChildren().add(need);
+							need.getParents().add(newParent);
+						}
+						else if (answer != null) {
+							newParent.getAnswers().add(answer);
+							answer.getNeeds().add(newParent);
+						}
+						newParent = needDAO.update(newParent);
+					}
+					else {
+						logger.debug("The new parent is not a PedagogicalNeed (!?)");
+					}
+				}
+				if (need != null) {
+					need = needDAO.update(need);
+					logger.debug("Need is updated");
+				}
+				else  if (answer != null) {
+					answer = answerDAO.update(answer);
+					logger.debug("Answer is updated");
 				}
 			}
-			if (idNewParent != null) {
-				PedagogicalNeed newParent = needDAO.retrieveById(idNewParent);
-				logger.info("Service changeParentOfNeed, newParent={}", newParent);
-				if (newParent != null) {
-					newParent.getChildren().add(need);
-					need.getParents().add(newParent);
-					newParent = needDAO.update(newParent);
-					need = needDAO.update(need);
-				}
+			else {
+				logger.error("There is no PedagogicalNeed, nor PedagogicalAnswer, with id={}", id);
 			}
 		}
-		logger.info("leaving changeParentOfNeed({}, {})", id, idNewParent);
+		logger.debug("leaving changeParentOfNeed({}, {})", id, idNewParent);
 	}
 
 	@Override

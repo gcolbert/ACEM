@@ -3,97 +3,123 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	template="../templates/template.xhtml">
-	<ui:define name="content">
-		<ui:debug hotkey="1"
-			rendered="#{facesContext.application.projectStage == 'Development'}" />
+	template="../templates/commonLayout.xhtml">
 
-		<p:layout id="home-layout" >
+	<!-- Control display of the layouts -->
+	<ui:param name="displayNorth" value="true" />
+	<ui:param name="displayWest" value="false" />
+	<ui:param name="displayEast" value="true" />
+	<ui:param name="eastPanelCollapsible" value="true"/>
+	<ui:param name="eastPanelCollapsed" value="false"/>
+	<ui:param name="displaySouth" value="false" />
+	<!-- 
+	<ui:param name="displayDialogDelete" value="false" />
+	-->
 
-			<p:layoutUnit position="east" size="220" collapsible="false"
-				collapsed="false" header="#{msg['HOME.NEWS.HEADER']}">
-				<p:panel header="#{msg['HOME.MOST_USED_RESOURCES.HEADER']}">
-				</p:panel>
-			</p:layoutUnit>
+	<!-- Titles and outcome for breadcrumb (Two levels (One and Two, outcome only on One) -->
+	<ui:param name="titlePageOne"
+		value="#{msg['MENU.HOME']}" />
+	<ui:param name="outcomePageOne" value="" />
+	<ui:param name="titlePageTwo"
+		value="" />
 
-			<p:layoutUnit position="center"
-				header="#{msg['HOME.PRESENTATION.HEADER']}">
-				<p:panelGrid styleClass="presentationPanelGrid" columns="2">
-					<p:column>
-						<p:panelGrid columns="1" styleClass="pagesDescriptionsPanelGrid">
-							<p:panelGrid columns="2">
-								<h:graphicImage url="resources/images/my-teachings.png"
-									alt="#{msg['MENU.MY_TEACHINGS']}" />
-								<p:panelGrid columns="1">
-									<h:outputText styleClass="section-title"
-										value="#{msg['MENU.MY_TEACHINGS']}" />
-									<h:outputText
-										value="#{msg['HOME.PRESENTATION.MY_TEACHINGS_TEXT']}" />
-								</p:panelGrid>
-							</p:panelGrid>
-							<p:panelGrid columns="2">
-								<h:graphicImage url="resources/images/my-scenarios.png"
-									alt="#{msg['MENU.MY_SCENARIOS']}" />
-								<p:panelGrid columns="1">
-									<h:outputText styleClass="section-title"
-										value="#{msg['MENU.MY_SCENARIOS']}" />
-									<h:outputText
-										value="#{msg['HOME.PRESENTATION.MY_SCENARIOS_TEXT']}" />
-								</p:panelGrid>
-							</p:panelGrid>
-							<p:panelGrid columns="2">
-								<h:graphicImage url="resources/images/scenarios-library.png"
-									alt="#{msg['MENU.SCENARIOS_LIBRARY']}" />
-								<p:panelGrid columns="1">
-									<h:outputText styleClass="section-title"
-										value="#{msg['MENU.SCENARIOS_LIBRARY']}" />
-									<h:outputText
-										value="#{msg['HOME.PRESENTATION.SCENARIOS_LIBRARY_TEXT']}" />
-								</p:panelGrid>
-							</p:panelGrid>
-							<p:panelGrid columns="2">
-								<h:graphicImage url="resources/images/pedagogical-advice.png"
-									alt="#{msg['MENU.PEDAGOGICAL_ADVICE']}" />
-								<p:panelGrid columns="1">
-									<h:outputText styleClass="section-title"
-										value="#{msg['MENU.PEDAGOGICAL_ADVICE']}" />
-									<h:outputText
-										value="#{msg['HOME.PRESENTATION.PEDAGOGICAL_ADVICE_TEXT']}" />
-								</p:panelGrid>
-							</p:panelGrid>
-							<p:panelGrid columns="2">
-								<h:graphicImage url="resources/images/my-tools.png"
-									alt="#{msg['MENU.MY_TOOLS']}" />
-								<p:panelGrid columns="1">
-									<h:outputText styleClass="section-title"
-										value="#{msg['MENU.MY_TOOLS']}" />
-									<h:outputText
-										value="#{msg['HOME.PRESENTATION.MY_TOOLS_TEXT']}" />
-								</p:panelGrid>
-							</p:panelGrid>
-							<p:panelGrid columns="2">
-								<h:graphicImage
-									url="resources/images/administrative-departments.png"
-									alt="#{msg['MENU.SERVICES']}" />
-								<p:panelGrid columns="1">
-									<h:outputText styleClass="section-title"
-										value="#{msg['MENU.SERVICES']}" />
-									<h:outputText
-										value="#{msg['HOME.PRESENTATION.SERVICES_TEXT']}" />
-								</p:panelGrid>
-							</p:panelGrid>
-						</p:panelGrid>
-					</p:column>
-					<p:column>
-						<h:outputText escape="false" styleClass="introduction_text"
-							value="#{msg['HOME.PRESENTATION.INTRODUCTION_TEXT']}" />
-						<h:graphicImage
-							url="resources/images/ACEM-circular-explanation.png" alt="ACEM"
-							styleClass="circularExplanationImg" />
-					</p:column>
-				</p:panelGrid>
-			</p:layoutUnit>
-		</p:layout>
+	<!-- Titles for layout (depend on control display) -->
+	<ui:param name="titleContent"
+		value="#{msg['HOME.PRESENTATION.HEADER']}" />
+	<ui:param name="titleEast" value="#{msg['HOME.SIDEPANEL.HEADER']}" />
+	<!-- Controller associated with this view -->
+	<!-- 
+	<ui:param name="associateBean" value="#{homeController}" />
+	-->
 
+	<ui:define name="east">
+		<p:panel header="#{msg['HOME.NEWS.HEADER']}">
+		</p:panel>
+		<p:panel header="#{msg['HOME.MOST_USED_RESOURCES.HEADER']}">
+		</p:panel>
 	</ui:define>
+
+	<ui:define name="content">
+		<p:panelGrid styleClass="presentationPanelGrid" columns="3">
+			<p:column>
+				<p:panelGrid columns="1" styleClass="pagesDescriptionsPanelGrid">
+					<p:panelGrid columns="2">
+						<h:graphicImage url="resources/images/my-teachings.png"
+							alt="#{msg['MENU.MY_TEACHINGS']}" styleClass="pageIllustration" />
+						<p:panelGrid columns="1">
+							<h:outputText styleClass="section-title"
+								value="#{msg['MENU.MY_TEACHINGS']}" />
+							<h:outputText
+								value="#{msg['HOME.PRESENTATION.MY_TEACHINGS_TEXT']}" />
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2">
+						<h:graphicImage url="resources/images/my-scenarios.png"
+							alt="#{msg['MENU.MY_SCENARIOS']}" styleClass="pageIllustration" />
+						<p:panelGrid columns="1">
+							<h:outputText styleClass="section-title"
+								value="#{msg['MENU.MY_SCENARIOS']}" />
+							<h:outputText
+								value="#{msg['HOME.PRESENTATION.MY_SCENARIOS_TEXT']}" />
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2">
+						<h:graphicImage url="resources/images/scenarios-library.png"
+							alt="#{msg['MENU.SCENARIOS_LIBRARY']}" styleClass="pageIllustration" />
+						<p:panelGrid columns="1">
+							<h:outputText styleClass="section-title"
+								value="#{msg['MENU.SCENARIOS_LIBRARY']}" />
+							<h:outputText
+								value="#{msg['HOME.PRESENTATION.SCENARIOS_LIBRARY_TEXT']}" />
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:column>
+			<p:column>
+				<h:outputText escape="false" styleClass="introduction_text"
+					value="#{msg['HOME.PRESENTATION.INTRODUCTION_TEXT']}" />
+				<p:lightBox styleClass="imagebox">
+					<h:outputLink value="resources/images/ACEM-circular-explanation.png" title="#{msg['HOME.PRESENTATION.EXPLANATION_PICTURE.TITLE']}"> 
+						<h:graphicImage url="resources/images/ACEM-circular-explanation.png" alt="#{msg['HOME.PRESENTATION.EXPLANATION_PICTURE.TITLE']}" styleClass="circularExplanationImg" />
+					</h:outputLink>
+				</p:lightBox>
+			</p:column>
+			<p:column>
+				<p:panelGrid columns="1" styleClass="pagesDescriptionsPanelGrid">
+					<p:panelGrid columns="2">
+						<h:graphicImage url="resources/images/pedagogical-advice.png"
+							alt="#{msg['MENU.PEDAGOGICAL_ADVICE']}" styleClass="pageIllustration" />
+						<p:panelGrid columns="1">
+							<h:outputText styleClass="section-title"
+								value="#{msg['MENU.PEDAGOGICAL_ADVICE']}" />
+							<h:outputText
+								value="#{msg['HOME.PRESENTATION.PEDAGOGICAL_ADVICE_TEXT']}" />
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2">
+						<h:graphicImage url="resources/images/my-tools.png"
+							alt="#{msg['MENU.MY_TOOLS']}" styleClass="pageIllustration" />
+						<p:panelGrid columns="1">
+							<h:outputText styleClass="section-title"
+								value="#{msg['MENU.MY_TOOLS']}" />
+							<h:outputText
+								value="#{msg['HOME.PRESENTATION.MY_TOOLS_TEXT']}" />
+						</p:panelGrid>
+					</p:panelGrid>
+					<p:panelGrid columns="2">
+						<h:graphicImage
+							url="resources/images/administrative-departments.png"
+							alt="#{msg['MENU.SERVICES']}" styleClass="pageIllustration" />
+						<p:panelGrid columns="1">
+							<h:outputText styleClass="section-title"
+								value="#{msg['MENU.SERVICES']}" />
+							<h:outputText
+								value="#{msg['HOME.PRESENTATION.SERVICES_TEXT']}" />
+						</p:panelGrid>
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:column>
+		</p:panelGrid>
+	</ui:define>
+
 </ui:composition>

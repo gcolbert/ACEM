@@ -83,13 +83,18 @@ public class TeachingDepartmentDAO implements DAO<Long, TeachingDepartment> {
 	}
 
 	@Override
+	public void initializeCollections(TeachingDepartment entity) {
+		neo4jOperations.fetch(entity.getPossessedResources());
+		neo4jOperations.fetch(entity.getViewedResources());
+		neo4jOperations.fetch(entity.getUseModes());
+		neo4jOperations.fetch(entity.getInstitutions());
+	}
+
+	@Override
 	public TeachingDepartment retrieveById(Long id, boolean initialize) {
 		TeachingDepartment entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getPossessedResources());
-			neo4jOperations.fetch(entity.getViewedResources());
-			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getInstitutions());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -105,13 +110,26 @@ public class TeachingDepartmentDAO implements DAO<Long, TeachingDepartment> {
 	}
 
 	@Override
+	public Collection<TeachingDepartment> retrieveByName(String name, boolean initialize) {
+		Collection<TeachingDepartment> entities = retrieveByName(name);
+		if (initialize) {
+			for (TeachingDepartment entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<TeachingDepartment> retrieveAll() {
 		Iterable<TeachingDepartmentNode> endResults = repository.findAll();
 		Collection<TeachingDepartment> collection = new HashSet<TeachingDepartment>();
 		if (endResults.iterator() != null) {
 			Iterator<TeachingDepartmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				TeachingDepartment entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -120,7 +138,8 @@ public class TeachingDepartmentDAO implements DAO<Long, TeachingDepartment> {
 	@Override
 	public TeachingDepartment update(TeachingDepartment entity) {
 		TeachingDepartment updatedEntity = repository.save((TeachingDepartmentNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

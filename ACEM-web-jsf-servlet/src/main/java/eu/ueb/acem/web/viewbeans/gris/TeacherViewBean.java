@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -35,19 +35,25 @@ import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
  */
 public class TeacherViewBean extends PersonViewBean {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -7825115133733181852L;
 
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(TeacherViewBean.class);
-	
+
 	private Teacher domainBean;
-	
+
 	private List<ToolCategoryViewBean> favoriteToolCategoryViewBeans;
-	
+
 	public TeacherViewBean() {
 		super();
 		favoriteToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
-	
+
 	public TeacherViewBean(Teacher teacher) {
 		this();
 		this.setDomainBean(teacher);
@@ -61,11 +67,11 @@ public class TeacherViewBean extends PersonViewBean {
 		super.setDomainBean(teacher);
 		this.domainBean = teacher;
 		for (ResourceCategory toolCategory : teacher.getFavoriteToolCategories()) {
-			logger.info("TeacherViewBean.setDomainBean : we add the toolCategory '{}' as favorite", toolCategory.getName());
+			logger.debug("setDomainBean : we add the toolCategory '{}' as favorite", toolCategory.getName());
 			addFavoriteToolCategoryViewBean(new ToolCategoryViewBean(toolCategory));
 		}
 	}
-	
+
 	public List<ToolCategoryViewBean> getFavoriteToolCategoryViewBeans() {
 		return favoriteToolCategoryViewBeans;
 	}
@@ -74,7 +80,7 @@ public class TeacherViewBean extends PersonViewBean {
 		favoriteToolCategoryViewBeans.add(toolCategoryViewBean);
 		toolCategoryViewBean.setFavoriteToolCategory(true);
 	}
-	
+
 	public void removeFavoriteToolCategoryViewBean(ToolCategoryViewBean toolCategoryViewBean) {
 		favoriteToolCategoryViewBeans.remove(toolCategoryViewBean);
 		toolCategoryViewBean.setFavoriteToolCategory(false);

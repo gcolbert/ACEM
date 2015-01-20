@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -56,7 +56,7 @@ public class EditableTreeBean implements Serializable {
 
 	public EditableTreeBean() {
 		// For some reason, the root of the tree is not visible
-		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
+		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null, null), null);
 
 		// Therefore, we add a list of visible roots, so that it is possible to
 		// right click on something to add children nodes
@@ -66,7 +66,7 @@ public class EditableTreeBean implements Serializable {
 	}
 
 	public void clear() {
-		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null), null);
+		root = new DefaultTreeNode(new TreeNodeData(null, "Root", null, null), null);
 		visibleRoots = new ArrayList<TreeNode>();
 	}
 
@@ -79,11 +79,15 @@ public class EditableTreeBean implements Serializable {
 	}
 
 	public TreeNode addVisibleRoot(String label) {
-		TreeNode node = new DefaultTreeNode(new TreeNodeData(null, label, null), root);
+		TreeNode node = new DefaultTreeNode(new TreeNodeData(null, label, null, null), root);
 		visibleRoots.add(node);
 		return node;
 	}
 
+	public void addVisibleRoot(TreeNode visibleRootNode) {
+		root.getChildren().add(visibleRootNode);
+	}
+	
 	/**
 	 * 
 	 * @param nodeType
@@ -102,7 +106,7 @@ public class EditableTreeBean implements Serializable {
 	 * @return the node that the method created
 	 */
 	public TreeNode addChild(String nodeType, TreeNode parent, Long id, String label, String concept) {
-		TreeNode child = new DefaultTreeNode(nodeType, new TreeNodeData(id, label, concept), parent);
+		TreeNode child = new DefaultTreeNode(nodeType, new TreeNodeData(id, label, concept, parent), parent);
 		allNodes.put(id, child);
 		return child;
 	}
@@ -151,7 +155,7 @@ public class EditableTreeBean implements Serializable {
 	public TreeNode getNodeWithId(Long id) {
 		return allNodes.get(id);
 	}
-	
+
 	public void retainLeavesAndParents(Set<Long> idsOfLeavesToKeep) {
 		Set<TreeNode> nodesToKeep = new HashSet<TreeNode>();
 		for (Long id : idsOfLeavesToKeep) {
@@ -166,14 +170,14 @@ public class EditableTreeBean implements Serializable {
 		}
 		retainChildren(root, nodesToKeep);
 	}
-	
+
 	private void retainChildren(TreeNode node, Set<TreeNode> nodesToKeep) {
 		node.getChildren().retainAll(nodesToKeep);
 		for (TreeNode child : node.getChildren()) {
 			retainChildren(child, nodesToKeep);
 		}
 	}
-	
+
 	public static class TreeNodeData implements Serializable {
 
 		private static final long serialVersionUID = -5623188924862380160L;
@@ -184,10 +188,13 @@ public class EditableTreeBean implements Serializable {
 
 		private String concept;
 
-		public TreeNodeData(Long id, String label, String concept) {
+		private TreeNode parentBackup;
+
+		public TreeNodeData(Long id, String label, String concept, TreeNode parent) {
 			this.id = id;
 			this.label = label;
 			this.concept = concept;
+			this.parentBackup = parent;
 		}
 
 		/**
@@ -217,6 +224,14 @@ public class EditableTreeBean implements Serializable {
 
 		public void setConcept(String concept) {
 			this.concept = concept;
+		}
+
+		public TreeNode getParentBackup() {
+			return parentBackup;
+		}
+
+		public void setParentBackup(TreeNode parent) {
+			this.parentBackup = parent;
 		}
 
 		/**

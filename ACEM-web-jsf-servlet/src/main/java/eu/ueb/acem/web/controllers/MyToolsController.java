@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -39,17 +39,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
-import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
+import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
@@ -68,17 +70,26 @@ import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
  * @since 2014-02-19
  * 
  */
-@Controller("resourcesController")
+@Controller("myToolsController")
 @Scope("view")
-public class ResourcesController extends AbstractContextAwareController {
+public class MyToolsController extends AbstractContextAwareController implements PageController {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -5663154564837226988L;
 
-	private static final Logger logger = LoggerFactory.getLogger(ResourcesController.class);
+	/**
+	 * For logging.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(MyToolsController.class);
 
 	@Inject
 	private ResourcesService resourcesService;
 	
+	@Inject
+	private UsersService usersService;
+
 	@Inject
 	private ResourceViewBeanHandler resourceViewBeanHandler;
 
@@ -110,15 +121,15 @@ public class ResourcesController extends AbstractContextAwareController {
 	private static final String[] RESOURCE_TYPES_I18N_EN = { "Software", "Software documentation", "Equipment",
 		"Pedagogical and documentary resource", "Professional training" };
 	
-	public ResourcesController() {
+	public MyToolsController() {
 		toolCategoryViewBeans = new HashMap<Long, ToolCategoryViewBean>();
 		allOrganisationViewBeans = new ArrayList<OrganisationViewBean>();
 		toolCategoryViewBeansByResourceType = new HashMap<String, List<ToolCategoryViewBean>>();
 	}
 
 	@PostConstruct
-	public void initResourcesController() {
-		logger.info("entering initResourcesController");
+	public void init() {
+		logger.info("Entering init()");
 
 		for (ResourceCategory toolCategory : resourcesService.retrieveAllCategories()) {
 			ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
@@ -132,7 +143,7 @@ public class ResourcesController extends AbstractContextAwareController {
 			}
 			toolCategoryViewBeans.put(toolCategory.getId(), toolCategoryViewBean);
 		}
-		
+
 		for (String resourceType : RESOURCE_TYPES) {
 			toolCategoryViewBeansByResourceType.put(resourceType, new ArrayList<ToolCategoryViewBean>());
 			for (ResourceCategory resourceCategory : resourcesService.retrieveCategoriesForResourceType(resourceType)) {
@@ -143,8 +154,19 @@ public class ResourcesController extends AbstractContextAwareController {
 
 		setAllOrganisationViewBeansAsList();
 
-		logger.info("leaving initResourcesController");
+		logger.info("leaving init()");
 		logger.info("------");
+	}
+
+	@Override
+	public String getPageTitle() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(msgs.getMessage("MENU.MY_TOOLS",null,getCurrentUserLocale()));
+		if (getSelectedToolCategoryViewBean() != null) {
+			sb.append(" - ");
+			sb.append(getSelectedToolCategoryViewBean().getName());
+		}
+		return sb.toString();
 	}
 
 	public String getTreeNodeType_NEED_LEAF() {
@@ -189,7 +211,9 @@ public class ResourcesController extends AbstractContextAwareController {
 		// When the category changes, we reset the selected category
 		setSelectedToolCategoryViewBean(null);
 
-		// TODO : check if we need to keep the "true" possibility
+		// TODO : check if we need to keep the "true" possibility (allows to
+		// start from an empty tree, and add nodes by right-clicking on the
+		// visible root node)
 		boolean repeatSelectedCategoryAsVisibleRootNode = false;
 		if (repeatSelectedCategoryAsVisibleRootNode) {
 			if (resourceType.equals("software")) {
@@ -266,6 +290,16 @@ public class ResourcesController extends AbstractContextAwareController {
 
 	public void setSelectedToolCategoryViewBean(ToolCategoryViewBean toolCategoryViewBean) {
 		this.selectedToolCategoryViewBean = toolCategoryViewBean;
+		if (this.selectedToolCategoryViewBean != null) {
+			this.selectedToolCategoryViewBean.getResourceViewBeans().clear();
+			for (Resource resource : this.selectedToolCategoryViewBean.getDomainBean().getResources()) {
+				ResourceViewBean resourceViewBean = resourceViewBeanHandler.getResourceViewBean(resource.getId());
+				this.selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
+			}
+			for (PedagogicalActivity pedagogicalActivity : this.selectedToolCategoryViewBean.getDomainBean().getPedagogicalActivities()) {
+				// TODO
+			}
+		}
 	}
 
 	private ToolCategoryViewBean getToolCategoryViewBean(Long id) {
@@ -330,7 +364,9 @@ public class ResourcesController extends AbstractContextAwareController {
 
 	public TreeNode getPedagogicalUsesTreeRoot() {
 		if (pedagogicalUsesTreeBean != null) {
-			return pedagogicalUsesTreeBean.getRoot();
+			TreeNode root = pedagogicalUsesTreeBean.getRoot();
+			pedagogicalUsesTreeBean.expandIncludingChildren(root);
+			return root;
 		}
 		else {
 			return null;
@@ -388,9 +424,9 @@ public class ResourcesController extends AbstractContextAwareController {
 	}
 
 	public void onCreateResource(String newResourceType, OrganisationViewBean newResourceSupportService, String newResourceName, String iconFileName) {
-		logger.info("onCreateResource, selectedToolCategoryViewBean.name={}", selectedToolCategoryViewBean.getName());
-		logger.info("onCreateResource, newResourceType={}, newResourceSupportService={}", newResourceType, newResourceSupportService);
-		logger.info("onCreateResource, newResourceName={}, iconFileName={}", newResourceName, iconFileName);
+		logger.debug("onCreateResource, selectedToolCategoryViewBean.name={}", selectedToolCategoryViewBean.getName());
+		logger.debug("onCreateResource, newResourceType={}, newResourceSupportService={}", newResourceType, newResourceSupportService);
+		logger.debug("onCreateResource, newResourceName={}, iconFileName={}", newResourceName, iconFileName);
 		Resource resource = resourcesService.createResource(selectedToolCategoryId, newResourceSupportService.getId(), newResourceType, newResourceName, iconFileName);
 		if (resource != null) {
 			ResourceViewBean resourceViewBean = resourceViewBeanHandler.getResourceViewBean(resource.getId());
@@ -431,10 +467,30 @@ public class ResourcesController extends AbstractContextAwareController {
 //		ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
 //		toolCategoryViewBeans.put(toolCategoryViewBean.getId(), toolCategoryViewBean);
 	}
-	
+
 	public void onToolCategoryAccordionPanelTabChange(TabChangeEvent event) {
 		logger.info("onToolCategoryAccordionPanelTabChange, tab={}", event.getTab());
 		setSelectedToolCategoryViewBean((ToolCategoryViewBean) event.getData());
 	}
-	
+
+	public void toggleFavoriteToolCategoryForCurrentUser(ToolCategoryViewBean toolCategoryViewBean) {
+		logger.debug("Entering toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
+		if (getCurrentUserViewBean() instanceof TeacherViewBean) {
+			TeacherViewBean currentUserViewBean = (TeacherViewBean)getCurrentUserViewBean();
+			if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
+				logger.info("user has tool category as favorite, we should remove it");
+				if (usersService.removeFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
+					currentUserViewBean.removeFavoriteToolCategoryViewBean(toolCategoryViewBean);
+				}
+			}
+			else {
+				logger.debug("user doesn't have tool category as favorite, we should add it");
+				if (usersService.addFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
+					currentUserViewBean.addFavoriteToolCategoryViewBean(toolCategoryViewBean);
+				}
+			}
+		}
+		logger.info("Leaving toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
+	}
+
 }

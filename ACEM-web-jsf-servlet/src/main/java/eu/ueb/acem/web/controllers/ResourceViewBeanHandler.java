@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -47,8 +47,11 @@ import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
  */
 @Component("resourceViewBeanHandler")
 @Scope("singleton")
-class ResourceViewBeanHandler {
+public class ResourceViewBeanHandler {
 
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(ResourceViewBeanHandler.class);
 
 	@Inject

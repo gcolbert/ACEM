@@ -85,14 +85,19 @@ public class SoftwareDAO implements DAO<Long, Software> {
 	}
 
 	@Override
+	public void initializeCollections(Software entity) {
+		neo4jOperations.fetch(entity.getCategories());
+		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
+		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+		neo4jOperations.fetch(entity.getUseModes());
+		neo4jOperations.fetch(entity.getDocumentations());
+	}
+
+	@Override
 	public Software retrieveById(Long id, boolean initialize) {
 		Software entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCategories());
-			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
-			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
-			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getDocumentations());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -108,13 +113,26 @@ public class SoftwareDAO implements DAO<Long, Software> {
 	}
 
 	@Override
+	public Collection<Software> retrieveByName(String name, boolean initialize) {
+		Collection<Software> entities = retrieveByName(name);
+		if (initialize) {
+			for (Software entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<Software> retrieveAll() {
 		Iterable<SoftwareNode> endResults = repository.findAll();
 		Collection<Software> collection = new HashSet<Software>();
 		if (endResults.iterator() != null) {
 			Iterator<SoftwareNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Software entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -123,7 +141,8 @@ public class SoftwareDAO implements DAO<Long, Software> {
 	@Override
 	public Software update(Software entity) {
 		Software updatedEntity = repository.save((SoftwareNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override
@@ -159,7 +178,9 @@ public class SoftwareDAO implements DAO<Long, Software> {
 		if (endResults.iterator() != null) {
 			Iterator<SoftwareNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Software entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;

@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -60,8 +60,14 @@ import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 @Scope("view")
 public class NeedsAndAnswersController extends AbstractContextAwareController {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 3305497053688875560L;
 
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersController.class);
 
 	@Inject
@@ -125,8 +131,8 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	}
 
 	@PostConstruct
-	public void initNeedsAndAnswersController() {
-		logger.info("entering initNeedsAndAnswersTreeController");
+	public void init() {
+		logger.info("entering init");
 		needsAndAnswersTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(msgs.getMessage(
 				"NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL", null, getCurrentUserLocale()));
 
@@ -151,7 +157,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		}
 		administrativeDepartmentViewBeans.sort();
 
-		logger.info("leaving initNeedsAndAnswersTreeController");
+		logger.info("leaving init");
 		logger.info("------");
 	}
 
@@ -256,7 +262,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	}
 
 	public void associateNeedWithSelectedNode() {
-		logger.info("entering addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
+		logger.info("entering associateNeedWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
 		PedagogicalNeed newNeed = needsAndAnswersService.createOrUpdateNeed(null,
 				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()),
@@ -267,12 +273,12 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 		setSelectedNode(newNode);
 		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
-		logger.info("leaving addChildToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
+		logger.info("leaving associateNeedWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.info("------");
 	}
 
 	public void associateAnswerWithSelectedNode() {
-		logger.info("entering associateAnswerToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
+		logger.info("entering associateAnswerWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
 		PedagogicalAnswer newAnswer = needsAndAnswersService.createOrUpdateAnswer(null,
 				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()),
@@ -284,7 +290,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 		setSelectedNode(newNode);
 		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
-		logger.info("leaving associateAnswerToSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
+		logger.info("leaving associateAnswerWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.info("------");
 	}
 
@@ -292,14 +298,85 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		TreeNode dragNode = event.getDragNode();
 		TreeNode dropNode = event.getDropNode();
 		int dropIndex = event.getDropIndex();
-
 		TreeNodeData dragNodeData = (TreeNodeData) dragNode.getData();
 		TreeNodeData dropNodeData = (TreeNodeData) dropNode.getData();
+		boolean revertDragDrop = false;
 
-		needsAndAnswersService.changeParentOfNeed(dragNodeData.getId(), dropNodeData.getId());
+		if (dragNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
+			if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())
+					|| (dropNode.getType().equals(getTreeNodeType_NEED_LEAF()))) {
+				needsAndAnswersService.changeParentOfNeedOrAnswer(dragNodeData.getId(), dropNodeData.getId());
 
-		MessageDisplayer.showMessageToUserWithSeverityInfo("Dragged " + dragNodeData, "Dropped on " + dropNodeData
-				+ " at " + dropIndex);
+				// If the dropNode was a NEED_LEAF, we change its type to getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS
+				if (dropNode.getType().equals(getTreeNodeType_NEED_LEAF())) {
+					((DefaultTreeNode)dropNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
+				}
+				// If the original parent was a NEED_WITH_ASSOCIATED_ANSWERS with exactly one child -> NEED_LEAF
+				if (((TreeNodeData)dragNode.getData()).getParentBackup().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())
+						&& (((TreeNodeData)dragNode.getData()).getParentBackup().getChildCount() == 0)) {
+					((DefaultTreeNode)((TreeNodeData)dragNode.getData()).getParentBackup()).setType(getTreeNodeType_NEED_LEAF());
+				}
+
+				MessageDisplayer.showMessageToUserWithSeverityInfo("Dragged " + dragNodeData, "Dropped on " + dropNodeData
+						+ " at " + dropIndex);
+			}
+			else if (dropNode.getType().equals("default")) {
+				revertDragDrop = true;
+				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical answer on the root node.");
+			}
+			else if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())) {
+				revertDragDrop = true;
+				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical answer on a pedagogical need that already has needs as children.");
+			}
+			else if (dropNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
+				revertDragDrop = true;
+				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical answer on a pedagogical answer");
+			}
+		}
+		else {
+			// Here we know that dragNode is NEED_LEAF, NEED_WITH_ASSOCIATED_NEEDS or NEED_WITH_ASSOCIATED_ANSWERS
+			if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())
+					|| (dropNode.getType().equals(getTreeNodeType_NEED_LEAF())
+							|| (dropNode.getType().equals("default")))) {
+				needsAndAnswersService.changeParentOfNeedOrAnswer(dragNodeData.getId(), dropNodeData.getId());
+
+				// If the dropNode was a NEED_LEAF, we change its type to getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS
+				if (dropNode.getType().equals(getTreeNodeType_NEED_LEAF())) {
+					((DefaultTreeNode)dropNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
+				}
+				// If the original parent was a NEED_WITH_ASSOCIATED_NEEDS with exactly one child -> NEED_LEAF
+				if (((TreeNodeData)dragNode.getData()).getParentBackup().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())
+						&& (((TreeNodeData)dragNode.getData()).getParentBackup().getChildCount() == 0)) {
+					((DefaultTreeNode)((TreeNodeData)dragNode.getData()).getParentBackup()).setType(getTreeNodeType_NEED_LEAF());
+				}
+
+				MessageDisplayer.showMessageToUserWithSeverityInfo("Dragged " + dragNodeData, "Dropped on " + dropNodeData
+						+ " at " + dropIndex);
+			}
+			else if (dropNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
+				revertDragDrop = true;
+				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical need on a pedagogical answer.");
+			}
+			else if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())) {
+				revertDragDrop = true;
+				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical need on a pedagogical need that has answers as children.");
+			}
+		}
+
+		if (revertDragDrop) {
+			// If the drag and drop isn't allowed, we have to restore the original parent for the dragNode
+			dragNode.setParent(((TreeNodeData)dragNode.getData()).getParentBackup());
+
+			// We delete the dragNode from the new parent's children
+			dropNode.getChildren().remove(dragNode);
+			
+			// We add the dragNode to the backup parent's children
+			((TreeNodeData)dragNode.getData()).getParentBackup().getChildren().add(dragNode);
+		}
+		else {
+			// Otherwise we update the "parentBackup" in the node data to reflect the new parent
+			((TreeNodeData)dragNode.getData()).setParentBackup(dragNode.getParent());
+		}
 	}
 
 	public void onNodeSelect() {

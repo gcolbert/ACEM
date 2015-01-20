@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -44,22 +44,19 @@ import eu.ueb.acem.services.ImagesService;
 @Scope("session")
 public class ImagesController extends AbstractContextAwareController {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 6541923413899165659L;
 
+	/**
+	 * For logging.
+	 */
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ImagesController.class);
 
 	@Inject
 	private ImagesService imagesService;
-
-	private String localPathToImagesFolder;
-
-	public void setLocalPathToImagesFolder(String localPath) {
-		if (! localPath.endsWith(File.separator)) {
-			localPath += File.separator;
-		}
-		this.localPathToImagesFolder = localPath;
-	}
 	
 	public StreamedContent getImage() throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -74,7 +71,7 @@ public class ImagesController extends AbstractContextAwareController {
 			// StreamedContent with the image bytes.
 			String imageFileName = context.getExternalContext().getRequestParameterMap().get("imageFileName");
 			
-			File image = imagesService.getImage(localPathToImagesFolder, imageFileName);
+			File image = imagesService.getImage(imageFileName);
 			return new DefaultStreamedContent(new FileInputStream(image));
 		}
 	}

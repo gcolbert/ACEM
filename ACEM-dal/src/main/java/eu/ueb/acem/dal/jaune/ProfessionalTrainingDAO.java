@@ -85,13 +85,18 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 	}
 
 	@Override
+	public void initializeCollections(ProfessionalTraining entity) {
+		neo4jOperations.fetch(entity.getCategories());
+		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
+		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+		neo4jOperations.fetch(entity.getUseModes());
+	}
+
+	@Override
 	public ProfessionalTraining retrieveById(Long id, boolean initialize) {
 		ProfessionalTraining entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCategories());
-			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
-			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
-			neo4jOperations.fetch(entity.getUseModes());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -107,13 +112,26 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 	}
 
 	@Override
+	public Collection<ProfessionalTraining> retrieveByName(String name, boolean initialize) {
+		Collection<ProfessionalTraining> entities = retrieveByName(name);
+		if (initialize) {
+			for (ProfessionalTraining entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<ProfessionalTraining> retrieveAll() {
 		Iterable<ProfessionalTrainingNode> endResults = repository.findAll();
 		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();
 		if (endResults.iterator() != null) {
 			Iterator<ProfessionalTrainingNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				ProfessionalTraining entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -122,7 +140,8 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 	@Override
 	public ProfessionalTraining update(ProfessionalTraining entity) {
 		ProfessionalTraining updatedEntity = repository.save((ProfessionalTrainingNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override
@@ -151,17 +170,19 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 		}
 		return collection;
 	}
-	
+
 	public Collection<ProfessionalTraining> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<ProfessionalTrainingNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();
 		if (endResults.iterator() != null) {
 			Iterator<ProfessionalTrainingNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				ProfessionalTraining entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
 	}
-	
+
 }

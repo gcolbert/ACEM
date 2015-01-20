@@ -83,11 +83,16 @@ public class CreditDAO implements DAO<Long, Credit> {
 	}
 
 	@Override
+	public void initializeCollections(Credit entity) {
+		neo4jOperations.fetch(entity.getCourses());
+		neo4jOperations.fetch(entity.getDegrees());
+	}
+
+	@Override
 	public Credit retrieveById(Long id, boolean initialize) {
 		Credit entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCourses());
-			neo4jOperations.fetch(entity.getDegrees());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -103,22 +108,36 @@ public class CreditDAO implements DAO<Long, Credit> {
 	}
 
 	@Override
+	public Collection<Credit> retrieveByName(String name, boolean initialize) {
+		Collection<Credit> entities = retrieveByName(name);
+		if (initialize) {
+			for (Credit entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<Credit> retrieveAll() {
 		Iterable<CreditNode> endResults = repository.findAll();
-		Collection<Credit> collection = new HashSet<Credit>();
+		Collection<Credit> entities = new HashSet<Credit>();
 		if (endResults.iterator() != null) {
 			Iterator<CreditNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Credit entity = iterator.next();
+				initializeCollections(entity);
+				entities.add(entity);
 			}
 		}
-		return collection;
+		return entities;
 	}
 
 	@Override
 	public Credit update(Credit entity) {
 		Credit updatedEntity = repository.save((CreditNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

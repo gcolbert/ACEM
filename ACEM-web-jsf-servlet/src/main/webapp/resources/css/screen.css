@@ -10,13 +10,6 @@ html {
 	font-family: "lucida grande",tahoma,lucide,Arial,sans-serif;
 }
 
-.ui-layout-toggler-west .ui-layout-unit-expand-icon .ui-icon-arrow-4-diag {
-	background-position:-32px 0; /* For west collapsed layout units : show a right arrow to expand */
-}
-.ui-layout-toggler-east .ui-layout-unit-expand-icon .ui-icon-arrow-4-diag {
-	background-position:-96px 0; /* For east collapsed layout units : show a left arrow to expand */
-}
-
 .app-header {
 	color:white;
 	background-image:url("../resources/images/BandeauNumeriqueAccueil2013.png");
@@ -67,12 +60,11 @@ html {
 	padding:1em !important; /* We want to have a padding for the content under the page header */
 }
 
-.ui-datatable th[role=columnheader]{
-	text-align:left;
-}
-
-.ui-chkbox-box {
-	border:1px solid black !important; /* Increase the border on checkboxes (it may be better set inside the theme) */
+.section-title {
+	font-weight:bold;
+	color:#2B558B;
+	font-size:1.1em;
+	margin-top:1em;
 }
 
 /***********/
@@ -111,16 +103,14 @@ html {
 	background-color:white;
 }
 
-.presentationPanelGrid .section-title {
-	font-weight:bold;
-	color:#a3c3ea;
-	font-size:1.1em;
-}
-
 .presentationPanelGrid .introduction_text {
 	display:block;
 	padding-top:8px;
 	font-size:1.3em;
+}
+
+.pageIllustration {
+	
 }
 
 .circularExplanationImg {
@@ -137,29 +127,6 @@ html {
 	width:160px;
 }
 
-.ui-tabs .ui-tabs-nav {
-	background:#E6E1E0;
-}
-
-.ui-tabs .ui-tabs-nav .ui-state-default:not(.ui-tabs-selected):not(.ui-state-hover)  {
-	background:white;
-}
-
-.ui-menu .ui-menuitem {
-	background-color:#878786;
-	margin-right:0.3em !important;
-}
-.ui-menu .ui-menuitem .ui-menuitem-text {
-	color:white;
-	font-weight:bold;
-}
-
-/* p:contextMenu */
-.ui-menu {
-	min-width: 18em;
-	margin-bottom:1em;
-}
-
 /***************************/
 /* PEDAGOGICAL ADVICE TREE */
 /***************************/
@@ -172,21 +139,23 @@ html {
 
 .pedagogicalAdviceTree {
 	width:100% !important; /* The pedagogical tree must fill its container horizontally */
+	box-sizing: border-box;
+	border:0;
+}
+
+.pedagogicalAnswerDetailsPanel {
+	border:0;
 }
 
 /****************/
 /* MY SCENARIOS */
 /****************/
-.allScenariosPanel .ui-widget-content[role=row],
-.allScenariosPanel .ui-panelgrid-cell[role=gridcell] {
+.userScenariosPanel .ui-widget-content[role=row],
+.userScenariosPanel .ui-panelgrid-cell[role=gridcell] {
 	border:0 !important;  /* The panel grid containing the list of all scenarios and create/delete buttons should not have any border */
 }
 
-.allScenariosScrollPanel {
-	min-height:300px; /* The scroll panel of all scenarios should have a minimum height */
-}
-
-.allScenariosScrollPanelColumn {
+.userScenariosScrollPanelColumn {
 	border:0px !important; /* The list of all scenarios has only one column so the column doesn't need a border */
 }
 
@@ -203,17 +172,9 @@ html {
 	padding-top:0 !important; /* The selected scenario layout unit and list of scenarios must be vertically aligned, so we have to remove the default padding */
 }
 
-.selectedScenarioPropertiesPanelGrid {
-	width:100%; /* The panel grid containing the selected scenario properties must fill its container horizontally */
-}
-
 .selectedScenarioPropertiesPanelGrid .ui-widget-content,
 .selectedScenarioPropertiesPanelGrid .ui-panelgrid-cell {
 	border:0 !important; /* The panel grid containing the selected scenario properties should not have any border */
-}
-
-.selectedScenarioPropertyInplace input {
-	width:90%; /* The inplace editor should extend horizontally (we cannot use 100% because of the two buttons) */
 }
 
 .selectedScenarioActivitiesDataTable .ui-datatable-header {
@@ -233,6 +194,7 @@ html {
 	text-align:center;
 	display:inline-block;
 	vertical-align:top;
+	margin-bottom:0.5em;
 }
 
 .toolCategoryMenuEntry:hover .toolCategoryIcon {
@@ -276,6 +238,7 @@ html {
 	border:0;
 }
 
+.selectedToolCategoryPanel,
 .selectedToolCategoryPanel table[role=grid],
 .selectedToolCategoryPanel tr[role=row],
 .selectedToolCategoryPanel td[role=gridcell] {
@@ -285,6 +248,8 @@ html {
 .toolImg {
 	vertical-align:bottom;
 	margin-left:1em;
+	display:block;
+	width:250px;
 }
 
 .favoriteToolCategory {
@@ -297,6 +262,10 @@ html {
 .favoriteToolCategoryCheckbox {
 	vertical-align:middle;
 	margin-right:0.5em;
+}
+
+.resourcesDataTableActionsPanel {
+	border:0;	
 }
 
 .bottomToolboxPanel {

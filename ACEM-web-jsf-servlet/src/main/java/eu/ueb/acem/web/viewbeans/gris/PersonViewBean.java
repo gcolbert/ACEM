@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -40,25 +40,25 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PersonViewBean.class);
-	
+
 	private Person domainBean;
-	
+
 	private List<OrganisationViewBean> organisationViewBeans;
-	
+
 	private Long id;
-	
+
 	private String name;
-	
+
 	private String login;
-	
+
 	private String language;
-	
+
 	private Boolean administrator;
-	
+
 	public PersonViewBean() {
 		this.organisationViewBeans = new ArrayList<OrganisationViewBean>();
 	}
-	
+
 	public PersonViewBean(Person person) {
 		this();
 		setDomainBean(person);
@@ -88,7 +88,7 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 	public void removeOrganisationViewBean(OrganisationViewBean organisationViewBean) {
 		organisationViewBeans.remove(organisationViewBean);
 	}
-	
+
 	@Override
 	public Long getId() {
 		return id;
@@ -129,7 +129,7 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 	public void setAdministrator(Boolean administrator) {
 		this.administrator = administrator;
 	}
-	
+
 	public Boolean getIsTeacher(){
 		return this instanceof TeacherViewBean;
 	}
@@ -139,5 +139,4 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		return getDomainBean().compareTo(o.getDomainBean());
 	}
 
-	
 }

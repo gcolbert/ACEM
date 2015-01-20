@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -19,10 +19,8 @@
 package eu.ueb.acem.web.controllers;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -32,8 +30,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
@@ -44,66 +42,48 @@ import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
  */
 @Component("toolCategoryViewBeanHandler")
 @Scope("singleton")
-class ToolCategoryViewBeanHandler {
+public class ToolCategoryViewBeanHandler {
 
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(ToolCategoryViewBeanHandler.class);
-
-	private Map<Long, ToolCategoryViewBean> toolCategoryViewBeans;
 
 	@Inject
 	private ResourceViewBeanHandler resourceViewBeanHandler;
-	
+
 	@Inject
 	private ResourcesService resourcesService;
 
 	public ToolCategoryViewBeanHandler() {
-		toolCategoryViewBeans = new HashMap<Long, ToolCategoryViewBean>();
 	}
-	
+
 	@PostConstruct
-	public void initToolCategoryViewBeanHandler() {
-		/*
-		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
-		logger.info("found {} tool categories", toolCategories.size());
-		for (ResourceCategory toolCategory : toolCategories) {
-			logger.info("toolCategory = {}", toolCategory.getName());
-			getToolCategoryViewBean(toolCategory.getId());
-		}
-		*/
+	public void init() {
 	}
 
 	public ToolCategoryViewBean getToolCategoryViewBean(Long id) {
 		ToolCategoryViewBean viewBean = null;
-		if (toolCategoryViewBeans.containsKey(id)) {
-			logger.info("toolCategoryViewBean found in toolCategoryViewBeans map, so we don't reload it.");
-			viewBean = toolCategoryViewBeans.get(id);
+		ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(id);
+		if (toolCategory != null) {
+			viewBean = new ToolCategoryViewBean(toolCategory);
+			for (Resource resource : toolCategory.getResources()) {
+				viewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(resource.getId()));
+			}
 		}
 		else {
-			logger.info("toolCategoryViewBean not found in toolCategoryViewBeans map, we load it with ResourcesService.");
-			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(id);
-			if (toolCategory != null) {
-				viewBean = new ToolCategoryViewBean(toolCategory);
-				
-				for (Resource resource : toolCategory.getResources()) {
-					viewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(resource.getId()));
-				}
-
-				toolCategoryViewBeans.put(id, viewBean);
-			}
-			else {
-				logger.error("There is no tool with id={} according to ResourcesService", id);
-			}
+			logger.info("There is no tool with id={} according to ResourcesService", id);
 		}
 		return viewBean;
 	}
 
-	public void removeToolCategoryViewBean(Long id) {
-		toolCategoryViewBeans.remove(id);
+	public List<ToolCategoryViewBean> getAllToolCategoryViewBeans() {
+		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
+		List<ToolCategoryViewBean> toolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
+		for (ResourceCategory toolCategory : toolCategories) {
+			toolCategoryViewBeans.add(getToolCategoryViewBean(toolCategory.getId()));
+		}
+		return toolCategoryViewBeans;
 	}
-	
-	public List<ToolCategoryViewBean> getToolCategoryViewBeansAsList() {
-		List<ToolCategoryViewBean> toolCategoryViewBeansAsList = new ArrayList<ToolCategoryViewBean>(toolCategoryViewBeans.values());
-		Collections.sort(toolCategoryViewBeansAsList);
-		return toolCategoryViewBeansAsList;
-	}
+
 }

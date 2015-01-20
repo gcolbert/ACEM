@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -30,11 +30,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
-import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 
 /**
  * @author Grégoire Colbert
@@ -45,8 +44,12 @@ import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 @Scope("singleton")
 class NeedsAndAnswersTreeGenerator {
 
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeGenerator.class);
-	
+
+	private static final String TREE_NODE_TYPE_VISIBLE_ROOT = "VisibleRoot";
 	private static final String TREE_NODE_TYPE_NEED_LEAF = "NeedLeaf";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS = "NeedWithAssociatedNeeds";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS = "NeedWithAssociatedAnswers";
@@ -54,7 +57,11 @@ class NeedsAndAnswersTreeGenerator {
 
 	@Inject
 	private NeedsAndAnswersService needsAndAnswersService;
-	
+
+	public String getTreeNodeType_VISIBLE_ROOT() {
+		return TREE_NODE_TYPE_VISIBLE_ROOT;
+	}
+
 	public String getTreeNodeType_NEED_LEAF() {
 		return TREE_NODE_TYPE_NEED_LEAF;
 	}
@@ -70,7 +77,7 @@ class NeedsAndAnswersTreeGenerator {
 	public String getTreeNodeType_ANSWER_LEAF() {
 		return TREE_NODE_TYPE_ANSWER_LEAF;
 	}
-	
+
 	/**
 	 * Returns a new {@link EditableTreeBean} containing the Pedagogical Advice
 	 * nodes returned by the {@link NeedsAndAnswersService}.
@@ -87,38 +94,25 @@ class NeedsAndAnswersTreeGenerator {
 	 */
 	public EditableTreeBean createNeedAndAnswersTree(String singleVisibleTreeRootLabel) {
 		EditableTreeBean treeBean = new EditableTreeBean();
-		if (singleVisibleTreeRootLabel != null) {
-			treeBean.addVisibleRoot(singleVisibleTreeRootLabel);
-		}
+		TreeNode currentVisibleRoot = null;
 		Collection<PedagogicalNeed> needs = needsAndAnswersService.retrieveNeedsAtRoot();
-		logger.info("Found {} needs at root of tree.", needs.size());
+		logger.debug("Found {} needs at root of tree.", needs.size());
+
+		if (singleVisibleTreeRootLabel != null) {
+			currentVisibleRoot = treeBean.addVisibleRoot(singleVisibleTreeRootLabel);
+		}
+
 		for (PedagogicalNeed need : needs) {
-			logger.info("need = {}", need.getName());
-			TreeNode currentVisibleRoot = null;
-			if (singleVisibleTreeRootLabel != null) {
-				// If the function was called with the
-				// "singleVisibleTreeRootLabel" set,
-				// we add the real roots of the tree as children of this
-				// given "artificial" root.
-				currentVisibleRoot = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(),
-						need.getName(), "Need"), treeBean.getVisibleRoots().get(0));
-				if (need.getChildren().size() > 0) {
-					((DefaultTreeNode) currentVisibleRoot).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
-				}
-				else if (need.getAnswers().size() > 0) {
-					((DefaultTreeNode) currentVisibleRoot).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
-				}
+			// It's not a problem if currentVisibleRoot is null
+			TreeNode newNode = createChild(treeBean, need, currentVisibleRoot);
+			if (singleVisibleTreeRootLabel == null) {
+				treeBean.addVisibleRoot(newNode);
 			}
 			else {
-				// otherwise, we add the current Need as a visible root by
-				// itself (thus allowing many visible roots, but it may lead
-				// to an invisible tree if the service returns 0 node)
-				currentVisibleRoot = treeBean.addVisibleRoot(need.getName());
-			}
-			for (PedagogicalNeed child : need.getChildren()) {
-				createChild(treeBean, child, currentVisibleRoot);
+				currentVisibleRoot.getChildren().add(newNode);
 			}
 		}
+
 		if (singleVisibleTreeRootLabel != null) {
 			treeBean.getVisibleRoots().get(0).setExpanded(true);
 		}
@@ -128,29 +122,32 @@ class NeedsAndAnswersTreeGenerator {
 	/**
 	 * Recursive function to construct Tree
 	 */
-	private void createChild(EditableTreeBean treeBean, PedagogicalNeed need, TreeNode parentNode) {
+	private TreeNode createChild(EditableTreeBean treeBean, PedagogicalNeed need, TreeNode parentNode) {
 		// We create the root node for this branch
-		//TreeNode newNode = new DefaultTreeNode(getTreeNodeType_NEED_LEAF(), new TreeNodeData(need.getId(), need.getName(), "Need"), rootNode);
 		need = needsAndAnswersService.retrievePedagogicalNeed(need.getId(), true);
 		TreeNode newNode = treeBean.addChild(getTreeNodeType_NEED_LEAF(), parentNode, need.getId(), need.getName(), "Need");
-		// We look for children and recursively create them too
-		Collection<PedagogicalNeed> associatedNeeds = need.getChildren();
-		if (associatedNeeds.size() > 0) {
+
+		// We look for children (needs) and recursively create them too
+		Collection<PedagogicalNeed> associatedPedagogicalNeeds = need.getChildren();
+		if (associatedPedagogicalNeeds.size() > 0) {
+			// TODO : When PF >= 5.2, call directly newNode.setType
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
-			for (PedagogicalNeed besoinChild : associatedNeeds) {
-				createChild(treeBean, besoinChild, newNode);
+			for (PedagogicalNeed needChild : associatedPedagogicalNeeds) {
+				createChild(treeBean, needChild, newNode);
 			}
 		}
 
-		Collection<PedagogicalAnswer> answers = need.getAnswers();
-		if (answers.size() > 0) {
+		Collection<PedagogicalAnswer> associatedPedagogicalAnswers = need.getAnswers();
+		if (associatedPedagogicalAnswers.size() > 0) {
+			// TODO : When PF >= 5.2, call directly newNode.setType
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
-			need.setAnswers((Set<PedagogicalAnswer>) answers);
-			for (PedagogicalAnswer answer : answers) {
-				//new DefaultTreeNode(getTreeNodeType_ANSWER_LEAF(), new TreeNodeData(answer.getId(), answer.getName(), "Answer"), newNode);
+			need.setAnswers((Set<PedagogicalAnswer>) associatedPedagogicalAnswers);
+			for (PedagogicalAnswer answer : associatedPedagogicalAnswers) {
 				treeBean.addChild(getTreeNodeType_ANSWER_LEAF(), newNode, answer.getId(), answer.getName(), "Answer");
 			}
 		}
+		
+		return newNode;
 	}
-
+	
 }

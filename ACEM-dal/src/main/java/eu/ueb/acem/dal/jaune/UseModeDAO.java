@@ -51,7 +51,6 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 	private static final Logger logger = LoggerFactory.getLogger(UseModeDAO.class);
 
 	@Inject
-	@SuppressWarnings("unused")
 	private Neo4jOperations neo4jOperations;
 
 	@Inject
@@ -87,8 +86,14 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 	public UseMode retrieveById(Long id, boolean initialize) {
 		UseMode entity = retrieveById(id);
 		if (initialize) {
+			initializeCollections(entity);
 		}
 		return entity;
+	}
+
+	@Override
+	public void initializeCollections(UseMode entity) {
+		neo4jOperations.fetch(entity.getReferredOrganisations());
 	}
 
 	@Override
@@ -102,13 +107,26 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 	}
 
 	@Override
+	public Collection<UseMode> retrieveByName(String name, boolean initialize) {
+		Collection<UseMode> entities = retrieveByName(name);
+		if (initialize) {
+			for (UseMode entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<UseMode> retrieveAll() {
 		Iterable<UseModeNode> endResults = repository.findAll();
 		Collection<UseMode> collection = new HashSet<UseMode>();
 		if (endResults.iterator() != null) {
 			Iterator<UseModeNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				UseMode entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -117,7 +135,8 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 	@Override
 	public UseMode update(UseMode entity) {
 		UseMode updatedEntity = repository.save((UseModeNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

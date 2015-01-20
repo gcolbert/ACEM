@@ -29,7 +29,6 @@
 	</bean>
 
 	<import resource="cache/cache.xml"/>
-	<import resource="web/controllers.xml" />
 	<import resource="i18n/i18n.xml" />
 
 	<!-- Enables the @Scope("view") for Spring's components and controllers -->

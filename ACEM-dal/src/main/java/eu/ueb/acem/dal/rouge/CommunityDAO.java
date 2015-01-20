@@ -83,13 +83,18 @@ public class CommunityDAO implements DAO<Long, Community> {
 	}
 
 	@Override
+	public void initializeCollections(Community entity) {
+		neo4jOperations.fetch(entity.getPossessedResources());
+		neo4jOperations.fetch(entity.getViewedResources());
+		neo4jOperations.fetch(entity.getUseModes());
+		neo4jOperations.fetch(entity.getInstitutions());
+	}
+	
+	@Override
 	public Community retrieveById(Long id, boolean initialize) {
 		Community entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getPossessedResources());
-			neo4jOperations.fetch(entity.getViewedResources());
-			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getInstitutions());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -105,22 +110,36 @@ public class CommunityDAO implements DAO<Long, Community> {
 	}
 
 	@Override
+	public Collection<Community> retrieveByName(String name, boolean initialize) {
+		Collection<Community> entities = retrieveByName(name);
+		if (initialize) {
+			for (Community entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<Community> retrieveAll() {
 		Iterable<CommunityNode> endResults = repository.findAll();
-		Collection<Community> collection = new HashSet<Community>();
+		Collection<Community> entities = new HashSet<Community>();
 		if (endResults.iterator() != null) {
 			Iterator<CommunityNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Community entity = iterator.next();
+				initializeCollections(entity);
+				entities.add(entity);
 			}
 		}
-		return collection;
+		return entities;
 	}
 
 	@Override
 	public Community update(Community entity) {
 		Community updatedEntity = repository.save((CommunityNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

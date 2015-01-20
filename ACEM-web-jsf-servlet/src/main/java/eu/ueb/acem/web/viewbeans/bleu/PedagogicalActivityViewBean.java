@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -24,7 +24,7 @@ import java.util.List;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.web.viewbeans.Pickable;
-import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -43,11 +43,11 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 	private String objective;
 	private String instructions;
 	private String duration;
-	private List<ResourceViewBean> resources;
+	private List<ToolCategoryViewBean> toolCategoryViewBeans;
 
 	public PedagogicalActivityViewBean(PedagogicalActivity pedagogicalActivity) {
+		toolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 		setPedagogicalActivity(pedagogicalActivity);
-		resources = new ArrayList<ResourceViewBean>();
 	}
 
 	public PedagogicalActivity getPedagogicalActivity() {
@@ -61,7 +61,6 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 		setObjective(pedagogicalActivity.getObjective());
 		setInstructions(pedagogicalActivity.getInstructions());
 		setDuration(pedagogicalActivity.getDuration());
-		//setResources(pedagogicalActivity.getResources());
 	}
 
 	public Long getPositionInScenario() {
@@ -118,18 +117,17 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 		pedagogicalActivity.setDuration(duration);
 	}
 
-	public List<ResourceViewBean> getResources() {
-		return resources;
+	public List<ToolCategoryViewBean> getToolCategoryViewBeans() {
+		return toolCategoryViewBeans;
 	}
 
-	public void setResources(List<ResourceViewBean> resources) {
-		this.resources = resources;
-		//pedagogicalActivity.setResources(resources.); // TODO ajouter les ressources (ou supprimer cette ligne?)
+	public void setToolCategoryViewBeans(List<ToolCategoryViewBean> toolCategoryViewBeans) {
+		this.toolCategoryViewBeans = toolCategoryViewBeans;
 	}
 
 	@Override
 	public int compareTo(PedagogicalActivityViewBean o) {
 		return getPedagogicalActivity().compareTo(o.getPedagogicalActivity());
 	}
-	
+
 }

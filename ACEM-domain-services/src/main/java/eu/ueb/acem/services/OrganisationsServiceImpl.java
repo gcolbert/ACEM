@@ -201,25 +201,25 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Override
 	public Community updateCommunity(Community community) {
 		Community updatedEntity = communityDAO.update(community);
-		return retrieveCommunity(updatedEntity.getId(), true);
+		return updatedEntity;
 	}
 
 	@Override
 	public Institution updateInstitution(Institution institution) {
 		Institution updatedEntity = institutionDAO.update(institution);
-		return retrieveInstitution(updatedEntity.getId(), true);
+		return updatedEntity;
 	}
 
 	@Override
 	public AdministrativeDepartment updateAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
 		AdministrativeDepartment updatedAdministrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
-		return retrieveAdministrativeDepartment(updatedAdministrativeDepartment.getId(), true);
+		return updatedAdministrativeDepartment;
 	}
 
 	@Override
 	public TeachingDepartment updateTeachingDepartment(TeachingDepartment teachingDepartment) {
 		TeachingDepartment updatedEntity = teachingDepartmentDAO.update(teachingDepartment);
-		return retrieveTeachingDepartment(updatedEntity.getId(), true);
+		return updatedEntity;
 	}
 
 	@Override

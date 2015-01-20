@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -23,8 +23,10 @@ import java.io.IOException;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.Person;
@@ -34,18 +36,20 @@ import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 /**
  * A bean to memorize the context of the application.
  */
+@Controller("sessionController")
+@Scope("session")
 public class SessionController extends AbstractDomainAwareBean {
 
 	/**
-	 * Logger
+	 * For logging.
 	 */
 	@SuppressWarnings("unused")
 	private final Logger logger = LoggerFactory.getLogger(SessionController.class);
 
 	/**
-	 * The serialization id.
+	 * For serialization.
 	 */
-	static final long serialVersionUID = -5936434246704000653L;
+	private static final long serialVersionUID = -5936434246704000653L;
 	
 	/*
 	 * ****************** PROPERTIES ********************

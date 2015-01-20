@@ -32,9 +32,8 @@
 		</property>
 	</bean>
 	
-	<import resource="classpath*:exceptionHandling/exceptionHandling.xml" />
 	<import resource="classpath*:cache/cache.xml"/>
-	<import resource="classpath*:web/controllers.xml" />
+	<import resource="classpath*:i18n/i18n.xml" />
 	
 	<!-- Enables the @Scope("view") for Spring's components and controllers -->
 	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">

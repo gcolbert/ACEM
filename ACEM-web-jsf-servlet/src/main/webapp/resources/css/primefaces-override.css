@@ -1,0 +1,88 @@
+/*------------------------------------------------------------
+Override of Primefaces default css
+--------------------------------------------------------------*/
+.ui-tabs .ui-tabs-nav {
+	background:#E6E1E0;
+}
+
+.ui-tabs .ui-tabs-nav .ui-state-default:not(.ui-tabs-selected):not(.ui-state-hover)  {
+	background:white;
+}
+
+.ui-menu .ui-menuitem {
+	background-color:#878786;
+	margin-right:0.3em !important;
+}
+.ui-menu .ui-menuitem .ui-menuitem-text {
+	color:white;
+	font-weight:bold;
+}
+
+/* p:contextMenu */
+.ui-menu {
+	min-width: 18em;
+}
+
+.ui-menubar {
+	border:0; /* Remove the border for menu bars */
+}
+
+.ui-breadcrumb {
+	margin:0 0.3em !important;
+}
+
+.ui-layout-north {
+	z-index:20 !important;        /* Let menu be visible over content layout */
+	overflow:visible !important;  /* Let menu be visible over content layout */
+	border: none;                 /* Remove the border for north layout (top) */
+	padding:0 !important;         /* Remove the padding for north layout (top) */
+}
+
+.ui-layout-north .ui-layout-unit-content {
+	overflow:visible !important;  /* Let menu be visible over content layout */
+	padding:0 !important;		  /* North layout should not have any padding */
+}
+
+.ui-layout-south {
+	border: none; /* Remove the border for south layout (footer) */
+}
+
+.centeredColumn {
+	text-align:center !important;
+}
+
+.ce-panelColumns td {
+	vertical-align: top; /* Align panel content to top */
+} 
+
+.ui-layout-toggler-west .ui-layout-unit-expand-icon .ui-icon-arrow-4-diag {
+	background-position:-32px -16px; /* For west collapsed layout units : show a right arrow to expand */
+}
+.ui-layout-toggler-east .ui-layout-unit-expand-icon .ui-icon-arrow-4-diag {
+	background-position:-96px -16px; /* For east collapsed layout units : show a left arrow to expand */
+}
+.ui-layout-toggler-north .ui-layout-unit-expand-icon .ui-icon-arrow-4-diag {
+	background-position:-64px -16px; /* For north collapsed layout units : show a down arrow to expand */
+}
+.ui-layout-toggler-south .ui-layout-unit-expand-icon .ui-icon-arrow-4-diag {
+	background-position:0px -16px; /* For south collapsed layout units : show a up arrow to expand */
+}
+
+.ui-chkbox-box,
+.ui-radiobutton-box {
+	border:1px solid black !important; /* Increase the border on checkboxes */
+}
+
+.ui-datatable th[role=columnheader]{
+	text-align:left; /* We want the headers of datatables to be aligned left (and not centered) */
+}
+
+.ui-editor {
+	height:100% !important;
+	box-sizing:border-box;
+}
+.ui-editor iframe {
+	width:100% !important;
+	/*height:100% !important;*/
+	box-sizing:border-box;
+}

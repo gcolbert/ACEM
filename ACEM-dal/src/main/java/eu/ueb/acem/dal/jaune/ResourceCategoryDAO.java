@@ -83,12 +83,17 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 	}
 
 	@Override
+	public void initializeCollections(ResourceCategory entity) {
+		neo4jOperations.fetch(entity.getAnswers());
+		neo4jOperations.fetch(entity.getPedagogicalActivities());
+		neo4jOperations.fetch(entity.getResources());
+	}
+
+	@Override
 	public ResourceCategory retrieveById(Long id, boolean initialize) {
 		ResourceCategory entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getAnswers());
-			neo4jOperations.fetch(entity.getPedagogicalActivities());
-			neo4jOperations.fetch(entity.getResources());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -104,13 +109,26 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 	}
 
 	@Override
+	public Collection<ResourceCategory> retrieveByName(String name, boolean initialize) {
+		Collection<ResourceCategory> entities = retrieveByName(name);
+		if (initialize) {
+			for (ResourceCategory entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<ResourceCategory> retrieveAll() {
 		Iterable<ResourceCategoryNode> endResults = repository.findAll();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
 		if (endResults.iterator() != null) {
 			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				ResourceCategory entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -119,7 +137,8 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 	@Override
 	public ResourceCategory update(ResourceCategory entity) {
 		ResourceCategory updatedEntity = repository.save((ResourceCategoryNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

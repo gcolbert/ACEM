@@ -3,270 +3,284 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	template="../templates/template.xhtml">
+	template="../templates/commonLayout.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="scenarioId"
+			value="#{myScenariosController.selectedScenarioId}" />
+	</f:metadata>
+
+	<!-- Controller associated with this view -->
+	<ui:param name="associateBean" value="#{myScenariosController}" />
+
+	<!-- Control display of the layouts -->
+	<ui:param name="displayNorth" value="true" />
+	<ui:param name="northPanelCollapsible" value="true"/>
+	<ui:param name="northPanelCollapsed" value="false"/>
+
+	<ui:param name="displayWest" value="true" />
+	<ui:param name="titleWest" value="#{msg['MY_SCENARIOS.LIST_USER_SCENARIOS.HEADER']}" />
+	<ui:param name="westPanelCollapsible" value="true"/>
+	<ui:param name="westPanelCollapsed" value="false"/>
+
+	<ui:param name="displayEast" value="false" />
+
+	<ui:param name="displaySouth" value="true" />
+	<ui:param name="titleSouth" value="#{msg['MY_SCENARIOS.CONTROLS.HEADER']}"/>
+	<ui:param name="southPanelCollapsible" value="true"/>
+	<ui:param name="southPanelCollapsed" value="false"/>
+
+	<ui:param name="pageTitle" value="#{associateBean.pageTitle}" />
+	<ui:param name="titleContent" value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}" />
+	<ui:param name="titlePageOne" value="#{msg['MY_SCENARIOS.TITLE']}"/>
+	<ui:param name="titlePageTwo" value=""/>
+
+	<!-- List of user's scenarios in west layout -->
+	<ui:define name="west">
+		<p:panelGrid columns="1" styleClass="userScenariosPanel">
+			<p:commandButton value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
+				icon="ui-icon-plusthick" update=":createScenarioForm:dialogCreateScenarioId"
+				oncomplete="PF('dialogCreateScenario').show()">
+				<p:resetInput target=":createScenarioForm:dialogCreateScenarioId" />
+			</p:commandButton>
+			<p:scrollPanel mode="native" styleClass="userScenariosScrollPanel">
+				<p:dataTable id="scenariosDataTable"
+					emptyMessage="#{msg['MY_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
+					value="#{associateBean.scenarioViewBeans}"
+					var="scenarioViewBean" rowKey="#{scenarioViewBean.id}"
+					selection="#{associateBean.selectedScenarioViewBean}"
+					selectionMode="single">
+					<p:ajax event="rowSelect"
+						listener="#{associateBean.onScenarioRowSelect}"
+						update=":contentForm :southForm" />
+					<p:column styleClass="userScenariosScrollPanelColumn"
+						headerText="#{msg['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
+						<h:outputText id="scenario" value="#{scenarioViewBean.name}" />
+						<p:tooltip for="scenario" value="#{scenarioViewBean.objective}" />  
+					</p:column>
+				</p:dataTable>
+			</p:scrollPanel>
+		</p:panelGrid>
+	</ui:define>
+
+	<!-- Actions for selected scenario in footer -->
+	<ui:define name="footer">
+		<p:commandButton icon="ui-icon-check"
+			value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.SAVE_LABEL']}"
+			action="#{associateBean.onSave}"
+			disabled="#{associateBean.selectedScenarioViewBean == null}"
+			update=":contentForm:messagesDisplayer" />
+		<p:commandButton id="deleteScenarioButton"
+			value="#{msg['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
+			icon="ui-icon-trash" action="#{associateBean.deleteSelectedScenario}"
+			disabled="#{associateBean.selectedScenarioViewBean == null}"
+			update=":westForm:scenariosDataTable :southForm :contentForm">
+			<p:confirm
+				header="#{msg['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_HEADER']}"
+				message="#{msg['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_QUESTION']}"
+				icon="ui-icon-alert" />
+		</p:commandButton>
+	</ui:define>
+
+	<!--  Selected scenario in center layout -->
 	<ui:define name="content">
-		<ui:debug hotkey="1"
-			rendered="#{facesContext.application.projectStage == 'Development'}" />
 
-		<h:form id="formScenarios">
-			<p:growl id="messagesDisplayer" showDetail="true" />
+		<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
+			<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
+				type="button" styleClass="ui-confirmdialog-yes"
+				icon="ui-icon-check" />
+			<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
+				type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
 
-			<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
-				<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
-					type="button" styleClass="ui-confirmdialog-yes"
-					icon="ui-icon-check" />
-				<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
-					type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-			</p:confirmDialog>
+		<p:outputPanel rendered="#{associateBean.selectedScenarioViewBean != null}">
 
-			<p:layout id="layout">
+			<p:panelGrid columns="2" styleClass="selectedScenarioPropertiesPanelGrid">
+				<p:outputLabel for="selectedScenarioName"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.NAME_LABEL']}"
+					styleClass="label" />
+				<h:outputText id="selectedScenarioName"
+					value="#{associateBean.selectedScenarioViewBean.name}" />
 
-				<p:layoutUnit position="west" resizable="true" collapsible="true" header="#{msg['MY_SCENARIOS.HEADER']}" size="250">
-					<p:panelGrid columns="1" styleClass="allScenariosPanel">
-						<p:commandButton
-							value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_LABEL']}"
-							icon="ui-icon-plusthick" update=":dialogCreateScenarioId"
-							oncomplete="PF('dialogCreateScenario').show()">
-							<p:resetInput target=":dialogCreateScenarioId" />
-						</p:commandButton>
-						<p:scrollPanel mode="native" styleClass="allScenariosScrollPanel">
-							<p:dataTable id="scenariosDataTable"
-								emptyMessage="#{msg['MY_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
-								value="#{myScenariosController.scenarioViewBeans}"
-								var="scenarioViewBean" rowKey="#{scenarioViewBean.id}"
-								selection="#{myScenariosController.selectedScenarioViewBean}"
-								selectionMode="single">
-								<p:ajax event="rowSelect"
-									listener="#{myScenariosController.onScenarioRowSelect}"
-									update="@form" />
-								<!-- 
-								<p:ajax event="rowUnselect"
-									listener="#{myScenariosController.onRowUnselect}"
-									update="@form" />
-									 -->
-								<p:column styleClass="allScenariosScrollPanelColumn"
-									headerText="#{msg['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
-									<h:outputText id="scenario" value="#{scenarioViewBean.name}" />
-									<p:tooltip for="scenario" value="#{scenarioViewBean.objective}" />  
-								</p:column>
-							</p:dataTable>
-						</p:scrollPanel>
-						<p:commandButton id="deleteScenarioButton"
-							value="#{msg['MY_SCENARIOS.DELETE_SCENARIO_LABEL']}"
-							icon="ui-icon-trash"
-							action="#{myScenariosController.deleteSelectedScenario}"
-							disabled="#{myScenariosController.selectedScenarioViewBean == null}"
-							update="@form">
-							<p:confirm
-								header="#{msg['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_HEADER']}"
-								message="#{msg['MY_SCENARIOS.DELETE_SCENARIO.CONFIRMATION_QUESTION']}"
-								icon="ui-icon-alert" />
-						</p:commandButton>
-					</p:panelGrid>
-				</p:layoutUnit>
+				<p:outputLabel for="selectedScenarioObjective"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.OBJECTIVE_LABEL']}"
+					styleClass="label" />
+				<h:outputText id="selectedScenarioObjective"
+					value="#{associateBean.selectedScenarioViewBean.objective}" />
 
-				<p:layoutUnit position="center" styleClass="selectedScenarioLayoutUnit">
-					<p:panel header="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}"
-						rendered="#{myScenariosController.selectedScenarioViewBean != null}">
+				<p:outputLabel for="selectedScenarioAuthors"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.AUTHORS_LABEL']}"
+					styleClass="label" />
+				<h:outputText  id="selectedScenarioAuthors"
+					value="#{associateBean.selectedScenarioViewBean.authors}" />
 
-						<p:panelGrid columns="2" styleClass="selectedScenarioPropertiesPanelGrid">
-							<h:outputLabel for="selectedScenarioName"
-								value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.NAME_LABEL']}"
-								styleClass="label" />
-							<p:panel>
-								<p:inplace styleClass="selectedScenarioPropertyInplace" editor="true">
-									<p:ajax event="save" listener="#{myScenariosController.onSave}"
-										update="@form" />
-									<p:ajax event="cancel" update="@this" />
-									<h:inputText id="selectedScenarioName"
-										value="#{myScenariosController.selectedScenarioViewBean.name}"
-										required="true" requiredMessage="#{msg['REQUIRED_FIELD']}" />
-								</p:inplace>
-							</p:panel>
+				<p:outputLabel for="selectedScenarioCreationDate"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.CREATION_DATE_LABEL']}"
+					styleClass="label" />
+				<h:outputText id="selectedScenarioCreationDate"
+					value="#{associateBean.selectedScenarioViewBean.creationDate}" />
 
-							<h:outputLabel for="selectedScenarioObjective"
-								value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.OBJECTIVE_LABEL']}"
-								styleClass="label" />
-							<p:panel>
-								<p:inplace styleClass="selectedScenarioPropertyInplace" editor="true">
-									<p:ajax event="save" listener="#{myScenariosController.onSave}"
-										update="@form" />
-									<p:ajax event="cancel" update="@this" />
-									<h:inputText id="selectedScenarioObjective"
-										value="#{myScenariosController.selectedScenarioViewBean.objective}"
-										required="true" requiredMessage="#{msg['REQUIRED_FIELD']}" />
-								</p:inplace>
-							</p:panel>
+				<p:outputLabel for="selectedScenarioModificationDate"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.MODIFICATION_DATE_LABEL']}"
+					styleClass="label" />
+				<h:outputText id="selectedScenarioModificationDate"
+					value="#{associateBean.selectedScenarioViewBean.modificationDate}" />
+			</p:panelGrid>
+			<p:commandButton 
+				value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_PEDAGOGICAL_SCENARIO_LABEL']}"
+				icon="ui-icon-pencil"
+				actionListener="#{associateBean.setSelectedPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
+				action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity()}"
+				oncomplete="PF('dialogEditScenario').show()"
+				update=":modifyScenarioForm:dialogEditScenarioId"
+				process="@this" />
 
-							<h:outputLabel for="selectedScenarioAuthors"
-								value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.AUTHORS_LABEL']}"
-								styleClass="label" />
-							<p:panel id="selectedScenarioAuthors">
-								<h:outputText 
-									value="#{myScenariosController.selectedScenarioViewBean.authors}" />
-							</p:panel>
-							<!-- 
-							<p:panel id="selectedScenarioAuthors">
-								<ui:repeat
-									value="#{myScenariosController.selectedScenarioViewBean.authorViewBeans}"
-									var="authorViewBean">
-									<h:outputText value="#{authorViewBean.name}" />
-								</ui:repeat>
-							</p:panel>
-							-->
+			<!-- 
+			<ui:repeat id="favoriteToolCategories"
+				value="#{associateBean.selectedScenarioViewBean.pedagogicalActivityViewBeans}"
+				var="pedagogicalActivityViewBean">
 
-							<h:outputLabel for="selectedScenarioCreationDate"
-								value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.CREATION_DATE_LABEL']}"
-								styleClass="label" />
-							<p:panel>
-								<h:outputText id="selectedScenarioCreationDate"
-									value="#{myScenariosController.selectedScenarioViewBean.creationDate}" />
-							</p:panel>
+				<p:outputLabel styleClass="label"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_POSITION_IN_SCENARIO']}"/>
+				<h:outputText value="#{pedagogicalActivityViewBean.positionInScenario}" />
 
-							<h:outputLabel for="selectedScenarioModificationDate"
-								value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.MODIFICATION_DATE_LABEL']}"
-								styleClass="label"
-								rendered="#{myScenariosController.selectedScenarioViewBean.modificationDate != null}" />
-							<p:panel
-								rendered="#{myScenariosController.selectedScenarioViewBean.modificationDate != null}">
-								<h:outputText id="selectedScenarioModificationDate"
-									value="#{myScenariosController.selectedScenarioViewBean.modificationDate}" />
-							</p:panel>
+				<p:outputLabel styleClass="label"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_NAME']}"/>
+				<h:outputText value="#{pedagogicalActivityViewBean.name}" />
 
-						</p:panelGrid>
+				<p:outputLabel styleClass="label"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_OBJECTIVE']}"/>
+				<h:outputText value="#{pedagogicalActivityViewBean.objective}" />
 
-						<p:dataTable styleClass="selectedScenarioActivitiesDataTable"
-							editable="true"
-							emptyMessage="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
-							value="#{myScenariosController.selectedScenarioViewBean.pedagogicalActivityViewBeans}"
-							var="pedagogicalActivityViewBean"
-							rowKey="pedagogicalActivityViewBean.id">
+				<p:outputLabel styleClass="label"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_INSTRUCTIONS']}"/>
+				<h:outputText value="#{pedagogicalActivityViewBean.instructions}" />
 
-							<f:facet name="header">#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.TABLE_HEADER']}</f:facet>
+				<p:outputLabel styleClass="label"
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DURATION']}"/>
+				<h:outputText value="#{pedagogicalActivityViewBean.duration}" />
 
-							<p:ajax event="rowEdit"
-								listener="#{myScenariosController.onActivityRowEdit}"
-								update=":formScenarios:messagesDisplayer" />
+				<p:outputLabel styleClass="label"
+					headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_TOOLS']}"/>
+				<h:outputText value="#{pedagogicalActivityViewBean.resources}" />
 
-							<p:ajax event="rowEditCancel" update="@this" />
+				<p:commandButton 
+					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_PEDAGOGICAL_ACTIVITY_LABEL']}"
+					icon="ui-icon-pencil"
+					actionListener="#{associateBean.setSelectedPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
+					action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity()}"
+					oncomplete="PF('dialogEditActivity').show()"
+					update=":modifyActivityForm:dialogEditActivityId"
+					process="@this" />
 
-							<p:column width="20"
-								headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_POSITION_IN_SCENARIO']}">
-								<h:outputText
-									value="#{pedagogicalActivityViewBean.positionInScenario}" />
-							</p:column>
-							<p:column
-								headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_NAME']}">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{pedagogicalActivityViewBean.name}" />
-									</f:facet>
-									<f:facet name="input">
-										<h:inputText value="#{pedagogicalActivityViewBean.name}"
-											style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column
-								headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_OBJECTIVE']}">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{pedagogicalActivityViewBean.objective}" />
-									</f:facet>
-									<f:facet name="input">
-										<h:inputText value="#{pedagogicalActivityViewBean.objective}"
-											style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column
-								headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_INSTRUCTIONS']}">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText
-											value="#{pedagogicalActivityViewBean.instructions}" />
-									</f:facet>
-									<f:facet name="input">
-										<h:inputText
-											value="#{pedagogicalActivityViewBean.instructions}"
-											style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column
-								headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DURATION']}">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{pedagogicalActivityViewBean.duration}" />
-									</f:facet>
-									<f:facet name="input">
-										<h:inputText value="#{pedagogicalActivityViewBean.duration}"
-											style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column
-								headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_TOOLS']}">
-								<p:cellEditor>
-									<f:facet name="output">
-										<h:outputText value="#{pedagogicalActivityViewBean.resources}" />
-									</f:facet>
-									<f:facet name="input">
-										<h:inputText value="#{pedagogicalActivityViewBean.resources}"
-											style="width:100%" />
-									</f:facet>
-								</p:cellEditor>
-							</p:column>
-							<p:column style="width:6%">
-								<!-- 
-								<p:commandButton 
-									value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_PEDAGOGICAL_ACTIVITY_LABEL']}"
-									icon="ui-icon-pencil"
-									actionListener="#{myScenariosController.setCurrentPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
-									action="#{myScenariosController.preparePicklistToolCategoryViewBeansForCurrentPedagogicalActivity()}"
-									oncomplete="PF('dialogEditActivity').show()"
-									update=":formEditActivity"
-									process="@this" />
-								 -->
-								<p:rowEditor />
-							</p:column>
-						</p:dataTable>
+			</ui:repeat>
+			-->
 
-						<p:commandButton
-							value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.ADD_ACTIVITY_LABEL']}"
-							icon="ui-icon-plusthick"
-							action="#{myScenariosController.onCreateActivity}" update="@form" />
+			<p:dataTable id="pedagogicalActivitiesDataTable" styleClass="selectedScenarioActivitiesDataTable"
+				editable="true"
+				emptyMessage="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
+				value="#{associateBean.selectedScenarioViewBean.pedagogicalActivityViewBeans}"
+				var="pedagogicalActivityViewBean"
+				rowKey="pedagogicalActivityViewBean.id">
 
-						<p:panel id="grid" header="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}">
-							<p:editor id="evaluationModesEditor"
-								value="#{myScenariosController.selectedScenarioViewBean.evaluationModes}"
-								controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo" />
-						</p:panel>
+				<f:facet name="header">#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.TABLE_HEADER']}</f:facet>
 
-<!-- 
-						<p:panelGrid columns="2">
-							<h:outputLabel for="selectedScenarioName"
-								value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}"
-								styleClass="label" />
+				<p:column width="20"
+					headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_POSITION_IN_SCENARIO']}">
+					<h:outputText
+						value="#{pedagogicalActivityViewBean.positionInScenario}" />
+				</p:column>
+				<p:column
+					headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_NAME']}">
+					<h:outputText value="#{pedagogicalActivityViewBean.name}" escape="false" />
+				</p:column>
+				<p:column
+					headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_OBJECTIVE']}">
+					<h:outputText value="#{pedagogicalActivityViewBean.objective}" escape="false" />
+				</p:column>
+				<p:column
+					headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_INSTRUCTIONS']}">
+					<h:outputText value="#{pedagogicalActivityViewBean.instructions}" escape="false" />
+				</p:column>
+				<p:column
+					headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DURATION']}">
+					<h:outputText value="#{pedagogicalActivityViewBean.duration}" escape="false" />
+				</p:column>
+				<p:column
+					headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_TOOLS']}">
+					<ui:repeat id="requiredToolCategories"
+						value="#{pedagogicalActivityViewBean.toolCategoryViewBeans}"
+						var="toolCategoryViewBean">
+						<h:outputLink id="goToToolCategoryBtn" outcome="my-tools">
+							<f:param name="toolCategoryId"
+								value="#{toolCategoryViewBean.id}" />
+							<h:outputText value="#{toolCategoryViewBean.name}"
+								rendered="#{empty toolCategoryViewBean.iconFileName}" />
+							<p:graphicImage rendered="#{not empty toolCategoryViewBean.iconFileName}"
+								styleClass="toolCategoryLogo"
+								alt="#{toolCategoryViewBean.name}" cache="true" width="50"
+								value="#{imagesController.getImage()}">
+								<f:param name="imageFileName"
+									value="#{toolCategoryViewBean.iconFileName}" />
+							</p:graphicImage>
+						</h:outputLink>
+						<p:tooltip for="goToToolCategoryBtn"
+							value="#{toolCategoryViewBean.name}" />
+					</ui:repeat>
+				</p:column>
+				<p:column>
+					<p:commandButton 
+						value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_PEDAGOGICAL_ACTIVITY_LABEL']}"
+						icon="ui-icon-pencil"
+						actionListener="#{associateBean.setSelectedPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
+						action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity()}"
+						oncomplete="PF('dialogEditActivity').show()"
+						update=":modifyActivityForm:dialogEditActivityId"
+						process="@this" />
+					<p:commandButton 
+						value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.DELETE_PEDAGOGICAL_ACTIVITY_LABEL']}"
+						icon="ui-icon-trash"
+						actionListener="#{associateBean.setSelectedPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
+						action="#{associateBean.onDeleteSelectedPedagogicalActivity()}"
+						update=":contentForm:pedagogicalActivitiesDataTable"
+						process="@this">
+						<p:confirm
+							header="#{msg['MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.CONFIRMATION_HEADER']}"
+							message="#{msg['MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.CONFIRMATION_QUESTION']}"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
 
-							<h:outputLabel for="selectedScenarioName"
-								value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}"
-								styleClass="label" />
-							<p:editor id="evaluationModesEditor"
-								value="#{myScenariosController.selectedScenarioViewBean.evaluationModes}"
-								controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo" />
-						</p:panelGrid>
--->						
-						<p:commandButton icon="ui-icon-check" value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.SAVE_LABEL']}" action="#{myScenariosController.onSave}" update=":formScenarios:messagesDisplayer"/>
-					</p:panel>
-				</p:layoutUnit>
-			</p:layout>
-		</h:form>
+			<p:commandButton
+				value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.ADD_ACTIVITY_LABEL']}"
+				icon="ui-icon-plusthick"
+				oncomplete="PF('dialogEditActivity').show()"
+				update=":modifyActivityForm:dialogEditActivityId"
+				process="@this">
+				<p:resetInput target=":modifyActivityForm:dialogEditActivityId" />
+			</p:commandButton>
 
-		<p:dialog id="dialogCreateScenarioId"
-			header="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogCreateScenario" modal="true" height="auto">
-			<h:form id="formCreateScenario">
+			<p:panel id="grid" header="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}">
+				<h:outputText id="evaluationModes" value="#{associateBean.selectedScenarioViewBean.evaluationModes}" escape="false"/>
+			</p:panel>
+
+			<p:commandButton
+				value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_EVALUATION_MODES_LABEL']}"
+				icon="ui-icon-pencil"
+				oncomplete="PF('dialogEditEvaluation').show()"
+				update=":modifyEditEvaluationForm:dialogEditEvaluationId"
+				process="@none" />
+
+		</p:outputPanel>
+
+	</ui:define>
+
+	<ui:define name="customDialogOutFormWithoutForm">
+		<h:form id="createScenarioForm">
+			<p:dialog id="dialogCreateScenarioId"
+				header="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogCreateScenario" modal="true" height="auto">
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newScenarioName"
 						value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.NAME_LABEL']}" />
@@ -274,31 +288,74 @@
 						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input1}" />
 					<p:message for="newScenarioName" display="text" />
-
 					<h:outputLabel for="newScenarioObjective"
 						value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.OBJECTIVE_LABEL']}" />
 					<p:inputText id="newScenarioObjective" required="true"
 						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input2}" />
 					<p:message for="newScenarioObjective" display="text" />
-
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{myScenariosController.createScenario(input1.value, input2.value)}"
-					update="@form :formScenarios"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogCreateScenario.hide(); }" />
-			</h:form>
-		</p:dialog>
+					action="#{myScenariosController.onCreatePedagogicalScenario(input1.value, input2.value)}"
+					update="@form :westForm:scenariosDataTable :contentForm :southForm"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateScenario').hide(); }" />
+			</p:dialog>
+		</h:form>
 
-		<p:dialog id="dialogEditActivityId"
-			header="#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.HEADER']}"
-			widgetVar="dialogEditActivity" modal="true" height="auto">
-			<h:form id="formEditActivity">
-			<!-- 
-				<p:pickList id="dialogAssociateToolCategoryPickList"
-					value="#{myScenariosController.pickListBean.pickListEntities}"
+		<h:form id="modifyScenarioForm">
+			<p:dialog id="dialogEditScenarioId"
+				header="#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_SCENARIO_WINDOW.HEADER']}"
+				widgetVar="dialogEditScenario" modal="true" height="auto">
+
+				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.NAME_LABEL']}"/></h3>
+				<p:editor
+					value="#{associateBean.selectedScenarioViewBean.name}" height="60"
+					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo"/>
+
+				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.OBJECTIVE_LABEL']}"/></h3>
+				<p:editor
+					value="#{associateBean.selectedScenarioViewBean.objective}" height="250"
+					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo"/>
+
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="false"
+					action="#{associateBean.onSave()}"
+					process="@form"
+					update=":contentForm"
+					oncomplete="PF('dialogEditScenario').hide();">
+					<p:resetInput target=":modifyScenarioForm:dialogEditScenarioId" />
+				</p:commandButton>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="modifyActivityForm">
+			<p:dialog id="dialogEditActivityId"
+				header="#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.HEADER']}"
+				widgetVar="dialogEditActivity" modal="true" height="auto">
+
+				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_NAME']}"/></h3>
+				<p:editor value="#{associateBean.selectedPedagogicalActivityViewBean.name}" height="60"
+					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo"/>
+
+				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_OBJECTIVE']}"/></h3>
+				<p:editor
+					value="#{associateBean.selectedPedagogicalActivityViewBean.objective}" height="120"
+					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo" />
+
+				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_INSTRUCTIONS']}"/></h3>
+				<p:editor value="#{associateBean.selectedPedagogicalActivityViewBean.instructions}" height="120"
+					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo"/>
+
+				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_DURATION']}"/></h3>
+				<p:editor value="#{associateBean.selectedPedagogicalActivityViewBean.duration}" height="60"
+					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo"/>
+
+				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_TOOLS']}"/></h3>
+				<p:pickList id="dialogAssociateToolCategoryPickList" height="80"
+					value="#{associateBean.pickListBean.pickListEntities}"
 					var="toolCategoryViewBean" itemValue="#{toolCategoryViewBean}"
 					itemLabel="#{toolCategoryViewBean.name}" converter="PickListConverter"
 					showSourceControls="false" showTargetControls="false"
@@ -307,22 +364,47 @@
 					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
 					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
 					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
+					<f:facet name="sourceCaption">#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.PICKLIST_TOOL_CATEGORIES_HEADER.AVAILABLE']}</f:facet>
+					<f:facet name="targetCaption">#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.PICKLIST_TOOL_CATEGORIES_HEADER.ASSOCIATED']}</f:facet>
 					<p:ajax event="transfer"
-						listener="#{myScenariosController.onToolCategoryTransfer}"
-						update="@this :formOrganisations:tabViewOrganisations :formScenarios:messagesDisplayer"
+						listener="#{associateBean.onToolCategoryTransfer}"
+						update="@this :contentForm:pedagogicalActivitiesDataTable :contentForm:messagesDisplayer"
 						process="@this" />
 				</p:pickList>
-			 -->
+
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.VALIDATE']}"
-					icon="ui-icon-check" validateClient="true"
-					action="#{myScenariosController.onSavePedagogicalActivity()}"
-					update="@form :formScenarios"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { dialogEditActivity.hide(); }" />
-			</h:form>
-		</p:dialog>
+					icon="ui-icon-check" validateClient="false"
+					action="#{associateBean.onSaveSelectedPedagogicalActivity()}"
+					process="@form"
+					update=":modifyActivityForm:dialogEditActivityId :contentForm:pedagogicalActivitiesDataTable"
+					oncomplete="PF('dialogEditActivity').hide();">
+					<p:resetInput target=":modifyActivityForm:dialogEditActivityId" />
+				</p:commandButton>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="modifyEditEvaluationForm">
+			<p:dialog id="dialogEditEvaluationId"
+				header="#{msg['MY_SCENARIOS.EDIT_EVALUATION_MODE_WINDOW.HEADER']}"
+				widgetVar="dialogEditEvaluation" modal="true" height="auto">
+
+				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}"/></h3>
+				<p:editor value="#{associateBean.selectedScenarioViewBean.evaluationModes}" height="400"
+					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo"/>
+
+				<p:commandButton styleClass="dialogValidationButton"
+					value="#{msg['MY_SCENARIOS.EDIT_PEDAGOGICAL_ACTIVITY_WINDOW.VALIDATE']}"
+					icon="ui-icon-check" validateClient="false"
+					action="#{associateBean.onSave()}"
+					process="@form"
+					update=":contentForm:evaluationModes"
+					oncomplete="PF('dialogEditEvaluation').hide();">
+					<p:resetInput target=":modifyEditEvaluationForm:dialogEditEvaluationId" />
+				</p:commandButton>
+			</p:dialog>
+		</h:form>
 
 	</ui:define>
+
 </ui:composition>

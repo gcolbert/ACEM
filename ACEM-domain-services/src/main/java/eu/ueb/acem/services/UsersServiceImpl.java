@@ -85,7 +85,8 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Person updatePerson(Person person) {
-		return personDAO.update(person);
+		Person updatedEntity = personDAO.update(person);
+		return updatedEntity;
 	}
 
 	@Override
@@ -108,7 +109,8 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Teacher updateTeacher(Teacher teacher) {
-		return teacherDAO.update(teacher);
+		Teacher updatedEntity = teacherDAO.update(teacher);
+		return updatedEntity;
 	}
 
 	@Override

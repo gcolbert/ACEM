@@ -2,13 +2,19 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	template="../templates/template.xhtml">
+	template="../templates/commonLayout.xhtml">
 
-	<ui:param name="titleContent" value="#{msg['NAVIGATION.TEXT.LOGOUT']}" />
+	<!-- Control display of the layouts -->
+	<ui:param name="displayNorth" value="true" />
+	<ui:param name="displayWest" value="false" />
+	<ui:param name="displayEast" value="false" />
+	<ui:param name="displaySouth" value="false" />
+
+	<ui:param name="titleContent" value="#{msg['SESSION_TIMEOUT_EXCEPTION.TITLE']}" />
+
+	<!-- Controller associated with this view -->
+	<ui:param name="associateBean" value="" />
 
 	<ui:define name="content">
-		<h:panelGrid columns="1" style="width:100%;text-align:center;">
-			<h:outputText value="#{msg['LOGIN.DISPLAYLOGOUT']}" />
-		</h:panelGrid>
 	</ui:define>
 </ui:composition>

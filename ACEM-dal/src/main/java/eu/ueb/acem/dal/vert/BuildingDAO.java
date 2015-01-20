@@ -83,10 +83,15 @@ public class BuildingDAO implements DAO<Long, Building> {
 	}
 
 	@Override
+	public void initializeCollections(Building entity) {
+		neo4jOperations.fetch(entity.getCampus());
+	}
+
+	@Override
 	public Building retrieveById(Long id, boolean initialize) {
 		Building entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCampus());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -102,22 +107,36 @@ public class BuildingDAO implements DAO<Long, Building> {
 	}
 
 	@Override
+	public Collection<Building> retrieveByName(String name, boolean initialize) {
+		Collection<Building> entities = retrieveByName(name);
+		if (initialize) {
+			for (Building entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<Building> retrieveAll() {
 		Iterable<BuildingNode> endResults = repository.findAll();
-		Collection<Building> collection = new HashSet<Building>();
+		Collection<Building> entities = new HashSet<Building>();
 		if (endResults.iterator() != null) {
 			Iterator<BuildingNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Building entity = iterator.next();
+				initializeCollections(entity);
+				entities.add(entity);
 			}
 		}
-		return collection;
+		return entities;
 	}
 
 	@Override
 	public Building update(Building entity) {
 		Building updatedEntity = repository.save((BuildingNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

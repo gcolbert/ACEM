@@ -83,15 +83,20 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 	}
 
 	@Override
+	public void initializeCollections(Institution entity) {
+		neo4jOperations.fetch(entity.getPossessedResources());
+		neo4jOperations.fetch(entity.getViewedResources());
+		neo4jOperations.fetch(entity.getUseModes());
+		neo4jOperations.fetch(entity.getCommunities());
+		neo4jOperations.fetch(entity.getAdministrativeDepartments());
+		neo4jOperations.fetch(entity.getTeachingDepartments());
+	}
+
+	@Override
 	public Institution retrieveById(Long id, boolean initialize) {
 		Institution entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getPossessedResources());
-			neo4jOperations.fetch(entity.getViewedResources());
-			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getCommunities());
-			neo4jOperations.fetch(entity.getAdministrativeDepartments());
-			neo4jOperations.fetch(entity.getTeachingDepartments());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -107,22 +112,36 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 	}
 
 	@Override
+	public Collection<Institution> retrieveByName(String name, boolean initialize) {
+		Collection<Institution> entities = retrieveByName(name);
+		if (initialize) {
+			for (Institution entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<Institution> retrieveAll() {
 		Iterable<InstitutionNode> endResults = repository.findAll();
-		Collection<Institution> collection = new HashSet<Institution>();
+		Collection<Institution> entities = new HashSet<Institution>();
 		if (endResults.iterator() != null) {
 			Iterator<InstitutionNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Institution entity = iterator.next();
+				initializeCollections(entity);
+				entities.add(entity);
 			}
 		}
-		return collection;
+		return entities;
 	}
 
 	@Override
 	public Institution update(Institution entity) {
 		Institution updatedEntity = repository.save((InstitutionNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

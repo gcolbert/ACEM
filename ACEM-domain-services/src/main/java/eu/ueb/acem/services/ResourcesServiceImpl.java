@@ -211,7 +211,6 @@ public class ResourcesServiceImpl implements ResourcesService {
 		return updatedResource;
 	}
 
-
 	@Override
 	public Boolean deleteResource(Long id) {
 		if (softwareDAO.exists(id)) {
@@ -283,7 +282,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	@Override
 	public ResourceCategory updateResourceCategory(ResourceCategory resourceCategory) {
-		return resourceCategoryDAO.update((ResourceCategory) resourceCategory);
+		ResourceCategory updatedEntity = resourceCategoryDAO.update(resourceCategory);
+		return updatedEntity;
 	}
 	
 	@Override
@@ -360,7 +360,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	@Override
 	public UseMode updateUseMode(UseMode resource) {
-		return useModeDAO.update(resource);
+		UseMode updatedEntity = useModeDAO.update(resource); 
+		return updatedEntity;
 	}
 
 	@Override

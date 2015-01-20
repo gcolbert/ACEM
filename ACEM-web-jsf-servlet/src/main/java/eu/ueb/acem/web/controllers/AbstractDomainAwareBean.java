@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -41,12 +41,12 @@ import eu.ueb.acem.services.DomainService;
 public abstract class AbstractDomainAwareBean implements InitializingBean, Serializable {
 
 	/**
-	 * serialVersionUID
+	 * For serialization.
 	 */
 	private static final long serialVersionUID = 3917164118541810598L;
 
 	/**
-	 * A logger.
+	 * For logging.
 	 */
 	private final Logger logger = LoggerFactory.getLogger(AbstractDomainAwareBean.class);
 
@@ -98,7 +98,7 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 	 * @return the current user's locale.
 	 */
 	public Locale getCurrentUserLocale() {
-		logger.debug(this.getClass().getName() + ".getCurrentUserLocale()");
+//		logger.debug(this.getClass().getName() + ".getCurrentUserLocale()");
 		Person currentUser = null;
 		try {
 			currentUser = getCurrentUser();
@@ -115,16 +115,8 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 			return null;
 		}
 		Locale locale = new Locale(lang);
-		logger.debug("language for user '" + currentUser.getLogin() + "' is '" + locale + "'");
+//		logger.debug("language for user '" + currentUser.getLogin() + "' is '" + locale + "'");
 		return locale;
-	}
-
-	/**
-	 * @param domainService
-	 *            the domainService to set
-	 */
-	public void setDomainService(final DomainService domainService) {
-		this.domainService = domainService;
 	}
 
 	/**

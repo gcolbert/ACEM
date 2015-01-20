@@ -34,6 +34,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
  * @author Grégoire Colbert
@@ -54,7 +55,10 @@ public class ScenariosServiceImpl implements ScenariosService {
 
 	@Inject
 	private UsersService usersService;
-	
+
+	@Inject
+	private ResourcesService resourcesService;
+
 	public ScenariosServiceImpl() {
 	}
 
@@ -68,8 +72,10 @@ public class ScenariosServiceImpl implements ScenariosService {
 		PedagogicalScenario scenario = new PedagogicalScenarioNode(name, objective);
 		scenario.getAuthors().add(author);
 		author.getScenarios().add(scenario);
+		scenario = pedagogicalScenarioDAO.create(scenario);
+		scenario = pedagogicalScenarioDAO.retrieveById(scenario.getId(), true);
 		author = usersService.updateTeacher(author);
-		return pedagogicalScenarioDAO.create(scenario);
+		return scenario;
 	}
 
 	@Override
@@ -85,7 +91,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 	@Override
 	public PedagogicalScenario updateScenario(PedagogicalScenario pedagogicalScenario) {
 		PedagogicalScenario updatedEntity = pedagogicalScenarioDAO.update(pedagogicalScenario);
-		return retrievePedagogicalScenario(updatedEntity.getId(), true);
+		return updatedEntity;
 	}
 
 	@Override
@@ -145,7 +151,10 @@ public class ScenariosServiceImpl implements ScenariosService {
 	@Override
 	public PedagogicalActivity updatePedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
 		PedagogicalActivity updatedEntity = pedagogicalActivityDAO.update(pedagogicalActivity);
-		return retrievePedagogicalActivity(updatedEntity.getId(), true);
+		for (ResourceCategory resourceCategory : updatedEntity.getResourceCategories()) {
+			resourceCategory = resourcesService.updateResourceCategory(resourceCategory);
+		}
+		return updatedEntity;
 	}
 
 	@Override
@@ -160,5 +169,5 @@ public class ScenariosServiceImpl implements ScenariosService {
 	public void deleteAllPedagogicalActivities() {
 		pedagogicalActivityDAO.deleteAll();
 	}
-	
+
 }

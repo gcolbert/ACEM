@@ -84,9 +84,15 @@ public class CampusDAO implements DAO<Long, Campus> {
 	}
 
 	@Override
+	public void initializeCollections(Campus entity) {
+
+	}
+
+	@Override
 	public Campus retrieveById(Long id, boolean initialize) {
 		Campus entity = retrieveById(id);
 		if (initialize) {
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -102,13 +108,26 @@ public class CampusDAO implements DAO<Long, Campus> {
 	}
 
 	@Override
+	public Collection<Campus> retrieveByName(String name, boolean initialize) {
+		Collection<Campus> entities = retrieveByName(name);
+		if (initialize) {
+			for (Campus entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<Campus> retrieveAll() {
 		Iterable<CampusNode> endResults = repository.findAll();
 		Collection<Campus> collection = new HashSet<Campus>();
 		if (endResults.iterator() != null) {
 			Iterator<CampusNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Campus entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -117,7 +136,8 @@ public class CampusDAO implements DAO<Long, Campus> {
 	@Override
 	public Campus update(Campus entity) {
 		Campus updatedEntity = repository.save((CampusNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

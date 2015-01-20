@@ -83,13 +83,18 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 	}
 
 	@Override
+	public void initializeCollections(AdministrativeDepartment entity) {
+		neo4jOperations.fetch(entity.getPossessedResources());
+		neo4jOperations.fetch(entity.getViewedResources());
+		neo4jOperations.fetch(entity.getUseModes());
+		neo4jOperations.fetch(entity.getInstitutions());
+	}
+
+	@Override
 	public AdministrativeDepartment retrieveById(Long id, boolean initialize) {
 		AdministrativeDepartment entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getPossessedResources());
-			neo4jOperations.fetch(entity.getViewedResources());
-			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getInstitutions());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -105,22 +110,36 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 	}
 
 	@Override
+	public Collection<AdministrativeDepartment> retrieveByName(String name, boolean initialize) {
+		Collection<AdministrativeDepartment> entities = retrieveByName(name);
+		if (initialize) {
+			for (AdministrativeDepartment entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<AdministrativeDepartment> retrieveAll() {
 		Iterable<AdministrativeDepartmentNode> endResults = repository.findAll();
-		Collection<AdministrativeDepartment> collection = new HashSet<AdministrativeDepartment>();
+		Collection<AdministrativeDepartment> entities = new HashSet<AdministrativeDepartment>();
 		if (endResults.iterator() != null) {
 			Iterator<AdministrativeDepartmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				AdministrativeDepartment entity = iterator.next();
+				initializeCollections(entity);
+				entities.add(entity);
 			}
 		}
-		return collection;
+		return entities;
 	}
 
 	@Override
 	public AdministrativeDepartment update(AdministrativeDepartment entity) {
 		AdministrativeDepartment updatedEntity = repository.save((AdministrativeDepartmentNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

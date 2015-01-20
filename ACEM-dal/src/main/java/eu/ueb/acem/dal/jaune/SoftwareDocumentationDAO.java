@@ -88,13 +88,18 @@ public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation
 	public SoftwareDocumentation retrieveById(Long id, boolean initialize) {
 		SoftwareDocumentation entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCategories());
-			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
-			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
-			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getSoftwares());
+			initializeCollections(entity);
 		}
 		return entity;
+	}
+
+	@Override
+	public void initializeCollections(SoftwareDocumentation entity) {
+		neo4jOperations.fetch(entity.getCategories());
+		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
+		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+		neo4jOperations.fetch(entity.getUseModes());
+		neo4jOperations.fetch(entity.getSoftwares());
 	}
 
 	@Override
@@ -108,13 +113,26 @@ public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation
 	}
 
 	@Override
+	public Collection<SoftwareDocumentation> retrieveByName(String name, boolean initialize) {
+		Collection<SoftwareDocumentation> entities = retrieveByName(name);
+		if (initialize) {
+			for (SoftwareDocumentation entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<SoftwareDocumentation> retrieveAll() {
 		Iterable<SoftwareDocumentationNode> endResults = repository.findAll();
 		Collection<SoftwareDocumentation> collection = new HashSet<SoftwareDocumentation>();
 		if (endResults.iterator() != null) {
 			Iterator<SoftwareDocumentationNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				SoftwareDocumentation entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -123,7 +141,8 @@ public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation
 	@Override
 	public SoftwareDocumentation update(SoftwareDocumentation entity) {
 		SoftwareDocumentation updatedEntity = repository.save((SoftwareDocumentationNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override
@@ -159,7 +178,9 @@ public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation
 		if (endResults.iterator() != null) {
 			Iterator<SoftwareDocumentationNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				SoftwareDocumentation entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;

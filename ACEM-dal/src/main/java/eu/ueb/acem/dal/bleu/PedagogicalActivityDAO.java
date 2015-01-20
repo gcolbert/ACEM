@@ -56,12 +56,11 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 
 	@Inject
 	private Neo4jOperations neo4jOperations;
-	
+
 	@Inject
 	private PedagogicalActivityRepository repository;
 
 	public PedagogicalActivityDAO() {
-
 	}
 
 	@Override
@@ -90,8 +89,7 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 	public PedagogicalActivity retrieveById(Long id, boolean initialize) {
 		PedagogicalActivity entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getResourceCategories());
-			neo4jOperations.fetch(entity.getScenarios());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -107,22 +105,42 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 	}
 
 	@Override
+	public Collection<PedagogicalActivity> retrieveByName(String name, boolean initialize) {
+		Collection<PedagogicalActivity> entities = retrieveByName(name);
+		if (initialize) {
+			for (PedagogicalActivity entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+	
+	@Override
 	public Set<PedagogicalActivity> retrieveAll() {
 		Iterable<PedagogicalActivityNode> endResults = repository.findAll();
 		Set<PedagogicalActivity> collection = new HashSet<PedagogicalActivity>();
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalActivityNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				PedagogicalActivity entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
 	}
 
 	@Override
+	public void initializeCollections(PedagogicalActivity entity) {
+		neo4jOperations.fetch(entity.getResourceCategories());
+		neo4jOperations.fetch(entity.getScenarios());
+	}
+	
+	@Override
 	public PedagogicalActivity update(PedagogicalActivity entity) {
 		PedagogicalActivity updatedEntity = repository.save((PedagogicalActivityNode) entity);
-		return retrieveById(updatedEntity.getId(),true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

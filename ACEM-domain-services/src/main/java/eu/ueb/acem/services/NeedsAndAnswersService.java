@@ -64,7 +64,7 @@ public interface NeedsAndAnswersService {
 
 	void saveNeedName(Long id, String newName);
 	
-	void changeParentOfNeed(Long id, Long idNewParent);
+	void changeParentOfNeedOrAnswer(Long id, Long idNewParent);
 
 	PedagogicalAnswer createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
 

@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -36,8 +36,14 @@ import org.springframework.stereotype.Controller;
 @Scope("session")
 public class MainMenuController implements Serializable {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -7218568142478270516L;
 
+	/**
+	 * For logging.
+	 */
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(MainMenuController.class);
 

@@ -91,6 +91,22 @@ public class PersonDAO implements DAO<Long, Person> {
 	}
 
 	@Override
+	public Collection<Person> retrieveByName(String name, boolean initialize) {
+		Collection<Person> entities = retrieveByName(name);
+		if (initialize) {
+			for (Person entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
+	public void initializeCollections(Person entity) {
+		neo4jOperations.fetch(entity.getWorksForOrganisations());
+	}
+
+	@Override
 	public Person retrieveById(Long id) {
 		return (id != null) ? repository.findOne(id) : null;
 	}
@@ -99,7 +115,7 @@ public class PersonDAO implements DAO<Long, Person> {
 	public Person retrieveById(Long id, boolean initialize) {
 		Person entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getWorksForOrganisations());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -111,7 +127,9 @@ public class PersonDAO implements DAO<Long, Person> {
 		if (endResults.iterator() != null) {
 			Iterator<PersonNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Person entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -139,8 +157,12 @@ public class PersonDAO implements DAO<Long, Person> {
 		return repository.count();
 	}
 
-	public Person retrieveByLogin(String id) {
-		return repository.findByLogin(id);
+	public Person retrieveByLogin(String id, boolean initialize) {
+		Person entity = repository.findByLogin(id);
+		if (initialize) {
+			initializeCollections(entity);
+		}
+		return entity;
 	}
 
 }

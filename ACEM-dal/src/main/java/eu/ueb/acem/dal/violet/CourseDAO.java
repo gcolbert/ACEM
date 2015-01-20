@@ -83,10 +83,15 @@ public class CourseDAO implements DAO<Long, Course> {
 	}
 
 	@Override
+	public void initializeCollections(Course entity) {
+		neo4jOperations.fetch(entity.getCredit());
+	}
+
+	@Override
 	public Course retrieveById(Long id, boolean initialize) {
 		Course entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCredit());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -102,13 +107,26 @@ public class CourseDAO implements DAO<Long, Course> {
 	}
 
 	@Override
+	public Collection<Course> retrieveByName(String name, boolean initialize) {
+		Collection<Course> entities = retrieveByName(name);
+		if (initialize) {
+			for (Course entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+	
+	@Override
 	public Collection<Course> retrieveAll() {
 		Iterable<CourseNode> endResults = repository.findAll();
 		Collection<Course> collection = new HashSet<Course>();
 		if (endResults.iterator() != null) {
 			Iterator<CourseNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Course entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -117,7 +135,8 @@ public class CourseDAO implements DAO<Long, Course> {
 	@Override
 	public Course update(Course entity) {
 		Course updatedEntity = repository.save((CourseNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override

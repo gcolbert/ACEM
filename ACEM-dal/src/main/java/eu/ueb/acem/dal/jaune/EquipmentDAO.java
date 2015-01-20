@@ -21,6 +21,7 @@ package eu.ueb.acem.dal.jaune;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -88,23 +89,39 @@ public class EquipmentDAO implements DAO<Long, Equipment> {
 	public Equipment retrieveById(Long id, boolean initialize) {
 		Equipment entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCategories());
-			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
-			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
-			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getStorageLocations());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
 
 	@Override
-	public Collection<Equipment> retrieveByName(String name) {
-		Iterable<EquipmentNode> stationaryEquipmentNodes = repository.findByName(name);
-		Collection<Equipment> stationaryEquipments = new HashSet<Equipment>();
-		for (Equipment software : stationaryEquipmentNodes) {
-			stationaryEquipments.add(software);
+	public Set<Equipment> retrieveByName(String name) {
+		Iterable<EquipmentNode> equipmentNodes = repository.findByName(name);
+		Set<Equipment> equipments = new HashSet<Equipment>();
+		for (Equipment entity : equipmentNodes) {
+			equipments.add(entity);
 		}
-		return stationaryEquipments;
+		return equipments;
+	}
+
+	@Override
+	public Set<Equipment> retrieveByName(String name, boolean initialize) {
+		Set<Equipment> entities = retrieveByName(name);
+		if (initialize) {
+			for (Equipment entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
+	public void initializeCollections(Equipment entity) {
+		neo4jOperations.fetch(entity.getCategories());
+		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
+		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+		neo4jOperations.fetch(entity.getUseModes());
+		neo4jOperations.fetch(entity.getStorageLocations());
 	}
 
 	@Override
@@ -114,7 +131,9 @@ public class EquipmentDAO implements DAO<Long, Equipment> {
 		if (endResults.iterator() != null) {
 			Iterator<EquipmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Equipment entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -123,7 +142,8 @@ public class EquipmentDAO implements DAO<Long, Equipment> {
 	@Override
 	public Equipment update(Equipment entity) {
 		Equipment updatedEntity = repository.save((EquipmentNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override
@@ -159,10 +179,12 @@ public class EquipmentDAO implements DAO<Long, Equipment> {
 		if (endResults.iterator() != null) {
 			Iterator<EquipmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Equipment entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
 	}
-	
+
 }

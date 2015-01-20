@@ -108,7 +108,7 @@ public class PersonDAOTest extends TestCase {
 		// We save our object
 		person1 = personDAO.update(person1);
 
-		Person person1bis = personDAO.retrieveByLogin(person1.getLogin());
+		Person person1bis = personDAO.retrieveByLogin(person1.getLogin(), true);
 
 		assertNotNull(person1bis);
 		assertEquals(person1bis, person1);

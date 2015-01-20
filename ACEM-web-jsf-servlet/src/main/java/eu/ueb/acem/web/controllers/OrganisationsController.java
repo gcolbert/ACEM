@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -58,8 +58,14 @@ import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 @Scope("view")
 public class OrganisationsController extends AbstractContextAwareController {
 
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationsController.class);
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 3854588801358138982L;
 
 	@Inject

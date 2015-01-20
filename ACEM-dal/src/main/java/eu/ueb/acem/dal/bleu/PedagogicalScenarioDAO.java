@@ -91,9 +91,7 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	public PedagogicalScenario retrieveById(Long id, boolean initialize) {
 		PedagogicalScenario entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getPedagogicalActivities());
-			neo4jOperations.fetch(entity.getAuthors());
-			neo4jOperations.fetch(entity.getClasses());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -109,13 +107,33 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	}
 
 	@Override
+	public Collection<PedagogicalScenario> retrieveByName(String name, boolean initialize) {
+		Collection<PedagogicalScenario> entities = retrieveByName(name);
+		if (initialize) {
+			for (PedagogicalScenario entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
+	public void initializeCollections(PedagogicalScenario entity) {
+		neo4jOperations.fetch(entity.getPedagogicalActivities());
+		neo4jOperations.fetch(entity.getAuthors());
+		neo4jOperations.fetch(entity.getClasses());
+	}
+
+	@Override
 	public Collection<PedagogicalScenario> retrieveAll() {
 		Iterable<PedagogicalScenarioNode> endResults = repository.findAll();
 		Collection<PedagogicalScenario> collection = new HashSet<PedagogicalScenario>();
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				PedagogicalScenario entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -125,7 +143,8 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	public PedagogicalScenario update(PedagogicalScenario entity) {
 		entity.setModificationDate(TimeTicker.tick());
 		PedagogicalScenario updatedEntity = repository.save((PedagogicalScenarioNode) entity);
-		return retrieveById(updatedEntity.getId(),true);
+		initializeCollections(updatedEntity);
+		return updatedEntity;
 	}
 
 	@Override
@@ -149,7 +168,9 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(retrieveById(iterator.next().getId(),true));
+				PedagogicalScenario entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;

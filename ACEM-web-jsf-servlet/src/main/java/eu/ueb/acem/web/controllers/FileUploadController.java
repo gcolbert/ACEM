@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -45,8 +45,14 @@ import eu.ueb.acem.web.utils.MessageDisplayer;
 @Scope("session")
 public class FileUploadController extends AbstractContextAwareController {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 8331050456345272270L;
 
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
 	private DefaultStreamedContent uploadedFile;

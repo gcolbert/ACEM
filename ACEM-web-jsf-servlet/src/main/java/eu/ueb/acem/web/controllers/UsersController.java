@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -32,16 +32,20 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
-import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 @Controller("usersController")
 @Scope("view")
 public class UsersController extends AbstractContextAwareController {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -977386846045010683L;
 
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
 	private PersonViewBean selectedUserViewBean;
@@ -55,16 +59,13 @@ public class UsersController extends AbstractContextAwareController {
 	@Inject
 	private OrganisationsController organisationsController;
 	
-//	@Inject
-//	private ResourcesController resourcesController;
-//
 //	private Set<Person> personViewBeans;
 
 	public UsersController() {
 	}
 
 	@PostConstruct
-	public void initUsersController() {
+	public void init() {
 //		personViewBeans.clear();
 //		Set<Person> persons = usersService.getPersons();
 //		for (Person person : persons) {
@@ -117,26 +118,6 @@ public class UsersController extends AbstractContextAwareController {
 		personViewBean.setDomainBean(usersService.updatePerson(personViewBean.getDomainBean()));
 	}
 
-	public void toggleFavoriteToolCategoryForCurrentUser(ToolCategoryViewBean toolCategoryViewBean) {
-		logger.debug("Entering toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
-		if (getCurrentUserViewBean() instanceof TeacherViewBean) {
-			TeacherViewBean currentUserViewBean = (TeacherViewBean)getCurrentUserViewBean();
-			if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
-				logger.info("user has tool category as favorite, we should remove it");
-				if (usersService.removeFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
-					currentUserViewBean.removeFavoriteToolCategoryViewBean(toolCategoryViewBean);
-				}
-			}
-			else {
-				logger.debug("user doesn't have tool category as favorite, we should add it");
-				if (usersService.addFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
-					currentUserViewBean.addFavoriteToolCategoryViewBean(toolCategoryViewBean);
-				}
-			}
-		}
-		logger.info("Leaving toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
-	}
-	
 	public void onTransfer(TransferEvent event) {
 		logger.debug("onTransfer");
 		@SuppressWarnings("unchecked")

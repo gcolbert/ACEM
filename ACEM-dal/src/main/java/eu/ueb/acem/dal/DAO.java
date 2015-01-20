@@ -38,7 +38,11 @@ public interface DAO<ID extends Serializable, E> extends Serializable {
 
 	Collection<E> retrieveByName(String name);
 
+	Collection<E> retrieveByName(String name, boolean initialize);
+
 	Collection<E> retrieveAll();
+
+	void initializeCollections(E entity);
 
 	E update(E entity);
 

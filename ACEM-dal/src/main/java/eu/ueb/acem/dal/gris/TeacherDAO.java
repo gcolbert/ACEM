@@ -18,9 +18,9 @@
  */
 package eu.ueb.acem.dal.gris;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -86,21 +86,34 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 	}
 
 	@Override
+	public void initializeCollections(Teacher entity) {
+		neo4jOperations.fetch(entity.getFavoriteToolCategories());
+		neo4jOperations.fetch(entity.getScenarios());
+		neo4jOperations.fetch(entity.getClasses());
+		neo4jOperations.fetch(entity.getWorksForOrganisations());
+	}
+
+	@Override
 	public Teacher retrieveById(Long id, boolean initialize) {
 		Teacher entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getFavoriteToolCategories());
-			neo4jOperations.fetch(entity.getScenarios());
-			neo4jOperations.fetch(entity.getClasses());
-			neo4jOperations.fetch(entity.getWorksForOrganisations());
+			initializeCollections(entity);
+		}
+		return entity;
+	}
+
+	public Teacher retrieveByLogin(String id, boolean initialize) {
+		Teacher entity = repository.findByLogin(id);
+		if (initialize) {
+			initializeCollections(entity);
 		}
 		return entity;
 	}
 
 	@Override
-	public Set<Teacher> retrieveByName(String name) {
+	public Collection<Teacher> retrieveByName(String name) {
 		Iterable<TeacherNode> nodes = repository.findByName(name);
-		Set<Teacher> entities = new HashSet<Teacher>();
+		Collection<Teacher> entities = new HashSet<Teacher>();
 		for (TeacherNode node : nodes) {
 			entities.add(node);
 		}
@@ -108,13 +121,26 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 	}
 
 	@Override
-	public Set<Teacher> retrieveAll() {
+	public Collection<Teacher> retrieveByName(String name, boolean initialize) {
+		Collection<Teacher> entities = retrieveByName(name);
+		if (initialize) {
+			for (Teacher entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
+	public Collection<Teacher> retrieveAll() {
 		Iterable<TeacherNode> endResults = repository.findAll();
-		Set<Teacher> collection = new HashSet<Teacher>();
+		Collection<Teacher> collection = new HashSet<Teacher>();
 		if (endResults.iterator() != null) {
 			Iterator<TeacherNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Teacher entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
 			}
 		}
 		return collection;
@@ -139,10 +165,6 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 	@Override
 	public Long count() {
 		return repository.count();
-	}
-
-	public Teacher retrieveByLogin(String id) {
-		return repository.findByLogin(id);
 	}
 
 }

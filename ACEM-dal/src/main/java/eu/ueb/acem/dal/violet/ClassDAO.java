@@ -83,12 +83,17 @@ public class ClassDAO implements DAO<Long, Class> {
 	}
 
 	@Override
+	public void initializeCollections(Class entity) {
+		neo4jOperations.fetch(entity.getCourse());
+		neo4jOperations.fetch(entity.getPedagogicalScenarios());
+		neo4jOperations.fetch(entity.getLocation());
+	}
+
+	@Override
 	public Class retrieveById(Long id, boolean initialize) {
 		Class entity = retrieveById(id);
 		if (initialize) {
-			neo4jOperations.fetch(entity.getCourse());
-			neo4jOperations.fetch(entity.getPedagogicalScenarios());
-			neo4jOperations.fetch(entity.getLocation());
+			initializeCollections(entity);
 		}
 		return entity;
 	}
@@ -104,22 +109,36 @@ public class ClassDAO implements DAO<Long, Class> {
 	}
 
 	@Override
+	public Collection<Class> retrieveByName(String name, boolean initialize) {
+		Collection<Class> entities = retrieveByName(name);
+		if (initialize) {
+			for (Class entity : entities) {
+				initializeCollections(entity);
+			}
+		}
+		return entities;
+	}
+
+	@Override
 	public Collection<Class> retrieveAll() {
 		Iterable<ClassNode> endResults = repository.findAll();
-		Collection<Class> collection = new HashSet<Class>();
+		Collection<Class> entities = new HashSet<Class>();
 		if (endResults.iterator() != null) {
 			Iterator<ClassNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				collection.add(iterator.next());
+				Class entity = iterator.next();
+				initializeCollections(entity);
+				entities.add(entity);
 			}
 		}
-		return collection;
+		return entities;
 	}
 
 	@Override
 	public Class update(Class entity) {
 		Class updatedEntity = repository.save((ClassNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
+		initializeCollections(entity);
+		return updatedEntity;
 	}
 
 	@Override
