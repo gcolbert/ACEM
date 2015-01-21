@@ -45,8 +45,12 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 	private String duration;
 	private List<ToolCategoryViewBean> toolCategoryViewBeans;
 
-	public PedagogicalActivityViewBean(PedagogicalActivity pedagogicalActivity) {
+	public PedagogicalActivityViewBean() {
 		toolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
+	}
+	
+	public PedagogicalActivityViewBean(PedagogicalActivity pedagogicalActivity) {
+		this();
 		setPedagogicalActivity(pedagogicalActivity);
 	}
 
@@ -69,7 +73,9 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 
 	public void setPositionInScenario(Long positionInScenario) {
 		this.positionInScenario = positionInScenario;
-		pedagogicalActivity.setPositionInScenario(positionInScenario);
+		if (pedagogicalActivity != null) {
+			pedagogicalActivity.setPositionInScenario(positionInScenario);
+		}
 	}
 
 	@Override
@@ -87,7 +93,9 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 
 	public void setName(String name) {
 		this.name = name;
-		pedagogicalActivity.setName(name);
+		if (pedagogicalActivity != null) {
+			pedagogicalActivity.setName(name);
+		}
 	}
 
 	public String getObjective() {
@@ -96,7 +104,9 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 
 	public void setObjective(String objective) {
 		this.objective = objective;
-		pedagogicalActivity.setObjective(objective);
+		if (pedagogicalActivity != null) {
+			pedagogicalActivity.setObjective(objective);
+		}
 	}
 
 	public String getInstructions() {
@@ -105,7 +115,9 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
-		pedagogicalActivity.setInstructions(instructions);
+		if (pedagogicalActivity != null) {
+			pedagogicalActivity.setInstructions(instructions);
+		}
 	}
 
 	public String getDuration() {
@@ -114,7 +126,9 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 
 	public void setDuration(String duration) {
 		this.duration = duration;
-		pedagogicalActivity.setDuration(duration);
+		if (pedagogicalActivity != null) {
+			pedagogicalActivity.setDuration(duration);
+		}
 	}
 
 	public List<ToolCategoryViewBean> getToolCategoryViewBeans() {

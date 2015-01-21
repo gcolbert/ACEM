@@ -63,4 +63,9 @@
 		<view-id value="/pages/logout.xhtml" />
 	</url-mapping>
 
+	<url-mapping id="exception">
+		<pattern value="/exception" />
+		<view-id value="/pages/exceptions/exception.xhtml" />
+	</url-mapping>
+
 </pretty-config>

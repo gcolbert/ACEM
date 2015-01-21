@@ -49,7 +49,6 @@ class NeedsAndAnswersTreeGenerator {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeGenerator.class);
 
-	private static final String TREE_NODE_TYPE_VISIBLE_ROOT = "VisibleRoot";
 	private static final String TREE_NODE_TYPE_NEED_LEAF = "NeedLeaf";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS = "NeedWithAssociatedNeeds";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS = "NeedWithAssociatedAnswers";
@@ -57,10 +56,6 @@ class NeedsAndAnswersTreeGenerator {
 
 	@Inject
 	private NeedsAndAnswersService needsAndAnswersService;
-
-	public String getTreeNodeType_VISIBLE_ROOT() {
-		return TREE_NODE_TYPE_VISIBLE_ROOT;
-	}
 
 	public String getTreeNodeType_NEED_LEAF() {
 		return TREE_NODE_TYPE_NEED_LEAF;

@@ -38,7 +38,7 @@ import eu.ueb.acem.web.viewbeans.Pickable;
  * @since 2014-02-17
  * 
  */
-public class ScenarioViewBean implements Pickable, Serializable, Comparable<ScenarioViewBean> {
+public class PedagogicalScenarioViewBean implements Pickable, Serializable, Comparable<PedagogicalScenarioViewBean> {
 
 	/**
 	 * For serialization.
@@ -46,7 +46,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	private static final long serialVersionUID = 2589803338943536893L;
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ScenarioViewBean.class);
+	private static final Logger logger = LoggerFactory.getLogger(PedagogicalScenarioViewBean.class);
 
 
 	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
@@ -62,11 +62,11 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	private String modificationDate;
 	private String evaluationModes;
 
-	public ScenarioViewBean() {
+	public PedagogicalScenarioViewBean() {
 		pedagogicalActivityViewBeans = new ArrayList<PedagogicalActivityViewBean>();
 	}
 
-	public ScenarioViewBean(PedagogicalScenario scenario) {
+	public PedagogicalScenarioViewBean(PedagogicalScenario scenario) {
 		this();
 		setScenario(scenario);
 	}
@@ -175,7 +175,7 @@ public class ScenarioViewBean implements Pickable, Serializable, Comparable<Scen
 	}
 
 	@Override
-	public int compareTo(ScenarioViewBean o) {
+	public int compareTo(PedagogicalScenarioViewBean o) {
 		return scenario.compareTo(o.getScenario());
 	}
 

@@ -255,6 +255,7 @@
 			<p:commandButton
 				value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.ADD_ACTIVITY_LABEL']}"
 				icon="ui-icon-plusthick"
+				action="#{associateBean.prepareCreatePedagogicalActivity()}"
 				oncomplete="PF('dialogEditActivity').show()"
 				update=":modifyActivityForm:dialogEditActivityId"
 				process="@this">

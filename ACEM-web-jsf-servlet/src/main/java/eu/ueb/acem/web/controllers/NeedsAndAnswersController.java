@@ -47,7 +47,7 @@ import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.SortableTableBean;
-import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
+import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 
@@ -93,9 +93,9 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	private PedagogicalAnswer selectedAnswer;
 
 	@Inject
-	private SortableTableBean<ScenarioViewBean> scenarioViewBeans;
+	private SortableTableBean<PedagogicalScenarioViewBean> pedagogicalScenarioViewBeans;
 
-	// private List<ScenarioViewBean> scenarioViewBeansForSelectedAnswer;
+	// private List<PedagogicalScenarioViewBean> scenarioViewBeansForSelectedAnswer;
 
 	private SortableTableBean<ToolCategoryViewBean> toolCategoryViewBeans;
 
@@ -126,8 +126,8 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
 
 		// scenarioViewBeansForSelectedAnswer = new
-		// ArrayList<ScenarioViewBean>();
-		scenarioViewBeans = new SortableTableBean<ScenarioViewBean>();
+		// ArrayList<PedagogicalScenarioViewBean>();
+		pedagogicalScenarioViewBeans = new SortableTableBean<PedagogicalScenarioViewBean>();
 	}
 
 	@PostConstruct
@@ -398,8 +398,8 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		}
 	}
 
-	public List<ScenarioViewBean> getScenarioViewBeansRelatedToSelectedAnswer() {
-		return scenarioViewBeans.getTableEntries();
+	public List<PedagogicalScenarioViewBean> getScenarioViewBeansRelatedToSelectedAnswer() {
+		return pedagogicalScenarioViewBeans.getTableEntries();
 	}
 
 	private void setScenarioViewBeansRelatedToSelectedAnswer() {
@@ -408,9 +408,9 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			Collection<PedagogicalScenario> scenarios = needsAndAnswersService
 					.getScenariosRelatedToAnswer(((TreeNodeData) selectedNode.getData()).getId());
 			logger.info("Found {} scenarios related to selected answer.", scenarios.size());
-			scenarioViewBeans.getTableEntries().clear();
+			pedagogicalScenarioViewBeans.getTableEntries().clear();
 			for (PedagogicalScenario scenario : scenarios) {
-				scenarioViewBeans.getTableEntries().add(new ScenarioViewBean(scenario));
+				pedagogicalScenarioViewBeans.getTableEntries().add(new PedagogicalScenarioViewBean(scenario));
 			}
 			logger.info("leaving setScenarioViewBeansRelatedToSelectedAnswer");
 			logger.info("------");

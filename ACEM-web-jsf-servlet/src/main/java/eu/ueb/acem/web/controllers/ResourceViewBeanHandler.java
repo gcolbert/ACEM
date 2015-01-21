@@ -31,7 +31,6 @@ import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
-import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
@@ -54,9 +53,6 @@ public class ResourceViewBeanHandler {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(ResourceViewBeanHandler.class);
 
-	@Inject
-	private OrganisationViewBeanHandler organisationViewBeanHandler;
-	
 	@Inject
 	private ResourcesService resourcesService;
 
@@ -82,15 +78,6 @@ public class ResourceViewBeanHandler {
 			else if (tool instanceof ProfessionalTraining) {
 				viewBean = new ProfessionalTrainingViewBean((ProfessionalTraining) tool);
 			}
-
-			viewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanHandler
-					.getOrganisationViewBean(tool.getOrganisationPossessingResource().getId()));
-
-			for (Organisation organisation : tool.getOrganisationsHavingAccessToResource()) {
-				viewBean.addOrganisationViewingResourceViewBean(organisationViewBeanHandler
-						.getOrganisationViewBean(organisation.getId()));
-			}
-
 		}
 		else {
 			logger.error("There is no tool with id={} according to ResourcesService", id);

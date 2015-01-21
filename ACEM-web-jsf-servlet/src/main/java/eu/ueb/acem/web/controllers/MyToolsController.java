@@ -55,7 +55,7 @@ import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
-import eu.ueb.acem.web.viewbeans.bleu.ScenarioViewBean;
+import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
@@ -96,6 +96,8 @@ public class MyToolsController extends AbstractContextAwareController implements
 	@Inject
 	private OrganisationsService organisationsService;
 	private List<OrganisationViewBean> allOrganisationViewBeans;
+	@Inject
+	private OrganisationViewBeanHandler organisationViewBeanHandler;
 
 	@Inject
 	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
@@ -139,7 +141,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 			List<PedagogicalScenario> scenarios = new ArrayList<PedagogicalScenario>(resourcesService.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryId));
 			for (PedagogicalScenario scenario : scenarios) {
-				toolCategoryViewBean.addScenarioViewBean(new ScenarioViewBean(scenario));
+				toolCategoryViewBean.addScenarioViewBean(new PedagogicalScenarioViewBean(scenario));
 			}
 			toolCategoryViewBeans.put(toolCategory.getId(), toolCategoryViewBean);
 		}
@@ -294,6 +296,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 			this.selectedToolCategoryViewBean.getResourceViewBeans().clear();
 			for (Resource resource : this.selectedToolCategoryViewBean.getDomainBean().getResources()) {
 				ResourceViewBean resourceViewBean = resourceViewBeanHandler.getResourceViewBean(resource.getId());
+
+				resourceViewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanHandler.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId()));
+				
+				for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
+					resourceViewBean.addOrganisationViewingResourceViewBean(organisationViewBeanHandler.getOrganisationViewBean(organisation.getId()));
+				}
+				
 				this.selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
 			}
 			for (PedagogicalActivity pedagogicalActivity : this.selectedToolCategoryViewBean.getDomainBean().getPedagogicalActivities()) {

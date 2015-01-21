@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
@@ -50,9 +49,6 @@ public class ToolCategoryViewBeanHandler {
 	private static final Logger logger = LoggerFactory.getLogger(ToolCategoryViewBeanHandler.class);
 
 	@Inject
-	private ResourceViewBeanHandler resourceViewBeanHandler;
-
-	@Inject
 	private ResourcesService resourcesService;
 
 	public ToolCategoryViewBeanHandler() {
@@ -67,12 +63,9 @@ public class ToolCategoryViewBeanHandler {
 		ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(id);
 		if (toolCategory != null) {
 			viewBean = new ToolCategoryViewBean(toolCategory);
-			for (Resource resource : toolCategory.getResources()) {
-				viewBean.addResourceViewBean(resourceViewBeanHandler.getResourceViewBean(resource.getId()));
-			}
 		}
 		else {
-			logger.info("There is no tool with id={} according to ResourcesService", id);
+			logger.debug("There is no tool with id={} according to ResourcesService", id);
 		}
 		return viewBean;
 	}
