@@ -25,13 +25,15 @@ import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-25
  * 
  */
-public class CommunityViewBean implements OrganisationViewBean, Serializable, Comparable<CommunityViewBean> {
+public class CommunityViewBean extends AbstractViewBean implements OrganisationViewBean, Serializable,
+		Comparable<CommunityViewBean> {
 
 	/**
 	 * For serialization.
@@ -42,8 +44,6 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 	private static final Logger logger = LoggerFactory.getLogger(CommunityViewBean.class);
 
 	private Community community;
-
-	private Long id;
 
 	private String name;
 
@@ -82,15 +82,6 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 	}
 
 	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Override
 	public String getName() {
 		return name;
 	}
@@ -125,39 +116,4 @@ public class CommunityViewBean implements OrganisationViewBean, Serializable, Co
 		return name.compareTo(o.getName());
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CommunityViewBean other = (CommunityViewBean) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		}
-		else
-			if (!getId().equals(other.getId()))
-				return false;
-		if (getName() == null) {
-			if (other.getName() != null)
-				return false;
-		}
-		else
-			if (!getName().equals(other.getName()))
-				return false;
-		return true;
-	}	
-	
 }

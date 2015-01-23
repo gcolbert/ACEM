@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
@@ -35,28 +36,30 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  * @since 2014-04-23
  * 
  */
-public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializable, Comparable<ProfessionalTrainingViewBean> {
+public class ProfessionalTrainingViewBean extends AbstractViewBean implements ResourceViewBean, Serializable,
+		Comparable<ProfessionalTrainingViewBean> {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -884629268063400124L;
 
 	private static final Logger logger = LoggerFactory.getLogger(ProfessionalTrainingViewBean.class);
 
 	private ProfessionalTraining professionalTraining;
 
-	private Long id;
-
 	private String name;
 
 	private String iconFileName;
-	
+
 	private String description;
 
 	private List<UseModeViewBean> useModeViewBeans;
-	
+
 	private OrganisationViewBean organisationPossessingResourceViewBean;
-	
+
 	private List<OrganisationViewBean> organisationsViewingResourceViewBeans;
-	
+
 	public ProfessionalTrainingViewBean() {
 		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
@@ -70,7 +73,7 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 	public ProfessionalTraining getDomainBean() {
 		return professionalTraining;
 	}
-	
+
 	@Override
 	public void setDomainBean(Resource resource) {
 		setProfessionalTraining((ProfessionalTraining) resource);
@@ -91,15 +94,6 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 			logger.info("UseModeViewBean.setDomainBean : we add the useMode '{}' as a UseMode", useMode.getName());
 			useModeViewBeans.add(new UseModeViewBean(useMode));
 		}
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	@Override
@@ -144,12 +138,12 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 		this.organisationPossessingResourceViewBean = organisationViewBean;
 		getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
 	}
-	
+
 	@Override
 	public List<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
 		return organisationsViewingResourceViewBeans;
 	}
-	
+
 	@Override
 	public void addOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
 		organisationsViewingResourceViewBeans.add(organisationViewBean);
@@ -172,19 +166,19 @@ public class ProfessionalTrainingViewBean implements ResourceViewBean, Serializa
 
 	@Override
 	public void setUseModeViewBean(UseModeViewBean useModeViewBean) {
-		this.useModeViewBeans.set(0,useModeViewBean);
+		this.useModeViewBeans.set(0, useModeViewBean);
 	}
-	
+
 	@Override
 	public List<UseModeViewBean> getUseModeViewBeans() {
 		return useModeViewBeans;
 	}
-	
+
 	@Override
 	public void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans) {
 		this.useModeViewBeans = useModeViewBeans;
 	}
-	
+
 	@Override
 	public int compareTo(ProfessionalTrainingViewBean o) {
 		return name.compareTo(o.getName());

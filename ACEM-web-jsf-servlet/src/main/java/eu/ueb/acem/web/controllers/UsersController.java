@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,7 +30,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.UsersService;
+import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
@@ -52,13 +56,16 @@ public class UsersController extends AbstractContextAwareController {
 
 	@Inject
 	private PickListBean pickListBean;
-	
+
 	@Inject
 	private UsersService usersService;
-	
+
 	@Inject
-	private OrganisationsController organisationsController;
-	
+	private OrganisationsService organisationsService;
+
+	@Inject
+	private OrganisationViewBeanGenerator organisationViewBeanGenerator;
+
 //	private Set<Person> personViewBeans;
 
 	public UsersController() {
@@ -99,11 +106,14 @@ public class UsersController extends AbstractContextAwareController {
 	public void preparePicklistOrganisationViewBeans() {
 		logger.debug("preparePicklistOrganisationViewBeans");
 		if (getSelectedUserViewBean() != null) {
+			List<OrganisationViewBean> allOrganisationViewBeans = new ArrayList<OrganisationViewBean>();
+			for (Organisation organisation : organisationsService.retrieveAllOrganisations()) {
+				allOrganisationViewBeans.add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
+			}
 			pickListBean.getPickListEntities().getSource().clear();
-			pickListBean.getPickListEntities().getSource().addAll(organisationsController.getOrganisationViewBeans().values());
+			pickListBean.getPickListEntities().getSource().addAll(allOrganisationViewBeans);
 			pickListBean.getPickListEntities().getTarget().clear();
-			for (OrganisationViewBean organisationViewBean : organisationsController.getOrganisationViewBeans().values()) {
-				logger.debug("organisationViewBean={}",organisationViewBean.getDomainBean().getName());
+			for (OrganisationViewBean organisationViewBean : allOrganisationViewBeans) {
 				if (getSelectedUserViewBean().getDomainBean().getWorksForOrganisations().contains(organisationViewBean.getDomainBean())) {
 					pickListBean.getPickListEntities().getSource().remove(organisationViewBean);
 					pickListBean.getPickListEntities().getTarget().add(organisationViewBean);

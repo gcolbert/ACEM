@@ -22,27 +22,29 @@ import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-25
  * 
  */
-public class TeachingDepartmentViewBean implements OrganisationViewBean, Serializable,
+public class TeachingDepartmentViewBean extends AbstractViewBean implements OrganisationViewBean, Serializable,
 		Comparable<TeachingDepartmentViewBean> {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 6787135851384385849L;
 
 	private TeachingDepartment teachingDepartment;
 
-	private Long id;
-	
 	private String name;
 
 	private String shortname;
-	
+
 	private String iconFileName;
-	
+
 	public TeachingDepartmentViewBean() {
 	}
 
@@ -71,15 +73,6 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Seriali
 	@Override
 	public void setDomainBean(Organisation organisation) {
 		setTeachingDepartment((TeachingDepartment) organisation);
-	}
-	
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	@Override
@@ -111,45 +104,10 @@ public class TeachingDepartmentViewBean implements OrganisationViewBean, Seriali
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
 	}
-	
+
 	@Override
 	public int compareTo(TeachingDepartmentViewBean o) {
 		return name.compareTo(o.getName());
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TeachingDepartmentViewBean other = (TeachingDepartmentViewBean) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		}
-		else
-			if (!getId().equals(other.getId()))
-				return false;
-		if (getName() == null) {
-			if (other.getName() != null)
-				return false;
-		}
-		else
-			if (!getName().equals(other.getName()))
-				return false;
-		return true;
-	}	
-	
 }

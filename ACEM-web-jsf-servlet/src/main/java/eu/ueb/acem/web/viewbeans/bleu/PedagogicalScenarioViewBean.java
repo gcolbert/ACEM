@@ -31,14 +31,15 @@ import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.web.viewbeans.Pickable;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-17
  * 
  */
-public class PedagogicalScenarioViewBean implements Pickable, Serializable, Comparable<PedagogicalScenarioViewBean> {
+public class PedagogicalScenarioViewBean extends AbstractViewBean implements Serializable,
+		Comparable<PedagogicalScenarioViewBean> {
 
 	/**
 	 * For serialization.
@@ -48,12 +49,10 @@ public class PedagogicalScenarioViewBean implements Pickable, Serializable, Comp
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalScenarioViewBean.class);
 
-
 	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
 
 	private PedagogicalScenario scenario;
 
-	private Long id;
 	private String name;
 	private String authors;
 	private String objective;
@@ -91,15 +90,6 @@ public class PedagogicalScenarioViewBean implements Pickable, Serializable, Comp
 		setModificationDate(scenario.getModificationDate());
 	}
 
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -128,12 +118,13 @@ public class PedagogicalScenarioViewBean implements Pickable, Serializable, Comp
 			authorsAsString = authorsAsString.concat(author.getName().concat(", "));
 		}
 		if (authorsAsString.length() > 0) {
-			// We remove the last two characters (corresponding to the ending ", " characters)
+			// We remove the last two characters (corresponding to the ending
+			// ", " characters)
 			authorsAsString = authorsAsString.substring(0, authorsAsString.length() - 2);
 		}
 		this.authors = authorsAsString;
 	}
-	
+
 	public String getEvaluationModes() {
 		return evaluationModes;
 	}

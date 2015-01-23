@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +37,7 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -66,18 +68,18 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	private PedagogicalScenarioViewBean selectedScenarioViewBean;
 
 	private PedagogicalActivityViewBean selectedPedagogicalActivityViewBean;
-
+	
 	@Inject
 	private ScenariosService scenariosService;
-	
+
+	@Inject
+	private ResourcesService resourcesService;
+
 	@Inject
 	private SortableTableBean<PedagogicalScenarioViewBean> pedagogicalScenarioViewBeans;
 
 	@Inject
 	private PickListBean pickListBean;
-
-	@Inject
-	private ToolCategoryViewBeanHandler toolCategoryViewBeanHandler;
 	
 	public MyScenariosController() {
 		pedagogicalScenarioViewBeans = new SortableTableBean<PedagogicalScenarioViewBean>();
@@ -235,9 +237,7 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	}
 
 	public void onSaveSelectedPedagogicalActivity() {
-		logger.info("onSaveSelectedPedagogicalActivity");
 		if (selectedPedagogicalActivityViewBean.getPedagogicalActivity()==null) {
-			logger.info("onSaveSelectedPedagogicalActivity, create");
 			// Create
 			PedagogicalActivity newPedagogicalActivity = scenariosService.createPedagogicalActivity(selectedPedagogicalActivityViewBean.getName());
 			newPedagogicalActivity.setObjective(selectedPedagogicalActivityViewBean.getObjective());
@@ -253,7 +253,6 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			selectedScenarioViewBean.getPedagogicalActivityViewBeans().add(selectedPedagogicalActivityViewBean);
 		}
 		else {
-			logger.info("onSaveSelectedPedagogicalActivity, update");
 			// Update
 			selectedPedagogicalActivityViewBean.getPedagogicalActivity().getResourceCategories().clear();
 			for (ToolCategoryViewBean toolCategoryViewBean : selectedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
@@ -273,8 +272,12 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	}
 
 	public void preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity() {
+		List<ToolCategoryViewBean> allToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
+		for (ResourceCategory toolCategory : resourcesService.retrieveAllCategories()) {
+			allToolCategoryViewBeans.add(new ToolCategoryViewBean(toolCategory));
+		}
 		pickListBean.getPickListEntities().getSource().clear();
-		pickListBean.getPickListEntities().getSource().addAll(toolCategoryViewBeanHandler.getAllToolCategoryViewBeans());
+		pickListBean.getPickListEntities().getSource().addAll(allToolCategoryViewBeans);
 		pickListBean.getPickListEntities().getTarget().clear();
 		if (getSelectedPedagogicalActivityViewBean() != null) {
 			for (ToolCategoryViewBean toolCategoryViewBean : getSelectedPedagogicalActivityViewBean().getToolCategoryViewBeans()) {

@@ -24,26 +24,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.UseMode;
-import eu.ueb.acem.web.viewbeans.Pickable;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-05-22
  * 
  */
-public class UseModeViewBean implements Serializable, Pickable, Comparable<UseModeViewBean> {
-	
+public class UseModeViewBean extends AbstractViewBean implements Serializable, Comparable<UseModeViewBean> {
+
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = 6232506617579076158L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(UseModeViewBean.class);
 
 	private UseMode useMode;
-	
-	private Long id;
 
 	private String name;
-	
+
 	private String description;
 
 	public UseModeViewBean() {
@@ -52,15 +53,6 @@ public class UseModeViewBean implements Serializable, Pickable, Comparable<UseMo
 	public UseModeViewBean(UseMode useMode) {
 		this();
 		setUseMode(useMode);
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -80,15 +72,15 @@ public class UseModeViewBean implements Serializable, Pickable, Comparable<UseMo
 		this.description = description;
 		useMode.setDescription(description);
 	}
-	
+
 	public UseMode getDomainBean() {
 		return useMode;
 	}
-	
+
 	public void setDomainBean(UseMode useMode) {
 		setUseMode(useMode);
 	}
-	
+
 	public UseMode getUseMode() {
 		return useMode;
 	}
@@ -99,11 +91,10 @@ public class UseModeViewBean implements Serializable, Pickable, Comparable<UseMo
 		setName(useMode.getName());
 		setDescription(useMode.getDescription());
 	}
-	
+
 	@Override
 	public int compareTo(UseModeViewBean o) {
 		return name.compareTo(o.getName());
 	}
 
 }
-

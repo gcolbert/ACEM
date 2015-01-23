@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.web.controllers;
+package eu.ueb.acem.web.utils;
 
 import java.util.Collection;
 import java.util.Set;
@@ -42,11 +42,12 @@ import eu.ueb.acem.web.viewbeans.EditableTreeBean;
  */
 @Component("needsAndAnswersTreeGenerator")
 @Scope("singleton")
-class NeedsAndAnswersTreeGenerator {
+public class NeedsAndAnswersTreeGenerator {
 
 	/**
 	 * For logging.
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeGenerator.class);
 
 	private static final String TREE_NODE_TYPE_NEED_LEAF = "NeedLeaf";
@@ -91,8 +92,6 @@ class NeedsAndAnswersTreeGenerator {
 		EditableTreeBean treeBean = new EditableTreeBean();
 		TreeNode currentVisibleRoot = null;
 		Collection<PedagogicalNeed> needs = needsAndAnswersService.retrieveNeedsAtRoot();
-		logger.debug("Found {} needs at root of tree.", needs.size());
-
 		if (singleVisibleTreeRootLabel != null) {
 			currentVisibleRoot = treeBean.addVisibleRoot(singleVisibleTreeRootLabel);
 		}

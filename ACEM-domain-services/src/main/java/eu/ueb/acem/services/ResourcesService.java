@@ -37,6 +37,8 @@ public interface ResourcesService {
 	ResourceCategory retrieveResourceCategory(Long id);
 
 	ResourceCategory updateResourceCategory(ResourceCategory resourceCategory);
+	
+	Boolean deleteResourceCategory(Long id);
 
 	Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType);
 

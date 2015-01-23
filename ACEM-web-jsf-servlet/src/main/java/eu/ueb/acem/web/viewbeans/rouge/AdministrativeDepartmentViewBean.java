@@ -26,30 +26,32 @@ import org.slf4j.LoggerFactory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.services.ScenariosServiceImpl;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-25
  * 
  */
-public class AdministrativeDepartmentViewBean implements OrganisationViewBean, Serializable,
+public class AdministrativeDepartmentViewBean extends AbstractViewBean implements OrganisationViewBean, Serializable,
 		Comparable<AdministrativeDepartmentViewBean> {
+
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -5647852694643666952L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ScenariosServiceImpl.class);
-	
-	private static final long serialVersionUID = -5647852694643666952L;
 
 	private AdministrativeDepartment administrativeDepartment;
 
-	private Long id;
-	
 	private String name;
 
 	private String shortname;
-	
+
 	private String iconFileName;
-	
+
 	public AdministrativeDepartmentViewBean() {
 	}
 
@@ -81,15 +83,6 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, S
 	}
 
 	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Override
 	public String getName() {
 		return name;
 	}
@@ -118,45 +111,10 @@ public class AdministrativeDepartmentViewBean implements OrganisationViewBean, S
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
 	}
-	
+
 	@Override
 	public int compareTo(AdministrativeDepartmentViewBean o) {
 		return name.compareTo(o.getName());
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AdministrativeDepartmentViewBean other = (AdministrativeDepartmentViewBean) obj;
-		if (getId() == null) {
-			if (other.getId() != null)
-				return false;
-		}
-		else
-			if (!getId().equals(other.getId()))
-				return false;
-		if (getName() == null) {
-			if (other.getName() != null)
-				return false;
-		}
-		else
-			if (!getName().equals(other.getName()))
-				return false;
-		return true;
-	}	
-	
 }

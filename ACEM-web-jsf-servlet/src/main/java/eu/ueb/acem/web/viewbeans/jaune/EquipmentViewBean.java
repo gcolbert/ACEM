@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
@@ -35,7 +36,8 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  * @since 2014-02-25
  * 
  */
-public class EquipmentViewBean implements ResourceViewBean, Serializable, Comparable<EquipmentViewBean> {
+public class EquipmentViewBean extends AbstractViewBean implements ResourceViewBean, Serializable,
+		Comparable<EquipmentViewBean> {
 
 	/**
 	 * For serialization.
@@ -43,23 +45,21 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 	private static final long serialVersionUID = -555050946530463265L;
 
 	private static final Logger logger = LoggerFactory.getLogger(EquipmentViewBean.class);
-	
-	private Equipment equipment;
 
-	private Long id;
+	private Equipment equipment;
 
 	private String name;
 
 	private String iconFileName;
-	
+
 	private String description;
 
 	private List<UseModeViewBean> useModeViewBeans;
-	
+
 	private OrganisationViewBean organisationPossessingResourceViewBean;
-	
+
 	private List<OrganisationViewBean> organisationsViewingResourceViewBeans;
-	
+
 	public EquipmentViewBean() {
 		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
@@ -73,7 +73,7 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 	public Equipment getDomainBean() {
 		return equipment;
 	}
-	
+
 	@Override
 	public void setDomainBean(Resource resource) {
 		setEquipment((Equipment) resource);
@@ -97,15 +97,6 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 	}
 
 	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Override
 	public String getName() {
 		return name;
 	}
@@ -125,7 +116,7 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		this.iconFileName = iconFileName;
 		getDomainBean().setIconFileName(iconFileName);
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return description;
@@ -136,7 +127,7 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		this.description = description;
 		getDomainBean().setDescription(description);
 	}
-	
+
 	@Override
 	public OrganisationViewBean getOrganisationPossessingResourceViewBean() {
 		return organisationPossessingResourceViewBean;
@@ -147,12 +138,12 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 		this.organisationPossessingResourceViewBean = organisationViewBean;
 		getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
 	}
-	
+
 	@Override
 	public List<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
 		return organisationsViewingResourceViewBeans;
 	}
-	
+
 	@Override
 	public void addOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
 		organisationsViewingResourceViewBeans.add(organisationViewBean);
@@ -175,19 +166,19 @@ public class EquipmentViewBean implements ResourceViewBean, Serializable, Compar
 
 	@Override
 	public void setUseModeViewBean(UseModeViewBean useModeViewBean) {
-		this.useModeViewBeans.set(0,useModeViewBean);
+		this.useModeViewBeans.set(0, useModeViewBean);
 	}
-	
+
 	@Override
 	public List<UseModeViewBean> getUseModeViewBeans() {
 		return useModeViewBeans;
 	}
-	
+
 	@Override
 	public void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans) {
 		this.useModeViewBeans = useModeViewBeans;
 	}
-	
+
 	@Override
 	public int compareTo(EquipmentViewBean o) {
 		return name.compareTo(o.getName());

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.web.controllers;
+package eu.ueb.acem.web.utils;
 
 import javax.inject.Inject;
 
@@ -42,24 +42,24 @@ import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
  * @since 2014-05-28
  * 
  */
-@Component("organisationViewBeanHandler")
+@Component("organisationViewBeanGenerator")
 @Scope("singleton")
-public class OrganisationViewBeanHandler {
+public class OrganisationViewBeanGenerator {
 
 	/**
 	 * For logging.
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(OrganisationViewBeanHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(OrganisationViewBeanGenerator.class);
 
 	@Inject
 	private OrganisationsService organisationsService;
 
-	public OrganisationViewBeanHandler() {
+	public OrganisationViewBeanGenerator() {
 	}
 
 	public OrganisationViewBean getOrganisationViewBean(Long id) {
 		OrganisationViewBean viewBean = null;
-		Organisation organisation = organisationsService.retrieveOrganisation(id, true); // TODO : do we need to set initialize to true here?
+		Organisation organisation = organisationsService.retrieveOrganisation(id, true);
 		if (organisation != null) {
 			if (organisation instanceof Community) {
 				viewBean = new CommunityViewBean((Community) organisation);
@@ -79,5 +79,4 @@ public class OrganisationViewBeanHandler {
 		}
 		return viewBean;
 	}
-	
 }

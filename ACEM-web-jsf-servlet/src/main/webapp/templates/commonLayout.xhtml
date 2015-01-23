@@ -5,6 +5,9 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
+
+	<ui:param name="eastPanelSize" value="400"/>
+
 <f:view locale="#{sessionController.currentUserLocale}">
 	<h:head>
 		<f:facet name="first">
@@ -46,7 +49,7 @@
 			<!-- Footer for validation toolbar -->
 			<p:layoutUnit id="layoutSouth" position="south" header="#{titleSouth}"
 				collapsible="#{southPanelCollapsible}"
-				collapsed="#{southPanelCollapsed}" size="100"
+				collapsed="#{southPanelCollapsed}" size="#{empty southPanelSize ? 100 : southPanelSize}"
 				resizable="true" rendered="#{displaySouth}">
 				<h:form id="southForm">
 					<ui:insert name="footer"></ui:insert>
@@ -56,7 +59,7 @@
 			<!-- West for detail edition when center needed elements list (see User) -->
 			<p:layoutUnit id="layoutWest" position="west" header="#{titleWest}"
 				collapsible="#{westPanelCollapsible}"
-				collapsed="#{westPanelCollapsed}" size="400"
+				collapsed="#{westPanelCollapsed}" size="#{empty westPanelSize ? 400 : westPanelSize}"
 				resizable="true" rendered="#{displayWest}">
 				<h:form id="westForm">
 					<ui:insert name="west">
@@ -66,7 +69,7 @@
 
 			<p:layoutUnit id="layoutEast" position="east" header="#{titleEast}"
 				collapsible="#{eastPanelCollapsible}"
-				collapsed="#{eastPanelCollapsed}" size="200"
+				collapsed="#{eastPanelCollapsed}" size="#{empty eastPanelSize ? 400 : eastPanelSize}"
 				resizable="true" rendered="#{displayEast}">
 				<h:form id="eastForm">
 					<ui:insert name="east">
@@ -149,7 +152,7 @@
 			</p:outputPanel>
 		</h:form>
 		<p:outputPanel id="customDialogPanelOutFormWithoutForm" deferred="true">
-				<ui:insert name="customDialogOutFormWithoutForm" />
+			<ui:insert name="customDialogOutFormWithoutForm" />
 		</p:outputPanel>
 		
 	</h:body>

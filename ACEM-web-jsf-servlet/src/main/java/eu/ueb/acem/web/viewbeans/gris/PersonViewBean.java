@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.web.viewbeans.Pickable;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
@@ -34,7 +34,7 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  * @since 2014-02-25
  * 
  */
-public class PersonViewBean implements Pickable, Serializable, Comparable<PersonViewBean> {
+public class PersonViewBean extends AbstractViewBean implements Serializable, Comparable<PersonViewBean> {
 
 	private static final long serialVersionUID = 4401967530594259861L;
 
@@ -44,8 +44,6 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 	private Person domainBean;
 
 	private List<OrganisationViewBean> organisationViewBeans;
-
-	private Long id;
 
 	private String name;
 
@@ -89,15 +87,6 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		organisationViewBeans.remove(organisationViewBean);
 	}
 
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -130,7 +119,7 @@ public class PersonViewBean implements Pickable, Serializable, Comparable<Person
 		this.administrator = administrator;
 	}
 
-	public Boolean getIsTeacher(){
+	public Boolean getIsTeacher() {
 		return this instanceof TeacherViewBean;
 	}
 

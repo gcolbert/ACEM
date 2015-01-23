@@ -26,8 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 import eu.ueb.acem.web.viewbeans.Pickable;
-import eu.ueb.acem.web.viewbeans.bleu.PedagogicalActivityViewBean;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 
 /**
@@ -35,29 +35,29 @@ import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
  * @since 2014-04-22
  * 
  */
-public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<ToolCategoryViewBean> {
+public class ToolCategoryViewBean extends AbstractViewBean implements Serializable, Pickable,
+		Comparable<ToolCategoryViewBean> {
 
+	/**
+	 * For serialization.
+	 */
 	private static final long serialVersionUID = -116654020465612191L;
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ToolCategoryViewBean.class);
-	
+
 	private ResourceCategory resourceCategory;
 
 	private List<ResourceViewBean> resourceViewBeans;
-	
-	private List<PedagogicalScenarioViewBean> pedagogicalScenarioViewBeans;
-	
-	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
 
-	private Long id;
+	private List<PedagogicalScenarioViewBean> pedagogicalScenarioViewBeans;
 
 	private String name;
-	
+
 	private Boolean favoriteToolCategory;
-	
+
 	private String iconFileName;
-	
+
 	private String description;
 
 	public ToolCategoryViewBean() {
@@ -73,7 +73,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 	public ResourceCategory getDomainBean() {
 		return resourceCategory;
 	}
-	
+
 	public void setDomainBean(ResourceCategory toolCategory) {
 		setResourceCategory((ResourceCategory) toolCategory);
 	}
@@ -89,7 +89,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 		setIconFileName(toolCategory.getIconFileName());
 		setDescription(toolCategory.getDescription());
 	}
-	
+
 	public List<ResourceViewBean> getResourceViewBeans() {
 		return resourceViewBeans;
 	}
@@ -112,15 +112,6 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 
 	public void removeScenarioViewBean(PedagogicalScenarioViewBean pedagogicalScenarioViewBean) {
 		pedagogicalScenarioViewBeans.remove(pedagogicalScenarioViewBean);
-	}
-	
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -148,7 +139,7 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 		this.iconFileName = iconFileName;
 		getDomainBean().setIconFileName(iconFileName);
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -157,45 +148,10 @@ public class ToolCategoryViewBean implements Serializable, Pickable, Comparable<
 		this.description = description;
 		getDomainBean().setDescription(description);
 	}
-	
+
 	@Override
 	public int compareTo(ToolCategoryViewBean o) {
 		return name.compareTo(o.getName());
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ToolCategoryViewBean other = (ToolCategoryViewBean) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		}
-		else
-			if (!id.equals(other.id))
-				return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		}
-		else
-			if (!name.equals(other.name))
-				return false;
-		return true;
-	}
-	
 }

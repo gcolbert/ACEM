@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.web.controllers;
+package eu.ueb.acem.web.utils;
 
 import javax.inject.Inject;
 
@@ -44,19 +44,19 @@ import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
  * @since 2014-05-28
  * 
  */
-@Component("resourceViewBeanHandler")
+@Component("resourceViewBeanGenerator")
 @Scope("singleton")
-public class ResourceViewBeanHandler {
+public class ResourceViewBeanGenerator {
 
 	/**
 	 * For logging.
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(ResourceViewBeanHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(ResourceViewBeanGenerator.class);
 
 	@Inject
 	private ResourcesService resourcesService;
 
-	public ResourceViewBeanHandler() {
+	public ResourceViewBeanGenerator() {
 	}
 
 	public ResourceViewBean getResourceViewBean(Long id) {

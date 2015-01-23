@@ -43,6 +43,7 @@ import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
+import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -95,8 +96,6 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 	@Inject
 	private SortableTableBean<PedagogicalScenarioViewBean> pedagogicalScenarioViewBeans;
 
-	// private List<PedagogicalScenarioViewBean> scenarioViewBeansForSelectedAnswer;
-
 	private SortableTableBean<ToolCategoryViewBean> toolCategoryViewBeans;
 
 	private List<ToolCategoryViewBean> toolCategoryViewBeansForSelectedAnswer;
@@ -125,8 +124,6 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
 
-		// scenarioViewBeansForSelectedAnswer = new
-		// ArrayList<PedagogicalScenarioViewBean>();
 		pedagogicalScenarioViewBeans = new SortableTableBean<PedagogicalScenarioViewBean>();
 	}
 
@@ -435,24 +432,6 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		}
 	}
 
-// TODO : delete
-//	public Collection<AdministrativeDepartmentViewBean> getAdministrativeDepartmentViewBeansForSelectedAnswer() {
-//		return administrativeDepartmentViewBeansForSelectedAnswer;
-//	}
-//
-//	private void setAdministrativeDepartmentViewBeansForSelectedAnswer() {
-//		if (selectedAnswer != null) {
-//			administrativeDepartmentViewBeansForSelectedAnswer.clear();
-//			for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
-//					.getTableEntries()) {
-//				if (selectedAnswer.getAdministrativeDepartments().contains(
-//						administrativeDepartmentViewBean.getAdministrativeDepartment())) {
-//					administrativeDepartmentViewBeansForSelectedAnswer.add(administrativeDepartmentViewBean);
-//				}
-//			}
-//		}
-//	}
-
 	public void preparePicklistToolCategoryViewBeansForSelectedAnswer() {
 		logger.info("preparePicklistToolCategoryViewBeansForSelectedAnswer");
 		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
@@ -470,26 +449,6 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			}
 		}
 	}
-
-//	public void preparePicklistAdministrativeDepartmentViewBeansForSelectedAnswer() {
-//		logger.info("preparePicklistAdministrativeDepartmentViewBeansForSelectedAnswer");
-//		if (selectedAnswer != null) {
-//			pickListBean.getPickListEntities().getSource().clear();
-//			pickListBean.getPickListEntities().getSource().addAll(administrativeDepartmentViewBeans.getTableEntries());
-//			pickListBean.getPickListEntities().getTarget().clear();
-//			PedagogicalAnswer selectedAnswer = needsAndAnswersService.retrievePedagogicalAnswer(((TreeNodeData) selectedNode.getData()).getId(), true);
-//			for (AdministrativeDepartment administrativeDepartmentForSelectedAnswer : selectedAnswer.getAdministrativeDepartments()) {
-//				for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
-//						.getTableEntries()) {
-//					if (administrativeDepartmentForSelectedAnswer.getId().equals(
-//							administrativeDepartmentViewBean.getId())) {
-//						pickListBean.getPickListEntities().getSource().remove(administrativeDepartmentViewBean);
-//						pickListBean.getPickListEntities().getTarget().add(administrativeDepartmentViewBean);
-//					}
-//				}
-//			}
-//		}
-//	}
 
 	public void onTransferToolCategory(TransferEvent event) {
 		logger.info("onTransferToolCategory");
@@ -526,44 +485,5 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 			}
 		}
 	}
-
-//	public void onTransferAdministrativeDepartment(TransferEvent event) {
-//		logger.info("onTransferAdministrativeDepartment");
-//		@SuppressWarnings("unchecked")
-//		List<AdministrativeDepartmentViewBean> listOfMovedViewBeans = (List<AdministrativeDepartmentViewBean>) event
-//				.getItems();
-//		for (AdministrativeDepartmentViewBean movedAdministrativeDepartmentViewBean : listOfMovedViewBeans) {
-//			if (event.isAdd()) {
-//				logger.info("We should associate answer {} and administrative department {}",
-//						((TreeNodeData) selectedNode.getData()).getLabel(),
-//						movedAdministrativeDepartmentViewBean.getName());
-//				if (needsAndAnswersService.associateAnswerWithAdministrativeDepartment(((TreeNodeData) selectedNode
-//						.getData()).getId(), movedAdministrativeDepartmentViewBean.getDomainBean().getId())) {
-//					administrativeDepartmentViewBeansForSelectedAnswer.add(movedAdministrativeDepartmentViewBean);
-//					logger.info("association successful");
-//				}
-//				else {
-//					logger.info("association failed");
-//				}
-//				movedAdministrativeDepartmentViewBean.setDomainBean(organisationsService
-//						.retrieveOrganisation(movedAdministrativeDepartmentViewBean.getId(), false));
-//			}
-//			else {
-//				logger.info("We should dissociate answer {} and administrative department {}",
-//						((TreeNodeData) selectedNode.getData()).getLabel(),
-//						movedAdministrativeDepartmentViewBean.getName());
-//				if (needsAndAnswersService.dissociateAnswerWithAdministrativeDepartment(((TreeNodeData) selectedNode
-//						.getData()).getId(), movedAdministrativeDepartmentViewBean.getDomainBean().getId())) {
-//					administrativeDepartmentViewBeansForSelectedAnswer.remove(movedAdministrativeDepartmentViewBean);
-//					logger.info("dissociation successful");
-//				}
-//				else {
-//					logger.info("dissociation failed");
-//				}
-//				movedAdministrativeDepartmentViewBean.setDomainBean(organisationsService
-//						.retrieveOrganisation(movedAdministrativeDepartmentViewBean.getId(), false));
-//			}
-//		}
-//	}
 
 }

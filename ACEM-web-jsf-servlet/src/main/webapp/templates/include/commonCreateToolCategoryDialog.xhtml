@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<!-- Controller associated with this view -->
+	<ui:param name="associateBean" value="#{commonToolCategoriesController}" />
+
+	<!-- ********** TOOL CATEGORIES ********************************************************************** -->
+
+	<h:form id="createToolCategoryForm">
+		<p:dialog id="idDialogCreateToolCategory"
+			header="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"
+			widgetVar="dialogCreateToolCategory" modal="true"
+			height="auto">
+			<p:panelGrid columns="3">
+
+				<h:outputLabel for="newToolCategoryName"
+					value="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.NAME_LABEL']}" />
+				<p:inputText id="newToolCategoryName" required="true"
+					requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
+					binding="#{input5}" />
+				<p:message for="newToolCategoryName" display="text" />
+
+				<h:outputLabel for="newToolCategoryDescription"
+					value="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.DESCRIPTION_LABEL']}" />
+				<p:inputText id="newToolCategoryDescription" required="true"
+					requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
+					binding="#{input5b}" />
+				<p:message for="newToolCategoryDescription" display="text" />
+
+				<h:outputLabel
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
+					for="newToolCategoryIcon" />
+				<p:column rowspan="2">
+					<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
+						sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
+						uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
+						cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
+						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
+						update="newToolCategoryIcon :contentForm:messagesDisplayer" />
+					<p:graphicImage id="newToolCategoryIcon" cache="false"
+						width="200" value="#{fileUploadController.uploadedFile}" />
+				</p:column>
+			</p:panelGrid>
+			<p:commandButton styleClass="dialogValidationButton"
+				value="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.VALIDATE']}"
+				icon="ui-icon-check"
+				action="#{associateBean.onCreateToolCategory(input5.value, input5b.value, fileUploadController.uploadedFileName)}"
+				update=":eastForm:accordionPanelForToolCategories :contentForm:messagesDisplayer"
+				process="@form"
+				oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateToolCategory').hide(); }" />
+		</p:dialog>
+	</h:form>
+
+</ui:composition>

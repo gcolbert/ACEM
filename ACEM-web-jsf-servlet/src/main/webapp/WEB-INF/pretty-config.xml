@@ -19,7 +19,7 @@
 	</url-mapping>
 
 	<url-mapping id="my-tools-param">
-		<pattern value="/my-tools/{toolCategoryId}" />
+		<pattern value="/my-tools?toolCategoryId=#{toolCategoryId}" />
 		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
 
@@ -32,12 +32,12 @@
 		<pattern value="/my-scenarios" />
 		<view-id value="/pages/my-scenarios.xhtml" />
 	</url-mapping>
-
+<!-- 
 	<url-mapping id="my-scenarios-param">
-		<pattern value="/my-scenarios/{scenarioId}" />
+		<pattern value="/my-scenarios/#{scenarioId}" />
 		<view-id value="/pages/my-scenarios.xhtml" />
 	</url-mapping>
-
+ -->
 	<url-mapping id="my-teachings">
 		<pattern value="/my-teachings" />
 		<view-id value="/pages/my-teachings.xhtml" />

@@ -6,7 +6,7 @@
 	template="../templates/commonLayout.xhtml">
 
 	<!-- Controller associated with this view -->
-	<ui:param name="associateBean" value="#{myScenariosController}" />
+	<ui:param name="associateBean" value="#{administrationController}" />
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
@@ -89,8 +89,7 @@
 										<p:commandButton id="deleteCommunityButton"
 											value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 											icon="ui-icon-trash"
-											actionListener="#{organisationsController.onDeleteOrganisation}"
-											action="#{usersController.onDeleteOrganisation}"
+											action="#{organisationsController.onDeleteOrganisation}"
 											update="accordionPanelForCommunities :formUsers:usersDataTable :contentForm:messagesDisplayer"
 											process="@this">
 											<p:confirm
@@ -102,8 +101,7 @@
 									<p:commandButton id="deleteCommunityButton"
 										value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
 										icon="ui-icon-trash"
-										actionListener="#{organisationsController.onDeleteOrganisation}"
-										action="#{usersController.onDeleteOrganisation}"
+										action="#{organisationsController.onDeleteOrganisation}"
 										update="accordionPanelForCommunities :contentForm:messagesDisplayer"
 										process="@this">
 										<p:confirm
@@ -197,7 +195,7 @@
 												actionListener="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
 												action="#{organisationsController.preparePicklistCommunityViewBeansForCurrentOrganisation()}"
 												oncomplete="PF('dialogAssociateCommunity').show()"
-												update=":contentForm:idDialogAssociateCommunity"
+												update=":associationCommunityForm:idDialogAssociateCommunity"
 												process="@this" />
 											<p:dataTable var="communityViewBean"
 												emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
@@ -423,98 +421,6 @@
 				</p:tab>
 			</p:tabView>
 		</p:panel>
-		
-		<!-- ********** TOOL CATEGORIES ********************************************************************** -->
-		<p:panel
-			header="#{msg['ADMINISTRATION.TOOL_CATEGORIES.HEADER']}">
-			<p:commandButton
-				value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_LABEL']}"
-				icon="ui-icon-plusthick"
-				update=":formToolCategories:idDialogCreateToolCategory"
-				oncomplete="PF('dialogCreateToolCategory').show()" process="@this">
-				<p:resetInput target=":formToolCategories:idDialogCreateToolCategory" />
-			</p:commandButton>
-			<p:accordionPanel id="accordionPanelForToolCategories" styleClass="administrationAccordionPanel"
-				widgetVar="accordionPanelForToolCategoriesWidget"
-				value="#{myToolsController.allToolCategoryViewBeans}"
-				var="toolCategoryViewBean" activeIndex="-1" dynamic="true"
-				collapsible="true">
-				<p:ajax event="tabChange"
-					listener="#{myToolsController.onToolCategoryAccordionPanelTabChange}"
-					update="@this" />
-				<p:tab title="#{toolCategoryViewBean.name}">
-					<p:panelGrid columns="2">
-						<p:graphicImage id="toolCategoryIcon"
-							rendered="#{not empty toolCategoryViewBean.iconFileName}"
-							styleClass="toolCategoryLogo" alt="#{toolCategoryViewBean.name}"
-							cache="false" width="150"
-							value="#{imagesController.getImage()}">
-							<f:param name="imageFileName"
-								value="#{toolCategoryViewBean.iconFileName}" />
-						</p:graphicImage>
-						<p:column>
-							<p:panelGrid columns="1" styleClass="toolCategoryDescriptionPanelGrid">
-								<h:outputText value="#{toolCategoryViewBean.description}"/>
-								
-								<h:link id="goToToolsBtn" outcome="my-tools">
-									<f:param name="toolCategoryId"
-										value="#{toolCategoryViewBean.id}" />
-									<h:outputText
-										value="#{toolCategoryViewBean.name}" />
-									<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
-										style="display:inline-block; vertical-align:middle;" />
-									<p:tooltip
-										value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.GO_TO_TOOL_CATEGORY_IN_MY_TOOLS']}"
-										for="goToToolsBtn" />
-								</h:link>
-							</p:panelGrid>
-							
-						<!-- 
-							TODO : modify selected tool category + delete selected tool category
-							
-							<p:commandButton
-								value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
-								icon="ui-icon-transferthick-e-w"
-								actionListener="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
-								action="#{organisationsController.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
-								oncomplete="PF('dialogAssociateInstitution').show()"
-								update=":associationInstitutionForm:idDialogAssociateInstitution"
-								process="@this" />
-							<p:commandButton
-								value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_COMMUNITY_LABEL']}"
-								icon="ui-icon-pencil"
-								actionListener="#{fileUploadController.reset()}"
-								action="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
-								update=":renameOrganisationForm:idDialogRenameOrganisation"
-								oncomplete="PF('dialogRenameOrganisation').show()"
-								process="@this" />
-							<p:commandButton id="deleteCommunityButton"
-								value="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_LABEL']}"
-								icon="ui-icon-trash"
-								actionListener="#{organisationsController.onDeleteOrganisation}"
-								action="#{usersController.onDeleteOrganisation}"
-								update="accordionPanelForCommunities :formUsers:usersDataTable :contentForm:messagesDisplayer"
-								process="@this">
-								<p:confirm
-									header="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_HEADER']}"
-									message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
-									icon="ui-icon-alert" />
-							</p:commandButton>
-							<p:dataTable id="dataTableInstitutionViewBeansForCommunity"
-								var="institutionViewBean"
-								emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-								value="#{organisationsController.institutionViewBeansForCurrentOrganisation}">
-								<p:column
-									headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
-									<h:outputText value="#{institutionViewBean.name}" />
-								</p:column>
-							</p:dataTable>
-							 -->
-						</p:column>
-					</p:panelGrid>
-				</p:tab>
-			</p:accordionPanel>
-		</p:panel>
 
 		<!-- ********** USERS ********************************************************************** -->
 		<!-- 
@@ -560,9 +466,23 @@
 			</p:dataTable>
 		</p:panel>
  -->
+
+		<!-- ********** TOOL CATEGORIES ********************************************************************** -->
+		<!-- 
+		<p:panel header="#{msg['TOOL_CATEGORIES.HEADER']}">
+			<ui:include src="/templates/include/commonListAllToolCategories.xhtml"/>
+		</p:panel>
+ 		-->
 	</ui:define>
 
 	<ui:define name="customDialogOutFormWithoutForm">
+
+		<!-- ********** CREATE TOOL CATEGORY DIALOG ********************************************************** -->
+		<!-- 
+		<ui:include src="/templates/include/commonCreateToolCategoryDialog.xhtml"/>
+ 		-->
+
+		<!-- ********** CREATE COMMUNITY DIALOG ********************************************************** -->
 		<h:form id="createCommunityForm">
 			<p:dialog id="idDialogCreateCommunity"
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
@@ -939,7 +859,7 @@
 		</h:form>
 
 <!-- 
-		<h:form id="formUsers">
+		<h:form id="usersForm">
 			<p:dialog id="idDialogAssociateOrganisationWithUser"
 				header="#{msg['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogAssociateOrganisationWithUser" modal="true"
@@ -968,50 +888,5 @@
 			</p:dialog>
 		</h:form>
  -->
-		<h:form id="formToolCategories">
-			<p:dialog id="idDialogCreateToolCategory"
-				header="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"
-				widgetVar="dialogCreateToolCategory" modal="true"
-				height="auto">
-				<p:panelGrid columns="3">
-
-					<h:outputLabel for="newToolCategoryName"
-						value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.NAME_LABEL']}" />
-					<p:inputText id="newToolCategoryName" required="true"
-						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
-						binding="#{input5}" />
-					<p:message for="newToolCategoryName" display="text" />
-
-					<h:outputLabel for="newToolCategoryDescription"
-						value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.DESCRIPTION_LABEL']}" />
-					<p:inputText id="newToolCategoryDescription" required="true"
-						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
-						binding="#{input5b}" />
-					<p:message for="newToolCategoryDescription" display="text" />
-
-					<h:outputLabel
-						value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
-						for="newToolCategoryIcon" />
-					<p:column rowspan="2">
-						<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-							sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
-							uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
-							cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
-							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
-							update="newToolCategoryIcon :contentForm:messagesDisplayer" />
-						<p:graphicImage id="newToolCategoryIcon" cache="false"
-							width="200" value="#{fileUploadController.uploadedFile}" />
-					</p:column>
-				</p:panelGrid>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['ADMINISTRATION.TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.CLOSE']}"
-					icon="ui-icon-check"
-					action="#{myToolsController.onCreateToolCategory(input5.value, input5b.value, fileUploadController.uploadedFileName)}"
-					update="@form :formToolCategories"
-					process="@this idDialogCreateToolCategory"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateToolCategory').hide(); }" />
-			</p:dialog>
-		</h:form>
-
 	</ui:define>
 </ui:composition>

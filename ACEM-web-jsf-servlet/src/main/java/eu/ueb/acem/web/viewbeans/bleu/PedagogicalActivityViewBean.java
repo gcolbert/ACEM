@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
-import eu.ueb.acem.web.viewbeans.Pickable;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
 /**
@@ -31,13 +31,13 @@ import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
  * @since 2014-02-25
  * 
  */
-public class PedagogicalActivityViewBean implements Pickable, Serializable, Comparable<PedagogicalActivityViewBean> {
+public class PedagogicalActivityViewBean extends AbstractViewBean implements Serializable,
+		Comparable<PedagogicalActivityViewBean> {
 
 	private static final long serialVersionUID = 8190209757734229700L;
 
 	private PedagogicalActivity pedagogicalActivity;
 
-	private Long id;
 	private Long positionInScenario;
 	private String name;
 	private String objective;
@@ -48,7 +48,7 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 	public PedagogicalActivityViewBean() {
 		toolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
-	
+
 	public PedagogicalActivityViewBean(PedagogicalActivity pedagogicalActivity) {
 		this();
 		setPedagogicalActivity(pedagogicalActivity);
@@ -76,15 +76,6 @@ public class PedagogicalActivityViewBean implements Pickable, Serializable, Comp
 		if (pedagogicalActivity != null) {
 			pedagogicalActivity.setPositionInScenario(positionInScenario);
 		}
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {

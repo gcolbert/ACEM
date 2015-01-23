@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
@@ -35,7 +36,8 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  * @since 2014-03-19
  * 
  */
-public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBean, Serializable, Comparable<DocumentaryAndPedagogicalResourceViewBean> {
+public class DocumentaryAndPedagogicalResourceViewBean extends AbstractViewBean implements ResourceViewBean,
+		Serializable, Comparable<DocumentaryAndPedagogicalResourceViewBean> {
 
 	/**
 	 * For serialization.
@@ -46,20 +48,18 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 
 	private PedagogicalAndDocumentaryResource documentaryAndPedagogicalResource;
 
-	private Long id;
-
 	private String name;
 
 	private String description;
-	
+
 	private String iconFileName;
-	
+
 	private OrganisationViewBean organisationPossessingResourceViewBean;
-	
+
 	private List<OrganisationViewBean> organisationsViewingResourceViewBeans;
-	
+
 	private List<UseModeViewBean> useModeViewBeans;
-	
+
 	public DocumentaryAndPedagogicalResourceViewBean() {
 		useModeViewBeans = new ArrayList<UseModeViewBean>();
 	}
@@ -73,7 +73,7 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 	public PedagogicalAndDocumentaryResource getDomainBean() {
 		return documentaryAndPedagogicalResource;
 	}
-	
+
 	@Override
 	public void setDomainBean(Resource resource) {
 		setDocumentaryAndPedagogicalResource((PedagogicalAndDocumentaryResource) resource);
@@ -97,15 +97,6 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 	}
 
 	@Override
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Override
 	public String getName() {
 		return name;
 	}
@@ -125,7 +116,7 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 		this.iconFileName = iconFileName;
 		getDomainBean().setIconFileName(iconFileName);
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return description;
@@ -152,7 +143,7 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 	public List<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
 		return organisationsViewingResourceViewBeans;
 	}
-	
+
 	@Override
 	public void addOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
 		organisationsViewingResourceViewBeans.add(organisationViewBean);
@@ -175,19 +166,19 @@ public class DocumentaryAndPedagogicalResourceViewBean implements ResourceViewBe
 
 	@Override
 	public void setUseModeViewBean(UseModeViewBean useModeViewBean) {
-		this.useModeViewBeans.set(0,useModeViewBean);
+		this.useModeViewBeans.set(0, useModeViewBean);
 	}
 
 	@Override
 	public List<UseModeViewBean> getUseModeViewBeans() {
 		return useModeViewBeans;
 	}
-	
+
 	@Override
 	public void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans) {
 		this.useModeViewBeans = useModeViewBeans;
 	}
-	
+
 	@Override
 	public int compareTo(DocumentaryAndPedagogicalResourceViewBean o) {
 		return name.compareTo(o.getName());

@@ -3,11 +3,10 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	template="../templates/commonLayout.xhtml">
+	template="/templates/commonLayout.xhtml">
 
 	<f:metadata>
-		<f:viewParam name="toolCategoryId"
-			value="#{myToolsController.selectedToolCategoryId}" />
+		<f:viewParam name="toolCategoryId" value="#{myToolsController.selectedToolCategoryId}" />
 	</f:metadata>
 
 	<!-- Controller associated with this view -->
@@ -18,12 +17,16 @@
 	<ui:param name="displayWest" value="true" />
 	<ui:param name="westPanelCollapsible" value="true"/>
 	<ui:param name="westPanelCollapsed" value="#{associateBean.selectedToolCategoryId!=null}" />
-	<ui:param name="displayEast" value="false" />
+	<ui:param name="displayEast" value="#{sessionController.getCurrentUser().isAdministrator()}" />
+	<ui:param name="eastPanelSize" value="400" />
+	<ui:param name="eastPanelCollapsible" value="true"/>
+	<ui:param name="eastPanelCollapsed" value="#{associateBean.selectedToolCategoryId!=null}" />
 	<ui:param name="displaySouth" value="true" />
 
 	<ui:param name="pageTitle" value="#{associateBean.pageTitle}" />
 	<ui:param name="titleContent" value="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.HEADER']}" />
 	<ui:param name="titleWest" value="#{msg['RESOURCES.TREE.HEADER']}" />
+	<ui:param name="titleEast" value="#{msg['TOOL_CATEGORIES.HEADER']}" />
 
 	<ui:define name="footer">
 		<p:outputPanel styleClass="bottomToolboxPanel">
@@ -129,10 +132,6 @@
 			value="#{associateBean.categoriesTreeRoot}" var="treeNodeData"
 			selectionMode="single"
 			selection="#{associateBean.selectedNode}">
-			<p:ajax event="select"
-				oncomplete="PrimeFaces.scrollTo('formSelectedToolCategory:selectedToolCategoryOutputPanel')"
-				update=":contentForm:selectedToolCategoryOutputPanel :contentForm:messagesDisplayer"
-				listener="#{associateBean.onNodeSelect}" />
 			<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 				<h:outputText value="#{treeNodeData.label}" />
 			</p:treeNode>
@@ -144,6 +143,10 @@
 				</h:link>
 			</p:treeNode>
 		</p:tree>
+	</ui:define>
+
+	<ui:define name="east">
+		<ui:include src="/templates/include/commonListAllToolCategories.xhtml"/>
 	</ui:define>
 
 	<ui:define name="content">
@@ -232,17 +235,19 @@
 				<p:panel styleClass="resourcesDataTableActionsPanel" rendered="#{sessionController.getCurrentUser().isAdministrator()}">
 					<p:commandButton rendered="#{sessionController.currentUserViewBean.administrator}"
 						value="#{msg['RESOURCES.CREATE_RESOURCE_LABEL']}"
-						icon="ui-icon-plusthick" update=":customDialogForm:idDialogCreateResource"
+						actionListener="#{associateBean.loadAllOrganisationViewBeans()}"
+						icon="ui-icon-plusthick" update=":formCreateResource:idDialogCreateResource"
 						oncomplete="PF('dialogCreateResource').show()">
-						<p:resetInput target=":customDialogForm:idDialogCreateResource" />
+						<p:resetInput target=":formCreateResource:idDialogCreateResource" />
 					</p:commandButton>
 					<p:commandButton id="idModifyToolButton"
 						rendered="#{sessionController.currentUserViewBean.administrator}"
 						value="#{msg['RESOURCES.MODIFY_RESOURCE_LABEL']}"
-						icon="ui-icon-pencil" update=":customDialogForm:idDialogModifyResource"
+						actionListener="#{associateBean.loadAllOrganisationViewBeans()}"
+						icon="ui-icon-pencil" update=":formModifyResource:idDialogModifyResource"
 						oncomplete="PF('dialogModifyResource').show()"
 						disabled="#{associateBean.selectedResourceViewBean == null}">
-						<p:resetInput target=":customDialogForm:idDialogModifyResource" />
+						<p:resetInput target=":formModifyResource:idDialogModifyResource" />
 					</p:commandButton>
 					<p:commandButton id="idDeleteToolButton"
 						rendered="#{sessionController.currentUserViewBean.administrator}"
@@ -250,7 +255,7 @@
 						value="#{msg['RESOURCES.DELETE_RESOURCE_LABEL']}"
 						icon="ui-icon-trash"
 						action="#{associateBean.onDeleteSelectedResource}"
-						update=":contentForm:toolsDataTable :contentForm:messagesDisplayer"
+						update="toolsDataTable :contentForm:messagesDisplayer"
 						process="@this">
 						<p:confirm
 							header="#{msg['RESOURCES.DELETE_RESOURCE.CONFIRMATION_HEADER']}"
@@ -306,18 +311,21 @@
 					</p:column>
 					<p:column
 						headerText="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.AUTHOR']}">
-						<h:outputText value="#{scenario.author}" />
+						<h:outputText value="#{scenario.authors}" />
 					</p:column>
 				</p:dataTable>
 			</p:panel>
 		</p:outputPanel>
 	</ui:define>
 
-	<ui:define name="customDialogOutForm">
-		<p:dialog id="idDialogCreateResource"
-			header="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogCreateResource" modal="true" height="auto">
-			<h:form id="formCreateResource">
+	<ui:define name="customDialogOutFormWithoutForm">
+	
+		<ui:include src="/templates/include/commonCreateToolCategoryDialog.xhtml"/>
+ 	
+		<h:form id="formCreateResource">
+			<p:dialog id="idDialogCreateResource"
+				header="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogCreateResource" modal="true" height="auto">
 				<p:panelGrid>
 					<p:row>
 						<p:column>
@@ -403,7 +411,7 @@
 									itemLabel="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
 								<f:selectItems
-									value="#{associateBean.allOrganisationViewBeansAsList}"
+									value="#{associateBean.allOrganisationViewBeans}"
 									var="organisationViewBean"
 									itemLabel="#{organisationViewBean.name}"
 									itemValue="#{organisationViewBean}" />
@@ -421,13 +429,13 @@
 					action="#{associateBean.onCreateResource(newResourceType.value, newResourceSupportService.value, newResourceName.value, fileUploadController.uploadedFileName)}"
 					process="@form" update="@this :contentForm:toolsDataTable :contentForm:messagesDisplayer"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateResource').hide(); }" />
-			</h:form>
-		</p:dialog>
+			</p:dialog>
+		</h:form>
 
-		<p:dialog id="idDialogModifyResource"
-			header="#{msg['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogModifyResource" modal="true" height="auto">
-			<h:form id="formModifyResource">
+		<h:form id="formModifyResource">
+			<p:dialog id="idDialogModifyResource"
+				header="#{msg['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogModifyResource" modal="true" height="auto">
 				<p:panelGrid
 					rendered="#{associateBean.selectedResourceViewBean != null}">
 					<p:row>
@@ -504,7 +512,7 @@
 									itemLabel="#{msg['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
 								<f:selectItems
-									value="#{associateBean.allOrganisationViewBeansAsList}"
+									value="#{associateBean.allOrganisationViewBeans}"
 									var="organisationViewBean"
 									itemLabel="#{organisationViewBean.name}"
 									itemValue="#{organisationViewBean}" />
@@ -536,16 +544,16 @@
 					process="@form"
 					update="@this :contentForm:toolsDataTable :contentForm:messagesDisplayer"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogModifyResource').hide(); }" />
-			</h:form>
-		</p:dialog>
+			</p:dialog>
+		</h:form>
 
-		<p:dialog id="dialogAssociateUseModeId"
-			header="#{msg['RESOURCES.ASSOCIATE_USE_MODE_MODAL_WINDOW.HEADER']}"
-			widgetVar="dialogAssociateUseMode" modal="true" height="auto">
-			<h:form id="formAssociateUseMode">
+		<h:form id="formAssociateUseMode">
+			<p:dialog id="dialogAssociateUseModeId"
+				header="#{msg['RESOURCES.ASSOCIATE_USE_MODE_MODAL_WINDOW.HEADER']}"
+				widgetVar="dialogAssociateUseMode" modal="true" height="auto">
 
-			</h:form>
-		</p:dialog>
+			</p:dialog>
+		</h:form>
 
 	</ui:define>
 </ui:composition>

@@ -211,7 +211,7 @@
 					<ui:repeat id="requiredToolCategories"
 						value="#{pedagogicalActivityViewBean.toolCategoryViewBeans}"
 						var="toolCategoryViewBean">
-						<h:outputLink id="goToToolCategoryBtn" outcome="my-tools">
+						<h:link id="goToToolCategoryBtn" outcome="my-tools">
 							<f:param name="toolCategoryId"
 								value="#{toolCategoryViewBean.id}" />
 							<h:outputText value="#{toolCategoryViewBean.name}"
@@ -223,7 +223,7 @@
 								<f:param name="imageFileName"
 									value="#{toolCategoryViewBean.iconFileName}" />
 							</p:graphicImage>
-						</h:outputLink>
+						</h:link>
 						<p:tooltip for="goToToolCategoryBtn"
 							value="#{toolCategoryViewBean.name}" />
 					</ui:repeat>

@@ -285,7 +285,20 @@ public class ResourcesServiceImpl implements ResourcesService {
 		ResourceCategory updatedEntity = resourceCategoryDAO.update(resourceCategory);
 		return updatedEntity;
 	}
-	
+
+	@Override
+	public Boolean deleteResourceCategory(Long id) {
+		if (resourceCategoryDAO.exists(id)) {
+			ResourceCategory entity = resourceCategoryDAO.retrieveById(id);
+			resourceCategoryDAO.delete(entity);
+			return !resourceCategoryDAO.exists(id);
+		}
+		else {
+			logger.error("There is no resource category with id='{}'", id);
+			return false;
+		}
+	}
+
 	@Override
 	public Collection<ResourceCategory> retrieveAllCategories() {
 		return resourceCategoryDAO.retrieveAll();
