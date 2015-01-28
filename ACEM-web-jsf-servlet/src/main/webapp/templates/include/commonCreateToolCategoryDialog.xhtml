@@ -7,6 +7,7 @@
 
 	<!-- Controller associated with this view -->
 	<ui:param name="associateBean" value="#{commonToolCategoriesController}" />
+	<ui:param name="formToUpdate" value="#{formToUpdate}"/>
 
 	<!-- ********** TOOL CATEGORIES ********************************************************************** -->
 
@@ -36,7 +37,7 @@
 					for="newToolCategoryIcon" />
 				<p:column rowspan="2">
 					<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-						sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
+						sizeLimit="500000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
 						uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
 						cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
 						allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
@@ -49,9 +50,10 @@
 				value="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.VALIDATE']}"
 				icon="ui-icon-check"
 				action="#{associateBean.onCreateToolCategory(input5.value, input5b.value, fileUploadController.uploadedFileName)}"
-				update=":eastForm:accordionPanelForToolCategories :contentForm:messagesDisplayer"
+				update="#{formToUpdate}:accordionPanelForToolCategories :contentForm:messagesDisplayer"
 				process="@form"
-				oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateToolCategory').hide(); }" />
+				oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateToolCategory').hide(); }">
+			</p:commandButton>
 		</p:dialog>
 	</h:form>
 

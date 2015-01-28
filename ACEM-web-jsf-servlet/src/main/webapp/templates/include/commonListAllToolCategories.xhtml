@@ -7,16 +7,8 @@
 
 	<!-- Controller associated with this view -->
 	<ui:param name="associateBean" value="#{commonToolCategoriesController}" />
+	<ui:param name="formToUpdate" value="#{formToUpdate}"/>
 
-	<!-- Confirm dialog -->
-	<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
-		<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
-			type="button" styleClass="ui-confirmdialog-yes"
-			icon="ui-icon-check" />
-		<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
-			type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-	</p:confirmDialog>
- 
 	<!-- ********** TOOL CATEGORIES ********************************************************************** -->
 	<p:commandButton
 		value="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_LABEL']}"
@@ -30,9 +22,6 @@
 		value="#{associateBean.allToolCategoryViewBeans}"
 		var="toolCategoryViewBean" activeIndex="-1" dynamic="true"
 		collapsible="true">
-		<p:ajax event="tabChange"
-			listener="#{associateBean.onToolCategoryAccordionPanelTabChange}"
-			update="@this" />
 		<p:tab title="#{toolCategoryViewBean.name}">
 			<p:panelGrid columns="2">
 				<p:graphicImage id="toolCategoryIcon"
@@ -55,7 +44,7 @@
 							<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
 								style="display:inline-block; vertical-align:middle;" />
 							<p:tooltip
-								value="#{msg['TOOL_CATEGORIES.GO_TO_TOOL_CATEGORY_IN_MY_TOOLS']}"
+								value="#{msg['GO_TO_TOOL_CATEGORY.TOOLTIP']}"
 								for="goToToolsBtn" />
 						</h:link>
 					</p:panelGrid>
@@ -64,9 +53,9 @@
 			<p:commandButton
 				value="#{msg['TOOL_CATEGORIES.DELETE_TOOL_CATEGORY_LABEL']}"
 				icon="ui-icon-trash"
-				action="#{associateBean.onDeleteSelectedToolCategory()}"
-				oncomplete="PF('dialogAssociateInstitution').show()"
-				update="accordionPanelForToolCategories :contentForm:messagesDisplayer"
+				actionListener="#{fileUploadController.reset()}"
+				action="#{associateBean.onDeleteToolCategory(toolCategoryViewBean)}"
+				update="#{formToUpdate}:accordionPanelForToolCategories :contentForm:selectedToolCategoryOutputPanel :contentForm:messagesDisplayer"
 				process="@this">
 				<p:confirm
 					header="#{msg['TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.CONFIRMATION_HEADER']}"

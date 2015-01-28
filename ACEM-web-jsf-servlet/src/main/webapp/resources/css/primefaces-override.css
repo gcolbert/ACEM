@@ -86,3 +86,8 @@ Override of Primefaces default css
 	/*height:100% !important;*/
 	box-sizing:border-box;
 }
+
+.notSelectableTree .ui-treenode-label,
+.notSelectableTree .ui-treenode-icon {
+	cursor:default !important; /* The cursor should be a plain arrow if the treenodes are not selectable */
+}

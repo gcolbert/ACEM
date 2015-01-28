@@ -13,12 +13,15 @@
 	<ui:param name="displayWest" value="true" />
 	<ui:param name="westPanelCollapsible" value="false"/>
 	<ui:param name="westPanelCollapsed" value="false"/>
+	<ui:param name="westPanelSize" value="600"/>
 	<ui:param name="displayEast" value="false" />
 	<ui:param name="displaySouth" value="false" />
 
-	<ui:param name="pageTitle" value="" />
+	<ui:param name="pageTitle" value="#{associateBean.pageTitle}" />
 	<ui:param name="titleContent" value="#{msg['NEEDS_AND_ANSWERS.TREE.HEADER']}" />
 	<ui:param name="titleWest" value="#{msg['NEEDS_AND_ANSWERS.TREE.HEADER']}" />
+	<ui:param name="titlePageOne" value="#{msg['MENU.PEDAGOGICAL_ADVICE']}"/>
+	<ui:param name="titlePageTwo" value=""/>
 
 	<ui:define name="west">
 		<p:tooltip />
@@ -43,13 +46,6 @@
 			</p:contextMenu>
 			<p:contextMenu for="pedagogicalAdviceTree"
 				nodeType="#{associateBean.treeNodeType_NEED_LEAF}">
-				<!-- 
-				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
-					update="messagesDisplayer"
-					action="#{associateBean.displaySelectedNodeInfo}"
-					icon="ui-icon-search" />
-				 -->
 				<p:menuitem
 					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
@@ -68,13 +64,6 @@
 			</p:contextMenu>
 			<p:contextMenu for="pedagogicalAdviceTree"
 				nodeType="#{associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
-				<!-- 
-				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
-					update="messagesDisplayer"
-					action="#{associateBean.displaySelectedNodeInfo}"
-					icon="ui-icon-search" />
-				 -->
 				<p:menuitem
 					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
@@ -93,13 +82,6 @@
 			</p:contextMenu>
 			<p:contextMenu for="pedagogicalAdviceTree"
 				nodeType="#{associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
-				<!-- 
-				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
-					update="messagesDisplayer"
-					action="#{associateBean.displaySelectedNodeInfo}"
-					icon="ui-icon-search" />
-				 -->
 				<p:menuitem
 					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
@@ -118,13 +100,6 @@
 			</p:contextMenu>
 			<p:contextMenu for="pedagogicalAdviceTree"
 				nodeType="#{associateBean.treeNodeType_ANSWER_LEAF}">
-				<!-- 
-				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.VIEW_INFORMATION']}"
-					update="messagesDisplayer"
-					action="#{associateBean.displaySelectedNodeInfo}"
-					icon="ui-icon-search" />
-				 -->
 				<p:menuitem
 					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_RESOURCE_CATEGORY']}"
 					update="pedagogicalAdviceTree" icon="ui-icon-link"
@@ -206,6 +181,8 @@
 			<p:panel id="selectedNodeDetails" styleClass="pedagogicalAnswerDetailsPanel"
 				rendered="#{(not empty associateBean.selectedNode) and (associateBean.selectedNode.type == associateBean.treeNodeType_ANSWER_LEAF)}">
 
+				<h2><h:outputText value="#{associateBean.selectedAnswer.name}"/></h2>
+
 				<h3 class="section-title"><h:outputText
 					value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS_LABEL']}" /></h3>
 
@@ -221,43 +198,13 @@
 							<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
 								style="display:inline-block; vertical-align:middle;" />
 							<p:tooltip
-								value="#{msg['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_TOOL_CATEGORY']}"
+								value="#{msg['GO_TO_TOOL_CATEGORY.TOOLTIP']}"
 								for="goToToolCategoryBtn" />
 						</h:link>
 					</p:column>
 					<p:column headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY_DESCRIPTION']}">
 						<h:outputText value="#{toolCategoryViewBean.description}"/>
 					</p:column>
-					<!-- 
-					<p:column
-						headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOLS']}">
-						<p:dataTable id="toolsTable"
-							value="#{toolCategoryViewBean.resourceViewBeans}"
-							emptyMessage="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.LIST.NO_RECORDS_FOUND']}"
-							var="resourceViewBean">
-							<p:column
-								headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_NAME']}">
-								<h:outputText value="#{resourceViewBean.name}" />
-					-->
-								<!-- 
-								<h:link id="goToResourceBtn" outcome="my-tools">
-									<f:param name="resourceId" value="#{resourceViewBean.id}" />
-									<h:outputText value="#{resourceViewBean.name}" />
-									<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
-										style="display:inline-block; vertical-align:middle;" />
-									<p:tooltip
-										value="#{msg['NEEDS_AND_ANSWERS.TREE.ANSWER.GO_TO_RESOURCE']}"
-										for="goToResourceBtn" />
-								</h:link>
-								-->
-					<!--
-							</p:column>
-							<p:column
-								headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.ORGANISATION_NAME']}">
-							</p:column>
-						</p:dataTable>
-					</p:column>
-					-->
 				</p:dataTable>
 				<p:commandButton
 					value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATE_TOOL_CATEGORIES_LABEL']}"
@@ -277,7 +224,15 @@
 					var="scenario">
 					<p:column
 						headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
-						<h:outputText value="#{scenario.name}" />
+						<h:link id="goToScenarioBtn" outcome="my-scenarios">
+							<f:param name="scenarioId" value="#{scenario.id}" />
+							<h:outputText value="#{scenario.name}" />
+							<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+								style="display:inline-block; vertical-align:middle;" />
+							<p:tooltip
+								value="#{msg['GO_TO_SCENARIO.TOOLTIP']}"
+								for="goToScenarioBtn" />
+						</h:link>
 					</p:column>
 					<p:column
 						headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.OBJECTIVE']}">
@@ -285,14 +240,8 @@
 					</p:column>
 					<p:column
 						headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.AUTHORS']}">
-						<h:outputText value="#{scenario.author}" />
+						<h:outputText value="#{scenario.authors}" />
 					</p:column>
-					<!-- 
-					<p:column
-						headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.RESOURCES']}">
-						<h:outputText value="#{scenario.resources}" />
-					</p:column>
-					 -->
 				</p:dataTable>
 			</p:panel>
 		</p:outputPanel>
@@ -324,8 +273,9 @@
 			<p:commandButton styleClass="dialogValidationButton"
 				value="#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.CLOSE']}"
 				icon="ui-icon-check"
+				actionListener="#{associateBean.setScenarioViewBeansRelatedToSelectedAnswer()}"
 				onclick="PF('dialogAssociateResourceCategory').hide()"
-				update="@none"
+				update=":contentForm:examplesOfScenariosTable"
 				process="@this :defaultDialogForm:idDialogAssociateResourceCategoryWithAnswer" />
 		</p:dialog>
 	</ui:define>

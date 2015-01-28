@@ -34,6 +34,8 @@ public interface ResourceViewBean extends Pickable {
 	Long getId();
 
 	String getName();
+	
+	void setName(String name);
 
 	Resource getDomainBean();
 
@@ -53,10 +55,6 @@ public interface ResourceViewBean extends Pickable {
 
 	List<OrganisationViewBean> getOrganisationViewingResourceViewBeans();
 
-	void addOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean);
-
-	void removeOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean);
-	
 	UseModeViewBean getUseModeViewBean();
 	
 	void setUseModeViewBean(UseModeViewBean useModeViewBean);

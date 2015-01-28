@@ -101,6 +101,7 @@ public class SoftwareViewBean extends AbstractViewBean implements ResourceViewBe
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 		getDomainBean().setName(name);
@@ -146,17 +147,8 @@ public class SoftwareViewBean extends AbstractViewBean implements ResourceViewBe
 	}
 
 	@Override
-	public void addOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
-		organisationsViewingResourceViewBeans.add(organisationViewBean);
-	}
-
-	@Override
-	public void removeOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
-		organisationsViewingResourceViewBeans.remove(organisationViewBean);
-	}
-
-	@Override
 	public UseModeViewBean getUseModeViewBean() {
+		// TODO : deal with many use modes for a given resource
 		if (useModeViewBeans.size() > 0) {
 			return useModeViewBeans.get(0);
 		}

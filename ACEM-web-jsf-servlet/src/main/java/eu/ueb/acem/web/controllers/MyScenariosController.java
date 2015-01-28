@@ -222,11 +222,6 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		setSelectedScenarioViewBean((PedagogicalScenarioViewBean) event.getObject());
 	}
 
-	public void onPedagogicalActivitiesRowSelect(SelectEvent event) {
-		logger.debug("onPedagogicalActivitiesRowSelect");
-		setSelectedPedagogicalActivityViewBean((PedagogicalActivityViewBean) event.getObject());
-	}
-
 	public void onSave() {
 		logger.debug("onSave");
 		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getScenario()));
@@ -267,11 +262,11 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	}
 
 	public void prepareCreatePedagogicalActivity() {
-		setSelectedPedagogicalActivityViewBean(new PedagogicalActivityViewBean());
-		preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity();
+		selectedPedagogicalActivityViewBean = new PedagogicalActivityViewBean();
+		preparePicklistToolCategoryViewBeansForPedagogicalActivity(null);
 	}
 
-	public void preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity() {
+	public void preparePicklistToolCategoryViewBeansForPedagogicalActivity(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
 		List<ToolCategoryViewBean> allToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 		for (ResourceCategory toolCategory : resourcesService.retrieveAllCategories()) {
 			allToolCategoryViewBeans.add(new ToolCategoryViewBean(toolCategory));
@@ -279,34 +274,36 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		pickListBean.getPickListEntities().getSource().clear();
 		pickListBean.getPickListEntities().getSource().addAll(allToolCategoryViewBeans);
 		pickListBean.getPickListEntities().getTarget().clear();
-		if (getSelectedPedagogicalActivityViewBean() != null) {
-			for (ToolCategoryViewBean toolCategoryViewBean : getSelectedPedagogicalActivityViewBean().getToolCategoryViewBeans()) {
+		if (pedagogicalActivityViewBean != null) {
+			for (ToolCategoryViewBean toolCategoryViewBean : pedagogicalActivityViewBean.getToolCategoryViewBeans()) {
 				pickListBean.getPickListEntities().getSource().remove(toolCategoryViewBean);
 				pickListBean.getPickListEntities().getTarget().add(toolCategoryViewBean);
 			}
 		}
 	}
 
-	public void onDeleteSelectedPedagogicalActivity() {
-		if (scenariosService.deletePedagogicalActivity(selectedPedagogicalActivityViewBean.getPedagogicalActivity().getId())) {
-			int position = selectedScenarioViewBean.getPedagogicalActivityViewBeans().indexOf(selectedPedagogicalActivityViewBean);
-			selectedScenarioViewBean.getPedagogicalActivityViewBeans().remove(selectedPedagogicalActivityViewBean);
-			// We renumber the remaining pedagogical activities of the selected scenario
-			for (int i = position; i < selectedScenarioViewBean.getPedagogicalActivityViewBeans().size(); i++) {
-				PedagogicalActivityViewBean pedagogicalActivityViewBean = selectedScenarioViewBean.getPedagogicalActivityViewBeans().get(i);
-				PedagogicalActivity pedagogicalActivity = pedagogicalActivityViewBean.getPedagogicalActivity();
-				pedagogicalActivity.setPositionInScenario(new Long(i+1));
-				pedagogicalActivity = scenariosService.updatePedagogicalActivity(pedagogicalActivity);
-				pedagogicalActivityViewBean.setPedagogicalActivity(pedagogicalActivity);
+	public void onDeletePedagogicalActivity(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
+		if (pedagogicalActivityViewBean != null) {
+			if (scenariosService.deletePedagogicalActivity(pedagogicalActivityViewBean.getPedagogicalActivity().getId())) {
+				int positionOfDeletedActivity = selectedScenarioViewBean.getPedagogicalActivityViewBeans().indexOf(pedagogicalActivityViewBean);
+				selectedScenarioViewBean.getPedagogicalActivityViewBeans().remove(pedagogicalActivityViewBean);
+				// We renumber the remaining pedagogical activities of the selected scenario
+				for (int i = positionOfDeletedActivity; i < selectedScenarioViewBean.getPedagogicalActivityViewBeans().size(); i++) {
+					PedagogicalActivityViewBean pedagogicalActivityViewBeanNeedingANewPosition = selectedScenarioViewBean.getPedagogicalActivityViewBeans().get(i);
+					PedagogicalActivity pedagogicalActivity = pedagogicalActivityViewBeanNeedingANewPosition.getPedagogicalActivity();
+					pedagogicalActivity.setPositionInScenario(new Long(i+1));
+					pedagogicalActivity = scenariosService.updatePedagogicalActivity(pedagogicalActivity);
+					pedagogicalActivityViewBeanNeedingANewPosition.setPedagogicalActivity(pedagogicalActivity);
+				}
+				MessageDisplayer.showMessageToUserWithSeverityInfo(
+						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 			}
-			MessageDisplayer.showMessageToUserWithSeverityInfo(
-					msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
-		}
-		else {
-			MessageDisplayer.showMessageToUserWithSeverityInfo(
-					msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()));
+			else {
+				MessageDisplayer.showMessageToUserWithSeverityInfo(
+						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
+						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()));
+			}
 		}
 	}
 

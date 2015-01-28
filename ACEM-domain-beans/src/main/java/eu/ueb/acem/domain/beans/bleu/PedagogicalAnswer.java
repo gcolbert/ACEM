@@ -37,9 +37,11 @@ public interface PedagogicalAnswer extends Serializable, Comparable<PedagogicalA
 	void setName(String name);
 
 	Set<PedagogicalNeed> getNeeds();
+	
+	void setNeeds(Set<PedagogicalNeed> needs);
 
 	Set<ResourceCategory> getResourceCategories();
 
-	Set<PedagogicalScenario> getScenariosRelatedToAnswer();
-
+	void setResourceCategories(Set<ResourceCategory> resourceCategories);
+	
 }

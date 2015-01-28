@@ -90,11 +90,11 @@ public class UsersController extends AbstractContextAwareController {
 //			personViewBeans.add(personViewBean);
 //		}
 	}
-	
+
 	public PickListBean getPickListBean() {
 		return pickListBean;
 	}
-	
+
 	public PersonViewBean getSelectedUserViewBean() {
 		return selectedUserViewBean;
 	}
@@ -140,7 +140,7 @@ public class UsersController extends AbstractContextAwareController {
 					if (usersService.associateUserWorkingForOrganisation(getSelectedUserViewBean().getId(),
 							movedOrganisationViewBean.getId())) {
 						selectedUserViewBean.getDomainBean().getWorksForOrganisations().add(movedOrganisationViewBean.getDomainBean());
-						selectedUserViewBean.addOrganisationViewBean(movedOrganisationViewBean);
+						selectedUserViewBean.getOrganisationViewBeans().add(movedOrganisationViewBean);
 						logger.debug("association successful");
 					}
 					else {
@@ -153,7 +153,7 @@ public class UsersController extends AbstractContextAwareController {
 					if (usersService.dissociateUserWorkingForOrganisation(getSelectedUserViewBean().getId(),
 							movedOrganisationViewBean.getId())) {
 						selectedUserViewBean.getDomainBean().getWorksForOrganisations().remove(movedOrganisationViewBean.getDomainBean());
-						selectedUserViewBean.removeOrganisationViewBean(movedOrganisationViewBean);
+						selectedUserViewBean.getOrganisationViewBeans().remove(movedOrganisationViewBean);
 						logger.debug("dissociation successful");
 					}
 					else {

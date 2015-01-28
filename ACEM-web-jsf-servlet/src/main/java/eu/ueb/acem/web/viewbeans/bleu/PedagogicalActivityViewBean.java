@@ -60,6 +60,7 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 
 	public void setPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
 		this.pedagogicalActivity = pedagogicalActivity;
+		setId(pedagogicalActivity.getId());
 		setPositionInScenario(pedagogicalActivity.getPositionInScenario());
 		setName(pedagogicalActivity.getName());
 		setObjective(pedagogicalActivity.getObjective());

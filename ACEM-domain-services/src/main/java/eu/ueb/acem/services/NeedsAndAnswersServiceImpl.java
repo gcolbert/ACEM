@@ -21,6 +21,7 @@ package eu.ueb.acem.services;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -29,16 +30,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import eu.ueb.acem.dal.bleu.PedagogicalActivityDAO;
 import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
 import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
+import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
 import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
  * @author Grégoire Colbert
@@ -58,6 +62,15 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	
 	@Inject
 	private ResourceCategoryDAO resourceCategoryDAO;
+	
+	@Inject
+	private PedagogicalScenarioDAO pedagogicalScenarioDAO;
+	
+	@Inject
+	private PedagogicalActivityDAO pedagogicalActivityDAO;
+	
+	@Inject
+	private ResourcesService resourcesService;
 
 	public NeedsAndAnswersServiceImpl() {
 
@@ -284,9 +297,20 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	@Override
 	public Collection<PedagogicalScenario> getScenariosRelatedToAnswer(Long id) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(id);
-		return answer.getScenariosRelatedToAnswer();
+		Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>();
+		for (ResourceCategory resourceCategory : answer.getResourceCategories()) {
+			resourceCategory = resourcesService.retrieveResourceCategory(resourceCategory.getId());
+			for (PedagogicalActivity pedagogicalActivity : resourceCategory.getPedagogicalActivities()) {
+				pedagogicalActivity = pedagogicalActivityDAO.retrieveById(pedagogicalActivity.getId(), true);
+				for (PedagogicalScenario pedagogicalScenario : pedagogicalActivity.getScenarios()) {
+					pedagogicalScenario = pedagogicalScenarioDAO.retrieveById(pedagogicalScenario.getId(), true);
+					scenarios.add(pedagogicalScenario);
+				}
+			}
+		}
+		return scenarios;
 	}
-
+	
 	@Override
 	public Collection<Resource> getResourcesRelatedToAnswer(Long id) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(id);
@@ -307,7 +331,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 		answer = answerDAO.update(answer);
 		resourceCategory = resourceCategoryDAO.update(resourceCategory);
-		return ((answer.getResourceCategories().contains(resourceCategory)) && (resourceCategory.getAnswers().contains(resourceCategory)));
+		return ((answer.getResourceCategories().contains(resourceCategory)) && (resourceCategory.getAnswers().contains(answer)));
 	}
 
 	@Override
@@ -320,7 +344,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 		answer = answerDAO.update(answer);
 		resourceCategory = resourceCategoryDAO.update(resourceCategory);
-		return ((!answer.getResourceCategories().contains(resourceCategory)) && (!resourceCategory.getAnswers().contains(resourceCategory)));
+		return ((!answer.getResourceCategories().contains(resourceCategory)) && (!resourceCategory.getAnswers().contains(answer)));
 	}
 
 }

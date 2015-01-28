@@ -34,13 +34,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.services.NeedsAndAnswersService;
-import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
@@ -50,7 +48,6 @@ import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -59,7 +56,7 @@ import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
  */
 @Controller("needsAndAnswersController")
 @Scope("view")
-public class NeedsAndAnswersController extends AbstractContextAwareController {
+public class NeedsAndAnswersController extends AbstractContextAwareController implements PageController {
 
 	/**
 	 * For serialization.
@@ -76,9 +73,6 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 	@Inject
 	private ResourcesService resourcesService;
-
-	@Inject
-	private OrganisationsService organisationsService;
 
 	@Inject
 	private EditableTreeBean needsAndAnswersTreeBean;
@@ -100,8 +94,6 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 	private List<ToolCategoryViewBean> toolCategoryViewBeansForSelectedAnswer;
 
-	private SortableTableBean<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
-
 	public String getTreeNodeType_NEED_LEAF() {
 		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_LEAF();
 	}
@@ -122,8 +114,6 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		toolCategoryViewBeansForSelectedAnswer = new ArrayList<ToolCategoryViewBean>();
 		toolCategoryViewBeans = new SortableTableBean<ToolCategoryViewBean>();
 
-		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
-
 		pedagogicalScenarioViewBeans = new SortableTableBean<PedagogicalScenarioViewBean>();
 	}
 
@@ -143,19 +133,19 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		}
 		toolCategoryViewBeans.sort();
 
-		Collection<AdministrativeDepartment> administrativeDepartments = organisationsService.retrieveAllAdministrativeDepartments();
-		logger.info("found {} administrative departments", administrativeDepartments.size());
-		administrativeDepartmentViewBeans.getTableEntries().clear();
-		for (AdministrativeDepartment administrativeDepartment : administrativeDepartments) {
-			logger.info("administrative department = {}", administrativeDepartment.getName());
-			AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
-					administrativeDepartment);
-			administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
-		}
-		administrativeDepartmentViewBeans.sort();
-
 		logger.info("leaving init");
 		logger.info("------");
+	}
+
+	@Override
+	public String getPageTitle() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(msgs.getMessage("MENU.PEDAGOGICAL_ADVICE",null,getCurrentUserLocale()));
+		if (getSelectedAnswer() != null) {
+			sb.append(" - ");
+			sb.append(getSelectedAnswer().getName());
+		}
+		return sb.toString();
 	}
 
 	public PickListBean getPickListBean() {
@@ -189,12 +179,10 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		}
 	}
 
-	public void displaySelectedNodeInfo() {
-		if (selectedNode != null) {
-			MessageDisplayer.showMessageToUserWithSeverityInfo("Selected", selectedNode.getData().toString());
-		}
+	public PedagogicalAnswer getSelectedAnswer() {
+		return selectedAnswer;
 	}
-
+	
 	public void deleteSelectedNode() {
 		logger.info("entering deleteSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		if (selectedNode != null) {
@@ -399,18 +387,13 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		return pedagogicalScenarioViewBeans.getTableEntries();
 	}
 
-	private void setScenarioViewBeansRelatedToSelectedAnswer() {
-		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
-			logger.info("entering setScenarioViewBeansRelatedToSelectedAnswer");
-			Collection<PedagogicalScenario> scenarios = needsAndAnswersService
-					.getScenariosRelatedToAnswer(((TreeNodeData) selectedNode.getData()).getId());
-			logger.info("Found {} scenarios related to selected answer.", scenarios.size());
+	public void setScenarioViewBeansRelatedToSelectedAnswer() {
+		if (selectedAnswer != null) {
+			PedagogicalAnswer pedagogicalAnswer = needsAndAnswersService.retrievePedagogicalAnswer(selectedAnswer.getId(), true);
 			pedagogicalScenarioViewBeans.getTableEntries().clear();
-			for (PedagogicalScenario scenario : scenarios) {
+			for (PedagogicalScenario scenario : needsAndAnswersService.getScenariosRelatedToAnswer(pedagogicalAnswer.getId())) {
 				pedagogicalScenarioViewBeans.getTableEntries().add(new PedagogicalScenarioViewBean(scenario));
 			}
-			logger.info("leaving setScenarioViewBeansRelatedToSelectedAnswer");
-			logger.info("------");
 		}
 	}
 
@@ -420,12 +403,9 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 
 	private void setToolCategoryViewBeansForSelectedAnswer() {
 		if (selectedAnswer != null) {
-			logger.info("setToolCategoryViewBeansForSelectedAnswer");
 			toolCategoryViewBeansForSelectedAnswer.clear();
 			for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
 				if (selectedAnswer.getResourceCategories().contains(toolCategoryViewBean.getResourceCategory())) {
-					logger.info("selectedAnswer is associated with {}", toolCategoryViewBean.getResourceCategory()
-							.getName());
 					toolCategoryViewBeansForSelectedAnswer.add(toolCategoryViewBean);
 				}
 			}
@@ -457,7 +437,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController {
 		for (ToolCategoryViewBean movedToolCategoryViewBean : listOfMovedViewBeans) {
 			if (event.isAdd()) {
 				logger.info("We should associate answer {} and tool category {}",
-						((TreeNodeData) selectedNode.getData()).getLabel(), movedToolCategoryViewBean.getName());
+						((TreeNodeData) selectedNode.getData()).getId(), movedToolCategoryViewBean.getId());
 				if (needsAndAnswersService.associateAnswerWithResourceCategory(((TreeNodeData) selectedNode.getData())
 						.getId(), movedToolCategoryViewBean.getDomainBean().getId())) {
 					toolCategoryViewBeansForSelectedAnswer.add(movedToolCategoryViewBean);

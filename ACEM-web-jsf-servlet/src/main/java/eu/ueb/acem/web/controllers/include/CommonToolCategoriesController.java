@@ -7,7 +7,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.primefaces.event.TabChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -39,8 +38,6 @@ public class CommonToolCategoriesController extends AbstractContextAwareControll
 
 	private List<ToolCategoryViewBean> allToolCategoryViewBeans;
 
-	private ToolCategoryViewBean selectedToolCategoryViewBean;
-
 	public CommonToolCategoriesController() {
 		allToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
@@ -62,29 +59,38 @@ public class CommonToolCategoriesController extends AbstractContextAwareControll
 	}
 
 	public void onCreateToolCategory(String name, String description, String iconFileName) {
-		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
+		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateToolCategory", name);
 		ResourceCategory toolCategory = resourcesService.createResourceCategory(name, description, iconFileName);
 		ToolCategoryViewBean newToolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
 		allToolCategoryViewBeans.add(newToolCategoryViewBean);
 		Collections.sort(allToolCategoryViewBeans);
 	}
 
-	public void onToolCategoryAccordionPanelTabChange(TabChangeEvent event) {
-		selectedToolCategoryViewBean = (ToolCategoryViewBean) event.getData();
+	public void onModifyToolCategory(ToolCategoryViewBean toolCategoryViewBean) {
+		if (toolCategoryViewBean != null) {
+			// TODO onModifyToolCategory
+//			if (resourcesService.updateResourceCategory(toolCategoryViewBean.getDomainBean())) {
+//			}
+//			else {
+//				
+//			}
+		}
 	}
 
-	public void onDeleteSelectedToolCategory() {
-		if (resourcesService.deleteResourceCategory(selectedToolCategoryViewBean.getDomainBean().getId())) {
-			MessageDisplayer.showMessageToUserWithSeverityInfo(
-					msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+	public void onDeleteToolCategory(ToolCategoryViewBean toolCategoryViewBean) {
+		if (toolCategoryViewBean != null) {
+			if (resourcesService.deleteResourceCategory(toolCategoryViewBean.getDomainBean().getId())) {
+				allToolCategoryViewBeans.remove(toolCategoryViewBean);
+				MessageDisplayer.showMessageToUserWithSeverityInfo(
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+			}
+			else {
+				MessageDisplayer.showMessageToUserWithSeverityInfo(
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()));
+			}
 		}
-		else {
-			MessageDisplayer.showMessageToUserWithSeverityInfo(
-					msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()));
-		}
-		allToolCategoryViewBeans.remove(selectedToolCategoryViewBean);
 	}
 
 }

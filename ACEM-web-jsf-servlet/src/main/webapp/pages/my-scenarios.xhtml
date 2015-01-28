@@ -84,15 +84,6 @@
 
 	<!--  Selected scenario in center layout -->
 	<ui:define name="content">
-
-		<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
-			<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
-				type="button" styleClass="ui-confirmdialog-yes"
-				icon="ui-icon-check" />
-			<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
-				type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-		</p:confirmDialog>
-
 		<p:outputPanel rendered="#{associateBean.selectedScenarioViewBean != null}">
 
 			<p:panelGrid columns="2" styleClass="selectedScenarioPropertiesPanelGrid">
@@ -130,7 +121,7 @@
 				value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_PEDAGOGICAL_SCENARIO_LABEL']}"
 				icon="ui-icon-pencil"
 				actionListener="#{associateBean.setSelectedPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
-				action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity()}"
+				action="#{associateBean.preparePicklistToolCategoryViewBeansForPedagogicalActivity(pedagogicalActivityViewBean)}"
 				oncomplete="PF('dialogEditScenario').show()"
 				update=":modifyScenarioForm:dialogEditScenarioId"
 				process="@this" />
@@ -168,7 +159,7 @@
 					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_PEDAGOGICAL_ACTIVITY_LABEL']}"
 					icon="ui-icon-pencil"
 					actionListener="#{associateBean.setSelectedPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
-					action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity()}"
+					action="#{associateBean.preparePicklistToolCategoryViewBeansForPedagogicalActivity(pedagogicalActivityViewBean)}"
 					oncomplete="PF('dialogEditActivity').show()"
 					update=":modifyActivityForm:dialogEditActivityId"
 					process="@this" />
@@ -233,15 +224,14 @@
 						value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_PEDAGOGICAL_ACTIVITY_LABEL']}"
 						icon="ui-icon-pencil"
 						actionListener="#{associateBean.setSelectedPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
-						action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedPedagogicalActivity()}"
+						action="#{associateBean.preparePicklistToolCategoryViewBeansForPedagogicalActivity(pedagogicalActivityViewBean)}"
 						oncomplete="PF('dialogEditActivity').show()"
 						update=":modifyActivityForm:dialogEditActivityId"
 						process="@this" />
 					<p:commandButton 
 						value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.DELETE_PEDAGOGICAL_ACTIVITY_LABEL']}"
 						icon="ui-icon-trash"
-						actionListener="#{associateBean.setSelectedPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
-						action="#{associateBean.onDeleteSelectedPedagogicalActivity()}"
+						action="#{associateBean.onDeletePedagogicalActivity(pedagogicalActivityViewBean)}"
 						update=":contentForm:pedagogicalActivitiesDataTable"
 						process="@this">
 						<p:confirm

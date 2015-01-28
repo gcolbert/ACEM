@@ -79,14 +79,6 @@ public class PersonViewBean extends AbstractViewBean implements Serializable, Co
 		return organisationViewBeans;
 	}
 
-	public void addOrganisationViewBean(OrganisationViewBean organisationViewBean) {
-		organisationViewBeans.add(organisationViewBean);
-	}
-
-	public void removeOrganisationViewBean(OrganisationViewBean organisationViewBean) {
-		organisationViewBeans.remove(organisationViewBean);
-	}
-
 	public String getName() {
 		return name;
 	}

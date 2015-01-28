@@ -25,14 +25,6 @@
 	<ui:param name="titlePageTwo" value=""/>
 
 	<ui:define name="content">
-		<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
-			<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
-				type="button" styleClass="ui-confirmdialog-yes"
-				icon="ui-icon-check" />
-			<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
-				type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-		</p:confirmDialog>
-
 		<p:panel header="#{msg['ADMINISTRATION.ORGANISATIONS.HEADER']}">
 			<p:tabView id="tabViewOrganisations" dynamic="true" cache="false">
 				<p:ajax event="tabChange"

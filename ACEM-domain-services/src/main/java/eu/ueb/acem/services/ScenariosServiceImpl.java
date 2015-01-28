@@ -34,7 +34,6 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
  * @author Grégoire Colbert
@@ -55,9 +54,6 @@ public class ScenariosServiceImpl implements ScenariosService {
 
 	@Inject
 	private UsersService usersService;
-
-	@Inject
-	private ResourcesService resourcesService;
 
 	public ScenariosServiceImpl() {
 	}
@@ -151,9 +147,6 @@ public class ScenariosServiceImpl implements ScenariosService {
 	@Override
 	public PedagogicalActivity updatePedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
 		PedagogicalActivity updatedEntity = pedagogicalActivityDAO.update(pedagogicalActivity);
-		for (ResourceCategory resourceCategory : updatedEntity.getResourceCategories()) {
-			resourceCategory = resourcesService.updateResourceCategory(resourceCategory);
-		}
 		return updatedEntity;
 	}
 

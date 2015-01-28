@@ -94,24 +94,8 @@ public class ToolCategoryViewBean extends AbstractViewBean implements Serializab
 		return resourceViewBeans;
 	}
 
-	public void addResourceViewBean(ResourceViewBean resourceViewBean) {
-		resourceViewBeans.add(resourceViewBean);
-	}
-
-	public void removeResourceViewBean(ResourceViewBean resourceViewBean) {
-		resourceViewBeans.remove(resourceViewBean);
-	}
-
 	public List<PedagogicalScenarioViewBean> getScenarioViewBeans() {
 		return pedagogicalScenarioViewBeans;
-	}
-
-	public void addScenarioViewBean(PedagogicalScenarioViewBean pedagogicalScenarioViewBean) {
-		pedagogicalScenarioViewBeans.add(pedagogicalScenarioViewBean);
-	}
-
-	public void removeScenarioViewBean(PedagogicalScenarioViewBean pedagogicalScenarioViewBean) {
-		pedagogicalScenarioViewBeans.remove(pedagogicalScenarioViewBean);
 	}
 
 	public String getName() {

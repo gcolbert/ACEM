@@ -119,7 +119,6 @@ public class PedagogicalAnswerDAO implements DAO<Long, PedagogicalAnswer> {
 	public void initializeCollections(PedagogicalAnswer entity) {
 		neo4jOperations.fetch(entity.getResourceCategories());
 		neo4jOperations.fetch(entity.getNeeds());
-		neo4jOperations.fetch(entity.getScenariosRelatedToAnswer());
 	}
 
 	@Override

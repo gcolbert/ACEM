@@ -43,6 +43,7 @@ public class TeacherViewBean extends PersonViewBean {
 	/**
 	 * For logging.
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(TeacherViewBean.class);
 
 	private Teacher domainBean;
@@ -67,23 +68,12 @@ public class TeacherViewBean extends PersonViewBean {
 		super.setDomainBean(teacher);
 		this.domainBean = teacher;
 		for (ResourceCategory toolCategory : teacher.getFavoriteToolCategories()) {
-			logger.debug("setDomainBean : we add the toolCategory '{}' as favorite", toolCategory.getName());
-			addFavoriteToolCategoryViewBean(new ToolCategoryViewBean(toolCategory));
+			favoriteToolCategoryViewBeans.add(new ToolCategoryViewBean(toolCategory));
 		}
 	}
 
 	public List<ToolCategoryViewBean> getFavoriteToolCategoryViewBeans() {
 		return favoriteToolCategoryViewBeans;
-	}
-
-	public void addFavoriteToolCategoryViewBean(ToolCategoryViewBean toolCategoryViewBean) {
-		favoriteToolCategoryViewBeans.add(toolCategoryViewBean);
-		toolCategoryViewBean.setFavoriteToolCategory(true);
-	}
-
-	public void removeFavoriteToolCategoryViewBean(ToolCategoryViewBean toolCategoryViewBean) {
-		favoriteToolCategoryViewBeans.remove(toolCategoryViewBean);
-		toolCategoryViewBean.setFavoriteToolCategory(false);
 	}
 
 }

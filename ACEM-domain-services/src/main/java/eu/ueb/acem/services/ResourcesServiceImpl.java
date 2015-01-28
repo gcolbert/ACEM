@@ -197,16 +197,19 @@ public class ResourcesServiceImpl implements ResourcesService {
 	public Resource updateResource(Resource resource) {
 		Resource updatedResource = null;
 		if (resource instanceof Software) {
-			resource = softwareDAO.update((Software) resource);
+			updatedResource = softwareDAO.update((Software) resource);
 		}
 		else if (resource instanceof SoftwareDocumentation) {
-			resource = softwareDocumentationDAO.update((SoftwareDocumentation) resource);
+			updatedResource = softwareDocumentationDAO.update((SoftwareDocumentation) resource);
 		}
 		else if (resource instanceof Equipment) {
-			resource = equipmentDAO.update((Equipment) resource);
+			updatedResource = equipmentDAO.update((Equipment) resource);
 		}
 		else if (resource instanceof PedagogicalAndDocumentaryResource) {
-			resource = pedagogicalAndDocumentaryResourcesDAO.update((PedagogicalAndDocumentaryResource) resource);
+			updatedResource = pedagogicalAndDocumentaryResourcesDAO.update((PedagogicalAndDocumentaryResource) resource);
+		}
+		else if (resource instanceof ProfessionalTraining) {
+			updatedResource = professionalTrainingDAO.update((ProfessionalTraining) resource);
 		}
 		return updatedResource;
 	}

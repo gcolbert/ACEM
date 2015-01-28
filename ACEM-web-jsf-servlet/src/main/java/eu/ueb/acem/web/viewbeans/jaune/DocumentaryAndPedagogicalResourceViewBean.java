@@ -101,6 +101,7 @@ public class DocumentaryAndPedagogicalResourceViewBean extends AbstractViewBean 
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 		this.getDomainBean().setName(name);
@@ -145,17 +146,8 @@ public class DocumentaryAndPedagogicalResourceViewBean extends AbstractViewBean 
 	}
 
 	@Override
-	public void addOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
-		organisationsViewingResourceViewBeans.add(organisationViewBean);
-	}
-
-	@Override
-	public void removeOrganisationViewingResourceViewBean(OrganisationViewBean organisationViewBean) {
-		organisationsViewingResourceViewBeans.remove(organisationViewBean);
-	}
-
-	@Override
 	public UseModeViewBean getUseModeViewBean() {
+		// TODO : deal with many use modes for a given resource
 		if (useModeViewBeans.size() > 0) {
 			return useModeViewBeans.get(0);
 		}

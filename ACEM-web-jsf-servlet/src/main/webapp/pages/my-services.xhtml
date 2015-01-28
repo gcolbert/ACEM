@@ -5,23 +5,22 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="../templates/commonLayout.xhtml">
 
+	<f:metadata>
+		<f:viewParam name="serviceId"
+			value="#{myServicesController.selectedServiceId}" />
+	</f:metadata>
+
+	<!-- Controller associated with this view -->
+	<ui:param name="associateBean" value="#{myServicesController}" />
+
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
 	<ui:param name="displayWest" value="false" />
 	<ui:param name="displayEast" value="false" />
 	<ui:param name="displaySouth" value="false" />
 
-	<ui:param name="titleContent" value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}" />
+	<ui:param name="titleContent" value="#{msg['MY_SERVICES.SELECTED_SCENARIO.HEADER']}" />
 
-	<!-- Controller associated with this view -->
-	<ui:param name="associateBean" value="" />
-
-	<!-- 
-	<f:metadata>
-		<f:viewParam name="serviceId"
-			value="#{myServicesController.selectedServiceId}" />
-	</f:metadata>
- -->
  	<ui:define name="content">
 	</ui:define>
 </ui:composition>

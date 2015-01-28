@@ -20,12 +20,14 @@ package eu.ueb.acem.web.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 
 import org.primefaces.event.SelectEvent;
@@ -40,7 +42,11 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.services.ScenariosService;
@@ -92,7 +98,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	private OrganisationsService organisationsService;
 	@Inject
 	private OrganisationViewBeanGenerator organisationViewBeanGenerator;
-	private List<OrganisationViewBean> allOrganisationViewBeans;
+	private List<SelectItem> allOrganisationViewBeans;
 
 	@Inject
 	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
@@ -116,7 +122,14 @@ public class MyToolsController extends AbstractContextAwareController implements
 		"Pedagogical and documentary resource", "Professional training" };
 
 	public MyToolsController() {
-		allOrganisationViewBeans = new ArrayList<OrganisationViewBean>();
+		allOrganisationViewBeans = new ArrayList<SelectItem>();
+	}
+
+	@PostConstruct
+	public void init() {
+		logger.info("entering init");
+		loadAllOrganisationViewBeans();
+		logger.info("leaving init");
 	}
 
 	@Override
@@ -265,7 +278,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 				resourceViewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId()));
 
 				for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
-					resourceViewBean.addOrganisationViewingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
+					resourceViewBean.getOrganisationViewingResourceViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
 				}
 
 				selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
@@ -301,16 +314,58 @@ public class MyToolsController extends AbstractContextAwareController implements
 		return categoriesTreeBean.getRoot();
 	}
 
-	public List<OrganisationViewBean> getAllOrganisationViewBeans() {
+	public List<SelectItem> getAllOrganisationViewBeans() {
 		return allOrganisationViewBeans;
 	}
 
 	public void loadAllOrganisationViewBeans() {
-		allOrganisationViewBeans.clear();
-		Collection<Organisation> organisations = organisationsService.retrieveAllOrganisations();
-		for (Organisation organisation : organisations) {
-			allOrganisationViewBeans.add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
+		SelectItemGroup groupCommunities = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.COMMUNITIES",null,getCurrentUserLocale()));
+		List<Community> communities = new ArrayList<Community>(organisationsService.retrieveAllCommunities());
+		Collections.sort(communities);
+		SelectItem[] arrayForCommunities = new SelectItem[communities.size()];
+		int i = 0;
+		for (Community community : communities) {
+			arrayForCommunities[i] = new SelectItem(organisationViewBeanGenerator.getOrganisationViewBean(community.getId()),community.getName());
+			i++;
 		}
+		groupCommunities.setSelectItems(arrayForCommunities);
+		allOrganisationViewBeans.add(groupCommunities);
+
+		SelectItemGroup groupInstitutions = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.INSTITUTIONS",null,getCurrentUserLocale()));
+		List<Institution> institutions = new ArrayList<Institution>(organisationsService.retrieveAllInstitutions());
+		Collections.sort(institutions);
+		SelectItem[] arrayForInstitutions = new SelectItem[institutions.size()];
+		i = 0;
+		for (Institution institution : institutions) {
+			arrayForInstitutions[i] = new SelectItem(organisationViewBeanGenerator.getOrganisationViewBean(institution.getId()),institution.getName());
+			i++;
+		}
+		groupInstitutions.setSelectItems(arrayForInstitutions);
+		allOrganisationViewBeans.add(groupInstitutions);
+
+		SelectItemGroup groupAdministrativeDepartments = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.ADMINISTRATIVE_DEPARTMENTS",null,getCurrentUserLocale()));
+		List<AdministrativeDepartment> administrativeDepartments = new ArrayList<AdministrativeDepartment>(organisationsService.retrieveAllAdministrativeDepartments());
+		Collections.sort(administrativeDepartments);
+		SelectItem[] arrayForAdministrativeDepartments = new SelectItem[administrativeDepartments.size()];
+		i = 0;
+		for (AdministrativeDepartment administrativeDepartment : administrativeDepartments) {
+			arrayForAdministrativeDepartments[i] = new SelectItem(organisationViewBeanGenerator.getOrganisationViewBean(administrativeDepartment.getId()),administrativeDepartment.getName());
+			i++;
+		}
+		groupAdministrativeDepartments.setSelectItems(arrayForAdministrativeDepartments);
+		allOrganisationViewBeans.add(groupAdministrativeDepartments);
+
+		SelectItemGroup groupTeachingDepartments = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.TEACHING_DEPARTMENTS",null,getCurrentUserLocale()));
+		List<TeachingDepartment> teachingDepartments = new ArrayList<TeachingDepartment>(organisationsService.retrieveAllTeachingDepartments());
+		Collections.sort(teachingDepartments);
+		SelectItem[] arrayForTeachingDepartments = new SelectItem[teachingDepartments.size()];
+		i = 0;
+		for (TeachingDepartment teachingDepartment : teachingDepartments) {
+			arrayForTeachingDepartments[i] = new SelectItem(organisationViewBeanGenerator.getOrganisationViewBean(teachingDepartment.getId()),teachingDepartment.getName());
+			i++;
+		}
+		groupTeachingDepartments.setSelectItems(arrayForTeachingDepartments);
+		allOrganisationViewBeans.add(groupTeachingDepartments);
 	}
 
 	public TreeNode getPedagogicalUsesTreeRoot() {
@@ -371,22 +426,27 @@ public class MyToolsController extends AbstractContextAwareController implements
 		Resource resource = resourcesService.createResource(selectedToolCategoryId, newResourceSupportService.getId(), newResourceType, newResourceName, iconFileName);
 		if (resource != null) {
 			ResourceViewBean resourceViewBean = resourceViewBeanGenerator.getResourceViewBean(resource.getId());
-			if (resourceViewBean != null) {
-				selectedToolCategoryViewBean.addResourceViewBean(resourceViewBean);
+
+			resourceViewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId()));
+
+			for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
+				resourceViewBean.getOrganisationViewingResourceViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
 			}
+
+			selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
 		}
 	}
 
-	public void onModifySelectedResource(String iconFileName) {
-		logger.info("onModifySelectedResource({})", iconFileName);
-		selectedResourceViewBean.setIconFileName(iconFileName);
-		resourcesService.updateResource(selectedResourceViewBean.getDomainBean());
+	public void onModifySelectedResource(String newIconFileName) {
+		selectedResourceViewBean.setIconFileName(newIconFileName);
+		selectedResourceViewBean.setDomainBean(resourcesService.updateResource(selectedResourceViewBean.getDomainBean()));
+		selectedToolCategoryViewBean.getResourceViewBeans().remove(selectedResourceViewBean);
+		selectedToolCategoryViewBean.getResourceViewBeans().add(selectedResourceViewBean);
 	}
 
-	// TODO : implement the deleteResource method in the resourcesServiceImpl
 	public void onDeleteSelectedResource() {
 		if (resourcesService.deleteResource(getSelectedResourceViewBean().getDomainBean().getId())) {
-			selectedToolCategoryViewBean.removeResourceViewBean(getSelectedResourceViewBean());
+			selectedToolCategoryViewBean.getResourceViewBeans().remove(getSelectedResourceViewBean());
 			MessageDisplayer.showMessageToUserWithSeverityInfo(
 					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
 					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
@@ -399,23 +459,19 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void toggleFavoriteToolCategoryForCurrentUser(ToolCategoryViewBean toolCategoryViewBean) {
-		logger.debug("Entering toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
 		if (getCurrentUserViewBean() instanceof TeacherViewBean) {
 			TeacherViewBean currentUserViewBean = (TeacherViewBean)getCurrentUserViewBean();
 			if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
-				logger.info("user has tool category as favorite, we should remove it");
 				if (usersService.removeFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
-					currentUserViewBean.removeFavoriteToolCategoryViewBean(toolCategoryViewBean);
+					currentUserViewBean.getFavoriteToolCategoryViewBeans().remove(toolCategoryViewBean);
 				}
 			}
 			else {
-				logger.debug("user doesn't have tool category as favorite, we should add it");
 				if (usersService.addFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
-					currentUserViewBean.addFavoriteToolCategoryViewBean(toolCategoryViewBean);
+					currentUserViewBean.getFavoriteToolCategoryViewBeans().add(toolCategoryViewBean);
 				}
 			}
 		}
-		logger.info("Leaving toggleFavoriteToolCategoryForCurrentUser, tool category name = {}", toolCategoryViewBean.getName());
 	}
 
 }

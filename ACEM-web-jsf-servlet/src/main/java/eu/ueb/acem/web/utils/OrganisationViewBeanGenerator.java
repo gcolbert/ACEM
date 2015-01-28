@@ -59,7 +59,7 @@ public class OrganisationViewBeanGenerator {
 
 	public OrganisationViewBean getOrganisationViewBean(Long id) {
 		OrganisationViewBean viewBean = null;
-		Organisation organisation = organisationsService.retrieveOrganisation(id, true);
+		Organisation organisation = organisationsService.retrieveOrganisation(id, false);
 		if (organisation != null) {
 			if (organisation instanceof Community) {
 				viewBean = new CommunityViewBean((Community) organisation);

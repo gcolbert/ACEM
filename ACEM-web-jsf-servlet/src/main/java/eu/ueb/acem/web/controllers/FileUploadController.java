@@ -31,6 +31,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -59,6 +60,7 @@ public class FileUploadController extends AbstractContextAwareController {
 
 	private String uploadedFileName;
 
+	@Value("${upload.localPathToUploadFolder}")
 	private String localPathToUploadFolder;
 
 	public void setLocalPathToUploadFolder(String localPath) {
@@ -90,6 +92,7 @@ public class FileUploadController extends AbstractContextAwareController {
 	public void copyFile(String fileName, InputStream in) {
 		try {
 			// write the inputStream to a FileOutputStream
+			logger.info("in copyFile, localPathToUploadFolder={}", localPathToUploadFolder);
 			OutputStream out = new FileOutputStream(new File(localPathToUploadFolder + fileName));
 
 			int read = 0;

@@ -14,10 +14,12 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
+	<ui:param name="northPanelCollapsible" value="true"/>
+	<ui:param name="northPanelCollapsed" value="false"/>
 	<ui:param name="displayWest" value="true" />
 	<ui:param name="westPanelCollapsible" value="true"/>
 	<ui:param name="westPanelCollapsed" value="#{associateBean.selectedToolCategoryId!=null}" />
-	<ui:param name="displayEast" value="#{sessionController.getCurrentUser().isAdministrator()}" />
+	<ui:param name="displayEast" value="#{sessionController.currentUserViewBean.administrator}" />
 	<ui:param name="eastPanelSize" value="400" />
 	<ui:param name="eastPanelCollapsible" value="true"/>
 	<ui:param name="eastPanelCollapsed" value="#{associateBean.selectedToolCategoryId!=null}" />
@@ -27,12 +29,14 @@
 	<ui:param name="titleContent" value="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.HEADER']}" />
 	<ui:param name="titleWest" value="#{msg['RESOURCES.TREE.HEADER']}" />
 	<ui:param name="titleEast" value="#{msg['TOOL_CATEGORIES.HEADER']}" />
+	<ui:param name="titleSouth" value="#{msg['RESOURCES.MY_FAVORITE_TOOL_CATEGORIES.HEADER']}" />
+	<ui:param name="titlePageOne" value="#{msg['MENU.MY_TOOLS']}"/>
+	<ui:param name="titlePageTwo" value=""/>
 
 	<ui:define name="footer">
 		<p:outputPanel styleClass="bottomToolboxPanel">
 			<p:panel id="favoriteToolCategoriesPanel" styleClass="favoriteToolCategoriesPanel"
-				rendered="#{sessionController.currentUserViewBean.isTeacher}"
-				header="#{msg['RESOURCES.MY_FAVORITE_TOOL_CATEGORIES.HEADER']}">
+				rendered="#{sessionController.currentUserViewBean.isTeacher}">
 				<ui:repeat id="favoriteToolCategories"
 					value="#{sessionController.currentUserViewBean.favoriteToolCategoryViewBeans}"
 					var="toolCategoryViewBean">
@@ -44,7 +48,7 @@
 						<p:graphicImage id="favoriteToolCategoryIcon"
 							rendered="#{not empty toolCategoryViewBean.iconFileName}"
 							styleClass="toolCategoryLogo"
-							alt="#{toolCategoryViewBean.name}" cache="false" width="50"
+							alt="#{toolCategoryViewBean.name}" cache="true" width="50"
 							value="#{imagesController.getImage()}">
 							<f:param name="imageFileName"
 								value="#{toolCategoryViewBean.iconFileName}" />
@@ -54,21 +58,14 @@
 						value="#{toolCategoryViewBean.name}" />
 				</ui:repeat>
 			</p:panel>
-
+<!-- 
 			<p:panel header="#{msg['RESOURCES.LAST_VIEWED_TOOL_CATEGORIES.HEADER']}" styleClass="lastViewedToolCategoriesPanel">
 			</p:panel>
+ -->
 		</p:outputPanel>
 	</ui:define>
 
 	<ui:define name="west">
-		<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
-			<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
-				type="button" styleClass="ui-confirmdialog-yes"
-				icon="ui-icon-check" />
-			<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
-				type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-		</p:confirmDialog>
-
 		<p:outputPanel styleClass="toolCategoriesOutputPanel">
 			<p:commandLink styleClass="toolCategoryMenuEntry"
 				action="#{associateBean.prepareToolCategoryTreeForResourceType('equipment')}"
@@ -146,7 +143,9 @@
 	</ui:define>
 
 	<ui:define name="east">
-		<ui:include src="/templates/include/commonListAllToolCategories.xhtml"/>
+		<ui:include src="/templates/include/commonListAllToolCategories.xhtml">
+			<ui:param name="formToUpdate" value=":eastForm"/>
+		</ui:include>
 	</ui:define>
 
 	<ui:define name="content">
@@ -162,21 +161,13 @@
 						rendered="#{not empty associateBean.selectedToolCategoryViewBean.iconFileName}"
 						styleClass="toolImg"
 						alt="#{associateBean.selectedToolCategoryViewBean.name}"
-						cache="false" width="80" value="#{imagesController.getImage()}">
+						cache="true" width="80" value="#{imagesController.getImage()}">
 						<f:param name="imageFileName"
 							value="#{associateBean.selectedToolCategoryViewBean.iconFileName}" />
 					</p:graphicImage>
 					<p:column>
 						<p:row>
-							<p:inplace id="selectedToolCategoryDescription" editor="true">
-								<p:ajax event="save"
-									listener="#{associateBean.onSelectedToolCategorySave}"
-									update="@this" />
-								<p:ajax event="cancel" update="@this" />
-								<h:inputText id="selectedScenarioName"
-									value="#{associateBean.selectedToolCategoryViewBean.description}"
-									required="true" requiredMessage="#{msg['REQUIRED_FIELD']}" />
-							</p:inplace>
+							<h:outputText value="#{associateBean.selectedToolCategoryViewBean.description}" />
 						</p:row>
 						<p:row>
 							<h:panelGroup styleClass="favoriteToolCategory">
@@ -194,7 +185,7 @@
 					</p:column>
 				</p:panelGrid>
 
-				<p:dataTable id="toolsDataTable" var="toolViewBean"
+				<p:dataTable id="toolsDataTable" var="toolViewBean" dynamic="true"
 					value="#{associateBean.selectedToolCategoryViewBean.resourceViewBeans}"
 					selection="#{associateBean.selectedResourceViewBean}"
 					emptyMessage="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.LIST.NO_RECORDS_FOUND']}"
@@ -202,14 +193,17 @@
 					<p:ajax event="rowSelectRadio"
 						listener="#{associateBean.onToolRowSelect}" process="@this"
 						update=":contentForm:idModifyToolButton :contentForm:idDeleteToolButton" />
-					<p:column rendered="#{sessionController.getCurrentUser().isAdministrator()}" selectionMode="single" style="width:16px;text-align:center" update=":contentForm:idModifyToolButton :contentForm:idDeleteToolButton" />
+					<p:column
+						rendered="#{sessionController.currentUserViewBean.administrator}"
+						selectionMode="single" style="width:16px;text-align:center"
+						update=":contentForm:idModifyToolButton :contentForm:idDeleteToolButton" />
 					<p:column
 						headerText="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_NAME']}">
 						<h:outputText value="#{toolViewBean.name}" />
 						<p:graphicImage id="resourceIcon"
 							rendered="#{not empty toolViewBean.iconFileName}"
-							styleClass="resourceLogo" alt="#{toolViewBean.name}"
-							cache="false" width="40" value="#{imagesController.getImage()}">
+							styleClass="toolIcon" alt="#{toolViewBean.name}"
+							cache="true" width="40" value="#{imagesController.getImage()}">
 							<f:param name="imageFileName"
 								value="#{toolViewBean.iconFileName}" />
 						</p:graphicImage>
@@ -225,32 +219,29 @@
 							<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
 								style="display:inline-block; vertical-align:middle;" />
 							<p:tooltip
-								value="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.GO_TO_TOOL_SUPPORT_SERVICE']}"
+								value="#{msg['GO_TO_TOOL_SUPPORT_SERVICE.TOOLTIP']}"
 								for="goToSupportServiceBtn" />
 						</h:link>
 					</p:column>
 					<p:column>
 					</p:column>
 				</p:dataTable>
-				<p:panel styleClass="resourcesDataTableActionsPanel" rendered="#{sessionController.getCurrentUser().isAdministrator()}">
-					<p:commandButton rendered="#{sessionController.currentUserViewBean.administrator}"
+				<p:panel styleClass="resourcesDataTableActionsPanel" rendered="#{sessionController.currentUserViewBean.administrator}">
+					<p:commandButton
 						value="#{msg['RESOURCES.CREATE_RESOURCE_LABEL']}"
-						actionListener="#{associateBean.loadAllOrganisationViewBeans()}"
 						icon="ui-icon-plusthick" update=":formCreateResource:idDialogCreateResource"
+						actionListener="#{fileUploadController.reset()}"
 						oncomplete="PF('dialogCreateResource').show()">
 						<p:resetInput target=":formCreateResource:idDialogCreateResource" />
 					</p:commandButton>
 					<p:commandButton id="idModifyToolButton"
-						rendered="#{sessionController.currentUserViewBean.administrator}"
 						value="#{msg['RESOURCES.MODIFY_RESOURCE_LABEL']}"
-						actionListener="#{associateBean.loadAllOrganisationViewBeans()}"
 						icon="ui-icon-pencil" update=":formModifyResource:idDialogModifyResource"
 						oncomplete="PF('dialogModifyResource').show()"
 						disabled="#{associateBean.selectedResourceViewBean == null}">
 						<p:resetInput target=":formModifyResource:idDialogModifyResource" />
 					</p:commandButton>
 					<p:commandButton id="idDeleteToolButton"
-						rendered="#{sessionController.currentUserViewBean.administrator}"
 						disabled="#{associateBean.selectedResourceViewBean == null}"
 						value="#{msg['RESOURCES.DELETE_RESOURCE_LABEL']}"
 						icon="ui-icon-trash"
@@ -266,7 +257,7 @@
 
 				<h3 class="section-title"><p:outputLabel
 					value="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.ASSOCIATED_PEDAGOGICAL_ADVICE_LABEL']}" /></h3>
-				<p:tree id="pedagogicalUsesTree" styleClass="pedagogicalAdviceTree" dynamic="true"
+				<p:tree id="pedagogicalUsesTree" styleClass="pedagogicalAdviceTree notSelectableTree" dynamic="false"
 					value="#{associateBean.pedagogicalUsesTreeRoot}"
 					var="treeNodeData">
 					<p:treeNode type="default"
@@ -303,7 +294,15 @@
 					var="scenario">
 					<p:column
 						headerText="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.TITLE']}">
-						<h:outputText value="#{scenario.name}" />
+						<h:link id="goToScenarioBtn" outcome="my-scenarios">
+							<f:param name="scenarioId" value="#{scenario.id}" />
+							<h:outputText value="#{scenario.name}" />
+							<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+								style="display:inline-block; vertical-align:middle;" />
+							<p:tooltip
+								value="#{msg['GO_TO_SCENARIO.TOOLTIP']}"
+								for="goToScenarioBtn" />
+						</h:link>
 					</p:column>
 					<p:column
 						headerText="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.OBJECTIVE']}">
@@ -319,9 +318,11 @@
 	</ui:define>
 
 	<ui:define name="customDialogOutFormWithoutForm">
-	
-		<ui:include src="/templates/include/commonCreateToolCategoryDialog.xhtml"/>
- 	
+
+		<ui:include src="/templates/include/commonCreateToolCategoryDialog.xhtml">
+			<ui:param name="formToUpdate" value=":eastForm"/>
+		</ui:include>
+ 
 		<h:form id="formCreateResource">
 			<p:dialog id="idDialogCreateResource"
 				header="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
@@ -388,7 +389,7 @@
 								<p:graphicImage
 									rendered="#{not empty fileUploadController.uploadedFileName}"
 									alt="#{associateBean.selectedResourceViewBean.name}"
-									cache="false" width="200" value="#{imagesController.image}">
+									cache="true" width="200" value="#{imagesController.image}">
 									<f:param name="imageFileName"
 										value="#{fileUploadController.uploadedFileName}" />
 								</p:graphicImage>
@@ -428,7 +429,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{associateBean.onCreateResource(newResourceType.value, newResourceSupportService.value, newResourceName.value, fileUploadController.uploadedFileName)}"
 					process="@form" update="@this :contentForm:toolsDataTable :contentForm:messagesDisplayer"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateResource').hide(); }" />
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateResource').hide(); }"/>
 			</p:dialog>
 		</h:form>
 
@@ -457,8 +458,7 @@
 						<p:column>
 							<p:inputText id="nameForTheExistingResource" required="true"
 								value="#{associateBean.selectedResourceViewBean.name}"
-								requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
-								binding="#{input3}" />
+								requiredMessage="#{msg['REQUIRED_FIELD']}" size="50" />
 						</p:column>
 						<p:column>
 							<p:message for="nameForTheExistingResource" display="text" />
@@ -482,14 +482,14 @@
 								<p:graphicImage
 									rendered="#{(not empty associateBean.selectedResourceViewBean.iconFileName) and (empty fileUploadController.uploadedFileName)}"
 									alt="#{associateBean.selectedResourceViewBean.name}"
-									cache="false" width="200" value="#{imagesController.image}">
+									cache="true" width="200" value="#{imagesController.image}">
 									<f:param name="imageFileName"
 										value="#{associateBean.selectedResourceViewBean.iconFileName}" />
 								</p:graphicImage>
 								<p:graphicImage
 									rendered="#{not empty fileUploadController.uploadedFileName}"
 									alt="#{associateBean.selectedResourceViewBean.name}"
-									cache="false" width="200" value="#{imagesController.image}">
+									cache="true" width="200" value="#{imagesController.image}">
 									<f:param name="imageFileName"
 										value="#{fileUploadController.uploadedFileName}" />
 								</p:graphicImage>
@@ -542,8 +542,8 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{associateBean.onModifySelectedResource(fileUploadController.uploadedFileName)}"
 					process="@form"
-					update="@this :contentForm:toolsDataTable :contentForm:messagesDisplayer"
-					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogModifyResource').hide(); }" />
+					update=":contentForm:toolsDataTable :contentForm:messagesDisplayer"
+					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogModifyResource').hide(); }"/>
 			</p:dialog>
 		</h:form>
 

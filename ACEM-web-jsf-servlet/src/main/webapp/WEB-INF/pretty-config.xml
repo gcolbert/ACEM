@@ -32,12 +32,12 @@
 		<pattern value="/my-scenarios" />
 		<view-id value="/pages/my-scenarios.xhtml" />
 	</url-mapping>
-<!-- 
+
 	<url-mapping id="my-scenarios-param">
-		<pattern value="/my-scenarios/#{scenarioId}" />
+		<pattern value="/my-scenarios?scenarioId=#{scenarioId}" />
 		<view-id value="/pages/my-scenarios.xhtml" />
 	</url-mapping>
- -->
+
 	<url-mapping id="my-teachings">
 		<pattern value="/my-teachings" />
 		<view-id value="/pages/my-teachings.xhtml" />

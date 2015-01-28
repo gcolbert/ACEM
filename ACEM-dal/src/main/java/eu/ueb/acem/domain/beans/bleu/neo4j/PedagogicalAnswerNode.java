@@ -29,10 +29,8 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
@@ -84,19 +82,18 @@ public class PedagogicalAnswerNode extends AbstractNode implements PedagogicalAn
 	}
 
 	@Override
-	public Set<ResourceCategory> getResourceCategories() {
-		return resourceCategories;
+	public void setNeeds(Set<PedagogicalNeed> needs) {
+		this.pedagogicalNeeds = needs;
 	}
 	
 	@Override
-	public Set<PedagogicalScenario> getScenariosRelatedToAnswer() {
-		Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>();
-		for (ResourceCategory resourceCategory : resourceCategories) {
-			for (PedagogicalActivity pedagogicalActivity : resourceCategory.getPedagogicalActivities()) {
-				scenarios.addAll(pedagogicalActivity.getScenarios());
-			}
-		}
-		return scenarios;
+	public Set<ResourceCategory> getResourceCategories() {
+		return resourceCategories;
+	}
+
+	@Override
+	public void setResourceCategories(Set<ResourceCategory> resourceCategories) {
+		this.resourceCategories = resourceCategories;
 	}
 
 	@Override
