@@ -238,15 +238,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	private void populateInstitutionViewBeansForCurrentOrganisation() {
-		logger.debug("setInstitutionViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			institutionViewBeansForCurrentOrganisation.clear();
 			for (InstitutionViewBean institutionViewBean : institutionViewBeans.getTableEntries()) {
 				if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
 					if (((CommunityViewBean) getCurrentOrganisationViewBean()).getCommunity().getInstitutions()
 							.contains(institutionViewBean.getInstitution())) {
-						logger.debug("selectedCommunity is associated with {}", institutionViewBean.getInstitution()
-								.getName());
 						institutionViewBeansForCurrentOrganisation.add(institutionViewBean);
 					}
 				}
@@ -272,7 +269,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	private void populateAdministrativeDepartmentViewBeansForCurrentOrganisation() {
-		logger.debug("setAdministrativeDepartmentViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			administrativeDepartmentViewBeansForCurrentOrganisation.clear();
 			for (AdministrativeDepartmentViewBean administrativeDepartmentViewBean : administrativeDepartmentViewBeans
@@ -291,7 +287,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	private void populateTeachingDepartmentViewBeansForCurrentOrganisation() {
-		logger.debug("setTeachingDepartmentViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			teachingDepartmentViewBeansForCurrentOrganisation.clear();
 			for (TeachingDepartmentViewBean teachingDepartmentViewBean : teachingDepartmentViewBeans.getTableEntries()) {
@@ -304,7 +299,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistCommunityViewBeansForCurrentOrganisation() {
-		logger.debug("preparePicklistCommunityViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(communityViewBeans.getTableEntries());
@@ -322,7 +316,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistInstitutionViewBeansForCurrentOrganisation() {
-		logger.debug("preparePicklistInstitutionViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(institutionViewBeans.getTableEntries());
@@ -364,7 +357,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistAdministrativeDepartmentViewBeansForCurrentOrganisation() {
-		logger.debug("preparePicklistAdministrativeDepartmentViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(administrativeDepartmentViewBeans.getTableEntries());
@@ -384,7 +376,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void preparePicklistTeachingDepartmentViewBeansForCurrentOrganisation() {
-		logger.debug("preparePicklistTeachingDepartmentViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(teachingDepartmentViewBeans.getTableEntries());
@@ -404,7 +395,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void onCreateCommunity(String name, String shortname, String iconFileName) {
-		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateCommunity", name);
 		Community community = organisationsService.createCommunity(name, shortname, iconFileName);
 		CommunityViewBean communityViewBean = new CommunityViewBean(community);
 		communityViewBeans.getTableEntries().add(communityViewBean);
@@ -413,7 +403,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void onCreateInstitution(String name, String shortname, String iconFileName) {
-		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateInstitution", name);
 		Institution institution = organisationsService.createInstitution(name, shortname, iconFileName);
 		InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
 		institutionViewBeans.getTableEntries().add(institutionViewBean);
@@ -422,7 +411,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void onCreateTeachingDepartment(String name, String shortname, String iconFileName) {
-		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateTeachingDepartment", name);
 		TeachingDepartment teachingDepartment = organisationsService.createTeachingDepartment(name, shortname,
 				iconFileName);
 		TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
@@ -432,7 +420,6 @@ public class OrganisationsController extends AbstractContextAwareController {
 	}
 
 	public void onCreateAdministrativeDepartment(String name, String shortname, String iconFileName) {
-		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateAdministrativeDepartment", name);
 		AdministrativeDepartment administrativeDepartment = organisationsService.createAdministrativeDepartment(name,
 				shortname, iconFileName);
 		AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
@@ -749,12 +736,5 @@ public class OrganisationsController extends AbstractContextAwareController {
 			break;
 		}
 	}
-
-	/*
-	 * public void handleNewCommunityIconUpload(FileUploadEvent event) {
-	 * UploadedFile file = event.getFile();
-	 * MessageDisplayer.showMessageToUserWithSeverityInfo
-	 * ("handleNewCommunityIconUpload", file.getFileName()); }
-	 */
 
 }

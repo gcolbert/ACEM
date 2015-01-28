@@ -15,12 +15,17 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
-	<ui:param name="displayWest" value="false" />
+	<ui:param name="displayWest" value="true" />
 	<ui:param name="displayEast" value="false" />
 	<ui:param name="displaySouth" value="false" />
 
-	<ui:param name="titleContent" value="#{msg['MY_SERVICES.SELECTED_SCENARIO.HEADER']}" />
+	<ui:param name="titleContent" value="#{msg['MY_SERVICES.SELECTED_SUPPORT_SERVICE.HEADER']}" />
+	<ui:param name="titleWest" value="#{msg['MY_SERVICES.LIST_SUPPORT_SERVICES.HEADER']}" />
+
+ 	<ui:define name="west">
+	</ui:define>
 
  	<ui:define name="content">
 	</ui:define>
+
 </ui:composition>

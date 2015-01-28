@@ -68,12 +68,15 @@ public class CommonToolCategoriesController extends AbstractContextAwareControll
 
 	public void onModifyToolCategory(ToolCategoryViewBean toolCategoryViewBean) {
 		if (toolCategoryViewBean != null) {
-			// TODO onModifyToolCategory
-//			if (resourcesService.updateResourceCategory(toolCategoryViewBean.getDomainBean())) {
-//			}
-//			else {
-//				
-//			}
+			toolCategoryViewBean.getDomainBean().setName(toolCategoryViewBean.getName());
+			toolCategoryViewBean.getDomainBean().setDescription(toolCategoryViewBean.getDescription());
+			toolCategoryViewBean.getDomainBean().setIconFileName(toolCategoryViewBean.getIconFileName());
+			toolCategoryViewBean.setDomainBean(resourcesService.updateResourceCategory(toolCategoryViewBean.getDomainBean()));
+			MessageDisplayer.showMessageToUserWithSeverityInfo(msgs.getMessage(
+					"TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.TITLE", null,
+					getCurrentUserLocale()), msgs.getMessage(
+					"TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.DETAILS", null,
+					getCurrentUserLocale()));
 		}
 	}
 

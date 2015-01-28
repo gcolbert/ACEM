@@ -70,7 +70,7 @@
 										update=":associationInstitutionForm:idDialogAssociateInstitution"
 										process="@this" />
 									<p:commandButton
-										value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_COMMUNITY_LABEL']}"
+										value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_COMMUNITY_LABEL']}"
 										icon="ui-icon-pencil"
 										actionListener="#{fileUploadController.reset()}"
 										action="#{organisationsController.setCurrentOrganisationViewBean(communityViewBean)}"
@@ -148,7 +148,7 @@
 								</p:graphicImage>
 								<p:column>
 									<p:commandButton
-										value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_INSTITUTION_LABEL']}"
+										value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_INSTITUTION_LABEL']}"
 										icon="ui-icon-pencil"
 										actionListener="#{fileUploadController.reset()}"
 										action="#{organisationsController.setCurrentOrganisationViewBean(institutionViewBean)}"
@@ -282,7 +282,7 @@
 										update=":associationInstitutionForm:idDialogAssociateInstitution"
 										process="@this" />
 									<p:commandButton
-										value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
+										value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 										icon="ui-icon-pencil"
 										actionListener="#{fileUploadController.reset()}"
 										action="#{organisationsController.setCurrentOrganisationViewBean(administrativeDepartmentViewBean)}"
@@ -367,7 +367,7 @@
 										update=":associationInstitutionForm:idDialogAssociateInstitution"
 										process="@this" />
 									<p:commandButton
-										value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_TEACHING_DEPARTMENT_LABEL']}"
+										value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_TEACHING_DEPARTMENT_LABEL']}"
 										icon="ui-icon-pencil"
 										actionListener="#{fileUploadController.reset()}"
 										action="#{organisationsController.setCurrentOrganisationViewBean(teachingDepartmentViewBean)}"
@@ -661,19 +661,19 @@
 
 		<h:form id="renameOrganisationForm">
 			<p:dialog id="idDialogRenameOrganisation"
-				header="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.HEADER']}"
+				header="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogRenameOrganisation" modal="true" height="auto">
 				<p:panelGrid columns="3"
 					rendered="#{organisationsController.currentOrganisationViewBean != null}">
 					<h:outputLabel for="newName"
-						value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.NEW_NAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.NEW_NAME_LABEL']}" />
 					<p:inputText id="newName" required="true"
 						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						value="#{organisationsController.currentOrganisationViewBean.name}" />
 					<p:message for="newName" display="text" />
 
 					<h:outputLabel for="newShortName"
-						value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.NEW_SHORTNAME_LABEL']}" />
+						value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.NEW_SHORTNAME_LABEL']}" />
 					<p:inputText id="newShortName" required="true"
 						requiredMessage="#{msg['REQUIRED_FIELD']}" size="20"
 						value="#{organisationsController.currentOrganisationViewBean.shortname}" />
@@ -709,7 +709,7 @@
 				</p:panelGrid>
 				<!-- 
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					actionListener="#{organisationsController.currentOrganisationViewBean.setIconFileName(fileUploadController.uploadedFileName)}"
 					action="#{organisationsController.onRenameOrganisation}"
@@ -718,7 +718,7 @@
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogRenameOrganisation').hide(); }" />
  -->
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
+					value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
 					actionListener="#{organisationsController.currentOrganisationViewBean.setIconFileName(fileUploadController.uploadedFileName)}"
 					action="#{organisationsController.onRenameOrganisation}"

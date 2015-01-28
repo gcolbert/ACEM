@@ -56,10 +56,6 @@ html {
 	font-weight: bold;
 }
 
-.app-body {
-	padding:1em !important; /* We want to have a padding for the content under the page header */
-}
-
 .section-title {
 	font-weight:bold;
 	color:#2B558B;
@@ -156,20 +152,11 @@ html {
 }
 
 .userScenariosScrollPanelColumn {
-	border:0px !important; /* The list of all scenarios has only one column so the column doesn't need a border */
+	border:0 !important; /* The list of all scenarios has only one column so the column doesn't need a border */
 }
 
-.selectedScenarioLayoutUnit {
-	width:auto !important; /* The selected scenario should adapt its width when the window is resized */
-
-	border:0; /* The selected scenario layout unit should take zero space, so that the list of scenarios and the selected scenario are vertically aligned on top */
-	padding:0 !important; /* same reason */
-	margin:0 !important; /* same reason */
-}
-
-.selectedScenarioLayoutUnit .ui-layout-unit-content {
-	height:auto !important; /* The selected scenario must not have a vertical scrollbar */
-	padding-top:0 !important; /* The selected scenario layout unit and list of scenarios must be vertically aligned, so we have to remove the default padding */
+.selectedScenarioPanel {
+	border:0;
 }
 
 .selectedScenarioPropertiesPanelGrid .ui-widget-content,
@@ -177,8 +164,14 @@ html {
 	border:0 !important; /* The panel grid containing the selected scenario properties should not have any border */
 }
 
+.selectedScenarioActivitiesDataTable {
+}
+
 .selectedScenarioActivitiesDataTable .ui-datatable-header {
 	text-align:left !important; /* The header of the activities datatable must be aligned left */
+}
+
+.selectedScenarioEvaluationModesPanel {
 }
 
 /************/

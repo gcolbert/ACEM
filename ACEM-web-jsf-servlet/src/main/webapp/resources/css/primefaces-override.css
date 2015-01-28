@@ -1,6 +1,9 @@
 /*------------------------------------------------------------
 Override of Primefaces default css
 --------------------------------------------------------------*/
+.ui-button {
+	margin:0.5em 0;
+}
 .ui-tabs .ui-tabs-nav {
 	background:#E6E1E0;
 }
@@ -83,11 +86,17 @@ Override of Primefaces default css
 }
 .ui-editor iframe {
 	width:100% !important;
-	/*height:100% !important;*/
 	box-sizing:border-box;
 }
 
 .notSelectableTree .ui-treenode-label,
 .notSelectableTree .ui-treenode-icon {
 	cursor:default !important; /* The cursor should be a plain arrow if the treenodes are not selectable */
+}
+
+.ui-accordion .ui-accordion-header {
+	margin:0.5em 0 0 0 !important;
+}
+.ui-accordion .ui-accordion-content {
+	padding:0 !important; /* Primefaces 5.1 sets a quite large padding for the content of accordions */
 }

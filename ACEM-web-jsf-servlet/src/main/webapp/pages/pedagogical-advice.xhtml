@@ -18,14 +18,12 @@
 	<ui:param name="displaySouth" value="false" />
 
 	<ui:param name="pageTitle" value="#{associateBean.pageTitle}" />
-	<ui:param name="titleContent" value="#{msg['NEEDS_AND_ANSWERS.TREE.HEADER']}" />
+	<ui:param name="titleContent" value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.HEADER']}" />
 	<ui:param name="titleWest" value="#{msg['NEEDS_AND_ANSWERS.TREE.HEADER']}" />
 	<ui:param name="titlePageOne" value="#{msg['MENU.PEDAGOGICAL_ADVICE']}"/>
 	<ui:param name="titlePageTwo" value=""/>
 
 	<ui:define name="west">
-		<p:tooltip />
-
 		<p:outputPanel>
 			<p:contextMenu for="pedagogicalAdviceTree" nodeType="default">
 				<p:menuitem
