@@ -20,17 +20,15 @@ package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
 
-import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.web.viewbeans.AbstractViewBean;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-25
  * 
  */
-public class TeachingDepartmentViewBean extends AbstractViewBean implements OrganisationViewBean, Serializable,
-		Comparable<TeachingDepartmentViewBean> {
+public class TeachingDepartmentViewBean extends AbstractOrganisationViewBean implements Serializable {
 
 	/**
 	 * For serialization.
@@ -38,12 +36,6 @@ public class TeachingDepartmentViewBean extends AbstractViewBean implements Orga
 	private static final long serialVersionUID = 6787135851384385849L;
 
 	private TeachingDepartment teachingDepartment;
-
-	private String name;
-
-	private String shortname;
-
-	private String iconFileName;
 
 	public TeachingDepartmentViewBean() {
 	}
@@ -59,10 +51,7 @@ public class TeachingDepartmentViewBean extends AbstractViewBean implements Orga
 
 	public void setTeachingDepartment(TeachingDepartment teachingDepartment) {
 		this.teachingDepartment = teachingDepartment;
-		setId(teachingDepartment.getId());
-		setName(teachingDepartment.getName());
-		setShortname(teachingDepartment.getShortname());
-		setIconFileName(teachingDepartment.getIconFileName());
+		super.setDomainBean(teachingDepartment);
 	}
 
 	@Override
@@ -73,41 +62,6 @@ public class TeachingDepartmentViewBean extends AbstractViewBean implements Orga
 	@Override
 	public void setDomainBean(Organisation organisation) {
 		setTeachingDepartment((TeachingDepartment) organisation);
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getShortname() {
-		return shortname;
-	}
-
-	@Override
-	public void setShortname(String shortname) {
-		this.shortname = shortname;
-	}
-
-	@Override
-	public String getIconFileName() {
-		return iconFileName;
-	}
-
-	@Override
-	public void setIconFileName(String iconFileName) {
-		this.iconFileName = iconFileName;
-	}
-
-	@Override
-	public int compareTo(TeachingDepartmentViewBean o) {
-		return name.compareTo(o.getName());
 	}
 
 }

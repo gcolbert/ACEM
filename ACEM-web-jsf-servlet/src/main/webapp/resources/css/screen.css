@@ -294,6 +294,13 @@ html {
 	padding-left:1em;
 }
 
+/***************/
+/* MY SERVICES */
+/***************/
+.selectedServicePanel {
+	border:0;
+}
+
 /******************/
 /* ADMINISTRATION */
 /******************/

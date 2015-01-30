@@ -23,7 +23,7 @@
 	<parent>
 		<artifactId>ACEM</artifactId>
 		<groupId>eu.ueb</groupId>
-		<version>0.0.5-SNAPSHOT</version>
+		<version>0.0.6-SNAPSHOT</version>
 	</parent>
 	<artifactId>ACEM-dal</artifactId>
 	<description>Data Access Layer</description>

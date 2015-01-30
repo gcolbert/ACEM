@@ -113,4 +113,6 @@ public interface OrganisationsService {
 
 	Boolean dissociateUseModeAndOrganisation(Long idUseMode, Long idOrganisation);
 
+	Boolean isImplicitlySharingResourcesWith(Organisation organisation1, Organisation organisation2);
+
 }

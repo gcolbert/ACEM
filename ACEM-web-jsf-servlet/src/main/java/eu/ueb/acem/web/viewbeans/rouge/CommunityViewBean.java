@@ -25,15 +25,13 @@ import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-25
  * 
  */
-public class CommunityViewBean extends AbstractViewBean implements OrganisationViewBean, Serializable,
-		Comparable<CommunityViewBean> {
+public class CommunityViewBean extends AbstractOrganisationViewBean implements Serializable {
 
 	/**
 	 * For serialization.
@@ -45,18 +43,21 @@ public class CommunityViewBean extends AbstractViewBean implements OrganisationV
 
 	private Community community;
 
-	private String name;
-
-	private String shortname;
-
-	private String iconFileName;
-
 	public CommunityViewBean() {
 	}
 
 	public CommunityViewBean(Community community) {
 		this();
 		setCommunity(community);
+	}
+
+	public Community getCommunity() {
+		return community;
+	}
+
+	public void setCommunity(Community community) {
+		this.community = community;
+		super.setDomainBean(community);
 	}
 
 	@Override
@@ -67,53 +68,6 @@ public class CommunityViewBean extends AbstractViewBean implements OrganisationV
 	@Override
 	public void setDomainBean(Organisation organisation) {
 		setCommunity((Community) organisation);
-	}
-
-	public Community getCommunity() {
-		return community;
-	}
-
-	public void setCommunity(Community community) {
-		this.community = community;
-		setId(community.getId());
-		setName(community.getName());
-		setShortname(community.getShortname());
-		setIconFileName(community.getIconFileName());
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getShortname() {
-		return shortname;
-	}
-
-	@Override
-	public void setShortname(String shortname) {
-		this.shortname = shortname;
-	}
-
-	@Override
-	public String getIconFileName() {
-		return iconFileName;
-	}
-
-	@Override
-	public void setIconFileName(String iconFileName) {
-		this.iconFileName = iconFileName;
-	}
-
-	@Override
-	public int compareTo(CommunityViewBean o) {
-		return name.compareTo(o.getName());
 	}
 
 }

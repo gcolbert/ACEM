@@ -17,6 +17,7 @@
 	<ui:param name="northPanelCollapsible" value="true"/>
 	<ui:param name="northPanelCollapsed" value="false"/>
 	<ui:param name="displayWest" value="true" />
+	<ui:param name="westPanelSize" value="350" />
 	<ui:param name="westPanelCollapsible" value="true"/>
 	<ui:param name="westPanelCollapsed" value="#{associateBean.selectedToolCategoryId!=null}" />
 	<ui:param name="displayEast" value="#{sessionController.currentUserViewBean.administrator}" />
@@ -49,7 +50,7 @@
 							rendered="#{not empty toolCategoryViewBean.iconFileName}"
 							styleClass="toolCategoryLogo"
 							alt="#{toolCategoryViewBean.name}" cache="true" width="50"
-							value="#{imagesController.getImage()}">
+							value="#{imagesController.image}">
 							<f:param name="imageFileName"
 								value="#{toolCategoryViewBean.iconFileName}" />
 						</p:graphicImage>
@@ -161,7 +162,7 @@
 						rendered="#{not empty associateBean.selectedToolCategoryViewBean.iconFileName}"
 						styleClass="toolImg"
 						alt="#{associateBean.selectedToolCategoryViewBean.name}"
-						cache="true" width="80" value="#{imagesController.getImage()}">
+						cache="true" width="80" value="#{imagesController.image}">
 						<f:param name="imageFileName"
 							value="#{associateBean.selectedToolCategoryViewBean.iconFileName}" />
 					</p:graphicImage>
@@ -203,19 +204,24 @@
 						<p:graphicImage id="resourceIcon"
 							rendered="#{not empty toolViewBean.iconFileName}"
 							styleClass="toolIcon" alt="#{toolViewBean.name}"
-							cache="true" width="40" value="#{imagesController.getImage()}">
+							cache="true" width="40" value="#{imagesController.image}">
 							<f:param name="imageFileName"
 								value="#{toolViewBean.iconFileName}" />
 						</p:graphicImage>
 					</p:column>
 					<p:column
-						headerText="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATION_NAME']}">
+						headerText="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.OWNER_ORGANISATION_NAME']}">
+						<h:outputText
+							value="#{toolViewBean.organisationPossessingResourceViewBean.name}" />
+					</p:column>
+					<p:column
+						headerText="#{msg['RESOURCES.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.SUPPORT_ORGANISATION_NAME']}">
 						<h:link id="goToSupportServiceBtn" outcome="my-services"
-							rendered="#{toolViewBean.organisationPossessingResourceViewBean != null}">
+							rendered="#{toolViewBean.organisationSupportingResourceViewBean != null}">
 							<f:param name="serviceId"
-								value="#{toolViewBean.organisationPossessingResourceViewBean.id}" />
+								value="#{toolViewBean.organisationSupportingResourceViewBean.id}" />
 							<h:outputText
-								value="#{toolViewBean.organisationPossessingResourceViewBean.name}" />
+								value="#{toolViewBean.organisationSupportingResourceViewBean.name}" />
 							<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
 								style="display:inline-block; vertical-align:middle;" />
 							<p:tooltip
@@ -223,7 +229,14 @@
 								for="goToSupportServiceBtn" />
 						</h:link>
 					</p:column>
-					<p:column>
+					<p:column
+						headerText="Visible par">
+					</p:column>
+					<p:column
+						headerText="Modalité d'utilisation">
+					</p:column>
+					<p:column
+						headerText="Disponibilité">
 					</p:column>
 				</p:dataTable>
 				<p:panel styleClass="resourcesDataTableActionsPanel" rendered="#{sessionController.currentUserViewBean.administrator}">
@@ -399,17 +412,40 @@
 
 					<p:row>
 						<p:column>
+							<h:outputLabel for="ownerOrganisationForTheNewResource"
+								value="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.OWNER_ORGANISATION_LABEL']}" />
+						</p:column>
+						<p:column colspan="2">
+							<p:selectOneMenu id="ownerOrganisationForTheNewResource"
+								required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
+								editable="false" immediate="true"
+								binding="#{newResourceOwnerOrganisation}"
+								converter="OrganisationConverter">
+								<f:selectItem
+									itemLabel="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_OWNER_ORGANISATION']}"
+									itemValue="" itemDisabled="true" noSelectionOption="true" />
+								<f:selectItems
+									value="#{associateBean.allOrganisationViewBeans}"
+									var="organisationViewBean"
+									itemLabel="#{organisationViewBean.name}"
+									itemValue="#{organisationViewBean}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
 							<h:outputLabel for="supportServiceForTheNewResource"
-								value="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SUPPORT_SERVICE_LABEL']}" />
+								value="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SUPPORT_ORGANISATION_LABEL']}" />
 						</p:column>
 						<p:column>
 							<p:selectOneMenu id="supportServiceForTheNewResource"
 								required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
 								editable="false" immediate="true"
-								binding="#{newResourceSupportService}"
+								binding="#{newResourceSupportOrganisation}"
 								converter="OrganisationConverter">
 								<f:selectItem
-									itemLabel="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
+									itemLabel="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_ORGANISATION']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
 								<f:selectItems
 									value="#{associateBean.allOrganisationViewBeans}"
@@ -427,7 +463,7 @@
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['RESOURCES.CREATE_RESOURCE_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{associateBean.onCreateResource(newResourceType.value, newResourceSupportService.value, newResourceName.value, fileUploadController.uploadedFileName)}"
+					action="#{associateBean.onCreateResource(newResourceType.value, newResourceOwnerOrganisation.value, newResourceSupportOrganisation.value, newResourceName.value, fileUploadController.uploadedFileName)}"
 					process="@form" update="@this :contentForm:toolsDataTable :contentForm:messagesDisplayer"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateResource').hide(); }"/>
 			</p:dialog>
@@ -499,17 +535,40 @@
 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="supportServiceForTheExistingResource"
-								value="#{msg['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SUPPORT_SERVICE_LABEL']}" />
+							<h:outputLabel for="ownerOrganisationForTheExistingResource"
+								value="#{msg['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.OWNER_ORGANISATION_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<p:selectOneMenu id="supportServiceForTheExistingResource"
+							<p:selectOneMenu id="ownerOrganisationForTheExistingResource"
 								required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
 								editable="false" immediate="true"
 								value="#{associateBean.selectedResourceViewBean.organisationPossessingResourceViewBean}"
 								converter="OrganisationConverter">
 								<f:selectItem
-									itemLabel="#{msg['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_SERVICE']}"
+									itemLabel="#{msg['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_OWNER_ORGANISATION']}"
+									itemValue="" itemDisabled="true" noSelectionOption="true" />
+								<f:selectItems
+									value="#{associateBean.allOrganisationViewBeans}"
+									var="organisationViewBean"
+									itemLabel="#{organisationViewBean.name}"
+									itemValue="#{organisationViewBean}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<h:outputLabel for="supportOrganisationForTheExistingResource"
+								value="#{msg['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SUPPORT_ORGANISATION_LABEL']}" />
+						</p:column>
+						<p:column colspan="2">
+							<p:selectOneMenu id="supportOrganisationForTheExistingResource"
+								required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
+								editable="false" immediate="true"
+								value="#{associateBean.selectedResourceViewBean.organisationSupportingResourceViewBean}"
+								converter="OrganisationConverter">
+								<f:selectItem
+									itemLabel="#{msg['RESOURCES.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_ORGANISATION']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
 								<f:selectItems
 									value="#{associateBean.allOrganisationViewBeans}"

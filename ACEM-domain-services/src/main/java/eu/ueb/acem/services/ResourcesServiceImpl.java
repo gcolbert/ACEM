@@ -113,9 +113,10 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Resource createResource(Long toolCategoryId, Long supportServiceId, String resourceType, String name, String iconFileName) {
-		Organisation supportService = organisationsService.retrieveOrganisation(supportServiceId, true);
-		if (supportService != null) {
+	public Resource createResource(Long toolCategoryId, Long ownerOrganisationId, Long supportOrganisationId, String resourceType, String name, String iconFileName) {
+		Organisation supportOrganisation = organisationsService.retrieveOrganisation(supportOrganisationId, true);
+		Organisation ownerOrganisation = organisationsService.retrieveOrganisation(ownerOrganisationId, true);
+		if ((ownerOrganisation != null) && (supportOrganisation != null)) {
 			Resource entity = null;
 			if (resourceType.equals("software")) {
 				entity = new SoftwareNode(name, iconFileName);
@@ -141,8 +142,10 @@ public class ResourcesServiceImpl implements ResourcesService {
 			resourceCategory.getResources().add(entity);
 			resourceCategory = resourceCategoryDAO.update(resourceCategory);
 			
-			entity.setOrganisationPossessingResource(supportService);
-			supportService = organisationsService.updateOrganisation(supportService);
+			entity.setOrganisationPossessingResource(ownerOrganisation);
+			ownerOrganisation = organisationsService.updateOrganisation(ownerOrganisation);
+			entity.setOrganisationSupportingResource(supportOrganisation);
+			supportOrganisation = organisationsService.updateOrganisation(supportOrganisation);
 
 			if (resourceType.equals("software")) {
 				entity = softwareDAO.create((Software)entity);

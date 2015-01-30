@@ -25,15 +25,13 @@ import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-25
  * 
  */
-public class InstitutionViewBean extends AbstractViewBean implements OrganisationViewBean, Serializable,
-		Comparable<InstitutionViewBean> {
+public class InstitutionViewBean extends AbstractOrganisationViewBean implements Serializable {
 
 	/**
 	 * For serialization.
@@ -44,12 +42,6 @@ public class InstitutionViewBean extends AbstractViewBean implements Organisatio
 	private static final Logger logger = LoggerFactory.getLogger(InstitutionViewBean.class);
 
 	private Institution institution;
-
-	private String name;
-
-	private String shortname;
-
-	private String iconFileName;
 
 	public InstitutionViewBean() {
 	}
@@ -65,10 +57,7 @@ public class InstitutionViewBean extends AbstractViewBean implements Organisatio
 
 	public void setInstitution(Institution institution) {
 		this.institution = institution;
-		setId(institution.getId());
-		setName(institution.getName());
-		setShortname(institution.getShortname());
-		setIconFileName(institution.getIconFileName());
+		super.setDomainBean(institution);
 	}
 
 	@Override
@@ -79,41 +68,6 @@ public class InstitutionViewBean extends AbstractViewBean implements Organisatio
 	@Override
 	public void setDomainBean(Organisation organisation) {
 		setInstitution((Institution) organisation);
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getShortname() {
-		return shortname;
-	}
-
-	@Override
-	public void setShortname(String shortname) {
-		this.shortname = shortname;
-	}
-
-	@Override
-	public String getIconFileName() {
-		return iconFileName;
-	}
-
-	@Override
-	public void setIconFileName(String iconFileName) {
-		this.iconFileName = iconFileName;
-	}
-
-	@Override
-	public int compareTo(InstitutionViewBean o) {
-		return name.compareTo(o.getName());
 	}
 
 }

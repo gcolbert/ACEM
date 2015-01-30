@@ -62,6 +62,9 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 	@RelatedTo(elementClass = OrganisationNode.class, type = "possessesResource", direction = INCOMING)
 	private Organisation organisationPossessingResource;
 
+	@RelatedTo(elementClass = OrganisationNode.class, type = "supportsResource", direction = INCOMING)
+	private Organisation organisationSupportingResource;
+	
 	@RelatedTo(elementClass = OrganisationNode.class, type = "accessesResource", direction = INCOMING)
 	private Set<Organisation> organisationsHavingAccessToResource = new HashSet<Organisation>(0);
 
@@ -121,6 +124,16 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 	@Override
 	public void setOrganisationPossessingResource(Organisation organisation) {
 		this.organisationPossessingResource = (OrganisationNode)organisation;
+	}
+
+	@Override
+	public Organisation getOrganisationSupportingResource() {
+		return organisationSupportingResource;
+	}
+	
+	@Override
+	public void setOrganisationSupportingResource(Organisation organisation) {
+		this.organisationSupportingResource = (OrganisationNode)organisation;
 	}
 
 	@Override

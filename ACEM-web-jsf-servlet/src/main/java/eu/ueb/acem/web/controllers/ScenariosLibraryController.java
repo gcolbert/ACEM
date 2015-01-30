@@ -26,7 +26,7 @@ import org.springframework.stereotype.Controller;
  * @since 2015-01-06
  * 
  */
-@Controller("ScenariosLibraryController")
+@Controller("scenariosLibraryController")
 @Scope("view")
 public class ScenariosLibraryController extends AbstractContextAwareController implements PageController {
 

@@ -65,6 +65,9 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	@RelatedTo(elementClass = ResourceNode.class, type = "possessesResource", direction = OUTGOING)
 	private Set<Resource> possessedResources = new HashSet<Resource>(0);
 
+	@RelatedTo(elementClass = ResourceNode.class, type = "supportsResource", direction = OUTGOING)
+	private Set<Resource> supportedResources = new HashSet<Resource>(0);
+
 	@RelatedTo(elementClass = ResourceNode.class, type = "accessesResource", direction = OUTGOING)
 	private Set<Resource> viewedResources = new HashSet<Resource>(0);
 
@@ -119,6 +122,16 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	@Override
 	public void setPossessedResources(Set<Resource> possessedResources) {
 		this.possessedResources = possessedResources;
+	}
+
+	@Override
+	public Set<Resource> getSupportedResources() {
+		return supportedResources;
+	}
+
+	@Override
+	public void setSupportedResources(Set<Resource> supportedResources) {
+		this.supportedResources = supportedResources;
 	}
 
 	@Override

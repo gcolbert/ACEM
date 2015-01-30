@@ -26,7 +26,7 @@
 
 	<ui:define name="content">
 		<p:panel header="#{msg['ADMINISTRATION.ORGANISATIONS.HEADER']}">
-			<p:tabView id="tabViewOrganisations" dynamic="true" cache="false">
+			<p:tabView id="tabViewOrganisations" dynamic="true" cache="true">
 				<p:ajax event="tabChange"
 						listener="#{organisationsController.onOrganisationsTabViewTabChange}"
 						update="@this" />
@@ -55,8 +55,8 @@
 								<p:graphicImage id="communityIcon"
 									rendered="#{not empty communityViewBean.iconFileName}"
 									styleClass="organisationLogo" alt="#{communityViewBean.name}"
-									cache="false" width="150"
-									value="#{imagesController.getImage()}">
+									cache="true" width="150"
+									value="#{imagesController.image}">
 									<f:param name="imageFileName"
 										value="#{communityViewBean.iconFileName}" />
 								</p:graphicImage>
@@ -141,8 +141,8 @@
 								<p:graphicImage id="institutionIcon"
 									rendered="#{not empty institutionViewBean.iconFileName}"
 									styleClass="organisationLogo"
-									alt="#{institutionViewBean.name}" cache="false" width="150"
-									value="#{imagesController.getImage()}">
+									alt="#{institutionViewBean.name}" cache="true" width="150"
+									value="#{imagesController.image}">
 									<f:param name="imageFileName"
 										value="#{institutionViewBean.iconFileName}" />
 								</p:graphicImage>
@@ -267,8 +267,8 @@
 								<p:graphicImage id="administrativeDepartmentIcon"
 									rendered="#{not empty administrativeDepartmentViewBean.iconFileName}"
 									styleClass="organisationLogo"
-									alt="#{administrativeDepartmentViewBean.name}" cache="false"
-									width="150" value="#{imagesController.getImage()}">
+									alt="#{administrativeDepartmentViewBean.name}" cache="true"
+									width="150" value="#{imagesController.image}">
 									<f:param name="imageFileName"
 										value="#{administrativeDepartmentViewBean.iconFileName}" />
 								</p:graphicImage>
@@ -352,8 +352,8 @@
 								<p:graphicImage id="teachingDepartmentIcon"
 									rendered="#{not empty teachingDepartmentViewBean.iconFileName}"
 									styleClass="organisationLogo"
-									alt="#{teachingDepartmentViewBean.name}" cache="false"
-									width="150" value="#{imagesController.getImage()}">
+									alt="#{teachingDepartmentViewBean.name}" cache="true"
+									width="150" value="#{imagesController.image}">
 									<f:param name="imageFileName"
 										value="#{teachingDepartmentViewBean.iconFileName}" />
 								</p:graphicImage>
@@ -415,7 +415,6 @@
 		</p:panel>
 
 		<!-- ********** USERS ********************************************************************** -->
-		<!-- 
 		<p:panel header="#{msg['ADMINISTRATION.USERS.HEADER']}">
 			<p:dataTable id="usersDataTable" var="personViewBean"
 				emptyMessage="#{msg['ADMINISTRATION.USERS.LIST.NO_RECORDS_FOUND']}"
@@ -445,19 +444,18 @@
 						actionListener="#{usersController.setSelectedUserViewBean(personViewBean)}"
 						action="#{usersController.preparePicklistOrganisationViewBeans()}"
 						oncomplete="PF('dialogAssociateOrganisationWithUser').show()"
-						update=":formUsers:idDialogAssociateOrganisationWithUser"
+						update=":usersForm:idDialogAssociateOrganisationWithUser"
 						process="@this" />
 				</p:column>
 				<p:column width="20%"
 					headerText="#{msg['ADMINISTRATION.USERS.LIST.IS_ADMIN.COLUMN_HEADER']}">
 					<p:selectBooleanCheckbox value="#{personViewBean.administrator}">
-						<p:ajax update="@this :formUsers:messagesDisplayerFormUsers"
+						<p:ajax update="@this :contentForm:messagesDisplayer"
 							listener="#{usersController.setAdministrator(personViewBean)}" />
 					</p:selectBooleanCheckbox>
 				</p:column>
 			</p:dataTable>
 		</p:panel>
- -->
 
 		<!-- ********** TOOL CATEGORIES ********************************************************************** -->
 		<!-- 
@@ -786,7 +784,7 @@
 					process="@this idDialogAssociateInstitution" />
 			</p:dialog>
 		</h:form>
-		
+
 		<h:form id="associationAdministrativeDepartmentForm">
 			<p:dialog id="idDialogAssociateAdministrativeDepartment"
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
@@ -850,7 +848,6 @@
 			</p:dialog>
 		</h:form>
 
-<!-- 
 		<h:form id="usersForm">
 			<p:dialog id="idDialogAssociateOrganisationWithUser"
 				header="#{msg['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.HEADER']}"
@@ -868,7 +865,7 @@
 					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
 					<f:facet name="targetCaption">#{msg['ADMINISTRATION.USERS.ASSOCIATE_ORGANISATIONS_TO_USER_MODAL_WINDOW.PICKLIST_HEADER.WORKS_FOR']}</f:facet>
 					<p:ajax event="transfer" listener="#{usersController.onTransfer}"
-						update="@this :formUsers:usersDataTable :formUsers:messagesDisplayerFormUsers"
+						update="@this :contentForm:usersDataTable :contentForm:messagesDisplayer"
 						process="@this" />
 				</p:pickList>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -879,6 +876,6 @@
 					process="@this idDialogAssociateOrganisationWithUser" />
 			</p:dialog>
 		</h:form>
- -->
+
 	</ui:define>
 </ui:composition>

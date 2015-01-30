@@ -53,6 +53,10 @@ public interface Organisation extends Serializable, Comparable<Organisation> {
 	Set<Resource> getPossessedResources();
 
 	void setPossessedResources(Set<Resource> possessedResources);
+	
+	Set<Resource> getSupportedResources();
+
+	void setSupportedResources(Set<Resource> supportedResources);
 
 	Set<Resource> getViewedResources();
 

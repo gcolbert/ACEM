@@ -46,7 +46,7 @@ public interface ResourcesService {
 
 	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(Long id);
 
-	Resource createResource(Long toolCategoryId, Long supportServiceId, String resourceType, String name, String iconFileName);
+	Resource createResource(Long toolCategoryId, Long ownerOrganisationId, Long supportOrganisationId, String resourceType, String name, String iconFileName);
 
 	Resource updateResource(Resource resource);
 

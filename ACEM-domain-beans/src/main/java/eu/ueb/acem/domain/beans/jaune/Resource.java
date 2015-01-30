@@ -56,6 +56,10 @@ public interface Resource extends Serializable, Comparable<Resource> {
 
 	void setOrganisationPossessingResource(Organisation organisation);
 
+	Organisation getOrganisationSupportingResource();
+
+	void setOrganisationSupportingResource(Organisation organisation);
+	
 	Set<Organisation> getOrganisationsHavingAccessToResource();
 
 	void setOrganisationsHavingAccessToResource(Set<Organisation> organisations);

@@ -29,7 +29,7 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  * @since 2014-02-25
  * 
  */
-public interface ResourceViewBean extends Pickable {
+public interface ResourceViewBean extends Pickable, Comparable<ResourceViewBean> {
 
 	Long getId();
 
@@ -53,6 +53,10 @@ public interface ResourceViewBean extends Pickable {
 	
 	void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean);
 
+	OrganisationViewBean getOrganisationSupportingResourceViewBean();
+	
+	void setOrganisationSupportingResourceViewBean(OrganisationViewBean organisationViewBean);
+	
 	List<OrganisationViewBean> getOrganisationViewingResourceViewBeans();
 
 	UseModeViewBean getUseModeViewBean();

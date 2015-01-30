@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("sortableTableBean")
 @Scope("view")
-public class SortableTableBean<E extends Comparable<E>> extends TableBean<E> {
+public class SortableTableBean<E extends Comparable<? super E>> extends TableBean<E> {
 
 	private static final long serialVersionUID = -5189856159830582038L;
 

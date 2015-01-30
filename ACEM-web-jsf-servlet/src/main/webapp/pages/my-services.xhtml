@@ -26,6 +26,24 @@
 	</ui:define>
 
  	<ui:define name="content">
+ 		<p:outputPanel id="selectedServiceOutputPanel">
+			<p:panel styleClass="selectedServicePanel"
+				id="selectedServicePanel"
+				rendered="#{associateBean.selectedServiceViewBean != null}">
+				<h2><h:outputText
+					value="#{associateBean.selectedServiceViewBean.name}" /></h2>
+
+				<p:graphicImage
+					rendered="#{not empty associateBean.selectedServiceViewBean.iconFileName}"
+					styleClass="organisationLogo"
+					alt="#{associateBean.selectedServiceViewBean.name}" cache="true" width="150"
+					value="#{imagesController.image}">
+					<f:param name="imageFileName"
+						value="#{associateBean.selectedServiceViewBean.iconFileName}" />
+				</p:graphicImage>
+
+			</p:panel>
+		</p:outputPanel>
 	</ui:define>
 
 </ui:composition>

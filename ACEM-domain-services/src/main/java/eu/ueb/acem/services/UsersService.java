@@ -18,8 +18,10 @@
  */
 package eu.ueb.acem.services;
 
-import eu.ueb.acem.domain.beans.gris.Teacher;
+import java.util.Collection;
+
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 
 /**
  * @author Grégoire Colbert
@@ -28,18 +30,20 @@ import eu.ueb.acem.domain.beans.gris.Person;
  */
 public interface UsersService {
 
-	Long countTeachers();
-	
 	Long countPersons();
 	
 	Person createPerson(String name, String login);
 
+	Collection<Person> retrieveAllPersons();
+	
 	Person retrievePerson(Long id);
 	
 	Person updatePerson(Person person);
 
 	Boolean deletePerson(Long id);
 
+	Long countTeachers();
+	
 	Teacher createTeacher(String name, String login);
 	
 	Teacher retrieveTeacher(Long id);
@@ -51,12 +55,6 @@ public interface UsersService {
 	Boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
 
 	Boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
-
-	/*-
-	Boolean addFavoriteResourceForTeacher(Long idTeacher, Long idResource);
-
-	Boolean removeFavoriteResourceForTeacher(Long idTeacher, Long idResource);
-	*/
 
 	Boolean addFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory);
 	

@@ -20,6 +20,8 @@ package eu.ueb.acem.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -404,4 +406,42 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		return ((! institution.getTeachingDepartments().contains(teachingDepartment)) && (!teachingDepartment.getInstitutions().contains(institution)));
 	}
 
+	@Override
+	public Boolean isImplicitlySharingResourcesWith(Organisation organisation1, Organisation organisation2) {
+		if (organisation1 instanceof Community) {
+			if (organisation2 instanceof Institution) {
+				if (((Institution) organisation2).getCommunities().contains(organisation1)) {
+					return true;
+				}
+			}
+			else if (organisation2 instanceof AdministrativeDepartment) {
+				Set<Institution> intersection = new HashSet<Institution>(((AdministrativeDepartment) organisation2).getInstitutions());
+				intersection.retainAll(((Community) organisation1).getInstitutions());
+				if (! intersection.isEmpty()) {
+					return true;
+				}
+			}
+			else if (organisation2 instanceof TeachingDepartment) {
+				Set<Institution> intersection = new HashSet<Institution>(((TeachingDepartment) organisation2).getInstitutions());
+				intersection.retainAll(((Community) organisation1).getInstitutions());
+				if (! intersection.isEmpty()) {
+					return true;
+				}
+			}
+		}
+		else if (organisation1 instanceof Institution) {
+			if (organisation2 instanceof AdministrativeDepartment) {
+				if (((AdministrativeDepartment) organisation2).getInstitutions().contains(organisation1)) {
+					return true;
+				}
+			}
+			else if (organisation2 instanceof TeachingDepartment) {
+				if (((TeachingDepartment) organisation2).getInstitutions().contains(organisation1)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 }

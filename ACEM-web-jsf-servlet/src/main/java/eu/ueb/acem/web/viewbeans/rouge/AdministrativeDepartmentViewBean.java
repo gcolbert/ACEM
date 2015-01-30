@@ -23,18 +23,16 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.ScenariosServiceImpl;
-import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-25
  * 
  */
-public class AdministrativeDepartmentViewBean extends AbstractViewBean implements OrganisationViewBean, Serializable,
-		Comparable<AdministrativeDepartmentViewBean> {
+public class AdministrativeDepartmentViewBean extends AbstractOrganisationViewBean implements Serializable {
 
 	/**
 	 * For serialization.
@@ -46,18 +44,21 @@ public class AdministrativeDepartmentViewBean extends AbstractViewBean implement
 
 	private AdministrativeDepartment administrativeDepartment;
 
-	private String name;
-
-	private String shortname;
-
-	private String iconFileName;
-
 	public AdministrativeDepartmentViewBean() {
 	}
 
-	public AdministrativeDepartmentViewBean(AdministrativeDepartment service) {
+	public AdministrativeDepartmentViewBean(AdministrativeDepartment administrativeDepartment) {
 		this();
-		setAdministrativeDepartment(service);
+		setAdministrativeDepartment(administrativeDepartment);
+	}
+
+	public AdministrativeDepartment getAdministrativeDepartment() {
+		return administrativeDepartment;
+	}
+
+	public void setAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
+		this.administrativeDepartment = administrativeDepartment;
+		super.setDomainBean(administrativeDepartment);
 	}
 
 	@Override
@@ -68,53 +69,6 @@ public class AdministrativeDepartmentViewBean extends AbstractViewBean implement
 	@Override
 	public void setDomainBean(Organisation organisation) {
 		setAdministrativeDepartment((AdministrativeDepartment) organisation);
-	}
-
-	public AdministrativeDepartment getAdministrativeDepartment() {
-		return administrativeDepartment;
-	}
-
-	public void setAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
-		this.administrativeDepartment = administrativeDepartment;
-		setId(administrativeDepartment.getId());
-		setName(administrativeDepartment.getName());
-		setShortname(administrativeDepartment.getShortname());
-		setIconFileName(administrativeDepartment.getIconFileName());
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getShortname() {
-		return shortname;
-	}
-
-	@Override
-	public void setShortname(String shortname) {
-		this.shortname = shortname;
-	}
-
-	@Override
-	public String getIconFileName() {
-		return iconFileName;
-	}
-
-	@Override
-	public void setIconFileName(String iconFileName) {
-		this.iconFileName = iconFileName;
-	}
-
-	@Override
-	public int compareTo(AdministrativeDepartmentViewBean o) {
-		return name.compareTo(o.getName());
 	}
 
 }

@@ -7,6 +7,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:param name="eastPanelSize" value="400"/>
+	<ui:param name="titleNorth" value="#{msg['APPLICATION.TITLE']} - #{msg['APPLICATION.DESCRIPTION']} (#{msg['APPLICATION.VERSION']} #{applicationService.version})" />
 
 <f:view locale="#{sessionController.currentUserLocale}">
 	<h:head>
@@ -22,7 +23,7 @@
 
 	<h:body>
 		<ui:debug hotkey="1" rendered="#{facesContext.application.projectStage == 'Development'}" />
-		
+
 		<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
 			<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
 				type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
@@ -34,7 +35,7 @@
 		<p:layout fullPage="true" id="layoutcontent">
 
 			<!-- Navigation and breadCrumb -->
-			<p:layoutUnit id="layoutNorth" position="north" header="Menu"
+			<p:layoutUnit id="layoutNorth" position="north" header="#{titleNorth}"
 				collapsible="#{northPanelCollapsible}"
 				collapsed="#{northPanelCollapsed}"
 				rendered="#{displayNorth}">

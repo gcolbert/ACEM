@@ -277,6 +277,10 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 				resourceViewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId()));
 
+				if (resourceViewBean.getDomainBean().getOrganisationSupportingResource() != null) {
+					resourceViewBean.setOrganisationSupportingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId()));
+				}
+				
 				for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
 					resourceViewBean.getOrganisationViewingResourceViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
 				}
@@ -419,15 +423,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 		setSelectedResourceViewBean((ResourceViewBean) event.getObject());
 	}
 
-	public void onCreateResource(String newResourceType, OrganisationViewBean newResourceSupportService, String newResourceName, String iconFileName) {
-		logger.debug("onCreateResource, selectedToolCategoryViewBean.name={}", selectedToolCategoryViewBean.getName());
-		logger.debug("onCreateResource, newResourceType={}, newResourceSupportService={}", newResourceType, newResourceSupportService);
-		logger.debug("onCreateResource, newResourceName={}, iconFileName={}", newResourceName, iconFileName);
-		Resource resource = resourcesService.createResource(selectedToolCategoryId, newResourceSupportService.getId(), newResourceType, newResourceName, iconFileName);
+	public void onCreateResource(String newResourceType, OrganisationViewBean newResourceOwnerOrganisation, OrganisationViewBean newResourceSupportOrganisation, String newResourceName, String iconFileName) {
+		Resource resource = resourcesService.createResource(selectedToolCategoryId, newResourceOwnerOrganisation.getId(), newResourceSupportOrganisation.getId(), newResourceType, newResourceName, iconFileName);
 		if (resource != null) {
 			ResourceViewBean resourceViewBean = resourceViewBeanGenerator.getResourceViewBean(resource.getId());
 
 			resourceViewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId()));
+			resourceViewBean.setOrganisationSupportingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId()));
 
 			for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
 				resourceViewBean.getOrganisationViewingResourceViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));

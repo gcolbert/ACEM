@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.services;
 
+import java.util.Collection;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -78,6 +80,11 @@ public class UsersServiceImpl implements UsersService {
 		return personDAO.create(new PersonNode(name, login));
 	}
 
+	@Override
+	public Collection<Person> retrieveAllPersons() {
+		return personDAO.retrieveAll();
+	}
+	
 	@Override
 	public Person retrievePerson(Long id) {
 		return personDAO.retrieveById(id);

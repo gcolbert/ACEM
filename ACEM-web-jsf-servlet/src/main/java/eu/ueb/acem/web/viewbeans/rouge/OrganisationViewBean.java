@@ -26,22 +26,26 @@ import eu.ueb.acem.web.viewbeans.Pickable;
  * @since 2014-02-25
  * 
  */
-public interface OrganisationViewBean extends Pickable {
+public interface OrganisationViewBean extends Pickable, Comparable<OrganisationViewBean> {
 
 	Long getId();
 
 	String getName();
 
 	void setName(String name);
-	
+
 	String getShortname();
 
 	void setShortname(String name);
-	
+
 	String getIconFileName();
-	
+
 	void setIconFileName(String iconFileName);
 	
+	String getContactMode();
+	
+	void setContactMode(String contactMode);
+
 	Organisation getDomainBean();
 
 	void setDomainBean(Organisation organisation);

@@ -32,6 +32,7 @@ Override of Primefaces default css
 
 .ui-breadcrumb {
 	margin:0 0.3em !important;
+	background: url("../resources/images/BandeauNumeriqueAccueil2013.png") no-repeat scroll 100% 100% #03132C;
 }
 
 .ui-layout-north {
