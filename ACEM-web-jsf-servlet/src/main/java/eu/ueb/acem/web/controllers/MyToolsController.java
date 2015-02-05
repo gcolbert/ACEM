@@ -193,20 +193,20 @@ public class MyToolsController extends AbstractContextAwareController implements
 		boolean repeatSelectedCategoryAsVisibleRootNode = false;
 		if (repeatSelectedCategoryAsVisibleRootNode) {
 			if (resourceType.equals("software")) {
-				categoriesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL",null,getCurrentUserLocale()));
+				categoriesTreeBean.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL",null,getCurrentUserLocale()));
 			}
 			else if (resourceType.equals("softwareDocumentation")) {
-				categoriesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL",null,getCurrentUserLocale()));
+				categoriesTreeBean.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL",null,getCurrentUserLocale()));
 			}
 			else if (resourceType.equals("equipment")) {
-				categoriesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL",null,getCurrentUserLocale()));
+				categoriesTreeBean.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL",null,getCurrentUserLocale()));
 			}
 			else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
 				categoriesTreeBean
-						.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL",null,getCurrentUserLocale()));
+						.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_MY_TOOLS.LABEL",null,getCurrentUserLocale()));
 			}
 			else if (resourceType.equals("professionalTraining")) {
-				categoriesTreeBean.addVisibleRoot(msgs.getMessage("RESOURCES.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL",null,getCurrentUserLocale()));
+				categoriesTreeBean.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL",null,getCurrentUserLocale()));
 			}
 			else {
 				logger.error("Unknown resourceType '{}'", resourceType);
@@ -449,14 +449,15 @@ public class MyToolsController extends AbstractContextAwareController implements
 	public void onDeleteSelectedResource() {
 		if (resourcesService.deleteResource(getSelectedResourceViewBean().getDomainBean().getId())) {
 			selectedToolCategoryViewBean.getResourceViewBeans().remove(getSelectedResourceViewBean());
-			MessageDisplayer.showMessageToUserWithSeverityInfo(
-					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+			MessageDisplayer.info(
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 		}
 		else {
-			MessageDisplayer.showMessageToUserWithSeverityError(
-					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("RESOURCES.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS",null,getCurrentUserLocale()));
+			MessageDisplayer.error(
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.TITLE",null,getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS",null,getCurrentUserLocale()),
+					logger);
 		}
 	}
 

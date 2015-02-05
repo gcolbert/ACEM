@@ -59,7 +59,7 @@ public class CommonToolCategoriesController extends AbstractContextAwareControll
 	}
 
 	public void onCreateToolCategory(String name, String description, String iconFileName) {
-		MessageDisplayer.showMessageToUserWithSeverityInfo("onCreateToolCategory", name);
+		MessageDisplayer.info("onCreateToolCategory", name);
 		ResourceCategory toolCategory = resourcesService.createResourceCategory(name, description, iconFileName);
 		ToolCategoryViewBean newToolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
 		allToolCategoryViewBeans.add(newToolCategoryViewBean);
@@ -72,7 +72,7 @@ public class CommonToolCategoriesController extends AbstractContextAwareControll
 			toolCategoryViewBean.getDomainBean().setDescription(toolCategoryViewBean.getDescription());
 			toolCategoryViewBean.getDomainBean().setIconFileName(toolCategoryViewBean.getIconFileName());
 			toolCategoryViewBean.setDomainBean(resourcesService.updateResourceCategory(toolCategoryViewBean.getDomainBean()));
-			MessageDisplayer.showMessageToUserWithSeverityInfo(msgs.getMessage(
+			MessageDisplayer.info(msgs.getMessage(
 					"TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.TITLE", null,
 					getCurrentUserLocale()), msgs.getMessage(
 					"TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.DETAILS", null,
@@ -84,12 +84,12 @@ public class CommonToolCategoriesController extends AbstractContextAwareControll
 		if (toolCategoryViewBean != null) {
 			if (resourcesService.deleteResourceCategory(toolCategoryViewBean.getDomainBean().getId())) {
 				allToolCategoryViewBeans.remove(toolCategoryViewBean);
-				MessageDisplayer.showMessageToUserWithSeverityInfo(
+				MessageDisplayer.info(
 						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
 						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 			}
 			else {
-				MessageDisplayer.showMessageToUserWithSeverityInfo(
+				MessageDisplayer.info(
 						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
 						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()));
 			}

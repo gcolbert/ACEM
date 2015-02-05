@@ -54,13 +54,14 @@ public class FileUploadController extends AbstractContextAwareController {
 	/**
 	 * For logging.
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
 	private DefaultStreamedContent uploadedFile;
 
 	private String uploadedFileName;
 
-	@Value("${upload.localPathToUploadFolder}")
+	@Value("${tmp.path}")
 	private String localPathToUploadFolder;
 
 	public void setLocalPathToUploadFolder(String localPath) {
@@ -71,8 +72,7 @@ public class FileUploadController extends AbstractContextAwareController {
 	}
 
 	public void upload(FileUploadEvent event) {
-		logger.info("upload");
-		MessageDisplayer.showMessageToUserWithSeverityInfo(
+		MessageDisplayer.info(
 				msgs.getMessage("FILEUPLOAD.UPLOAD_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
 				msgs.getMessage("FILEUPLOAD.UPLOAD_SUCCESSFUL.DETAILS", new String[] {event.getFile().getFileName()},
 						getCurrentUserLocale()));
@@ -82,7 +82,6 @@ public class FileUploadController extends AbstractContextAwareController {
 			uploadedFile = new DefaultStreamedContent(new ByteArrayInputStream(Files.readAllBytes(Paths
 					.get(localPathToUploadFolder + event.getFile().getFileName()))));
 			uploadedFileName = event.getFile().getFileName();
-			logger.info("successful");
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -92,7 +91,6 @@ public class FileUploadController extends AbstractContextAwareController {
 	public void copyFile(String fileName, InputStream in) {
 		try {
 			// write the inputStream to a FileOutputStream
-			logger.info("in copyFile, localPathToUploadFolder={}", localPathToUploadFolder);
 			OutputStream out = new FileOutputStream(new File(localPathToUploadFolder + fileName));
 
 			int read = 0;
@@ -105,8 +103,6 @@ public class FileUploadController extends AbstractContextAwareController {
 			in.close();
 			out.flush();
 			out.close();
-
-			System.out.println("New file created!");
 		}
 		catch (IOException e) {
 			System.out.println(e.getMessage());
@@ -122,7 +118,6 @@ public class FileUploadController extends AbstractContextAwareController {
 	}
 
 	public void reset() {
-		logger.info("reset()");
 		uploadedFile = null;
 		uploadedFileName = null;
 	}

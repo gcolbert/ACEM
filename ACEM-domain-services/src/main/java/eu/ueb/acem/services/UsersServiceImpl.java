@@ -66,6 +66,12 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
+	public Person retrievePersonByLogin(String login) {
+		Person person = personDAO.retrieveByLogin(login, false);
+		return person;
+	}
+
+	@Override
 	public Long countTeachers() {
 		return teacherDAO.count();
 	}
@@ -76,8 +82,8 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Person createPerson(String name, String login) {
-		return personDAO.create(new PersonNode(name, login));
+	public Person createPerson(String name, String login, String password) {
+		return personDAO.create(new PersonNode(name, login, password));
 	}
 
 	@Override
@@ -105,8 +111,8 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public Teacher createTeacher(String name, String login) {
-		return teacherDAO.create(new TeacherNode(name, login));
+	public Teacher createTeacher(String name, String login, String password) {
+		return teacherDAO.create(new TeacherNode(name, login, password));
 	}
 
 	@Override

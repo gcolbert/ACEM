@@ -33,6 +33,14 @@
 				styleClass="#{mainMenuController.getMenuitemStyleClass('my-tools')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		</p:submenu>
+		<p:submenu label="#{msg['MENU.ADMIN']}" url="/administration">
+			<p:menuitem value="#{msg['MENU.ADMIN_ORGANISATIONS']}" url="/administration/organisations"
+				styleClass="#{mainMenuController.getMenuitemStyleClass('organisations')}"
+				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+			<p:menuitem value="#{msg['MENU.ADMIN_USERS']}" url="/administration/users"
+				styleClass="#{mainMenuController.getMenuitemStyleClass('users')}"
+				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+		</p:submenu>
 
 		<!-- 
 		<p:menuitem value="#{msg['MENU.MY_TEACHINGS']}" url="/my-teachings"

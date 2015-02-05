@@ -291,7 +291,7 @@
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{myScenariosController.onCreatePedagogicalScenario(input1.value, input2.value)}"
+					action="#{associateBean.onCreatePedagogicalScenario(input1.value, input2.value)}"
 					update="@form :westForm:scenariosDataTable :contentForm :southForm"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateScenario').hide(); }" />
 			</p:dialog>

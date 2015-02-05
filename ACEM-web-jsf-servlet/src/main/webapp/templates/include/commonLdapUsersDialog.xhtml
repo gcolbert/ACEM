@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<!-- Controller associated with this view -->
+	<ui:param name="associateBean" value="#{adminUsersController}" />
+	<ui:param name="formToUpdate" value="#{formToUpdate}" />
+
+	<h:form id="ldapUsersDialogForm">
+		<p:dialog header="#{msg['APPLICATION.BUTTON.LDAPSEARCH']}"
+			modal="true" closable="false" closeOnEscape="true" dynamic="true"
+			widgetVar="dialogLdapSearch" id="idDialogLdapSearch">
+			<p:remoteCommand name="updateDialogMessages"
+				update=":contentForm:messagesDisplayer" />
+			<p:toolbar widgetVar="ldapSearchToolBarNorth"
+				id="ldapSearchToolBarNorth">
+				<f:facet name="left">
+					<p:ajaxStatus id="startAjax">
+						<f:facet name="start">
+							<h:outputText value="#{msg['APPLICATION.MESSAGE.PROCESS']}" />
+						</f:facet>
+					</p:ajaxStatus>
+				</f:facet>
+				<f:facet name="right">
+					<p:inputText style="margin-right:10px" immediate="true"
+						placeholder="#{msg['APPLICATION.TEXT.SEARCH']}"
+						title="#{msg['APPLICATION.HELP.SEARCH']}"
+						value="#{associateBean.searchLdap}"
+						onkeypress="if (event.keyCode == 13){this.onchange(); return false;}">
+						<p:ajax event="change" update="listLdapUsers"
+							oncomplete="updateDialogMessages();" />
+						<p:ajax event="blur" update="listLdapUsers"
+							oncomplete="updateDialogMessages();" />
+					</p:inputText>
+					<p:commandButton title="#{msg['APPLICATION.BUTTON.SEARCH']}"
+						icon="ui-icon-search" process="@this" />
+				</f:facet>
+			</p:toolbar>
+			<p:dataTable id="listLdapUsers" widgetvar="listLdapUsers"
+				var="ldapUserView" value="#{associateBean.ldapUsers}"
+				emptyMessage="#{msg['APPLICATION.MESSAGE.NO_RECORD']}" rows="10"
+				paginator="true" rowIndexVar="rowIndex" lazy="false"
+				paginatorPosition="bottom"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,15,20" selectionMode="single"
+				selection="#{associateBean.selectedLdapUser}"
+				rowKey="#{ldapUserView.id}">
+				<p:ajax event="rowSelect"
+					listener="#{associateBean.onRowSelectLdapUser}"
+					update=":ldapUsersDialogForm:ldapSearchToolBar" />
+				<p:column headerText="#{msg['USER.TEXT.LOGIN']}"
+					style="width:100px">
+					<h:outputText value="#{ldapUserView.id}" />
+				</p:column>
+				<p:column headerText="#{msg['USER.TEXT.FIRSTNAME']}">
+					<h:outputText value="#{ldapUserView.firstName}" />
+				</p:column>
+				<p:column headerText="#{msg['USER.TEXT.LASTNAME']}">
+					<h:outputText value="#{ldapUserView.lastName}" />
+				</p:column>
+				<p:column headerText="#{msg['USER.TEXT.EMAIL']}">
+					<h:outputText value="#{ldapUserView.email}" />
+				</p:column>
+			</p:dataTable>
+			<p:toolbar id="ldapSearchToolBar" style="height: 45px">
+				<f:facet name="right">
+					<p:commandButton value="#{msg['APPLICATION.BUTTON.CANCEL']}"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close"
+						onclick="PF('dialogLdapSearch').hide();" process="@this"
+						update=":contentForm:messagesDisplayer, startAjax" />
+					<p:commandButton value="#{msg['APPLICATION.BUTTON.SELECT']}"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+						actionListener="#{associateBean.addFromLdapAction}"
+						update=":contentForm:messagesDisplayer, startAjax, #{formToUpdate}:usersDataTable"
+						oncomplete="PF('dialogLdapSearch').hide()"
+						disabled="#{!associateBean.existSelectedLdapUser}" process="@this">
+						<p:resetInput target="#{formToUpdate}" />
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+		</p:dialog>
+	</h:form>
+
+</ui:composition>

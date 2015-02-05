@@ -19,6 +19,7 @@
 package eu.ueb.acem.services;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * @author Grégoire Colbert
@@ -29,4 +30,6 @@ public interface ImagesService {
 
 	File getImage(String imageFileName);
 
+	File getImage(Path imageFilePath);
+	
 }

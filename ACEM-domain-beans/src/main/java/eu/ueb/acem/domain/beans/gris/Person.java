@@ -44,6 +44,10 @@ public interface Person extends Serializable, Comparable<Person> {
 
 	void setPassword(String password);
 
+	String getEmail();
+
+	void setEmail(String email);
+	
 	String getLanguage();
 
 	void setLanguage(String language);

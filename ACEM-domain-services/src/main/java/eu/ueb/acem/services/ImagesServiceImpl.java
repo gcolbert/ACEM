@@ -19,7 +19,10 @@
 package eu.ueb.acem.services;
 
 import java.io.File;
+import java.nio.file.Path;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +34,14 @@ import org.springframework.stereotype.Service;
 @Service("imagesService")
 public class ImagesServiceImpl implements ImagesService {
 
-	@Value("${upload.localPathToUploadFolder}")
+	@Value("${images.path}")
 	private String localPathToImagesFolder;
+	
+	private static Logger logger = LoggerFactory.getLogger(ImagesService.class);
 
+	@Override
 	public File getImage(String imageFileName) {
+		logger.info("getImage from String {}", imageFileName);
 		String localPath = localPathToImagesFolder;
 		if (! localPath.endsWith(File.separator)) {
 			localPath += File.separator;
@@ -43,4 +50,11 @@ public class ImagesServiceImpl implements ImagesService {
 		return file;
 	}
 
+	@Override
+	public File getImage(Path imageFilePath) {
+		logger.info("getImage from Path {}", imageFilePath);
+		File file = imageFilePath.toFile();
+		return file;
+	}
+	
 }

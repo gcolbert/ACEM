@@ -23,11 +23,13 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
+import eu.ueb.acem.services.auth.LdapUserService;
 
 /**
  * @author Grégoire Colbert
@@ -48,7 +50,25 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	private static final Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
 
 	@Inject
-	private TeacherDAO enseignantDAO;
+	private TeacherDAO teacherDAO;
+
+	/**
+	 * {@link ldapUserService}.
+	 */
+	@Inject
+	private LdapUserService ldapUserService;
+
+	/**
+	 * The path for the tmp directory
+	 */
+	@Value("${tmp.path}")
+	private String tmpPath;
+
+	/**
+	 * The path for the tmp directory
+	 */
+	@Value("${images.path}")
+	private String imagesPath;
 
 	/**
 	 * Constructor.
@@ -62,14 +82,38 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	}
 
 	@Override
-	public Person getUser(String uid) {
-		Person user = enseignantDAO.retrieveByLogin(uid, true);
+	public Person getUser(String login) {
+		Person user = teacherDAO.retrieveByLogin(login, true);
 		if (user == null) {
-			user = enseignantDAO.create(new TeacherNode(uid, uid));
-			user.setLogin(uid);
+			user = teacherDAO.create(new TeacherNode(login, login, "pass"));
+			user.setLogin(login);
 			user.setLanguage("fr");
 		}
 		return user;
 	}
 
+	/**
+	 * @see eu.ueb.acem.services.DomainService#getLdapUserService()
+	 */
+	@Override
+	public LdapUserService getLdapUserService() {
+		return ldapUserService;
+	}
+
+	/**
+	 * @see eu.ueb.acem.services.DomainService#getTemporaryDirectory()
+	 */
+	@Override
+	public String getTemporaryDirectory() {
+		return this.tmpPath;
+	}
+
+	/**
+	 * @see eu.ueb.acem.services.DomainService#getImagesDirectory()
+	 */
+	@Override
+	public String getImagesDirectory() {
+		return this.imagesPath;
+	}
+	
 }

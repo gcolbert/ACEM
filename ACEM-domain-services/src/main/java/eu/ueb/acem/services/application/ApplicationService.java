@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * A bean to manage ChainEdit Version.
+ * A bean to manage the application version.
  */
 @Service("applicationService")
 public class ApplicationService implements InitializingBean, Serializable {

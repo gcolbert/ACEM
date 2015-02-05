@@ -21,6 +21,8 @@ package eu.ueb.acem.web.controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
@@ -57,7 +59,7 @@ public class ImagesController extends AbstractContextAwareController {
 
 	@Inject
 	private ImagesService imagesService;
-	
+
 	public StreamedContent getImage() throws IOException {
 		FacesContext context = FacesContext.getCurrentInstance();
 
@@ -69,9 +71,15 @@ public class ImagesController extends AbstractContextAwareController {
 		else {
 			// So, browser is requesting the image. Return a real
 			// StreamedContent with the image bytes.
-			String imageFileName = context.getExternalContext().getRequestParameterMap().get("imageFileName");
-			
-			File image = imagesService.getImage(imageFileName);
+			File image = null;
+			if (context.getExternalContext().getRequestParameterMap().get("imageFilePath") != null) {
+				Path imageFilePath = FileSystems.getDefault().getPath(context.getExternalContext().getRequestParameterMap().get("imageFilePath"));
+				image = imagesService.getImage(imageFilePath);
+			}
+			else {
+				String imageFileName = context.getExternalContext().getRequestParameterMap().get("imageFileName");
+				image = imagesService.getImage(imageFileName);
+			}
 			return new DefaultStreamedContent(new FileInputStream(image));
 		}
 	}

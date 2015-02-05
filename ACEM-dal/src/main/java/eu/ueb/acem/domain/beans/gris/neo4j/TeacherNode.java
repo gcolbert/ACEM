@@ -61,8 +61,8 @@ public class TeacherNode extends PersonNode implements Teacher {
 	public TeacherNode() {
 	}
 
-	public TeacherNode(String name, String login) {
-		super(name, login);
+	public TeacherNode(String name, String login, String password) {
+		super(name, login, password);
 	}
 
 	@Override

@@ -63,6 +63,8 @@ public class PersonNode extends AbstractNode implements Person {
 
 	private String password;
 	
+	private String email;
+	
 	private String language;
 
 	private Boolean administrator;
@@ -72,10 +74,11 @@ public class PersonNode extends AbstractNode implements Person {
 		setAdministrator(false);
 	}
 
-	public PersonNode(String name, String login) {
+	public PersonNode(String name, String login, String password) {
 		this();
 		setName(name);
 		setLogin(login);
+		setPassword(password);
 	}
 
 	@Override
@@ -111,6 +114,16 @@ public class PersonNode extends AbstractNode implements Person {
 	@Override
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public String getEmail() {
+		return email;
+	}
+
+	@Override
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	@Override

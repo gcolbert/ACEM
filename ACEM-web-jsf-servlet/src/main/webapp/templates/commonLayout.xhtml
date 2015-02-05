@@ -6,8 +6,9 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:param name="eastPanelSize" value="400"/>
-	<ui:param name="titleNorth" value="#{msg['APPLICATION.TITLE']} - #{msg['APPLICATION.DESCRIPTION']} (#{msg['APPLICATION.VERSION']} #{applicationService.version})" />
+<ui:param name="eastPanelSize" value="400" />
+<ui:param name="titleNorth"
+	value="#{msg['APPLICATION.TITLE']} - #{msg['APPLICATION.DESCRIPTION']} (#{msg['APPLICATION.VERSION']} #{applicationService.version})" />
 
 <f:view locale="#{sessionController.currentUserLocale}">
 	<h:head>
@@ -15,49 +16,47 @@
 			<meta charset="UTF-8" />
 		</f:facet>
 		<title>#{pageTitle}</title>
-		<ui:include src="include/commonHead.xhtml"/>
+		<h:outputScript name="js/navigation.js" target="head" />
+		<h:outputScript name="jsf.js" library="javax.faces" target="head" />
 		<ui:insert name="header">
 		</ui:insert>
-		<ui:include src="include/commonHeadCSS.xhtml" />
 	</h:head>
 
 	<h:body>
-		<ui:debug hotkey="1" rendered="#{facesContext.application.projectStage == 'Development'}" />
+		<f:facet name="last">
+			<h:outputStylesheet library="css" name="primefaces-override.css" />
+			<h:outputStylesheet library="css" name="screen.css" />
+		</f:facet>
 
-		<p:confirmDialog global="true" styleClass="confirmDialog" showEffect="fade">
-			<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
-				type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-			<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
-				type="button" styleClass="ui-confirmdialog-yes"
-				icon="ui-icon-check" />
-		</p:confirmDialog>
- 
+		<ui:debug hotkey="1"
+			rendered="#{facesContext.application.projectStage == 'Development'}" />
+
 		<p:layout fullPage="true" id="layoutcontent">
 
 			<!-- Navigation and breadCrumb -->
-			<p:layoutUnit id="layoutNorth" position="north" header="#{titleNorth}"
-				collapsible="#{northPanelCollapsible}"
-				collapsed="#{northPanelCollapsed}"
-				rendered="#{displayNorth}">
-			<h:form id="northForm">
-				<ui:insert name="header">
-					<ui:include src="include/commonHeader.xhtml">
-					</ui:include>
-				</ui:insert>
-				<ui:insert name="navigation">
-					<ui:include src="include/commonNavigation.xhtml">
-						<ui:param name="titlePageOne" value="#{titlePageOne}" />
-						<ui:param name="titlePageTwo" value="#{titlePageTwo}" />
-						<ui:param name="outcomePageOne" value="#{outcomePageOne}" />
-					</ui:include>
-				</ui:insert>
-			</h:form>
+			<p:layoutUnit id="layoutNorth" position="north"
+				header="#{titleNorth}" collapsible="#{northPanelCollapsible}"
+				collapsed="#{northPanelCollapsed}" rendered="#{displayNorth}">
+				<h:form id="northForm">
+					<ui:insert name="header">
+						<ui:include src="include/commonHeader.xhtml">
+						</ui:include>
+					</ui:insert>
+					<ui:insert name="navigation">
+						<ui:include src="include/commonNavigation.xhtml">
+							<ui:param name="titlePageOne" value="#{titlePageOne}" />
+							<ui:param name="titlePageTwo" value="#{titlePageTwo}" />
+							<ui:param name="outcomePageOne" value="#{outcomePageOne}" />
+						</ui:include>
+					</ui:insert>
+				</h:form>
 			</p:layoutUnit>
 
 			<!-- Footer for validation toolbar -->
-			<p:layoutUnit id="layoutSouth" position="south" header="#{titleSouth}"
-				collapsible="#{southPanelCollapsible}"
-				collapsed="#{southPanelCollapsed}" size="#{empty southPanelSize ? 100 : southPanelSize}"
+			<p:layoutUnit id="layoutSouth" position="south"
+				header="#{titleSouth}" collapsible="#{southPanelCollapsible}"
+				collapsed="#{southPanelCollapsed}"
+				size="#{empty southPanelSize ? 100 : southPanelSize}"
 				resizable="true" rendered="#{displaySouth}">
 				<h:form id="southForm">
 					<ui:insert name="footer"></ui:insert>
@@ -67,8 +66,9 @@
 			<!-- West for detail edition when center needed elements list (see User) -->
 			<p:layoutUnit id="layoutWest" position="west" header="#{titleWest}"
 				collapsible="#{westPanelCollapsible}"
-				collapsed="#{westPanelCollapsed}" size="#{empty westPanelSize ? 400 : westPanelSize}"
-				resizable="true" rendered="#{displayWest}">
+				collapsed="#{westPanelCollapsed}"
+				size="#{empty westPanelSize ? 400 : westPanelSize}" resizable="true"
+				rendered="#{displayWest}">
 				<h:form id="westForm">
 					<ui:insert name="west">
 					</ui:insert>
@@ -77,8 +77,9 @@
 
 			<p:layoutUnit id="layoutEast" position="east" header="#{titleEast}"
 				collapsible="#{eastPanelCollapsible}"
-				collapsed="#{eastPanelCollapsed}" size="#{empty eastPanelSize ? 400 : eastPanelSize}"
-				resizable="true" rendered="#{displayEast}">
+				collapsed="#{eastPanelCollapsed}"
+				size="#{empty eastPanelSize ? 400 : eastPanelSize}" resizable="true"
+				rendered="#{displayEast}">
 				<h:form id="eastForm">
 					<ui:insert name="east">
 					</ui:insert>
@@ -89,8 +90,8 @@
 			<p:layoutUnit id="layoutCenter" position="center"
 				header="#{titleContent}">
 				<h:form id="contentForm">
-					<p:growl id="messagesDisplayer" autoUpdate="true" showSummary="true"
-						showDetail="true" />
+					<p:growl id="messagesDisplayer" autoUpdate="true"
+						showSummary="true" showDetail="true" />
 					<ui:insert name="content">
 						<ui:include src="include/commonContent.xhtml" />
 					</ui:insert>
@@ -100,41 +101,23 @@
 		</p:layout>
 
 		<h:form id="defaultDialogForm">
-			<!-- About dialog -->
-			<p:dialog header="#{msg['NAVIGATION.TEXT.ABOUT']}" draggable="true"
-				modal="true" widgetVar="info" showEffect="fade" hideEffect="fade"
-				width="450">
-				<h:panelGrid columns="1" style="width:100%;text-align:center;">
-					<p:graphicImage value="/resources/images/logo-chainedit.png" />
-				</h:panelGrid>
-				<br />
-				<p:panelGrid columns="1" style="width:100%;text-align:center;">
-					<h:outputText value="#{msg['APPLICATION.TITLE']}"
-						style="font-weight:bold" />
-				</p:panelGrid>
-				<br />
-				<p:panelGrid columns="1" style="width:100%;text-align:center;">
-					<h:outputText value="#{msg['APPLICATION.DESCRIPTION']}" />
-				</p:panelGrid>
-				<br />
-				<p:panelGrid columns="2">
-					<h:outputText value="#{msg['ABOUT.VERSION']} : "
-						style="font-weight:bold" />
-					<h:outputText value="#{applicationService.version}" />
-					<h:outputText value="#{msg['ABOUT.AUTHOR']} : "
-						style="font-weight:bold" />
-					<h:outputText value="#{msg['ABOUT.AUTHOR.NAME']}" />
-					<h:outputText value="#{msg['ABOUT.SOCIETY']} : "
-						style="font-weight:bold" />
-					<h:outputText value="#{msg['ABOUT.SOCIETY.NAME']}" />
-					<h:outputText value="#{msg['ABOUT.SITE']} : "
-						style="font-weight:bold" />
-					<h:outputLink target="_blank" value="#{msg['ABOUT.SITE.NAME']}">#{msg['ABOUT.SITE.NAME']}</h:outputLink>						
-				</p:panelGrid>
-			</p:dialog>
+
+			<!-- Confirm dialog -->
+			<p:confirmDialog global="true" styleClass="confirmDialog"
+				showEffect="fade">
+				<p:commandButton value="#{msg['CONFIRM_DIALOG.NO_LABEL']}"
+					type="button"
+					styleClass="dialogValidationButton ui-confirmdialog-no"
+					icon="ui-icon-close" />
+				<p:commandButton value="#{msg['CONFIRM_DIALOG.YES_LABEL']}"
+					type="button"
+					styleClass="dialogValidationButton ui-confirmdialog-yes"
+					icon="ui-icon-check" />
+			</p:confirmDialog>
 
 			<ui:insert name="defaultDialog">
 				<!-- Default delete dialog can be override (see skinList) -->
+				<!-- 
 				<p:outputPanel deferred="true" rendered="#{displayDialogDelete}">
 					<ui:include src="include/commonDeleteDialog.xhtml">
 						<ui:param name="associateBean" value="#{associateBean}" />
@@ -145,6 +128,7 @@
 						<ui:param name="associateBean" value="#{associateBean}" />
 					</ui:include>
 				</p:outputPanel>
+				 -->
 			</ui:insert>
 
 			<!-- For custom purpose -->
@@ -159,10 +143,11 @@
 				<ui:insert name="customDialogOutForm" />
 			</p:outputPanel>
 		</h:form>
-		<p:outputPanel id="customDialogPanelOutFormWithoutForm" deferred="true">
+		<p:outputPanel id="customDialogPanelOutFormWithoutForm"
+			deferred="true">
 			<ui:insert name="customDialogOutFormWithoutForm" />
 		</p:outputPanel>
-		
+
 	</h:body>
 </f:view>
 </html>

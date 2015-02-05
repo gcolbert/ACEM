@@ -18,18 +18,9 @@
 
  	<context:component-scan base-package="eu.ueb.acem.web"/>
 
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:/properties/defaults.properties</value>
-				<value>classpath:/properties/config.properties</value>
-			</list>
-		</property>
-	</bean>
-
 	<import resource="cache/cache.xml"/>
 	<import resource="i18n/i18n.xml" />
+	<import resource="ldap/ldap.xml" />
 
 	<!-- Enables the @Scope("view") for Spring's components and controllers -->
 	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
@@ -40,6 +31,16 @@
 	            </entry>
 	        </map>
 	    </property>
+	</bean>
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/properties/defaults.properties</value>
+				<value>classpath:/properties/config.properties</value>
+			</list>
+		</property>
 	</bean>
 
 </beans>

@@ -10,6 +10,13 @@ html {
 	font-family: "lucida grande",tahoma,lucide,Arial,sans-serif;
 }
 
+.ui-layout-north > .ui-widget-header:first-of-type,
+.ui-layout-south > .ui-widget-header:first-of-type,
+.ui-layout-center > .ui-widget-header:first-of-type {
+	background: url("../resources/images/BandeauNumeriqueAccueil2013.png") no-repeat scroll 100% 100% #03132C;
+}
+
+/*
 .app-header {
 	color:white;
 	background-image:url("../resources/images/BandeauNumeriqueAccueil2013.png");
@@ -55,7 +62,7 @@ html {
 	float: right;
 	font-weight: bold;
 }
-
+*/
 .section-title {
 	font-weight:bold;
 	color:#2B558B;
@@ -68,10 +75,6 @@ html {
 /***********/
 .dialogValidationButton {
 	float: right;
-}
-
-.confirmDialog {
-	text-align: right !important;
 }
 
 /********/
@@ -134,7 +137,7 @@ html {
 }
 
 .pedagogicalAdviceTree {
-	width:100% !important; /* The pedagogical tree must fill its container horizontally */
+	width:100%; /* The pedagogical tree must fill its container horizontally */
 	box-sizing: border-box;
 	border:0;
 }
@@ -148,11 +151,11 @@ html {
 /****************/
 .userScenariosPanel .ui-widget-content[role=row],
 .userScenariosPanel .ui-panelgrid-cell[role=gridcell] {
-	border:0 !important;  /* The panel grid containing the list of all scenarios and create/delete buttons should not have any border */
+	border:0;  /* The panel grid containing the list of all scenarios and create/delete buttons should not have any border */
 }
 
-.userScenariosScrollPanelColumn {
-	border:0 !important; /* The list of all scenarios has only one column so the column doesn't need a border */
+.ui-datatable tbody td.userScenariosScrollPanelColumn {
+	border:0; /* The list of all scenarios has only one column so the column doesn't need a border */
 }
 
 .selectedScenarioPanel {
@@ -161,17 +164,7 @@ html {
 
 .selectedScenarioPropertiesPanelGrid .ui-widget-content,
 .selectedScenarioPropertiesPanelGrid .ui-panelgrid-cell {
-	border:0 !important; /* The panel grid containing the selected scenario properties should not have any border */
-}
-
-.selectedScenarioActivitiesDataTable {
-}
-
-.selectedScenarioActivitiesDataTable .ui-datatable-header {
-	text-align:left !important; /* The header of the activities datatable must be aligned left */
-}
-
-.selectedScenarioEvaluationModesPanel {
+	border:0; /* The panel grid containing the selected scenario properties should not have any border */
 }
 
 /************/
@@ -266,7 +259,7 @@ html {
 	border:0;	
 }
 .resourcesDataTableActionsPanel .ui-panel-content {
-	padding-left:0 !important;
+	padding-left:0;
 }
 
 .bottomToolboxPanel {
@@ -325,4 +318,8 @@ html {
 }
 .organisationPanelGrid .ui-panelgrid-cell:first-of-type {
 	vertical-align:middle;
+}
+
+.iconPanel {
+	border:0;
 }

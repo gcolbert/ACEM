@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans default-lazy-init="true"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:ldap="http://www.springframework.org/schema/ldap"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/ldap http://www.springframework.org/schema/ldap/spring-ldap.xsd">
+
+	<!-- /properties/ldap/ldap.xml The configuration file for domain services. 
+		This file is referenced by /properties/applicationContext.xml. -->
+
+	<bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+		<property name="url" value="${ldap.url}" />
+		<property name="base" value="${ldap.base}" />
+		<property name="userDn" value="${ldap.userName}" />
+		<property name="password" value="${ldap.password}" />
+		<property name="baseEnvironmentProperties">
+			<map>
+				<entry key="com.sun.jndi.ldap.connect.timeout" value="${ldap.connectTimeout}" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+		<constructor-arg ref="contextSource" />
+	</bean>
+
+	<bean id="ldapUserService" class="eu.ueb.acem.services.auth.LdapUserService">
+
+		<property name="ldapTemplate" ref="ldapTemplate" />
+		<property name="searchAttribute" value="${ldap.searchAttribute}" />
+		<property name="uidAttribute" value="${ldap.uidAttribute}" />
+		<property name="nameAttribute" value="${ldap.nameAttribute}" />
+		<property name="givenNameAttribute" value="${ldap.givenNameAttribute}" />
+		<property name="emailAttribute" value="${ldap.emailAttribute}" />
+		<property name="objectclass" value="${ldap.objectclass}" />
+
+	</bean>
+
+</beans>

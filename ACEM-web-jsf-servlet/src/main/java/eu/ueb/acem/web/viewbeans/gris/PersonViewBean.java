@@ -49,6 +49,10 @@ public class PersonViewBean extends AbstractViewBean implements Serializable, Co
 
 	private String login;
 
+	private String password;
+
+	private String email;
+
 	private String language;
 
 	private Boolean administrator;
@@ -71,6 +75,8 @@ public class PersonViewBean extends AbstractViewBean implements Serializable, Co
 		setId(person.getId());
 		setName(person.getName());
 		setLogin(person.getLogin());
+		setPassword(person.getPassword());
+		setEmail(person.getEmail());
 		setLanguage(person.getLanguage());
 		setAdministrator(person.isAdministrator());
 	}
@@ -95,6 +101,22 @@ public class PersonViewBean extends AbstractViewBean implements Serializable, Co
 		this.login = login;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	public String getLanguage() {
 		return language;
 	}

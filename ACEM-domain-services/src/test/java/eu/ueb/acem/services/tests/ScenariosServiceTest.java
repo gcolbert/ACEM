@@ -49,7 +49,7 @@ public class ScenariosServiceTest extends TestCase {
 	public final void t01_TestGetScenariosWithAuthor() {
 		Institution institution = organisationsService.createInstitution("University of Music", "UoM", null);
 		
-		Teacher teacher = usersService.createTeacher("Grégoire COLBERT", "gcolbert");
+		Teacher teacher = usersService.createTeacher("Grégoire COLBERT", "gcolbert", "pass");
 		teacher.getWorksForOrganisations().add(institution);
 		teacher = usersService.updateTeacher(teacher);
 

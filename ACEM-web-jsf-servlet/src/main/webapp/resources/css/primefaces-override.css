@@ -2,7 +2,9 @@
 Override of Primefaces default css
 --------------------------------------------------------------*/
 .ui-button {
-	margin:0.5em 0;
+	margin-right:0.5em;
+	margin-top:0.5em;
+	margin-bottom:0.5em;
 }
 .ui-tabs .ui-tabs-nav {
 	background:#E6E1E0;
@@ -14,7 +16,7 @@ Override of Primefaces default css
 
 .ui-menu .ui-menuitem {
 	background-color:#878786;
-	margin-right:0.3em !important;
+	margin-right:0.3em;
 }
 .ui-menu .ui-menuitem .ui-menuitem-text {
 	color:white;
@@ -31,20 +33,19 @@ Override of Primefaces default css
 }
 
 .ui-breadcrumb {
-	margin:0 0.3em !important;
-	background: url("../resources/images/BandeauNumeriqueAccueil2013.png") no-repeat scroll 100% 100% #03132C;
+	margin:0 0.3em;
 }
 
 .ui-layout-north {
 	z-index:20 !important;        /* Let menu be visible over content layout */
-	overflow:visible !important;  /* Let menu be visible over content layout */
+	overflow:visible;             /* Let menu be visible over content layout */
 	border: none;                 /* Remove the border for north layout (top) */
-	padding:0 !important;         /* Remove the padding for north layout (top) */
+	padding:0;                    /* Remove the padding for north layout (top) */
 }
 
 .ui-layout-north .ui-layout-unit-content {
-	overflow:visible !important;  /* Let menu be visible over content layout */
-	padding:0 !important;		  /* North layout should not have any padding */
+	overflow:visible;             /* Let menu be visible over content layout */
+	padding:0; 	                  /* North layout should not have any padding */
 }
 
 .ui-layout-south {
@@ -52,7 +53,7 @@ Override of Primefaces default css
 }
 
 .centeredColumn {
-	text-align:center !important;
+	text-align:center;
 }
 
 .ce-panelColumns td {
@@ -72,9 +73,9 @@ Override of Primefaces default css
 	background-position:0px -16px; /* For south collapsed layout units : show a up arrow to expand */
 }
 
-.ui-chkbox-box,
-.ui-radiobutton-box {
-	border:1px solid black !important; /* Increase the border on checkboxes */
+.ui-chkbox-box.ui-state-default,
+.ui-radiobutton-box.ui-state-default {
+	border:1px solid black; /* Darken the border on checkbox and radiobutton */
 }
 
 .ui-datatable th[role=columnheader]{
@@ -82,7 +83,7 @@ Override of Primefaces default css
 }
 
 .ui-editor {
-	height:100% !important;
+	height:100%;
 	box-sizing:border-box;
 }
 .ui-editor iframe {
@@ -90,14 +91,17 @@ Override of Primefaces default css
 	box-sizing:border-box;
 }
 
-.notSelectableTree .ui-treenode-label,
-.notSelectableTree .ui-treenode-icon {
-	cursor:default !important; /* The cursor should be a plain arrow if the treenodes are not selectable */
+.notSelectableTree.ui-tree .ui-tree-selectable .ui-treenode-label,
+.notSelectableTree.ui-tree .ui-tree-selectable .ui-treenode-icon {
+	cursor:default; /* The cursor should be a plain arrow if the treenodes are not selectable */
 }
 
 .ui-accordion .ui-accordion-header {
-	margin:0.5em 0 0 0 !important;
+	margin:0.5em 0 0 0;
+}
+.ui-accordion .ui-accordion-header:first-of-type {
+	margin:0 0 0 0;
 }
 .ui-accordion .ui-accordion-content {
-	padding:0 !important; /* Primefaces 5.1 sets a quite large padding for the content of accordions */
+	padding:0; /* Primefaces 5.1 sets a quite large padding for the content of accordions */
 }

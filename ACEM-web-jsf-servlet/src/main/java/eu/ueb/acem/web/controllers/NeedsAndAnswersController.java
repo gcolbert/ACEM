@@ -205,20 +205,21 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 					setSelectedNode(null);
 				}
 				else {
-					MessageDisplayer.showMessageToUserWithSeverityError(msgs.getMessage(
+					MessageDisplayer.error(msgs.getMessage(
 							"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE", null,
 							getCurrentUserLocale()), msgs.getMessage(
 							"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS", null,
-							getCurrentUserLocale()));
+							getCurrentUserLocale()), logger);
 					logger.info("The service failed to delete the node.");
 				}
 			}
 			else {
-				MessageDisplayer.showMessageToUserWithSeverityError(msgs.getMessage(
+				MessageDisplayer.error(msgs.getMessage(
 						"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE", null,
 						getCurrentUserLocale()), msgs.getMessage(
 						"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS", null,
-						getCurrentUserLocale()));
+						getCurrentUserLocale()),
+						logger);
 				logger.info("The selected node has children, cannot delete!");
 			}
 		}
@@ -302,20 +303,20 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 					((DefaultTreeNode)((TreeNodeData)dragNode.getData()).getParentBackup()).setType(getTreeNodeType_NEED_LEAF());
 				}
 
-				MessageDisplayer.showMessageToUserWithSeverityInfo("Dragged " + dragNodeData, "Dropped on " + dropNodeData
+				MessageDisplayer.info("Dragged " + dragNodeData, "Dropped on " + dropNodeData
 						+ " at " + dropIndex);
 			}
 			else if (dropNode.getType().equals("default")) {
 				revertDragDrop = true;
-				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical answer on the root node.");
+				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical answer on the root node.", logger);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())) {
 				revertDragDrop = true;
-				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical answer on a pedagogical need that already has needs as children.");
+				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical answer on a pedagogical need that already has needs as children.", logger);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 				revertDragDrop = true;
-				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical answer on a pedagogical answer");
+				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical answer on a pedagogical answer", logger);
 			}
 		}
 		else {
@@ -335,16 +336,16 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 					((DefaultTreeNode)((TreeNodeData)dragNode.getData()).getParentBackup()).setType(getTreeNodeType_NEED_LEAF());
 				}
 
-				MessageDisplayer.showMessageToUserWithSeverityInfo("Dragged " + dragNodeData, "Dropped on " + dropNodeData
+				MessageDisplayer.info("Dragged " + dragNodeData, "Dropped on " + dropNodeData
 						+ " at " + dropIndex);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 				revertDragDrop = true;
-				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical need on a pedagogical answer.");
+				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical need on a pedagogical answer.", logger);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())) {
 				revertDragDrop = true;
-				MessageDisplayer.showMessageToUserWithSeverityError("Forbidden", "You cannot drop a pedagogical need on a pedagogical need that has answers as children.");
+				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical need on a pedagogical need that has answers as children.", logger);
 			}
 		}
 

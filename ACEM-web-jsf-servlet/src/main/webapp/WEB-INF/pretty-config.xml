@@ -53,6 +53,16 @@
 		<view-id value="/pages/administration.xhtml" />
 	</url-mapping>
 
+	<url-mapping id="adminOrganisations">
+		<pattern value="/administration/organisations" />
+		<view-id value="/pages/adminOrganisations.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="adminUsers">
+		<pattern value="/administration/users" />
+		<view-id value="/pages/adminUsers.xhtml" />
+	</url-mapping>
+
 	<url-mapping id="timeout">
 		<pattern value="/timeout" />
 		<view-id value="/pages/timeout.xhtml" />

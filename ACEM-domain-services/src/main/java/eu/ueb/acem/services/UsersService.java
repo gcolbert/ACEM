@@ -32,19 +32,21 @@ public interface UsersService {
 
 	Long countPersons();
 	
-	Person createPerson(String name, String login);
+	Person createPerson(String name, String login, String password);
 
 	Collection<Person> retrieveAllPersons();
 	
 	Person retrievePerson(Long id);
-	
+
+	Person retrievePersonByLogin(String login);
+
 	Person updatePerson(Person person);
 
 	Boolean deletePerson(Long id);
 
 	Long countTeachers();
 	
-	Teacher createTeacher(String name, String login);
+	Teacher createTeacher(String name, String login, String password);
 	
 	Teacher retrieveTeacher(Long id);
 	

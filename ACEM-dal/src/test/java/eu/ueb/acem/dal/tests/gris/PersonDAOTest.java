@@ -81,7 +81,7 @@ public class PersonDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t01_TestCreateTeacher() {
 		// We create a new object in the datastore
-		Teacher teacher1 = new TeacherNode("Pr. John Doe", "jdoe");
+		Teacher teacher1 = new TeacherNode("Pr. John Doe", "jdoe", "pass");
 
 		// We create our object
 		teacher1 = teacherDAO.create(teacher1);
@@ -102,7 +102,7 @@ public class PersonDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t02_TestRetrieveByLogin() {
 		// We create a new object in the datastore
-		Person person1 = new PersonNode("Grégoire Colbert", "gcolbert");
+		Person person1 = new PersonNode("Grégoire Colbert", "gcolbert", "pass");
 		person1.setAdministrator(true);
 
 		// We save our object

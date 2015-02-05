@@ -26,26 +26,30 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.ldap.LdapUser;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.UsersService;
+import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
-@Controller("usersController")
+@Controller("adminUsersController")
 @Scope("view")
-public class UsersController extends AbstractContextAwareController {
+public class AdminUsersController extends AbstractContextAwareController implements PageController {
 
 	/**
 	 * For serialization.
@@ -55,7 +59,7 @@ public class UsersController extends AbstractContextAwareController {
 	/**
 	 * For logging.
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminUsersController.class);
 
 	private PersonViewBean selectedUserViewBean;
 
@@ -73,7 +77,54 @@ public class UsersController extends AbstractContextAwareController {
 
 	private List<PersonViewBean> personViewBeans;
 
-	public UsersController() {
+	@Override
+	public String getPageTitle() {
+		return msgs.getMessage(
+				"ADMINISTRATION.USERS.HEADER", null,
+				getCurrentUserLocale());
+	}
+
+	/*************** LDAP ********************/
+	/**
+	 * True if ldap search is active
+	 */
+	@Value("${ldap.search}")
+	private boolean existldapSearch;
+
+	/**
+	 * String for LDAP search
+	 */
+	private String searchLdap;
+
+	/**
+	 * The result of the search, as a list of LdapUser.
+	 */
+	private List<LdapUser> ldapUsers;
+
+	/**
+	 * The selected User in the List
+	 */
+	private LdapUser selectedLdapUser;
+
+	/**
+	 * The LDAP attribute that contains the name.
+	 */
+	@Value("${ldap.nameAttribute}")
+	private String nameLdapAttribute;
+
+	/**
+	 * The LDAP attribute that contains the lastname.
+	 */
+	@Value("${ldap.givenNameAttribute}")
+	private String lastNameLdapAttribute;
+
+	/**
+	 * The LDAP attribute that contains the mail.
+	 */
+	@Value("${ldap.emailAttribute}")
+	private String mailLdapAttribute;
+	
+	public AdminUsersController() {
 		personViewBeans = new ArrayList<PersonViewBean>();
 	}
 
@@ -134,12 +185,11 @@ public class UsersController extends AbstractContextAwareController {
 	}
 
 	public void setAdministrator(PersonViewBean personViewBean) {
-		logger.debug("setAdministrator({},{})", personViewBean.getAdministrator(), personViewBean.getDomainBean().isAdministrator());
 		personViewBean.getDomainBean().setAdministrator(personViewBean.getAdministrator());
 		personViewBean.setDomainBean(usersService.updatePerson(personViewBean.getDomainBean()));
 		try {
+			// if the modified personViewBean is the currentUserViewBean, we update currentUserViewBean too
 			if (getSessionController().getCurrentUserViewBean().equals(personViewBean)) {
-				logger.info("personViewBean is the currentUserViewBean");
 				getSessionController().getCurrentUserViewBean().setAdministrator(personViewBean.getAdministrator());
 			}
 		}
@@ -208,5 +258,120 @@ public class UsersController extends AbstractContextAwareController {
 		}
 		return false;
 	}
+	
+	/************************************************* LDAP *******************************************/
+	/**
+	 * True if a user is selected in the list of LDAP users
+	 * 
+	 * @return true/false
+	 */
+	public boolean isExistSelectedLdapUser() {
+		boolean r = false;
+		if (this.selectedLdapUser != null) {
+			r = true;
+		}
+		return r;
+	}
+
+	/**
+	 * List of users from LDAP for user selection
+	 * 
+	 * @return the list of users
+	 */
+	public List<LdapUser> getLdapUsers() {
+		if (ldapUsers == null) {
+			this.ldapUsers = new ArrayList<LdapUser>();
+			if (searchLdap != null && searchLdap.trim().length() > 2) {
+				try{
+					this.ldapUsers = getDomainService().getLdapUserService().findAllByCnAndUid(searchLdap);
+				}
+				catch(Exception e){
+					MessageDisplayer.error(e, msgs, getCurrentUserLocale(), logger);
+				}
+			}
+		}
+		return this.ldapUsers;
+	}
+
+	/**
+	 * Set the list of LDAP users
+	 * 
+	 * @param list
+	 *            The list of LDAP users
+	 */
+	public void setLdapUser(List<LdapUser> list) {
+		this.ldapUsers = list;
+	}
+
+	/**
+	 * @return the string to search in LDAP
+	 */
+	public String getSearchLdap() {
+		return searchLdap;
+	}
+
+	/**
+	 * @param searchLdap
+	 *            the string to search in LDAP
+	 */
+	public void setSearchLdap(String searchLdap) {
+		this.searchLdap = searchLdap;
+		this.ldapUsers = null;
+	}
+
+	/**
+	 * Get the selected LDAP user
+	 * 
+	 * @return The selected LDAP user
+	 */
+	public LdapUser getSelectedLdapUser() {
+		return selectedLdapUser;
+	}
+
+	/**
+	 * Set the selected LDAP user
+	 * 
+	 * @param selectedLdapUser
+	 *            The LDAP user to set
+	 */
+	public void setSelectedLdapUser(LdapUser selectedLdapUser) {
+		this.selectedLdapUser = selectedLdapUser;
+	}
+
+	/**
+	 * Add a selected LDAP User
+	 */
+	public void addFromLdapAction() {
+		if (selectedLdapUser != null) {
+			Person person = usersService.retrievePersonByLogin(selectedLdapUser.getId());
+			if (person == null) {
+				Teacher teacher = usersService.createTeacher(selectedLdapUser.getFirstName()+" "+selectedLdapUser.getLastName(), selectedLdapUser.getId(), "pass");
+				teacher.setEmail(selectedLdapUser.getEmail());
+				PersonViewBean personViewBean = new PersonViewBean(teacher);
+				personViewBeans.add(personViewBean);
+				Collections.sort(personViewBeans);
+			}
+			else {
+				for (PersonViewBean personViewBean : personViewBeans) {
+					if (personViewBean.getId().equals(person.getId())) {
+						person.setName(selectedLdapUser.getFirstName()+" "+selectedLdapUser.getLastName());
+						person.setEmail(selectedLdapUser.getEmail());
+						personViewBean.setDomainBean(person);
+					}
+				}
+			}
+		}
+		logger.debug("AdminUserController addFromLdapAction ");
+	}
+
+	/**
+	 * Get the selected LDAP user for toolbar update
+	 * 
+	 * @param event
+	 */
+	public void onRowSelectLdapUser(SelectEvent event) {
+		this.selectedLdapUser = (LdapUser) event.getObject();
+	}
+	
 	
 }

@@ -206,7 +206,7 @@
 				</p:dataTable>
 				<p:commandButton
 					value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATE_TOOL_CATEGORIES_LABEL']}"
-					rendered="#{sessionController.currentUserViewBean.administrator}"
+					rendered="#{associateBean.currentUserViewBean.administrator}"
 					icon="ui-icon-transferthick-e-w"
 					action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedAnswer}"
 					oncomplete="PF('dialogAssociateResourceCategory').show()"

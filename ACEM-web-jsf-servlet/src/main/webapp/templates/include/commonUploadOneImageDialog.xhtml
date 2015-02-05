@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<p:dialog header="#{msg['APPLICATION.TEXT.UPLOAD_IMAGE']}" modal="true"
+		closable="true" closeOnEscape="true" dynamic="true"
+		widgetVar="dialogUploadOneImage" id="idDialogUploadOneImage">
+		<p:fileUpload id="fileUploadOne"
+			fileUploadListener="#{associateBean.commonUploadOneDialog.handleFileUpload}"
+			mode="advanced" skinSimple="true" auto="true"
+			oncomplete="PF('dialogUploadOneImage').hide();"
+			update=":contentForm:messagesDisplayer"
+			allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
+			label="#{msg['APPLICATION.BUTTON.CHOOSE']}" />
+		<p:commandButton value="#{msg['APPLICATION.BUTTON.CANCEL']}"
+			styleClass="ui-confirmdialog-no dialogValidationButton" icon="ui-icon-close"
+			actionListener="#{associateBean.commonUploadOneDialog.cancelAction}"
+			oncomplete="PF('dialogUploadOneImage').hide();" process="@this"
+			update=":contentForm:messagesDisplayer" />
+	</p:dialog>
+</ui:composition>

@@ -18,6 +18,11 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,6 +32,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.omnifaces.util.Ajax;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
@@ -34,12 +40,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.rouge.Community;
-import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
-import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.services.OrganisationsService;
+import eu.ueb.acem.services.util.file.FileUtil;
 import eu.ueb.acem.web.utils.MessageDisplayer;
+import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
+import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
@@ -54,14 +63,14 @@ import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
  * @since 2014-02-19
  * 
  */
-@Controller("organisationsController")
+@Controller("adminOrganisationsController")
 @Scope("view")
-public class OrganisationsController extends AbstractContextAwareController {
+public class AdminOrganisationsController extends AbstractContextAwareController implements PageController, CommonUploadOneDialogInterface {
 
 	/**
 	 * For logging.
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(OrganisationsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminOrganisationsController.class);
 
 	/**
 	 * For serialization.
@@ -70,7 +79,7 @@ public class OrganisationsController extends AbstractContextAwareController {
 
 	@Inject
 	private OrganisationsService organisationsService;
-
+	
 	private Map<Long, OrganisationViewBean> organisationViewBeans;
 
 	private SortableTableBean<CommunityViewBean> communityViewBeans;
@@ -92,10 +101,17 @@ public class OrganisationsController extends AbstractContextAwareController {
 	@Inject
 	private PickListBean pickListBean;
 
-	@Inject
-	private FileUploadController fileUploadController;
+	/**
+	 * Dialog for upload of one zip file Selection
+	 */
+	private CommonUploadOneDialog commonUploadOneDialog;
 
-	public OrganisationsController() {
+	/**
+	 * Uploaded file
+	 */
+	private Path temporaryFilePath;
+
+	public AdminOrganisationsController() {
 		communityViewBeans = new SortableTableBean<CommunityViewBean>();
 		institutionViewBeans = new SortableTableBean<InstitutionViewBean>();
 		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
@@ -113,6 +129,8 @@ public class OrganisationsController extends AbstractContextAwareController {
 	public void initOrganisationsController() {
 		logger.debug("initOrganisationsController");
 		try {
+			this.commonUploadOneDialog = new CommonUploadOneDialog(this);
+
 			Collection<Community> communities = organisationsService.retrieveAllCommunities();
 			logger.debug("found {} communities", communities.size());
 			communityViewBeans.getTableEntries().clear();
@@ -163,6 +181,13 @@ public class OrganisationsController extends AbstractContextAwareController {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String getPageTitle() {
+		return msgs.getMessage(
+				"ADMINISTRATION.ORGANISATIONS.HEADER", null,
+				getCurrentUserLocale());
 	}
 
 	public PickListBean getPickListBean() {
@@ -394,7 +419,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 		}
 	}
 
-	public void onCreateCommunity(String name, String shortname, String iconFileName) {
+	public void onCreateCommunity(String name, String shortname) {
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (! iconFileName.trim().isEmpty()) {
+			moveIconToImagesFolder();
+			commonUploadOneDialog.reset();
+		}
 		Community community = organisationsService.createCommunity(name, shortname, iconFileName);
 		CommunityViewBean communityViewBean = new CommunityViewBean(community);
 		communityViewBeans.getTableEntries().add(communityViewBean);
@@ -402,7 +432,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 		organisationViewBeans.put(communityViewBean.getId(), communityViewBean);
 	}
 
-	public void onCreateInstitution(String name, String shortname, String iconFileName) {
+	public void onCreateInstitution(String name, String shortname) {
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (! iconFileName.trim().isEmpty()) {
+			moveIconToImagesFolder();
+			commonUploadOneDialog.reset();
+		}
 		Institution institution = organisationsService.createInstitution(name, shortname, iconFileName);
 		InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
 		institutionViewBeans.getTableEntries().add(institutionViewBean);
@@ -410,7 +445,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 		organisationViewBeans.put(institutionViewBean.getId(), institutionViewBean);
 	}
 
-	public void onCreateTeachingDepartment(String name, String shortname, String iconFileName) {
+	public void onCreateTeachingDepartment(String name, String shortname) {
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (! iconFileName.trim().isEmpty()) {
+			moveIconToImagesFolder();
+			commonUploadOneDialog.reset();
+		}
 		TeachingDepartment teachingDepartment = organisationsService.createTeachingDepartment(name, shortname,
 				iconFileName);
 		TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
@@ -419,7 +459,12 @@ public class OrganisationsController extends AbstractContextAwareController {
 		organisationViewBeans.put(teachingDepartmentViewBean.getId(), teachingDepartmentViewBean);
 	}
 
-	public void onCreateAdministrativeDepartment(String name, String shortname, String iconFileName) {
+	public void onCreateAdministrativeDepartment(String name, String shortname) {
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (! iconFileName.trim().isEmpty()) {
+			moveIconToImagesFolder();
+			commonUploadOneDialog.reset();
+		}
 		AdministrativeDepartment administrativeDepartment = organisationsService.createAdministrativeDepartment(name,
 				shortname, iconFileName);
 		AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
@@ -429,47 +474,78 @@ public class OrganisationsController extends AbstractContextAwareController {
 		organisationViewBeans.put(administrativeDepartmentViewBean.getId(), administrativeDepartmentViewBean);
 	}
 
-	public void onRenameOrganisation() {
+	public void prepareCreation() {
+		currentOrganisationViewBean = null;
+		temporaryFilePath = null;
+		commonUploadOneDialog.reset();
+	}
+
+	public void prepareModification(OrganisationViewBean organisationViewBean) {
+		currentOrganisationViewBean = organisationViewBean;
+		temporaryFilePath = null;
+		commonUploadOneDialog.reset();
+	}
+
+	private void moveIconToImagesFolder() {
+		// We move the file from the temporary folder to the images folder
+		// and give it the originalFileName
+		String destinationFilePath = FileUtil.getNormalizedFilePath(getDomainService().getImagesDirectory()
+				+ File.separator + commonUploadOneDialog.getFileUploadedName());
+		logger.info("destinationFilePath={}",destinationFilePath);
+		if (Files.notExists(Paths.get(destinationFilePath), LinkOption.NOFOLLOW_LINKS)) {
+			FileUtil.renameDirectoryOrFile(temporaryFilePath.toString(), destinationFilePath);
+		}
+		this.temporaryFilePath = null;
+	}
+
+	public void onModifyOrganisation() {
 		currentOrganisationViewBean.getDomainBean().setName(currentOrganisationViewBean.getName());
 		currentOrganisationViewBean.getDomainBean().setShortname(currentOrganisationViewBean.getShortname());
+
+		// TODO check if this can be simplified/refactored
+		if (! commonUploadOneDialog.getFileUploadedName().trim().isEmpty()) {
+			moveIconToImagesFolder();
+			currentOrganisationViewBean.setIconFileName(commonUploadOneDialog.getFileUploadedName());
+			commonUploadOneDialog.reset();
+		}
+
 		currentOrganisationViewBean.getDomainBean().setIconFileName(currentOrganisationViewBean.getIconFileName());
 		currentOrganisationViewBean.setDomainBean(organisationsService.updateOrganisation(currentOrganisationViewBean
 				.getDomainBean()));
-		fileUploadController.reset();
-		MessageDisplayer.showMessageToUserWithSeverityInfo(msgs.getMessage(
-				"ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.RENAME_SUCCESSFUL.TITLE", null,
+		MessageDisplayer.info(msgs.getMessage(
+				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.TITLE", null,
 				getCurrentUserLocale()), msgs.getMessage(
-				"ADMINISTRATION.ORGANISATIONS.RENAME_ORGANISATION_MODAL_WINDOW.RENAME_SUCCESSFUL.DETAILS", null,
+				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.DETAILS", null,
 				getCurrentUserLocale()));
 	}
 
-	public void onDeleteOrganisation() {
-		if (organisationsService.deleteOrganisation(currentOrganisationViewBean.getDomainBean().getId())) {
-			if (currentOrganisationViewBean instanceof CommunityViewBean) {
-				communityViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+	public void onDeleteOrganisation(OrganisationViewBean organisationViewBean) {
+		if (organisationsService.deleteOrganisation(organisationViewBean.getDomainBean().getId())) {
+			if (organisationViewBean instanceof CommunityViewBean) {
+				communityViewBeans.getTableEntries().remove(organisationViewBean);
 			}
-			else if (currentOrganisationViewBean instanceof InstitutionViewBean) {
-				institutionViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+			else if (organisationViewBean instanceof InstitutionViewBean) {
+				institutionViewBeans.getTableEntries().remove(organisationViewBean);
 			}
-			else if (currentOrganisationViewBean instanceof AdministrativeDepartmentViewBean) {
-				administrativeDepartmentViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+			else if (organisationViewBean instanceof AdministrativeDepartmentViewBean) {
+				administrativeDepartmentViewBeans.getTableEntries().remove(organisationViewBean);
 			}
-			else if (currentOrganisationViewBean instanceof TeachingDepartmentViewBean) {
-				teachingDepartmentViewBeans.getTableEntries().remove(currentOrganisationViewBean);
+			else if (organisationViewBean instanceof TeachingDepartmentViewBean) {
+				teachingDepartmentViewBeans.getTableEntries().remove(organisationViewBean);
 			}
-			organisationViewBeans.remove(currentOrganisationViewBean.getId());
-			MessageDisplayer.showMessageToUserWithSeverityInfo(msgs.getMessage(
+			organisationViewBeans.remove(organisationViewBean.getId());
+			MessageDisplayer.info(msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE", null,
 					getCurrentUserLocale()), msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS", null,
 					getCurrentUserLocale()));
 		}
 		else {
-			MessageDisplayer.showMessageToUserWithSeverityError(msgs.getMessage(
+			MessageDisplayer.error(msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.TITLE", null,
 					getCurrentUserLocale()), msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.DETAILS", null,
-					getCurrentUserLocale()));
+					getCurrentUserLocale()), logger);
 		}
 	}
 
@@ -735,6 +811,48 @@ public class OrganisationsController extends AbstractContextAwareController {
 		default:
 			break;
 		}
+	}
+
+	/*
+	 * ****************** Modal dialogs ********************
+	 */
+	/**
+	 * Get the Bean to manage dialog
+	 * 
+	 * @return the bean
+	 */
+	public CommonUploadOneDialog getCommonUploadOneDialog() {
+		return commonUploadOneDialog;
+	}
+
+	public Path getTemporaryFilePath() {
+		return temporaryFilePath;
+	}
+
+	/**
+	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
+	 *      java.lang.String)
+	 */
+	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath,
+			String originalFileName) {
+		// Remove previous file if it exists
+		if (this.temporaryFilePath != null) {
+			File oldFile = temporaryFilePath.toFile();
+			if (oldFile.exists()) {
+				oldFile.delete();
+			}
+		}
+		// Memorize new one
+		this.temporaryFilePath = temporaryFilePath;
+
+		// If null there was an error on file copy
+		if (temporaryFilePath == null) {
+			MessageDisplayer.error(msgs.getMessage(
+					"SERVICE_FILEUTIL_FILE_NOT_CREATED", null,
+					getCurrentUserLocale()), "", logger);
+		}
+
+		Ajax.update("modifyOrganisationForm:icon","createCommunityForm:icon","createInstitutionForm:icon","createAdministrativeDepartmentForm:icon","createTeachingDepartmentForm:icon");
 	}
 
 }

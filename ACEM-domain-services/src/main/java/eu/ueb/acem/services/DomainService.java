@@ -21,6 +21,7 @@ package eu.ueb.acem.services;
 import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.services.auth.LdapUserService;
 
 /**
  * @author Grégoire Colbert
@@ -33,5 +34,17 @@ public interface DomainService extends Serializable {
 	 * @return a user.
 	 */
 	Person getUser(String uid);
+
+	LdapUserService getLdapUserService();
+
+	/**
+	 * @return Path to the temp directory for uploaded files
+	 */
+	String getTemporaryDirectory();
+
+	/**
+	 * @return Path to the images directory
+	 */
+	String getImagesDirectory();
 
 }
