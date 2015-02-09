@@ -132,7 +132,7 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	 * @param imageFileName
 	 */
 	// TODO : move this to services layer?
-	public void moveUploadedIconToImagesFolder(Path temporaryFilePath, String imageFileName) {
+	protected void moveUploadedIconToImagesFolder(Path temporaryFilePath, String imageFileName) {
 		// We move the file from the temporary folder to the images folder,
 		// and give it its original file name
 		String destinationFilePath = FileUtil.getNormalizedFilePath(getDomainService().getImagesDirectory()
@@ -141,5 +141,18 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 			FileUtil.renameDirectoryOrFile(temporaryFilePath.toString(), destinationFilePath);
 		}
 	}
-	
+
+	/**
+	 * Remove temporary file, if it exists.
+	 * @param temporaryFilePath A path to the temporary file to delete.
+	 */
+	protected void deleteTemporaryFileIfExists(Path temporaryFilePath) {
+		if (temporaryFilePath != null) {
+			File oldFile = temporaryFilePath.toFile();
+			if (oldFile.exists()) {
+				oldFile.delete();
+			}
+		}
+	}
+
 }

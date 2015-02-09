@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -672,18 +671,5 @@ public class MyToolsController extends AbstractContextAwareController implements
 		// Remove previous file if it exists
 		deleteTemporaryFileIfExists(this.temporaryFilePath);
     }
-
-	/**
-	 * Remove temporary file, if it exists.
-	 * @param temporaryFilePath A path to the temporary file to delete.
-	 */
-	private void deleteTemporaryFileIfExists(Path temporaryFilePath) {
-		if (temporaryFilePath != null) {
-			File oldFile = temporaryFilePath.toFile();
-			if (oldFile.exists()) {
-				oldFile.delete();
-			}
-		}
-	}
 
 }

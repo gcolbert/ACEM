@@ -32,6 +32,11 @@ Override of Primefaces default css
 	border:0; /* Remove the border for menu bars */
 }
 
+.ui-menubar .ui-menu-child .ui-menuitem-link {
+    box-sizing: border-box;
+    width: 100%; /* By default it is 92% */
+}
+
 .ui-breadcrumb {
 	margin:0 0.3em;
 }
