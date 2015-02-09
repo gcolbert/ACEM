@@ -641,19 +641,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	/**
-	 * Remove previous file if it exists
-	 * @param temporaryFilePath A path to the file.
-	 */
-	private void deleteTemporaryFileIfExists(Path temporaryFilePath) {
-		if (temporaryFilePath != null) {
-			File oldFile = temporaryFilePath.toFile();
-			if (oldFile.exists()) {
-				oldFile.delete();
-			}
-		}
-	}
-
-	/**
 	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
 	 *      java.lang.String)
 	 */
@@ -685,5 +672,18 @@ public class MyToolsController extends AbstractContextAwareController implements
 		// Remove previous file if it exists
 		deleteTemporaryFileIfExists(this.temporaryFilePath);
     }
+
+	/**
+	 * Remove temporary file, if it exists.
+	 * @param temporaryFilePath A path to the temporary file to delete.
+	 */
+	private void deleteTemporaryFileIfExists(Path temporaryFilePath) {
+		if (temporaryFilePath != null) {
+			File oldFile = temporaryFilePath.toFile();
+			if (oldFile.exists()) {
+				oldFile.delete();
+			}
+		}
+	}
 
 }
