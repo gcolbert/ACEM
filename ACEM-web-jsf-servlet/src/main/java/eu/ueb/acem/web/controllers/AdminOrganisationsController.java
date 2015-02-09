@@ -19,10 +19,7 @@
 package eu.ueb.acem.web.controllers;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,6 +30,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.omnifaces.util.Ajax;
+import org.primefaces.event.CloseEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.TransferEvent;
 import org.slf4j.Logger;
@@ -45,7 +43,6 @@ import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.services.OrganisationsService;
-import eu.ueb.acem.services.util.file.FileUtil;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
@@ -422,7 +419,8 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	public void onCreateCommunity(String name, String shortname) {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (! iconFileName.trim().isEmpty()) {
-			moveIconToImagesFolder();
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
 		Community community = organisationsService.createCommunity(name, shortname, iconFileName);
@@ -435,7 +433,8 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	public void onCreateInstitution(String name, String shortname) {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (! iconFileName.trim().isEmpty()) {
-			moveIconToImagesFolder();
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
 		Institution institution = organisationsService.createInstitution(name, shortname, iconFileName);
@@ -448,7 +447,8 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	public void onCreateTeachingDepartment(String name, String shortname) {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (! iconFileName.trim().isEmpty()) {
-			moveIconToImagesFolder();
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
 		TeachingDepartment teachingDepartment = organisationsService.createTeachingDepartment(name, shortname,
@@ -462,7 +462,8 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	public void onCreateAdministrativeDepartment(String name, String shortname) {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (! iconFileName.trim().isEmpty()) {
-			moveIconToImagesFolder();
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
 		AdministrativeDepartment administrativeDepartment = organisationsService.createAdministrativeDepartment(name,
@@ -486,29 +487,19 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 		commonUploadOneDialog.reset();
 	}
 
-	private void moveIconToImagesFolder() {
-		// We move the file from the temporary folder to the images folder
-		// and give it the originalFileName
-		String destinationFilePath = FileUtil.getNormalizedFilePath(getDomainService().getImagesDirectory()
-				+ File.separator + commonUploadOneDialog.getFileUploadedName());
-		logger.info("destinationFilePath={}",destinationFilePath);
-		if (Files.notExists(Paths.get(destinationFilePath), LinkOption.NOFOLLOW_LINKS)) {
-			FileUtil.renameDirectoryOrFile(temporaryFilePath.toString(), destinationFilePath);
-		}
-		this.temporaryFilePath = null;
-	}
-
 	public void onModifyOrganisation() {
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (!iconFileName.trim().isEmpty()) {
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, commonUploadOneDialog.getFileUploadedName());
+			this.temporaryFilePath = null;
+			commonUploadOneDialog.reset();
+			// We set the icon file name inside this block, because if the user
+			// didn't upload any icon, we keep the current icon.
+			currentOrganisationViewBean.setIconFileName(iconFileName);
+		}
+
 		currentOrganisationViewBean.getDomainBean().setName(currentOrganisationViewBean.getName());
 		currentOrganisationViewBean.getDomainBean().setShortname(currentOrganisationViewBean.getShortname());
-
-		// TODO check if this can be simplified/refactored
-		if (! commonUploadOneDialog.getFileUploadedName().trim().isEmpty()) {
-			moveIconToImagesFolder();
-			currentOrganisationViewBean.setIconFileName(commonUploadOneDialog.getFileUploadedName());
-			commonUploadOneDialog.reset();
-		}
-
 		currentOrganisationViewBean.getDomainBean().setIconFileName(currentOrganisationViewBean.getIconFileName());
 		currentOrganisationViewBean.setDomainBean(organisationsService.updateOrganisation(currentOrganisationViewBean
 				.getDomainBean()));
@@ -821,6 +812,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	 * 
 	 * @return the bean
 	 */
+	@Override
 	public CommonUploadOneDialog getCommonUploadOneDialog() {
 		return commonUploadOneDialog;
 	}
@@ -830,18 +822,27 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	}
 
 	/**
-	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
-	 *      java.lang.String)
+	 * Remove previous file if it exists
+	 * @param temporaryFilePath A path to the file.
 	 */
-	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath,
-			String originalFileName) {
-		// Remove previous file if it exists
-		if (this.temporaryFilePath != null) {
+	private void deleteTemporaryFileIfExists(Path temporaryFilePath) {
+		if (temporaryFilePath != null) {
 			File oldFile = temporaryFilePath.toFile();
 			if (oldFile.exists()) {
 				oldFile.delete();
 			}
 		}
+	}
+
+	/**
+	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
+	 *      java.lang.String)
+	 */
+	@Override
+	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath,
+			String originalFileName) {
+		deleteTemporaryFileIfExists(this.temporaryFilePath);
+
 		// Memorize new one
 		this.temporaryFilePath = temporaryFilePath;
 
@@ -852,7 +853,17 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 					getCurrentUserLocale()), "", logger);
 		}
 
-		Ajax.update("modifyOrganisationForm:icon","createCommunityForm:icon","createInstitutionForm:icon","createAdministrativeDepartmentForm:icon","createTeachingDepartmentForm:icon");
+		Ajax.update("modifyOrganisationForm:icon", "createCommunityForm:icon", "createInstitutionForm:icon",
+				"createAdministrativeDepartmentForm:icon", "createTeachingDepartmentForm:icon");
 	}
+
+	/**
+	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#onClose(java.lang.String,
+	 *      java.lang.String)
+	 */
+	@Override
+    public void onClose(CloseEvent event) {
+		deleteTemporaryFileIfExists(this.temporaryFilePath);
+    }
 
 }

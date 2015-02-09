@@ -18,6 +18,12 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.Validate;
@@ -26,6 +32,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.services.util.file.FileUtil;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
@@ -118,4 +125,21 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 		return sessionController;
 	}
 
+	/**
+	 * Moves the image at temporaryFilePath to the images's directory,
+	 * and gives it the name "imageFileName".
+	 * @param temporaryFilePath
+	 * @param imageFileName
+	 */
+	// TODO : move this to services layer?
+	public void moveUploadedIconToImagesFolder(Path temporaryFilePath, String imageFileName) {
+		// We move the file from the temporary folder to the images folder,
+		// and give it its original file name
+		String destinationFilePath = FileUtil.getNormalizedFilePath(getDomainService().getImagesDirectory()
+				+ File.separator + imageFileName);
+		if (Files.notExists(Paths.get(destinationFilePath), LinkOption.NOFOLLOW_LINKS)) {
+			FileUtil.renameDirectoryOrFile(temporaryFilePath.toString(), destinationFilePath);
+		}
+	}
+	
 }

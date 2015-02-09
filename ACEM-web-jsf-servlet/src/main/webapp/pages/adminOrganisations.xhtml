@@ -364,6 +364,7 @@
 			<p:dialog id="idDialogCreateCommunity"
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateCommunity" modal="true" height="auto">
+				<p:ajax event="close" listener="#{associateBean.onClose}" />
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newCommunityName"
 						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.NAME_LABEL']}" />
@@ -411,6 +412,7 @@
 			<p:dialog id="idDialogCreateInstitution"
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateInstitution" modal="true" height="auto">
+				<p:ajax event="close" listener="#{associateBean.onClose}" />
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newInstitutionName"
 						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.NAME_LABEL']}" />
@@ -459,6 +461,7 @@
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateAdministrativeDepartment" modal="true"
 				height="auto">
+				<p:ajax event="close" listener="#{associateBean.onClose}" />
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newAdministrativeDepartmentName"
 						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
@@ -508,6 +511,7 @@
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateTeachingDepartment" modal="true"
 				height="auto">
+				<p:ajax event="close" listener="#{associateBean.onClose}" />
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newTeachingDepartmentName"
 						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
@@ -555,6 +559,7 @@
 			<p:dialog id="idDialogModifyOrganisation"
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogModifyOrganisation" modal="true" height="auto">
+				<p:ajax event="close" listener="#{associateBean.onClose}" />
 				<p:panelGrid columns="3"
 					rendered="#{associateBean.currentOrganisationViewBean != null}">
 					<h:outputLabel for="newName"

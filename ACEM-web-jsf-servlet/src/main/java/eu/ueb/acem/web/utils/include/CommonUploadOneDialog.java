@@ -70,6 +70,7 @@ public class CommonUploadOneDialog implements Serializable {
 	/**
 	 * Bean constructor private to force use of the interface.
 	 */
+	@SuppressWarnings("unused")
 	private CommonUploadOneDialog() {
 		super();
 	}
@@ -140,7 +141,7 @@ public class CommonUploadOneDialog implements Serializable {
 	 * 
 	 */
 	public void cancelAction() {
-		logger.debug("CommonSelectModelDialog cancelAction ");
+		logger.debug("CommonUploadOneDialog cancelAction ");
 	}
 
 }

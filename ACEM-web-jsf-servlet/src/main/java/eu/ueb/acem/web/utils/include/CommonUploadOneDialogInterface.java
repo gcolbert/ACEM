@@ -20,6 +20,8 @@ package eu.ueb.acem.web.utils.include;
 
 import java.nio.file.Path;
 
+import org.primefaces.event.CloseEvent;
+
 import eu.ueb.acem.services.DomainService;
 
 
@@ -50,5 +52,11 @@ public interface CommonUploadOneDialogInterface {
 	 * @return
 	 */
 	public DomainService getDomainService();
+
+	/**
+	 * What should be done when dialog is closed
+	 * @param event
+	 */
+	void onClose(CloseEvent event);
 	
 }

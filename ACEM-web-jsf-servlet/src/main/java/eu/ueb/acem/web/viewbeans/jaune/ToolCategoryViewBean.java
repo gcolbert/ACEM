@@ -104,7 +104,9 @@ public class ToolCategoryViewBean extends AbstractViewBean implements Serializab
 
 	public void setName(String name) {
 		this.name = name;
-		getDomainBean().setName(name);
+		if (getDomainBean() != null) {
+			getDomainBean().setName(name);
+		}
 	}
 
 	public Boolean getFavoriteToolCategory() {
@@ -121,7 +123,9 @@ public class ToolCategoryViewBean extends AbstractViewBean implements Serializab
 
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
-		getDomainBean().setIconFileName(iconFileName);
+		if (getDomainBean() != null) {
+			getDomainBean().setIconFileName(iconFileName);
+		}
 	}
 
 	public String getDescription() {
@@ -130,7 +134,10 @@ public class ToolCategoryViewBean extends AbstractViewBean implements Serializab
 
 	public void setDescription(String description) {
 		this.description = description;
-		getDomainBean().setDescription(description);
+		if (getDomainBean() != null) {
+			getDomainBean().setDescription(description);
+		}
+		
 	}
 
 	@Override

@@ -6,13 +6,13 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<!-- Controller associated with this view -->
-	<ui:param name="associateBean" value="#{commonToolCategoriesController}" />
 	<ui:param name="formToUpdate" value="#{formToUpdate}"/>
 
 	<!-- ********** TOOL CATEGORIES ********************************************************************** -->
 	<p:commandButton
 		value="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_LABEL']}"
 		icon="ui-icon-plusthick"
+		action="#{associateBean.prepareToolCategoryCreation}"
 		update=":createToolCategoryForm:idDialogCreateToolCategory"
 		oncomplete="PF('dialogCreateToolCategory').show()" process="@this">
 		<p:resetInput target=":createToolCategoryForm:idDialogCreateToolCategory" />
@@ -53,7 +53,6 @@
 			<p:commandButton
 				value="#{msg['TOOL_CATEGORIES.DELETE_TOOL_CATEGORY_LABEL']}"
 				icon="ui-icon-trash"
-				actionListener="#{fileUploadController.reset()}"
 				action="#{associateBean.onDeleteToolCategory(toolCategoryViewBean)}"
 				update="#{formToUpdate}:accordionPanelForToolCategories :contentForm:selectedToolCategoryOutputPanel :contentForm:messagesDisplayer"
 				process="@this">

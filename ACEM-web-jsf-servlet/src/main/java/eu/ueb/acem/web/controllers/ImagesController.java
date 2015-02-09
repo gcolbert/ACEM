@@ -21,6 +21,7 @@ package eu.ueb.acem.web.controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
@@ -43,8 +44,8 @@ import eu.ueb.acem.services.ImagesService;
  * 
  */
 @Controller("imagesController")
-@Scope("session")
-public class ImagesController extends AbstractContextAwareController {
+@Scope("singleton")
+public class ImagesController implements Serializable {
 
 	/**
 	 * For serialization.

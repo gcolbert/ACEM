@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,6 +32,8 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 
+import org.omnifaces.util.Ajax;
+import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
@@ -55,6 +59,8 @@ import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
 import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
 import eu.ueb.acem.web.utils.ResourceViewBeanGenerator;
+import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
+import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
@@ -70,7 +76,7 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  */
 @Controller("myToolsController")
 @Scope("view")
-public class MyToolsController extends AbstractContextAwareController implements PageController {
+public class MyToolsController extends AbstractContextAwareController implements PageController, CommonUploadOneDialogInterface {
 
 	/**
 	 * For serialization.
@@ -82,23 +88,28 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(MyToolsController.class);
 
-	@Inject
-	private ResourcesService resourcesService;
-	
+	/* ***********************************************************************/
+
 	@Inject
 	private UsersService usersService;
-	
+
+	/* ***********************************************************************/
+
 	@Inject
 	private ScenariosService scenariosService;
 
-	@Inject
-	private ResourceViewBeanGenerator resourceViewBeanGenerator;
+	/* ***********************************************************************/
 
 	@Inject
 	private OrganisationsService organisationsService;
 	@Inject
 	private OrganisationViewBeanGenerator organisationViewBeanGenerator;
+	/**
+	 * List of all organisations (needed for the admin to associate a resource with an organisation)
+	 */
 	private List<SelectItem> allOrganisationViewBeans;
+
+	/* ***********************************************************************/
 
 	@Inject
 	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
@@ -112,24 +123,47 @@ public class MyToolsController extends AbstractContextAwareController implements
 	private Long selectedToolCategoryId;
 	private ToolCategoryViewBean selectedToolCategoryViewBean;
 
-	private ResourceViewBean selectedResourceViewBean;
+	private List<ToolCategoryViewBean> allToolCategoryViewBeans;
+	private ToolCategoryViewBean objectEdited;
 
+	/* ***********************************************************************/
+
+	@Inject
+	private ResourcesService resourcesService;
+	@Inject
+	private ResourceViewBeanGenerator resourceViewBeanGenerator;
+	private ResourceViewBean selectedResourceViewBean;
 	private static final String[] RESOURCE_TYPES = { "software", "softwareDocumentation", "equipment",
 			"pedagogicalAndDocumentaryResources", "professionalTraining" };
 	private static final String[] RESOURCE_TYPES_I18N_FR = { "Applicatif", "Documentation d'applicatif", "Équipement",
-		"Ressource documentaire et pédagogique", "Formation pour les personnels" };
+			"Ressource documentaire et pédagogique", "Formation pour les personnels" };
 	private static final String[] RESOURCE_TYPES_I18N_EN = { "Software", "Software documentation", "Equipment",
-		"Pedagogical and documentary resource", "Professional training" };
+			"Pedagogical and documentary resource", "Professional training" };
+	
+	/* ***********************************************************************/
+
+	/**
+	 * Dialog for upload of one zip file Selection
+	 */
+	private CommonUploadOneDialog commonUploadOneDialog;
+
+	/**
+	 * Uploaded file
+	 */
+	private Path temporaryFilePath;
+
+	/* ***********************************************************************/
 
 	public MyToolsController() {
 		allOrganisationViewBeans = new ArrayList<SelectItem>();
+		allToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
 
 	@PostConstruct
 	public void init() {
-		logger.info("entering init");
+		this.commonUploadOneDialog = new CommonUploadOneDialog(this);
 		loadAllOrganisationViewBeans();
-		logger.info("leaving init");
+		loadAllToolCategoryViewBeans();
 	}
 
 	@Override
@@ -141,22 +175,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 			sb.append(getSelectedToolCategoryViewBean().getName());
 		}
 		return sb.toString();
-	}
-
-	public String getTreeNodeType_NEED_LEAF() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_LEAF();
-	}
-
-	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS();
-	}
-
-	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS();
-	}
-
-	public String getTreeNodeType_ANSWER_LEAF() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_ANSWER_LEAF();
 	}
 
 	public String getTreeNodeType_CATEGORY() {
@@ -306,14 +324,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 		logger.info("Leaving setSelectedToolCategoryViewBean");
 	}
 
-	public ResourceViewBean getSelectedResourceViewBean() {
-		return selectedResourceViewBean;
-	}
-
-	public void setSelectedResourceViewBean(ResourceViewBean resourceViewBean) {
-		selectedResourceViewBean = resourceViewBean;
-	}
-
 	public TreeNode getCategoriesTreeRoot() {
 		return categoriesTreeBean.getRoot();
 	}
@@ -372,6 +382,221 @@ public class MyToolsController extends AbstractContextAwareController implements
 		allOrganisationViewBeans.add(groupTeachingDepartments);
 	}
 
+	/*
+	 * ****************** Tool categories ********************
+	 */
+	public TreeNode getSelectedNode() {
+		return categoriesTreeSelectedNode;
+	}
+
+	public void setSelectedNode(TreeNode selectedNode) {
+		if (categoriesTreeSelectedNode != null) {
+			categoriesTreeSelectedNode.setSelected(false);
+		}
+		categoriesTreeSelectedNode = selectedNode;
+
+		categoriesTreeBean.expandOnlyOneNode(categoriesTreeSelectedNode);
+
+		if ((categoriesTreeSelectedNode != null)
+				&& (categoriesTreeSelectedNode.getType().equals(getTreeNodeType_CATEGORY()))) {
+			setSelectedToolCategoryId(((TreeNodeData) categoriesTreeSelectedNode.getData()).getId());
+		}
+	}
+
+	public void prepareToolCategoryCreation() {
+		objectEdited = new ToolCategoryViewBean();
+		selectedToolCategoryViewBean = null;
+		temporaryFilePath = null;
+		commonUploadOneDialog.reset();
+	}
+
+	public void prepareToolCategoryModification(ToolCategoryViewBean toolCategoryViewBean) {
+		objectEdited = toolCategoryViewBean;
+		selectedToolCategoryViewBean = toolCategoryViewBean;
+		temporaryFilePath = null;
+		commonUploadOneDialog.reset();
+	}
+
+	public ToolCategoryViewBean getObjectEdited() {
+		return objectEdited;
+	}
+
+	public List<ToolCategoryViewBean> getAllToolCategoryViewBeans() {
+		return allToolCategoryViewBeans;
+	}
+
+	public void loadAllToolCategoryViewBeans() {
+		for (ResourceCategory resourceCategory : resourcesService.retrieveAllCategories()) {
+			allToolCategoryViewBeans.add(new ToolCategoryViewBean(resourceCategory));
+		}
+		Collections.sort(allToolCategoryViewBeans);
+	}
+	
+	public void onCreateToolCategory(String name, String description) {
+		objectEdited.setName(name);
+		objectEdited.setDescription(description);
+
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (! iconFileName.trim().isEmpty()) {
+			moveUploadedIconToImagesFolder(temporaryFilePath, iconFileName);
+			temporaryFilePath = null;
+			commonUploadOneDialog.reset();
+		}
+		objectEdited.setIconFileName(iconFileName);
+
+		MessageDisplayer.info("onCreateToolCategory", name);
+		ResourceCategory toolCategory = resourcesService.createResourceCategory(name, description, iconFileName);
+		ToolCategoryViewBean newToolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
+		allToolCategoryViewBeans.add(newToolCategoryViewBean);
+		Collections.sort(allToolCategoryViewBeans);
+	}
+
+	public void onModifyToolCategory(ToolCategoryViewBean toolCategoryViewBean) {
+		if (toolCategoryViewBean != null) {
+			toolCategoryViewBean.getDomainBean().setName(toolCategoryViewBean.getName());
+			toolCategoryViewBean.getDomainBean().setDescription(toolCategoryViewBean.getDescription());
+			toolCategoryViewBean.getDomainBean().setIconFileName(toolCategoryViewBean.getIconFileName());
+			toolCategoryViewBean.setDomainBean(resourcesService.updateResourceCategory(toolCategoryViewBean.getDomainBean()));
+			MessageDisplayer.info(msgs.getMessage(
+					"TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.TITLE", null,
+					getCurrentUserLocale()), msgs.getMessage(
+					"TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.DETAILS", null,
+					getCurrentUserLocale()));
+		}
+	}
+
+	public void onDeleteToolCategory(ToolCategoryViewBean toolCategoryViewBean) {
+		if (toolCategoryViewBean != null) {
+			if (resourcesService.deleteResourceCategory(toolCategoryViewBean.getDomainBean().getId())) {
+				allToolCategoryViewBeans.remove(toolCategoryViewBean);
+				MessageDisplayer.info(
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+			}
+			else {
+				MessageDisplayer.info(
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()));
+			}
+		}
+	}
+
+	public void toggleFavoriteToolCategoryForCurrentUser(ToolCategoryViewBean toolCategoryViewBean) {
+		if (getCurrentUserViewBean() instanceof TeacherViewBean) {
+			TeacherViewBean currentUserViewBean = (TeacherViewBean)getCurrentUserViewBean();
+			if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
+				if (usersService.removeFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
+					currentUserViewBean.getFavoriteToolCategoryViewBeans().remove(toolCategoryViewBean);
+				}
+			}
+			else {
+				if (usersService.addFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
+					currentUserViewBean.getFavoriteToolCategoryViewBeans().add(toolCategoryViewBean);
+				}
+			}
+		}
+	}
+	
+	/*
+	 * ****************** Resources ********************
+	 */
+	public ResourceViewBean getSelectedResourceViewBean() {
+		return selectedResourceViewBean;
+	}
+
+	public void setSelectedResourceViewBean(ResourceViewBean resourceViewBean) {
+		selectedResourceViewBean = resourceViewBean;
+	}
+	
+	public void prepareResourceCreation() {
+		selectedResourceViewBean = null;
+		temporaryFilePath = null;
+		commonUploadOneDialog.reset();
+	}
+
+	public void prepareResourceModification(ResourceViewBean resourceViewBean) {
+		selectedResourceViewBean = resourceViewBean;
+		temporaryFilePath = null;
+		commonUploadOneDialog.reset();
+	}
+
+	public void onCreateResource(String newResourceType, OrganisationViewBean newResourceOwnerOrganisation, OrganisationViewBean newResourceSupportOrganisation, String newResourceName) {
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (! iconFileName.trim().isEmpty()) {
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			this.temporaryFilePath = null;
+			commonUploadOneDialog.reset();
+		}
+
+		Resource resource = resourcesService.createResource(selectedToolCategoryId, newResourceOwnerOrganisation.getId(), newResourceSupportOrganisation.getId(), newResourceType, newResourceName, iconFileName);
+		if (resource != null) {
+			ResourceViewBean resourceViewBean = resourceViewBeanGenerator.getResourceViewBean(resource.getId());
+
+			resourceViewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId()));
+			resourceViewBean.setOrganisationSupportingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId()));
+
+			for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
+				resourceViewBean.getOrganisationViewingResourceViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
+			}
+
+			selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
+		}
+	}
+
+	public void onModifySelectedResource() {
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (! iconFileName.trim().isEmpty()) {
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			this.temporaryFilePath = null;
+			commonUploadOneDialog.reset();
+			// We set the icon file name inside this block, because if the user
+			// didn't upload any icon, we keep the current icon.
+			selectedResourceViewBean.setIconFileName(iconFileName);
+		}
+		selectedResourceViewBean.setDomainBean(resourcesService.updateResource(selectedResourceViewBean.getDomainBean()));
+		selectedToolCategoryViewBean.getResourceViewBeans().remove(selectedResourceViewBean);
+		selectedToolCategoryViewBean.getResourceViewBeans().add(selectedResourceViewBean);
+	}
+
+	public void onDeleteSelectedResource() {
+		if (resourcesService.deleteResource(getSelectedResourceViewBean().getDomainBean().getId())) {
+			selectedToolCategoryViewBean.getResourceViewBeans().remove(getSelectedResourceViewBean());
+			MessageDisplayer.info(
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+		}
+		else {
+			MessageDisplayer.error(
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.TITLE",null,getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS",null,getCurrentUserLocale()),
+					logger);
+		}
+	}
+
+	public void onToolRowSelect(SelectEvent event) {
+		logger.info("onToolRowSelect");
+		setSelectedResourceViewBean((ResourceViewBean) event.getObject());
+	}
+
+	/*
+	 * ****************** Pedagogical uses of selected tool category ********************
+	 */
+	public String getTreeNodeType_NEED_LEAF() {
+		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_LEAF();
+	}
+
+	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
+		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS();
+	}
+
+	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
+		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS();
+	}
+
+	public String getTreeNodeType_ANSWER_LEAF() {
+		return needsAndAnswersTreeGenerator.getTreeNodeType_ANSWER_LEAF();
+	}
+	
 	public TreeNode getPedagogicalUsesTreeRoot() {
 		if (pedagogicalUsesTreeBean != null) {
 			TreeNode root = pedagogicalUsesTreeBean.getRoot();
@@ -394,87 +619,71 @@ public class MyToolsController extends AbstractContextAwareController implements
 		logger.info("Leaving setPedagogicalUsesTreeRoot");
 	}
 
-	public TreeNode getSelectedNode() {
-		return categoriesTreeSelectedNode;
+	/*
+	 * ****************** Modal dialogs ********************
+	 */
+	/**
+	 * Get the Bean to manage dialog
+	 * 
+	 * @return the bean
+	 */
+	@Override
+	public CommonUploadOneDialog getCommonUploadOneDialog() {
+		return commonUploadOneDialog;
 	}
 
-	public void setSelectedNode(TreeNode selectedNode) {
-		if (categoriesTreeSelectedNode != null) {
-			categoriesTreeSelectedNode.setSelected(false);
-		}
-		categoriesTreeSelectedNode = selectedNode;
-
-		categoriesTreeBean.expandOnlyOneNode(categoriesTreeSelectedNode);
-
-		if ((categoriesTreeSelectedNode != null)
-				&& (categoriesTreeSelectedNode.getType().equals(getTreeNodeType_CATEGORY()))) {
-			setSelectedToolCategoryId(((TreeNodeData) categoriesTreeSelectedNode.getData()).getId());
-		}
+	public Path getTemporaryFilePath() {
+		return temporaryFilePath;
 	}
 
-	public void onSelectedToolCategorySave() {
-		logger.info("onSelectedToolCategorySave");
-		selectedToolCategoryViewBean.setResourceCategory(resourcesService
-				.updateResourceCategory(selectedToolCategoryViewBean.getResourceCategory()));
+	public void setTemporaryFilePath(Path path) {
+		this.temporaryFilePath = path;
 	}
 
-	public void onToolRowSelect(SelectEvent event) {
-		logger.info("onToolRowSelect");
-		setSelectedResourceViewBean((ResourceViewBean) event.getObject());
-	}
-
-	public void onCreateResource(String newResourceType, OrganisationViewBean newResourceOwnerOrganisation, OrganisationViewBean newResourceSupportOrganisation, String newResourceName, String iconFileName) {
-		Resource resource = resourcesService.createResource(selectedToolCategoryId, newResourceOwnerOrganisation.getId(), newResourceSupportOrganisation.getId(), newResourceType, newResourceName, iconFileName);
-		if (resource != null) {
-			ResourceViewBean resourceViewBean = resourceViewBeanGenerator.getResourceViewBean(resource.getId());
-
-			resourceViewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId()));
-			resourceViewBean.setOrganisationSupportingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId()));
-
-			for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
-				resourceViewBean.getOrganisationViewingResourceViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
-			}
-
-			selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
-		}
-	}
-
-	public void onModifySelectedResource(String newIconFileName) {
-		selectedResourceViewBean.setIconFileName(newIconFileName);
-		selectedResourceViewBean.setDomainBean(resourcesService.updateResource(selectedResourceViewBean.getDomainBean()));
-		selectedToolCategoryViewBean.getResourceViewBeans().remove(selectedResourceViewBean);
-		selectedToolCategoryViewBean.getResourceViewBeans().add(selectedResourceViewBean);
-	}
-
-	public void onDeleteSelectedResource() {
-		if (resourcesService.deleteResource(getSelectedResourceViewBean().getDomainBean().getId())) {
-			selectedToolCategoryViewBean.getResourceViewBeans().remove(getSelectedResourceViewBean());
-			MessageDisplayer.info(
-					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
-		}
-		else {
-			MessageDisplayer.error(
-					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS",null,getCurrentUserLocale()),
-					logger);
-		}
-	}
-
-	public void toggleFavoriteToolCategoryForCurrentUser(ToolCategoryViewBean toolCategoryViewBean) {
-		if (getCurrentUserViewBean() instanceof TeacherViewBean) {
-			TeacherViewBean currentUserViewBean = (TeacherViewBean)getCurrentUserViewBean();
-			if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
-				if (usersService.removeFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
-					currentUserViewBean.getFavoriteToolCategoryViewBeans().remove(toolCategoryViewBean);
-				}
-			}
-			else {
-				if (usersService.addFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
-					currentUserViewBean.getFavoriteToolCategoryViewBeans().add(toolCategoryViewBean);
-				}
+	/**
+	 * Remove previous file if it exists
+	 * @param temporaryFilePath A path to the file.
+	 */
+	private void deleteTemporaryFileIfExists(Path temporaryFilePath) {
+		if (temporaryFilePath != null) {
+			File oldFile = temporaryFilePath.toFile();
+			if (oldFile.exists()) {
+				oldFile.delete();
 			}
 		}
 	}
+
+	/**
+	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
+	 *      java.lang.String)
+	 */
+	@Override
+	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath,
+			String originalFileName) {
+		// Remove previous file if it exists
+		deleteTemporaryFileIfExists(this.temporaryFilePath);
+
+		// Memorize new one
+		this.temporaryFilePath = temporaryFilePath;
+
+		// If null there was an error on file copy
+		if (temporaryFilePath == null) {
+			MessageDisplayer.error(msgs.getMessage(
+					"SERVICE_FILEUTIL_FILE_NOT_CREATED", null,
+					getCurrentUserLocale()), "", logger);
+		}
+
+		Ajax.update("createToolCategoryForm:icon", "formCreateResource:icon", "formModifyResource:icon");
+	}
+
+	/**
+	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#onClose(java.lang.String,
+	 *      java.lang.String)
+	 */
+	@Override
+    public void onClose(CloseEvent event) {
+		// Remove previous file if it exists
+		deleteTemporaryFileIfExists(this.temporaryFilePath);
+    }
 
 }

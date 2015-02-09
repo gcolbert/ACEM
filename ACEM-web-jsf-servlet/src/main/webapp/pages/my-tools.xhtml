@@ -146,6 +146,7 @@
 	<ui:define name="east">
 		<ui:include src="/templates/include/commonListAllToolCategories.xhtml">
 			<ui:param name="formToUpdate" value=":eastForm"/>
+			<ui:param name="associateBean" value="#{associateBean}"/>
 		</ui:include>
 	</ui:define>
 
@@ -243,13 +244,14 @@
 					<p:commandButton
 						value="#{msg['MY_TOOLS.CREATE_RESOURCE_LABEL']}"
 						icon="ui-icon-plusthick" update=":formCreateResource:idDialogCreateResource"
-						actionListener="#{fileUploadController.reset()}"
+						action="#{associateBean.prepareResourceCreation}"
 						oncomplete="PF('dialogCreateResource').show()">
 						<p:resetInput target=":formCreateResource:idDialogCreateResource" />
 					</p:commandButton>
 					<p:commandButton id="idModifyToolButton"
 						value="#{msg['MY_TOOLS.MODIFY_RESOURCE_LABEL']}"
 						icon="ui-icon-pencil" update=":formModifyResource:idDialogModifyResource"
+						action="#{associateBean.prepareResourceModification(associateBean.selectedResourceViewBean)}"
 						oncomplete="PF('dialogModifyResource').show()"
 						disabled="#{associateBean.selectedResourceViewBean == null}">
 						<p:resetInput target=":formModifyResource:idDialogModifyResource" />
@@ -334,12 +336,14 @@
 
 		<ui:include src="/templates/include/commonCreateToolCategoryDialog.xhtml">
 			<ui:param name="formToUpdate" value=":eastForm"/>
+			<ui:param name="associateBean" value="#{associateBean}"/>
 		</ui:include>
  
 		<h:form id="formCreateResource">
 			<p:dialog id="idDialogCreateResource"
 				header="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateResource" modal="true" height="auto">
+				<p:ajax event="close" listener="#{associateBean.onClose}" />
 				<p:panelGrid>
 					<p:row>
 						<p:column>
@@ -389,24 +393,28 @@
 						<p:column>
 							<h:outputLabel
 								value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.ICON_LABEL']}"
-								for="iconForTheNewResource" />
+								for="icon" />
 						</p:column>
 						<p:column colspan="2">
-							<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-								sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
-								uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
-								cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
-								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
-								update="iconForTheNewResource :contentForm:messagesDisplayer" />
-							<p:panel id="iconForTheNewResource">
+							<p:panel id="icon" styleClass="iconPanel">
 								<p:graphicImage
-									rendered="#{not empty fileUploadController.uploadedFileName}"
+									rendered="#{(not empty associateBean.selectedResourceViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
 									alt="#{associateBean.selectedResourceViewBean.name}"
 									cache="true" width="200" value="#{imagesController.image}">
 									<f:param name="imageFileName"
-										value="#{fileUploadController.uploadedFileName}" />
+										value="#{associateBean.selectedResourceViewBean.iconFileName}" />
+								</p:graphicImage>
+								<p:graphicImage
+									rendered="#{not empty associateBean.temporaryFilePath}"
+									alt="#{associateBean.selectedResourceViewBean.name}"
+									cache="true" width="200" value="#{imagesController.image}">
+									<f:param name="imageFilePath"
+										value="#{associateBean.temporaryFilePath}" />
 								</p:graphicImage>
 							</p:panel>
+							<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+								icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+								process="@this" />
 						</p:column>
 					</p:row>
 
@@ -463,7 +471,7 @@
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{associateBean.onCreateResource(newResourceType.value, newResourceOwnerOrganisation.value, newResourceSupportOrganisation.value, newResourceName.value, fileUploadController.uploadedFileName)}"
+					action="#{associateBean.onCreateResource(newResourceType.value, newResourceOwnerOrganisation.value, newResourceSupportOrganisation.value, newResourceName.value)}"
 					process="@form" update="@this :contentForm:toolsDataTable :contentForm:messagesDisplayer"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogCreateResource').hide(); }"/>
 			</p:dialog>
@@ -473,6 +481,7 @@
 			<p:dialog id="idDialogModifyResource"
 				header="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogModifyResource" modal="true" height="auto">
+				<p:ajax event="close" listener="#{associateBean.onClose}" />
 				<p:panelGrid
 					rendered="#{associateBean.selectedResourceViewBean != null}">
 					<p:row>
@@ -505,31 +514,28 @@
 						<p:column>
 							<h:outputLabel
 								value="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.ICON_LABEL']}"
-								for="iconForTheExistingResource" />
+								for="icon" />
 						</p:column>
 						<p:column colspan="2">
-							<p:fileUpload fileUploadListener="#{fileUploadController.upload}"
-								sizeLimit="300000" label="#{msg['FILEUPLOAD.CHOOSE_LABEL']}"
-								uploadLabel="#{msg['FILEUPLOAD.UPLOAD_LABEL']}"
-								cancelLabel="#{msg['FILEUPLOAD.CANCEL_LABEL']}" fileLimit="1"
-								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
-								update="iconForTheExistingResource :contentForm:messagesDisplayer" />
-							<p:panel id="iconForTheExistingResource">
+							<p:panel id="icon" styleClass="iconPanel">
 								<p:graphicImage
-									rendered="#{(not empty associateBean.selectedResourceViewBean.iconFileName) and (empty fileUploadController.uploadedFileName)}"
+									rendered="#{(not empty associateBean.selectedResourceViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
 									alt="#{associateBean.selectedResourceViewBean.name}"
 									cache="true" width="200" value="#{imagesController.image}">
 									<f:param name="imageFileName"
 										value="#{associateBean.selectedResourceViewBean.iconFileName}" />
 								</p:graphicImage>
 								<p:graphicImage
-									rendered="#{not empty fileUploadController.uploadedFileName}"
+									rendered="#{not empty associateBean.temporaryFilePath}"
 									alt="#{associateBean.selectedResourceViewBean.name}"
 									cache="true" width="200" value="#{imagesController.image}">
-									<f:param name="imageFileName"
-										value="#{fileUploadController.uploadedFileName}" />
+									<f:param name="imageFilePath"
+										value="#{associateBean.temporaryFilePath}" />
 								</p:graphicImage>
 							</p:panel>
+							<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+								icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+								process="@this" />
 						</p:column>
 					</p:row>
 
@@ -599,7 +605,7 @@
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.VALIDATE']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{associateBean.onModifySelectedResource(fileUploadController.uploadedFileName)}"
+					action="#{associateBean.onModifySelectedResource}"
 					process="@form"
 					update=":contentForm:toolsDataTable :contentForm:messagesDisplayer"
 					oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('dialogModifyResource').hide(); }"/>
@@ -615,4 +621,11 @@
 		</h:form>
 
 	</ui:define>
+
+	<ui:define name="customDialogOutForm">
+		<ui:include src="/templates/include/commonUploadOneImageDialog.xhtml">
+			<ui:param name="associateBean" value="#{associateBean}" />
+		</ui:include>
+	</ui:define>
+
 </ui:composition>
