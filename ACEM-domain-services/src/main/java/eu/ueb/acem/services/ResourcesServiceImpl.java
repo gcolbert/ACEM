@@ -91,19 +91,19 @@ public class ResourcesServiceImpl implements ResourcesService {
 	@Override
 	public Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType) {
 		Set<ResourceCategory> categories = new HashSet<ResourceCategory>();
-		if (resourceType.equals("software")) {
+		if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
 			categories.addAll(softwareDAO.getCategories());
 		}
-		else if (resourceType.equals("softwareDocumentation")) {
+		else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
 			categories.addAll(softwareDocumentationDAO.getCategories());
 		}
-		else if (resourceType.equals("equipment")) {
+		else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
 			categories.addAll(equipmentDAO.getCategories());
 		}
-		else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
+		else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTATION_RESOURCE")) {
 			categories.addAll(pedagogicalAndDocumentaryResourcesDAO.getCategories());
 		}
-		else if (resourceType.equals("professionalTraining")) {
+		else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
 			categories.addAll(professionalTrainingDAO.getCategories());
 		}
 		else {
@@ -118,19 +118,19 @@ public class ResourcesServiceImpl implements ResourcesService {
 		Organisation ownerOrganisation = organisationsService.retrieveOrganisation(ownerOrganisationId, true);
 		if ((ownerOrganisation != null) && (supportOrganisation != null)) {
 			Resource entity = null;
-			if (resourceType.equals("software")) {
+			if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
 				entity = new SoftwareNode(name, iconFileName);
 			}
-			else if (resourceType.equals("softwareDocumentation")) {
+			else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
 				entity = new SoftwareDocumentationNode(name, iconFileName);
 			}
-			else if (resourceType.equals("equipment")) {
+			else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
 				entity = new EquipmentNode(name, iconFileName);
 			}
-			else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
+			else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTATION_RESOURCE")) {
 				entity = new PedagogicalAndDocumentaryResourceNode(name, iconFileName);
 			}
-			else if (resourceType.equals("professionalTraining")) {
+			else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
 				entity = new ProfessionalTrainingNode(name, iconFileName);
 			}
 			else {
@@ -147,19 +147,19 @@ public class ResourcesServiceImpl implements ResourcesService {
 			entity.setOrganisationSupportingResource(supportOrganisation);
 			supportOrganisation = organisationsService.updateOrganisation(supportOrganisation);
 
-			if (resourceType.equals("software")) {
+			if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
 				entity = softwareDAO.create((Software)entity);
 			}
-			else if (resourceType.equals("softwareDocumentation")) {
+			else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
 				entity = softwareDocumentationDAO.create((SoftwareDocumentation)entity);
 			}
-			else if (resourceType.equals("equipment")) {
+			else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
 				entity = equipmentDAO.create((Equipment)entity);
 			}
-			else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
+			else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTATION_RESOURCE")) {
 				entity = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource)entity);
 			}
-			else if (resourceType.equals("professionalTraining")) {
+			else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
 				entity = professionalTrainingDAO.create((ProfessionalTraining)entity);
 			}
 			else {
@@ -249,23 +249,23 @@ public class ResourcesServiceImpl implements ResourcesService {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void saveResourceName(String resourceType, Long id, String label) {
 		Resource entity = null;
-		if (resourceType.equals("software")) {
+		if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
 			entity = softwareDAO.retrieveById(id);
 		}
-		else if (resourceType.equals("softwareDocumentation")) {
+		else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
 			entity = softwareDocumentationDAO.retrieveById(id);
 		}
-		else if (resourceType.equals("equipment")) {
+		else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
 			entity = equipmentDAO.retrieveById(id);
 		}
-		else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
+		else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTATION_RESOURCE")) {
 			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
 		}
-		else if (resourceType.equals("professionalTraining")) {
+		else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
 			entity = professionalTrainingDAO.retrieveById(id);
 		}
 		else {

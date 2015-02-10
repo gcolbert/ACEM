@@ -209,7 +209,7 @@
 								<p:graphicImage rendered="#{not empty toolCategoryViewBean.iconFileName}"
 									styleClass="toolCategoryLogo"
 									alt="#{toolCategoryViewBean.name}" cache="true" width="50"
-									value="#{imagesController.getImage()}">
+									value="#{imagesController.image}">
 									<f:param name="imageFileName"
 										value="#{toolCategoryViewBean.iconFileName}" />
 								</p:graphicImage>
@@ -240,7 +240,7 @@
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-	
+
 				<p:commandButton
 					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.ADD_ACTIVITY_LABEL']}"
 					icon="ui-icon-plusthick"

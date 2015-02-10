@@ -37,11 +37,11 @@ public class ImagesServiceImpl implements ImagesService {
 	@Value("${images.path}")
 	private String localPathToImagesFolder;
 	
+	@SuppressWarnings("unused")
 	private static Logger logger = LoggerFactory.getLogger(ImagesService.class);
 
 	@Override
 	public File getImage(String imageFileName) {
-		logger.info("getImage from String {}", imageFileName);
 		String localPath = localPathToImagesFolder;
 		if (! localPath.endsWith(File.separator)) {
 			localPath += File.separator;
@@ -52,7 +52,6 @@ public class ImagesServiceImpl implements ImagesService {
 
 	@Override
 	public File getImage(Path imageFilePath) {
-		logger.info("getImage from Path {}", imageFilePath);
 		File file = imageFilePath.toFile();
 		return file;
 	}

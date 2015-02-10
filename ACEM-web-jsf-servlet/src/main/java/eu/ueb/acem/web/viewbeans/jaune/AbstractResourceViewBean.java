@@ -121,27 +121,15 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 		this.organisationSupportingResourceViewBean = organisationViewBean;
 		getDomainBean().setOrganisationSupportingResource(organisationViewBean.getDomainBean());
 	}
-	
+
 	@Override
 	public List<OrganisationViewBean> getOrganisationViewingResourceViewBeans() {
 		return organisationsViewingResourceViewBeans;
 	}
 
 	@Override
-	public UseModeViewBean getUseModeViewBean() {
-		// TODO : deal with many use modes for a given resource
-		if (useModeViewBeans.size() > 0) {
-			return useModeViewBeans.get(0);
-		}
-		else {
-			return null;
-		}
-	}
-
-	@Override
-	public void setUseModeViewBean(UseModeViewBean useModeViewBean) {
-		// TODO : deal with many use modes for a given resource
-		this.useModeViewBeans.set(0, useModeViewBean);
+	public void setOrganisationViewingResourceViewBeans(List<OrganisationViewBean> organisationViewBeans) {
+		this.organisationsViewingResourceViewBeans = organisationViewBeans;
 	}
 
 	@Override

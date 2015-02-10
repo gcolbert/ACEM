@@ -125,13 +125,21 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 		return sessionController;
 	}
 
-	/**
-	 * Moves the image at temporaryFilePath to the images's directory,
-	 * and gives it the name "imageFileName".
-	 * @param temporaryFilePath
-	 * @param imageFileName
+	/*
+	 * ***** UTILITIES FOR CONTROLLERS IMPLEMENTING COMMON UPLOAD ONE *****
 	 */
-	// TODO : move this to services layer?
+
+	/**
+	 * Method used in controllers implementing CommonUploadOneDialogInterface,
+	 * to move the image from "temporaryFilePath" to the images's directory, and
+	 * to give it the name "imageFileName", when saving the modified object.
+	 * 
+	 * @param temporaryFilePath
+	 *            a path to the temporary file to move, including filename
+	 * @param imageFileName
+	 *            the filename to give to the file once written in the
+	 *            ImagesDirectory
+	 */
 	protected void moveUploadedIconToImagesFolder(Path temporaryFilePath, String imageFileName) {
 		// We move the file from the temporary folder to the images folder,
 		// and give it its original file name
@@ -143,8 +151,12 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	}
 
 	/**
-	 * Remove temporary file, if it exists.
-	 * @param temporaryFilePath A path to the temporary file to delete.
+	 * Method used in controllers implementing CommonUploadOneDialogInterface,
+	 * to delete the temporary file after the user closes the create/modify
+	 * dialog without saving the modified object.
+	 * 
+	 * @param temporaryFilePath
+	 *            A path (including filename) to the temporary file to delete.
 	 */
 	protected void deleteTemporaryFileIfExists(Path temporaryFilePath) {
 		if (temporaryFilePath != null) {

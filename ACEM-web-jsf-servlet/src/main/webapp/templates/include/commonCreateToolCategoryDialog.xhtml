@@ -15,7 +15,7 @@
 			header="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"
 			widgetVar="dialogCreateToolCategory" modal="true"
 			height="auto">
-			<p:ajax event="close" listener="#{associateBean.onClose}" />
+			<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 			<p:panelGrid columns="3">
 
 				<h:outputLabel for="newToolCategoryName"

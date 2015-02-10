@@ -364,7 +364,7 @@
 			<p:dialog id="idDialogCreateCommunity"
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateCommunity" modal="true" height="auto">
-				<p:ajax event="close" listener="#{associateBean.onClose}" />
+				<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newCommunityName"
 						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_COMMUNITY_MODAL_WINDOW.NAME_LABEL']}" />
@@ -396,6 +396,11 @@
 						<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
 							icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
 							process="@this" />
+						<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+							disabled="#{empty associateBean.temporaryFilePath}"
+							icon="ui-icon-trash" action="#{associateBean.removeIcon(null)}"
+							update="@this icon"
+							process="@this" />
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -412,7 +417,7 @@
 			<p:dialog id="idDialogCreateInstitution"
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateInstitution" modal="true" height="auto">
-				<p:ajax event="close" listener="#{associateBean.onClose}" />
+				<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newInstitutionName"
 						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_INSTITUTION_MODAL_WINDOW.NAME_LABEL']}" />
@@ -444,6 +449,11 @@
 						<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
 							icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
 							process="@this" />
+						<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+							disabled="#{empty associateBean.temporaryFilePath}"
+							icon="ui-icon-trash" action="#{associateBean.removeIcon(null)}"
+							update="@this icon"
+							process="@this" />
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -461,7 +471,7 @@
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateAdministrativeDepartment" modal="true"
 				height="auto">
-				<p:ajax event="close" listener="#{associateBean.onClose}" />
+				<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newAdministrativeDepartmentName"
 						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
@@ -494,6 +504,11 @@
 						<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
 							icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
 							process="@this" />
+						<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+							disabled="#{empty associateBean.temporaryFilePath}"
+							icon="ui-icon-trash" action="#{associateBean.removeIcon(null)}"
+							update="@this icon"
+							process="@this" />
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -511,7 +526,7 @@
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateTeachingDepartment" modal="true"
 				height="auto">
-				<p:ajax event="close" listener="#{associateBean.onClose}" />
+				<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 				<p:panelGrid columns="3">
 					<h:outputLabel for="newTeachingDepartmentName"
 						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_TEACHING_DEPARTMENT_MODAL_WINDOW.NAME_LABEL']}" />
@@ -543,6 +558,11 @@
 						<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
 							icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
 							process="@this" />
+						<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+							disabled="#{empty associateBean.temporaryFilePath}"
+							icon="ui-icon-trash" action="#{associateBean.removeIcon(null)}"
+							update="@this icon"
+							process="@this" />
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -559,7 +579,7 @@
 			<p:dialog id="idDialogModifyOrganisation"
 				header="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogModifyOrganisation" modal="true" height="auto">
-				<p:ajax event="close" listener="#{associateBean.onClose}" />
+				<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 				<p:panelGrid columns="3"
 					rendered="#{associateBean.currentOrganisationViewBean != null}">
 					<h:outputLabel for="newName"
@@ -599,6 +619,11 @@
 						<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
 							icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
 							process="@this" />
+						<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+							disabled="#{(empty associateBean.currentOrganisationViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
+							icon="ui-icon-trash" action="#{associateBean.removeIcon(associateBean.currentOrganisationViewBean)}"
+							update="@this icon"
+							process="@this" />
 					</p:column>
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
@@ -636,7 +661,7 @@
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateCommunity').hide()" update="@none"
-					process="@this idDialogAssociateCommunity" />
+					process="@form" />
 			</p:dialog>
 		</h:form>
 
@@ -666,7 +691,7 @@
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateInstitution').hide()" update="@none"
-					process="@this idDialogAssociateInstitution" />
+					process="@form" />
 			</p:dialog>
 		</h:form>
 
@@ -698,7 +723,7 @@
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateAdministrativeDepartment').hide()"
 					update="@none"
-					process="@this idDialogAssociateAdministrativeDepartment" />
+					process="@form" />
 			</p:dialog>
 		</h:form>
 
@@ -729,7 +754,8 @@
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.CLOSE']}"
 					icon="ui-icon-check"
 					onclick="PF('dialogAssociateTeachingDepartment').hide()"
-					update="@none" process="@this idDialogAssociateTeachingDepartment" />
+					update="@none"
+					process="@form" />
 			</p:dialog>
 		</h:form>
 

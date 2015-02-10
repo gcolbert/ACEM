@@ -58,11 +58,9 @@ public interface ResourceViewBean extends Pickable, Comparable<ResourceViewBean>
 	void setOrganisationSupportingResourceViewBean(OrganisationViewBean organisationViewBean);
 	
 	List<OrganisationViewBean> getOrganisationViewingResourceViewBeans();
+	
+	void setOrganisationViewingResourceViewBeans(List<OrganisationViewBean> organisationViewBeans);
 
-	UseModeViewBean getUseModeViewBean();
-	
-	void setUseModeViewBean(UseModeViewBean useModeViewBean);
-	
 	List<UseModeViewBean> getUseModeViewBeans();
 	
 	void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans);

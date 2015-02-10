@@ -231,30 +231,30 @@
 						</h:link>
 					</p:column>
 					<p:column
-						headerText="Visible par">
+						headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATIONS_HAVING_ACCESS_TO_RESOURCE']}">
 					</p:column>
 					<p:column
-						headerText="Modalité d'utilisation">
+						headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.USE_MODES']}">
 					</p:column>
 					<p:column
-						headerText="Disponibilité">
+						headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.AVAILABILITY']}">
 					</p:column>
 				</p:dataTable>
 				<p:panel styleClass="resourcesDataTableActionsPanel" rendered="#{associateBean.currentUserViewBean.administrator}">
 					<p:commandButton
 						value="#{msg['MY_TOOLS.CREATE_RESOURCE_LABEL']}"
-						icon="ui-icon-plusthick" update=":formCreateResource:idDialogCreateResource"
+						icon="ui-icon-plusthick" update=":createResourceForm:idDialogCreateResource"
 						action="#{associateBean.prepareResourceCreation}"
 						oncomplete="PF('dialogCreateResource').show()">
-						<p:resetInput target=":formCreateResource:idDialogCreateResource" />
+						<p:resetInput target=":createResourceForm:idDialogCreateResource" />
 					</p:commandButton>
 					<p:commandButton id="idModifyToolButton"
 						value="#{msg['MY_TOOLS.MODIFY_RESOURCE_LABEL']}"
-						icon="ui-icon-pencil" update=":formModifyResource:idDialogModifyResource"
+						icon="ui-icon-pencil" update=":modifyResourceForm:idDialogModifyResource"
 						action="#{associateBean.prepareResourceModification(associateBean.selectedResourceViewBean)}"
 						oncomplete="PF('dialogModifyResource').show()"
 						disabled="#{associateBean.selectedResourceViewBean == null}">
-						<p:resetInput target=":formModifyResource:idDialogModifyResource" />
+						<p:resetInput target=":modifyResourceForm:idDialogModifyResource" />
 					</p:commandButton>
 					<p:commandButton id="idDeleteToolButton"
 						disabled="#{associateBean.selectedResourceViewBean == null}"
@@ -339,11 +339,11 @@
 			<ui:param name="associateBean" value="#{associateBean}"/>
 		</ui:include>
  
-		<h:form id="formCreateResource">
+		<h:form id="createResourceForm">
 			<p:dialog id="idDialogCreateResource"
 				header="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateResource" modal="true" height="auto">
-				<p:ajax event="close" listener="#{associateBean.onClose}" />
+				<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 				<p:panelGrid>
 					<p:row>
 						<p:column>
@@ -368,8 +368,8 @@
 								<f:selectItem
 									itemLabel="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.SELECT_TOOL_TYPE']}"
 									itemValue="" itemDisabled="true" noSelectionOption="true" />
-								<f:selectItems
-									value="#{associateBean.allResourceTypes}"/>
+								<f:selectItems value="#{associateBean.allResourceTypes}" var="resourceType"
+									itemValue="#{resourceType}" itemLabel="#{msg[resourceType]}"/>
 							</p:selectOneMenu>
 						</p:column>
 					</p:row>
@@ -391,9 +391,8 @@
 
 					<p:row>
 						<p:column>
-							<h:outputLabel
-								value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.ICON_LABEL']}"
-								for="icon" />
+							<h:outputLabel for="icon"
+								value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.ICON_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
 							<p:panel id="icon" styleClass="iconPanel">
@@ -414,6 +413,11 @@
 							</p:panel>
 							<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
 								icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+								process="@this" />
+							<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+								disabled="#{empty associateBean.temporaryFilePath}"
+								icon="ui-icon-trash" action="#{associateBean.removeIcon(null)}"
+								update="@this icon"
 								process="@this" />
 						</p:column>
 					</p:row>
@@ -477,11 +481,11 @@
 			</p:dialog>
 		</h:form>
 
-		<h:form id="formModifyResource">
+		<h:form id="modifyResourceForm">
 			<p:dialog id="idDialogModifyResource"
 				header="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogModifyResource" modal="true" height="auto">
-				<p:ajax event="close" listener="#{associateBean.onClose}" />
+				<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 				<p:panelGrid
 					rendered="#{associateBean.selectedResourceViewBean != null}">
 					<p:row>
@@ -536,6 +540,11 @@
 							<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
 								icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
 								process="@this" />
+							<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+								disabled="#{(empty associateBean.selectedResourceViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
+								icon="ui-icon-trash" action="#{associateBean.removeIcon(associateBean.selectedResourceViewBean)}"
+								update="@this icon"
+								process="@this" />
 						</p:column>
 					</p:row>
 
@@ -585,20 +594,23 @@
 						</p:column>
 					</p:row>
 
-					<!-- 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="useModeForTheExistingResource"
-								value="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.USE_MODE_LABEL']}" />
+							<h:outputLabel for="useModesForTheExistingResource"
+								value="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.USE_MODES_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<p:editor id="useModeForTheExistingResource"
-									value="#{associateBean.selectedResourceViewBean.useModeViewBean}"
-									controls="bold bullets numbering undo redo link unlink">
-							</p:editor>
+							<p:dataTable id="useModesForTheExistingResource"
+								value="#{associateBean.selectedResourceViewBean.useModeViewBeans}"
+								emptyMessage="#{msg['APPLICATION.MESSAGE.NO_RECORD']}"
+								var="useMode">
+								<p:column
+									headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.USE_MODES']}">
+									<h:outputText value="#{useMode.name}" />
+								</p:column>
+							</p:dataTable>
 						</p:column>
 					</p:row>
-					 -->
 
 				</p:panelGrid>
 
@@ -612,11 +624,18 @@
 			</p:dialog>
 		</h:form>
 
-		<h:form id="formAssociateUseMode">
-			<p:dialog id="dialogAssociateUseModeId"
+		<h:form id="associateUseModesForm">
+			<p:dialog id="idDialogAssociateUseModes"
 				header="#{msg['MY_TOOLS.ASSOCIATE_USE_MODE_MODAL_WINDOW.HEADER']}"
-				widgetVar="dialogAssociateUseMode" modal="true" height="auto">
+				widgetVar="dialogAssociateUseModes" modal="true" height="auto">
 
+				<h:outputLabel
+					value="#{msg['MY_TOOLS.ASSOCIATE_USE_MODE_MODAL_WINDOW.NEW_USE_MODE_LABEL']}"
+					for="newUseMode" />
+				<p:editor id="newUseMode"
+					value="#{associateBean.selectedResourceViewBean.useModeViewBeans}"
+					controls="bold bullets numbering undo redo link unlink">
+				</p:editor>
 			</p:dialog>
 		</h:form>
 

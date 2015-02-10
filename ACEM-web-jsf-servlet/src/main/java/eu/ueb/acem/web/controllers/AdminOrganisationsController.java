@@ -48,6 +48,8 @@ import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
+import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
@@ -816,10 +818,6 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 		return commonUploadOneDialog;
 	}
 
-	public Path getTemporaryFilePath() {
-		return temporaryFilePath;
-	}
-
 	/**
 	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
 	 *      java.lang.String)
@@ -840,16 +838,35 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 		}
 
 		Ajax.update("modifyOrganisationForm:icon", "createCommunityForm:icon", "createInstitutionForm:icon",
-				"createAdministrativeDepartmentForm:icon", "createTeachingDepartmentForm:icon");
+				"createAdministrativeDepartmentForm:icon", "createTeachingDepartmentForm:icon",
+				"modifyOrganisationForm:deleteIconButton", "createCommunityForm:deleteIconButton", "createInstitutionForm:deleteIconButton",
+				"createAdministrativeDepartmentForm:deleteIconButton", "createTeachingDepartmentForm:deleteIconButton");
+	}
+
+	public Path getTemporaryFilePath() {
+		return temporaryFilePath;
+	}
+
+	public void removeIcon(OrganisationViewBean organisationViewBean) {
+		if (organisationViewBean != null) {
+			organisationViewBean.setIconFileName("");
+		}
+		resetTemporaryFilePath();
+	}
+
+	private void resetTemporaryFilePath() {
+		deleteTemporaryFileIfExists(this.temporaryFilePath);
+		this.temporaryFilePath = null;
+		commonUploadOneDialog.reset();
 	}
 
 	/**
-	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#onClose(java.lang.String,
-	 *      java.lang.String)
+	 * Called when the user closes the dialog containing an image uploader.
+	 * @param event
 	 */
-	@Override
-    public void onClose(CloseEvent event) {
-		deleteTemporaryFileIfExists(this.temporaryFilePath);
+	public void onCloseDialogWithUploadedFile(CloseEvent event) {
+		// Remove previously uploaded file if it exists
+    	deleteTemporaryFileIfExists(this.temporaryFilePath);
     }
-	
+
 }

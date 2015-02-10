@@ -45,6 +45,7 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -66,6 +67,7 @@ import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.UseModeViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
@@ -132,17 +134,14 @@ public class MyToolsController extends AbstractContextAwareController implements
 	@Inject
 	private ResourceViewBeanGenerator resourceViewBeanGenerator;
 	private ResourceViewBean selectedResourceViewBean;
-	private static final String[] RESOURCE_TYPES = { "software", "softwareDocumentation", "equipment",
-			"pedagogicalAndDocumentaryResources", "professionalTraining" };
-	private static final String[] RESOURCE_TYPES_I18N_FR = { "Applicatif", "Documentation d'applicatif", "Équipement",
-			"Ressource documentaire et pédagogique", "Formation pour les personnels" };
-	private static final String[] RESOURCE_TYPES_I18N_EN = { "Software", "Software documentation", "Equipment",
-			"Pedagogical and documentary resource", "Professional training" };
+	private static final String[] RESOURCE_TYPES = { "RESOURCE_TYPE_SOFTWARE", "RESOURCE_TYPE_SOFTWARE_DOCUMENTATION",
+			"RESOURCE_TYPE_EQUIPMENT", "RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE",
+			"RESOURCE_TYPE_PROFESSIONAL_TRAINING" };
 	
 	/* ***********************************************************************/
 
 	/**
-	 * Dialog for upload of one zip file Selection
+	 * Dialog for uploading an icon
 	 */
 	private CommonUploadOneDialog commonUploadOneDialog;
 
@@ -182,16 +181,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	public List<String> getAllResourceTypes() {
 		return Arrays.asList(RESOURCE_TYPES);
-	}
-
-	public List<String> getAllResourceTypes_i18n_fr() {
-		logger.info("getAllResourceTypes_i18n_fr");
-		return Arrays.asList(RESOURCE_TYPES_I18N_FR);
-	}
-
-	public List<String> getAllResourceTypes_i18n_en() {
-		logger.info("getAllResourceTypes_i18n_en");
-		return Arrays.asList(RESOURCE_TYPES_I18N_EN);
 	}
 
 	public void prepareToolCategoryTreeForResourceType(String resourceType) {
@@ -297,9 +286,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 				if (resourceViewBean.getDomainBean().getOrganisationSupportingResource() != null) {
 					resourceViewBean.setOrganisationSupportingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId()));
 				}
-				
+
 				for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
 					resourceViewBean.getOrganisationViewingResourceViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
+				}
+
+				for (UseMode useMode : resourceViewBean.getDomainBean().getUseModes()) {
+					resourceViewBean.getUseModeViewBeans().add(new UseModeViewBean(useMode));
 				}
 
 				selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
@@ -430,24 +423,37 @@ public class MyToolsController extends AbstractContextAwareController implements
 		}
 		Collections.sort(allToolCategoryViewBeans);
 	}
-	
+
 	public void onCreateToolCategory(String name, String description) {
 		objectEdited.setName(name);
 		objectEdited.setDescription(description);
 
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (! iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(temporaryFilePath, iconFileName);
-			temporaryFilePath = null;
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
 		objectEdited.setIconFileName(iconFileName);
 
-		MessageDisplayer.info("onCreateToolCategory", name);
 		ResourceCategory toolCategory = resourcesService.createResourceCategory(name, description, iconFileName);
-		ToolCategoryViewBean newToolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
-		allToolCategoryViewBeans.add(newToolCategoryViewBean);
-		Collections.sort(allToolCategoryViewBeans);
+		if (toolCategory != null) {
+			ToolCategoryViewBean newToolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
+			allToolCategoryViewBeans.add(newToolCategoryViewBean);
+			Collections.sort(allToolCategoryViewBeans);
+			MessageDisplayer.info(msgs.getMessage(
+					"TOOL_CATEGORIES.CREATION_SUCCESSFUL.TITLE", null,
+					getCurrentUserLocale()), msgs.getMessage(
+					"TOOL_CATEGORIES.CREATION_SUCCESSFUL.DETAILS", null,
+					getCurrentUserLocale()));
+		}
+		else {
+			MessageDisplayer.info(msgs.getMessage(
+					"TOOL_CATEGORIES.CREATION_FAILURE.TITLE", null,
+					getCurrentUserLocale()), msgs.getMessage(
+					"TOOL_CATEGORIES.CREATION_FAILURE.DETAILS", null,
+					getCurrentUserLocale()));
+		}
 	}
 
 	public void onModifyToolCategory(ToolCategoryViewBean toolCategoryViewBean) {
@@ -495,7 +501,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 			}
 		}
 	}
-	
+
 	/*
 	 * ****************** Resources ********************
 	 */
@@ -506,7 +512,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	public void setSelectedResourceViewBean(ResourceViewBean resourceViewBean) {
 		selectedResourceViewBean = resourceViewBean;
 	}
-	
+
 	public void prepareResourceCreation() {
 		selectedResourceViewBean = null;
 		temporaryFilePath = null;
@@ -631,14 +637,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 		return commonUploadOneDialog;
 	}
 
-	public Path getTemporaryFilePath() {
-		return temporaryFilePath;
-	}
-
-	public void setTemporaryFilePath(Path path) {
-		this.temporaryFilePath = path;
-	}
-
 	/**
 	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
 	 *      java.lang.String)
@@ -646,7 +644,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	@Override
 	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath,
 			String originalFileName) {
-		// Remove previous file if it exists
+		// Remove previously uploaded file if it exists
 		deleteTemporaryFileIfExists(this.temporaryFilePath);
 
 		// Memorize new one
@@ -659,17 +657,42 @@ public class MyToolsController extends AbstractContextAwareController implements
 					getCurrentUserLocale()), "", logger);
 		}
 
-		Ajax.update("createToolCategoryForm:icon", "formCreateResource:icon", "formModifyResource:icon");
+		Ajax.update("createToolCategoryForm:icon", "createResourceForm:icon", "modifyResourceForm:icon",
+				"createToolCategoryForm:deleteIconButton", "createResourceForm:deleteIconButton",
+				"modifyResourceForm:deleteIconButton");
+	}
+
+	public Path getTemporaryFilePath() {
+		return temporaryFilePath;
+	}
+
+	public void removeIcon(ToolCategoryViewBean toolCategoryViewBean) {
+		if (toolCategoryViewBean != null) {
+			toolCategoryViewBean.setIconFileName("");
+		}
+		resetTemporaryFilePath();
+	}
+
+	public void removeIcon(ResourceViewBean resourceViewBean) {
+		if (resourceViewBean != null) {
+			resourceViewBean.setIconFileName("");
+		}
+		resetTemporaryFilePath();
+	}
+
+	private void resetTemporaryFilePath() {
+		deleteTemporaryFileIfExists(this.temporaryFilePath);
+		this.temporaryFilePath = null;
+		commonUploadOneDialog.reset();
 	}
 
 	/**
-	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#onClose(java.lang.String,
-	 *      java.lang.String)
+	 * Called when the user closes the dialog containing an image uploader.
+	 * @param event
 	 */
-	@Override
-    public void onClose(CloseEvent event) {
-		// Remove previous file if it exists
+	public void onCloseDialogWithUploadedFile(CloseEvent event) {
+		// Remove previously uploaded file if it exists
 		deleteTemporaryFileIfExists(this.temporaryFilePath);
-    }
+	}
 
 }
