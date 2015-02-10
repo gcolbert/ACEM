@@ -657,23 +657,21 @@ public class MyToolsController extends AbstractContextAwareController implements
 					getCurrentUserLocale()), "", logger);
 		}
 
-		Ajax.update("createToolCategoryForm:icon", "createResourceForm:icon", "modifyResourceForm:icon",
-				"createToolCategoryForm:deleteIconButton", "createResourceForm:deleteIconButton",
-				"modifyResourceForm:deleteIconButton");
+		Ajax.update("createToolCategoryForm:iconOutputPanel", "createResourceForm:iconOutputPanel", "modifyResourceForm:iconOutputPanel");
 	}
 
 	public Path getTemporaryFilePath() {
 		return temporaryFilePath;
 	}
 
-	public void removeIcon(ToolCategoryViewBean toolCategoryViewBean) {
+	public void removeToolCategoryIcon(ToolCategoryViewBean toolCategoryViewBean) {
 		if (toolCategoryViewBean != null) {
 			toolCategoryViewBean.setIconFileName("");
 		}
 		resetTemporaryFilePath();
 	}
 
-	public void removeIcon(ResourceViewBean resourceViewBean) {
+	public void removeResourceIcon(ResourceViewBean resourceViewBean) {
 		if (resourceViewBean != null) {
 			resourceViewBean.setIconFileName("");
 		}

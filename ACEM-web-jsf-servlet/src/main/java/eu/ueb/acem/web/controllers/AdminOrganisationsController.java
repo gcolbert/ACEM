@@ -837,10 +837,9 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 					getCurrentUserLocale()), "", logger);
 		}
 
-		Ajax.update("modifyOrganisationForm:icon", "createCommunityForm:icon", "createInstitutionForm:icon",
-				"createAdministrativeDepartmentForm:icon", "createTeachingDepartmentForm:icon",
-				"modifyOrganisationForm:deleteIconButton", "createCommunityForm:deleteIconButton", "createInstitutionForm:deleteIconButton",
-				"createAdministrativeDepartmentForm:deleteIconButton", "createTeachingDepartmentForm:deleteIconButton");
+		Ajax.update("modifyOrganisationForm:iconOutputPanel", "createCommunityForm:iconOutputPanel",
+				"createInstitutionForm:iconOutputPanel", "createAdministrativeDepartmentForm:iconOutputPanel",
+				"createTeachingDepartmentForm:iconOutputPanel");
 	}
 
 	public Path getTemporaryFilePath() {

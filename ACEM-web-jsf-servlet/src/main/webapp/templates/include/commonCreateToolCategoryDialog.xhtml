@@ -36,25 +36,32 @@
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
 					for="icon" />
 				<p:column rowspan="2">
-					<p:panel id="icon" styleClass="iconPanel">
-						<p:graphicImage
-							rendered="#{(not empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
-							alt="#{associateBean.objectEdited.name}"
-							cache="true" width="200" value="#{imagesController.image}">
-							<f:param name="imageFileName"
-								value="#{associateBean.objectEdited.iconFileName}" />
-						</p:graphicImage>
-						<p:graphicImage
-							rendered="#{not empty associateBean.temporaryFilePath}"
-							alt="#{associateBean.commonUploadOneDialog.fileUploadedName}"
-							cache="true" width="200" value="#{imagesController.image}">
-							<f:param name="imageFilePath"
-								value="#{associateBean.temporaryFilePath}" />
-						</p:graphicImage>
-					</p:panel>
-					<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
-						icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
-						process="@this" />
+					<p:outputPanel id="iconOutputPanel">
+						<p:panel id="icon" styleClass="iconPanel">
+							<p:graphicImage
+								rendered="#{(not empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
+								alt="#{associateBean.objectEdited.name}"
+								cache="true" width="200" value="#{imagesController.image}">
+								<f:param name="imageFileName"
+									value="#{associateBean.objectEdited.iconFileName}" />
+							</p:graphicImage>
+							<p:graphicImage
+								rendered="#{not empty associateBean.temporaryFilePath}"
+								alt="#{associateBean.commonUploadOneDialog.fileUploadedName}"
+								cache="true" width="200" value="#{imagesController.image}">
+								<f:param name="imageFilePath"
+									value="#{associateBean.temporaryFilePath}" />
+							</p:graphicImage>
+						</p:panel>
+						<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+							icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+							process="@this" />
+						<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+							disabled="#{empty associateBean.temporaryFilePath}"
+							icon="ui-icon-trash" action="#{associateBean.removeToolCategoryIcon(null)}"
+							update="@this icon"
+							process="@this" />
+					</p:outputPanel>
 				</p:column>
 			</p:panelGrid>
 			<p:commandButton styleClass="dialogValidationButton"

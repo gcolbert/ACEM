@@ -395,30 +395,32 @@
 								value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.ICON_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<p:panel id="icon" styleClass="iconPanel">
-								<p:graphicImage
-									rendered="#{(not empty associateBean.selectedResourceViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
-									alt="#{associateBean.selectedResourceViewBean.name}"
-									cache="true" width="200" value="#{imagesController.image}">
-									<f:param name="imageFileName"
-										value="#{associateBean.selectedResourceViewBean.iconFileName}" />
-								</p:graphicImage>
-								<p:graphicImage
-									rendered="#{not empty associateBean.temporaryFilePath}"
-									alt="#{associateBean.selectedResourceViewBean.name}"
-									cache="true" width="200" value="#{imagesController.image}">
-									<f:param name="imageFilePath"
-										value="#{associateBean.temporaryFilePath}" />
-								</p:graphicImage>
-							</p:panel>
-							<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
-								icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
-								process="@this" />
-							<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
-								disabled="#{empty associateBean.temporaryFilePath}"
-								icon="ui-icon-trash" action="#{associateBean.removeIcon(null)}"
-								update="@this icon"
-								process="@this" />
+							<p:outputPanel id="iconOutputPanel">
+								<p:panel id="icon" styleClass="iconPanel">
+									<p:graphicImage
+										rendered="#{(not empty associateBean.selectedResourceViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
+										alt="#{associateBean.selectedResourceViewBean.name}"
+										cache="true" width="200" value="#{imagesController.image}">
+										<f:param name="imageFileName"
+											value="#{associateBean.selectedResourceViewBean.iconFileName}" />
+									</p:graphicImage>
+									<p:graphicImage
+										rendered="#{not empty associateBean.temporaryFilePath}"
+										alt="#{associateBean.selectedResourceViewBean.name}"
+										cache="true" width="200" value="#{imagesController.image}">
+										<f:param name="imageFilePath"
+											value="#{associateBean.temporaryFilePath}" />
+									</p:graphicImage>
+								</p:panel>
+								<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+									icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+									process="@this" />
+								<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+									disabled="#{empty associateBean.temporaryFilePath}"
+									icon="ui-icon-trash" action="#{associateBean.removeResourceIcon(null)}"
+									update="@this icon"
+									process="@this" />
+							</p:outputPanel>
 						</p:column>
 					</p:row>
 
@@ -521,30 +523,32 @@
 								for="icon" />
 						</p:column>
 						<p:column colspan="2">
-							<p:panel id="icon" styleClass="iconPanel">
-								<p:graphicImage
-									rendered="#{(not empty associateBean.selectedResourceViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
-									alt="#{associateBean.selectedResourceViewBean.name}"
-									cache="true" width="200" value="#{imagesController.image}">
-									<f:param name="imageFileName"
-										value="#{associateBean.selectedResourceViewBean.iconFileName}" />
-								</p:graphicImage>
-								<p:graphicImage
-									rendered="#{not empty associateBean.temporaryFilePath}"
-									alt="#{associateBean.selectedResourceViewBean.name}"
-									cache="true" width="200" value="#{imagesController.image}">
-									<f:param name="imageFilePath"
-										value="#{associateBean.temporaryFilePath}" />
-								</p:graphicImage>
-							</p:panel>
-							<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
-								icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
-								process="@this" />
-							<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
-								disabled="#{(empty associateBean.selectedResourceViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
-								icon="ui-icon-trash" action="#{associateBean.removeIcon(associateBean.selectedResourceViewBean)}"
-								update="@this icon"
-								process="@this" />
+							<p:outputPanel id="iconOutputPanel">
+								<p:panel id="icon" styleClass="iconPanel">
+									<p:graphicImage
+										rendered="#{(not empty associateBean.selectedResourceViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
+										alt="#{associateBean.selectedResourceViewBean.name}"
+										cache="true" width="200" value="#{imagesController.image}">
+										<f:param name="imageFileName"
+											value="#{associateBean.selectedResourceViewBean.iconFileName}" />
+									</p:graphicImage>
+									<p:graphicImage
+										rendered="#{not empty associateBean.temporaryFilePath}"
+										alt="#{associateBean.selectedResourceViewBean.name}"
+										cache="true" width="200" value="#{imagesController.image}">
+										<f:param name="imageFilePath"
+											value="#{associateBean.temporaryFilePath}" />
+									</p:graphicImage>
+								</p:panel>
+								<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+									icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+									process="@this" />
+								<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+									disabled="#{(empty associateBean.selectedResourceViewBean.iconFileName) and (empty associateBean.temporaryFilePath)}"
+									icon="ui-icon-trash" action="#{associateBean.removeResourceIcon(associateBean.selectedResourceViewBean)}"
+									update="@this icon"
+									process="@this" />
+							</p:outputPanel>
 						</p:column>
 					</p:row>
 
