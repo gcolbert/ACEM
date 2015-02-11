@@ -20,17 +20,16 @@ package eu.ueb.acem.dal.bleu;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalActivityRepository;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
@@ -41,7 +40,8 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
  * 
  */
 @Repository("pedagogicalActivityDAO")
-public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
+public class PedagogicalActivityDAO extends AbstractDAO<PedagogicalActivity, PedagogicalActivityNode> implements
+		DAO<Long, PedagogicalActivity> {
 
 	/**
 	 * For serialization.
@@ -55,12 +55,11 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalActivityDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private PedagogicalActivityRepository repository;
 
-	public PedagogicalActivityDAO() {
+	@Override
+	public GenericRepository<PedagogicalActivityNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -76,25 +75,6 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 	}
 
 	@Override
-	public PedagogicalActivity create(PedagogicalActivity entity) {
-		return repository.save((PedagogicalActivityNode) entity);
-	}
-
-	@Override
-	public PedagogicalActivity retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
-	public PedagogicalActivity retrieveById(Long id, boolean initialize) {
-		PedagogicalActivity entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
-	}
-
-	@Override
 	public Collection<PedagogicalActivity> retrieveByName(String name) {
 		Iterable<PedagogicalActivityNode> nodes = repository.findByName(name);
 		Collection<PedagogicalActivity> entities = new HashSet<PedagogicalActivity>();
@@ -105,57 +85,9 @@ public class PedagogicalActivityDAO implements DAO<Long, PedagogicalActivity> {
 	}
 
 	@Override
-	public Collection<PedagogicalActivity> retrieveByName(String name, boolean initialize) {
-		Collection<PedagogicalActivity> entities = retrieveByName(name);
-		if (initialize) {
-			for (PedagogicalActivity entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-	
-	@Override
-	public Set<PedagogicalActivity> retrieveAll() {
-		Iterable<PedagogicalActivityNode> endResults = repository.findAll();
-		Set<PedagogicalActivity> collection = new HashSet<PedagogicalActivity>();
-		if (endResults.iterator() != null) {
-			Iterator<PedagogicalActivityNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				PedagogicalActivity entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
 	public void initializeCollections(PedagogicalActivity entity) {
 		neo4jOperations.fetch(entity.getResourceCategories());
 		neo4jOperations.fetch(entity.getScenarios());
-	}
-	
-	@Override
-	public PedagogicalActivity update(PedagogicalActivity entity) {
-		PedagogicalActivity updatedEntity = repository.save((PedagogicalActivityNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(PedagogicalActivity entity) {
-		repository.delete((PedagogicalActivityNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

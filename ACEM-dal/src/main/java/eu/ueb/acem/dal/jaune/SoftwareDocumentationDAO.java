@@ -26,10 +26,10 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.AbstractDAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.SoftwareDocumentationRepository;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
@@ -42,7 +42,8 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
  * 
  */
 @Repository("softwareDocumentationDAO")
-public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation> {
+public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation, SoftwareDocumentationNode> implements
+		ResourceDAO<Long, SoftwareDocumentation> {
 
 	/**
 	 * For serialization.
@@ -53,13 +54,11 @@ public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation
 	private static final Logger logger = LoggerFactory.getLogger(SoftwareDocumentationDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private SoftwareDocumentationRepository repository;
 
-	public SoftwareDocumentationDAO() {
-
+	@Override
+	public GenericRepository<SoftwareDocumentationNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -72,25 +71,6 @@ public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation
 		else {
 			return repository.count(id) > 0 ? true : false;
 		}
-	}
-
-	@Override
-	public SoftwareDocumentation create(SoftwareDocumentation entity) {
-		return repository.save((SoftwareDocumentationNode) entity);
-	}
-
-	@Override
-	public SoftwareDocumentation retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
-	public SoftwareDocumentation retrieveById(Long id, boolean initialize) {
-		SoftwareDocumentation entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -112,54 +92,11 @@ public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation
 		return softwares;
 	}
 
+	/**
+	 * Returns the categories containing at least one "SoftwareDocumentation"
+	 * entity.
+	 */
 	@Override
-	public Collection<SoftwareDocumentation> retrieveByName(String name, boolean initialize) {
-		Collection<SoftwareDocumentation> entities = retrieveByName(name);
-		if (initialize) {
-			for (SoftwareDocumentation entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<SoftwareDocumentation> retrieveAll() {
-		Iterable<SoftwareDocumentationNode> endResults = repository.findAll();
-		Collection<SoftwareDocumentation> collection = new HashSet<SoftwareDocumentation>();
-		if (endResults.iterator() != null) {
-			Iterator<SoftwareDocumentationNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				SoftwareDocumentation entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public SoftwareDocumentation update(SoftwareDocumentation entity) {
-		SoftwareDocumentation updatedEntity = repository.save((SoftwareDocumentationNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(SoftwareDocumentation entity) {
-		repository.delete((SoftwareDocumentationNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
-	}
-
 	public Collection<ResourceCategory> getCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
@@ -172,6 +109,7 @@ public class SoftwareDocumentationDAO implements DAO<Long, SoftwareDocumentation
 		return collection;
 	}
 
+	@Override
 	public Collection<SoftwareDocumentation> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<SoftwareDocumentationNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<SoftwareDocumentation> collection = new HashSet<SoftwareDocumentation>();

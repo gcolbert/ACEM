@@ -21,9 +21,7 @@ package eu.ueb.acem.web.controllers;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -48,8 +46,6 @@ import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
 import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.TableBean;
-import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
@@ -77,13 +73,13 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 
 	@Inject
 	private OrganisationsService organisationsService;
-	
-	private Map<Long, OrganisationViewBean> organisationViewBeans;
 
 	private SortableTableBean<CommunityViewBean> communityViewBeans;
 	private SortableTableBean<InstitutionViewBean> institutionViewBeans;
 	private SortableTableBean<AdministrativeDepartmentViewBean> administrativeDepartmentViewBeans;
 	private SortableTableBean<TeachingDepartmentViewBean> teachingDepartmentViewBeans;
+
+	private OrganisationViewBean objectEdited;
 
 	private OrganisationViewBean currentOrganisationViewBean;
 	private List<CommunityViewBean> communityViewBeansForCurrentOrganisation;
@@ -119,60 +115,43 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 		institutionViewBeansForCurrentOrganisation = new ArrayList<InstitutionViewBean>();
 		administrativeDepartmentViewBeansForCurrentOrganisation = new ArrayList<AdministrativeDepartmentViewBean>();
 		teachingDepartmentViewBeansForCurrentOrganisation = new ArrayList<TeachingDepartmentViewBean>();
-
-		organisationViewBeans = new HashMap<Long, OrganisationViewBean>();
 	}
 
 	@PostConstruct
 	public void initOrganisationsController() {
-		logger.debug("initOrganisationsController");
 		try {
 			this.commonUploadOneDialog = new CommonUploadOneDialog(this);
 
 			Collection<Community> communities = organisationsService.retrieveAllCommunities();
-			logger.debug("found {} communities", communities.size());
 			communityViewBeans.getTableEntries().clear();
 			for (Community community : communities) {
-				logger.debug("community = {}", community.getName());
 				CommunityViewBean communityViewBean = new CommunityViewBean(community);
 				communityViewBeans.getTableEntries().add(communityViewBean);
-				organisationViewBeans.put(communityViewBean.getId(), communityViewBean);
 			}
 			communityViewBeans.sort();
 
 			Collection<Institution> institutions = organisationsService.retrieveAllInstitutions();
-			logger.debug("found {} institutions", institutions.size());
 			institutionViewBeans.getTableEntries().clear();
 			for (Institution institution : institutions) {
-				logger.debug("institution = {}", institution.getName());
 				InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
 				institutionViewBeans.getTableEntries().add(institutionViewBean);
-				organisationViewBeans.put(institutionViewBean.getId(), institutionViewBean);
 			}
 			institutionViewBeans.sort();
 
 			Collection<AdministrativeDepartment> administrativeDepartments = organisationsService
 					.retrieveAllAdministrativeDepartments();
-			logger.debug("found {} administrative departments", administrativeDepartments.size());
 			administrativeDepartmentViewBeans.getTableEntries().clear();
 			for (AdministrativeDepartment administrativeDepartment : administrativeDepartments) {
-				logger.debug("administrative department = {}", administrativeDepartment.getName());
-				AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
-						administrativeDepartment);
+				AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(administrativeDepartment);
 				administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
-				organisationViewBeans.put(administrativeDepartmentViewBean.getId(), administrativeDepartmentViewBean);
 			}
 			administrativeDepartmentViewBeans.sort();
 
 			Collection<TeachingDepartment> teachingDepartments = organisationsService.retrieveAllTeachingDepartments();
-			logger.debug("found {} teaching departments", teachingDepartments.size());
 			teachingDepartmentViewBeans.getTableEntries().clear();
 			for (TeachingDepartment teachingDepartment : teachingDepartments) {
-				logger.debug("teaching department = {}", teachingDepartment.getName());
-				TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(
-						teachingDepartment);
+				TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
 				teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
-				organisationViewBeans.put(teachingDepartmentViewBean.getId(), teachingDepartmentViewBean);
 			}
 			teachingDepartmentViewBeans.sort();
 		}
@@ -186,18 +165,6 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 		return msgs.getMessage(
 				"ADMINISTRATION.ORGANISATIONS.HEADER", null,
 				getCurrentUserLocale());
-	}
-
-	public PickListBean getPickListBean() {
-		return pickListBean;
-	}
-
-	public OrganisationViewBean getOrganisationViewBeanFromId(Long id) {
-		return organisationViewBeans.get(id);
-	}
-
-	public Map<Long, OrganisationViewBean> getOrganisationViewBeans() {
-		return organisationViewBeans;
 	}
 
 	public TableBean<CommunityViewBean> getCommunityViewBeans() {
@@ -244,7 +211,6 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	// Note : can only be called for an institution (given the current domain
 	// modelisation)
 	private void populateCommunityViewBeansForCurrentOrganisation() {
-		logger.debug("setCommunityViewBeansForCurrentOrganisation");
 		if (getCurrentOrganisationViewBean() != null) {
 			communityViewBeansForCurrentOrganisation.clear();
 			for (CommunityViewBean communityViewBean : communityViewBeans.getTableEntries()) {
@@ -319,6 +285,238 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 				}
 			}
 		}
+	}
+
+	public void onCommunitiesAccordionPanelTabChange(TabChangeEvent event) {
+		memoryCommunityViewBean = (OrganisationViewBean) event.getData();
+		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
+		populateDataTablesForCurrentOrganisationViewBean();
+	}
+
+	public void onInstitutionsAccordionPanelTabChange(TabChangeEvent event) {
+		memoryInstitutionViewBean = (OrganisationViewBean) event.getData();
+		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
+		populateDataTablesForCurrentOrganisationViewBean();
+	}
+
+	public void onAdministrativeDepartmentsAccordionPanelTabChange(TabChangeEvent event) {
+		memoryAdministrativeDepartmentViewBean = (OrganisationViewBean) event.getData();
+		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
+		populateDataTablesForCurrentOrganisationViewBean();
+	}
+
+	public void onTeachingDepartmentsAccordionPanelTabChange(TabChangeEvent event) {
+		memoryTeachingDepartmentViewBean = (OrganisationViewBean) event.getData();
+		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
+		populateDataTablesForCurrentOrganisationViewBean();
+	}
+
+	/**
+	 * Called when we change the tab
+	 * 
+	 * @param event
+	 */
+	public void onOrganisationsTabViewTabChange(TabChangeEvent event) {
+		/*
+		 * There may be one opened organisation in the accordion of the tab
+		 * which has just been selected, so here we refresh the datatables.
+		 */
+		switch ((String) event.getTab().getAttributes().get("id")) {
+		case "tabCommunities":
+			if (memoryCommunityViewBean != null) {
+				setCurrentOrganisationViewBean(memoryCommunityViewBean);
+				populateDataTablesForCurrentOrganisationViewBean();
+			}
+			break;
+		case "tabInstitutions":
+			if (memoryInstitutionViewBean != null) {
+				setCurrentOrganisationViewBean(memoryInstitutionViewBean);
+				populateDataTablesForCurrentOrganisationViewBean();
+			}
+			break;
+		case "tabAdministrativeDepartments":
+			if (memoryAdministrativeDepartmentViewBean != null) {
+				setCurrentOrganisationViewBean(memoryAdministrativeDepartmentViewBean);
+				populateDataTablesForCurrentOrganisationViewBean();
+			}
+			break;
+		case "tabTeachingDepartments":
+			if (memoryTeachingDepartmentViewBean != null) {
+				setCurrentOrganisationViewBean(memoryTeachingDepartmentViewBean);
+				populateDataTablesForCurrentOrganisationViewBean();
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	public OrganisationViewBean getObjectEdited() {
+		return objectEdited;
+	}
+
+	/* ************************************** CREATION **************************************************/
+
+	private void prepareCreation() {
+		temporaryFilePath = null;
+		commonUploadOneDialog.reset();
+	}
+
+	public void prepareCommunityCreation() {
+		objectEdited = new CommunityViewBean();
+		prepareCreation();
+	}
+
+	public void prepareInstitutionCreation() {
+		objectEdited = new InstitutionViewBean();
+		prepareCreation();
+	}
+
+	public void prepareAdministrativeDepartmentCreation() {
+		objectEdited = new AdministrativeDepartmentViewBean();
+		prepareCreation();
+	}
+
+	public void prepareTeachingDepartmentCreation() {
+		objectEdited = new TeachingDepartmentViewBean();
+		prepareCreation();
+	}
+
+	public void onCreateOrganisation() {
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (! iconFileName.trim().isEmpty()) {
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			this.temporaryFilePath = null;
+			commonUploadOneDialog.reset();
+		}
+		
+		if (objectEdited instanceof CommunityViewBean) {
+			Community community = organisationsService.createCommunity(objectEdited.getName(),
+					objectEdited.getShortname(), objectEdited.getIconFileName());
+			CommunityViewBean communityViewBean = new CommunityViewBean(community);
+			communityViewBeans.getTableEntries().add(communityViewBean);
+			communityViewBeans.sort();
+		}
+		else if (objectEdited instanceof InstitutionViewBean) {
+			Institution institution = organisationsService.createInstitution(objectEdited.getName(),
+					objectEdited.getShortname(), objectEdited.getIconFileName());
+			InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
+			institutionViewBeans.getTableEntries().add(institutionViewBean);
+			institutionViewBeans.sort();
+		}
+		else if (objectEdited instanceof AdministrativeDepartmentViewBean) {
+			AdministrativeDepartment administrativeDepartment = organisationsService.createAdministrativeDepartment(
+					objectEdited.getName(), objectEdited.getShortname(), objectEdited.getIconFileName());
+			AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
+					administrativeDepartment);
+			administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
+			administrativeDepartmentViewBeans.sort();
+		}
+		else if (objectEdited instanceof TeachingDepartmentViewBean) {
+			TeachingDepartment teachingDepartment = organisationsService.createTeachingDepartment(
+					objectEdited.getName(), objectEdited.getShortname(), objectEdited.getIconFileName());
+			TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
+			teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
+			teachingDepartmentViewBeans.sort();
+		}
+	}
+
+	/* ************************************** MODIFICATION **************************************************/
+	
+	private void prepareModification() {
+		temporaryFilePath = null;
+		commonUploadOneDialog.reset();
+	}
+
+	public void prepareCommunityModification(CommunityViewBean communityViewBean) {
+		objectEdited = new CommunityViewBean(organisationsService.retrieveCommunity(communityViewBean.getId(), true));
+		prepareModification();
+	}
+
+	public void prepareInstitutionModification(InstitutionViewBean institutionViewBean) {
+		objectEdited = new InstitutionViewBean(organisationsService.retrieveInstitution(institutionViewBean.getId(), true));
+		prepareModification();
+	}
+
+	public void prepareAdministrativeDepartmentModification(AdministrativeDepartmentViewBean administrativeDepartmentViewBean) {
+		objectEdited = new AdministrativeDepartmentViewBean(organisationsService.retrieveAdministrativeDepartment(administrativeDepartmentViewBean.getId(), true));
+		prepareModification();
+	}
+
+	public void prepareTeachingDepartmentModification(TeachingDepartmentViewBean teachingDepartmentViewBean) {
+		objectEdited = new TeachingDepartmentViewBean(organisationsService.retrieveTeachingDepartment(teachingDepartmentViewBean.getId(), true));
+		prepareModification();
+	}
+
+	public void onModifyOrganisation() {
+		String iconFileName = commonUploadOneDialog.getFileUploadedName();
+		if (!iconFileName.trim().isEmpty()) {
+			moveUploadedIconToImagesFolder(this.temporaryFilePath, commonUploadOneDialog.getFileUploadedName());
+			this.temporaryFilePath = null;
+			commonUploadOneDialog.reset();
+			// We set the icon file name inside this block, because if the user
+			// didn't upload any icon, we keep the current icon.
+			objectEdited.setIconFileName(iconFileName);
+		}
+
+		// We transfer all data from objectEdited to currentOrganisationViewBean
+		currentOrganisationViewBean.setName(objectEdited.getName());
+		currentOrganisationViewBean.getDomainBean().setName(currentOrganisationViewBean.getName());
+
+		currentOrganisationViewBean.setShortname(objectEdited.getShortname());
+		currentOrganisationViewBean.getDomainBean().setShortname(currentOrganisationViewBean.getShortname());
+
+		currentOrganisationViewBean.setIconFileName(objectEdited.getIconFileName());
+		currentOrganisationViewBean.getDomainBean().setIconFileName(currentOrganisationViewBean.getIconFileName());
+
+		// We persist the modified Organisation
+		currentOrganisationViewBean.setDomainBean(organisationsService.updateOrganisation(currentOrganisationViewBean
+				.getDomainBean()));
+
+		MessageDisplayer.info(msgs.getMessage(
+				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.TITLE", null,
+				getCurrentUserLocale()), msgs.getMessage(
+				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.DETAILS", null,
+				getCurrentUserLocale()));
+	}
+
+	/* ************************************** DELETION **************************************************/
+
+	public void onDeleteOrganisation(OrganisationViewBean organisationViewBean) {
+		if (organisationsService.deleteOrganisation(organisationViewBean.getDomainBean().getId())) {
+			if (organisationViewBean instanceof CommunityViewBean) {
+				communityViewBeans.getTableEntries().remove(organisationViewBean);
+			}
+			else if (organisationViewBean instanceof InstitutionViewBean) {
+				institutionViewBeans.getTableEntries().remove(organisationViewBean);
+			}
+			else if (organisationViewBean instanceof AdministrativeDepartmentViewBean) {
+				administrativeDepartmentViewBeans.getTableEntries().remove(organisationViewBean);
+			}
+			else if (organisationViewBean instanceof TeachingDepartmentViewBean) {
+				teachingDepartmentViewBeans.getTableEntries().remove(organisationViewBean);
+			}
+			MessageDisplayer.info(msgs.getMessage(
+					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE", null,
+					getCurrentUserLocale()), msgs.getMessage(
+					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS", null,
+					getCurrentUserLocale()));
+		}
+		else {
+			MessageDisplayer.error(msgs.getMessage(
+					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.TITLE", null,
+					getCurrentUserLocale()), msgs.getMessage(
+					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.DETAILS", null,
+					getCurrentUserLocale()), logger);
+		}
+	}
+
+	/*
+	 * *********************************** PICKLIST OF ORGANISATIONS ***************************************
+	 */
+
+	public PickListBean getPickListBean() {
+		return pickListBean;
 	}
 
 	public void preparePicklistCommunityViewBeansForCurrentOrganisation() {
@@ -417,151 +615,24 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 		}
 	}
 
-	public void onCreateCommunity(String name, String shortname) {
-		String iconFileName = commonUploadOneDialog.getFileUploadedName();
-		if (! iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
-			this.temporaryFilePath = null;
-			commonUploadOneDialog.reset();
-		}
-		Community community = organisationsService.createCommunity(name, shortname, iconFileName);
-		CommunityViewBean communityViewBean = new CommunityViewBean(community);
-		communityViewBeans.getTableEntries().add(communityViewBean);
-		communityViewBeans.sort();
-		organisationViewBeans.put(communityViewBean.getId(), communityViewBean);
-	}
-
-	public void onCreateInstitution(String name, String shortname) {
-		String iconFileName = commonUploadOneDialog.getFileUploadedName();
-		if (! iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
-			this.temporaryFilePath = null;
-			commonUploadOneDialog.reset();
-		}
-		Institution institution = organisationsService.createInstitution(name, shortname, iconFileName);
-		InstitutionViewBean institutionViewBean = new InstitutionViewBean(institution);
-		institutionViewBeans.getTableEntries().add(institutionViewBean);
-		institutionViewBeans.sort();
-		organisationViewBeans.put(institutionViewBean.getId(), institutionViewBean);
-	}
-
-	public void onCreateTeachingDepartment(String name, String shortname) {
-		String iconFileName = commonUploadOneDialog.getFileUploadedName();
-		if (! iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
-			this.temporaryFilePath = null;
-			commonUploadOneDialog.reset();
-		}
-		TeachingDepartment teachingDepartment = organisationsService.createTeachingDepartment(name, shortname,
-				iconFileName);
-		TeachingDepartmentViewBean teachingDepartmentViewBean = new TeachingDepartmentViewBean(teachingDepartment);
-		teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
-		teachingDepartmentViewBeans.sort();
-		organisationViewBeans.put(teachingDepartmentViewBean.getId(), teachingDepartmentViewBean);
-	}
-
-	public void onCreateAdministrativeDepartment(String name, String shortname) {
-		String iconFileName = commonUploadOneDialog.getFileUploadedName();
-		if (! iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
-			this.temporaryFilePath = null;
-			commonUploadOneDialog.reset();
-		}
-		AdministrativeDepartment administrativeDepartment = organisationsService.createAdministrativeDepartment(name,
-				shortname, iconFileName);
-		AdministrativeDepartmentViewBean administrativeDepartmentViewBean = new AdministrativeDepartmentViewBean(
-				administrativeDepartment);
-		administrativeDepartmentViewBeans.getTableEntries().add(administrativeDepartmentViewBean);
-		administrativeDepartmentViewBeans.sort();
-		organisationViewBeans.put(administrativeDepartmentViewBean.getId(), administrativeDepartmentViewBean);
-	}
-
-	public void prepareCreation() {
-		currentOrganisationViewBean = null;
-		temporaryFilePath = null;
-		commonUploadOneDialog.reset();
-	}
-
-	public void prepareModification(OrganisationViewBean organisationViewBean) {
-		currentOrganisationViewBean = organisationViewBean;
-		temporaryFilePath = null;
-		commonUploadOneDialog.reset();
-	}
-
-	public void onModifyOrganisation() {
-		String iconFileName = commonUploadOneDialog.getFileUploadedName();
-		if (!iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, commonUploadOneDialog.getFileUploadedName());
-			this.temporaryFilePath = null;
-			commonUploadOneDialog.reset();
-			// We set the icon file name inside this block, because if the user
-			// didn't upload any icon, we keep the current icon.
-			currentOrganisationViewBean.setIconFileName(iconFileName);
-		}
-
-		currentOrganisationViewBean.getDomainBean().setName(currentOrganisationViewBean.getName());
-		currentOrganisationViewBean.getDomainBean().setShortname(currentOrganisationViewBean.getShortname());
-		currentOrganisationViewBean.getDomainBean().setIconFileName(currentOrganisationViewBean.getIconFileName());
-		currentOrganisationViewBean.setDomainBean(organisationsService.updateOrganisation(currentOrganisationViewBean
-				.getDomainBean()));
-		MessageDisplayer.info(msgs.getMessage(
-				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.TITLE", null,
-				getCurrentUserLocale()), msgs.getMessage(
-				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.DETAILS", null,
-				getCurrentUserLocale()));
-	}
-
-	public void onDeleteOrganisation(OrganisationViewBean organisationViewBean) {
-		if (organisationsService.deleteOrganisation(organisationViewBean.getDomainBean().getId())) {
-			if (organisationViewBean instanceof CommunityViewBean) {
-				communityViewBeans.getTableEntries().remove(organisationViewBean);
-			}
-			else if (organisationViewBean instanceof InstitutionViewBean) {
-				institutionViewBeans.getTableEntries().remove(organisationViewBean);
-			}
-			else if (organisationViewBean instanceof AdministrativeDepartmentViewBean) {
-				administrativeDepartmentViewBeans.getTableEntries().remove(organisationViewBean);
-			}
-			else if (organisationViewBean instanceof TeachingDepartmentViewBean) {
-				teachingDepartmentViewBeans.getTableEntries().remove(organisationViewBean);
-			}
-			organisationViewBeans.remove(organisationViewBean.getId());
-			MessageDisplayer.info(msgs.getMessage(
-					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE", null,
-					getCurrentUserLocale()), msgs.getMessage(
-					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS", null,
-					getCurrentUserLocale()));
-		}
-		else {
-			MessageDisplayer.error(msgs.getMessage(
-					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.TITLE", null,
-					getCurrentUserLocale()), msgs.getMessage(
-					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.DETAILS", null,
-					getCurrentUserLocale()), logger);
-		}
-	}
-
 	public void onTransfer(TransferEvent event) {
 		logger.debug("onTransfer");
 		@SuppressWarnings("unchecked")
 		List<OrganisationViewBean> listOfMovedViewBeans = (List<OrganisationViewBean>) event.getItems();
 		for (OrganisationViewBean movedOrganisationViewBean : listOfMovedViewBeans) {
 			if (event.isAdd()) {
-				logger.debug("We should associate {} and {}", movedOrganisationViewBean.getName(),
-						getCurrentOrganisationViewBean().getName());
+				logger.debug("We should associate {} and {}", movedOrganisationViewBean.getName(), getCurrentOrganisationViewBean().getName());
 				if (movedOrganisationViewBean instanceof CommunityViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
 					// must be an instance of InstitutionViewBean
-					if (organisationsService.associateCommunityAndInstitution(movedOrganisationViewBean.getDomainBean()
-							.getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
+					if (organisationsService.associateCommunityAndInstitution(movedOrganisationViewBean.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
 						communityViewBeansForCurrentOrganisation.add((CommunityViewBean) movedOrganisationViewBean);
 						logger.debug("association successful");
 					}
 					else {
 						logger.debug("association failed");
 					}
-					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveCommunity(
-							movedOrganisationViewBean.getId(), false));
+					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveCommunity(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof InstitutionViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
@@ -571,10 +642,8 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 					// So here, we have to test which class
 					// currentOrganisationViewBean belongs to.
 					if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
-						if (organisationsService.associateCommunityAndInstitution(getCurrentOrganisationViewBean()
-								.getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
-							institutionViewBeansForCurrentOrganisation
-									.add((InstitutionViewBean) movedOrganisationViewBean);
+						if (organisationsService.associateCommunityAndInstitution(getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
+							institutionViewBeansForCurrentOrganisation.add((InstitutionViewBean) movedOrganisationViewBean);
 							logger.debug("association successful");
 						}
 						else {
@@ -582,11 +651,8 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 						}
 					}
 					else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
-						if (organisationsService.associateInstitutionAndAdministrativeDepartment(
-								movedOrganisationViewBean.getDomainBean().getId(), getCurrentOrganisationViewBean()
-										.getDomainBean().getId())) {
-							institutionViewBeansForCurrentOrganisation
-									.add((InstitutionViewBean) movedOrganisationViewBean);
+						if (organisationsService.associateInstitutionAndAdministrativeDepartment(movedOrganisationViewBean.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
+							institutionViewBeansForCurrentOrganisation.add((InstitutionViewBean) movedOrganisationViewBean);
 							logger.debug("association successful");
 						}
 						else {
@@ -594,10 +660,8 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 						}
 					}
 					else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
-						if (organisationsService.associateInstitutionAndTeachingDepartment(movedOrganisationViewBean
-								.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
-							institutionViewBeansForCurrentOrganisation
-									.add((InstitutionViewBean) movedOrganisationViewBean);
+						if (organisationsService.associateInstitutionAndTeachingDepartment(movedOrganisationViewBean.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
+							institutionViewBeansForCurrentOrganisation.add((InstitutionViewBean) movedOrganisationViewBean);
 							logger.debug("association successful");
 						}
 						else {
@@ -607,39 +671,31 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 					else {
 						logger.info("currentOrganisationViewBean instanceof {}", currentOrganisationViewBean.getClass());
 					}
-					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveInstitution(
-							movedOrganisationViewBean.getId(), false));
+					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveInstitution(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof AdministrativeDepartmentViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
 					// must be an instance of InstitutionViewBean
-					if (organisationsService.associateInstitutionAndAdministrativeDepartment(
-							getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean
-									.getDomainBean().getId())) {
-						administrativeDepartmentViewBeansForCurrentOrganisation
-								.add((AdministrativeDepartmentViewBean) movedOrganisationViewBean);
+					if (organisationsService.associateInstitutionAndAdministrativeDepartment(getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
+						administrativeDepartmentViewBeansForCurrentOrganisation.add((AdministrativeDepartmentViewBean) movedOrganisationViewBean);
 						logger.debug("association successful");
 					}
 					else {
 						logger.debug("association failed");
 					}
-					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveAdministrativeDepartment(
-							movedOrganisationViewBean.getId(), false));
+					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveAdministrativeDepartment(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof TeachingDepartmentViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
 					// must be an instance of InstitutionViewBean
-					if (organisationsService.associateInstitutionAndTeachingDepartment(getCurrentOrganisationViewBean()
-							.getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
-						teachingDepartmentViewBeansForCurrentOrganisation
-								.add((TeachingDepartmentViewBean) movedOrganisationViewBean);
+					if (organisationsService.associateInstitutionAndTeachingDepartment(getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
+						teachingDepartmentViewBeansForCurrentOrganisation.add((TeachingDepartmentViewBean) movedOrganisationViewBean);
 						logger.debug("association successful");
 					}
 					else {
 						logger.debug("association failed");
 					}
-					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveTeachingDepartment(
-							movedOrganisationViewBean.getId(), false));
+					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveTeachingDepartment(movedOrganisationViewBean.getId(), false));
 				}
 			}
 			else {
@@ -648,16 +704,14 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 				if (movedOrganisationViewBean instanceof CommunityViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
 					// must be an instance of InstitutionViewBean
-					if (organisationsService.dissociateCommunityAndInstitution(movedOrganisationViewBean
-							.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
+					if (organisationsService.dissociateCommunityAndInstitution(movedOrganisationViewBean.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
 						communityViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
 						logger.debug("dissociation successful");
 					}
 					else {
 						logger.debug("dissociation failed");
 					}
-					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveCommunity(
-							movedOrganisationViewBean.getId(), false));
+					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveCommunity(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof InstitutionViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
@@ -667,8 +721,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 					// So here, we have to test which class
 					// currentOrganisationViewBean belongs to.
 					if (getCurrentOrganisationViewBean() instanceof CommunityViewBean) {
-						if (organisationsService.dissociateCommunityAndInstitution(getCurrentOrganisationViewBean()
-								.getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
+						if (organisationsService.dissociateCommunityAndInstitution(getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
 							institutionViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
 							logger.debug("dissociation successful");
 						}
@@ -677,9 +730,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 						}
 					}
 					else if (getCurrentOrganisationViewBean() instanceof AdministrativeDepartmentViewBean) {
-						if (organisationsService.dissociateInstitutionAndAdministrativeDepartment(
-								movedOrganisationViewBean.getDomainBean().getId(), getCurrentOrganisationViewBean()
-										.getDomainBean().getId())) {
+						if (organisationsService.dissociateInstitutionAndAdministrativeDepartment(movedOrganisationViewBean.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
 							institutionViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
 							logger.debug("dissociation successful");
 						}
@@ -688,8 +739,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 						}
 					}
 					else if (getCurrentOrganisationViewBean() instanceof TeachingDepartmentViewBean) {
-						if (organisationsService.dissociateInstitutionAndTeachingDepartment(movedOrganisationViewBean
-								.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
+						if (organisationsService.dissociateInstitutionAndTeachingDepartment(movedOrganisationViewBean.getDomainBean().getId(), getCurrentOrganisationViewBean().getDomainBean().getId())) {
 							institutionViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
 							logger.debug("dissociation successful");
 						}
@@ -698,115 +748,41 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 						}
 					}
 					else {
-						logger.debug("currentOrganisationViewBean instanceof {}",
-								currentOrganisationViewBean.getClass());
+						logger.debug("currentOrganisationViewBean instanceof {}", currentOrganisationViewBean.getClass());
 					}
-					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveInstitution(
-							movedOrganisationViewBean.getId(), false));
+					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveInstitution(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof AdministrativeDepartmentViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
 					// must be an instance of InstitutionViewBean
-					if (organisationsService.dissociateInstitutionAndAdministrativeDepartment(
-							getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean
-									.getDomainBean().getId())) {
+					if (organisationsService.dissociateInstitutionAndAdministrativeDepartment(getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
 						administrativeDepartmentViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
 						logger.debug("dissociation successful");
 					}
 					else {
 						logger.debug("dissociation failed");
 					}
-					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveAdministrativeDepartment(
-							movedOrganisationViewBean.getId(), false));
+					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveAdministrativeDepartment(movedOrganisationViewBean.getId(), false));
 				}
 				else if (movedOrganisationViewBean instanceof TeachingDepartmentViewBean) {
 					// Based on the domain rules, currentOrganisationViewBean
 					// must be an instance of InstitutionViewBean
-					if (organisationsService.dissociateInstitutionAndTeachingDepartment(
-							getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean
-									.getDomainBean().getId())) {
+					if (organisationsService.dissociateInstitutionAndTeachingDepartment(getCurrentOrganisationViewBean().getDomainBean().getId(), movedOrganisationViewBean.getDomainBean().getId())) {
 						teachingDepartmentViewBeansForCurrentOrganisation.remove(movedOrganisationViewBean);
 						logger.debug("dissociation successful");
 					}
 					else {
 						logger.debug("dissociated failed");
 					}
-					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveTeachingDepartment(
-							movedOrganisationViewBean.getId(), false));
+					movedOrganisationViewBean.setDomainBean(organisationsService.retrieveTeachingDepartment(movedOrganisationViewBean.getId(), false));
 				}
 			}
 		}
-		getCurrentOrganisationViewBean().setDomainBean(
-				organisationsService.retrieveOrganisation(getCurrentOrganisationViewBean().getDomainBean().getId(),
-						false));
-	}
-
-	public void onCommunitiesAccordionPanelTabChange(TabChangeEvent event) {
-		memoryCommunityViewBean = (OrganisationViewBean) event.getData();
-		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
-		populateDataTablesForCurrentOrganisationViewBean();
-	}
-
-	public void onInstitutionsAccordionPanelTabChange(TabChangeEvent event) {
-		memoryInstitutionViewBean = (OrganisationViewBean) event.getData();
-		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
-		populateDataTablesForCurrentOrganisationViewBean();
-	}
-
-	public void onAdministrativeDepartmentsAccordionPanelTabChange(TabChangeEvent event) {
-		memoryAdministrativeDepartmentViewBean = (OrganisationViewBean) event.getData();
-		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
-		populateDataTablesForCurrentOrganisationViewBean();
-	}
-
-	public void onTeachingDepartmentsAccordionPanelTabChange(TabChangeEvent event) {
-		memoryTeachingDepartmentViewBean = (OrganisationViewBean) event.getData();
-		setCurrentOrganisationViewBean((OrganisationViewBean) event.getData());
-		populateDataTablesForCurrentOrganisationViewBean();
-	}
-
-	/**
-	 * Called when we change the tab
-	 * 
-	 * @param event
-	 */
-	public void onOrganisationsTabViewTabChange(TabChangeEvent event) {
-		/*
-		 * There may be one opened organisation in the accordion of the tab
-		 * which has just been selected, so here we refresh the datatables.
-		 */
-		switch ((String) event.getTab().getAttributes().get("id")) {
-		case "tabCommunities":
-			if (memoryCommunityViewBean != null) {
-				setCurrentOrganisationViewBean(memoryCommunityViewBean);
-				populateDataTablesForCurrentOrganisationViewBean();
-			}
-			break;
-		case "tabInstitutions":
-			if (memoryInstitutionViewBean != null) {
-				setCurrentOrganisationViewBean(memoryInstitutionViewBean);
-				populateDataTablesForCurrentOrganisationViewBean();
-			}
-			break;
-		case "tabAdministrativeDepartments":
-			if (memoryAdministrativeDepartmentViewBean != null) {
-				setCurrentOrganisationViewBean(memoryAdministrativeDepartmentViewBean);
-				populateDataTablesForCurrentOrganisationViewBean();
-			}
-			break;
-		case "tabTeachingDepartments":
-			if (memoryTeachingDepartmentViewBean != null) {
-				setCurrentOrganisationViewBean(memoryTeachingDepartmentViewBean);
-				populateDataTablesForCurrentOrganisationViewBean();
-			}
-			break;
-		default:
-			break;
-		}
+		getCurrentOrganisationViewBean().setDomainBean(organisationsService.retrieveOrganisation(getCurrentOrganisationViewBean().getDomainBean().getId(),false));
 	}
 
 	/*
-	 * ****************** Modal dialogs ********************
+	 * ************************************** IMAGE UPLOAD ******************************************
 	 */
 	/**
 	 * Get the Bean to manage dialog
@@ -837,19 +813,15 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 					getCurrentUserLocale()), "", logger);
 		}
 
-		Ajax.update("modifyOrganisationForm:iconOutputPanel", "createCommunityForm:iconOutputPanel",
-				"createInstitutionForm:iconOutputPanel", "createAdministrativeDepartmentForm:iconOutputPanel",
-				"createTeachingDepartmentForm:iconOutputPanel");
+		Ajax.update("modifyOrganisationForm:iconOutputPanel", "createOrganisationForm:iconOutputPanel");
 	}
 
 	public Path getTemporaryFilePath() {
 		return temporaryFilePath;
 	}
 
-	public void removeIcon(OrganisationViewBean organisationViewBean) {
-		if (organisationViewBean != null) {
-			organisationViewBean.setIconFileName("");
-		}
+	public void removeObjectEditedIcon() {
+		objectEdited.setIconFileName("");
 		resetTemporaryFilePath();
 	}
 

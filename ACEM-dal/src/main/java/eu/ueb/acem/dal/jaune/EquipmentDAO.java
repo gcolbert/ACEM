@@ -27,10 +27,10 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.AbstractDAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.EquipmentRepository;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -43,7 +43,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * 
  */
 @Repository("equipmentDAO")
-public class EquipmentDAO implements DAO<Long, Equipment> {
+public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implements ResourceDAO<Long, Equipment> {
 
 	/**
 	 * For serialization.
@@ -54,15 +54,13 @@ public class EquipmentDAO implements DAO<Long, Equipment> {
 	private static final Logger logger = LoggerFactory.getLogger(EquipmentDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private EquipmentRepository repository;
 
-	public EquipmentDAO() {
-
+	@Override
+	public GenericRepository<EquipmentNode> getRepository() {
+		return repository;
 	}
-
+	
 	@Override
 	public Boolean exists(Long id) {
 		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
@@ -76,25 +74,6 @@ public class EquipmentDAO implements DAO<Long, Equipment> {
 	}
 
 	@Override
-	public Equipment create(Equipment entity) {
-		return repository.save((EquipmentNode) entity);
-	}
-
-	@Override
-	public Equipment retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
-	public Equipment retrieveById(Long id, boolean initialize) {
-		Equipment entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
-	}
-
-	@Override
 	public Set<Equipment> retrieveByName(String name) {
 		Iterable<EquipmentNode> equipmentNodes = repository.findByName(name);
 		Set<Equipment> equipments = new HashSet<Equipment>();
@@ -102,17 +81,6 @@ public class EquipmentDAO implements DAO<Long, Equipment> {
 			equipments.add(entity);
 		}
 		return equipments;
-	}
-
-	@Override
-	public Set<Equipment> retrieveByName(String name, boolean initialize) {
-		Set<Equipment> entities = retrieveByName(name);
-		if (initialize) {
-			for (Equipment entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
 	}
 
 	@Override
@@ -124,43 +92,10 @@ public class EquipmentDAO implements DAO<Long, Equipment> {
 		neo4jOperations.fetch(entity.getStorageLocations());
 	}
 
+	/**
+	 * Returns the categories containing at least one "Equipment" entity.
+	 */
 	@Override
-	public Collection<Equipment> retrieveAll() {
-		Iterable<EquipmentNode> endResults = repository.findAll();
-		Collection<Equipment> collection = new HashSet<Equipment>();
-		if (endResults.iterator() != null) {
-			Iterator<EquipmentNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Equipment entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public Equipment update(Equipment entity) {
-		Equipment updatedEntity = repository.save((EquipmentNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Equipment entity) {
-		repository.delete((EquipmentNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
-	}
-
 	public Collection<ResourceCategory> getCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
@@ -173,6 +108,7 @@ public class EquipmentDAO implements DAO<Long, Equipment> {
 		return collection;
 	}
 
+	@Override
 	public Collection<Equipment> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<EquipmentNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<Equipment> collection = new HashSet<Equipment>();

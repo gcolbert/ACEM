@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.gris;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.gris.neo4j.TeacherRepository;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
  * 
  */
 @Repository("teacherDAO")
-public class TeacherDAO implements DAO<Long, Teacher> {
+public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> implements DAO<Long, Teacher> {
 
 	/**
 	 * For serialization
@@ -54,13 +54,11 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 	private static final Logger logger = LoggerFactory.getLogger(TeacherDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private TeacherRepository repository;
 
-	public TeacherDAO() {
-
+	@Override
+	public GenericRepository<TeacherNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -76,30 +74,11 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 	}
 
 	@Override
-	public Teacher create(Teacher entity) {
-		return repository.save((TeacherNode) entity);
-	}
-
-	@Override
-	public Teacher retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Teacher entity) {
 		neo4jOperations.fetch(entity.getFavoriteToolCategories());
 		neo4jOperations.fetch(entity.getScenarios());
 		neo4jOperations.fetch(entity.getClasses());
 		neo4jOperations.fetch(entity.getWorksForOrganisations());
-	}
-
-	@Override
-	public Teacher retrieveById(Long id, boolean initialize) {
-		Teacher entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	public Teacher retrieveByLogin(String id, boolean initialize) {
@@ -118,53 +97,6 @@ public class TeacherDAO implements DAO<Long, Teacher> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Teacher> retrieveByName(String name, boolean initialize) {
-		Collection<Teacher> entities = retrieveByName(name);
-		if (initialize) {
-			for (Teacher entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Teacher> retrieveAll() {
-		Iterable<TeacherNode> endResults = repository.findAll();
-		Collection<Teacher> collection = new HashSet<Teacher>();
-		if (endResults.iterator() != null) {
-			Iterator<TeacherNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Teacher entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public Teacher update(Teacher entity) {
-		Teacher updatedEntity = repository.save((TeacherNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
-	}
-
-	@Override
-	public void delete(Teacher entity) {
-		repository.delete((TeacherNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.jaune;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.UseModeRepository;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
  * 
  */
 @Repository("useModeDAO")
-public class UseModeDAO implements DAO<Long, UseMode> {
+public class UseModeDAO extends AbstractDAO<UseMode, UseModeNode> implements DAO<Long, UseMode> {
 
 	/**
 	 * For serialization.
@@ -51,13 +51,11 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 	private static final Logger logger = LoggerFactory.getLogger(UseModeDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private UseModeRepository repository;
 
-	public UseModeDAO() {
-
+	@Override
+	public GenericRepository<UseModeNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,25 +71,6 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 	}
 
 	@Override
-	public UseMode create(UseMode entity) {
-		return repository.save((UseModeNode) entity);
-	}
-
-	@Override
-	public UseMode retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
-	public UseMode retrieveById(Long id, boolean initialize) {
-		UseMode entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
-	}
-
-	@Override
 	public void initializeCollections(UseMode entity) {
 		neo4jOperations.fetch(entity.getReferredOrganisations());
 	}
@@ -104,54 +83,6 @@ public class UseModeDAO implements DAO<Long, UseMode> {
 			useModes.add(useMode);
 		}
 		return useModes;
-	}
-
-	@Override
-	public Collection<UseMode> retrieveByName(String name, boolean initialize) {
-		Collection<UseMode> entities = retrieveByName(name);
-		if (initialize) {
-			for (UseMode entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<UseMode> retrieveAll() {
-		Iterable<UseModeNode> endResults = repository.findAll();
-		Collection<UseMode> collection = new HashSet<UseMode>();
-		if (endResults.iterator() != null) {
-			Iterator<UseModeNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				UseMode entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public UseMode update(UseMode entity) {
-		UseMode updatedEntity = repository.save((UseModeNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(UseMode entity) {
-		repository.delete((UseModeNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

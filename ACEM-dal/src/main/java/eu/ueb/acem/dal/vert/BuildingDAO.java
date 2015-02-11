@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.vert;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.vert.neo4j.BuildingRepository;
 import eu.ueb.acem.domain.beans.vert.Building;
 import eu.ueb.acem.domain.beans.vert.neo4j.BuildingNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.vert.neo4j.BuildingNode;
  * 
  */
 @Repository("buildingDAO")
-public class BuildingDAO implements DAO<Long, Building> {
+public class BuildingDAO extends AbstractDAO<Building, BuildingNode> implements DAO<Long, Building> {
 
 	/**
 	 * For serialization.
@@ -51,13 +51,11 @@ public class BuildingDAO implements DAO<Long, Building> {
 	private static final Logger logger = LoggerFactory.getLogger(BuildingDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private BuildingRepository repository;
 
-	public BuildingDAO() {
-
+	@Override
+	public GenericRepository<BuildingNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,27 +71,8 @@ public class BuildingDAO implements DAO<Long, Building> {
 	}
 
 	@Override
-	public Building create(Building entity) {
-		return repository.save((BuildingNode) entity);
-	}
-
-	@Override
-	public Building retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Building entity) {
 		neo4jOperations.fetch(entity.getCampus());
-	}
-
-	@Override
-	public Building retrieveById(Long id, boolean initialize) {
-		Building entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -104,54 +83,6 @@ public class BuildingDAO implements DAO<Long, Building> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Building> retrieveByName(String name, boolean initialize) {
-		Collection<Building> entities = retrieveByName(name);
-		if (initialize) {
-			for (Building entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Building> retrieveAll() {
-		Iterable<BuildingNode> endResults = repository.findAll();
-		Collection<Building> entities = new HashSet<Building>();
-		if (endResults.iterator() != null) {
-			Iterator<BuildingNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Building entity = iterator.next();
-				initializeCollections(entity);
-				entities.add(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Building update(Building entity) {
-		Building updatedEntity = repository.save((BuildingNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Building entity) {
-		repository.delete((BuildingNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

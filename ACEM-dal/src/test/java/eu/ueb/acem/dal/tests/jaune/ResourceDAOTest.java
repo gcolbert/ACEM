@@ -35,19 +35,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.jaune.EquipmentDAO;
-import eu.ueb.acem.dal.jaune.PedagogicalAndDocumentaryResourcesDAO;
-import eu.ueb.acem.dal.jaune.ProfessionalTrainingDAO;
 import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
-import eu.ueb.acem.dal.jaune.SoftwareDAO;
-import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
+import eu.ueb.acem.dal.jaune.ResourceDAO;
 import eu.ueb.acem.dal.jaune.UseModeDAO;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 
 /**
  * @author Grégoire Colbert
@@ -69,22 +68,22 @@ public class ResourceDAOTest extends TestCase {
 	private ResourceCategoryDAO resourceCategoryDAO;
 
 	@Inject
-	private SoftwareDAO softwareDAO;
+	private ResourceDAO<Long,Software> softwareDAO;
 
 	@Inject
-	private SoftwareDocumentationDAO softwareDocumentationDAO;
-
-	@Inject
-	@SuppressWarnings("unused")
-	private EquipmentDAO equipmentDAO;
+	private ResourceDAO<Long,SoftwareDocumentation> softwareDocumentationDAO;
 
 	@Inject
 	@SuppressWarnings("unused")
-	private PedagogicalAndDocumentaryResourcesDAO pedagogicalAndDocumentaryResourcesDAO;
+	private ResourceDAO<Long,Equipment> equipmentDAO;
 
 	@Inject
 	@SuppressWarnings("unused")
-	private ProfessionalTrainingDAO professionalTrainingDAO;
+	private ResourceDAO<Long,PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResourcesDAO;
+
+	@Inject
+	@SuppressWarnings("unused")
+	private ResourceDAO<Long,ProfessionalTraining> professionalTrainingDAO;
 
 	public ResourceDAOTest() {
 	}

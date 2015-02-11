@@ -26,10 +26,10 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.AbstractDAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.ProfessionalTrainingRepository;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -42,7 +42,8 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * 
  */
 @Repository("professionalTrainingDAO")
-public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> {
+public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, ProfessionalTrainingNode> implements
+		ResourceDAO<Long, ProfessionalTraining> {
 
 	/**
 	 * For serialization.
@@ -53,15 +54,13 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 	private static final Logger logger = LoggerFactory.getLogger(ProfessionalTrainingDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private ProfessionalTrainingRepository repository;
 
-	public ProfessionalTrainingDAO() {
-
+	@Override
+	public GenericRepository<ProfessionalTrainingNode> getRepository() {
+		return repository;
 	}
-
+	
 	@Override
 	public Boolean exists(Long id) {
 		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
@@ -75,30 +74,11 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 	}
 
 	@Override
-	public ProfessionalTraining create(ProfessionalTraining entity) {
-		return repository.save((ProfessionalTrainingNode) entity);
-	}
-
-	@Override
-	public ProfessionalTraining retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(ProfessionalTraining entity) {
 		neo4jOperations.fetch(entity.getCategories());
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
 		neo4jOperations.fetch(entity.getUseModes());
-	}
-
-	@Override
-	public ProfessionalTraining retrieveById(Long id, boolean initialize) {
-		ProfessionalTraining entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -111,54 +91,11 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 		return entities;
 	}
 
+	/**
+	 * Returns the categories containing at least one "ProfessionalTraining"
+	 * entity.
+	 */
 	@Override
-	public Collection<ProfessionalTraining> retrieveByName(String name, boolean initialize) {
-		Collection<ProfessionalTraining> entities = retrieveByName(name);
-		if (initialize) {
-			for (ProfessionalTraining entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<ProfessionalTraining> retrieveAll() {
-		Iterable<ProfessionalTrainingNode> endResults = repository.findAll();
-		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();
-		if (endResults.iterator() != null) {
-			Iterator<ProfessionalTrainingNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				ProfessionalTraining entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public ProfessionalTraining update(ProfessionalTraining entity) {
-		ProfessionalTraining updatedEntity = repository.save((ProfessionalTrainingNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(ProfessionalTraining entity) {
-		repository.delete((ProfessionalTrainingNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
-	}
-
 	public Collection<ResourceCategory> getCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
@@ -171,6 +108,7 @@ public class ProfessionalTrainingDAO implements DAO<Long, ProfessionalTraining> 
 		return collection;
 	}
 
+	@Override
 	public Collection<ProfessionalTraining> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<ProfessionalTrainingNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();

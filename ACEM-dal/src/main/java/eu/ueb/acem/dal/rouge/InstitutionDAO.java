@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.rouge;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.InstitutionRepository;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
  * 
  */
 @Repository("institutionDAO")
-public class InstitutionDAO implements DAO<Long, Institution> {
+public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> implements DAO<Long, Institution> {
 
 	/**
 	 * FOr serialization.
@@ -51,13 +51,11 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 	private static final Logger logger = LoggerFactory.getLogger(InstitutionDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private InstitutionRepository repository;
 
-	public InstitutionDAO() {
-
+	@Override
+	public GenericRepository<InstitutionNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,16 +71,6 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 	}
 
 	@Override
-	public Institution create(Institution entity) {
-		return repository.save((InstitutionNode) entity);
-	}
-
-	@Override
-	public Institution retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Institution entity) {
 		neo4jOperations.fetch(entity.getPossessedResources());
 		neo4jOperations.fetch(entity.getViewedResources());
@@ -93,15 +81,6 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 	}
 
 	@Override
-	public Institution retrieveById(Long id, boolean initialize) {
-		Institution entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
-	}
-
-	@Override
 	public Collection<Institution> retrieveByName(String name) {
 		Iterable<InstitutionNode> nodes = repository.findByName(name);
 		Collection<Institution> entities = new HashSet<Institution>();
@@ -109,54 +88,6 @@ public class InstitutionDAO implements DAO<Long, Institution> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Institution> retrieveByName(String name, boolean initialize) {
-		Collection<Institution> entities = retrieveByName(name);
-		if (initialize) {
-			for (Institution entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Institution> retrieveAll() {
-		Iterable<InstitutionNode> endResults = repository.findAll();
-		Collection<Institution> entities = new HashSet<Institution>();
-		if (endResults.iterator() != null) {
-			Iterator<InstitutionNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Institution entity = iterator.next();
-				initializeCollections(entity);
-				entities.add(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Institution update(Institution entity) {
-		Institution updatedEntity = repository.save((InstitutionNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Institution entity) {
-		repository.delete((InstitutionNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

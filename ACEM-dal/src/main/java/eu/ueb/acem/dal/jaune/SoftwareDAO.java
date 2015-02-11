@@ -26,10 +26,10 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.AbstractDAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.SoftwareRepository;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
@@ -42,7 +42,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
  * 
  */
 @Repository("softwareDAO")
-public class SoftwareDAO implements DAO<Long, Software> {
+public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements ResourceDAO<Long, Software> {
 
 	/**
 	 * For serialization.
@@ -53,13 +53,11 @@ public class SoftwareDAO implements DAO<Long, Software> {
 	private static final Logger logger = LoggerFactory.getLogger(SoftwareDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private SoftwareRepository repository;
 
-	public SoftwareDAO() {
-
+	@Override
+	public GenericRepository<SoftwareNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -75,31 +73,12 @@ public class SoftwareDAO implements DAO<Long, Software> {
 	}
 
 	@Override
-	public Software create(Software entity) {
-		return repository.save((SoftwareNode) entity);
-	}
-
-	@Override
-	public Software retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Software entity) {
 		neo4jOperations.fetch(entity.getCategories());
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
 		neo4jOperations.fetch(entity.getUseModes());
 		neo4jOperations.fetch(entity.getDocumentations());
-	}
-
-	@Override
-	public Software retrieveById(Long id, boolean initialize) {
-		Software entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -112,54 +91,10 @@ public class SoftwareDAO implements DAO<Long, Software> {
 		return softwares;
 	}
 
+	/**
+	 * Returns the categories containing at least one "Software" entity.
+	 */
 	@Override
-	public Collection<Software> retrieveByName(String name, boolean initialize) {
-		Collection<Software> entities = retrieveByName(name);
-		if (initialize) {
-			for (Software entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Software> retrieveAll() {
-		Iterable<SoftwareNode> endResults = repository.findAll();
-		Collection<Software> collection = new HashSet<Software>();
-		if (endResults.iterator() != null) {
-			Iterator<SoftwareNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Software entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public Software update(Software entity) {
-		Software updatedEntity = repository.save((SoftwareNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Software entity) {
-		repository.delete((SoftwareNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
-	}
-
 	public Collection<ResourceCategory> getCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
@@ -172,6 +107,7 @@ public class SoftwareDAO implements DAO<Long, Software> {
 		return collection;
 	}
 
+	@Override
 	public Collection<Software> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<SoftwareNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<Software> collection = new HashSet<Software>();

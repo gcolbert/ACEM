@@ -28,29 +28,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.jaune.EquipmentDAO;
-import eu.ueb.acem.dal.jaune.PedagogicalAndDocumentaryResourcesDAO;
-import eu.ueb.acem.dal.jaune.ProfessionalTrainingDAO;
 import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
-import eu.ueb.acem.dal.jaune.SoftwareDAO;
-import eu.ueb.acem.dal.jaune.SoftwareDocumentationDAO;
+import eu.ueb.acem.dal.jaune.ResourceDAO;
 import eu.ueb.acem.dal.jaune.UseModeDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
+import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
-import eu.ueb.acem.domain.beans.jaune.Equipment;
-import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.Resource;
-import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -74,19 +70,19 @@ public class ResourcesServiceImpl implements ResourcesService {
 	private UseModeDAO useModeDAO;
 
 	@Inject
-	private EquipmentDAO equipmentDAO;
+	private ResourceDAO<Long,Equipment> equipmentDAO;
 
 	@Inject
-	private PedagogicalAndDocumentaryResourcesDAO pedagogicalAndDocumentaryResourcesDAO;
+	private ResourceDAO<Long,PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResourcesDAO;
 
 	@Inject
-	private ProfessionalTrainingDAO professionalTrainingDAO;
+	private ResourceDAO<Long,ProfessionalTraining> professionalTrainingDAO;
 
 	@Inject
-	private SoftwareDAO softwareDAO;
+	private ResourceDAO<Long,Software> softwareDAO;
 
 	@Inject
-	private SoftwareDocumentationDAO softwareDocumentationDAO;
+	private ResourceDAO<Long,SoftwareDocumentation> softwareDocumentationDAO;
 
 	@Override
 	public Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType) {

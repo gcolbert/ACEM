@@ -27,10 +27,10 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.AbstractDAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.PedagogicalAndDocumentaryResourcesRepository;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -42,8 +42,10 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * @since 2014-03-11
  * 
  */
-@Repository("pedagogicalAndDocumentaryResourcesDAO")
-public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, PedagogicalAndDocumentaryResource> {
+@Repository("pedagogicalAndDocumentaryResourceDAO")
+public class PedagogicalAndDocumentaryResourceDAO extends
+		AbstractDAO<PedagogicalAndDocumentaryResource, PedagogicalAndDocumentaryResourceNode> implements
+		ResourceDAO<Long, PedagogicalAndDocumentaryResource> {
 
 	/**
 	 * For serialization.
@@ -51,18 +53,16 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Pedagogi
 	private static final long serialVersionUID = 3560652375213346842L;
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(PedagogicalAndDocumentaryResourcesDAO.class);
-
-	@Inject
-	private Neo4jOperations neo4jOperations;
+	private static final Logger logger = LoggerFactory.getLogger(PedagogicalAndDocumentaryResourceDAO.class);
 
 	@Inject
 	private PedagogicalAndDocumentaryResourcesRepository repository;
 
-	public PedagogicalAndDocumentaryResourcesDAO() {
-
+	@Override
+	public GenericRepository<PedagogicalAndDocumentaryResourceNode> getRepository() {
+		return repository;
 	}
-
+	
 	@Override
 	public Boolean exists(Long id) {
 		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
@@ -76,25 +76,6 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Pedagogi
 	}
 
 	@Override
-	public PedagogicalAndDocumentaryResource create(PedagogicalAndDocumentaryResource entity) {
-		return repository.save((PedagogicalAndDocumentaryResourceNode) entity);
-	}
-
-	@Override
-	public PedagogicalAndDocumentaryResource retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
-	public PedagogicalAndDocumentaryResource retrieveById(Long id, boolean initialize) {
-		PedagogicalAndDocumentaryResource entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
-	}
-
-	@Override
 	public Set<PedagogicalAndDocumentaryResource> retrieveByName(String name) {
 		Iterable<PedagogicalAndDocumentaryResourceNode> pedagogicalAndDocumentaryResourceNodes = repository.findByName(name);
 		Set<PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResources = new HashSet<PedagogicalAndDocumentaryResource>();
@@ -105,17 +86,6 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Pedagogi
 	}
 
 	@Override
-	public Set<PedagogicalAndDocumentaryResource> retrieveByName(String name, boolean initialize) {
-		Set<PedagogicalAndDocumentaryResource> entities = retrieveByName(name);
-		if (initialize) {
-			for (PedagogicalAndDocumentaryResource entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
 	public void initializeCollections(PedagogicalAndDocumentaryResource entity) {
 		neo4jOperations.fetch(entity.getCategories());
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
@@ -123,43 +93,11 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Pedagogi
 		neo4jOperations.fetch(entity.getUseModes());
 	}
 
+	/**
+	 * Returns the categories containing at least one
+	 * "PedagogicalAndDocumentaryResource" entity.
+	 */
 	@Override
-	public Set<PedagogicalAndDocumentaryResource> retrieveAll() {
-		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.findAll();
-		Set<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
-		if (endResults.iterator() != null) {
-			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				PedagogicalAndDocumentaryResource entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public PedagogicalAndDocumentaryResource update(PedagogicalAndDocumentaryResource entity) {
-		PedagogicalAndDocumentaryResource updatedEntity = repository.save((PedagogicalAndDocumentaryResourceNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(PedagogicalAndDocumentaryResource entity) {
-		repository.delete((PedagogicalAndDocumentaryResourceNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
-	}
-
 	public Collection<ResourceCategory> getCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
@@ -172,6 +110,7 @@ public class PedagogicalAndDocumentaryResourcesDAO implements DAO<Long, Pedagogi
 		return collection;
 	}
 
+	@Override
 	public Collection<PedagogicalAndDocumentaryResource> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.getEntitiesWithCategory(category.getId());
 		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();

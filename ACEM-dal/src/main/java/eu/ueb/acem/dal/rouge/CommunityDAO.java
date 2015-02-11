@@ -26,10 +26,11 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.CommunityRepository;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
@@ -40,7 +41,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
  * 
  */
 @Repository("communityDAO")
-public class CommunityDAO implements DAO<Long, Community> {
+public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implements DAO<Long, Community> {
 
 	/**
 	 * FOr serialization.
@@ -51,13 +52,11 @@ public class CommunityDAO implements DAO<Long, Community> {
 	private static final Logger logger = LoggerFactory.getLogger(CommunityDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private CommunityRepository repository;
 
-	public CommunityDAO() {
-
+	@Override
+	public GenericRepository<CommunityNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,16 +72,6 @@ public class CommunityDAO implements DAO<Long, Community> {
 	}
 
 	@Override
-	public Community create(Community entity) {
-		return repository.save((CommunityNode) entity);
-	}
-
-	@Override
-	public Community retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Community entity) {
 		neo4jOperations.fetch(entity.getPossessedResources());
 		neo4jOperations.fetch(entity.getViewedResources());
@@ -91,31 +80,11 @@ public class CommunityDAO implements DAO<Long, Community> {
 	}
 	
 	@Override
-	public Community retrieveById(Long id, boolean initialize) {
-		Community entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
-	}
-
-	@Override
 	public Collection<Community> retrieveByName(String name) {
 		Iterable<CommunityNode> nodes = repository.findByName(name);
 		Collection<Community> entities = new HashSet<Community>();
 		for (CommunityNode node : nodes) {
 			entities.add(node);
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Community> retrieveByName(String name, boolean initialize) {
-		Collection<Community> entities = retrieveByName(name);
-		if (initialize) {
-			for (Community entity : entities) {
-				initializeCollections(entity);
-			}
 		}
 		return entities;
 	}
@@ -133,28 +102,6 @@ public class CommunityDAO implements DAO<Long, Community> {
 			}
 		}
 		return entities;
-	}
-
-	@Override
-	public Community update(Community entity) {
-		Community updatedEntity = repository.save((CommunityNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Community entity) {
-		repository.delete((CommunityNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

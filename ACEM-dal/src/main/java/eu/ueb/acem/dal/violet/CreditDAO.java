@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.violet;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.violet.neo4j.CreditRepository;
 import eu.ueb.acem.domain.beans.violet.Credit;
 import eu.ueb.acem.domain.beans.violet.neo4j.CreditNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.CreditNode;
  * 
  */
 @Repository("creditDAO")
-public class CreditDAO implements DAO<Long, Credit> {
+public class CreditDAO extends AbstractDAO<Credit, CreditNode> implements DAO<Long, Credit> {
 
 	/**
 	 * For serialization.
@@ -51,13 +51,11 @@ public class CreditDAO implements DAO<Long, Credit> {
 	private static final Logger logger = LoggerFactory.getLogger(CreditDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private CreditRepository repository;
 
-	public CreditDAO() {
-
+	@Override
+	public GenericRepository<CreditNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,28 +71,9 @@ public class CreditDAO implements DAO<Long, Credit> {
 	}
 
 	@Override
-	public Credit create(Credit entity) {
-		return repository.save((CreditNode) entity);
-	}
-
-	@Override
-	public Credit retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Credit entity) {
 		neo4jOperations.fetch(entity.getCourses());
 		neo4jOperations.fetch(entity.getDegrees());
-	}
-
-	@Override
-	public Credit retrieveById(Long id, boolean initialize) {
-		Credit entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -105,54 +84,6 @@ public class CreditDAO implements DAO<Long, Credit> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Credit> retrieveByName(String name, boolean initialize) {
-		Collection<Credit> entities = retrieveByName(name);
-		if (initialize) {
-			for (Credit entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Credit> retrieveAll() {
-		Iterable<CreditNode> endResults = repository.findAll();
-		Collection<Credit> entities = new HashSet<Credit>();
-		if (endResults.iterator() != null) {
-			Iterator<CreditNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Credit entity = iterator.next();
-				initializeCollections(entity);
-				entities.add(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Credit update(Credit entity) {
-		Credit updatedEntity = repository.save((CreditNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Credit entity) {
-		repository.delete((CreditNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

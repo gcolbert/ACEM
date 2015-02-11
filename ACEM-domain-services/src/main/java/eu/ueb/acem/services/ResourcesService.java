@@ -73,5 +73,5 @@ public interface ResourcesService {
 	UseMode retrieveUseMode(Long idUseMode, boolean initialize);
 
 	Boolean deleteUseMode(Long id);
-	
+
 }

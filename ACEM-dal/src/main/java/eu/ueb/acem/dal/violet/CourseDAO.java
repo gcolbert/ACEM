@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.violet;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.violet.neo4j.CourseRepository;
 import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.neo4j.CourseNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.CourseNode;
  * 
  */
 @Repository("courseDAO")
-public class CourseDAO implements DAO<Long, Course> {
+public class CourseDAO extends AbstractDAO<Course, CourseNode> implements DAO<Long, Course> {
 
 	/**
 	 * For serialization.
@@ -51,13 +51,11 @@ public class CourseDAO implements DAO<Long, Course> {
 	private static final Logger logger = LoggerFactory.getLogger(CourseDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private CourseRepository repository;
 
-	public CourseDAO() {
-
+	@Override
+	public GenericRepository<CourseNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,27 +71,8 @@ public class CourseDAO implements DAO<Long, Course> {
 	}
 
 	@Override
-	public Course create(Course entity) {
-		return repository.save((CourseNode) entity);
-	}
-
-	@Override
-	public Course retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Course entity) {
 		neo4jOperations.fetch(entity.getCredit());
-	}
-
-	@Override
-	public Course retrieveById(Long id, boolean initialize) {
-		Course entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -104,54 +83,6 @@ public class CourseDAO implements DAO<Long, Course> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Course> retrieveByName(String name, boolean initialize) {
-		Collection<Course> entities = retrieveByName(name);
-		if (initialize) {
-			for (Course entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-	
-	@Override
-	public Collection<Course> retrieveAll() {
-		Iterable<CourseNode> endResults = repository.findAll();
-		Collection<Course> collection = new HashSet<Course>();
-		if (endResults.iterator() != null) {
-			Iterator<CourseNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Course entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public Course update(Course entity) {
-		Course updatedEntity = repository.save((CourseNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Course entity) {
-		repository.delete((CourseNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

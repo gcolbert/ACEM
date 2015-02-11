@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.violet;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.violet.neo4j.ClassRepository;
 import eu.ueb.acem.domain.beans.violet.Class;
 import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
  * 
  */
 @Repository("classDAO")
-public class ClassDAO implements DAO<Long, Class> {
+public class ClassDAO extends AbstractDAO<Class, ClassNode> implements DAO<Long, Class> {
 
 	/**
 	 * For serialization.
@@ -51,13 +51,11 @@ public class ClassDAO implements DAO<Long, Class> {
 	private static final Logger logger = LoggerFactory.getLogger(ClassDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private ClassRepository repository;
 
-	public ClassDAO() {
-
+	@Override
+	public GenericRepository<ClassNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,29 +71,10 @@ public class ClassDAO implements DAO<Long, Class> {
 	}
 
 	@Override
-	public Class create(Class entity) {
-		return repository.save((ClassNode) entity);
-	}
-
-	@Override
-	public Class retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Class entity) {
 		neo4jOperations.fetch(entity.getCourse());
 		neo4jOperations.fetch(entity.getPedagogicalScenarios());
 		neo4jOperations.fetch(entity.getLocation());
-	}
-
-	@Override
-	public Class retrieveById(Long id, boolean initialize) {
-		Class entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -106,54 +85,6 @@ public class ClassDAO implements DAO<Long, Class> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Class> retrieveByName(String name, boolean initialize) {
-		Collection<Class> entities = retrieveByName(name);
-		if (initialize) {
-			for (Class entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Class> retrieveAll() {
-		Iterable<ClassNode> endResults = repository.findAll();
-		Collection<Class> entities = new HashSet<Class>();
-		if (endResults.iterator() != null) {
-			Iterator<ClassNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Class entity = iterator.next();
-				initializeCollections(entity);
-				entities.add(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Class update(Class entity) {
-		Class updatedEntity = repository.save((ClassNode) entity);
-		initializeCollections(entity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Class entity) {
-		repository.delete((ClassNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

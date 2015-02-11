@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.gris;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.gris.neo4j.PersonRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
  * 
  */
 @Repository("personDAO")
-public class PersonDAO implements DAO<Long, Person> {
+public class PersonDAO extends AbstractDAO<Person, PersonNode> implements DAO<Long, Person> {
 
 	/**
 	 * For serialization.
@@ -54,13 +54,11 @@ public class PersonDAO implements DAO<Long, Person> {
 	private static final Logger logger = LoggerFactory.getLogger(PersonDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private PersonRepository repository;
 
-	public PersonDAO() {
-
+	@Override
+	public GenericRepository<PersonNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -76,11 +74,6 @@ public class PersonDAO implements DAO<Long, Person> {
 	}
 
 	@Override
-	public Person create(Person entity) {
-		return repository.save((PersonNode) entity);
-	}
-
-	@Override
 	public Collection<Person> retrieveByName(String name) {
 		Iterable<PersonNode> nodes = repository.findByName(name);
 		Collection<Person> entities = new HashSet<Person>();
@@ -91,70 +84,8 @@ public class PersonDAO implements DAO<Long, Person> {
 	}
 
 	@Override
-	public Collection<Person> retrieveByName(String name, boolean initialize) {
-		Collection<Person> entities = retrieveByName(name);
-		if (initialize) {
-			for (Person entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
 	public void initializeCollections(Person entity) {
 		neo4jOperations.fetch(entity.getWorksForOrganisations());
-	}
-
-	@Override
-	public Person retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
-	public Person retrieveById(Long id, boolean initialize) {
-		Person entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
-	}
-
-	@Override
-	public Collection<Person> retrieveAll() {
-		Iterable<PersonNode> endResults = repository.findAll();
-		Collection<Person> collection = new HashSet<Person>();
-		if (endResults.iterator() != null) {
-			Iterator<PersonNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Person entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public Person update(Person entity) {
-		Person updatedEntity = repository.save((PersonNode) entity);
-		return retrieveById(updatedEntity.getId(), true);
-	}
-
-	@Override
-	public void delete(Person entity) {
-		PersonNode personNode = (PersonNode) entity;
-		repository.delete(personNode);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 	public Person retrieveByLogin(String id, boolean initialize) {

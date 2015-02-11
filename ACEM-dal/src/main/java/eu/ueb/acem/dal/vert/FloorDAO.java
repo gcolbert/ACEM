@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.vert;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.vert.neo4j.FloorRepository;
 import eu.ueb.acem.domain.beans.vert.Floor;
 import eu.ueb.acem.domain.beans.vert.neo4j.FloorNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.vert.neo4j.FloorNode;
  * 
  */
 @Repository("floorDAO")
-public class FloorDAO implements DAO<Long, Floor> {
+public class FloorDAO extends AbstractDAO<Floor, FloorNode> implements DAO<Long, Floor> {
 
 	/**
 	 * For serialization.
@@ -51,13 +51,11 @@ public class FloorDAO implements DAO<Long, Floor> {
 	private static final Logger logger = LoggerFactory.getLogger(FloorDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private FloorRepository repository;
 
-	public FloorDAO() {
-
+	@Override
+	public GenericRepository<FloorNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,27 +71,8 @@ public class FloorDAO implements DAO<Long, Floor> {
 	}
 
 	@Override
-	public Floor create(Floor entity) {
-		return repository.save((FloorNode) entity);
-	}
-
-	@Override
-	public Floor retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Floor entity) {
 		neo4jOperations.fetch(entity.getBuilding());
-	}
-
-	@Override
-	public Floor retrieveById(Long id, boolean initialize) {
-		Floor entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -104,54 +83,6 @@ public class FloorDAO implements DAO<Long, Floor> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Floor> retrieveByName(String name, boolean initialize) {
-		Collection<Floor> entities = retrieveByName(name);
-		if (initialize) {
-			for (Floor entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Floor> retrieveAll() {
-		Iterable<FloorNode> endResults = repository.findAll();
-		Collection<Floor> collection = new HashSet<Floor>();
-		if (endResults.iterator() != null) {
-			Iterator<FloorNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Floor entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public Floor update(Floor entity) {
-		Floor updatedEntity = repository.save((FloorNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Floor entity) {
-		repository.delete((FloorNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

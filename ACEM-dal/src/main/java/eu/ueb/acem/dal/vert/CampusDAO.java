@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.vert;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.vert.neo4j.CampusRepository;
 import eu.ueb.acem.domain.beans.vert.Campus;
 import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
  * 
  */
 @Repository("campusDAO")
-public class CampusDAO implements DAO<Long, Campus> {
+public class CampusDAO extends AbstractDAO<Campus, CampusNode> implements DAO<Long, Campus> {
 
 	/**
 	 * For serialization.
@@ -50,15 +50,12 @@ public class CampusDAO implements DAO<Long, Campus> {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(CampusDAO.class);
 
-	@SuppressWarnings("unused")
-	@Inject
-	private Neo4jOperations neo4jOperations;
-
 	@Inject
 	private CampusRepository repository;
 
-	public CampusDAO() {
-
+	@Override
+	public GenericRepository<CampusNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -74,27 +71,8 @@ public class CampusDAO implements DAO<Long, Campus> {
 	}
 
 	@Override
-	public Campus create(Campus entity) {
-		return repository.save((CampusNode) entity);
-	}
-
-	@Override
-	public Campus retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Campus entity) {
 
-	}
-
-	@Override
-	public Campus retrieveById(Long id, boolean initialize) {
-		Campus entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -105,54 +83,6 @@ public class CampusDAO implements DAO<Long, Campus> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Campus> retrieveByName(String name, boolean initialize) {
-		Collection<Campus> entities = retrieveByName(name);
-		if (initialize) {
-			for (Campus entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Campus> retrieveAll() {
-		Iterable<CampusNode> endResults = repository.findAll();
-		Collection<Campus> collection = new HashSet<Campus>();
-		if (endResults.iterator() != null) {
-			Iterator<CampusNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Campus entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public Campus update(Campus entity) {
-		Campus updatedEntity = repository.save((CampusNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Campus entity) {
-		repository.delete((CampusNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

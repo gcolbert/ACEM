@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.rouge;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.TeachingDepartmentRepository;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
@@ -40,7 +40,8 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
  * 
  */
 @Repository("teachingDepartmentDAO")
-public class TeachingDepartmentDAO implements DAO<Long, TeachingDepartment> {
+public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, TeachingDepartmentNode> implements
+		DAO<Long, TeachingDepartment> {
 
 	/**
 	 * For serialization.
@@ -51,13 +52,11 @@ public class TeachingDepartmentDAO implements DAO<Long, TeachingDepartment> {
 	private static final Logger logger = LoggerFactory.getLogger(TeachingDepartmentDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private TeachingDepartmentRepository repository;
 
-	public TeachingDepartmentDAO() {
-
+	@Override
+	public GenericRepository<TeachingDepartmentNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,30 +72,11 @@ public class TeachingDepartmentDAO implements DAO<Long, TeachingDepartment> {
 	}
 
 	@Override
-	public TeachingDepartment create(TeachingDepartment entity) {
-		return repository.save((TeachingDepartmentNode) entity);
-	}
-
-	@Override
-	public TeachingDepartment retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(TeachingDepartment entity) {
 		neo4jOperations.fetch(entity.getPossessedResources());
 		neo4jOperations.fetch(entity.getViewedResources());
 		neo4jOperations.fetch(entity.getUseModes());
 		neo4jOperations.fetch(entity.getInstitutions());
-	}
-
-	@Override
-	public TeachingDepartment retrieveById(Long id, boolean initialize) {
-		TeachingDepartment entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -107,54 +87,6 @@ public class TeachingDepartmentDAO implements DAO<Long, TeachingDepartment> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<TeachingDepartment> retrieveByName(String name, boolean initialize) {
-		Collection<TeachingDepartment> entities = retrieveByName(name);
-		if (initialize) {
-			for (TeachingDepartment entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<TeachingDepartment> retrieveAll() {
-		Iterable<TeachingDepartmentNode> endResults = repository.findAll();
-		Collection<TeachingDepartment> collection = new HashSet<TeachingDepartment>();
-		if (endResults.iterator() != null) {
-			Iterator<TeachingDepartmentNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				TeachingDepartment entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public TeachingDepartment update(TeachingDepartment entity) {
-		TeachingDepartment updatedEntity = repository.save((TeachingDepartmentNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(TeachingDepartment entity) {
-		repository.delete((TeachingDepartmentNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

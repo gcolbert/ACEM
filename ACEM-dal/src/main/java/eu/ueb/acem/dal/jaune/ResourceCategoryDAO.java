@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.jaune;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.ResourceCategoryRepository;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
@@ -40,7 +40,8 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * 
  */
 @Repository("resourceCategoryDAO")
-public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
+public class ResourceCategoryDAO extends AbstractDAO<ResourceCategory, ResourceCategoryNode> implements
+		DAO<Long, ResourceCategory> {
 
 	/**
 	 * For serialization.
@@ -51,13 +52,11 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 	private static final Logger logger = LoggerFactory.getLogger(ResourceCategoryDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private ResourceCategoryRepository repository;
 
-	public ResourceCategoryDAO() {
-
+	@Override
+	public GenericRepository<ResourceCategoryNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,29 +72,10 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 	}
 
 	@Override
-	public ResourceCategory create(ResourceCategory entity) {
-		return repository.save((ResourceCategoryNode) entity);
-	}
-
-	@Override
-	public ResourceCategory retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(ResourceCategory entity) {
 		neo4jOperations.fetch(entity.getAnswers());
 		neo4jOperations.fetch(entity.getPedagogicalActivities());
 		neo4jOperations.fetch(entity.getResources());
-	}
-
-	@Override
-	public ResourceCategory retrieveById(Long id, boolean initialize) {
-		ResourceCategory entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -106,54 +86,6 @@ public class ResourceCategoryDAO implements DAO<Long, ResourceCategory> {
 			categories.add(category);
 		}
 		return categories;
-	}
-
-	@Override
-	public Collection<ResourceCategory> retrieveByName(String name, boolean initialize) {
-		Collection<ResourceCategory> entities = retrieveByName(name);
-		if (initialize) {
-			for (ResourceCategory entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<ResourceCategory> retrieveAll() {
-		Iterable<ResourceCategoryNode> endResults = repository.findAll();
-		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
-		if (endResults.iterator() != null) {
-			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				ResourceCategory entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public ResourceCategory update(ResourceCategory entity) {
-		ResourceCategory updatedEntity = repository.save((ResourceCategoryNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(ResourceCategory entity) {
-		repository.delete((ResourceCategoryNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

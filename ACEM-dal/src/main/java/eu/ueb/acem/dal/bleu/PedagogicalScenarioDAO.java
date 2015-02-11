@@ -26,11 +26,11 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.TimeTicker;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalScenarioRepository;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
@@ -42,7 +42,8 @@ import eu.ueb.acem.domain.beans.gris.Person;
  * 
  */
 @Repository("scenarioDAO")
-public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
+public class PedagogicalScenarioDAO extends AbstractDAO<PedagogicalScenario, PedagogicalScenarioNode> implements
+		DAO<Long, PedagogicalScenario> {
 
 	/**
 	 * For serialization.
@@ -56,12 +57,11 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalScenarioDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private PedagogicalScenarioRepository repository;
 
-	public PedagogicalScenarioDAO() {
+	@Override
+	public GenericRepository<PedagogicalScenarioNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -77,26 +77,6 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	}
 
 	@Override
-	public PedagogicalScenario create(PedagogicalScenario entity) {
-		entity.setCreationDate(TimeTicker.tick());
-		return repository.save((PedagogicalScenarioNode) entity);
-	}
-
-	@Override
-	public PedagogicalScenario retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
-	public PedagogicalScenario retrieveById(Long id, boolean initialize) {
-		PedagogicalScenario entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
-	}
-
-	@Override
 	public Collection<PedagogicalScenario> retrieveByName(String name) {
 		Iterable<PedagogicalScenarioNode> nodes = repository.findByName(name);
 		Collection<PedagogicalScenario> entities = new HashSet<PedagogicalScenario>();
@@ -107,59 +87,10 @@ public class PedagogicalScenarioDAO implements DAO<Long, PedagogicalScenario> {
 	}
 
 	@Override
-	public Collection<PedagogicalScenario> retrieveByName(String name, boolean initialize) {
-		Collection<PedagogicalScenario> entities = retrieveByName(name);
-		if (initialize) {
-			for (PedagogicalScenario entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
 	public void initializeCollections(PedagogicalScenario entity) {
 		neo4jOperations.fetch(entity.getPedagogicalActivities());
 		neo4jOperations.fetch(entity.getAuthors());
 		neo4jOperations.fetch(entity.getClasses());
-	}
-
-	@Override
-	public Collection<PedagogicalScenario> retrieveAll() {
-		Iterable<PedagogicalScenarioNode> endResults = repository.findAll();
-		Collection<PedagogicalScenario> collection = new HashSet<PedagogicalScenario>();
-		if (endResults.iterator() != null) {
-			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				PedagogicalScenario entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public PedagogicalScenario update(PedagogicalScenario entity) {
-		entity.setModificationDate(TimeTicker.tick());
-		PedagogicalScenario updatedEntity = repository.save((PedagogicalScenarioNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(PedagogicalScenario entity) {
-		repository.delete((PedagogicalScenarioNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 	public Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author) {

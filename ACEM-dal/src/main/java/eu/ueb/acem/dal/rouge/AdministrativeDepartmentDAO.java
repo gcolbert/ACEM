@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.rouge;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.AdministrativeDepartmentRepository;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
  * 
  */
 @Repository("administrativeDepartmentDAO")
-public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepartment> {
+public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepartment, AdministrativeDepartmentNode> implements DAO<Long, AdministrativeDepartment> {
 
 	/**
 	 * For serialization.
@@ -51,13 +51,11 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 	private static final Logger logger = LoggerFactory.getLogger(AdministrativeDepartmentDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private AdministrativeDepartmentRepository repository;
 
-	public AdministrativeDepartmentDAO() {
-
+	@Override
+	public GenericRepository<AdministrativeDepartmentNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,30 +71,11 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 	}
 
 	@Override
-	public AdministrativeDepartment create(AdministrativeDepartment entity) {
-		return repository.save((AdministrativeDepartmentNode) entity);
-	}
-
-	@Override
-	public AdministrativeDepartment retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(AdministrativeDepartment entity) {
 		neo4jOperations.fetch(entity.getPossessedResources());
 		neo4jOperations.fetch(entity.getViewedResources());
 		neo4jOperations.fetch(entity.getUseModes());
 		neo4jOperations.fetch(entity.getInstitutions());
-	}
-
-	@Override
-	public AdministrativeDepartment retrieveById(Long id, boolean initialize) {
-		AdministrativeDepartment entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -107,54 +86,6 @@ public class AdministrativeDepartmentDAO implements DAO<Long, AdministrativeDepa
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<AdministrativeDepartment> retrieveByName(String name, boolean initialize) {
-		Collection<AdministrativeDepartment> entities = retrieveByName(name);
-		if (initialize) {
-			for (AdministrativeDepartment entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<AdministrativeDepartment> retrieveAll() {
-		Iterable<AdministrativeDepartmentNode> endResults = repository.findAll();
-		Collection<AdministrativeDepartment> entities = new HashSet<AdministrativeDepartment>();
-		if (endResults.iterator() != null) {
-			Iterator<AdministrativeDepartmentNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				AdministrativeDepartment entity = iterator.next();
-				initializeCollections(entity);
-				entities.add(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public AdministrativeDepartment update(AdministrativeDepartment entity) {
-		AdministrativeDepartment updatedEntity = repository.save((AdministrativeDepartmentNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(AdministrativeDepartment entity) {
-		repository.delete((AdministrativeDepartmentNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

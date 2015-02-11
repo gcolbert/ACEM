@@ -20,16 +20,16 @@ package eu.ueb.acem.dal.violet;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.violet.neo4j.DegreeRepository;
 import eu.ueb.acem.domain.beans.violet.Degree;
 import eu.ueb.acem.domain.beans.violet.neo4j.DegreeNode;
@@ -40,7 +40,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.DegreeNode;
  * 
  */
 @Repository("diplomaDAO")
-public class DegreeDAO implements DAO<Long, Degree> {
+public class DegreeDAO extends AbstractDAO<Degree, DegreeNode> implements DAO<Long, Degree> {
 
 	/**
 	 * For serialization.
@@ -51,13 +51,11 @@ public class DegreeDAO implements DAO<Long, Degree> {
 	private static final Logger logger = LoggerFactory.getLogger(DegreeDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private DegreeRepository repository;
 
-	public DegreeDAO() {
-
+	@Override
+	public GenericRepository<DegreeNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -73,27 +71,8 @@ public class DegreeDAO implements DAO<Long, Degree> {
 	}
 
 	@Override
-	public Degree create(Degree entity) {
-		return repository.save((DegreeNode) entity);
-	}
-
-	@Override
-	public Degree retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Degree entity) {
 		neo4jOperations.fetch(entity.getCredits());
-	}
-
-	@Override
-	public Degree retrieveById(Long id, boolean initialize) {
-		Degree entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -104,54 +83,6 @@ public class DegreeDAO implements DAO<Long, Degree> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Degree> retrieveByName(String name, boolean initialize) {
-		Collection<Degree> entities = retrieveByName(name);
-		if (initialize) {
-			for (Degree entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-	
-	@Override
-	public Collection<Degree> retrieveAll() {
-		Iterable<DegreeNode> endResults = repository.findAll();
-		Collection<Degree> collection = new HashSet<Degree>();
-		if (endResults.iterator() != null) {
-			Iterator<DegreeNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Degree entity = iterator.next();
-				initializeCollections(entity);
-				collection.add(entity);
-			}
-		}
-		return collection;
-	}
-
-	@Override
-	public Degree update(Degree entity) {
-		Degree updatedEntity = repository.save((DegreeNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Degree entity) {
-		repository.delete((DegreeNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }

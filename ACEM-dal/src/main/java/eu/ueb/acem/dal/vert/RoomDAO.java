@@ -21,16 +21,16 @@ package eu.ueb.acem.dal.vert;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.vert.neo4j.RoomRepository;
 import eu.ueb.acem.domain.beans.vert.Room;
 import eu.ueb.acem.domain.beans.vert.neo4j.RoomNode;
@@ -41,7 +41,7 @@ import eu.ueb.acem.domain.beans.vert.neo4j.RoomNode;
  * 
  */
 @Repository("roomDAO")
-public class RoomDAO implements DAO<Long, Room> {
+public class RoomDAO extends AbstractDAO<Room, RoomNode> implements DAO<Long, Room> {
 
 	/**
 	 * For serialization.
@@ -52,13 +52,11 @@ public class RoomDAO implements DAO<Long, Room> {
 	private static final Logger logger = LoggerFactory.getLogger(RoomDAO.class);
 
 	@Inject
-	private Neo4jOperations neo4jOperations;
-
-	@Inject
 	private RoomRepository repository;
 
-	public RoomDAO() {
-
+	@Override
+	public GenericRepository<RoomNode> getRepository() {
+		return repository;
 	}
 
 	@Override
@@ -74,27 +72,8 @@ public class RoomDAO implements DAO<Long, Room> {
 	}
 
 	@Override
-	public Room create(Room entity) {
-		return repository.save((RoomNode) entity);
-	}
-
-	@Override
-	public Room retrieveById(Long id) {
-		return (id != null) ? repository.findOne(id) : null;
-	}
-
-	@Override
 	public void initializeCollections(Room entity) {
 		neo4jOperations.fetch(entity.getFloor());
-	}
-
-	@Override
-	public Room retrieveById(Long id, boolean initialize) {
-		Room entity = retrieveById(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
 	}
 
 	@Override
@@ -105,54 +84,6 @@ public class RoomDAO implements DAO<Long, Room> {
 			entities.add(node);
 		}
 		return entities;
-	}
-
-	@Override
-	public Collection<Room> retrieveByName(String name, boolean initialize) {
-		Collection<Room> entities = retrieveByName(name);
-		if (initialize) {
-			for (Room entity : entities) {
-				initializeCollections(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Collection<Room> retrieveAll() {
-		Iterable<RoomNode> endResults = repository.findAll();
-		Collection<Room> entities = new HashSet<Room>();
-		if (endResults.iterator() != null) {
-			Iterator<RoomNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Room entity = iterator.next();
-				initializeCollections(entity);
-				entities.add(entity);
-			}
-		}
-		return entities;
-	}
-
-	@Override
-	public Room update(Room entity) {
-		Room updatedEntity = repository.save((RoomNode) entity);
-		initializeCollections(updatedEntity);
-		return updatedEntity;
-	}
-
-	@Override
-	public void delete(Room entity) {
-		repository.delete((RoomNode) entity);
-	}
-
-	@Override
-	public void deleteAll() {
-		repository.deleteAll();
-	}
-
-	@Override
-	public Long count() {
-		return repository.count();
 	}
 
 }
