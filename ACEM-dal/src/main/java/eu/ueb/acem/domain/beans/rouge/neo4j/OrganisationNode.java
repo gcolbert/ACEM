@@ -18,8 +18,8 @@
  */
 package eu.ueb.acem.domain.beans.rouge.neo4j;
 
-import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -61,7 +61,7 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	private String iconFileName;
 
 	private String contactMode;
-	
+
 	@RelatedTo(elementClass = ResourceNode.class, type = "possessesResource", direction = OUTGOING)
 	private Set<Resource> possessedResources = new HashSet<Resource>(0);
 
@@ -76,12 +76,8 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	
 	@RelatedTo(elementClass = PhysicalSpaceNode.class, type = "occupies", direction = OUTGOING)
 	private Set<PhysicalSpace> occupiedPhysicalSpaces = new HashSet<PhysicalSpace>(0);
-	
-	public OrganisationNode() {
-	}
 
-	public OrganisationNode(String name) {
-		this.setName(name);
+	public OrganisationNode() {
 	}
 
 	@Override

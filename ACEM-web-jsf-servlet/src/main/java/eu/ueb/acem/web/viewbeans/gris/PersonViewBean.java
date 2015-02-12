@@ -70,15 +70,15 @@ public class PersonViewBean extends AbstractViewBean implements Serializable, Co
 		return domainBean;
 	}
 
-	public void setDomainBean(Person person) {
-		this.domainBean = person;
-		setId(person.getId());
-		setName(person.getName());
-		setLogin(person.getLogin());
-		setPassword(person.getPassword());
-		setEmail(person.getEmail());
-		setLanguage(person.getLanguage());
-		setAdministrator(person.isAdministrator());
+	public void setDomainBean(Person domainBean) {
+		this.domainBean = domainBean;
+		setId(domainBean.getId());
+		setName(domainBean.getName());
+		setLogin(domainBean.getLogin());
+		setPassword(domainBean.getPassword());
+		setEmail(domainBean.getEmail());
+		setLanguage(domainBean.getLanguage());
+		setAdministrator(domainBean.isAdministrator());
 	}
 
 	public List<OrganisationViewBean> getOrganisationViewBeans() {

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="associateBean" value="#{associateBean}"/>
+	<ui:param name="widgetName" value="#{widgetName}"/>
+	<ui:param name="dialogHeader" value="#{dialogHeader}"/>
+	<ui:param name="sourceCaption" value="#{sourceCaption}"/>
+	<ui:param name="targetCaption" value="#{targetCaption}"/>
+
+	<p:dialog id="idDialogAssociateOrganisations"
+		header="#{dialogHeader}"
+		widgetVar="#{widgetName}" modal="true"
+		height="auto">
+		<p:pickList id="dialogAssociateOrganisationsPickList"
+			value="#{associateBean.pickListBean.pickListEntities}"
+			var="organisationViewBean"
+			itemValue="#{organisationViewBean}"
+			itemLabel="#{organisationViewBean.name}"
+			converter="PickListConverter" showSourceControls="false"
+			showTargetControls="false" showCheckbox="true"
+			showSourceFilter="true" showTargetFilter="true"
+			filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
+			addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
+			removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
+			removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
+			<f:facet name="sourceCaption">#{sourceCaption}</f:facet>
+			<f:facet name="targetCaption">#{targetCaption}</f:facet>
+			<p:ajax event="transfer"
+				listener="#{associateBean.onTransfer}"
+				update="@this :contentForm:tabViewOrganisations :contentForm:messagesDisplayer :contentForm:tabViewOrganisations:accordionPanelForCommunities :contentForm:tabViewOrganisations:accordionPanelForInstitutions :contentForm:tabViewOrganisations:accordionPanelForAdministrativeDepartments :contentForm:tabViewOrganisations:accordionPanelForTeachingDepartments"
+				process="@this" />
+		</p:pickList>
+		<p:commandButton styleClass="dialogValidationButton"
+			value="#{msg['APPLICATION.BUTTON.CLOSE']}"
+			icon="ui-icon-check"
+			onclick="PF('dialogAssociateOrganisations').hide()"
+			update="@none"
+			process="@form" />
+	</p:dialog>
+</ui:composition>

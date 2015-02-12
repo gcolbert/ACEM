@@ -69,5 +69,5 @@ public interface Organisation extends Serializable, Comparable<Organisation> {
 	Set<PhysicalSpace> getOccupiedPhysicalSpaces();
 
 	void setOccupiedPhysicalSpaces(Set<PhysicalSpace> occupiedPhysicalSpaces);
-
+	
 }

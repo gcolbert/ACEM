@@ -275,26 +275,6 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
-	public void deleteAllCommunities() {
-		communityDAO.deleteAll();
-	}
-
-	@Override
-	public void deleteAllInstitutions() {
-		institutionDAO.deleteAll();
-	}
-
-	@Override
-	public void deleteAllAdministrativeDepartments() {
-		administrativeDepartmentDAO.deleteAll();
-	}
-
-	@Override
-	public void deleteAllTeachingDepartments() {
-		teachingDepartmentDAO.deleteAll();
-	}
-
-	@Override
 	public Boolean associateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
 		Community community = retrieveCommunity(idCommunity, false);
 		Institution institution = retrieveInstitution(idInstitution, false);

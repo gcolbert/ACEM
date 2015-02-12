@@ -46,7 +46,7 @@ public class ToolCategoryViewBean extends AbstractViewBean implements Serializab
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ToolCategoryViewBean.class);
 
-	private ResourceCategory resourceCategory;
+	private ResourceCategory domainBean;
 
 	private List<ResourceViewBean> resourceViewBeans;
 
@@ -67,27 +67,19 @@ public class ToolCategoryViewBean extends AbstractViewBean implements Serializab
 
 	public ToolCategoryViewBean(ResourceCategory toolCategory) {
 		this();
-		setResourceCategory(toolCategory);
+		setDomainBean(toolCategory);
 	}
 
 	public ResourceCategory getDomainBean() {
-		return resourceCategory;
+		return domainBean;
 	}
 
-	public void setDomainBean(ResourceCategory toolCategory) {
-		setResourceCategory((ResourceCategory) toolCategory);
-	}
-
-	public ResourceCategory getResourceCategory() {
-		return resourceCategory;
-	}
-
-	public void setResourceCategory(ResourceCategory toolCategory) {
-		this.resourceCategory = toolCategory;
-		setId(toolCategory.getId());
-		setName(toolCategory.getName());
-		setIconFileName(toolCategory.getIconFileName());
-		setDescription(toolCategory.getDescription());
+	public void setDomainBean(ResourceCategory domainBean) {
+		this.domainBean = domainBean;
+		setId(domainBean.getId());
+		setName(domainBean.getName());
+		setIconFileName(domainBean.getIconFileName());
+		setDescription(domainBean.getDescription());
 	}
 
 	public List<ResourceViewBean> getResourceViewBeans() {
@@ -104,8 +96,8 @@ public class ToolCategoryViewBean extends AbstractViewBean implements Serializab
 
 	public void setName(String name) {
 		this.name = name;
-		if (getDomainBean() != null) {
-			getDomainBean().setName(name);
+		if (domainBean != null) {
+			domainBean.setName(name);
 		}
 	}
 
@@ -123,8 +115,8 @@ public class ToolCategoryViewBean extends AbstractViewBean implements Serializab
 
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
-		if (getDomainBean() != null) {
-			getDomainBean().setIconFileName(iconFileName);
+		if (domainBean != null) {
+			domainBean.setIconFileName(iconFileName);
 		}
 	}
 
@@ -134,8 +126,8 @@ public class ToolCategoryViewBean extends AbstractViewBean implements Serializab
 
 	public void setDescription(String description) {
 		this.description = description;
-		if (getDomainBean() != null) {
-			getDomainBean().setDescription(description);
+		if (domainBean != null) {
+			domainBean.setDescription(description);
 		}
 		
 	}

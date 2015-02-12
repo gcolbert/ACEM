@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
-import eu.ueb.acem.domain.beans.jaune.Resource;
 
 /**
  * @author Grégoire Colbert
@@ -41,7 +40,7 @@ public class DocumentaryAndPedagogicalResourceViewBean extends AbstractResourceV
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(DocumentaryAndPedagogicalResourceViewBean.class);
 
-	private PedagogicalAndDocumentaryResource documentaryAndPedagogicalResource;
+	private PedagogicalAndDocumentaryResource domainBean;
 
 	public DocumentaryAndPedagogicalResourceViewBean() {
 		super();
@@ -49,26 +48,17 @@ public class DocumentaryAndPedagogicalResourceViewBean extends AbstractResourceV
 
 	public DocumentaryAndPedagogicalResourceViewBean(PedagogicalAndDocumentaryResource documentaryAndPedagogicalResource) {
 		this();
-		setDocumentaryAndPedagogicalResource(documentaryAndPedagogicalResource);
+		setDomainBean(documentaryAndPedagogicalResource);
 	}
 
 	@Override
 	public PedagogicalAndDocumentaryResource getDomainBean() {
-		return documentaryAndPedagogicalResource;
+		return domainBean;
 	}
 
-	@Override
-	public void setDomainBean(Resource resource) {
-		setDocumentaryAndPedagogicalResource((PedagogicalAndDocumentaryResource) resource);
-	}
-
-	public PedagogicalAndDocumentaryResource getDocumentaryAndPedagogical() {
-		return documentaryAndPedagogicalResource;
-	}
-
-	public void setDocumentaryAndPedagogicalResource(PedagogicalAndDocumentaryResource documentaryAndPedagogicalResource) {
-		this.documentaryAndPedagogicalResource = documentaryAndPedagogicalResource;
-		super.setDomainBean(documentaryAndPedagogicalResource);
+	public void setDomainBean(PedagogicalAndDocumentaryResource domainBean) {
+		this.domainBean = domainBean;
+		super.setDomainBean(domainBean);
 	}
 
 }

@@ -66,7 +66,7 @@
 									actionListener="#{associateBean.setCurrentOrganisationViewBean(communityViewBean)}"
 									action="#{associateBean.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
 									oncomplete="PF('dialogAssociateInstitution').show()"
-									update=":associationInstitutionForm:idDialogAssociateInstitution"
+									update=":associationInstitutionForm:idDialogAssociateOrganisations"
 									process="@this" />
 								<p:commandButton
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_COMMUNITY_LABEL']}"
@@ -158,7 +158,7 @@
 											actionListener="#{associateBean.setCurrentOrganisationViewBean(institutionViewBean)}"
 											action="#{associateBean.preparePicklistCommunityViewBeansForCurrentOrganisation()}"
 											oncomplete="PF('dialogAssociateCommunity').show()"
-											update=":associationCommunityForm:idDialogAssociateCommunity"
+											update=":associationCommunityForm:idDialogAssociateOrganisations"
 											process="@this" />
 										<p:dataTable var="communityViewBean"
 											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
@@ -176,7 +176,7 @@
 											actionListener="#{associateBean.setCurrentOrganisationViewBean(institutionViewBean)}"
 											action="#{associateBean.preparePicklistAdministrativeDepartmentViewBeansForCurrentOrganisation()}"
 											oncomplete="PF('dialogAssociateAdministrativeDepartment').show()"
-											update=":associationAdministrativeDepartmentForm:idDialogAssociateAdministrativeDepartment"
+											update=":associationAdministrativeDepartmentForm:idDialogAssociateOrganisations"
 											process="@this" />
 										<p:dataTable var="administrativeDepartmentViewBean"
 											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
@@ -195,7 +195,7 @@
 											actionListener="#{associateBean.setCurrentOrganisationViewBean(institutionViewBean)}"
 											action="#{associateBean.preparePicklistTeachingDepartmentViewBeansForCurrentOrganisation()}"
 											oncomplete="PF('dialogAssociateTeachingDepartment').show()"
-											update=":associationTeachingDepartmentForm:idDialogAssociateTeachingDepartment"
+											update=":associationTeachingDepartmentForm:idDialogAssociateOrganisations"
 											process="@this" />
 										<p:dataTable var="teachingDepartmentViewBean"
 											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
@@ -250,7 +250,7 @@
 									actionListener="#{associateBean.setCurrentOrganisationViewBean(administrativeDepartmentViewBean)}"
 									action="#{associateBean.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
 									oncomplete="PF('dialogAssociateInstitution').show()"
-									update=":associationInstitutionForm:idDialogAssociateInstitution"
+									update=":associationInstitutionForm:idDialogAssociateOrganisations"
 									process="@this" />
 								<p:commandButton
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
@@ -320,7 +320,7 @@
 									icon="ui-icon-transferthick-e-w"
 									action="#{associateBean.prepareTeachingDepartmentModification(teachingDepartmentViewBean)}"
 									oncomplete="PF('dialogAssociateInstitution').show()"
-									update=":associationInstitutionForm:idDialogAssociateInstitution"
+									update=":associationInstitutionForm:idDialogAssociateOrganisations"
 									process="@this" />
 								<p:commandButton
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_TEACHING_DEPARTMENT_LABEL']}"
@@ -471,126 +471,43 @@
  		</h:form>
 
 		<h:form id="associationCommunityForm">
-			<p:dialog id="idDialogAssociateCommunity"
-				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.HEADER']}"
-				widgetVar="dialogAssociateCommunity" modal="true" height="auto">
-				<p:pickList id="dialogAssociateCommunityPickList"
-					value="#{associateBean.pickListBean.pickListEntities}"
-					var="communityViewBean" itemValue="#{communityViewBean}"
-					itemLabel="#{communityViewBean.name}" converter="PickListConverter"
-					showSourceControls="false" showTargetControls="false"
-					showCheckbox="true" showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
-					<p:ajax event="transfer"
-						listener="#{associateBean.onTransfer}"
-						update="@this :contentForm:tabViewOrganisations :contentForm:messagesDisplayer :contentForm:tabViewOrganisations:accordionPanelForCommunities :contentForm:tabViewOrganisations:accordionPanelForInstitutions :contentForm:tabViewOrganisations:accordionPanelForAdministrativeDepartments :contentForm:tabViewOrganisations:accordionPanelForTeachingDepartments"
-						process="@this" />
-				</p:pickList>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.CLOSE']}"
-					icon="ui-icon-check"
-					onclick="PF('dialogAssociateCommunity').hide()" update="@none"
-					process="@form" />
-			</p:dialog>
+			<ui:include src="/templates/include/commonAssociateOrganisationsDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}" />
+				<ui:param name="widgetName" value="dialogAssociateCommunity"/>
+				<ui:param name="dialogHeader" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.HEADER']}"/>
+				<ui:param name="sourceCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}"/>
+				<ui:param name="targetCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}"/>
+			</ui:include>
 		</h:form>
-
+ 
 		<h:form id="associationInstitutionForm">
-			<p:dialog id="idDialogAssociateInstitution"
-				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.HEADER']}"
-				widgetVar="dialogAssociateInstitution" modal="true" height="auto">
-				<p:pickList id="dialogAssociateInstitutionPickList"
-					value="#{associateBean.pickListBean.pickListEntities}"
-					var="institutionViewBean" itemValue="#{institutionViewBean}"
-					itemLabel="#{institutionViewBean.name}"
-					converter="PickListConverter" showSourceControls="false"
-					showTargetControls="false" showCheckbox="true"
-					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
-					<p:ajax event="transfer"
-						listener="#{associateBean.onTransfer}"
-						update="@this :contentForm:tabViewOrganisations :contentForm:messagesDisplayer :contentForm:tabViewOrganisations:accordionPanelForCommunities :contentForm:tabViewOrganisations:accordionPanelForInstitutions :contentForm:tabViewOrganisations:accordionPanelForAdministrativeDepartments :contentForm:tabViewOrganisations:accordionPanelForTeachingDepartments"
-						process="@this" />
-				</p:pickList>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.CLOSE']}"
-					icon="ui-icon-check"
-					onclick="PF('dialogAssociateInstitution').hide()" update="@none"
-					process="@form" />
-			</p:dialog>
+			<ui:include src="/templates/include/commonAssociateOrganisationsDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}" />
+				<ui:param name="widgetName" value="dialogAssociateInstitution"/>
+				<ui:param name="dialogHeader" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.HEADER']}"/>
+				<ui:param name="sourceCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}"/>
+				<ui:param name="targetCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}"/>
+			</ui:include>
 		</h:form>
-
+ 
 		<h:form id="associationAdministrativeDepartmentForm">
-			<p:dialog id="idDialogAssociateAdministrativeDepartment"
-				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"
-				widgetVar="dialogAssociateAdministrativeDepartment" modal="true"
-				height="auto">
-				<p:pickList id="dialogAssociateAdministrativeDepartmentPickList"
-					value="#{associateBean.pickListBean.pickListEntities}"
-					var="administrativeDepartmentViewBean"
-					itemValue="#{administrativeDepartmentViewBean}"
-					itemLabel="#{administrativeDepartmentViewBean.name}"
-					converter="PickListConverter" showSourceControls="false"
-					showTargetControls="false" showCheckbox="true"
-					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
-					<p:ajax event="transfer"
-						listener="#{associateBean.onTransfer}"
-						update="@this :contentForm:tabViewOrganisations :contentForm:messagesDisplayer :contentForm:tabViewOrganisations:accordionPanelForCommunities :contentForm:tabViewOrganisations:accordionPanelForInstitutions :contentForm:tabViewOrganisations:accordionPanelForAdministrativeDepartments :contentForm:tabViewOrganisations:accordionPanelForTeachingDepartments"						process="@this" />
-				</p:pickList>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.CLOSE']}"
-					icon="ui-icon-check"
-					onclick="PF('dialogAssociateAdministrativeDepartment').hide()"
-					update="@none"
-					process="@form" />
-			</p:dialog>
+			<ui:include src="/templates/include/commonAssociateOrganisationsDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}" />
+				<ui:param name="widgetName" value="dialogAssociateAdministrativeDepartment"/>
+				<ui:param name="dialogHeader" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.HEADER']}"/>
+				<ui:param name="sourceCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}"/>
+				<ui:param name="targetCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_ADMINISTRATIVE_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}"/>
+			</ui:include>
 		</h:form>
 
 		<h:form id="associationTeachingDepartmentForm">
-			<p:dialog id="idDialogAssociateTeachingDepartment"
-				header="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"
-				widgetVar="dialogAssociateTeachingDepartment" modal="true"
-				height="auto">
-				<p:pickList id="dialogAssociateTeachingDepartmentPickList"
-					value="#{associateBean.pickListBean.pickListEntities}"
-					var="teachingDepartmentViewBean"
-					itemValue="#{teachingDepartmentViewBean}"
-					itemLabel="#{teachingDepartmentViewBean.name}"
-					converter="PickListConverter" showSourceControls="false"
-					showTargetControls="false" showCheckbox="true"
-					showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains" addLabel="#{msg['PICKLIST.ADD_LABEL']}"
-					addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
-					removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
-					removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
-					<f:facet name="sourceCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-					<f:facet name="targetCaption">#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}</f:facet>
-					<p:ajax event="transfer"
-						listener="#{associateBean.onTransfer}"
-						update="@this :contentForm:tabViewOrganisations :contentForm:messagesDisplayer :contentForm:tabViewOrganisations:accordionPanelForCommunities :contentForm:tabViewOrganisations:accordionPanelForInstitutions :contentForm:tabViewOrganisations:accordionPanelForAdministrativeDepartments :contentForm:tabViewOrganisations:accordionPanelForTeachingDepartments"						process="@this" />
-				</p:pickList>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.CLOSE']}"
-					icon="ui-icon-check"
-					onclick="PF('dialogAssociateTeachingDepartment').hide()"
-					update="@none"
-					process="@form" />
-			</p:dialog>
+			<ui:include src="/templates/include/commonAssociateOrganisationsDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}" />
+				<ui:param name="widgetName" value="dialogAssociateTeachingDepartment"/>
+				<ui:param name="dialogHeader" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.HEADER']}"/>
+				<ui:param name="sourceCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}"/>
+				<ui:param name="targetCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}"/>
+			</ui:include>
 		</h:form>
 
 	</ui:define>

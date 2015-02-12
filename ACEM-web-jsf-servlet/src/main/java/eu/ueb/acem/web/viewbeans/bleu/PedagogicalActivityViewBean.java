@@ -36,7 +36,7 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 
 	private static final long serialVersionUID = 8190209757734229700L;
 
-	private PedagogicalActivity pedagogicalActivity;
+	private PedagogicalActivity domainBean;
 
 	private Long positionInScenario;
 	private String name;
@@ -51,21 +51,21 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 
 	public PedagogicalActivityViewBean(PedagogicalActivity pedagogicalActivity) {
 		this();
-		setPedagogicalActivity(pedagogicalActivity);
+		setDomainBean(pedagogicalActivity);
 	}
 
-	public PedagogicalActivity getPedagogicalActivity() {
-		return pedagogicalActivity;
+	public PedagogicalActivity getDomainBean() {
+		return domainBean;
 	}
 
-	public void setPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		this.pedagogicalActivity = pedagogicalActivity;
-		setId(pedagogicalActivity.getId());
-		setPositionInScenario(pedagogicalActivity.getPositionInScenario());
-		setName(pedagogicalActivity.getName());
-		setObjective(pedagogicalActivity.getObjective());
-		setInstructions(pedagogicalActivity.getInstructions());
-		setDuration(pedagogicalActivity.getDuration());
+	public void setDomainBean(PedagogicalActivity domainBean) {
+		this.domainBean = domainBean;
+		setId(domainBean.getId());
+		setPositionInScenario(domainBean.getPositionInScenario());
+		setName(domainBean.getName());
+		setObjective(domainBean.getObjective());
+		setInstructions(domainBean.getInstructions());
+		setDuration(domainBean.getDuration());
 	}
 
 	public Long getPositionInScenario() {
@@ -74,8 +74,8 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 
 	public void setPositionInScenario(Long positionInScenario) {
 		this.positionInScenario = positionInScenario;
-		if (pedagogicalActivity != null) {
-			pedagogicalActivity.setPositionInScenario(positionInScenario);
+		if (domainBean != null) {
+			domainBean.setPositionInScenario(positionInScenario);
 		}
 	}
 
@@ -85,8 +85,8 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 
 	public void setName(String name) {
 		this.name = name;
-		if (pedagogicalActivity != null) {
-			pedagogicalActivity.setName(name);
+		if (domainBean != null) {
+			domainBean.setName(name);
 		}
 	}
 
@@ -96,8 +96,8 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 
 	public void setObjective(String objective) {
 		this.objective = objective;
-		if (pedagogicalActivity != null) {
-			pedagogicalActivity.setObjective(objective);
+		if (domainBean != null) {
+			domainBean.setObjective(objective);
 		}
 	}
 
@@ -107,8 +107,8 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
-		if (pedagogicalActivity != null) {
-			pedagogicalActivity.setInstructions(instructions);
+		if (domainBean != null) {
+			domainBean.setInstructions(instructions);
 		}
 	}
 
@@ -118,8 +118,8 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 
 	public void setDuration(String duration) {
 		this.duration = duration;
-		if (pedagogicalActivity != null) {
-			pedagogicalActivity.setDuration(duration);
+		if (domainBean != null) {
+			domainBean.setDuration(duration);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 
 	@Override
 	public int compareTo(PedagogicalActivityViewBean o) {
-		return getPedagogicalActivity().compareTo(o.getPedagogicalActivity());
+		return getDomainBean().compareTo(o.getDomainBean());
 	}
 
 }

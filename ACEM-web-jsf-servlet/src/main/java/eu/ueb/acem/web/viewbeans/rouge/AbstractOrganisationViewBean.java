@@ -38,7 +38,7 @@ public abstract class AbstractOrganisationViewBean extends AbstractViewBean impl
 
 	@Override
 	public abstract Organisation getDomainBean();
-
+	
 	@Override
 	public void setDomainBean(Organisation organisation) {
 		setId(organisation.getId());

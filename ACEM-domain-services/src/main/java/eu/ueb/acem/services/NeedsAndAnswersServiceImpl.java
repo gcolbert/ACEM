@@ -125,11 +125,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
-	public void deleteAllNeeds() {
-		needDAO.deleteAll();
-	}
-
-	@Override
 	public Long countAnswers() {
 		return answerDAO.count();
 	}
@@ -157,11 +152,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 			answerDAO.delete(answerDAO.retrieveById(id));
 		}
 		return (!answerDAO.exists(id));
-	}
-
-	@Override
-	public void deleteAllAnswers() {
-		answerDAO.deleteAll();
 	}
 
 	@Override

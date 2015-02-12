@@ -125,11 +125,6 @@ public class ScenariosServiceImpl implements ScenariosService {
 	}
 
 	@Override
-	public void deleteAllScenarios() {
-		pedagogicalScenarioDAO.deleteAll();
-	}
-
-	@Override
 	public Long countPedagogicalActivities() {
 		return pedagogicalActivityDAO.count();
 	}
@@ -156,11 +151,6 @@ public class ScenariosServiceImpl implements ScenariosService {
 			pedagogicalActivityDAO.delete(pedagogicalActivityDAO.retrieveById(id));
 		}
 		return (!pedagogicalActivityDAO.exists(id));
-	}
-
-	@Override
-	public void deleteAllPedagogicalActivities() {
-		pedagogicalActivityDAO.deleteAll();
 	}
 
 }

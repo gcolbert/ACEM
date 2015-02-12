@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
-import eu.ueb.acem.domain.beans.jaune.Resource;
 
 /**
  * @author Grégoire Colbert
@@ -41,7 +40,7 @@ public class ProfessionalTrainingViewBean extends AbstractResourceViewBean imple
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(ProfessionalTrainingViewBean.class);
 
-	private ProfessionalTraining professionalTraining;
+	private ProfessionalTraining domainBean;
 
 	public ProfessionalTrainingViewBean() {
 		super();
@@ -49,26 +48,17 @@ public class ProfessionalTrainingViewBean extends AbstractResourceViewBean imple
 
 	public ProfessionalTrainingViewBean(ProfessionalTraining professionalTraining) {
 		this();
-		setProfessionalTraining(professionalTraining);
+		setDomainBean(professionalTraining);
 	}
 
 	@Override
 	public ProfessionalTraining getDomainBean() {
-		return professionalTraining;
+		return domainBean;
 	}
 
-	@Override
-	public void setDomainBean(Resource resource) {
-		setProfessionalTraining((ProfessionalTraining) resource);
-	}
-
-	public ProfessionalTraining getProfessionalTraining() {
-		return professionalTraining;
-	}
-
-	public void setProfessionalTraining(ProfessionalTraining professionalTraining) {
-		this.professionalTraining = professionalTraining;
-		super.setDomainBean(professionalTraining);
+	public void setDomainBean(ProfessionalTraining domainBean) {
+		this.domainBean = domainBean;
+		super.setDomainBean(domainBean);
 	}
 
 }

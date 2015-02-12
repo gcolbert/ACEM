@@ -20,12 +20,7 @@ package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
-import eu.ueb.acem.domain.beans.rouge.Organisation;
-import eu.ueb.acem.services.ScenariosServiceImpl;
 
 /**
  * @author Grégoire Colbert
@@ -39,36 +34,24 @@ public class AdministrativeDepartmentViewBean extends AbstractOrganisationViewBe
 	 */
 	private static final long serialVersionUID = -5647852694643666952L;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ScenariosServiceImpl.class);
-
-	private AdministrativeDepartment administrativeDepartment;
+	private AdministrativeDepartment domainBean;
 
 	public AdministrativeDepartmentViewBean() {
 	}
 
-	public AdministrativeDepartmentViewBean(AdministrativeDepartment administrativeDepartment) {
+	public AdministrativeDepartmentViewBean(AdministrativeDepartment domainBean) {
 		this();
-		setAdministrativeDepartment(administrativeDepartment);
-	}
-
-	public AdministrativeDepartment getAdministrativeDepartment() {
-		return administrativeDepartment;
-	}
-
-	public void setAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
-		this.administrativeDepartment = administrativeDepartment;
-		super.setDomainBean(administrativeDepartment);
+		setDomainBean(domainBean);
 	}
 
 	@Override
-	public Organisation getDomainBean() {
-		return getAdministrativeDepartment();
+	public AdministrativeDepartment getDomainBean() {
+		return domainBean;
 	}
 
-	@Override
-	public void setDomainBean(Organisation organisation) {
-		setAdministrativeDepartment((AdministrativeDepartment) organisation);
+	public void setDomainBean(AdministrativeDepartment domainBean) {
+		this.domainBean = domainBean;
+		super.setDomainBean(domainBean);
 	}
 
 }

@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.jaune.Equipment;
-import eu.ueb.acem.domain.beans.jaune.Resource;
 
 /**
  * @author Grégoire Colbert
@@ -41,7 +40,7 @@ public class EquipmentViewBean extends AbstractResourceViewBean implements Seria
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(EquipmentViewBean.class);
 
-	private Equipment equipment;
+	private Equipment domainBean;
 
 	public EquipmentViewBean() {
 		super();
@@ -49,26 +48,17 @@ public class EquipmentViewBean extends AbstractResourceViewBean implements Seria
 
 	public EquipmentViewBean(Equipment equipment) {
 		this();
-		setEquipment(equipment);
+		setDomainBean(equipment);
 	}
 
 	@Override
 	public Equipment getDomainBean() {
-		return equipment;
+		return domainBean;
 	}
 
-	@Override
-	public void setDomainBean(Resource resource) {
-		setEquipment((Equipment) resource);
-	}
-
-	public Equipment getEquipment() {
-		return equipment;
-	}
-
-	public void setEquipment(Equipment equipment) {
-		this.equipment = equipment;
-		super.setDomainBean(equipment);
+	public void setDomainBean(Equipment domainBean) {
+		this.domainBean = domainBean;
+		super.setDomainBean(domainBean);
 	}
 
 }

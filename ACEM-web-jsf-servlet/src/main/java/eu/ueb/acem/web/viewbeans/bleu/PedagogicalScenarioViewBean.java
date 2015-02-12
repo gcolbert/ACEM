@@ -51,7 +51,7 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
 
-	private PedagogicalScenario scenario;
+	private PedagogicalScenario domainBean;
 
 	private String name;
 	private String authors;
@@ -74,20 +74,20 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 		return pedagogicalActivityViewBeans;
 	}
 
-	public PedagogicalScenario getScenario() {
-		return scenario;
+	public PedagogicalScenario getDomainBean() {
+		return domainBean;
 	}
 
-	public void setScenario(PedagogicalScenario scenario) {
-		this.scenario = scenario;
-		setId(scenario.getId());
-		this.name = scenario.getName();
-		this.objective = scenario.getObjective();
-		setAuthors(scenario.getAuthors());
-		this.evaluationModes = scenario.getEvaluationModes();
-		this.published = scenario.isPublished();
-		setCreationDate(scenario.getCreationDate());
-		setModificationDate(scenario.getModificationDate());
+	public void setScenario(PedagogicalScenario domainBean) {
+		this.domainBean = domainBean;
+		setId(domainBean.getId());
+		this.name = domainBean.getName();
+		this.objective = domainBean.getObjective();
+		setAuthors(domainBean.getAuthors());
+		this.evaluationModes = domainBean.getEvaluationModes();
+		this.published = domainBean.isPublished();
+		setCreationDate(domainBean.getCreationDate());
+		setModificationDate(domainBean.getModificationDate());
 	}
 
 	public String getName() {
@@ -96,7 +96,7 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	public void setName(String name) {
 		this.name = name;
-		scenario.setName(name);
+		domainBean.setName(name);
 	}
 
 	public String getObjective() {
@@ -105,7 +105,7 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	public void setObjective(String objective) {
 		this.objective = objective;
-		scenario.setObjective(objective);
+		domainBean.setObjective(objective);
 	}
 
 	public String getAuthors() {
@@ -131,7 +131,7 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	public void setEvaluationModes(String evaluationModes) {
 		this.evaluationModes = evaluationModes;
-		scenario.setEvaluationModes(evaluationModes);
+		domainBean.setEvaluationModes(evaluationModes);
 	}
 
 	public Boolean isPublished() {
@@ -140,7 +140,7 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	public void setPublished(Boolean published) {
 		this.published = published;
-		scenario.setPublished(published);
+		domainBean.setPublished(published);
 	}
 
 	public String getCreationDate() {
@@ -167,7 +167,7 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	@Override
 	public int compareTo(PedagogicalScenarioViewBean o) {
-		return scenario.compareTo(o.getScenario());
+		return domainBean.compareTo(o.getDomainBean());
 	}
 
 }

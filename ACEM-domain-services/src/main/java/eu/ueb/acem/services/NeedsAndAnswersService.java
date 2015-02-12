@@ -46,8 +46,6 @@ public interface NeedsAndAnswersService {
 
 	Boolean deleteNeed(Long id);
 
-	void deleteAllNeeds();
-
 	Long countAnswers();
 
 	PedagogicalAnswer createPedagogicalAnswer(String name);
@@ -57,8 +55,6 @@ public interface NeedsAndAnswersService {
 	PedagogicalAnswer updatePedagogicalAnswer(PedagogicalAnswer answer);
 
 	Boolean deleteAnswer(Long id);
-
-	void deleteAllAnswers();
 
 	PedagogicalNeed createOrUpdateNeed(Long id, String name, Long idParent);
 

@@ -64,10 +64,10 @@ public class TeacherViewBean extends PersonViewBean {
 		return domainBean;
 	}
 
-	public void setDomainBean(Teacher teacher) {
-		super.setDomainBean(teacher);
-		this.domainBean = teacher;
-		for (ResourceCategory toolCategory : teacher.getFavoriteToolCategories()) {
+	public void setDomainBean(Teacher domainBean) {
+		super.setDomainBean(domainBean);
+		this.domainBean = domainBean;
+		for (ResourceCategory toolCategory : domainBean.getFavoriteToolCategories()) {
 			favoriteToolCategoryViewBeans.add(new ToolCategoryViewBean(toolCategory));
 		}
 	}

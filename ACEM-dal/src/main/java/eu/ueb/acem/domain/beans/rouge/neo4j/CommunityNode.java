@@ -56,6 +56,7 @@ public class CommunityNode extends OrganisationNode implements Community {
 	private Set<Institution> institutions;
 
 	public CommunityNode() {
+		super();
 	}
 
 	public CommunityNode(String name, String shortname, String iconFileName) {

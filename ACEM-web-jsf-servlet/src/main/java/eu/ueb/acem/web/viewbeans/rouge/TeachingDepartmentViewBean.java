@@ -20,7 +20,6 @@ package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
 
-import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
@@ -35,33 +34,24 @@ public class TeachingDepartmentViewBean extends AbstractOrganisationViewBean imp
 	 */
 	private static final long serialVersionUID = 6787135851384385849L;
 
-	private TeachingDepartment teachingDepartment;
+	private TeachingDepartment domainBean;
 
 	public TeachingDepartmentViewBean() {
 	}
 
-	public TeachingDepartmentViewBean(TeachingDepartment teachingDepartment) {
+	public TeachingDepartmentViewBean(TeachingDepartment domainBean) {
 		this();
-		setTeachingDepartment(teachingDepartment);
-	}
-
-	public TeachingDepartment getTeachingDepartment() {
-		return teachingDepartment;
-	}
-
-	public void setTeachingDepartment(TeachingDepartment teachingDepartment) {
-		this.teachingDepartment = teachingDepartment;
-		super.setDomainBean(teachingDepartment);
+		setDomainBean(domainBean);
 	}
 
 	@Override
-	public Organisation getDomainBean() {
-		return getTeachingDepartment();
+	public TeachingDepartment getDomainBean() {
+		return domainBean;
 	}
 
-	@Override
-	public void setDomainBean(Organisation organisation) {
-		setTeachingDepartment((TeachingDepartment) organisation);
+	public void setDomainBean(TeachingDepartment domainBean) {
+		this.domainBean = domainBean;
+		super.setDomainBean(domainBean);
 	}
 
 }

@@ -18,10 +18,6 @@
  */
 package eu.ueb.acem.dal.rouge;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -65,21 +61,6 @@ public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implemen
 		neo4jOperations.fetch(entity.getViewedResources());
 		neo4jOperations.fetch(entity.getUseModes());
 		neo4jOperations.fetch(entity.getInstitutions());
-	}
-
-	@Override
-	public Collection<Community> retrieveAll() {
-		Iterable<CommunityNode> endResults = repository.findAll();
-		Collection<Community> entities = new HashSet<Community>();
-		if (endResults.iterator() != null) {
-			Iterator<CommunityNode> iterator = endResults.iterator();
-			while (iterator.hasNext()) {
-				Community entity = iterator.next();
-				initializeCollections(entity);
-				entities.add(entity);
-			}
-		}
-		return entities;
 	}
 
 }

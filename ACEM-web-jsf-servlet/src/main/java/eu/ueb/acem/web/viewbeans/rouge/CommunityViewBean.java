@@ -20,11 +20,7 @@ package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.ueb.acem.domain.beans.rouge.Community;
-import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
@@ -38,36 +34,24 @@ public class CommunityViewBean extends AbstractOrganisationViewBean implements S
 	 */
 	private static final long serialVersionUID = -5804352947613671276L;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(CommunityViewBean.class);
-
-	private Community community;
+	private Community domainBean;
 
 	public CommunityViewBean() {
 	}
 
-	public CommunityViewBean(Community community) {
+	public CommunityViewBean(Community domainBean) {
 		this();
-		setCommunity(community);
-	}
-
-	public Community getCommunity() {
-		return community;
-	}
-
-	public void setCommunity(Community community) {
-		this.community = community;
-		super.setDomainBean(community);
+		setDomainBean(domainBean);
 	}
 
 	@Override
-	public Organisation getDomainBean() {
-		return getCommunity();
+	public Community getDomainBean() {
+		return domainBean;
 	}
 
-	@Override
-	public void setDomainBean(Organisation organisation) {
-		setCommunity((Community) organisation);
+	public void setDomainBean(Community domainBean) {
+		this.domainBean = domainBean;
+		super.setDomainBean(domainBean);
 	}
 
 }

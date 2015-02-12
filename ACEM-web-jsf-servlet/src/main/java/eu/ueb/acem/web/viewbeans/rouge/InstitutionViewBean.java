@@ -20,11 +20,7 @@ package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.ueb.acem.domain.beans.rouge.Institution;
-import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
@@ -38,36 +34,24 @@ public class InstitutionViewBean extends AbstractOrganisationViewBean implements
 	 */
 	private static final long serialVersionUID = 6170498010377898612L;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(InstitutionViewBean.class);
-
-	private Institution institution;
+	private Institution domainBean;
 
 	public InstitutionViewBean() {
 	}
 
-	public InstitutionViewBean(Institution institution) {
+	public InstitutionViewBean(Institution domainBean) {
 		this();
-		setInstitution(institution);
-	}
-
-	public Institution getInstitution() {
-		return institution;
-	}
-
-	public void setInstitution(Institution institution) {
-		this.institution = institution;
-		super.setDomainBean(institution);
+		setDomainBean(domainBean);
 	}
 
 	@Override
-	public Organisation getDomainBean() {
-		return getInstitution();
+	public Institution getDomainBean() {
+		return domainBean;
 	}
 
-	@Override
-	public void setDomainBean(Organisation organisation) {
-		setInstitution((Institution) organisation);
+	public void setDomainBean(Institution domainBean) {
+		this.domainBean = domainBean;
+		super.setDomainBean(domainBean);
 	}
 
 }

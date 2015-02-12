@@ -41,7 +41,7 @@ public class UseModeViewBean extends AbstractViewBean implements Serializable, C
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(UseModeViewBean.class);
 
-	private UseMode useMode;
+	private UseMode domainBean;
 
 	private String name;
 
@@ -52,7 +52,7 @@ public class UseModeViewBean extends AbstractViewBean implements Serializable, C
 
 	public UseModeViewBean(UseMode useMode) {
 		this();
-		setUseMode(useMode);
+		setDomainBean(useMode);
 	}
 
 	public String getName() {
@@ -61,7 +61,7 @@ public class UseModeViewBean extends AbstractViewBean implements Serializable, C
 
 	public void setName(String name) {
 		this.name = name;
-		useMode.setName(name);
+		domainBean.setName(name);
 	}
 
 	public String getDescription() {
@@ -70,23 +70,15 @@ public class UseModeViewBean extends AbstractViewBean implements Serializable, C
 
 	public void setDescription(String description) {
 		this.description = description;
-		useMode.setDescription(description);
+		domainBean.setDescription(description);
 	}
 
 	public UseMode getDomainBean() {
-		return useMode;
+		return domainBean;
 	}
 
 	public void setDomainBean(UseMode useMode) {
-		setUseMode(useMode);
-	}
-
-	public UseMode getUseMode() {
-		return useMode;
-	}
-
-	public void setUseMode(UseMode useMode) {
-		this.useMode = useMode;
+		this.domainBean = useMode;
 		setId(useMode.getId());
 		setName(useMode.getName());
 		setDescription(useMode.getDescription());

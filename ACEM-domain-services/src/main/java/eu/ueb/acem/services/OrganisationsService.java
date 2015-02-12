@@ -88,14 +88,6 @@ public interface OrganisationsService {
 	Boolean deleteAdministrativeDepartment(Long id);
 
 	Boolean deleteTeachingDepartment(Long id);
-	
-	void deleteAllCommunities();
-
-	void deleteAllInstitutions();
-
-	void deleteAllAdministrativeDepartments();
-
-	void deleteAllTeachingDepartments();
 
 	Boolean associateCommunityAndInstitution(Long idCommunity, Long idInstitution);
 

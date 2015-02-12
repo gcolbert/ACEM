@@ -406,7 +406,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 		if (selectedAnswer != null) {
 			toolCategoryViewBeansForSelectedAnswer.clear();
 			for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
-				if (selectedAnswer.getResourceCategories().contains(toolCategoryViewBean.getResourceCategory())) {
+				if (selectedAnswer.getResourceCategories().contains(toolCategoryViewBean.getDomainBean())) {
 					toolCategoryViewBeansForSelectedAnswer.add(toolCategoryViewBean);
 				}
 			}

@@ -23,7 +23,6 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.Software;
 
 /**
@@ -41,7 +40,7 @@ public class SoftwareViewBean extends AbstractResourceViewBean implements Serial
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(SoftwareViewBean.class);
 
-	private Software software;
+	private Software domainBean;
 
 	public SoftwareViewBean() {
 		super();
@@ -49,26 +48,17 @@ public class SoftwareViewBean extends AbstractResourceViewBean implements Serial
 
 	public SoftwareViewBean(Software software) {
 		this();
-		setSoftware(software);
+		setDomainBean(software);
 	}
 
 	@Override
 	public Software getDomainBean() {
-		return software;
+		return domainBean;
 	}
 
-	@Override
-	public void setDomainBean(Resource resource) {
-		setSoftware((Software) resource);
-	}
-
-	public Software getSoftware() {
-		return software;
-	}
-
-	public void setSoftware(Software software) {
-		this.software = software;
-		super.setDomainBean(software);
+	public void setDomainBean(Software domainBean) {
+		this.domainBean = domainBean;
+		super.setDomainBean(domainBean);
 	}
 
 }
