@@ -56,7 +56,7 @@ public class CampusDAO extends AbstractDAO<Campus, CampusNode> implements DAO<Lo
 	}
 
 	@Override
-	public void initializeCollections(Campus entity) {
+	protected final void initializeCollections(Campus entity) {
 
 	}
 

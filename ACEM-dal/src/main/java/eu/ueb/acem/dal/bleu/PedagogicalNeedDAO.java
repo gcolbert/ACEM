@@ -59,7 +59,7 @@ public class PedagogicalNeedDAO extends AbstractDAO<PedagogicalNeed, Pedagogical
 	}
 
 	@Override
-	public void initializeCollections(PedagogicalNeed entity) {
+	protected final void initializeCollections(PedagogicalNeed entity) {
 		neo4jOperations.fetch(entity.getChildren());
 		neo4jOperations.fetch(entity.getAnswers());
 		neo4jOperations.fetch(entity.getParents());

@@ -59,7 +59,7 @@ public class PersonDAO extends AbstractDAO<Person, PersonNode> implements DAO<Lo
 	}
 
 	@Override
-	public void initializeCollections(Person entity) {
+	protected final void initializeCollections(Person entity) {
 		neo4jOperations.fetch(entity.getWorksForOrganisations());
 	}
 

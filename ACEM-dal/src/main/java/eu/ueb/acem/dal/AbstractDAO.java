@@ -38,6 +38,8 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E> {
 
 	protected abstract GenericRepository<N> getRepository();
 
+	protected abstract void initializeCollections(E entity);
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public E create(E entity) {
@@ -69,9 +71,6 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E> {
 		}
 		return entity;
 	}
-
-	@Override
-	public abstract void initializeCollections(E entity);
 
 	@Override
 	public Collection<E> retrieveByName(String name) {

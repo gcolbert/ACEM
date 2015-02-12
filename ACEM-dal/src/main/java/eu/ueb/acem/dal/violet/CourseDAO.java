@@ -56,7 +56,7 @@ public class CourseDAO extends AbstractDAO<Course, CourseNode> implements DAO<Lo
 	}
 
 	@Override
-	public void initializeCollections(Course entity) {
+	protected final void initializeCollections(Course entity) {
 		neo4jOperations.fetch(entity.getCredit());
 	}
 

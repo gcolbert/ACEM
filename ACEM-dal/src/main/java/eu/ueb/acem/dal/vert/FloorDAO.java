@@ -56,7 +56,7 @@ public class FloorDAO extends AbstractDAO<Floor, FloorNode> implements DAO<Long,
 	}
 
 	@Override
-	public void initializeCollections(Floor entity) {
+	protected final void initializeCollections(Floor entity) {
 		neo4jOperations.fetch(entity.getBuilding());
 	}
 

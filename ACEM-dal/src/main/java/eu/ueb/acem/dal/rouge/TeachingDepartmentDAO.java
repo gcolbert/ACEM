@@ -57,7 +57,7 @@ public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, Teach
 	}
 
 	@Override
-	public void initializeCollections(TeachingDepartment entity) {
+	protected final void initializeCollections(TeachingDepartment entity) {
 		neo4jOperations.fetch(entity.getPossessedResources());
 		neo4jOperations.fetch(entity.getViewedResources());
 		neo4jOperations.fetch(entity.getUseModes());

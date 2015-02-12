@@ -59,7 +59,7 @@ public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> implements DAO
 	}
 
 	@Override
-	public void initializeCollections(Teacher entity) {
+	protected final void initializeCollections(Teacher entity) {
 		neo4jOperations.fetch(entity.getFavoriteToolCategories());
 		neo4jOperations.fetch(entity.getScenarios());
 		neo4jOperations.fetch(entity.getClasses());

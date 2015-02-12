@@ -61,7 +61,7 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 	}
 
 	@Override
-	public void initializeCollections(Equipment entity) {
+	protected final void initializeCollections(Equipment entity) {
 		neo4jOperations.fetch(entity.getCategories());
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());

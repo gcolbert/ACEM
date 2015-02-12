@@ -63,7 +63,7 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	}
 	
 	@Override
-	public void initializeCollections(PedagogicalAndDocumentaryResource entity) {
+	protected final void initializeCollections(PedagogicalAndDocumentaryResource entity) {
 		neo4jOperations.fetch(entity.getCategories());
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());

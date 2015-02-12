@@ -56,7 +56,7 @@ public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepar
 	}
 
 	@Override
-	public void initializeCollections(AdministrativeDepartment entity) {
+	protected final void initializeCollections(AdministrativeDepartment entity) {
 		neo4jOperations.fetch(entity.getPossessedResources());
 		neo4jOperations.fetch(entity.getViewedResources());
 		neo4jOperations.fetch(entity.getUseModes());

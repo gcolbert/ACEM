@@ -28,7 +28,7 @@ import org.springframework.data.neo4j.repository.RelationshipOperationsRepositor
  */
 public interface GenericRepository<N> extends GraphRepository<N>, RelationshipOperationsRepository<N> {
 
-	Iterable<N> findByName(String name); // Does not seem to work
+	Iterable<N> findByName(String name);
 
 	Long count(Long id);
 

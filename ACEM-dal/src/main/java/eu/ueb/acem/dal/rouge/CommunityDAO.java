@@ -60,7 +60,7 @@ public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implemen
 	}
 
 	@Override
-	public void initializeCollections(Community entity) {
+	protected final void initializeCollections(Community entity) {
 		neo4jOperations.fetch(entity.getPossessedResources());
 		neo4jOperations.fetch(entity.getViewedResources());
 		neo4jOperations.fetch(entity.getUseModes());

@@ -42,8 +42,6 @@ public interface DAO<ID extends Serializable, E> extends Serializable {
 
 	Collection<E> retrieveAll();
 
-	void initializeCollections(E entity);
-
 	E update(E entity);
 
 	void delete(E entity);

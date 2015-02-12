@@ -56,7 +56,7 @@ public class BuildingDAO extends AbstractDAO<Building, BuildingNode> implements 
 	}
 
 	@Override
-	public void initializeCollections(Building entity) {
+	protected final void initializeCollections(Building entity) {
 		neo4jOperations.fetch(entity.getCampus());
 	}
 

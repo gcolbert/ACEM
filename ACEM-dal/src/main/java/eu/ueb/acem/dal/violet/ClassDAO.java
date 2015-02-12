@@ -56,7 +56,7 @@ public class ClassDAO extends AbstractDAO<Class, ClassNode> implements DAO<Long,
 	}
 
 	@Override
-	public void initializeCollections(Class entity) {
+	protected final void initializeCollections(Class entity) {
 		neo4jOperations.fetch(entity.getCourse());
 		neo4jOperations.fetch(entity.getPedagogicalScenarios());
 		neo4jOperations.fetch(entity.getLocation());

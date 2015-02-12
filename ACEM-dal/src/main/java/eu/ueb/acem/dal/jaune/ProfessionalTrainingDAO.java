@@ -62,7 +62,7 @@ public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, P
 	}
 
 	@Override
-	public void initializeCollections(ProfessionalTraining entity) {
+	protected final void initializeCollections(ProfessionalTraining entity) {
 		neo4jOperations.fetch(entity.getCategories());
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
