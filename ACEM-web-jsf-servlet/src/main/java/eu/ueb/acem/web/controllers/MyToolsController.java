@@ -198,20 +198,20 @@ public class MyToolsController extends AbstractContextAwareController implements
 		// visible root node)
 		boolean repeatSelectedCategoryAsVisibleRootNode = false;
 		if (repeatSelectedCategoryAsVisibleRootNode) {
-			if (resourceType.equals("software")) {
+			if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
 				categoriesTreeBean.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL",null,getCurrentUserLocale()));
 			}
-			else if (resourceType.equals("softwareDocumentation")) {
+			else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
 				categoriesTreeBean.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL",null,getCurrentUserLocale()));
 			}
-			else if (resourceType.equals("equipment")) {
+			else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
 				categoriesTreeBean.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL",null,getCurrentUserLocale()));
 			}
-			else if (resourceType.equals("pedagogicalAndDocumentaryResources")) {
+			else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE")) {
 				categoriesTreeBean
 						.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_MY_TOOLS.LABEL",null,getCurrentUserLocale()));
 			}
-			else if (resourceType.equals("professionalTraining")) {
+			else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
 				categoriesTreeBean.addVisibleRoot(msgs.getMessage("MY_TOOLS.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL",null,getCurrentUserLocale()));
 			}
 			else {

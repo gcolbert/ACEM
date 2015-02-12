@@ -69,7 +69,7 @@
 	<ui:define name="west">
 		<p:outputPanel styleClass="toolCategoriesOutputPanel">
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('equipment')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_EQUIPMENT')}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
@@ -80,7 +80,7 @@
 						value="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}" /></span>
 			</p:commandLink>
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('software')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_SOFTWARE')}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
@@ -91,7 +91,7 @@
 						value="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}" /></span>
 			</p:commandLink>
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('softwareDocumentation')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_SOFTWARE_DOCUMENTATION')}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
@@ -102,7 +102,7 @@
 						value="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}" /></span>
 			</p:commandLink>
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('pedagogicalAndDocumentaryResources')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE')}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
@@ -113,7 +113,7 @@
 						value="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}" /></span>
 			</p:commandLink>
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('professionalTraining')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_PROFESSIONAL_TRAINING')}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
@@ -347,22 +347,22 @@
 				<p:panelGrid>
 					<p:row>
 						<p:column>
-							<h:outputLabel for="categoryForTheNewResource"
+							<h:outputLabel for="category"
 								value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.CATEGORY_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<h:outputText id="categoryForTheNewResource"
+							<h:outputText id="category"
 								value="#{associateBean.selectedToolCategoryViewBean.name}" />
 						</p:column>
 					</p:row>
 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="typeForTheNewResource"
+							<h:outputLabel for="type"
 								value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.TYPE_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<p:selectOneMenu id="typeForTheNewResource" required="true"
+							<p:selectOneMenu id="type" required="true"
 								requiredMessage="#{msg['REQUIRED_FIELD']}" editable="false" var="p"
 								immediate="true" binding="#{newResourceType}">
 								<f:selectItem
@@ -376,16 +376,16 @@
 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="nameForTheNewResource"
+							<h:outputLabel for="name"
 								value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />
 						</p:column>
 						<p:column>
-							<p:inputText id="nameForTheNewResource" required="true"
+							<p:inputText id="name" required="true"
 								requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 								binding="#{newResourceName}" />
 						</p:column>
 						<p:column>
-							<p:message for="nameForTheNewResource" display="text" />
+							<p:message for="name" display="text" />
 						</p:column>
 					</p:row>
 
@@ -426,11 +426,11 @@
 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="ownerOrganisationForTheNewResource"
+							<h:outputLabel for="ownerOrganisation"
 								value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.OWNER_ORGANISATION_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<p:selectOneMenu id="ownerOrganisationForTheNewResource"
+							<p:selectOneMenu id="ownerOrganisation"
 								required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
 								editable="false" immediate="true"
 								binding="#{newResourceOwnerOrganisation}"
@@ -449,11 +449,11 @@
 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="supportServiceForTheNewResource"
+							<h:outputLabel for="supportService"
 								value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.SUPPORT_ORGANISATION_LABEL']}" />
 						</p:column>
 						<p:column>
-							<p:selectOneMenu id="supportServiceForTheNewResource"
+							<p:selectOneMenu id="supportService"
 								required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
 								editable="false" immediate="true"
 								binding="#{newResourceSupportOrganisation}"
@@ -469,7 +469,7 @@
 							</p:selectOneMenu>
 						</p:column>
 						<p:column>
-							<p:message for="supportServiceForTheNewResource" display="text" />
+							<p:message for="supportService" display="text" />
 						</p:column>
 					</p:row>
 
@@ -503,16 +503,16 @@
 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="nameForTheExistingResource"
+							<h:outputLabel for="name"
 								value="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.NAME_LABEL']}" />
 						</p:column>
 						<p:column>
-							<p:inputText id="nameForTheExistingResource" required="true"
+							<p:inputText id="name" required="true"
 								value="#{associateBean.selectedResourceViewBean.name}"
 								requiredMessage="#{msg['REQUIRED_FIELD']}" size="50" />
 						</p:column>
 						<p:column>
-							<p:message for="nameForTheExistingResource" display="text" />
+							<p:message for="name" display="text" />
 						</p:column>
 					</p:row>
 
@@ -554,11 +554,11 @@
 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="ownerOrganisationForTheExistingResource"
+							<h:outputLabel for="ownerOrganisation"
 								value="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.OWNER_ORGANISATION_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<p:selectOneMenu id="ownerOrganisationForTheExistingResource"
+							<p:selectOneMenu id="ownerOrganisation"
 								required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
 								editable="false" immediate="true"
 								value="#{associateBean.selectedResourceViewBean.organisationPossessingResourceViewBean}"
@@ -577,11 +577,11 @@
 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="supportOrganisationForTheExistingResource"
+							<h:outputLabel for="supportOrganisation"
 								value="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.SUPPORT_ORGANISATION_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<p:selectOneMenu id="supportOrganisationForTheExistingResource"
+							<p:selectOneMenu id="supportOrganisation"
 								required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
 								editable="false" immediate="true"
 								value="#{associateBean.selectedResourceViewBean.organisationSupportingResourceViewBean}"
@@ -600,11 +600,11 @@
 
 					<p:row>
 						<p:column>
-							<h:outputLabel for="useModesForTheExistingResource"
+							<h:outputLabel for="useModes"
 								value="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.USE_MODES_LABEL']}" />
 						</p:column>
 						<p:column colspan="2">
-							<p:dataTable id="useModesForTheExistingResource"
+							<p:dataTable id="useModes"
 								value="#{associateBean.selectedResourceViewBean.useModeViewBeans}"
 								emptyMessage="#{msg['APPLICATION.MESSAGE.NO_RECORD']}"
 								var="useMode">
@@ -635,8 +635,8 @@
 
 				<h:outputLabel
 					value="#{msg['MY_TOOLS.ASSOCIATE_USE_MODE_MODAL_WINDOW.NEW_USE_MODE_LABEL']}"
-					for="newUseMode" />
-				<p:editor id="newUseMode"
+					for="useMode" />
+				<p:editor id="useMode"
 					value="#{associateBean.selectedResourceViewBean.useModeViewBeans}"
 					controls="bold bullets numbering undo redo link unlink">
 				</p:editor>
