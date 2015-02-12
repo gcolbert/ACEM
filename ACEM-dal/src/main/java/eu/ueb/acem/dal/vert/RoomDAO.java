@@ -19,9 +19,6 @@
 package eu.ueb.acem.dal.vert;
 
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -55,35 +52,13 @@ public class RoomDAO extends AbstractDAO<Room, RoomNode> implements DAO<Long, Ro
 	private RoomRepository repository;
 
 	@Override
-	public GenericRepository<RoomNode> getRepository() {
+	protected final GenericRepository<RoomNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
 	public void initializeCollections(Room entity) {
 		neo4jOperations.fetch(entity.getFloor());
-	}
-
-	@Override
-	public Collection<Room> retrieveByName(String name) {
-		Iterable<RoomNode> nodes = repository.findByName(name);
-		Collection<Room> entities = new HashSet<Room>();
-		for (RoomNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

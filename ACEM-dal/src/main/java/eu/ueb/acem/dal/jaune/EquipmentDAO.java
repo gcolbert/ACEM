@@ -21,7 +21,6 @@ package eu.ueb.acem.dal.jaune;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -57,30 +56,8 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 	private EquipmentRepository repository;
 
 	@Override
-	public GenericRepository<EquipmentNode> getRepository() {
+	protected final GenericRepository<EquipmentNode> getRepository() {
 		return repository;
-	}
-	
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
-	}
-
-	@Override
-	public Set<Equipment> retrieveByName(String name) {
-		Iterable<EquipmentNode> equipmentNodes = repository.findByName(name);
-		Set<Equipment> equipments = new HashSet<Equipment>();
-		for (Equipment entity : equipmentNodes) {
-			equipments.add(entity);
-		}
-		return equipments;
 	}
 
 	@Override

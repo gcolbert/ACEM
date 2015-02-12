@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.gris;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -57,20 +54,8 @@ public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> implements DAO
 	private TeacherRepository repository;
 
 	@Override
-	public GenericRepository<TeacherNode> getRepository() {
+	protected final GenericRepository<TeacherNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
@@ -87,16 +72,6 @@ public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> implements DAO
 			initializeCollections(entity);
 		}
 		return entity;
-	}
-
-	@Override
-	public Collection<Teacher> retrieveByName(String name) {
-		Iterable<TeacherNode> nodes = repository.findByName(name);
-		Collection<Teacher> entities = new HashSet<Teacher>();
-		for (TeacherNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

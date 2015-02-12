@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.vert;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -54,35 +51,13 @@ public class BuildingDAO extends AbstractDAO<Building, BuildingNode> implements 
 	private BuildingRepository repository;
 
 	@Override
-	public GenericRepository<BuildingNode> getRepository() {
+	protected final GenericRepository<BuildingNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
 	public void initializeCollections(Building entity) {
 		neo4jOperations.fetch(entity.getCampus());
-	}
-
-	@Override
-	public Collection<Building> retrieveByName(String name) {
-		Iterable<BuildingNode> nodes = repository.findByName(name);
-		Collection<Building> entities = new HashSet<Building>();
-		for (BuildingNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

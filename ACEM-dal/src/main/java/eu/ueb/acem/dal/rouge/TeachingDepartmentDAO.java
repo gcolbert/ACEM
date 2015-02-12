@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.rouge;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -55,20 +52,8 @@ public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, Teach
 	private TeachingDepartmentRepository repository;
 
 	@Override
-	public GenericRepository<TeachingDepartmentNode> getRepository() {
+	protected final GenericRepository<TeachingDepartmentNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
@@ -77,16 +62,6 @@ public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, Teach
 		neo4jOperations.fetch(entity.getViewedResources());
 		neo4jOperations.fetch(entity.getUseModes());
 		neo4jOperations.fetch(entity.getInstitutions());
-	}
-
-	@Override
-	public Collection<TeachingDepartment> retrieveByName(String name) {
-		Iterable<TeachingDepartmentNode> nodes = repository.findByName(name);
-		Collection<TeachingDepartment> entities = new HashSet<TeachingDepartment>();
-		for (TeachingDepartmentNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

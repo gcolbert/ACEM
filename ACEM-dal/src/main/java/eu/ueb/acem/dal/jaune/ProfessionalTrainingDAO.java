@@ -57,20 +57,8 @@ public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, P
 	private ProfessionalTrainingRepository repository;
 
 	@Override
-	public GenericRepository<ProfessionalTrainingNode> getRepository() {
+	protected final GenericRepository<ProfessionalTrainingNode> getRepository() {
 		return repository;
-	}
-	
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
@@ -79,16 +67,6 @@ public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, P
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
 		neo4jOperations.fetch(entity.getUseModes());
-	}
-
-	@Override
-	public Collection<ProfessionalTraining> retrieveByName(String name) {
-		Iterable<ProfessionalTrainingNode> nodes = repository.findByName(name);
-		Collection<ProfessionalTraining> entities = new HashSet<ProfessionalTraining>();
-		for (ProfessionalTrainingNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 	/**

@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.bleu;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -58,30 +55,8 @@ public class PedagogicalActivityDAO extends AbstractDAO<PedagogicalActivity, Ped
 	private PedagogicalActivityRepository repository;
 
 	@Override
-	public GenericRepository<PedagogicalActivityNode> getRepository() {
+	protected final GenericRepository<PedagogicalActivityNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
-	}
-
-	@Override
-	public Collection<PedagogicalActivity> retrieveByName(String name) {
-		Iterable<PedagogicalActivityNode> nodes = repository.findByName(name);
-		Collection<PedagogicalActivity> entities = new HashSet<PedagogicalActivity>();
-		for (PedagogicalActivityNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 	@Override

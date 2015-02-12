@@ -60,30 +60,8 @@ public class PedagogicalScenarioDAO extends AbstractDAO<PedagogicalScenario, Ped
 	private PedagogicalScenarioRepository repository;
 
 	@Override
-	public GenericRepository<PedagogicalScenarioNode> getRepository() {
+	protected final GenericRepository<PedagogicalScenarioNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
-	}
-
-	@Override
-	public Collection<PedagogicalScenario> retrieveByName(String name) {
-		Iterable<PedagogicalScenarioNode> nodes = repository.findByName(name);
-		Collection<PedagogicalScenario> entities = new HashSet<PedagogicalScenario>();
-		for (PedagogicalScenarioNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 	@Override

@@ -57,20 +57,8 @@ public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation,
 	private SoftwareDocumentationRepository repository;
 
 	@Override
-	public GenericRepository<SoftwareDocumentationNode> getRepository() {
+	protected final GenericRepository<SoftwareDocumentationNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
@@ -80,16 +68,6 @@ public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation,
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
 		neo4jOperations.fetch(entity.getUseModes());
 		neo4jOperations.fetch(entity.getSoftwares());
-	}
-
-	@Override
-	public Collection<SoftwareDocumentation> retrieveByName(String name) {
-		Iterable<SoftwareDocumentationNode> softwareNodes = repository.findByName(name);
-		Collection<SoftwareDocumentation> softwares = new HashSet<SoftwareDocumentation>();
-		for (SoftwareDocumentation software : softwareNodes) {
-			softwares.add(software);
-		}
-		return softwares;
 	}
 
 	/**

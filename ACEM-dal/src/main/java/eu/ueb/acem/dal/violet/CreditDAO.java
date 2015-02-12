@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.violet;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -54,36 +51,14 @@ public class CreditDAO extends AbstractDAO<Credit, CreditNode> implements DAO<Lo
 	private CreditRepository repository;
 
 	@Override
-	public GenericRepository<CreditNode> getRepository() {
+	protected final GenericRepository<CreditNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
 	public void initializeCollections(Credit entity) {
 		neo4jOperations.fetch(entity.getCourses());
 		neo4jOperations.fetch(entity.getDegrees());
-	}
-
-	@Override
-	public Collection<Credit> retrieveByName(String name) {
-		Iterable<CreditNode> nodes = repository.findByName(name);
-		Collection<Credit> entities = new HashSet<Credit>();
-		for (CreditNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

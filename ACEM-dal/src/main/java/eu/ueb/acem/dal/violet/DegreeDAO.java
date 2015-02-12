@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.violet;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -54,35 +51,13 @@ public class DegreeDAO extends AbstractDAO<Degree, DegreeNode> implements DAO<Lo
 	private DegreeRepository repository;
 
 	@Override
-	public GenericRepository<DegreeNode> getRepository() {
+	protected final GenericRepository<DegreeNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
 	public void initializeCollections(Degree entity) {
 		neo4jOperations.fetch(entity.getCredits());
-	}
-
-	@Override
-	public Collection<Degree> retrieveByName(String name) {
-		Iterable<DegreeNode> nodes = repository.findByName(name);
-		Collection<Degree> entities = new HashSet<Degree>();
-		for (DegreeNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

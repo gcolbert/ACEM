@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.violet;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -54,20 +51,8 @@ public class ClassDAO extends AbstractDAO<Class, ClassNode> implements DAO<Long,
 	private ClassRepository repository;
 
 	@Override
-	public GenericRepository<ClassNode> getRepository() {
+	protected final GenericRepository<ClassNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
@@ -75,16 +60,6 @@ public class ClassDAO extends AbstractDAO<Class, ClassNode> implements DAO<Long,
 		neo4jOperations.fetch(entity.getCourse());
 		neo4jOperations.fetch(entity.getPedagogicalScenarios());
 		neo4jOperations.fetch(entity.getLocation());
-	}
-
-	@Override
-	public Collection<Class> retrieveByName(String name) {
-		Iterable<ClassNode> nodes = repository.findByName(name);
-		Collection<Class> entities = new HashSet<Class>();
-		for (ClassNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

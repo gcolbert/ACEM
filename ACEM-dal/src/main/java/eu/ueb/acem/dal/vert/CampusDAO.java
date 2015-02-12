@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.vert;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -54,35 +51,13 @@ public class CampusDAO extends AbstractDAO<Campus, CampusNode> implements DAO<Lo
 	private CampusRepository repository;
 
 	@Override
-	public GenericRepository<CampusNode> getRepository() {
+	protected final GenericRepository<CampusNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
 	public void initializeCollections(Campus entity) {
 
-	}
-
-	@Override
-	public Collection<Campus> retrieveByName(String name) {
-		Iterable<CampusNode> nodes = repository.findByName(name);
-		Collection<Campus> entities = new HashSet<Campus>();
-		for (CampusNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

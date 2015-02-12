@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.dal.bleu;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,30 +54,8 @@ public class PedagogicalNeedDAO extends AbstractDAO<PedagogicalNeed, Pedagogical
 	private PedagogicalNeedRepository repository;
 
 	@Override
-	public GenericRepository<PedagogicalNeedNode> getRepository() {
+	protected final GenericRepository<PedagogicalNeedNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
-	}
-
-	@Override
-	public Collection<PedagogicalNeed> retrieveByName(String name) {
-		Iterable<PedagogicalNeedNode> needNodes = repository.findByName(name);
-		Collection<PedagogicalNeed> needs = new HashSet<PedagogicalNeed>();
-		for (PedagogicalNeed need : needNodes) {
-			needs.add(need);
-		}
-		return needs;
 	}
 
 	@Override

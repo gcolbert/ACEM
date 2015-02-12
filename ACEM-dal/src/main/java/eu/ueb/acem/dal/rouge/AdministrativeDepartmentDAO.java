@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.rouge;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -54,20 +51,8 @@ public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepar
 	private AdministrativeDepartmentRepository repository;
 
 	@Override
-	public GenericRepository<AdministrativeDepartmentNode> getRepository() {
+	protected final GenericRepository<AdministrativeDepartmentNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
@@ -76,16 +61,6 @@ public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepar
 		neo4jOperations.fetch(entity.getViewedResources());
 		neo4jOperations.fetch(entity.getUseModes());
 		neo4jOperations.fetch(entity.getInstitutions());
-	}
-
-	@Override
-	public Collection<AdministrativeDepartment> retrieveByName(String name) {
-		Iterable<AdministrativeDepartmentNode> nodes = repository.findByName(name);
-		Collection<AdministrativeDepartment> entities = new HashSet<AdministrativeDepartment>();
-		for (AdministrativeDepartmentNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

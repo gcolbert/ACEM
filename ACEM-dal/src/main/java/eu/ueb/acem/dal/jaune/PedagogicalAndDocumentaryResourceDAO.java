@@ -21,7 +21,6 @@ package eu.ueb.acem.dal.jaune;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -59,32 +58,10 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	private PedagogicalAndDocumentaryResourcesRepository repository;
 
 	@Override
-	public GenericRepository<PedagogicalAndDocumentaryResourceNode> getRepository() {
+	protected final GenericRepository<PedagogicalAndDocumentaryResourceNode> getRepository() {
 		return repository;
 	}
 	
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
-	}
-
-	@Override
-	public Set<PedagogicalAndDocumentaryResource> retrieveByName(String name) {
-		Iterable<PedagogicalAndDocumentaryResourceNode> pedagogicalAndDocumentaryResourceNodes = repository.findByName(name);
-		Set<PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResources = new HashSet<PedagogicalAndDocumentaryResource>();
-		for (PedagogicalAndDocumentaryResource pedagogicalAndDocumentaryResource : pedagogicalAndDocumentaryResourceNodes) {
-			pedagogicalAndDocumentaryResources.add(pedagogicalAndDocumentaryResource);
-		}
-		return pedagogicalAndDocumentaryResources;
-	}
-
 	@Override
 	public void initializeCollections(PedagogicalAndDocumentaryResource entity) {
 		neo4jOperations.fetch(entity.getCategories());

@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.jaune;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -55,20 +52,8 @@ public class ResourceCategoryDAO extends AbstractDAO<ResourceCategory, ResourceC
 	private ResourceCategoryRepository repository;
 
 	@Override
-	public GenericRepository<ResourceCategoryNode> getRepository() {
+	protected final GenericRepository<ResourceCategoryNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
@@ -76,16 +61,6 @@ public class ResourceCategoryDAO extends AbstractDAO<ResourceCategory, ResourceC
 		neo4jOperations.fetch(entity.getAnswers());
 		neo4jOperations.fetch(entity.getPedagogicalActivities());
 		neo4jOperations.fetch(entity.getResources());
-	}
-
-	@Override
-	public Collection<ResourceCategory> retrieveByName(String name) {
-		Iterable<ResourceCategoryNode> nodes = repository.findByName(name);
-		Collection<ResourceCategory> categories = new HashSet<ResourceCategory>();
-		for (ResourceCategory category : nodes) {
-			categories.add(category);
-		}
-		return categories;
 	}
 
 }

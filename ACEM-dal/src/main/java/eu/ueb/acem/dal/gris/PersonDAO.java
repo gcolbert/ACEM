@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.gris;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -57,30 +54,8 @@ public class PersonDAO extends AbstractDAO<Person, PersonNode> implements DAO<Lo
 	private PersonRepository repository;
 
 	@Override
-	public GenericRepository<PersonNode> getRepository() {
+	protected final GenericRepository<PersonNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
-	}
-
-	@Override
-	public Collection<Person> retrieveByName(String name) {
-		Iterable<PersonNode> nodes = repository.findByName(name);
-		Collection<Person> entities = new HashSet<Person>();
-		for (PersonNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 	@Override

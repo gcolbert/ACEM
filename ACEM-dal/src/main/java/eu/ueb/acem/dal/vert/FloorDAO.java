@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.vert;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -54,35 +51,13 @@ public class FloorDAO extends AbstractDAO<Floor, FloorNode> implements DAO<Long,
 	private FloorRepository repository;
 
 	@Override
-	public GenericRepository<FloorNode> getRepository() {
+	protected final GenericRepository<FloorNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
 	public void initializeCollections(Floor entity) {
 		neo4jOperations.fetch(entity.getBuilding());
-	}
-
-	@Override
-	public Collection<Floor> retrieveByName(String name) {
-		Iterable<FloorNode> nodes = repository.findByName(name);
-		Collection<Floor> entities = new HashSet<Floor>();
-		for (FloorNode node : nodes) {
-			entities.add(node);
-		}
-		return entities;
 	}
 
 }

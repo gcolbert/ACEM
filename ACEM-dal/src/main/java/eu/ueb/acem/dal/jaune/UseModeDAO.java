@@ -18,9 +18,6 @@
  */
 package eu.ueb.acem.dal.jaune;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -54,35 +51,13 @@ public class UseModeDAO extends AbstractDAO<UseMode, UseModeNode> implements DAO
 	private UseModeRepository repository;
 
 	@Override
-	public GenericRepository<UseModeNode> getRepository() {
+	protected final GenericRepository<UseModeNode> getRepository() {
 		return repository;
-	}
-
-	@Override
-	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
-		if (id == null) {
-			return false;
-		}
-		else {
-			return repository.count(id) > 0 ? true : false;
-		}
 	}
 
 	@Override
 	public void initializeCollections(UseMode entity) {
 		neo4jOperations.fetch(entity.getReferredOrganisations());
-	}
-
-	@Override
-	public Collection<UseMode> retrieveByName(String name) {
-		Iterable<UseModeNode> useModeNodes = repository.findByName(name);
-		Collection<UseMode> useModes = new HashSet<UseMode>();
-		for (UseMode useMode : useModeNodes) {
-			useModes.add(useMode);
-		}
-		return useModes;
 	}
 
 }

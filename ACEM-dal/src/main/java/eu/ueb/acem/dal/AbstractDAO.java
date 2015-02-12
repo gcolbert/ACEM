@@ -36,17 +36,26 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E> {
 	@Inject
 	protected Neo4jOperations neo4jOperations;
 
-	@Override
-	public abstract Boolean exists(Long id);
+	protected abstract GenericRepository<N> getRepository();
 
-	public abstract GenericRepository<N> getRepository();
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public E create(E entity) {
 		return getRepository().save((N) entity);
 	}
 
+	@Override
+	public Boolean exists(Long id) {
+		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
+		//return (id != null) ? repository.exists(id) : false;
+		if (id == null) {
+			return false;
+		}
+		else {
+			return getRepository().count(id) > 0 ? true : false;
+		}
+	}
+	
 	@Override
 	public E retrieveById(Long id) {
 		return (id != null) ? getRepository().findOne(id) : null;
@@ -65,8 +74,15 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E> {
 	public abstract void initializeCollections(E entity);
 
 	@Override
-	public abstract Collection<E> retrieveByName(String name);
-
+	public Collection<E> retrieveByName(String name) {
+		Iterable<N> nodes = getRepository().findByName(name);
+		Collection<E> entities = new HashSet<E>();
+		for (E entity : nodes) {
+			entities.add(entity);
+		}
+		return entities;
+	}
+	
 	@Override
 	public Collection<E> retrieveByName(String name, boolean initialize) {
 		Collection<E> entities = retrieveByName(name);
