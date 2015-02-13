@@ -289,7 +289,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		PedagogicalAnswer answer = answerDAO.retrieveById(id);
 		Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>();
 		for (ResourceCategory resourceCategory : answer.getResourceCategories()) {
-			resourceCategory = resourcesService.retrieveResourceCategory(resourceCategory.getId());
+			resourceCategory = resourcesService.retrieveResourceCategory(resourceCategory.getId(), true);
 			for (PedagogicalActivity pedagogicalActivity : resourceCategory.getPedagogicalActivities()) {
 				pedagogicalActivity = pedagogicalActivityDAO.retrieveById(pedagogicalActivity.getId(), true);
 				for (PedagogicalScenario pedagogicalScenario : pedagogicalActivity.getScenarios()) {

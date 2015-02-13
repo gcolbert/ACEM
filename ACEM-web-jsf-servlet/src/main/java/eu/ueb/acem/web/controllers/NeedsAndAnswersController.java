@@ -448,7 +448,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 					logger.info("association failed");
 				}
 				movedToolCategoryViewBean.setDomainBean(resourcesService
-						.retrieveResourceCategory(movedToolCategoryViewBean.getId()));
+						.retrieveResourceCategory(movedToolCategoryViewBean.getId(), true));
 			}
 			else {
 				logger.info("We should dissociate answer {} and tool category {}",
@@ -462,7 +462,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 					logger.info("dissociation failed");
 				}
 				movedToolCategoryViewBean.setDomainBean(resourcesService
-						.retrieveResourceCategory(movedToolCategoryViewBean.getId()));
+						.retrieveResourceCategory(movedToolCategoryViewBean.getId(), true));
 			}
 		}
 	}

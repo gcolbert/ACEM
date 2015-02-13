@@ -103,8 +103,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	@Inject
 	private OrganisationsService organisationsService;
-	@Inject
-	private OrganisationViewBeanGenerator organisationViewBeanGenerator;
+
 	/**
 	 * List of all organisations (needed for the admin to associate a resource with an organisation)
 	 */
@@ -131,8 +130,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	@Inject
 	private ResourcesService resourcesService;
-	@Inject
-	private ResourceViewBeanGenerator resourceViewBeanGenerator;
 	private ResourceViewBean selectedResourceViewBean;
 	private static final String[] RESOURCE_TYPES = { "RESOURCE_TYPE_SOFTWARE", "RESOURCE_TYPE_SOFTWARE_DOCUMENTATION",
 			"RESOURCE_TYPE_EQUIPMENT", "RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE",
@@ -240,14 +237,15 @@ public class MyToolsController extends AbstractContextAwareController implements
 	public void setSelectedToolCategoryId(Long toolCategoryId) {
 		logger.info("Entering setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
 		selectedToolCategoryId = toolCategoryId;
-
-		ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(toolCategoryId);
-		if (toolCategory != null) {
-			setSelectedToolCategoryViewBean(new ToolCategoryViewBean(toolCategory));
-		}
-		else {
-			selectedToolCategoryId = null;
-			selectedToolCategoryViewBean = null;
+		if (toolCategoryId != null) {
+			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(toolCategoryId, true);
+			if (toolCategory != null) {
+				setSelectedToolCategoryViewBean(new ToolCategoryViewBean(toolCategory));
+			}
+			else {
+				selectedToolCategoryId = null;
+				selectedToolCategoryViewBean = null;
+			}
 		}
 		logger.info("Leaving setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
 	}
@@ -279,16 +277,18 @@ public class MyToolsController extends AbstractContextAwareController implements
 			// We associate the ResourceViewBeans
 			selectedToolCategoryViewBean.getResourceViewBeans().clear();
 			for (Resource resource : selectedToolCategoryViewBean.getDomainBean().getResources()) {
-				ResourceViewBean resourceViewBean = resourceViewBeanGenerator.getResourceViewBean(resource.getId());
+				resource = resourcesService.retrieveResource(resource.getId(), true);
+				ResourceViewBean resourceViewBean = ResourceViewBeanGenerator.getViewBean(resource);
 
-				resourceViewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId()));
+				resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource()));
 
 				if (resourceViewBean.getDomainBean().getOrganisationSupportingResource() != null) {
-					resourceViewBean.setOrganisationSupportingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId()));
+					Organisation supportService = organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId(), true);
+					resourceViewBean.setOrganisationSupportingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(supportService));
 				}
 
 				for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
-					resourceViewBean.getOrganisationViewingResourceViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
+					resourceViewBean.getOrganisationViewingResourceViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisation));
 				}
 
 				for (UseMode useMode : resourceViewBean.getDomainBean().getUseModes()) {
@@ -331,7 +331,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		SelectItem[] arrayForCommunities = new SelectItem[communities.size()];
 		int i = 0;
 		for (Community community : communities) {
-			arrayForCommunities[i] = new SelectItem(organisationViewBeanGenerator.getOrganisationViewBean(community.getId()),community.getName());
+			arrayForCommunities[i] = new SelectItem(OrganisationViewBeanGenerator.getViewBean(community),community.getName());
 			i++;
 		}
 		groupCommunities.setSelectItems(arrayForCommunities);
@@ -343,7 +343,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		SelectItem[] arrayForInstitutions = new SelectItem[institutions.size()];
 		i = 0;
 		for (Institution institution : institutions) {
-			arrayForInstitutions[i] = new SelectItem(organisationViewBeanGenerator.getOrganisationViewBean(institution.getId()),institution.getName());
+			arrayForInstitutions[i] = new SelectItem(OrganisationViewBeanGenerator.getViewBean(institution),institution.getName());
 			i++;
 		}
 		groupInstitutions.setSelectItems(arrayForInstitutions);
@@ -355,7 +355,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		SelectItem[] arrayForAdministrativeDepartments = new SelectItem[administrativeDepartments.size()];
 		i = 0;
 		for (AdministrativeDepartment administrativeDepartment : administrativeDepartments) {
-			arrayForAdministrativeDepartments[i] = new SelectItem(organisationViewBeanGenerator.getOrganisationViewBean(administrativeDepartment.getId()),administrativeDepartment.getName());
+			arrayForAdministrativeDepartments[i] = new SelectItem(OrganisationViewBeanGenerator.getViewBean(administrativeDepartment),administrativeDepartment.getName());
 			i++;
 		}
 		groupAdministrativeDepartments.setSelectItems(arrayForAdministrativeDepartments);
@@ -367,7 +367,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		SelectItem[] arrayForTeachingDepartments = new SelectItem[teachingDepartments.size()];
 		i = 0;
 		for (TeachingDepartment teachingDepartment : teachingDepartments) {
-			arrayForTeachingDepartments[i] = new SelectItem(organisationViewBeanGenerator.getOrganisationViewBean(teachingDepartment.getId()),teachingDepartment.getName());
+			arrayForTeachingDepartments[i] = new SelectItem(OrganisationViewBeanGenerator.getViewBean(teachingDepartment),teachingDepartment.getName());
 			i++;
 		}
 		groupTeachingDepartments.setSelectItems(arrayForTeachingDepartments);
@@ -535,13 +535,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 		Resource resource = resourcesService.createResource(selectedToolCategoryId, newResourceOwnerOrganisation.getId(), newResourceSupportOrganisation.getId(), newResourceType, newResourceName, iconFileName);
 		if (resource != null) {
-			ResourceViewBean resourceViewBean = resourceViewBeanGenerator.getResourceViewBean(resource.getId());
+			ResourceViewBean resourceViewBean = ResourceViewBeanGenerator.getViewBean(resource);
 
-			resourceViewBean.setOrganisationPossessingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId()));
-			resourceViewBean.setOrganisationSupportingResourceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId()));
+			resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource()));
+			resourceViewBean.setOrganisationSupportingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(resourceViewBean.getDomainBean().getOrganisationSupportingResource()));
 
 			for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
-				resourceViewBean.getOrganisationViewingResourceViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
+				resourceViewBean.getOrganisationViewingResourceViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisation));
 			}
 
 			selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);

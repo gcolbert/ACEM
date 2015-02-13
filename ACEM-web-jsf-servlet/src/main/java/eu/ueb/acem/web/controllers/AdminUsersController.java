@@ -72,9 +72,6 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	@Inject
 	private OrganisationsService organisationsService;
 
-	@Inject
-	private OrganisationViewBeanGenerator organisationViewBeanGenerator;
-
 	private List<PersonViewBean> personViewBeans;
 
 	@Override
@@ -142,7 +139,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 				personViewBean = new PersonViewBean(person);
 			}
 			for (Organisation organisation : person.getWorksForOrganisations()) {
-				personViewBean.getOrganisationViewBeans().add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
+				personViewBean.getOrganisationViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisation));
 			}
 			personViewBeans.add(personViewBean);
 		}
@@ -169,7 +166,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 		if (getSelectedUserViewBean() != null) {
 			List<OrganisationViewBean> allOrganisationViewBeans = new ArrayList<OrganisationViewBean>();
 			for (Organisation organisation : organisationsService.retrieveAllOrganisations()) {
-				allOrganisationViewBeans.add(organisationViewBeanGenerator.getOrganisationViewBean(organisation.getId()));
+				allOrganisationViewBeans.add(OrganisationViewBeanGenerator.getViewBean(organisation));
 			}
 			Collections.sort(allOrganisationViewBeans);
 			pickListBean.getPickListEntities().getSource().clear();

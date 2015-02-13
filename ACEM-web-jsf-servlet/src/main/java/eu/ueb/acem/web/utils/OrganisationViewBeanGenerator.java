@@ -18,19 +18,11 @@
  */
 package eu.ueb.acem.web.utils;
 
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
-import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.viewbeans.rouge.AdministrativeDepartmentViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.CommunityViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.InstitutionViewBean;
@@ -42,24 +34,10 @@ import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
  * @since 2014-05-28
  * 
  */
-@Component("organisationViewBeanGenerator")
-@Scope("singleton")
 public class OrganisationViewBeanGenerator {
 
-	/**
-	 * For logging.
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(OrganisationViewBeanGenerator.class);
-
-	@Inject
-	private OrganisationsService organisationsService;
-
-	public OrganisationViewBeanGenerator() {
-	}
-
-	public OrganisationViewBean getOrganisationViewBean(Long id) {
+	public static OrganisationViewBean getViewBean(Organisation organisation) {
 		OrganisationViewBean viewBean = null;
-		Organisation organisation = organisationsService.retrieveOrganisation(id, false);
 		if (organisation != null) {
 			if (organisation instanceof Community) {
 				viewBean = new CommunityViewBean((Community) organisation);
@@ -73,9 +51,6 @@ public class OrganisationViewBeanGenerator {
 			else if (organisation instanceof TeachingDepartment) {
 				viewBean = new TeachingDepartmentViewBean((TeachingDepartment) organisation);
 			}
-		}
-		else {
-			logger.error("There is no organisation with id={} according to OrganisationsService", id);
 		}
 		return viewBean;
 	}

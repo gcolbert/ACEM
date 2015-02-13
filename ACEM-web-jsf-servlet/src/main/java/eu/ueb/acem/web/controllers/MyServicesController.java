@@ -52,9 +52,6 @@ public class MyServicesController extends AbstractContextAwareController impleme
 	@Inject
 	private OrganisationsService organisationsService;
 	
-	@Inject
-	private OrganisationViewBeanGenerator organisationViewBeanGenerator;
-
 	private Long selectedServiceId;
 	private OrganisationViewBean selectedServiceViewBean;
 
@@ -79,7 +76,7 @@ public class MyServicesController extends AbstractContextAwareController impleme
 
 		Organisation service = organisationsService.retrieveOrganisation(serviceId, true);
 		if (service != null) {
-			setSelectedServiceViewBean(organisationViewBeanGenerator.getOrganisationViewBean(serviceId));
+			setSelectedServiceViewBean(OrganisationViewBeanGenerator.getViewBean(service));
 		}
 		else {
 			selectedServiceId = null;

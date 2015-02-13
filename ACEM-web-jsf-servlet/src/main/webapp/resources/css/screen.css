@@ -167,6 +167,15 @@ html {
 	border:0; /* The panel grid containing the selected scenario properties should not have any border */
 }
 
+.selectedScenarioActivitiesDataTable .ui-datatable-header {
+	text-align:left;
+	margin-top:0.5em;
+}
+
+.selectedScenarioEvaluationModesPanel {
+	margin-top:0.5em;	
+}
+
 /************/
 /* MY TOOLS */
 /************/
@@ -333,6 +342,10 @@ html {
 	                          because with CSS you cannot set a property on a parent that has a specific child */
 }
 
+.associatedOrganisationsPanelGrid .ui-panelgrid-cell {
+	padding-top:0;
+}
+
 .associatedOrganisationsPanelGrid .ui-panelgrid-cell:first-of-type {
 	vertical-align:top; /* We override the previous rule so that it doesn't apply to inner datatables
 	                       because with CSS, children always inherit, even when you don't want to */
@@ -342,6 +355,10 @@ html {
 .associatedOrganisationsPanelGrid > tbody > .ui-widget-content[role=row] > .ui-panelgrid-cell[role=gridcell] {
 	border:0;
 	padding-left:0;
+}
+
+.associatedOrganisationsDataTable {
+	margin-top:0.5em;
 }
 
 .iconPanel {

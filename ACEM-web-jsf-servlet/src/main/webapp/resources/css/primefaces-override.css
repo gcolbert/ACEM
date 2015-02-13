@@ -4,7 +4,6 @@ Override of Primefaces default css
 .ui-button {
 	margin-right:0.5em;
 	margin-top:0.5em;
-	margin-bottom:0.5em;
 }
 .ui-tabs .ui-tabs-nav {
 	background:#E6E1E0;
@@ -103,9 +102,6 @@ Override of Primefaces default css
 
 .ui-accordion .ui-accordion-header {
 	margin:0.5em 0 0 0;
-}
-.ui-accordion .ui-accordion-header:first-of-type {
-	margin:0 0 0 0;
 }
 .ui-accordion .ui-accordion-content {
 	padding:0; /* Primefaces 5.1 sets a quite large padding for the content of accordions */

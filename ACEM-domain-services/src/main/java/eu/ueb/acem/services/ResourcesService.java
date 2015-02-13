@@ -34,7 +34,7 @@ public interface ResourcesService {
 
 	ResourceCategory createResourceCategory(String name, String description, String iconFileName);
 
-	ResourceCategory retrieveResourceCategory(Long id);
+	ResourceCategory retrieveResourceCategory(Long id, boolean initialize); 
 
 	ResourceCategory updateResourceCategory(ResourceCategory resourceCategory);
 	

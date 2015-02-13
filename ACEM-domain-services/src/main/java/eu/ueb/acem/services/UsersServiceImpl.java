@@ -181,7 +181,7 @@ public class UsersServiceImpl implements UsersService {
 		Boolean success = false;
 		if (personDAO.exists(idTeacher)) {
 			Teacher teacher = teacherDAO.retrieveById(idTeacher);
-			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory);
+			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory, true);
 			if (toolCategory != null) {
 				teacher.getFavoriteToolCategories().add(toolCategory);
 				teacher = teacherDAO.update(teacher);
@@ -197,7 +197,7 @@ public class UsersServiceImpl implements UsersService {
 		Boolean success = false;
 		if (personDAO.exists(idTeacher)) {
 			Teacher teacher = teacherDAO.retrieveById(idTeacher);
-			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory);
+			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory, true);
 			if (toolCategory != null) {
 				teacher.getFavoriteToolCategories().remove(toolCategory);
 				teacher = teacherDAO.update(teacher);
@@ -206,5 +206,5 @@ public class UsersServiceImpl implements UsersService {
 		}
 		return success;
 	}
-	
+
 }

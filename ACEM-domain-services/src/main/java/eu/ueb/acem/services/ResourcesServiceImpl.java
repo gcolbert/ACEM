@@ -65,24 +65,24 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	@Inject
 	private OrganisationsService organisationsService;
-	
+
 	@Inject
 	private UseModeDAO useModeDAO;
 
 	@Inject
-	private ResourceDAO<Long,Equipment> equipmentDAO;
+	private ResourceDAO<Long, Equipment> equipmentDAO;
 
 	@Inject
-	private ResourceDAO<Long,PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResourcesDAO;
+	private ResourceDAO<Long, PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResourcesDAO;
 
 	@Inject
-	private ResourceDAO<Long,ProfessionalTraining> professionalTrainingDAO;
+	private ResourceDAO<Long, ProfessionalTraining> professionalTrainingDAO;
 
 	@Inject
-	private ResourceDAO<Long,Software> softwareDAO;
+	private ResourceDAO<Long, Software> softwareDAO;
 
 	@Inject
-	private ResourceDAO<Long,SoftwareDocumentation> softwareDocumentationDAO;
+	private ResourceDAO<Long, SoftwareDocumentation> softwareDocumentationDAO;
 
 	@Override
 	public Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType) {
@@ -109,7 +109,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Resource createResource(Long toolCategoryId, Long ownerOrganisationId, Long supportOrganisationId, String resourceType, String name, String iconFileName) {
+	public Resource createResource(Long toolCategoryId, Long ownerOrganisationId, Long supportOrganisationId,
+			String resourceType, String name, String iconFileName) {
 		Organisation supportOrganisation = organisationsService.retrieveOrganisation(supportOrganisationId, true);
 		Organisation ownerOrganisation = organisationsService.retrieveOrganisation(ownerOrganisationId, true);
 		if ((ownerOrganisation != null) && (supportOrganisation != null)) {
@@ -133,30 +134,30 @@ public class ResourcesServiceImpl implements ResourcesService {
 				logger.error("Unknown resourceType '{}'", resourceType);
 			}
 
-			ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
+			ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId, true);
 			entity.getCategories().add(resourceCategory);
 			resourceCategory.getResources().add(entity);
 			resourceCategory = resourceCategoryDAO.update(resourceCategory);
-			
+
 			entity.setOrganisationPossessingResource(ownerOrganisation);
 			ownerOrganisation = organisationsService.updateOrganisation(ownerOrganisation);
 			entity.setOrganisationSupportingResource(supportOrganisation);
 			supportOrganisation = organisationsService.updateOrganisation(supportOrganisation);
 
 			if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
-				entity = softwareDAO.create((Software)entity);
+				entity = softwareDAO.create((Software) entity);
 			}
 			else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
-				entity = softwareDocumentationDAO.create((SoftwareDocumentation)entity);
+				entity = softwareDocumentationDAO.create((SoftwareDocumentation) entity);
 			}
 			else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
-				entity = equipmentDAO.create((Equipment)entity);
+				entity = equipmentDAO.create((Equipment) entity);
 			}
 			else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTATION_RESOURCE")) {
-				entity = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource)entity);
+				entity = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource) entity);
 			}
 			else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
-				entity = professionalTrainingDAO.create((ProfessionalTraining)entity);
+				entity = professionalTrainingDAO.create((ProfessionalTraining) entity);
 			}
 			else {
 				logger.error("Unknown resourceType '{}'", resourceType);
@@ -205,7 +206,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 			updatedResource = equipmentDAO.update((Equipment) resource);
 		}
 		else if (resource instanceof PedagogicalAndDocumentaryResource) {
-			updatedResource = pedagogicalAndDocumentaryResourcesDAO.update((PedagogicalAndDocumentaryResource) resource);
+			updatedResource = pedagogicalAndDocumentaryResourcesDAO
+					.update((PedagogicalAndDocumentaryResource) resource);
 		}
 		else if (resource instanceof ProfessionalTraining) {
 			updatedResource = professionalTrainingDAO.update((ProfessionalTraining) resource);
@@ -276,10 +278,10 @@ public class ResourcesServiceImpl implements ResourcesService {
 	public ResourceCategory createResourceCategory(String name, String description, String iconFileName) {
 		return resourceCategoryDAO.create(new ResourceCategoryNode(name, description, iconFileName));
 	}
-	
+
 	@Override
-	public ResourceCategory retrieveResourceCategory(Long id) {
-		return resourceCategoryDAO.retrieveById(id);
+	public ResourceCategory retrieveResourceCategory(Long id, boolean initialize) {
+		return resourceCategoryDAO.retrieveById(id, initialize);
 	}
 
 	@Override
@@ -305,11 +307,11 @@ public class ResourcesServiceImpl implements ResourcesService {
 	public Collection<ResourceCategory> retrieveAllCategories() {
 		return resourceCategoryDAO.retrieveAll();
 	}
-	
+
 	@Override
 	public Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(Long id) {
-		ResourceCategory toolCategory = retrieveResourceCategory(id);
-		Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>();
+		ResourceCategory toolCategory = retrieveResourceCategory(id, true);
+		Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>(0);
 		if (toolCategory != null) {
 			for (PedagogicalActivity activity : toolCategory.getPedagogicalActivities()) {
 				scenarios.addAll(activity.getScenarios());
@@ -317,7 +319,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 		}
 		return scenarios;
 	}
-	
+
 	@Override
 	public Collection<? extends Resource> retrieveSoftwaresWithCategory(ResourceCategory category) {
 		if (category != null) {
@@ -359,7 +361,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Resource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category) {
+	public Collection<? extends Resource> retrievePedagogicalAndDocumentaryResourcesWithCategory(
+			ResourceCategory category) {
 		if (category != null) {
 			return pedagogicalAndDocumentaryResourcesDAO.retrieveAllWithCategory(category);
 		}
@@ -375,7 +378,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	@Override
 	public UseMode updateUseMode(UseMode resource) {
-		UseMode updatedEntity = useModeDAO.update(resource); 
+		UseMode updatedEntity = useModeDAO.update(resource);
 		return updatedEntity;
 	}
 
