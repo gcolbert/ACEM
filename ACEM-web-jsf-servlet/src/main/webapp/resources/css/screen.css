@@ -324,7 +324,11 @@ html {
 	vertical-align:top;
 }
 
-.organisationPanelGrid  .ui-panelgrid-cell:first-of-type {
+.organisationPanelGrid > tbody > .ui-widget-content[role=row] > .ui-panelgrid-cell {
+	border:0;
+}
+
+.organisationPanelGrid .ui-panelgrid-cell:first-of-type {
 	vertical-align:middle; /* We suppose that the first cell contains the organisation logo and center it vertically
 	                          because with CSS you cannot set a property on a parent that has a specific child */
 }

@@ -52,11 +52,7 @@ public class CommunityViewBean extends AbstractOrganisationViewBean implements S
 
 	@Override
 	public void setDomainBean(Organisation domainBean) {
-		setDomainBean((Community) domainBean);
-	}
-
-	public void setDomainBean(Community domainBean) {
-		this.domainBean = domainBean;
+		this.domainBean = (Community) domainBean;
 		super.setDomainBean(domainBean);
 	}
 

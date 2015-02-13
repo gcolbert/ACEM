@@ -33,12 +33,12 @@ public abstract class AbstractOrganisationViewBean extends AbstractViewBean impl
 	private String shortname;
 
 	private String iconFileName;
-	
+
 	private String contactMode;
 
 	@Override
 	public abstract Organisation getDomainBean();
-	
+
 	@Override
 	public void setDomainBean(Organisation organisation) {
 		setId(organisation.getId());
@@ -47,7 +47,7 @@ public abstract class AbstractOrganisationViewBean extends AbstractViewBean impl
 		setIconFileName(organisation.getIconFileName());
 		setContactMode(organisation.getContactMode());
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;
@@ -92,5 +92,5 @@ public abstract class AbstractOrganisationViewBean extends AbstractViewBean impl
 	public int compareTo(OrganisationViewBean o) {
 		return name.compareTo(o.getName());
 	}
-	
+
 }

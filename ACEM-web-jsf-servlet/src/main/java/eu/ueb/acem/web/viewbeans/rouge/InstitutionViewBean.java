@@ -52,11 +52,7 @@ public class InstitutionViewBean extends AbstractOrganisationViewBean implements
 
 	@Override
 	public void setDomainBean(Organisation domainBean) {
-		setDomainBean((Institution) domainBean);
-	}
-
-	public void setDomainBean(Institution domainBean) {
-		this.domainBean = domainBean;
+		this.domainBean = (Institution) domainBean;
 		super.setDomainBean(domainBean);
 	}
 

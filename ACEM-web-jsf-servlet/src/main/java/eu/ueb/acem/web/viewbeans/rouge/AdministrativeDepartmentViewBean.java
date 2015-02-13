@@ -52,11 +52,7 @@ public class AdministrativeDepartmentViewBean extends AbstractOrganisationViewBe
 
 	@Override
 	public void setDomainBean(Organisation domainBean) {
-		setDomainBean((AdministrativeDepartment) domainBean);
-	}
-
-	public void setDomainBean(AdministrativeDepartment domainBean) {
-		this.domainBean = domainBean;
+		this.domainBean = (AdministrativeDepartment) domainBean;
 		super.setDomainBean(domainBean);
 	}
 
