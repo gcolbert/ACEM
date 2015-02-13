@@ -21,6 +21,7 @@ package eu.ueb.acem.web.viewbeans.rouge;
 import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
@@ -47,6 +48,11 @@ public class CommunityViewBean extends AbstractOrganisationViewBean implements S
 	@Override
 	public Community getDomainBean() {
 		return domainBean;
+	}
+
+	@Override
+	public void setDomainBean(Organisation domainBean) {
+		setDomainBean((Community) domainBean);
 	}
 
 	public void setDomainBean(Community domainBean) {

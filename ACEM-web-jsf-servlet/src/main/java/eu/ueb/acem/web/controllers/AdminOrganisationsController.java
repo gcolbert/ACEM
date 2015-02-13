@@ -625,7 +625,6 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	}
 
 	public void onTransfer(TransferEvent event) {
-		logger.debug("onTransfer");
 		@SuppressWarnings("unchecked")
 		List<OrganisationViewBean> listOfMovedViewBeans = (List<OrganisationViewBean>) event.getItems();
 		for (OrganisationViewBean movedOrganisationViewBean : listOfMovedViewBeans) {

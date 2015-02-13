@@ -21,6 +21,7 @@ package eu.ueb.acem.web.viewbeans.rouge;
 import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
@@ -47,6 +48,11 @@ public class InstitutionViewBean extends AbstractOrganisationViewBean implements
 	@Override
 	public Institution getDomainBean() {
 		return domainBean;
+	}
+
+	@Override
+	public void setDomainBean(Organisation domainBean) {
+		setDomainBean((Institution) domainBean);
 	}
 
 	public void setDomainBean(Institution domainBean) {

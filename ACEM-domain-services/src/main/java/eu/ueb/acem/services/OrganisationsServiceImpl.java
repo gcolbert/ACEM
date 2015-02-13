@@ -276,8 +276,8 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	@Override
 	public Boolean associateCommunityAndInstitution(Long idCommunity, Long idInstitution) {
-		Community community = retrieveCommunity(idCommunity, false);
-		Institution institution = retrieveInstitution(idInstitution, false);
+		Community community = retrieveCommunity(idCommunity, true);
+		Institution institution = retrieveInstitution(idInstitution, true);
 
 		community.getInstitutions().add(institution);
 		institution.getCommunities().add(community);

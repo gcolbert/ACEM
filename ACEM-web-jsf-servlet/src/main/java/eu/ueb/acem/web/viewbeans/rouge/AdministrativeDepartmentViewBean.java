@@ -21,6 +21,7 @@ package eu.ueb.acem.web.viewbeans.rouge;
 import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
@@ -47,6 +48,11 @@ public class AdministrativeDepartmentViewBean extends AbstractOrganisationViewBe
 	@Override
 	public AdministrativeDepartment getDomainBean() {
 		return domainBean;
+	}
+
+	@Override
+	public void setDomainBean(Organisation domainBean) {
+		setDomainBean((AdministrativeDepartment) domainBean);
 	}
 
 	public void setDomainBean(AdministrativeDepartment domainBean) {

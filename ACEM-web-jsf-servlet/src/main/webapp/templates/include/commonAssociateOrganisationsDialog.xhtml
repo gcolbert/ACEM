@@ -32,7 +32,7 @@
 			<f:facet name="targetCaption">#{targetCaption}</f:facet>
 			<p:ajax event="transfer"
 				listener="#{associateBean.onTransfer}"
-				update="@this :contentForm:tabViewOrganisations :contentForm:messagesDisplayer :contentForm:tabViewOrganisations:accordionPanelForCommunities :contentForm:tabViewOrganisations:accordionPanelForInstitutions :contentForm:tabViewOrganisations:accordionPanelForAdministrativeDepartments :contentForm:tabViewOrganisations:accordionPanelForTeachingDepartments"
+				update="@this :contentForm:tabViewOrganisations :contentForm:messagesDisplayer"
 				process="@this" />
 		</p:pickList>
 		<p:commandButton styleClass="dialogValidationButton"
@@ -40,6 +40,6 @@
 			icon="ui-icon-check"
 			onclick="PF('dialogAssociateOrganisations').hide()"
 			update="@none"
-			process="@form" />
+			process="@none" />
 	</p:dialog>
 </ui:composition>

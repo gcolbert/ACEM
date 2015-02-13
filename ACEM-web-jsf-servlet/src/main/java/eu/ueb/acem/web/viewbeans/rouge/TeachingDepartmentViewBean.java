@@ -20,6 +20,7 @@ package eu.ueb.acem.web.viewbeans.rouge;
 
 import java.io.Serializable;
 
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
@@ -49,6 +50,11 @@ public class TeachingDepartmentViewBean extends AbstractOrganisationViewBean imp
 		return domainBean;
 	}
 
+	@Override
+	public void setDomainBean(Organisation domainBean) {
+		setDomainBean((TeachingDepartment) domainBean);
+	}
+	
 	public void setDomainBean(TeachingDepartment domainBean) {
 		this.domainBean = domainBean;
 		super.setDomainBean(domainBean);
