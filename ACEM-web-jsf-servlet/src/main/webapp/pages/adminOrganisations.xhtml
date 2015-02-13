@@ -61,14 +61,6 @@
 							</p:graphicImage>
 							<p:column>
 								<p:commandButton
-									value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
-									icon="ui-icon-transferthick-e-w"
-									actionListener="#{associateBean.setCurrentOrganisationViewBean(communityViewBean)}"
-									action="#{associateBean.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
-									oncomplete="PF('dialogAssociateInstitution').show()"
-									update=":associationInstitutionForm:idDialogAssociateOrganisations"
-									process="@this" />
-								<p:commandButton
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_COMMUNITY_LABEL']}"
 									icon="ui-icon-pencil"
 									action="#{associateBean.prepareCommunityModification(communityViewBean)}"
@@ -86,15 +78,27 @@
 										message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 										icon="ui-icon-alert" />
 								</p:commandButton>
-								<p:dataTable id="dataTableInstitutionViewBeansForCommunity"
-									var="institutionViewBean"
-									emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{associateBean.institutionViewBeansForCurrentOrganisation}">
-									<p:column
-										headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
-										<h:outputText value="#{institutionViewBean.name}" />
+								<p:panelGrid columns="1" styleClass="associatedOrganisationsPanelGrid">
+									<p:column>
+										<p:commandButton
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
+											icon="ui-icon-transferthick-e-w"
+											actionListener="#{associateBean.setCurrentOrganisationViewBean(communityViewBean)}"
+											action="#{associateBean.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
+											oncomplete="PF('dialogAssociateInstitution').show()"
+											update=":associationInstitutionForm:idDialogAssociateOrganisations"
+											process="@this" />
+										<p:dataTable id="dataTableInstitutionViewBeansForCommunity"
+											var="institutionViewBean" styleClass="associatedOrganisationsDataTable"
+											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
+											value="#{associateBean.institutionViewBeansForCurrentOrganisation}">
+											<p:column
+												headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
+												<h:outputText value="#{institutionViewBean.name}" />
+											</p:column>
+										</p:dataTable>
 									</p:column>
-								</p:dataTable>
+								</p:panelGrid>
 							</p:column>
 						</p:panelGrid>
 					</p:tab>
@@ -150,7 +154,7 @@
 										message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 										icon="ui-icon-alert" />
 								</p:commandButton>
-								<p:panelGrid columns="3">
+								<p:panelGrid columns="3" styleClass="associatedOrganisationsPanelGrid">
 									<p:column>
 										<p:commandButton
 											value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_COMMUNITY_LABEL']}"
@@ -160,7 +164,7 @@
 											oncomplete="PF('dialogAssociateCommunity').show()"
 											update=":associationCommunityForm:idDialogAssociateOrganisations"
 											process="@this" />
-										<p:dataTable var="communityViewBean"
+										<p:dataTable var="communityViewBean" styleClass="associatedOrganisationsDataTable"
 											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.LIST.NO_RECORDS_FOUND']}"
 											value="#{associateBean.communityViewBeansForCurrentOrganisation}">
 											<p:column
@@ -178,7 +182,7 @@
 											oncomplete="PF('dialogAssociateAdministrativeDepartment').show()"
 											update=":associationAdministrativeDepartmentForm:idDialogAssociateOrganisations"
 											process="@this" />
-										<p:dataTable var="administrativeDepartmentViewBean"
+										<p:dataTable var="administrativeDepartmentViewBean" styleClass="associatedOrganisationsDataTable"
 											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
 											value="#{associateBean.administrativeDepartmentViewBeansForCurrentOrganisation}">
 											<p:column
@@ -197,7 +201,7 @@
 											oncomplete="PF('dialogAssociateTeachingDepartment').show()"
 											update=":associationTeachingDepartmentForm:idDialogAssociateOrganisations"
 											process="@this" />
-										<p:dataTable var="teachingDepartmentViewBean"
+										<p:dataTable var="teachingDepartmentViewBean" styleClass="associatedOrganisationsDataTable"
 											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.LIST.NO_RECORDS_FOUND']}"
 											value="#{associateBean.teachingDepartmentViewBeansForCurrentOrganisation}">
 											<p:column
@@ -245,14 +249,6 @@
 							</p:graphicImage>
 							<p:column>
 								<p:commandButton
-									value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
-									icon="ui-icon-transferthick-e-w"
-									actionListener="#{associateBean.setCurrentOrganisationViewBean(administrativeDepartmentViewBean)}"
-									action="#{associateBean.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
-									oncomplete="PF('dialogAssociateInstitution').show()"
-									update=":associationInstitutionForm:idDialogAssociateOrganisations"
-									process="@this" />
-								<p:commandButton
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 									icon="ui-icon-pencil"
 									action="#{associateBean.prepareAdministrativeDepartmentModification(administrativeDepartmentViewBean)}"
@@ -270,14 +266,26 @@
 										message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 										icon="ui-icon-alert" />
 								</p:commandButton>
-								<p:dataTable var="institutionViewBean"
-									emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{associateBean.institutionViewBeansForCurrentOrganisation}">
-									<p:column
-										headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
-										<h:outputText value="#{institutionViewBean.name}" />
+								<p:panelGrid columns="1" styleClass="associatedOrganisationsPanelGrid">
+									<p:column>
+										<p:commandButton
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
+											icon="ui-icon-transferthick-e-w"
+											actionListener="#{associateBean.setCurrentOrganisationViewBean(administrativeDepartmentViewBean)}"
+											action="#{associateBean.preparePicklistInstitutionViewBeansForCurrentOrganisation()}"
+											oncomplete="PF('dialogAssociateInstitution').show()"
+											update=":associationInstitutionForm:idDialogAssociateOrganisations"
+											process="@this" />
+										<p:dataTable var="institutionViewBean" styleClass="associatedOrganisationsDataTable"
+											emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
+											value="#{associateBean.institutionViewBeansForCurrentOrganisation}">
+											<p:column
+												headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
+												<h:outputText value="#{institutionViewBean.name}" />
+											</p:column>
+										</p:dataTable>
 									</p:column>
-								</p:dataTable>
+								</p:panelGrid>
 							</p:column>
 						</p:panelGrid>
 					</p:tab>
@@ -316,13 +324,6 @@
 							</p:graphicImage>
 							<p:column>
 								<p:commandButton
-									value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
-									icon="ui-icon-transferthick-e-w"
-									action="#{associateBean.prepareTeachingDepartmentModification(teachingDepartmentViewBean)}"
-									oncomplete="PF('dialogAssociateInstitution').show()"
-									update=":associationInstitutionForm:idDialogAssociateOrganisations"
-									process="@this" />
-								<p:commandButton
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_TEACHING_DEPARTMENT_LABEL']}"
 									icon="ui-icon-pencil"
 									actionListener="#{associateBean.commonUploadOneDialog.reset}"
@@ -341,14 +342,25 @@
 										message="#{msg['ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION.CONFIRMATION_QUESTION']}"
 										icon="ui-icon-alert" />
 								</p:commandButton>
-									<p:dataTable var="institutionViewBean"
-									emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
-									value="#{associateBean.institutionViewBeansForCurrentOrganisation}">
-									<p:column
-										headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
-										<h:outputText value="#{institutionViewBean.name}" />
+								<p:panelGrid columns="1" styleClass="associatedOrganisationsPanelGrid">
+									<p:column>
+										<p:commandButton
+											value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_INSTITUTION_LABEL']}"
+											icon="ui-icon-transferthick-e-w"
+											action="#{associateBean.prepareTeachingDepartmentModification(teachingDepartmentViewBean)}"
+											oncomplete="PF('dialogAssociateInstitution').show()"
+											update=":associationInstitutionForm:idDialogAssociateOrganisations"
+											process="@this" />
+										<p:dataTable var="institutionViewBean" styleClass="associatedOrganisationsDataTable"
+										emptyMessage="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.NO_RECORDS_FOUND']}"
+										value="#{associateBean.institutionViewBeansForCurrentOrganisation}">
+											<p:column
+												headerText="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.LIST.COLUMN_HEADER.NAME']}">
+												<h:outputText value="#{institutionViewBean.name}" />
+											</p:column>
+										</p:dataTable>
 									</p:column>
-								</p:dataTable>
+								</p:panelGrid>
 							</p:column>
 						</p:panelGrid>
 					</p:tab>

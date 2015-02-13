@@ -294,10 +294,9 @@ html {
 	border:0;
 }
 
-/******************/
-/* ADMINISTRATION */
-/******************/
-.organisationLogo,
+/***********************************/
+/* COMMON LIST ALL TOOL CATEGORIES */
+/***********************************/ 
 .toolCategoryLogo {
 	display:block;
 	margin:auto;
@@ -309,6 +308,14 @@ html {
 	border:0;
 }
 
+/***********************/
+/* ADMIN ORGANISATIONS */
+/***********************/
+.organisationLogo {
+	display:block;
+	margin:auto;
+}
+
 .administrationAccordionPanel .ui-accordion-content {
 	padding:0;
 }
@@ -316,8 +323,21 @@ html {
 .organisationPanelGrid .ui-panelgrid-cell {
 	vertical-align:top;
 }
-.organisationPanelGrid .ui-panelgrid-cell:first-of-type {
-	vertical-align:middle;
+
+.organisationPanelGrid  .ui-panelgrid-cell:first-of-type {
+	vertical-align:middle; /* We suppose that the first cell contains the organisation logo and center it vertically
+	                          because with CSS you cannot set a property on a parent that has a specific child */
+}
+
+.associatedOrganisationsPanelGrid .ui-panelgrid-cell:first-of-type {
+	vertical-align:top; /* We override the previous rule so that it doesn't apply to inner datatables
+	                       because with CSS, children always inherit, even when you don't want to */
+}
+
+.associatedOrganisationsPanelGrid > tbody > .ui-widget-content[role=row],
+.associatedOrganisationsPanelGrid > tbody > .ui-widget-content[role=row] > .ui-panelgrid-cell[role=gridcell] {
+	border:0;
+	padding-left:0;
 }
 
 .iconPanel {
