@@ -101,10 +101,6 @@ public interface OrganisationsService {
 
 	Boolean dissociateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment);
 
-	Boolean associateUseModeAndOrganisation(Long idUseMode, Long idOrganisation);
-
-	Boolean dissociateUseModeAndOrganisation(Long idUseMode, Long idOrganisation);
-
 	Boolean isImplicitlySharingResourcesWith(Organisation organisation1, Organisation organisation2);
 
 }

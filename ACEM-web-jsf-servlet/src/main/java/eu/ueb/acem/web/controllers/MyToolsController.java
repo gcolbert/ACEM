@@ -43,8 +43,13 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.Software;
+import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
@@ -58,14 +63,18 @@ import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
 import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
-import eu.ueb.acem.web.utils.ResourceViewBeanGenerator;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ProfessionalTrainingViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.SoftwareDocumentationViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.UseModeViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
@@ -278,7 +287,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 			selectedToolCategoryViewBean.getResourceViewBeans().clear();
 			for (Resource resource : selectedToolCategoryViewBean.getDomainBean().getResources()) {
 				resource = resourcesService.retrieveResource(resource.getId(), true);
-				ResourceViewBean resourceViewBean = ResourceViewBeanGenerator.getViewBean(resource);
+				ResourceViewBean resourceViewBean = getResourceViewBean(resource);
 
 				resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource()));
 
@@ -505,6 +514,28 @@ public class MyToolsController extends AbstractContextAwareController implements
 	/*
 	 * ****************** Resources ********************
 	 */
+	public ResourceViewBean getResourceViewBean(Resource resource) {
+		ResourceViewBean viewBean = null;
+		if (resource != null) {
+			if (resource instanceof Software) {
+				viewBean = new SoftwareViewBean((Software) resource);
+			}
+			else if (resource instanceof PedagogicalAndDocumentaryResource) {
+				viewBean = new DocumentaryAndPedagogicalResourceViewBean((PedagogicalAndDocumentaryResource) resource);
+			}
+			else if (resource instanceof Equipment) {
+				viewBean = new EquipmentViewBean((Equipment) resource);
+			}
+			else if (resource instanceof SoftwareDocumentation) {
+				viewBean = new SoftwareDocumentationViewBean((SoftwareDocumentation) resource);
+			}
+			else if (resource instanceof ProfessionalTraining) {
+				viewBean = new ProfessionalTrainingViewBean((ProfessionalTraining) resource);
+			}
+		}
+		return viewBean;
+	}
+
 	public ResourceViewBean getSelectedResourceViewBean() {
 		return selectedResourceViewBean;
 	}
@@ -535,7 +566,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 		Resource resource = resourcesService.createResource(selectedToolCategoryId, newResourceOwnerOrganisation.getId(), newResourceSupportOrganisation.getId(), newResourceType, newResourceName, iconFileName);
 		if (resource != null) {
-			ResourceViewBean resourceViewBean = ResourceViewBeanGenerator.getViewBean(resource);
+			ResourceViewBean resourceViewBean = getResourceViewBean(resource);
 
 			resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource()));
 			resourceViewBean.setOrganisationSupportingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(resourceViewBean.getDomainBean().getOrganisationSupportingResource()));
@@ -693,4 +724,5 @@ public class MyToolsController extends AbstractContextAwareController implements
 		deleteTemporaryFileIfExists(this.temporaryFilePath);
 	}
 
+	
 }

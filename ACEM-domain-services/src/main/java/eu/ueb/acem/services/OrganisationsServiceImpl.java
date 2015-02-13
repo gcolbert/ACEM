@@ -33,7 +33,6 @@ import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
 import eu.ueb.acem.dal.rouge.CommunityDAO;
 import eu.ueb.acem.dal.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
-import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -66,9 +65,6 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	@Inject
 	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
 	
-	@Inject
-	private ResourcesService resourcesService;
-
 	@Override
 	public Long countCommunities() {
 		return communityDAO.count();
@@ -330,34 +326,6 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		return ((!institution.getAdministrativeDepartments().contains(administrativeDepartment)) && (!administrativeDepartment.getInstitutions().contains(institution)));
 	}
 
-	@Override
-	public Boolean associateUseModeAndOrganisation(Long idUseMode, Long idOrganisation) {
-		UseMode useMode = resourcesService.retrieveUseMode(idUseMode, true);
-		Organisation referredOrganisation = retrieveOrganisation(idOrganisation, true);
-
-		useMode.getReferredOrganisations().add(referredOrganisation);
-		referredOrganisation.getUseModes().add(useMode);
-		
-		useMode = resourcesService.updateUseMode(useMode);
-		referredOrganisation = updateOrganisation(referredOrganisation);
-
-		return ((useMode.getReferredOrganisations().contains(referredOrganisation)) && (referredOrganisation.getUseModes().contains(useMode)));
-	}
-
-	@Override
-	public Boolean dissociateUseModeAndOrganisation(Long idUseMode, Long idOrganisation) {
-		UseMode useMode = resourcesService.retrieveUseMode(idUseMode, true);
-		AdministrativeDepartment referredOrganisation = retrieveAdministrativeDepartment(idOrganisation, true);
-
-		useMode.getReferredOrganisations().remove(referredOrganisation);
-		referredOrganisation.getUseModes().remove(useMode);
-
-		useMode = resourcesService.updateUseMode(useMode);
-		referredOrganisation = updateAdministrativeDepartment(referredOrganisation);
-
-		return ((!useMode.getReferredOrganisations().contains(referredOrganisation)) && (!referredOrganisation.getUseModes().contains(useMode)));
-	}
-	
 	@Override
 	public Boolean associateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment) {
 		Institution institution = retrieveInstitution(idInstitution, true);

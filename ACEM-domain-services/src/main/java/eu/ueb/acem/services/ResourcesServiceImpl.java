@@ -396,4 +396,33 @@ public class ResourcesServiceImpl implements ResourcesService {
 		return !useModeDAO.exists(id);
 	}
 
+	@Override
+	public Boolean associateUseModeAndOrganisation(Long idUseMode, Long idOrganisation) {
+		UseMode useMode = retrieveUseMode(idUseMode, true);
+		Organisation referredOrganisation = organisationsService.retrieveOrganisation(idOrganisation, true);
+
+		useMode.getReferredOrganisations().add(referredOrganisation);
+		referredOrganisation.getUseModes().add(useMode);
+		
+		useMode = updateUseMode(useMode);
+		referredOrganisation = organisationsService.updateOrganisation(referredOrganisation);
+
+		return ((useMode.getReferredOrganisations().contains(referredOrganisation)) && (referredOrganisation.getUseModes().contains(useMode)));
+	}
+
+	@Override
+	public Boolean dissociateUseModeAndOrganisation(Long idUseMode, Long idOrganisation) {
+		UseMode useMode = retrieveUseMode(idUseMode, true);
+		Organisation referredOrganisation = organisationsService.retrieveOrganisation(idOrganisation, true);
+
+		useMode.getReferredOrganisations().remove(referredOrganisation);
+		referredOrganisation.getUseModes().remove(useMode);
+
+		useMode = updateUseMode(useMode);
+		referredOrganisation = organisationsService.updateOrganisation(referredOrganisation);
+
+		return ((!useMode.getReferredOrganisations().contains(referredOrganisation)) && (!referredOrganisation.getUseModes().contains(useMode)));
+	}
+	
+	
 }

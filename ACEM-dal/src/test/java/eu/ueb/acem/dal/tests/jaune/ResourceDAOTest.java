@@ -74,15 +74,12 @@ public class ResourceDAOTest extends TestCase {
 	private ResourceDAO<Long,SoftwareDocumentation> softwareDocumentationDAO;
 
 	@Inject
-	@SuppressWarnings("unused")
 	private ResourceDAO<Long,Equipment> equipmentDAO;
 
 	@Inject
-	@SuppressWarnings("unused")
 	private ResourceDAO<Long,PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResourcesDAO;
 
 	@Inject
-	@SuppressWarnings("unused")
 	private ResourceDAO<Long,ProfessionalTraining> professionalTrainingDAO;
 
 	public ResourceDAOTest() {

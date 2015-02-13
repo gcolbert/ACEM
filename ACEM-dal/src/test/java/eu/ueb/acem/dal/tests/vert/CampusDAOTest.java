@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Grégoire COLBERT 2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -16,14 +16,12 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.tests.gris;
+package eu.ueb.acem.dal.tests.vert;
 
 import javax.inject.Inject;
 
 import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -33,87 +31,72 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.gris.PersonDAO;
-import eu.ueb.acem.dal.gris.TeacherDAO;
-import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
+import eu.ueb.acem.dal.vert.CampusDAO;
+import eu.ueb.acem.domain.beans.vert.Campus;
+import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-11-22
+ * @since 2015-02-13
  * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/dal-test-context.xml")
-public class PersonDAOTest extends TestCase {
+public class CampusDAOTest extends TestCase {
 
 	/**
 	 * For Logging.
 	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(PersonDAOTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(CampusDAOTest.class);
 
 	@Inject
-	private TeacherDAO teacherDAO;
+	private CampusDAO campusDAO;
 
-	@Inject
-	private PersonDAO personDAO;
+	public CampusDAOTest() {
 
-	public PersonDAOTest() {
-
-	}
-
-	@Before
-	public void before() {
-	}
-
-	@After
-	public void after() {
 	}
 
 	/**
-	 * Create
+	 * Create campus
 	 */
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t01_TestCreateTeacher() {
+	public final void t01_TestCreateCampus() {
 		// We create a new object in the datastore
-		Teacher teacher1 = new TeacherNode("Pr. John Doe", "jdoe", "pass");
+		String name = "Campus de Beaulieu";
+		Double latitude = new Double("48.115595");
+		Double longitude = new Double("-1.636717");
+
+		Campus campus = new CampusNode(name);
+		campus.setLatitude(latitude);
+		campus.setLongitude(longitude);
 
 		// We create our object
-		teacher1 = teacherDAO.create(teacher1);
+		campus = campusDAO.create(campus);
 
 		// We check that "create" is idempotent (multiple calls must not
 		// duplicate data)
-		teacher1 = teacherDAO.create(teacher1);
+		campus = campusDAO.create(campus);
 
 		// There must exactly 1 object in the datastore
-		assertEquals("There are more than one object in the datastore", new Long(1), teacherDAO.count());
-	}
+		assertEquals("There should be exactly one object in the datastore", new Long(1), campusDAO.count());
 
-	/**
-	 * RetrieveByLogin
-	 */
-	@Test
-	@Transactional
-	@Rollback(true)
-	public final void t02_TestRetrieveByLogin() {
-		// We create a new object in the datastore
-		Person person1 = new PersonNode("Grégoire Colbert", "gcolbert", "pass");
-		person1.setAdministrator(true);
+		Campus campusReloaded = campusDAO.retrieveById(campus.getId(), false);
+		assertNotNull("The reloaded campus is null", campusReloaded);
 
-		// We save our object
-		person1 = personDAO.update(person1);
+		assertEquals("RetrieveByName didn't return the correct number of Campus", new Long(1), new Long(campusDAO
+				.retrieveByName(campus.getName()).size()));
 
-		// We don't need to initialize the associated collections for this test
-		Person person1bis = personDAO.retrieveByLogin(person1.getLogin(), false);
+		// The name must be good
+		assertEquals("The reloaded name is not good", name, campusReloaded.getName());
 
-		assertNotNull(person1bis);
-		assertEquals(person1bis, person1);
-		assertEquals(person1bis.getName(), person1.getName());
+		// The latitude must be good
+		assertEquals("The reloaded latitude is not good", latitude, campusReloaded.getLatitude());
+
+		// The longitude must be good
+		assertEquals("The reloaded longitude is not good", name, campusReloaded.getLongitude());
 	}
 
 }

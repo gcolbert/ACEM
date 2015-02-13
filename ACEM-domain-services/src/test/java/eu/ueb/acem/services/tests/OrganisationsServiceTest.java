@@ -167,7 +167,7 @@ public class OrganisationsServiceTest extends TestCase {
 	public final void t07_TestAssociateOrganisationAndUseMode() {
 		AdministrativeDepartment administrativeDepartment1 = organisationsService.createAdministrativeDepartment("my administrativeDepartment", "ad", null);
 		UseMode useMode1 = resourcesService.createUseMode("this is a use mode referring an administrative department");
-		assertTrue("The association of the Organisation and UseMode failed", organisationsService.associateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
+		assertTrue("The association of the Organisation and UseMode failed", resourcesService.associateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
 
 		AdministrativeDepartment administrativeDepartment1bis = organisationsService.retrieveAdministrativeDepartment(administrativeDepartment1.getId(), true);
 		UseMode useMode1bis = resourcesService.retrieveUseMode(useMode1.getId(), true);
@@ -185,9 +185,9 @@ public class OrganisationsServiceTest extends TestCase {
 		AdministrativeDepartment administrativeDepartment1 = organisationsService.createAdministrativeDepartment("my administrativeDepartment", "ad", null);
 		UseMode useMode1 = resourcesService.createUseMode("this is a use mode referring an administrative department");
 
-		assertTrue("The association of the administrative department and use mode failed", organisationsService.associateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
+		assertTrue("The association of the administrative department and use mode failed", resourcesService.associateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
 
-		assertTrue("The dissociation of the administrative department and use mode failed", organisationsService.dissociateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
+		assertTrue("The dissociation of the administrative department and use mode failed", resourcesService.dissociateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
 
 		AdministrativeDepartment administrativeDepartment1bis = organisationsService.retrieveAdministrativeDepartment(administrativeDepartment1.getId(), true);
 		UseMode useMode1bis = resourcesService.retrieveUseMode(useMode1.getId(), true);

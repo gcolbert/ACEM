@@ -74,4 +74,8 @@ public interface ResourcesService {
 
 	Boolean deleteUseMode(Long id);
 
+	Boolean associateUseModeAndOrganisation(Long idUseMode, Long idOrganisation);
+
+	Boolean dissociateUseModeAndOrganisation(Long idUseMode, Long idOrganisation);
+
 }

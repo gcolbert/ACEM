@@ -235,8 +235,8 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	}
 
 	/**
-	 * Check that we can retrieve the PedagogicalNeedNodes that don't have any parent
-	 * (roots of the tree)
+	 * Check that we can retrieve the PedagogicalNeedNodes that don't have any
+	 * parent (roots of the tree)
 	 */
 	@Test
 	@Transactional
@@ -321,9 +321,21 @@ public class PedagogicalNeedDAOTest extends TestCase {
 		need1.getChildren().add(need11);
 		needDAO.update(need1);
 
-		PedagogicalNeed need1bis = needDAO.retrieveById(need1.getId(), true); // Do you see the second parameter here?
+		// Here we want to test the children of the reloaded PedagogicalNeed,
+		// that's why the second parameter of retrieveById is set to 'true'
+		PedagogicalNeed need1bis = needDAO.retrieveById(need1.getId(), true);
 		for (PedagogicalNeed need1child : need1bis.getChildren()) {
+			// If it was false, getName() would return null here
 			assertEquals("t09 need 1.1", need1child.getName());
+		}
+
+		// Let's test if setting the second parameter to 'false' works as
+		// expected
+		PedagogicalNeed need1ter = needDAO.retrieveById(need1.getId(), false);
+		for (PedagogicalNeed need1child : need1ter.getChildren()) {
+			// If it was false, getName() would return null here
+			assertNull("The child's name should be null because we called retrieveById with initialize=false",
+					need1child.getName());
 		}
 	}
 
