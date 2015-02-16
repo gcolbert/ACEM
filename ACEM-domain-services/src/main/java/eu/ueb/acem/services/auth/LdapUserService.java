@@ -2,6 +2,7 @@ package eu.ueb.acem.services.auth;
 
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,7 +19,12 @@ import eu.ueb.acem.domain.beans.ldap.LdapUser;
  * @author Romuald Lorthioir
  */
 @Service("ldapUserService")
-public class LdapUserService {
+public class LdapUserService implements Serializable {
+
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 6381776593382396819L;
 
 	/**
 	 * For Logging.
