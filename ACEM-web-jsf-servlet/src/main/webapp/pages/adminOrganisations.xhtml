@@ -37,9 +37,9 @@
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.COMMUNITIES.CREATE_COMMUNITY_LABEL']}"
 					icon="ui-icon-plusthick"
 					action="#{associateBean.prepareCommunityCreation}"
-					update=":createOrganisationForm:idDialogCreateOrganisation"
+					update=":createOrganisationForm:idDialogCreateOrModifyOrganisation"
 					oncomplete="PF('dialogCreateOrganisation').show()" process="@this">
-					<p:resetInput target=":createOrganisationForm:idDialogCreateOrganisation" />
+					<p:resetInput target=":createOrganisationForm:idDialogCreateOrModifyOrganisation" />
 				</p:commandButton>
 				<p:accordionPanel id="accordionPanelForCommunities" styleClass="administrationAccordionPanel"
 					widgetVar="accordionPanelForCommunitiesWidget"
@@ -64,7 +64,7 @@
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_COMMUNITY_LABEL']}"
 									icon="ui-icon-pencil"
 									action="#{associateBean.prepareCommunityModification(communityViewBean)}"
-									update=":modifyOrganisationForm:idDialogModifyOrganisation"
+									update=":modifyOrganisationForm:idDialogCreateOrModifyOrganisation"
 									oncomplete="PF('dialogModifyOrganisation').show()"
 									process="@this" />	
 								<p:commandButton id="deleteCommunityButton"
@@ -112,10 +112,10 @@
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.INSTITUTIONS.CREATE_INSTITUTION_LABEL']}"
 					icon="ui-icon-plusthick"
 					action="#{associateBean.prepareInstitutionCreation}"
-					update=":createOrganisationForm:idDialogCreateOrganisation"
+					update=":createOrganisationForm:idDialogCreateOrModifyOrganisation"
 					oncomplete="PF('dialogCreateOrganisation').show()" process="@this">
 					<p:resetInput
-						target=":createOrganisationForm:idDialogCreateOrganisation" />
+						target=":createOrganisationForm:idDialogCreateOrModifyOrganisation" />
 				</p:commandButton>
 				<p:accordionPanel id="accordionPanelForInstitutions" styleClass="administrationAccordionPanel"
 					widgetVar="accordionPanelForInstitutionsWidget"
@@ -140,7 +140,7 @@
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_INSTITUTION_LABEL']}"
 									icon="ui-icon-pencil"
 									action="#{associateBean.prepareInstitutionModification(institutionViewBean)}"
-									update=":modifyOrganisationForm:idDialogModifyOrganisation"
+									update=":modifyOrganisationForm:idDialogCreateOrModifyOrganisation"
 									oncomplete="PF('dialogModifyOrganisation').show()"
 									process="@this" />
 								<p:commandButton id="deleteInstitutionButton"
@@ -224,11 +224,11 @@
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.ADMINISTRATIVE_DEPARTMENTS.CREATE_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 					icon="ui-icon-plusthick"
 					action="#{associateBean.prepareAdministrativeDepartmentCreation}"
-					update=":createOrganisationForm:idDialogCreateOrganisation"
+					update=":createOrganisationForm:idDialogCreateOrModifyOrganisation"
 					oncomplete="PF('dialogCreateOrganisation').show()"
 					process="@this">
 					<p:resetInput
-						target=":createOrganisationForm:idDialogCreateOrganisation" />
+						target=":createOrganisationForm:idDialogCreateOrModifyOrganisation" />
 				</p:commandButton>
 				<p:accordionPanel id="accordionPanelForAdministrativeDepartments" styleClass="administrationAccordionPanel"
 					value="#{associateBean.administrativeDepartmentViewBeans.tableEntries}"
@@ -252,7 +252,7 @@
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ADMINISTRATIVE_DEPARTMENT_LABEL']}"
 									icon="ui-icon-pencil"
 									action="#{associateBean.prepareAdministrativeDepartmentModification(administrativeDepartmentViewBean)}"
-									update=":modifyOrganisationForm:idDialogModifyOrganisation"
+									update=":modifyOrganisationForm:idDialogCreateOrModifyOrganisation"
 									oncomplete="PF('dialogModifyOrganisation').show()"
 									process="@this" />
 								<p:commandButton id="deleteAdministrativeDepartmentButton"
@@ -299,11 +299,11 @@
 					value="#{msg['ADMINISTRATION.ORGANISATIONS.TEACHING_DEPARTMENTS.CREATE_TEACHING_DEPARTMENT_LABEL']}"
 					icon="ui-icon-plusthick"
 					action="#{associateBean.prepareTeachingDepartmentCreation}"
-					update=":createOrganisationForm:idDialogCreateOrganisation"
+					update=":createOrganisationForm:idDialogCreateOrModifyOrganisation"
 					oncomplete="PF('dialogCreateOrganisation').show()"
 					process="@this">
 					<p:resetInput
-						target=":createOrganisationForm:idDialogCreateOrganisation" />
+						target=":createOrganisationForm:idDialogCreateOrModifyOrganisation" />
 				</p:commandButton>
 				<p:accordionPanel id="accordionPanelForTeachingDepartments" styleClass="administrationAccordionPanel"
 					value="#{associateBean.teachingDepartmentViewBeans.tableEntries}"
@@ -328,7 +328,7 @@
 									icon="ui-icon-pencil"
 									actionListener="#{associateBean.commonUploadOneDialog.reset}"
 									action="#{associateBean.setCurrentOrganisationViewBean(teachingDepartmentViewBean)}"
-									update=":modifyOrganisationForm:idDialogModifyOrganisation"
+									update=":modifyOrganisationForm:idDialogCreateOrModifyOrganisation"
 									oncomplete="PF('dialogModifyOrganisation').show()"
 									process="@this" />
 								<p:commandButton id="deleteTeachingDepartmentButton"
@@ -370,117 +370,23 @@
 	</ui:define>
 
 	<ui:define name="customDialogOutFormWithoutForm">
-
 		<h:form id="createOrganisationForm">
-			<p:dialog id="idDialogCreateOrganisation"
-				header="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ORGANISATION_MODAL_WINDOW.HEADER']}"
-				widgetVar="dialogCreateOrganisation" modal="true" height="auto">
-				<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
-				<p:panelGrid columns="2"
-					rendered="#{associateBean.objectEdited != null}">
-					<h:outputLabel for="name"
-						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ORGANISATION_MODAL_WINDOW.NAME_LABEL']}" />
-					<p:inputText id="name"
-						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50" value="#{associateBean.objectEdited.name}"/>
-
-					<h:outputLabel for="shortname"
-						value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ORGANISATION_MODAL_WINDOW.SHORT_NAME_LABEL']}" />
-					<p:inputText id="shortname"
-						requiredMessage="#{msg['REQUIRED_FIELD']}" size="20" value="#{associateBean.objectEdited.shortname}" />
-
-					<h:outputLabel
-						value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
-						for="icon" />
-					<p:column rowspan="2">
-						<p:outputPanel id="iconOutputPanel">
-							<p:panel id="icon" styleClass="iconPanel">
-								<p:graphicImage
-									rendered="#{not empty associateBean.temporaryFilePath}"
-									alt="#{associateBean.temporaryFilePath}"
-									cache="true" width="200" value="#{imagesController.image}">
-									<f:param name="imageFilePath"
-										value="#{associateBean.temporaryFilePath}" />
-								</p:graphicImage>
-							</p:panel>
-							<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
-								icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
-								process="@this" />
-							<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
-								disabled="#{empty associateBean.temporaryFilePath}"
-								icon="ui-icon-trash" action="#{associateBean.removeObjectEditedIcon}"
-								update="@this icon"
-								process="@this" />
-						</p:outputPanel>
-					</p:column>
-				</p:panelGrid>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['APPLICATION.BUTTON.CREATE']}"
-					icon="ui-icon-check"
-					action="#{associateBean.onCreateOrganisation}"
-					process="@form"
-					update=":contentForm:tabViewOrganisations :contentForm:messagesDisplayer"
-					oncomplete="PF('dialogCreateOrganisation').hide();"/>
-			</p:dialog>
+			<ui:include src="/templates/include/commonCreateOrModifyOrganisationDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}"/>
+				<ui:param name="widgetName" value="dialogCreateOrganisation"/>
+				<ui:param name="formToUpdate" value=":contentForm"/>
+				<ui:param name="dialogHeader" value="#{msg['ADMINISTRATION.ORGANISATIONS.CREATE_ORGANISATION_MODAL_WINDOW.HEADER']}"/>
+			</ui:include>
 		</h:form>
 
 		<h:form id="modifyOrganisationForm">
-			<p:dialog id="idDialogModifyOrganisation"
-				header="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.HEADER']}"
-				widgetVar="dialogModifyOrganisation" modal="true" height="auto">
-				<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
-				<p:panelGrid columns="2"
-					rendered="#{associateBean.objectEdited != null}">
-					<h:outputLabel for="name"
-						value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.NEW_NAME_LABEL']}" />
-					<p:inputText id="name" required="true" size="50"
-						value="#{associateBean.objectEdited.name}" />
-
-					<h:outputLabel for="shortname"
-						value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.NEW_SHORTNAME_LABEL']}" />
-					<p:inputText id="shortname" required="true" size="20"
-						value="#{associateBean.objectEdited.shortname}" />
-
-					<h:outputLabel
-						value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
-						for="icon" />
-					<p:column rowspan="2">
-						<p:outputPanel id="iconOutputPanel">
-							<p:panel id="icon" styleClass="iconPanel">
-								<p:graphicImage
-									rendered="#{(not empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
-									alt="#{associateBean.objectEdited.name}"
-									cache="true" width="200" value="#{imagesController.image}">
-									<f:param name="imageFileName"
-										value="#{associateBean.objectEdited.iconFileName}" />
-								</p:graphicImage>
-								<p:graphicImage
-									rendered="#{not empty associateBean.temporaryFilePath}"
-									alt="#{associateBean.objectEdited.name}"
-									cache="true" width="200" value="#{imagesController.image}">
-									<f:param name="imageFilePath"
-										value="#{associateBean.temporaryFilePath}" />
-								</p:graphicImage>
-							</p:panel>
-							<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
-								icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
-								process="@this" />
-							<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
-								disabled="#{(empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
-								icon="ui-icon-trash" action="#{associateBean.removeObjectEditedIcon}"
-								update="@this icon"
-								process="@this" />
-						</p:outputPanel>
-					</p:column>
-				</p:panelGrid>
-				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['APPLICATION.BUTTON.MODIFY']}"
-					icon="ui-icon-check"
-					action="#{associateBean.onModifyOrganisation}"
-					process="@form"
-					update=":contentForm:tabViewOrganisations :contentForm:messagesDisplayer"
-					oncomplete="PF('dialogModifyOrganisation').hide();" />
- 			</p:dialog>
- 		</h:form>
+			<ui:include src="/templates/include/commonCreateOrModifyOrganisationDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}"/>
+				<ui:param name="widgetName" value="dialogModifyOrganisation"/>
+				<ui:param name="formToUpdate" value=":contentForm"/>
+				<ui:param name="dialogHeader" value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.HEADER']}"/>
+			</ui:include>
+		</h:form>
 
 		<h:form id="associationCommunityForm">
 			<ui:include src="/templates/include/commonAssociateOrganisationsDialog.xhtml">

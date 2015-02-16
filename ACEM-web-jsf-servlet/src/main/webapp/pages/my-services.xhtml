@@ -33,14 +33,24 @@
 				<h2><h:outputText
 					value="#{associateBean.selectedServiceViewBean.name}" /></h2>
 
-				<p:graphicImage
-					rendered="#{not empty associateBean.selectedServiceViewBean.iconFileName}"
-					styleClass="organisationLogo"
-					alt="#{associateBean.selectedServiceViewBean.name}" cache="true" width="150"
-					value="#{imagesController.image}">
-					<f:param name="imageFileName"
-						value="#{associateBean.selectedServiceViewBean.iconFileName}" />
-				</p:graphicImage>
+				<p:panelGrid columns="2">
+					<p:graphicImage
+						rendered="#{not empty associateBean.selectedServiceViewBean.iconFileName}"
+						styleClass="organisationLogo"
+						alt="#{associateBean.selectedServiceViewBean.name}" cache="true" width="150"
+						value="#{imagesController.image}">
+						<f:param name="imageFileName"
+							value="#{associateBean.selectedServiceViewBean.iconFileName}" />
+					</p:graphicImage>
+					<p:column>
+						<p:row>
+							<h:outputText value="#{associateBean.selectedServiceViewBean.shortname}" />
+						</p:row>
+						<p:row>
+							<h:outputText value="#{associateBean.selectedServiceViewBean.contactMode}" />
+						</p:row>
+					</p:column>
+				</p:panelGrid>
 
 			</p:panel>
 		</p:outputPanel>

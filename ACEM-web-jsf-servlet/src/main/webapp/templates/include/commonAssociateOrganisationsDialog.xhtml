@@ -38,7 +38,7 @@
 		<p:commandButton styleClass="dialogValidationButton"
 			value="#{msg['APPLICATION.BUTTON.CLOSE']}"
 			icon="ui-icon-check"
-			onclick="PF('dialogAssociateOrganisations').hide()"
+			onclick="PF('#{widgetName}').hide()"
 			update="@none"
 			process="@none" />
 	</p:dialog>
