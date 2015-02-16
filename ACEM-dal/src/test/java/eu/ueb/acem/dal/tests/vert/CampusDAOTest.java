@@ -96,7 +96,7 @@ public class CampusDAOTest extends TestCase {
 		assertEquals("The reloaded latitude is not good", latitude, campusReloaded.getLatitude());
 
 		// The longitude must be good
-		assertEquals("The reloaded longitude is not good", name, campusReloaded.getLongitude());
+		assertEquals("The reloaded longitude is not good", longitude, campusReloaded.getLongitude());
 	}
 
 }

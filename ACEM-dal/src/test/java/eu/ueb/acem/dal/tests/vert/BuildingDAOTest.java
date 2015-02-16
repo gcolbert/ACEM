@@ -96,6 +96,6 @@ public class BuildingDAOTest extends TestCase {
 		assertEquals("The reloaded latitude is not good", latitude, buildingReloaded.getLatitude());
 
 		// The longitude must be good
-		assertEquals("The reloaded longitude is not good", name, buildingReloaded.getLongitude());
+		assertEquals("The reloaded longitude is not good", longitude, buildingReloaded.getLongitude());
 	}
 }

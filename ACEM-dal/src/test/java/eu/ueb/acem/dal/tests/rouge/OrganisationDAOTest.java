@@ -148,10 +148,10 @@ public class OrganisationDAOTest extends TestCase {
 		Community community = new CommunityNode("Université européenne de Bretagne", "UEB", null);
 		community = communityDAO.create(community);
 
-		// There must exactly 1 object in the community repository
+		// There must be exactly 1 object in the community repository
 		assertEquals("There are more than one object in the community repository", new Long(1), communityDAO.count());
 
-		// There must exactly 1 object in the institution repository
+		// There must be exactly 1 object in the institution repository
 		assertEquals("There are more than one object in the institution repository", new Long(1),
 				institutionDAO.count());
 

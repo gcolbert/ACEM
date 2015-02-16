@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.dal;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ import javax.inject.Inject;
 
 import org.springframework.data.neo4j.template.Neo4jOperations;
 
-public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E> {
+public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Serializable {
 
 	/**
 	 * For serialization.

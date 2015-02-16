@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.dal;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -26,7 +25,7 @@ import java.util.Collection;
  * @since 2013-11-20
  * 
  */
-public interface DAO<ID extends Serializable, E> extends Serializable {
+public interface DAO<ID, E> {
 
 	Boolean exists(ID id);
 	

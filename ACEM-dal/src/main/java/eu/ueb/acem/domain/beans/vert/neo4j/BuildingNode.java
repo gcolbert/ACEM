@@ -50,6 +50,9 @@ public class BuildingNode extends PhysicalSpaceNode implements Building {
 
 	private Double latitude;
 	private Double longitude;
+	
+	public BuildingNode() {
+	}
 
 	public BuildingNode(String name) {
 		this.name = name;
