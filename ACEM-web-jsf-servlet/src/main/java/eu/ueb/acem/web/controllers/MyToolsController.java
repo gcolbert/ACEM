@@ -433,49 +433,61 @@ public class MyToolsController extends AbstractContextAwareController implements
 		Collections.sort(allToolCategoryViewBeans);
 	}
 
-	public void onCreateToolCategory(String name, String description) {
-		objectEdited.setName(name);
-		objectEdited.setDescription(description);
+	public void onSaveToolCategory() {
+		if (objectEdited.getDomainBean() == null) {
+			createToolCategoryFromObjectEdited();
+		}
+		else {
+			modifyToolCategoryFromObjectEdited();
+		}
+	}
 
+	private void createToolCategoryFromObjectEdited() {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
-		if (! iconFileName.trim().isEmpty()) {
+		if (!iconFileName.trim().isEmpty()) {
 			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
 			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
 		objectEdited.setIconFileName(iconFileName);
 
-		ResourceCategory toolCategory = resourcesService.createResourceCategory(name, description, iconFileName);
+		ResourceCategory toolCategory = resourcesService.createResourceCategory(objectEdited.getName(),
+				objectEdited.getDescription(), iconFileName);
 		if (toolCategory != null) {
 			ToolCategoryViewBean newToolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
 			allToolCategoryViewBeans.add(newToolCategoryViewBean);
 			Collections.sort(allToolCategoryViewBeans);
-			MessageDisplayer.info(msgs.getMessage(
-					"TOOL_CATEGORIES.CREATION_SUCCESSFUL.TITLE", null,
-					getCurrentUserLocale()), msgs.getMessage(
-					"TOOL_CATEGORIES.CREATION_SUCCESSFUL.DETAILS", null,
-					getCurrentUserLocale()));
+			MessageDisplayer.info(
+					msgs.getMessage("TOOL_CATEGORIES.CREATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
+					msgs.getMessage("TOOL_CATEGORIES.CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
 		}
 		else {
-			MessageDisplayer.info(msgs.getMessage(
-					"TOOL_CATEGORIES.CREATION_FAILURE.TITLE", null,
-					getCurrentUserLocale()), msgs.getMessage(
-					"TOOL_CATEGORIES.CREATION_FAILURE.DETAILS", null,
-					getCurrentUserLocale()));
+			MessageDisplayer.info(
+					msgs.getMessage("TOOL_CATEGORIES.CREATION_FAILURE.TITLE", null, getCurrentUserLocale()),
+					msgs.getMessage("TOOL_CATEGORIES.CREATION_FAILURE.DETAILS", null, getCurrentUserLocale()));
 		}
 	}
 
-	public void onModifyToolCategory(ToolCategoryViewBean toolCategoryViewBean) {
-		if (toolCategoryViewBean != null) {
-			toolCategoryViewBean.getDomainBean().setName(toolCategoryViewBean.getName());
-			toolCategoryViewBean.getDomainBean().setDescription(toolCategoryViewBean.getDescription());
-			toolCategoryViewBean.getDomainBean().setIconFileName(toolCategoryViewBean.getIconFileName());
-			toolCategoryViewBean.setDomainBean(resourcesService.updateResourceCategory(toolCategoryViewBean.getDomainBean()));
-			MessageDisplayer.info(msgs.getMessage(
-					"TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.TITLE", null,
-					getCurrentUserLocale()), msgs.getMessage(
-					"TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.DETAILS", null,
-					getCurrentUserLocale()));
+	private void modifyToolCategoryFromObjectEdited() {
+		logger.info("onModifyToolCategory");
+		if (objectEdited != null) {
+			String iconFileName = commonUploadOneDialog.getFileUploadedName();
+			if (!iconFileName.trim().isEmpty()) {
+				moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+				this.temporaryFilePath = null;
+				commonUploadOneDialog.reset();
+				// We set the icon file name inside this block, because if the user
+				// didn't upload any icon, we keep the current icon.
+				objectEdited.setIconFileName(iconFileName);
+			}
+
+			objectEdited.getDomainBean().setName(objectEdited.getName());
+			objectEdited.getDomainBean().setDescription(objectEdited.getDescription());
+			objectEdited.getDomainBean().setIconFileName(objectEdited.getIconFileName());
+			objectEdited.setDomainBean(resourcesService.updateResourceCategory(objectEdited.getDomainBean()));
+			MessageDisplayer.info(
+					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
+					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
 		}
 	}
 
@@ -688,20 +700,20 @@ public class MyToolsController extends AbstractContextAwareController implements
 					getCurrentUserLocale()), "", logger);
 		}
 
-		Ajax.update("createToolCategoryForm:iconOutputPanel", "createResourceForm:iconOutputPanel", "modifyResourceForm:iconOutputPanel");
+		Ajax.update("createToolCategoryForm:iconOutputPanel", "modifyToolCategoryForm:iconOutputPanel",
+				"createResourceForm:iconOutputPanel", "modifyResourceForm:iconOutputPanel");
 	}
 
 	public Path getTemporaryFilePath() {
 		return temporaryFilePath;
 	}
 
-	public void removeToolCategoryIcon(ToolCategoryViewBean toolCategoryViewBean) {
-		if (toolCategoryViewBean != null) {
-			toolCategoryViewBean.setIconFileName("");
-		}
+	public void removeObjectEditedIcon() {
+		objectEdited.setIconFileName("");
 		resetTemporaryFilePath();
 	}
 
+	// TODO : merge with removeObjectEditedIcon
 	public void removeResourceIcon(ResourceViewBean resourceViewBean) {
 		if (resourceViewBean != null) {
 			resourceViewBean.setIconFileName("");
@@ -724,5 +736,4 @@ public class MyToolsController extends AbstractContextAwareController implements
 		deleteTemporaryFileIfExists(this.temporaryFilePath);
 	}
 
-	
 }

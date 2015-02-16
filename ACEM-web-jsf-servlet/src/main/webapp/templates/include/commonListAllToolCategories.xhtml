@@ -8,14 +8,14 @@
 	<!-- Controller associated with this view -->
 	<ui:param name="formToUpdate" value="#{formToUpdate}"/>
 
-	<!-- ********** TOOL CATEGORIES ********************************************************************** -->
+	<!-- ********** LIST ALL TOOL CATEGORIES ********** -->
 	<p:commandButton
 		value="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_LABEL']}"
 		icon="ui-icon-plusthick"
 		action="#{associateBean.prepareToolCategoryCreation}"
-		update=":createToolCategoryForm:idDialogCreateToolCategory"
+		update=":createToolCategoryForm:idDialogCreateOrModifyToolCategory"
 		oncomplete="PF('dialogCreateToolCategory').show()" process="@this">
-		<p:resetInput target=":createToolCategoryForm:idDialogCreateToolCategory" />
+		<p:resetInput target=":createToolCategoryForm:idDialogCreateOrModifyToolCategory" />
 	</p:commandButton>
 	<p:accordionPanel id="accordionPanelForToolCategories" styleClass="administrationAccordionPanel"
 		widgetVar="accordionPanelForToolCategoriesWidget"
@@ -27,8 +27,8 @@
 				<p:graphicImage id="toolCategoryIcon"
 					rendered="#{not empty toolCategoryViewBean.iconFileName}"
 					styleClass="toolCategoryLogo" alt="#{toolCategoryViewBean.name}"
-					cache="false" width="150"
-					value="#{imagesController.getImage()}">
+					cache="true" width="150"
+					value="#{imagesController.image}">
 					<f:param name="imageFileName"
 						value="#{toolCategoryViewBean.iconFileName}" />
 				</p:graphicImage>
@@ -50,6 +50,14 @@
 					</p:panelGrid>
 				</p:column>
 			</p:panelGrid>
+			<p:commandButton
+				value="#{msg['TOOL_CATEGORIES.MODIFY_TOOL_CATEGORY_LABEL']}"
+				icon="ui-icon-pencil"
+				action="#{associateBean.prepareToolCategoryModification(toolCategoryViewBean)}"
+				update=":modifyToolCategoryForm:idDialogCreateOrModifyToolCategory"
+				oncomplete="PF('dialogModifyToolCategory').show()" process="@this">
+				<p:resetInput target=":modifyToolCategoryForm:idDialogCreateOrModifyToolCategory" />
+			</p:commandButton>
 			<p:commandButton
 				value="#{msg['TOOL_CATEGORIES.DELETE_TOOL_CATEGORY_LABEL']}"
 				icon="ui-icon-trash"

@@ -354,6 +354,15 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 		return objectEdited;
 	}
 
+	public void onSaveOrganisation() {
+		if (objectEdited.getDomainBean() == null) {
+			onCreateOrganisation();
+		}
+		else {
+			onModifyOrganisation();
+		}
+	}
+	
 	/*
 	 * ************ CREATION ****************************
 	 */
@@ -383,7 +392,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 		prepareCreation();
 	}
 
-	public void onCreateOrganisation() {
+	private void onCreateOrganisation() {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (!iconFileName.trim().isEmpty()) {
 			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
@@ -455,7 +464,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 		prepareModification();
 	}
 
-	public void onModifyOrganisation() {
+	private void onModifyOrganisation() {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (!iconFileName.trim().isEmpty()) {
 			moveUploadedIconToImagesFolder(this.temporaryFilePath, commonUploadOneDialog.getFileUploadedName());

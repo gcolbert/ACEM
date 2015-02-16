@@ -8,27 +8,32 @@
 	<!-- Controller associated with this view -->
 	<ui:param name="associateBean" value="#{associateBean}"/>
 	<ui:param name="formToUpdate" value="#{formToUpdate}"/>
-	<ui:param name="widgetName" value="#{widgetName}"/>
 	<ui:param name="dialogHeader" value="#{dialogHeader}"/>
+	<ui:param name="widgetName" value="#{widgetName}"/>
 
-	<p:dialog id="idDialogCreateOrModifyOrganisation"
+	<!-- ********** CREATE/MODIFY TOOL CATEGORY ********** -->
+	<p:dialog id="idDialogCreateOrModifyToolCategory"
 		header="#{dialogHeader}"
-		widgetVar="#{widgetName}" modal="true" height="auto">
+		widgetVar="#{widgetName}" modal="true"
+		height="auto">
 		<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 		<p:panelGrid columns="2"
 			rendered="#{associateBean.objectEdited != null}">
-			<h:outputLabel for="name"
-				value="#{msg['ORGANISATION.NAME_LABEL']}" />
-			<p:inputText id="name" required="true" size="50"
+
+			<h:outputLabel for="toolCategoryName"
+				value="#{msg['TOOL_CATEGORY.NAME_LABEL']}" />
+			<p:inputText id="toolCategoryName" required="true"
+				requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 				value="#{associateBean.objectEdited.name}" />
 
-			<h:outputLabel for="shortname"
-				value="#{msg['ORGANISATION.SHORTNAME_LABEL']}" />
-			<p:inputText id="shortname" required="true" size="20"
-				value="#{associateBean.objectEdited.shortname}" />
+			<h:outputLabel for="toolCategoryDescription"
+				value="#{msg['TOOL_CATEGORY.DESCRIPTION_LABEL']}" />
+			<p:inputText id="toolCategoryDescription" required="true"
+				requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
+				value="#{associateBean.objectEdited.description}" />
 
 			<h:outputLabel
-				value="#{msg['ORGANISATION.ICON_LABEL']}"
+				value="#{msg['ADMINISTRATION.ORGANISATIONS.ICON_LABEL']}"
 				for="icon" />
 			<p:column rowspan="2">
 				<p:outputPanel id="iconOutputPanel">
@@ -42,7 +47,7 @@
 						</p:graphicImage>
 						<p:graphicImage
 							rendered="#{not empty associateBean.temporaryFilePath}"
-							alt="#{associateBean.objectEdited.name}"
+							alt="#{associateBean.commonUploadOneDialog.fileUploadedName}"
 							cache="true" width="200" value="#{imagesController.image}">
 							<f:param name="imageFilePath"
 								value="#{associateBean.temporaryFilePath}" />
@@ -62,10 +67,10 @@
 		<p:commandButton styleClass="dialogValidationButton"
 			value="#{msg['APPLICATION.BUTTON.SAVE']}"
 			icon="ui-icon-check"
-			action="#{associateBean.onSaveOrganisation}"
+			action="#{associateBean.onSaveToolCategory}"
+			update="#{formToUpdate}:accordionPanelForToolCategories :contentForm:messagesDisplayer"
 			process="@form"
-			update="${formToUpdate}:tabViewOrganisations :contentForm:messagesDisplayer"
-			oncomplete="PF('#{widgetName}').hide();" />
+			oncomplete="PF('#{widgetName}').hide();">
+		</p:commandButton>
 	</p:dialog>
-
 </ui:composition>

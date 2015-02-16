@@ -334,11 +334,24 @@
 
 	<ui:define name="customDialogOutFormWithoutForm">
 
-		<ui:include src="/templates/include/commonCreateToolCategoryDialog.xhtml">
-			<ui:param name="formToUpdate" value=":eastForm"/>
-			<ui:param name="associateBean" value="#{associateBean}"/>
-		</ui:include>
- 
+		<h:form id="createToolCategoryForm">
+			<ui:include src="/templates/include/commonCreateOrModifyToolCategoryDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}"/>
+				<ui:param name="widgetName" value="dialogCreateToolCategory"/>
+				<ui:param name="formToUpdate" value=":eastForm"/>
+				<ui:param name="dialogHeader" value="#{msg['TOOL_CATEGORIES.CREATE_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"/>
+			</ui:include>
+		</h:form>
+
+		<h:form id="modifyToolCategoryForm">
+			<ui:include src="/templates/include/commonCreateOrModifyToolCategoryDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}"/>
+				<ui:param name="widgetName" value="dialogModifyToolCategory"/>
+				<ui:param name="formToUpdate" value=":eastForm"/>
+				<ui:param name="dialogHeader" value="#{msg['TOOL_CATEGORIES.MODIFY_TOOL_CATEGORY_MODAL_WINDOW.HEADER']}"/>
+			</ui:include>
+		</h:form>
+
 		<h:form id="createResourceForm">
 			<p:dialog id="idDialogCreateResource"
 				header="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.HEADER']}"
@@ -475,7 +488,7 @@
 
  				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['MY_TOOLS.CREATE_RESOURCE_MODAL_WINDOW.VALIDATE']}"
+					value="#{msg['APPLICATION.BUTTON.SAVE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{associateBean.onCreateResource(newResourceType.value, newResourceOwnerOrganisation.value, newResourceSupportOrganisation.value, newResourceName.value)}"
 					process="@form" update="@this :contentForm:toolsDataTable :contentForm:messagesDisplayer"
@@ -619,7 +632,7 @@
 				</p:panelGrid>
 
 				<p:commandButton styleClass="dialogValidationButton"
-					value="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.VALIDATE']}"
+					value="#{msg['APPLICATION.BUTTON.SAVE']}"
 					icon="ui-icon-check" validateClient="true"
 					action="#{associateBean.onModifySelectedResource}"
 					process="@form"
