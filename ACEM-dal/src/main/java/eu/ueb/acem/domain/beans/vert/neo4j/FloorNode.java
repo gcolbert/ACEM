@@ -50,6 +50,9 @@ public class FloorNode extends PhysicalSpaceNode implements Floor {
 	@RelatedTo(elementClass = BuildingNode.class, type = "isPartOfBuilding", direction = OUTGOING)
 	private Building building;
 
+	public FloorNode() {
+	}
+	
 	public FloorNode(Integer number) { 
 		this.number = number;
 	}
