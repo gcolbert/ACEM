@@ -51,10 +51,13 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 		useModeViewBeans = new ArrayList<UseModeViewBean>();
 		organisationsViewingResourceViewBeans = new ArrayList<OrganisationViewBean>();
 	}
-	
+
 	@Override
 	public abstract Resource getDomainBean();
-	
+
+	@Override
+	public abstract String getType();
+
 	@Override
 	public void setDomainBean(Resource resource) {
 		setId(resource.getId());

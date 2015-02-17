@@ -50,7 +50,7 @@ public class DocumentaryAndPedagogicalResourceViewBean extends AbstractResourceV
 		this();
 		setDomainBean(documentaryAndPedagogicalResource);
 	}
-
+	
 	@Override
 	public PedagogicalAndDocumentaryResource getDomainBean() {
 		return domainBean;
@@ -59,6 +59,11 @@ public class DocumentaryAndPedagogicalResourceViewBean extends AbstractResourceV
 	public void setDomainBean(PedagogicalAndDocumentaryResource domainBean) {
 		this.domainBean = domainBean;
 		super.setDomainBean(domainBean);
+	}
+
+	@Override
+	public String getType() {
+		return "RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE";
 	}
 
 }

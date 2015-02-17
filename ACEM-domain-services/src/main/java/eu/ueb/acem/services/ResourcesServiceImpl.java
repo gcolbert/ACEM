@@ -96,7 +96,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 		else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
 			categories.addAll(equipmentDAO.getCategories());
 		}
-		else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTATION_RESOURCE")) {
+		else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE")) {
 			categories.addAll(pedagogicalAndDocumentaryResourcesDAO.getCategories());
 		}
 		else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
@@ -113,7 +113,8 @@ public class ResourcesServiceImpl implements ResourcesService {
 			String resourceType, String name, String iconFileName) {
 		Organisation supportOrganisation = organisationsService.retrieveOrganisation(supportOrganisationId, true);
 		Organisation ownerOrganisation = organisationsService.retrieveOrganisation(ownerOrganisationId, true);
-		if ((ownerOrganisation != null) && (supportOrganisation != null)) {
+		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId, true);
+		if ((ownerOrganisation != null) && (supportOrganisation != null) && (resourceCategory != null)) {
 			Resource entity = null;
 			if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
 				entity = new SoftwareNode(name, iconFileName);
@@ -124,7 +125,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 			else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
 				entity = new EquipmentNode(name, iconFileName);
 			}
-			else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTATION_RESOURCE")) {
+			else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE")) {
 				entity = new PedagogicalAndDocumentaryResourceNode(name, iconFileName);
 			}
 			else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
@@ -134,33 +135,31 @@ public class ResourcesServiceImpl implements ResourcesService {
 				logger.error("Unknown resourceType '{}'", resourceType);
 			}
 
-			ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId, true);
-			entity.getCategories().add(resourceCategory);
-			resourceCategory.getResources().add(entity);
-			resourceCategory = resourceCategoryDAO.update(resourceCategory);
-
-			entity.setOrganisationPossessingResource(ownerOrganisation);
-			ownerOrganisation = organisationsService.updateOrganisation(ownerOrganisation);
-			entity.setOrganisationSupportingResource(supportOrganisation);
-			supportOrganisation = organisationsService.updateOrganisation(supportOrganisation);
-
-			if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
-				entity = softwareDAO.create((Software) entity);
-			}
-			else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
-				entity = softwareDocumentationDAO.create((SoftwareDocumentation) entity);
-			}
-			else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
-				entity = equipmentDAO.create((Equipment) entity);
-			}
-			else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTATION_RESOURCE")) {
-				entity = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource) entity);
-			}
-			else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
-				entity = professionalTrainingDAO.create((ProfessionalTraining) entity);
-			}
-			else {
-				logger.error("Unknown resourceType '{}'", resourceType);
+			if (entity != null) {
+				entity.getCategories().add(resourceCategory);
+				resourceCategory.getResources().add(entity);
+				resourceCategory = resourceCategoryDAO.update(resourceCategory);
+	
+				entity.setOrganisationPossessingResource(ownerOrganisation);
+				ownerOrganisation = organisationsService.updateOrganisation(ownerOrganisation);
+				entity.setOrganisationSupportingResource(supportOrganisation);
+				supportOrganisation = organisationsService.updateOrganisation(supportOrganisation);
+				
+				if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
+					entity = softwareDAO.create((Software) entity);
+				}
+				else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
+					entity = softwareDocumentationDAO.create((SoftwareDocumentation) entity);
+				}
+				else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
+					entity = equipmentDAO.create((Equipment) entity);
+				}
+				else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE")) {
+					entity = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource) entity);
+				}
+				else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
+					entity = professionalTrainingDAO.create((ProfessionalTraining) entity);
+				}
 			}
 			return entity;
 		}
@@ -260,7 +259,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 		else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
 			entity = equipmentDAO.retrieveById(id);
 		}
-		else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTATION_RESOURCE")) {
+		else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE")) {
 			entity = pedagogicalAndDocumentaryResourcesDAO.retrieveById(id);
 		}
 		else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {

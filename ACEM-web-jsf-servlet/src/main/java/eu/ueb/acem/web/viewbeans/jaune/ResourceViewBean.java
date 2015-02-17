@@ -33,6 +33,8 @@ public interface ResourceViewBean extends Pickable, Comparable<ResourceViewBean>
 
 	Long getId();
 
+	String getType();
+	
 	String getName();
 	
 	void setName(String name);
@@ -48,7 +50,7 @@ public interface ResourceViewBean extends Pickable, Comparable<ResourceViewBean>
 	String getIconFileName();
 
 	void setIconFileName(String iconFileName);
-	
+
 	OrganisationViewBean getOrganisationPossessingResourceViewBean();
 	
 	void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean);

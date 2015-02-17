@@ -61,4 +61,9 @@ public class EquipmentViewBean extends AbstractResourceViewBean implements Seria
 		super.setDomainBean(domainBean);
 	}
 
+	@Override
+	public String getType() {
+		return "RESOURCE_TYPE_EQUIPMENT";
+	}
+
 }

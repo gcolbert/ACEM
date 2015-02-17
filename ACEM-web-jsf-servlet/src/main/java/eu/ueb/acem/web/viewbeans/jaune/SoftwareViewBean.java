@@ -61,4 +61,9 @@ public class SoftwareViewBean extends AbstractResourceViewBean implements Serial
 		super.setDomainBean(domainBean);
 	}
 
+	@Override
+	public String getType() {
+		return "RESOURCE_TYPE_SOFTWARE";
+	}
+
 }

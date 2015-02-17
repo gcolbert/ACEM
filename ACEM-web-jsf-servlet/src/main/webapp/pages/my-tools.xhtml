@@ -199,6 +199,9 @@
 						rendered="#{associateBean.currentUserViewBean.administrator}"
 						selectionMode="single" style="width:16px;text-align:center"
 						update=":contentForm:idModifyToolButton :contentForm:idDeleteToolButton" />
+					<p:column headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_TYPE']}">
+						<h:outputText value="#{msg[toolViewBean.type]}"/>
+					</p:column>
 					<p:column
 						headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_NAME']}">
 						<h:outputText value="#{toolViewBean.name}" />

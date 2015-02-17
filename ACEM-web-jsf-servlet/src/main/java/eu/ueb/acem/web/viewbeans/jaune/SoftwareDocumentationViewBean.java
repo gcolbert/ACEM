@@ -65,4 +65,9 @@ public class SoftwareDocumentationViewBean extends AbstractResourceViewBean impl
 		super.setDomainBean(domainBean);
 	}
 
+	@Override
+	public String getType() {
+		return "RESOURCE_TYPE_SOFTWARE_DOCUMENTATION";
+	}
+
 }
