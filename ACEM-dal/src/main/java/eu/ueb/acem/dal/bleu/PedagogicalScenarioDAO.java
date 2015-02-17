@@ -31,6 +31,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
+import eu.ueb.acem.dal.TimeTicker;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalScenarioRepository;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
@@ -83,6 +84,18 @@ public class PedagogicalScenarioDAO extends AbstractDAO<PedagogicalScenario, Ped
 			}
 		}
 		return collection;
+	}
+
+	@Override
+	public PedagogicalScenario create(PedagogicalScenario entity) {
+		entity.setCreationDate(TimeTicker.tick());
+		return super.create(entity);
+	}
+
+	@Override
+	public PedagogicalScenario update(PedagogicalScenario entity) {
+		entity.setModificationDate(TimeTicker.tick());
+		return super.update(entity);
 	}
 
 }

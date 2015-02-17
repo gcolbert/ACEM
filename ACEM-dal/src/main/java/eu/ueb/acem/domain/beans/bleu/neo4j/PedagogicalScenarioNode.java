@@ -82,7 +82,7 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 
 	public PedagogicalScenarioNode(String name, String objective) {
 		this();
-		setName(name);
+		this.name = name;
 		this.objective = objective;
 	}
 
