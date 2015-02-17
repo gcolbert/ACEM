@@ -344,6 +344,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 			if (person == null) {
 				Teacher teacher = usersService.createTeacher(selectedLdapUser.getFirstName()+" "+selectedLdapUser.getLastName(), selectedLdapUser.getId(), "pass");
 				teacher.setEmail(selectedLdapUser.getEmail());
+				teacher = usersService.updateTeacher(teacher);
 				PersonViewBean personViewBean = new PersonViewBean(teacher);
 				personViewBeans.add(personViewBean);
 				Collections.sort(personViewBeans);
@@ -353,12 +354,12 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 					if (personViewBean.getId().equals(person.getId())) {
 						person.setName(selectedLdapUser.getFirstName()+" "+selectedLdapUser.getLastName());
 						person.setEmail(selectedLdapUser.getEmail());
+						person = usersService.updatePerson(person);
 						personViewBean.setDomainBean(person);
 					}
 				}
 			}
 		}
-		logger.debug("AdminUserController addFromLdapAction ");
 	}
 
 	/**
