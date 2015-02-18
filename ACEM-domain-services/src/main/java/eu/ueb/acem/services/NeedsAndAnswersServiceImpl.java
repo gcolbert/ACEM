@@ -135,6 +135,11 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
+	public PedagogicalAnswer createPedagogicalAnswer(String name, String description) {
+		return answerDAO.create(new PedagogicalAnswerNode(name, description));
+	}
+
+	@Override
 	public PedagogicalAnswer retrievePedagogicalAnswer(Long id, boolean initialize) {
 		return answerDAO.retrieveById(id, initialize);
 	}

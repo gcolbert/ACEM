@@ -50,6 +50,8 @@ public interface NeedsAndAnswersService {
 
 	PedagogicalAnswer createPedagogicalAnswer(String name);
 
+	PedagogicalAnswer createPedagogicalAnswer(String name, String description);
+
 	PedagogicalAnswer retrievePedagogicalAnswer(Long id, boolean initialize);
 
 	PedagogicalAnswer updatePedagogicalAnswer(PedagogicalAnswer answer);

@@ -35,6 +35,10 @@ public interface PedagogicalAnswer extends Serializable, Comparable<PedagogicalA
 	String getName();
 
 	void setName(String name);
+	
+	String getDescription();
+	
+	void setDescription(String description);
 
 	Set<PedagogicalNeed> getNeeds();
 	

@@ -87,11 +87,12 @@ public class EditableTreeBean implements Serializable {
 	public void addVisibleRoot(TreeNode visibleRootNode) {
 		root.getChildren().add(visibleRootNode);
 	}
-	
+
 	/**
 	 * 
 	 * @param nodeType
-	 *            The node type of the new node (supported types are defined by the tree controller)
+	 *            The node type of the new node (supported types are defined by
+	 *            the tree controller)
 	 * @param parent
 	 *            The node of the parent
 	 * @param id
@@ -128,7 +129,7 @@ public class EditableTreeBean implements Serializable {
 			}
 		}
 	}
-	
+
 	public void collapseIncludingChildren(TreeNode node) {
 		node.setExpanded(false);
 		for (TreeNode child : node.getChildren()) {
@@ -149,6 +150,7 @@ public class EditableTreeBean implements Serializable {
 		if (node != null) {
 			collapseTree();
 			expandParentsOf(node);
+			node.setExpanded(true);
 		}
 	}
 
@@ -226,6 +228,12 @@ public class EditableTreeBean implements Serializable {
 			this.concept = concept;
 		}
 
+		/**
+		 * This field is used to restore the original parent if a drag and drop
+		 * of the current node is not allowed after the drop.
+		 * 
+		 * @return the parent of the node before the drag and drop.
+		 */
 		public TreeNode getParentBackup() {
 			return parentBackup;
 		}

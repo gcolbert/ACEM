@@ -51,6 +51,8 @@ public class PedagogicalAnswerNode extends AbstractNode implements PedagogicalAn
 
 	@Indexed
 	private String name;
+	
+	private String description;
 
 	@RelatedTo(elementClass = PedagogicalNeedNode.class, type = "needAnsweredBy", direction = INCOMING)
 	private Set<PedagogicalNeed> pedagogicalNeeds = new HashSet<PedagogicalNeed>(0);
@@ -66,6 +68,11 @@ public class PedagogicalAnswerNode extends AbstractNode implements PedagogicalAn
 		setName(name);
 	}
 
+	public PedagogicalAnswerNode(String name, String description) {
+		this(name);
+		setDescription(description);
+	}
+
 	@Override
 	public String getName() {
 		return name;
@@ -74,6 +81,16 @@ public class PedagogicalAnswerNode extends AbstractNode implements PedagogicalAn
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
