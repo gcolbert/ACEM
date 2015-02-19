@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.violet.neo4j.CreditRepository;
 import eu.ueb.acem.domain.beans.violet.Credit;
@@ -37,7 +36,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.CreditNode;
  * 
  */
 @Repository("creditDAO")
-public class CreditDAO extends AbstractDAO<Credit, CreditNode> implements DAO<Long, Credit> {
+public class CreditDAO extends AbstractDAO<Credit, CreditNode> {
 
 	/**
 	 * For serialization.

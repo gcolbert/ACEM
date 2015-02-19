@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalNeedRepository;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
@@ -40,7 +39,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
  * 
  */
 @Repository("pedagogicalNeedDAO")
-public class PedagogicalNeedDAO extends AbstractDAO<PedagogicalNeed, PedagogicalNeedNode> implements DAO<Long, PedagogicalNeed> {
+public class PedagogicalNeedDAO extends AbstractDAO<PedagogicalNeed, PedagogicalNeedNode> {
 
 	/**
 	 * For serialization.

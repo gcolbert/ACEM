@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.TeachingDepartmentRepository;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
@@ -37,8 +36,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
  * 
  */
 @Repository("teachingDepartmentDAO")
-public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, TeachingDepartmentNode> implements
-		DAO<Long, TeachingDepartment> {
+public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, TeachingDepartmentNode> {
 
 	/**
 	 * For serialization.

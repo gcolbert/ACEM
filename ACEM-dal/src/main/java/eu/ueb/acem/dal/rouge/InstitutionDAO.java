@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.InstitutionRepository;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -37,7 +36,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
  * 
  */
 @Repository("institutionDAO")
-public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> implements DAO<Long, Institution> {
+public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> {
 
 	/**
 	 * FOr serialization.

@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.gris.neo4j.PersonRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
@@ -37,7 +36,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
  * 
  */
 @Repository("personDAO")
-public class PersonDAO extends AbstractDAO<Person, PersonNode> implements DAO<Long, Person> {
+public class PersonDAO extends AbstractDAO<Person, PersonNode> {
 
 	/**
 	 * For serialization.

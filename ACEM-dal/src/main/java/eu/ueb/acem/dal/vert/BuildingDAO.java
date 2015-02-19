@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.vert.neo4j.BuildingRepository;
 import eu.ueb.acem.domain.beans.vert.Building;
@@ -37,7 +36,7 @@ import eu.ueb.acem.domain.beans.vert.neo4j.BuildingNode;
  * 
  */
 @Repository("buildingDAO")
-public class BuildingDAO extends AbstractDAO<Building, BuildingNode> implements DAO<Long, Building> {
+public class BuildingDAO extends AbstractDAO<Building, BuildingNode> {
 
 	/**
 	 * For serialization.

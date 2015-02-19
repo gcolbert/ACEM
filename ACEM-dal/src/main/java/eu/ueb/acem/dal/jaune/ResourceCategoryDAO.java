@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.ResourceCategoryRepository;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -37,8 +36,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * 
  */
 @Repository("resourceCategoryDAO")
-public class ResourceCategoryDAO extends AbstractDAO<ResourceCategory, ResourceCategoryNode> implements
-		DAO<Long, ResourceCategory> {
+public class ResourceCategoryDAO extends AbstractDAO<ResourceCategory, ResourceCategoryNode> {
 
 	/**
 	 * For serialization.

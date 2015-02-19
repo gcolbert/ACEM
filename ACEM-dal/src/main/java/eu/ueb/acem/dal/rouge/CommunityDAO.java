@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.CommunityRepository;
 import eu.ueb.acem.domain.beans.rouge.Community;
@@ -37,7 +36,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
  * 
  */
 @Repository("communityDAO")
-public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implements DAO<Long, Community> {
+public class CommunityDAO extends AbstractDAO<Community, CommunityNode> {
 
 	/**
 	 * FOr serialization.

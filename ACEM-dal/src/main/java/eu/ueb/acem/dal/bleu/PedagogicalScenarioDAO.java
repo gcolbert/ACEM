@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.TimeTicker;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalScenarioRepository;
@@ -43,8 +42,7 @@ import eu.ueb.acem.domain.beans.gris.Person;
  * 
  */
 @Repository("scenarioDAO")
-public class PedagogicalScenarioDAO extends AbstractDAO<PedagogicalScenario, PedagogicalScenarioNode> implements
-		DAO<Long, PedagogicalScenario> {
+public class PedagogicalScenarioDAO extends AbstractDAO<PedagogicalScenario, PedagogicalScenarioNode> {
 
 	/**
 	 * For serialization.

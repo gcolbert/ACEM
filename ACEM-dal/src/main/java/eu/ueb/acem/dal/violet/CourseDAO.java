@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.violet.neo4j.CourseRepository;
 import eu.ueb.acem.domain.beans.violet.Course;
@@ -37,7 +36,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.CourseNode;
  * 
  */
 @Repository("courseDAO")
-public class CourseDAO extends AbstractDAO<Course, CourseNode> implements DAO<Long, Course> {
+public class CourseDAO extends AbstractDAO<Course, CourseNode> {
 
 	/**
 	 * For serialization.

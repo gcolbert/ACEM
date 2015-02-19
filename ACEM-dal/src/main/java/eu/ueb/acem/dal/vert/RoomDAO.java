@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.vert.neo4j.RoomRepository;
 import eu.ueb.acem.domain.beans.vert.Room;
@@ -38,7 +37,7 @@ import eu.ueb.acem.domain.beans.vert.neo4j.RoomNode;
  * 
  */
 @Repository("roomDAO")
-public class RoomDAO extends AbstractDAO<Room, RoomNode> implements DAO<Long, Room> {
+public class RoomDAO extends AbstractDAO<Room, RoomNode> {
 
 	/**
 	 * For serialization.

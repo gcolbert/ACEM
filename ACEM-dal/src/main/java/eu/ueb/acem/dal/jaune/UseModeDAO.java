@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.UseModeRepository;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
@@ -37,7 +36,7 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
  * 
  */
 @Repository("useModeDAO")
-public class UseModeDAO extends AbstractDAO<UseMode, UseModeNode> implements DAO<Long, UseMode> {
+public class UseModeDAO extends AbstractDAO<UseMode, UseModeNode> {
 
 	/**
 	 * For serialization.

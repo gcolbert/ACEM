@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.violet.neo4j.DegreeRepository;
 import eu.ueb.acem.domain.beans.violet.Degree;
@@ -37,7 +36,7 @@ import eu.ueb.acem.domain.beans.violet.neo4j.DegreeNode;
  * 
  */
 @Repository("diplomaDAO")
-public class DegreeDAO extends AbstractDAO<Degree, DegreeNode> implements DAO<Long, Degree> {
+public class DegreeDAO extends AbstractDAO<Degree, DegreeNode> {
 
 	/**
 	 * For serialization.
