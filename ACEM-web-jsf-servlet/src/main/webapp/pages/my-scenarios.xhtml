@@ -116,7 +116,7 @@
 				<p:commandButton
 					value="#{msg['APPLICATION.BUTTON.OPEN_MODIFY_DIALOG']}"
 					icon="ui-icon-pencil"
-					action="#{associateBean.prepareModifyPedagogicalScenario(associateBean.selectedScenarioViewBean)}"
+					action="#{associateBean.prepareModifyPedagogicalScenario}"
 					oncomplete="PF('dialogEditScenario').show()"
 					update=":createOrModifyPedagogicalScenarioForm:idDialogCreateOrModifyPedagogicalScenario"
 					process="@this" />
@@ -199,7 +199,7 @@
 				<p:commandButton
 					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.ADD_ACTIVITY_LABEL']}"
 					icon="ui-icon-plusthick"
-					action="#{associateBean.prepareCreatePedagogicalActivity()}"
+					action="#{associateBean.prepareCreatePedagogicalActivity}"
 					oncomplete="PF('dialogEditActivity').show()"
 					update=":createOrModifyActivityForm:dialogEditActivityId"
 					process="@this">
@@ -216,9 +216,10 @@
 				<p:commandButton
 					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_EVALUATION_MODES_LABEL']}"
 					icon="ui-icon-pencil"
+					action="#{associateBean.prepareModifyPedagogicalScenario}"
 					oncomplete="PF('dialogEditEvaluation').show()"
 					update=":modifyEditEvaluationForm:dialogEditEvaluationId"
-					process="@none" />
+					process="@this" />
 			</p:panel>
 		</p:outputPanel>
 
@@ -317,7 +318,7 @@
 				widgetVar="dialogEditEvaluation" modal="true" height="auto">
 
 				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EVALUATION_MODES_LABEL']}"/></h3>
-				<p:editor value="#{associateBean.selectedScenarioViewBean.evaluationModes}" height="400"
+				<p:editor value="#{associateBean.objectEditedScenario.evaluationModes}" height="400"
 					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo"/>
 
 				<p:commandButton styleClass="dialogValidationButton"

@@ -174,6 +174,7 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	public void setSelectedScenarioViewBean(PedagogicalScenarioViewBean selectedScenarioViewBean) {
 		this.selectedScenarioViewBean = selectedScenarioViewBean;
 		if (this.selectedScenarioViewBean != null) {
+			// We create the pedagogicalActivityViewBeans associated with the selected scenario
 			this.selectedScenarioViewBean.getPedagogicalActivityViewBeans().clear();
 			for (PedagogicalActivity pedagogicalActivity : this.selectedScenarioViewBean.getDomainBean().getPedagogicalActivities()) {
 				pedagogicalActivity = scenariosService.retrievePedagogicalActivity(pedagogicalActivity.getId(), true);
@@ -202,17 +203,20 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	}
 
 	public void prepareCreatePedagogicalScenario() {
+		logger.info("prepareCreate");
 		objectEditedScenario = new PedagogicalScenarioViewBean();
 		selectedScenarioViewBean = null;
 	}
 
-	public void prepareModifyPedagogicalScenario(PedagogicalScenarioViewBean viewBean) {
-		objectEditedScenario = viewBean;
-		selectedScenarioViewBean = viewBean;
+	public void prepareModifyPedagogicalScenario() {
+		objectEditedScenario = new PedagogicalScenarioViewBean(scenariosService.retrievePedagogicalScenario(
+				selectedScenarioViewBean.getId(), true));
+		logger.info("prepareModify, objectEditedScenario={}", objectEditedScenario);
 	}
 
 	public void onSavePedagogicalScenario() {
 		if (objectEditedScenario.getDomainBean()==null) {
+			logger.info("onSavePedagogicalScenario, CREATE");
 			// Create
 			try {
 				PedagogicalScenario scenario = scenariosService.createScenario((Teacher) getCurrentUser(),
@@ -237,7 +241,9 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			}
 		}
 		else {
+			logger.info("onSavePedagogicalScenario, UPDATE");
 			// Update
+			selectedScenarioViewBean.setEvaluationModes(objectEditedScenario.getEvaluationModes());
 			selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getDomainBean()));
 			MessageDisplayer.info(
 					msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
