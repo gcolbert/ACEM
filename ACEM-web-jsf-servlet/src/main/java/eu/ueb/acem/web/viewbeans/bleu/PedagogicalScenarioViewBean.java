@@ -81,11 +81,11 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 	public void setScenario(PedagogicalScenario domainBean) {
 		this.domainBean = domainBean;
 		setId(domainBean.getId());
-		this.name = domainBean.getName();
-		this.objective = domainBean.getObjective();
+		setName(domainBean.getName());
+		setObjective(domainBean.getObjective());
 		setAuthors(domainBean.getAuthors());
-		this.evaluationModes = domainBean.getEvaluationModes();
-		this.published = domainBean.isPublished();
+		setEvaluationModes(domainBean.getEvaluationModes());
+		setPublished(domainBean.isPublished());
 		setCreationDate(domainBean.getCreationDate());
 		setModificationDate(domainBean.getModificationDate());
 	}
@@ -96,7 +96,9 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	public void setName(String name) {
 		this.name = name;
-		domainBean.setName(name);
+		if (domainBean != null) {
+			domainBean.setName(name);
+		}
 	}
 
 	public String getObjective() {
@@ -105,7 +107,9 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	public void setObjective(String objective) {
 		this.objective = objective;
-		domainBean.setObjective(objective);
+		if (domainBean != null) {
+			domainBean.setObjective(objective);
+		}
 	}
 
 	public String getAuthors() {
@@ -117,7 +121,7 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 		for (Teacher author : authors) {
 			authorsAsString = authorsAsString.concat(author.getName().concat(", "));
 		}
-		if (authorsAsString.length() > 0) {
+		if (! authorsAsString.isEmpty()) {
 			// We remove the last two characters (corresponding to the ending
 			// ", " characters)
 			authorsAsString = authorsAsString.substring(0, authorsAsString.length() - 2);
@@ -131,7 +135,9 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	public void setEvaluationModes(String evaluationModes) {
 		this.evaluationModes = evaluationModes;
-		domainBean.setEvaluationModes(evaluationModes);
+		if (domainBean != null) {
+			domainBean.setEvaluationModes(evaluationModes);
+		}
 	}
 
 	public Boolean isPublished() {
@@ -140,7 +146,9 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	public void setPublished(Boolean published) {
 		this.published = published;
-		domainBean.setPublished(published);
+		if (domainBean != null) {
+			domainBean.setPublished(published);
+		}
 	}
 
 	public String getCreationDate() {

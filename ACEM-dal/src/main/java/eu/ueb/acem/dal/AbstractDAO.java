@@ -44,7 +44,9 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 	@SuppressWarnings("unchecked")
 	@Override
 	public E create(E entity) {
-		return getRepository().save((N) entity);
+		E e = getRepository().save((N) entity);
+		initializeCollections(e);
+		return e;
 	}
 
 	@Override

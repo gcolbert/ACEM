@@ -68,7 +68,9 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	private PedagogicalScenarioViewBean selectedScenarioViewBean;
 
 	private PedagogicalActivityViewBean selectedPedagogicalActivityViewBean;
-	
+
+	private PedagogicalScenarioViewBean objectEditedScenario;
+
 	@Inject
 	private ScenariosService scenariosService;
 
@@ -80,7 +82,7 @@ public class MyScenariosController extends AbstractContextAwareController implem
 
 	@Inject
 	private PickListBean pickListBean;
-	
+
 	public MyScenariosController() {
 		pedagogicalScenarioViewBeans = new SortableTableBean<PedagogicalScenarioViewBean>();
 	}
@@ -118,35 +120,11 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		return pickListBean;
 	}
 
-	public void onCreatePedagogicalScenario(String name, String objective) {
-		PedagogicalScenario scenario;
-		try {
-			scenario = scenariosService.createScenario((Teacher)getCurrentUser(), name, objective);
-			if (scenario != null) {
-				PedagogicalScenarioViewBean pedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(scenario);
-				pedagogicalScenarioViewBeans.getTableEntries().add(pedagogicalScenarioViewBean);
-				pedagogicalScenarioViewBeans.sortReverseOrder();
-				setSelectedScenarioViewBean(pedagogicalScenarioViewBean);
-				MessageDisplayer.info(
-						msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-						msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
-			}
-			else {
-				MessageDisplayer.error(
-						msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.TITLE",null,getCurrentUserLocale()),
-						msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.DETAILS",null,getCurrentUserLocale()),
-						logger);
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void deleteSelectedScenario() {
 		if (selectedScenarioViewBean != null) {
 			try {
 				if (scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(selectedScenarioViewBean.getId(), getCurrentUser().getId())) {
+					((Teacher)getCurrentUserViewBean().getDomainBean()).getScenarios().remove(selectedScenarioViewBean);
 					pedagogicalScenarioViewBeans.getTableEntries().remove(selectedScenarioViewBean);
 					MessageDisplayer.info(
 							msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
@@ -162,7 +140,9 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			selectedScenarioViewBean = null;
+			finally {
+				selectedScenarioViewBean = null;
+			}
 		}
 	}
 
@@ -221,13 +201,49 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		setSelectedScenarioViewBean((PedagogicalScenarioViewBean) event.getObject());
 	}
 
-	public void onSave() {
-		logger.debug("onSave");
-		selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getDomainBean()));
+	public void prepareCreatePedagogicalScenario() {
+		objectEditedScenario = new PedagogicalScenarioViewBean();
+		selectedScenarioViewBean = null;
+	}
+
+	public void prepareModifyPedagogicalScenario(PedagogicalScenarioViewBean viewBean) {
+		objectEditedScenario = viewBean;
+		selectedScenarioViewBean = viewBean;
+	}
+
+	public void onSavePedagogicalScenario() {
+		if (objectEditedScenario.getDomainBean()==null) {
+			// Create
+			try {
+				PedagogicalScenario scenario = scenariosService.createScenario((Teacher) getCurrentUser(),
+						objectEditedScenario.getName(), objectEditedScenario.getObjective());
+				if (scenario != null) {
+					PedagogicalScenarioViewBean pedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(scenario);
+					pedagogicalScenarioViewBeans.getTableEntries().add(pedagogicalScenarioViewBean);
+					setSelectedScenarioViewBean(pedagogicalScenarioViewBean);
+					MessageDisplayer.info(msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE",
+							null, getCurrentUserLocale()), msgs.getMessage(
+							"MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
+				}
+				else {
+					MessageDisplayer.error(msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.TITLE", null,
+							getCurrentUserLocale()), msgs.getMessage(
+							"MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.DETAILS", null, getCurrentUserLocale()),
+							logger);
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			// Update
+			selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getDomainBean()));
+			MessageDisplayer.info(
+					msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+					msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+		}
 		pedagogicalScenarioViewBeans.sortReverseOrder();
-		MessageDisplayer.info(
-				msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-				msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 	}
 
 	public void onSaveSelectedPedagogicalActivity() {
@@ -260,6 +276,10 @@ public class MyScenariosController extends AbstractContextAwareController implem
 				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 	}
 
+	public PedagogicalScenarioViewBean getObjectEditedScenario() {
+		return objectEditedScenario;
+	}
+	
 	public void prepareCreatePedagogicalActivity() {
 		selectedPedagogicalActivityViewBean = new PedagogicalActivityViewBean();
 		preparePicklistToolCategoryViewBeansForPedagogicalActivity(null);

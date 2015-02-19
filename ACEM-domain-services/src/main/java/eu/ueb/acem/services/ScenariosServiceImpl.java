@@ -67,9 +67,8 @@ public class ScenariosServiceImpl implements ScenariosService {
 	public PedagogicalScenario createScenario(Teacher author, String name, String objective) {
 		PedagogicalScenario scenario = new PedagogicalScenarioNode(name, objective);
 		scenario.getAuthors().add(author);
-		author.getScenarios().add(scenario);
 		scenario = pedagogicalScenarioDAO.create(scenario);
-		scenario = pedagogicalScenarioDAO.retrieveById(scenario.getId(), true);
+		author.getScenarios().add(scenario);
 		author = usersService.updateTeacher(author);
 		return scenario;
 	}
