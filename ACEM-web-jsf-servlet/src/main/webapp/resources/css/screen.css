@@ -16,6 +16,10 @@ html {
 	background: url("../resources/images/BandeauNumeriqueAccueil2013.png") no-repeat scroll 100% 100% #03132C;
 }
 
+.blockButton {
+	display:block;
+}
+
 /*
 .app-header {
 	color:white;
@@ -75,6 +79,10 @@ html {
 /***********/
 .dialogValidationButton {
 	float: right;
+}
+.inputTextareaForDialog {
+	box-sizing:border-box;
+	width:100%;
 }
 
 /********/
@@ -148,6 +156,14 @@ html {
 
 .pedagogicalAdviceDescriptionPanel {
 	margin:1em 0;
+}
+
+.pedagogicalAdvicePanelGrid .ui-widget-content[role=row] {
+	border:0;
+}
+
+.pedagogicalAdvicePanelGrid .ui-panelgrid-cell {
+	border:0;
 }
 
 /****************/

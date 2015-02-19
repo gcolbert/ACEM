@@ -116,7 +116,7 @@
 					<h:outputText id="selectedScenarioModificationDate"
 						value="#{associateBean.selectedScenarioViewBean.modificationDate}" />
 				</p:panelGrid>
-				<p:commandButton 
+				<p:commandButton
 					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.EDIT_PEDAGOGICAL_SCENARIO_LABEL']}"
 					icon="ui-icon-pencil"
 					actionListener="#{associateBean.setSelectedPedagogicalActivityViewBean(pedagogicalActivityViewBean)}"
@@ -274,19 +274,19 @@
 			<p:dialog id="dialogCreateScenarioId"
 				header="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogCreateScenario" modal="true" height="auto">
-				<p:panelGrid columns="3">
-					<h:outputLabel for="newScenarioName"
+				<p:panelGrid columns="2">
+					<h:outputLabel for="name"
 						value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.NAME_LABEL']}" />
-					<p:inputText id="newScenarioName" required="true"
+					<p:inputText id="name" required="true"
 						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input1}" />
-					<p:message for="newScenarioName" display="text" />
-					<h:outputLabel for="newScenarioObjective"
+					<p:message for="name" display="text" />
+					<h:outputLabel for="objective"
 						value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.OBJECTIVE_LABEL']}" />
-					<p:inputText id="newScenarioObjective" required="true"
+					<p:inputText id="objective" required="true"
 						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
 						binding="#{input2}" />
-					<p:message for="newScenarioObjective" display="text" />
+					<p:message for="objective" display="text" />
 				</p:panelGrid>
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['MY_SCENARIOS.CREATE_SCENARIO_MODAL_WINDOW.VALIDATE']}"
@@ -305,7 +305,7 @@
 				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.NAME_LABEL']}"/></h3>
 				<p:editor
 					value="#{associateBean.selectedScenarioViewBean.name}" height="60"
-					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo"/>
+					controls="undo redo"/>
 
 				<h3 class="section-title"><p:outputLabel value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.OBJECTIVE_LABEL']}"/></h3>
 				<p:editor

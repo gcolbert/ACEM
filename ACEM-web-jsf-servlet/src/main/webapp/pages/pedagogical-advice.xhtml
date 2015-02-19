@@ -173,14 +173,24 @@
 
 				<h2><h:outputText value="#{associateBean.selectedAnswer.name}"/></h2>
 
+				<p:panelGrid columns="2" styleClass="pedagogicalAdvicePanelGrid">
+					<h:graphicImage url="resources/images/pedagogical-advice.png"
+						alt="#{msg['MENU.PEDAGOGICAL_ADVICE']}" styleClass="pageIllustration" />
+					<p:panelGrid columns="1">
+						<h:outputText styleClass="section-title"
+							value="#{msg['PEDAGOGICAL_ANSWER.DESCRIPTION_LABEL']}" />
+						<h:outputText
+							value="#{associateBean.selectedAnswer.description}" escape="false" />
+						<p:commandButton styleClass="blockButton" value="#{msg['APPLICATION.BUTTON.OPEN_MODIFY_DIALOG']}"
+							rendered="#{associateBean.currentUserViewBean.administrator}"
+							icon="ui-icon-pencil" update=":modifyPedagogicalAnswerForm:dialogModifyPedagogicalAnswerId"
+							oncomplete="PF('dialogModifyPedagogicalAnswer').show()">
+							<p:resetInput target=":modifyPedagogicalAnswerForm:dialogModifyPedagogicalAnswerId" />
+						</p:commandButton>
+					</p:panelGrid>
+				</p:panelGrid>
+
 				<p:outputPanel styleClass="pedagogicalAdviceDescriptionPanel">
-					<h:outputText value="#{associateBean.selectedAnswer.description}" escape="false"/>
-		
-					<p:commandButton value="#{msg['APPLICATION.BUTTON.OPEN_MODIFY_DIALOG']}"
-						icon="ui-icon-pencil" update=":modifyPedagogicalAnswerForm:dialogModifyPedagogicalAnswerId"
-						oncomplete="PF('dialogModifyPedagogicalAnswer').show()">
-						<p:resetInput target=":modifyPedagogicalAnswerForm:dialogModifyPedagogicalAnswerId" />
-					</p:commandButton>
 				</p:outputPanel>
 
 				<h3 class="section-title"><h:outputText
@@ -282,22 +292,21 @@
 
 	<ui:define name="customDialogOutFormWithoutForm">
 		<h:form id="modifyPedagogicalAnswerForm">
-			<p:dialog id="dialogModifyPedagogicalAnswerId"
+			<p:dialog id="dialogModifyPedagogicalAnswerId" width="500"
 				header="#{msg['NEEDS_AND_ANSWERS.MODIFY_PEDAGOGICAL_ANSWER_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogModifyPedagogicalAnswer" modal="true" height="auto">
-				<p:panelGrid columns="2" rendered="#{associateBean.selectedAnswer != null}">
-					<h:outputLabel for="name"
-						value="#{msg['PEDAGOGICAL_ANSWER.NAME_LABEL']}" />
-					<p:inputText id="name" required="true"
-						requiredMessage="#{msg['REQUIRED_FIELD']}" size="50"
+				<p:outputPanel rendered="#{associateBean.selectedAnswer != null}">
+					<h3 class="section-title"><p:outputLabel value="#{msg['PEDAGOGICAL_ANSWER.NAME_LABEL']}"/></h3>
+					<p:inputTextarea id="name" styleClass="inputTextareaForDialog" required="true"
+						requiredMessage="#{msg['REQUIRED_FIELD']}" rows="2" cols="80"
 						value="#{associateBean.selectedAnswer.name}" />
+				</p:outputPanel>
 
-					<h:outputLabel for="description"
-						value="#{msg['PEDAGOGICAL_ANSWER.DESCRIPTION_LABEL']}" />
-					<p:editor id="description"
-						value="#{associateBean.selectedAnswer.description}" height="300"
-						controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo"/>
-				</p:panelGrid>
+				<h3 class="section-title"><p:outputLabel value="#{msg['PEDAGOGICAL_ANSWER.DESCRIPTION_LABEL']}"/></h3>
+				<p:editor id="description"
+					value="#{associateBean.selectedAnswer.description}" height="300"
+					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo link unlink"/>
+
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['APPLICATION.BUTTON.MODIFY']}"
 					icon="ui-icon-check" validateClient="true"
