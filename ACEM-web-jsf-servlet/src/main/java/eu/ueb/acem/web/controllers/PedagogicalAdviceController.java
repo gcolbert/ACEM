@@ -56,9 +56,9 @@ import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
  * @since 2013-11-20
  * 
  */
-@Controller("needsAndAnswersController")
+@Controller("pedagogicalController")
 @Scope("view")
-public class NeedsAndAnswersController extends AbstractContextAwareController implements PageController {
+public class PedagogicalAdviceController extends AbstractContextAwareController implements PageController {
 
 	/**
 	 * For serialization.
@@ -68,7 +68,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 	/**
 	 * For logging.
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersController.class);
+	private static final Logger logger = LoggerFactory.getLogger(PedagogicalAdviceController.class);
 
 	@Inject
 	private NeedsAndAnswersService needsAndAnswersService;
@@ -113,7 +113,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 		return needsAndAnswersTreeGenerator.getTreeNodeType_ANSWER_LEAF();
 	}
 
-	public NeedsAndAnswersController() {
+	public PedagogicalAdviceController() {
 		toolCategoryViewBeansForSelectedAnswer = new ArrayList<ToolCategoryViewBean>();
 		toolCategoryViewBeans = new SortableTableBean<ToolCategoryViewBean>();
 
@@ -124,7 +124,7 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 	public void init() {
 		logger.info("entering init");
 		needsAndAnswersTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(msgs.getMessage(
-				"NEEDS_AND_ANSWERS.TREE.VISIBLE_ROOT.LABEL", null, getCurrentUserLocale()));
+				"PEDAGOGICAL_ADVICE.TREE.VISIBLE_ROOT.LABEL", null, getCurrentUserLocale()));
 
 		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
 		logger.info("found {} tool categories", toolCategories.size());
@@ -209,6 +209,10 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 		}
 	}
 
+	public TreeNode getSelectedNode() {
+		return selectedNode;
+	}
+	
 	public PedagogicalAnswer getSelectedAnswer() {
 		return selectedPedagogicalAnswer;
 	}
@@ -236,18 +240,18 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 				}
 				else {
 					MessageDisplayer.error(msgs.getMessage(
-							"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE", null,
+							"PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE", null,
 							getCurrentUserLocale()), msgs.getMessage(
-							"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS", null,
+							"PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS", null,
 							getCurrentUserLocale()), logger);
 					logger.info("The service failed to delete the node.");
 				}
 			}
 			else {
 				MessageDisplayer.error(msgs.getMessage(
-						"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE", null,
+						"PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE", null,
 						getCurrentUserLocale()), msgs.getMessage(
-						"NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS", null,
+						"PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS", null,
 						getCurrentUserLocale()),
 						logger);
 				logger.info("The selected node has children, cannot delete!");
@@ -261,11 +265,11 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 		logger.debug("entering associateNeedWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
 		PedagogicalNeed newNeed = needsAndAnswersService.createOrUpdateNeed(null,
-				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()),
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()),
 				((TreeNodeData) selectedNode.getData()).getId());
 
 		TreeNode newNode = needsAndAnswersTreeBean.addChild(getTreeNodeType_NEED_LEAF(), selectedNode, newNeed.getId(),
-				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()), "Need");
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()), "Need");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 		setSelectedNode(newNode);
 		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
@@ -277,12 +281,12 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 		logger.debug("entering associateAnswerWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
 		PedagogicalAnswer newAnswer = needsAndAnswersService.createOrUpdateAnswer(null,
-				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()),
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()),
 				((TreeNodeData) selectedNode.getData()).getId());
 
 		TreeNode newNode = needsAndAnswersTreeBean.addChild(getTreeNodeType_ANSWER_LEAF(), selectedNode,
 				newAnswer.getId(),
-				msgs.getMessage("NEEDS_AND_ANSWERS.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()), "Answer");
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()), "Answer");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 		setSelectedNode(newNode);
 		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
@@ -377,10 +381,16 @@ public class NeedsAndAnswersController extends AbstractContextAwareController im
 
 	public void onSaveSelectedPedagogicalNeed() {
 		needsAndAnswersService.updatePedagogicalNeed(selectedPedagogicalNeed);
+		MessageDisplayer.info(msgs.getMessage("PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.TITLE",
+				null, getCurrentUserLocale()), msgs.getMessage(
+				"PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
 	}
 
 	public void onSaveSelectedPedagogicalAnswer() {
 		needsAndAnswersService.updatePedagogicalAnswer(selectedPedagogicalAnswer);
+		MessageDisplayer.info(msgs.getMessage("PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.TITLE",
+				null, getCurrentUserLocale()), msgs.getMessage(
+				"PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
 	}
 
 	public List<PedagogicalScenarioViewBean> getScenarioViewBeansRelatedToSelectedAnswer() {

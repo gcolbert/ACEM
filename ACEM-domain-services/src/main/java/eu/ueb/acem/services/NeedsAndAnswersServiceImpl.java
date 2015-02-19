@@ -100,6 +100,11 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
+	public PedagogicalNeed createPedagogicalNeed(String name, String description) {
+		return needDAO.create(new PedagogicalNeedNode(name, description));
+	}
+	
+	@Override
 	public Collection<PedagogicalNeed> retrieveNeedsAtRoot() {
 		return needDAO.retrieveNeedsAtRoot();
 	}

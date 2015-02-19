@@ -55,6 +55,8 @@ public class PedagogicalNeedNode extends AbstractNode implements PedagogicalNeed
 	@Indexed
 	private String name;
 
+	private String description;
+	
 	@RelatedTo(elementClass = PedagogicalNeedNode.class, type = "hasParentNeed", direction = OUTGOING)
 	private Set<PedagogicalNeed> parents = new HashSet<PedagogicalNeed>(0);
 
@@ -72,6 +74,11 @@ public class PedagogicalNeedNode extends AbstractNode implements PedagogicalNeed
 		setName(name);
 	}
 
+	public PedagogicalNeedNode(String name, String description) {
+		this(name);
+		setDescription(description);
+	}
+	
 	@Override
 	public String getName() {
 		return name;
@@ -80,6 +87,16 @@ public class PedagogicalNeedNode extends AbstractNode implements PedagogicalNeed
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

@@ -38,6 +38,8 @@ public interface NeedsAndAnswersService {
 
 	PedagogicalNeed createPedagogicalNeed(String name);
 
+	PedagogicalNeed createPedagogicalNeed(String name, String description);
+
 	Collection<PedagogicalNeed> retrieveNeedsAtRoot();
 
 	PedagogicalNeed retrievePedagogicalNeed(Long id, boolean initialize);

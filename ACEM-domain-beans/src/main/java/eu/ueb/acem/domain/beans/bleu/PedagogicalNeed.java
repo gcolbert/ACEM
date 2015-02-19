@@ -34,6 +34,10 @@ public interface PedagogicalNeed extends Serializable, Comparable<PedagogicalNee
 
 	void setName(String name);
 
+	String getDescription();
+
+	void setDescription(String description);
+
 	Set<PedagogicalNeed> getParents();
 
 	void setParents(Set<PedagogicalNeed> parents);

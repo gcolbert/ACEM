@@ -6,7 +6,7 @@
 	template="../templates/commonLayout.xhtml">
 
 	<!-- Controller associated with this view -->
-	<ui:param name="associateBean" value="#{needsAndAnswersController}" />
+	<ui:param name="associateBean" value="#{pedagogicalController}" />
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
@@ -15,19 +15,23 @@
 	<ui:param name="westPanelCollapsed" value="false"/>
 	<ui:param name="westPanelSize" value="600"/>
 	<ui:param name="displayEast" value="false" />
-	<ui:param name="displaySouth" value="false" />
+	<ui:param name="displaySouth" value="#{associateBean.currentUserViewBean.administrator}" />
+	<ui:param name="titleSouth" value="#{msg['PEDAGOGICAL_ADVICE.CONTROLS.HEADER']}"/>
+	<ui:param name="southPanelCollapsible" value="true"/>
+	<ui:param name="southPanelCollapsed" value="false"/>
 
 	<ui:param name="pageTitle" value="#{associateBean.pageTitle}" />
-	<ui:param name="titleContent" value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.HEADER']}" />
-	<ui:param name="titleWest" value="#{msg['NEEDS_AND_ANSWERS.TREE.HEADER']}" />
+	<ui:param name="titleContent" value="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.HEADER']}" />
+	<ui:param name="titleWest" value="#{msg['PEDAGOGICAL_ADVICE.TREE.HEADER']}" />
 	<ui:param name="titlePageOne" value="#{msg['MENU.PEDAGOGICAL_ADVICE']}"/>
 	<ui:param name="titlePageTwo" value=""/>
 
 	<ui:define name="west">
 		<p:outputPanel>
+<!-- 
 			<p:contextMenu for="pedagogicalAdviceTree" nodeType="default">
 				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
+					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
 					action="#{associateBean.associateNeedWithSelectedNode}"
 					icon="ui-icon-plus" />
@@ -35,25 +39,25 @@
 			<p:contextMenu for="pedagogicalAdviceTree"
 				nodeType="#{associateBean.treeNodeType_NEED_LEAF}">
 				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
+					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
 					action="#{associateBean.associateNeedWithSelectedNode}"
 					icon="ui-icon-plus" />
 				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
+					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
 					action="#{associateBean.associateAnswerWithSelectedNode}"
 					icon="ui-icon-plus" />
 				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
+					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
 					action="#{associateBean.deleteSelectedNode}"
-					icon="ui-icon-close" />
+					icon="ui-icon-trash" />
 			</p:contextMenu>
 			<p:contextMenu for="pedagogicalAdviceTree"
 				nodeType="#{associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
 				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
+					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
 					action="#{associateBean.associateNeedWithSelectedNode}"
 					icon="ui-icon-plus" />
@@ -61,7 +65,7 @@
 			<p:contextMenu for="pedagogicalAdviceTree"
 				nodeType="#{associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
 				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
+					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
 					action="#{associateBean.associateAnswerWithSelectedNode}"
 					icon="ui-icon-plus" />
@@ -69,21 +73,12 @@
 			<p:contextMenu for="pedagogicalAdviceTree"
 				nodeType="#{associateBean.treeNodeType_ANSWER_LEAF}">
 				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_RESOURCE_CATEGORY']}"
-					update="pedagogicalAdviceTree" icon="ui-icon-link"
-					onclick="PF('dialogAssociateResourceCategory').show()"
-					type="button" />
-				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.ANSWER.ASSOCIATE_SERVICE']}"
-					update="pedagogicalAdviceTree" icon="ui-icon-link"
-					onclick="PF('dialogAssociateService').show()" type="button" />
-				<p:menuitem
-					value="#{msg['NEEDS_AND_ANSWERS.TREE.CONTEXT_MENU.DELETE_NODE']}"
+					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE']}"
 					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
 					action="#{associateBean.deleteSelectedNode}"
 					icon="ui-icon-trash" />
 			</p:contextMenu>
-
+-->
 			<p:tree id="pedagogicalAdviceTree" styleClass="pedagogicalAdviceTree" dynamic="true"
 				value="#{associateBean.treeRoot}" var="treeNodeData"
 				selectionMode="single" cache="false"
@@ -94,10 +89,10 @@
 					update="@this :contentForm:messagesDisplayer" />
 				<p:ajax event="expand"
 					listener="#{associateBean.onNodeExpand}"
-					update="@this :contentForm:selectedNodeDetailsOutputPanel :contentForm:associatedToolCategoriesTable" />
+					update="@this :contentForm:selectedNodeDetailsOutputPanel :contentForm:associatedToolCategoriesTable :southForm" />
 				<p:ajax event="select"
 					listener="#{associateBean.onNodeSelect}"
-					update="@this :contentForm:selectedNodeDetailsOutputPanel :contentForm:associatedToolCategoriesTable" />
+					update="@this :contentForm:selectedNodeDetailsOutputPanel :contentForm:associatedToolCategoriesTable :southForm" />
 				<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 					<h:outputText value="#{treeNodeData.label}" />
 				</p:treeNode>
@@ -107,14 +102,6 @@
  					<span style="cursor: pointer;">
 						<h:outputText value="#{treeNodeData.label}" />
 					</span>
-					<!-- 
-					<p:inplace editor="true" event="dblclick">
-						<p:ajax event="save"
-							listener="#{associateBean.onLabelSave(treeNodeData)}"
-							update="@this" />
-						<p:inputText value="#{treeNodeData.label}" />
-					</p:inplace>
-					 -->
 				</p:treeNode>
 				<p:treeNode
 					type="#{associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}"
@@ -122,14 +109,6 @@
  					<span style="cursor: pointer;">
 						<h:outputText value="#{treeNodeData.label}" />
 					</span>
-					<!-- 
-					<p:inplace editor="true" event="dblclick">
-						<p:ajax event="save"
-							listener="#{associateBean.onLabelSave(treeNodeData)}"
-							update="@this" />
-						<p:inputText value="#{treeNodeData.label}" />
-					</p:inplace>
-					 -->
 				</p:treeNode>
 				<p:treeNode
 					type="#{associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}"
@@ -137,14 +116,6 @@
  					<span style="cursor: pointer;">
 						<h:outputText value="#{treeNodeData.label}" />
 					</span>
-					<!-- 
-					<p:inplace editor="true" event="dblclick">
-						<p:ajax event="save"
-							listener="#{associateBean.onLabelSave(treeNodeData)}"
-							update="@this" />
-						<p:inputText value="#{treeNodeData.label}" />
-					</p:inplace>
-					-->
 				</p:treeNode>
 				<p:treeNode
 					type="#{associateBean.treeNodeType_ANSWER_LEAF}"
@@ -152,17 +123,36 @@
  					<span style="cursor: pointer;">
 						<h:outputText value="#{treeNodeData.label}" />
 					</span>
-					<!-- 
-					<p:inplace editor="true" event="dblclick">
-						<p:ajax event="save"
-							listener="#{associateBean.onLabelSave(treeNodeData)}"
-							update="@this" />
-						<p:inputText value="#{treeNodeData.label}" />
-					</p:inplace>
-					 -->
 				</p:treeNode>
 			</p:tree>
 		</p:outputPanel>
+	</ui:define>
+
+	<ui:define name="footer">
+		<p:menuitem
+			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
+			update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
+			action="#{associateBean.associateNeedWithSelectedNode}"
+			icon="ui-icon-plus" />
+
+		<p:commandButton id="addPedagogicalNeedChildButton"
+			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
+			icon="ui-icon-plus" action="#{associateBean.associateNeedWithSelectedNode}"
+			disabled="#{(associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq associateBean.treeNodeType_ANSWER_LEAF) or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS))}"
+			update=":westForm:pedagogicalAdviceTree :southForm :contentForm">
+		</p:commandButton>
+		<p:commandButton id="addPedagogicalAnswerChildButton"
+			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
+			icon="ui-icon-plus" action="#{associateBean.associateAnswerWithSelectedNode}"
+			disabled="#{(associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq 'default') or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS) or (associateBean.selectedNode.type eq associateBean.treeNodeType_ANSWER_LEAF))}"
+			update=":westForm:pedagogicalAdviceTree :southForm :contentForm">
+		</p:commandButton>
+		<p:commandButton id="deletePedagogicalAdviceChildButton"
+			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE']}"
+			icon="ui-icon-trash" action="#{associateBean.deleteSelectedNode}"
+			disabled="#{(associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS) or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS))}"
+			update=":westForm:pedagogicalAdviceTree :southForm :contentForm">
+		</p:commandButton>
 	</ui:define>
 
 	<ui:define name="content">
@@ -178,7 +168,7 @@
 						alt="#{msg['MENU.PEDAGOGICAL_ADVICE']}" styleClass="pageIllustration" />
 					<p:panelGrid columns="1">
 						<h:outputText styleClass="section-title"
-							value="#{msg['PEDAGOGICAL_ANSWER.DESCRIPTION_LABEL']}" />
+							value="#{msg['PEDAGOGICAL_ADVICE.DESCRIPTION_LABEL']}" />
 						<h:outputText
 							value="#{associateBean.selectedAnswer.description}" escape="false" />
 						<p:commandButton styleClass="blockButton" value="#{msg['APPLICATION.BUTTON.OPEN_MODIFY_DIALOG']}"
@@ -194,14 +184,14 @@
 				</p:outputPanel>
 
 				<h3 class="section-title"><h:outputText
-					value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS_LABEL']}" /></h3>
+					value="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS_LABEL']}" /></h3>
 
 				<p:dataTable id="associatedToolCategoriesTable"
 					value="#{associateBean.toolCategoryViewBeansForSelectedAnswer}"
-					emptyMessage="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOL_CATEGORIES.LIST.NO_RECORDS_FOUND']}"
+					emptyMessage="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOL_CATEGORIES.LIST.NO_RECORDS_FOUND']}"
 					var="toolCategoryViewBean">
 					<p:column
-						headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY']}">
+						headerText="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY']}">
 						<h:link id="goToToolCategoryBtn" outcome="my-tools">
 							<f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
 							<h:outputText value="#{toolCategoryViewBean.name}" />
@@ -212,12 +202,12 @@
 								for="goToToolCategoryBtn" />
 						</h:link>
 					</p:column>
-					<p:column headerText="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY_DESCRIPTION']}">
+					<p:column headerText="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY_DESCRIPTION']}">
 						<h:outputText value="#{toolCategoryViewBean.description}"/>
 					</p:column>
 				</p:dataTable>
 				<p:commandButton
-					value="#{msg['NEEDS_AND_ANSWERS.SELECTED_ANSWER.ASSOCIATE_TOOL_CATEGORIES_LABEL']}"
+					value="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATE_TOOL_CATEGORIES_LABEL']}"
 					rendered="#{associateBean.currentUserViewBean.administrator}"
 					icon="ui-icon-transferthick-e-w"
 					action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedAnswer}"
@@ -226,14 +216,14 @@
 					process="@this" />
 
 				<h3 class="section-title"><h:outputText
-					value="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.HEADER']}" /></h3>
+					value="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.HEADER']}" /></h3>
 
 				<p:dataTable id="examplesOfScenariosTable"
 					value="#{associateBean.scenarioViewBeansRelatedToSelectedAnswer}"
-					emptyMessage="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.ASSOCIATED_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
+					emptyMessage="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.ASSOCIATED_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
 					var="scenario">
 					<p:column
-						headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
+						headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
 						<h:link id="goToScenarioBtn" outcome="my-scenarios">
 							<f:param name="scenarioId" value="#{scenario.id}" />
 							<h:outputText value="#{scenario.name}" />
@@ -245,11 +235,11 @@
 						</h:link>
 					</p:column>
 					<p:column
-						headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.OBJECTIVE']}">
+						headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.OBJECTIVE']}">
 						<h:outputText value="#{scenario.objective}" />
 					</p:column>
 					<p:column
-						headerText="#{msg['NEEDS_AND_ANSWERS.SCENARIOS_EXAMPLES.COLUMNS.AUTHORS']}">
+						headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.AUTHORS']}">
 						<h:outputText value="#{scenario.authors}" />
 					</p:column>
 				</p:dataTable>
@@ -259,7 +249,7 @@
 
 	<ui:define name="defaultDialog">
 		<p:dialog id="idDialogAssociateResourceCategoryWithAnswer"
-			header="#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.HEADER']}"
+			header="#{msg['PEDAGOGICAL_ADVICE.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.HEADER']}"
 			widgetVar="dialogAssociateResourceCategory" modal="true"
 			height="auto">
 			<p:pickList id="dialogAssociateAnswerWithToolCategoryPickList"
@@ -273,17 +263,17 @@
 				addAllLabel="#{msg['PICKLIST.ADD_ALL_LABEL']}"
 				removeLabel="#{msg['PICKLIST.REMOVE_LABEL']}"
 				removeAllLabel="#{msg['PICKLIST.REMOVE_ALL_LABEL']}">
-				<f:facet name="sourceCaption">#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.AVAILABLE']}</f:facet>
-				<f:facet name="targetCaption">#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.ASSOCIATED_WITH_SELECTED_ANSWER']}</f:facet>
+				<f:facet name="sourceCaption">#{msg['PEDAGOGICAL_ADVICE.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.AVAILABLE']}</f:facet>
+				<f:facet name="targetCaption">#{msg['PEDAGOGICAL_ADVICE.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.PICKLIST_HEADER.ASSOCIATED_WITH_SELECTED_ANSWER']}</f:facet>
 				<p:ajax event="transfer"
 					listener="#{associateBean.onTransferToolCategory}"
 					update="@this :contentForm:associatedToolCategoriesTable :contentForm:messagesDisplayer"
 					process="@this" />
 			</p:pickList>
 			<p:commandButton styleClass="dialogValidationButton"
-				value="#{msg['NEEDS_AND_ANSWERS.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.CLOSE']}"
+				value="#{msg['PEDAGOGICAL_ADVICE.ASSOCIATE_RESOURCE_CATEGORY_DIALOG.CLOSE']}"
 				icon="ui-icon-check"
-				actionListener="#{associateBean.setScenarioViewBeansRelatedToSelectedAnswer()}"
+				actionListener="#{associateBean.setScenarioViewBeansRelatedToSelectedAnswer}"
 				onclick="PF('dialogAssociateResourceCategory').hide()"
 				update=":contentForm:examplesOfScenariosTable"
 				process="@this :defaultDialogForm:idDialogAssociateResourceCategoryWithAnswer" />
@@ -293,16 +283,16 @@
 	<ui:define name="customDialogOutFormWithoutForm">
 		<h:form id="modifyPedagogicalAnswerForm">
 			<p:dialog id="dialogModifyPedagogicalAnswerId" width="500"
-				header="#{msg['NEEDS_AND_ANSWERS.MODIFY_PEDAGOGICAL_ANSWER_MODAL_WINDOW.HEADER']}"
+				header="#{msg['PEDAGOGICAL_ADVICE.MODIFY_PEDAGOGICAL_ADVICE_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogModifyPedagogicalAnswer" modal="true" height="auto">
 				<p:outputPanel rendered="#{associateBean.selectedAnswer != null}">
-					<h3 class="section-title"><p:outputLabel value="#{msg['PEDAGOGICAL_ANSWER.NAME_LABEL']}"/></h3>
+					<h3 class="section-title"><p:outputLabel value="#{msg['PEDAGOGICAL_ADVICE.NAME_LABEL']}"/></h3>
 					<p:inputTextarea id="name" styleClass="inputTextareaForDialog" required="true"
 						requiredMessage="#{msg['REQUIRED_FIELD']}" rows="2" cols="80"
 						value="#{associateBean.selectedAnswer.name}" />
 				</p:outputPanel>
 
-				<h3 class="section-title"><p:outputLabel value="#{msg['PEDAGOGICAL_ANSWER.DESCRIPTION_LABEL']}"/></h3>
+				<h3 class="section-title"><p:outputLabel value="#{msg['PEDAGOGICAL_ADVICE.DESCRIPTION_LABEL']}"/></h3>
 				<p:editor id="description"
 					value="#{associateBean.selectedAnswer.description}" height="300"
 					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo link unlink"/>
@@ -310,7 +300,7 @@
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['APPLICATION.BUTTON.MODIFY']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{associateBean.onSaveSelectedPedagogicalAnswer()}"
+					action="#{associateBean.onSaveSelectedPedagogicalAnswer}"
 					update="@form :westForm:pedagogicalAdviceTree :contentForm"
 					oncomplete="PF('dialogModifyPedagogicalAnswer').hide();" />
 			</p:dialog>
