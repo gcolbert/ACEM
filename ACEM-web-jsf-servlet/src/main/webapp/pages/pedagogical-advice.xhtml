@@ -129,12 +129,6 @@
 	</ui:define>
 
 	<ui:define name="footer">
-		<p:menuitem
-			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-			update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
-			action="#{associateBean.associateNeedWithSelectedNode}"
-			icon="ui-icon-plus" />
-
 		<p:commandButton id="addPedagogicalNeedChildButton"
 			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 			icon="ui-icon-plus" action="#{associateBean.associateNeedWithSelectedNode}"
