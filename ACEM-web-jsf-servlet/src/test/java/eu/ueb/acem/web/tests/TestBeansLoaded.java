@@ -43,8 +43,8 @@ public class TestBeansLoaded extends TestCase {
 	}
 
 	@Test
-	public void testNeedsAndAnswersController() {
-		assertTrue("Controller needsAndAnswersController is not loaded", applicationContext.containsBean("needsAndAnswersController"));
+	public void testPedagogicalAdviceController() {
+		assertTrue("Controller pedagogicalAdviceController is not loaded", applicationContext.containsBean("pedagogicalAdviceController"));
 	}
 
 	@Test
