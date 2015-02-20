@@ -212,11 +212,11 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	public TreeNode getSelectedNode() {
 		return selectedNode;
 	}
-	
+
 	public PedagogicalAnswer getSelectedAnswer() {
 		return selectedPedagogicalAnswer;
 	}
-	
+
 	public void deleteSelectedNode() {
 		logger.debug("entering deleteSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		if (selectedNode != null) {
@@ -225,8 +225,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 			if (selectedNode.isLeaf()) {
 				if (needsAndAnswersService.deleteNode(((TreeNodeData) selectedNode.getData()).getId())) {
 					// If the selectedNode was the only child, we must change
-					// back the parent's type to be a "Need leaf", so that the
-					// good ContextMenu will be displayed
+					// back the parent's type to be a "Need leaf"
 					if (selectedNode.getParent().getChildCount() == 1) {
 						if ((selectedNode.getParent().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS()))
 								|| (selectedNode.getParent().getType()
@@ -307,14 +306,18 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 					|| (dropNode.getType().equals(getTreeNodeType_NEED_LEAF()))) {
 				needsAndAnswersService.changeParentOfNeedOrAnswer(dragNodeData.getId(), dropNodeData.getId());
 
-				// If the dropNode was a NEED_LEAF, we change its type to getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS
+				// If the dropNode was a NEED_LEAF, we change its type to
+				// getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS
 				if (dropNode.getType().equals(getTreeNodeType_NEED_LEAF())) {
-					((DefaultTreeNode)dropNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
+					((DefaultTreeNode) dropNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 				}
-				// If the original parent was a NEED_WITH_ASSOCIATED_ANSWERS with exactly one child -> NEED_LEAF
-				if (((TreeNodeData)dragNode.getData()).getParentBackup().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())
-						&& (((TreeNodeData)dragNode.getData()).getParentBackup().getChildCount() == 0)) {
-					((DefaultTreeNode)((TreeNodeData)dragNode.getData()).getParentBackup()).setType(getTreeNodeType_NEED_LEAF());
+				// If the original parent was a NEED_WITH_ASSOCIATED_ANSWERS
+				// with exactly one child -> NEED_LEAF
+				if (((TreeNodeData) dragNode.getData()).getParentBackup().getType()
+						.equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())
+						&& (((TreeNodeData) dragNode.getData()).getParentBackup().getChildCount() == 0)) {
+					((DefaultTreeNode) ((TreeNodeData) dragNode.getData()).getParentBackup())
+							.setType(getTreeNodeType_NEED_LEAF());
 				}
 
 				MessageDisplayer.info("Dragged " + dragNodeData.getLabel(), "Dropped on " + dropNodeData.getLabel()
@@ -322,60 +325,80 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 			}
 			else if (dropNode.getType().equals("default")) {
 				revertDragDrop = true;
-				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical answer on the root node.", logger);
+				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
+						getCurrentUserLocale()), msgs.getMessage(
+						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_ANSWER_ON_ROOT", null, getCurrentUserLocale()),
+						logger);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())) {
 				revertDragDrop = true;
-				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical answer on a pedagogical need that already has needs as children.", logger);
+				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
+						getCurrentUserLocale()), msgs.getMessage(
+						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_ANSWER_ON_NEED_WITH_ASSOCIATED_NEEDS", null,
+						getCurrentUserLocale()), logger);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 				revertDragDrop = true;
-				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical answer on a pedagogical answer", logger);
+				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
+						getCurrentUserLocale()), msgs.getMessage(
+						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_ANSWER_ON_ANSWER", null, getCurrentUserLocale()),
+						logger);
 			}
 		}
 		else {
-			// Here we know that dragNode is NEED_LEAF, NEED_WITH_ASSOCIATED_NEEDS or NEED_WITH_ASSOCIATED_ANSWERS
+			// Here we know that dragNode is NEED_LEAF,
+			// NEED_WITH_ASSOCIATED_NEEDS or NEED_WITH_ASSOCIATED_ANSWERS
 			if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())
-					|| (dropNode.getType().equals(getTreeNodeType_NEED_LEAF())
-							|| (dropNode.getType().equals("default")))) {
+					|| (dropNode.getType().equals(getTreeNodeType_NEED_LEAF()) || (dropNode.getType().equals("default")))) {
 				needsAndAnswersService.changeParentOfNeedOrAnswer(dragNodeData.getId(), dropNodeData.getId());
 
-				// If the dropNode was a NEED_LEAF, we change its type to getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS
+				// If the dropNode was a NEED_LEAF, we change its type to
+				// getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS
 				if (dropNode.getType().equals(getTreeNodeType_NEED_LEAF())) {
-					((DefaultTreeNode)dropNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
+					((DefaultTreeNode) dropNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 				}
-				// If the original parent was a NEED_WITH_ASSOCIATED_NEEDS with exactly one child -> NEED_LEAF
-				if (((TreeNodeData)dragNode.getData()).getParentBackup().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())
-						&& (((TreeNodeData)dragNode.getData()).getParentBackup().getChildCount() == 0)) {
-					((DefaultTreeNode)((TreeNodeData)dragNode.getData()).getParentBackup()).setType(getTreeNodeType_NEED_LEAF());
+				// If the original parent was a NEED_WITH_ASSOCIATED_NEEDS with
+				// exactly one child -> NEED_LEAF
+				if (((TreeNodeData) dragNode.getData()).getParentBackup().getType()
+						.equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())
+						&& (((TreeNodeData) dragNode.getData()).getParentBackup().getChildCount() == 0)) {
+					((DefaultTreeNode) ((TreeNodeData) dragNode.getData()).getParentBackup())
+							.setType(getTreeNodeType_NEED_LEAF());
 				}
 
-				MessageDisplayer.info("Dragged " + dragNodeData, "Dropped on " + dropNodeData
-						+ " at " + dropIndex);
+				MessageDisplayer.info("Dragged " + dragNodeData, "Dropped on " + dropNodeData + " at " + dropIndex);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 				revertDragDrop = true;
-				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical need on a pedagogical answer.", logger);
+				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
+						getCurrentUserLocale()), msgs.getMessage(
+						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_NEED_ON_ANSWER", null, getCurrentUserLocale()),
+						logger);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())) {
 				revertDragDrop = true;
-				MessageDisplayer.error("Forbidden", "You cannot drop a pedagogical need on a pedagogical need that has answers as children.", logger);
+				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
+						getCurrentUserLocale()), msgs.getMessage(
+						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_NEED_ON_NEED_WITH_ASSOCIATED_ANSWERS", null,
+						getCurrentUserLocale()), logger);
 			}
 		}
 
 		if (revertDragDrop) {
-			// If the drag and drop isn't allowed, we have to restore the original parent for the dragNode
-			dragNode.setParent(((TreeNodeData)dragNode.getData()).getParentBackup());
+			// If the drag and drop isn't allowed, we have to restore the
+			// original parent for the dragNode
+			dragNode.setParent(((TreeNodeData) dragNode.getData()).getParentBackup());
 
 			// We delete the dragNode from the new parent's children
 			dropNode.getChildren().remove(dragNode);
-			
+
 			// We add the dragNode to the backup parent's children
-			((TreeNodeData)dragNode.getData()).getParentBackup().getChildren().add(dragNode);
+			((TreeNodeData) dragNode.getData()).getParentBackup().getChildren().add(dragNode);
 		}
 		else {
-			// Otherwise we update the "parentBackup" in the node data to reflect the new parent
-			((TreeNodeData)dragNode.getData()).setParentBackup(dragNode.getParent());
+			// Otherwise we update the "parentBackup" in the node data to
+			// reflect the new parent
+			((TreeNodeData) dragNode.getData()).setParentBackup(dragNode.getParent());
 		}
 	}
 

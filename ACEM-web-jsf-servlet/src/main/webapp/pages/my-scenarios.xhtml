@@ -120,16 +120,16 @@
 					oncomplete="PF('dialogEditScenario').show()"
 					update=":createOrModifyPedagogicalScenarioForm:idDialogCreateOrModifyPedagogicalScenario"
 					process="@this" />
-	
+
 				<p:dataTable id="pedagogicalActivitiesDataTable" styleClass="selectedScenarioActivitiesDataTable"
 					editable="true"
 					emptyMessage="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
 					value="#{associateBean.selectedScenarioViewBean.pedagogicalActivityViewBeans}"
 					var="pedagogicalActivityViewBean"
 					rowKey="pedagogicalActivityViewBean.id">
-	
+
 					<f:facet name="header">#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.TABLE_HEADER']}</f:facet>
-	
+
 					<p:column width="20"
 						headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_POSITION_IN_SCENARIO']}">
 						<h:outputText
@@ -306,7 +306,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{associateBean.onSaveSelectedPedagogicalActivity}"
 					process="@form"
-					update=":createOrModifyActivityForm:dialogEditActivityId :contentForm:pedagogicalActivitiesDataTable"
+					update=":contentForm:pedagogicalActivitiesDataTable :contentForm:messagesDisplayer"
 					oncomplete="PF('dialogEditActivity').hide();">
 					<p:resetInput target=":createOrModifyActivityForm:dialogEditActivityId" />
 				</p:commandButton>
@@ -327,7 +327,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{associateBean.onSavePedagogicalScenario}"
 					process="@form"
-					update=":contentForm:evaluationModes"
+					update=":contentForm:evaluationModes :contentForm:messagesDisplayer"
 					oncomplete="PF('dialogEditEvaluation').hide();">
 					<p:resetInput target=":modifyEditEvaluationForm:dialogEditEvaluationId" />
 				</p:commandButton>
