@@ -154,6 +154,10 @@ html {
 	border:0;
 }
 
+.pedagogicalAdvicePanelGrid .ui-panelgrid-cell {
+	vertical-align:top;
+}
+
 .pedagogicalAdviceDescriptionPanel {
 	margin:1em 0;
 }
