@@ -101,19 +101,19 @@
 	<ui:define name="content">
 
 		<p:outputPanel id="selectedNodeDetailsOutputPanel">
-			<p:panel id="selectedNodeDetails" styleClass="pedagogicalAnswerDetailsPanel"
-				rendered="#{not empty associateBean.selectedAnswer}">
+			<p:panel id="selectedNodeDetails" styleClass="pedagogicalAdviceDetailsPanel"
+				rendered="#{associateBean.selectedPedagogicalAdvice != null}">
 
-				<h2><h:outputText value="#{associateBean.selectedAnswer.name}"/></h2>
+				<h2><h:outputText value="#{associateBean.selectedPedagogicalAdvice.name}"/></h2>
 
 				<p:panelGrid columns="2" styleClass="pedagogicalAdvicePanelGrid">
 					<h:graphicImage url="resources/images/pedagogical-advice.png"
 						alt="#{msg['MENU.PEDAGOGICAL_ADVICE']}" styleClass="pageIllustration" />
 					<p:panelGrid columns="1">
 						<h:outputText styleClass="section-title"
-							value="#{msg['PEDAGOGICAL_ADVICE.DESCRIPTION_LABEL']}" rendered="#{not empty associateBean.selectedAnswer.description}" />
+							value="#{msg['PEDAGOGICAL_ADVICE.DESCRIPTION_LABEL']}" rendered="#{not empty associateBean.selectedPedagogicalAdvice.description}" />
 						<h:outputText
-							value="#{associateBean.selectedAnswer.description}" escape="false" />
+							value="#{associateBean.selectedPedagogicalAdvice.description}" escape="false" />
 						<p:commandButton styleClass="blockButton" value="#{msg['APPLICATION.BUTTON.OPEN_MODIFY_DIALOG']}"
 							rendered="#{associateBean.currentUserViewBean.administrator}"
 							icon="ui-icon-pencil" update=":modifyPedagogicalAdviceForm:dialogModifyPedagogicalAdviceId"
@@ -123,66 +123,68 @@
 					</p:panelGrid>
 				</p:panelGrid>
 
-				<h3 class="section-title"><h:outputText
-					value="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS_LABEL']}" /></h3>
-
-				<p:dataTable id="associatedToolCategoriesTable"
-					value="#{associateBean.toolCategoryViewBeansForSelectedAnswer}"
-					emptyMessage="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOL_CATEGORIES.LIST.NO_RECORDS_FOUND']}"
-					var="toolCategoryViewBean">
-					<p:column
-						headerText="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY']}">
-						<h:link id="goToToolCategoryBtn" outcome="my-tools">
-							<f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
-							<h:outputText value="#{toolCategoryViewBean.name}" />
-							<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
-								style="display:inline-block; vertical-align:middle;" />
-							<p:tooltip
-								value="#{msg['GO_TO_TOOL_CATEGORY.TOOLTIP']}"
-								for="goToToolCategoryBtn" />
-						</h:link>
-					</p:column>
-					<p:column headerText="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY_DESCRIPTION']}">
-						<h:outputText value="#{toolCategoryViewBean.description}"/>
-					</p:column>
-				</p:dataTable>
-				<p:commandButton
-					value="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATE_TOOL_CATEGORIES_LABEL']}"
-					rendered="#{associateBean.currentUserViewBean.administrator}"
-					icon="ui-icon-transferthick-e-w"
-					action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedAnswer}"
-					oncomplete="PF('dialogAssociateResourceCategory').show()"
-					update=":defaultDialogForm:idDialogAssociateResourceCategoryWithAnswer"
-					process="@this" />
-
-				<h3 class="section-title"><h:outputText
-					value="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.HEADER']}" /></h3>
-
-				<p:dataTable id="examplesOfScenariosTable"
-					value="#{associateBean.scenarioViewBeansRelatedToSelectedAnswer}"
-					emptyMessage="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.ASSOCIATED_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
-					var="scenario">
-					<p:column
-						headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
-						<h:link id="goToScenarioBtn" outcome="my-scenarios">
-							<f:param name="scenarioId" value="#{scenario.id}" />
-							<h:outputText value="#{scenario.name}" />
-							<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
-								style="display:inline-block; vertical-align:middle;" />
-							<p:tooltip
-								value="#{msg['GO_TO_SCENARIO.TOOLTIP']}"
-								for="goToScenarioBtn" />
-						</h:link>
-					</p:column>
-					<p:column
-						headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.OBJECTIVE']}">
-						<h:outputText value="#{scenario.objective}" />
-					</p:column>
-					<p:column
-						headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.AUTHORS']}">
-						<h:outputText value="#{scenario.authors}" />
-					</p:column>
-				</p:dataTable>
+				<p:outputPanel rendered="#{associateBean.selectedPedagogicalAnswer != null}">
+					<h3 class="section-title"><h:outputText
+						value="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS_LABEL']}" /></h3>
+	
+					<p:dataTable id="associatedToolCategoriesTable"
+						value="#{associateBean.toolCategoryViewBeansForSelectedAnswer}"
+						emptyMessage="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOL_CATEGORIES.LIST.NO_RECORDS_FOUND']}"
+						var="toolCategoryViewBean">
+						<p:column
+							headerText="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY']}">
+							<h:link id="goToToolCategoryBtn" outcome="my-tools">
+								<f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
+								<h:outputText value="#{toolCategoryViewBean.name}" />
+								<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+									style="display:inline-block; vertical-align:middle;" />
+								<p:tooltip
+									value="#{msg['GO_TO_TOOL_CATEGORY.TOOLTIP']}"
+									for="goToToolCategoryBtn" />
+							</h:link>
+						</p:column>
+						<p:column headerText="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY_DESCRIPTION']}">
+							<h:outputText value="#{toolCategoryViewBean.description}"/>
+						</p:column>
+					</p:dataTable>
+					<p:commandButton
+						value="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATE_TOOL_CATEGORIES_LABEL']}"
+						rendered="#{associateBean.currentUserViewBean.administrator}"
+						icon="ui-icon-transferthick-e-w"
+						action="#{associateBean.preparePicklistToolCategoryViewBeansForSelectedAnswer}"
+						oncomplete="PF('dialogAssociateResourceCategory').show()"
+						update=":defaultDialogForm:idDialogAssociateResourceCategoryWithAnswer"
+						process="@this" />
+	
+					<h3 class="section-title"><h:outputText
+						value="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.HEADER']}" /></h3>
+	
+					<p:dataTable id="examplesOfScenariosTable"
+						value="#{associateBean.scenarioViewBeansRelatedToSelectedAnswer}"
+						emptyMessage="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.ASSOCIATED_SCENARIOS.LIST.NO_RECORDS_FOUND']}"
+						var="scenario">
+						<p:column
+							headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
+							<h:link id="goToScenarioBtn" outcome="my-scenarios">
+								<f:param name="scenarioId" value="#{scenario.id}" />
+								<h:outputText value="#{scenario.name}" />
+								<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+									style="display:inline-block; vertical-align:middle;" />
+								<p:tooltip
+									value="#{msg['GO_TO_SCENARIO.TOOLTIP']}"
+									for="goToScenarioBtn" />
+							</h:link>
+						</p:column>
+						<p:column
+							headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.OBJECTIVE']}">
+							<h:outputText value="#{scenario.objective}" />
+						</p:column>
+						<p:column
+							headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.AUTHORS']}">
+							<h:outputText value="#{scenario.authors}" />
+						</p:column>
+					</p:dataTable>
+				</p:outputPanel>
 			</p:panel>
 		</p:outputPanel>
 	</ui:define>
@@ -225,22 +227,22 @@
 			<p:dialog id="dialogModifyPedagogicalAdviceId" width="500"
 				header="#{msg['PEDAGOGICAL_ADVICE.MODIFY_PEDAGOGICAL_ADVICE_MODAL_WINDOW.HEADER']}"
 				widgetVar="dialogModifyPedagogicalAdvice" modal="true" height="auto">
-				<p:outputPanel rendered="#{associateBean.selectedAnswer != null}">
+				<p:outputPanel rendered="#{associateBean.selectedPedagogicalAdvice != null}">
 					<h3 class="section-title"><p:outputLabel for="name" value="#{msg['PEDAGOGICAL_ADVICE.NAME_LABEL']}"/></h3>
 					<p:inputTextarea id="name" styleClass="inputTextareaForDialog" required="true"
 						requiredMessage="#{msg['REQUIRED_FIELD']}" rows="2" cols="80"
-						value="#{associateBean.selectedAnswer.name}" />
+						value="#{associateBean.selectedPedagogicalAdvice.name}" />
 				</p:outputPanel>
 
 				<h3 class="section-title"><p:outputLabel for="description" value="#{msg['PEDAGOGICAL_ADVICE.DESCRIPTION_LABEL']}"/></h3>
 				<p:editor id="description"
-					value="#{associateBean.selectedAnswer.description}" height="300"
+					value="#{associateBean.selectedPedagogicalAdvice.description}" height="300"
 					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo link unlink"/>
 
 				<p:commandButton styleClass="dialogValidationButton"
 					value="#{msg['APPLICATION.BUTTON.MODIFY']}"
 					icon="ui-icon-check" validateClient="true"
-					action="#{associateBean.onSaveSelectedPedagogicalAnswer}"
+					action="#{associateBean.onSaveSelectedPedagogicalAdvice}"
 					update="@form :westForm:pedagogicalAdviceTree :contentForm"
 					oncomplete="PF('dialogModifyPedagogicalAdvice').hide();" />
 			</p:dialog>

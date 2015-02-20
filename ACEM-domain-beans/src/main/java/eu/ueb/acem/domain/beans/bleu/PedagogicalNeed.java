@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.domain.beans.bleu;
 
-import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -26,17 +25,7 @@ import java.util.Set;
  * @since 2013-11-20
  * 
  */
-public interface PedagogicalNeed extends Serializable, Comparable<PedagogicalNeed> {
-
-	Long getId();
-
-	String getName();
-
-	void setName(String name);
-
-	String getDescription();
-
-	void setDescription(String description);
+public interface PedagogicalNeed extends PedagogicalAdvice, Comparable<PedagogicalNeed> {
 
 	Set<PedagogicalNeed> getParents();
 
