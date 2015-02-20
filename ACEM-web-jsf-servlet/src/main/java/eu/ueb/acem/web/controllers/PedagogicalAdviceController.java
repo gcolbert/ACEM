@@ -296,7 +296,6 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	public void onDragDrop(TreeDragDropEvent event) {
 		TreeNode dragNode = event.getDragNode();
 		TreeNode dropNode = event.getDropNode();
-		int dropIndex = event.getDropIndex();
 		TreeNodeData dragNodeData = (TreeNodeData) dragNode.getData();
 		TreeNodeData dropNodeData = (TreeNodeData) dropNode.getData();
 		boolean revertDragDrop = false;
@@ -320,8 +319,8 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 							.setType(getTreeNodeType_NEED_LEAF());
 				}
 
-				MessageDisplayer.info("Dragged " + dragNodeData.getLabel(), "Dropped on " + dropNodeData.getLabel()
-						+ " at " + dropIndex);
+				MessageDisplayer.info(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.DRAG_AND_DROP_SUCCESSFUL.TITLE", null,
+						getCurrentUserLocale()), "");
 			}
 			else if (dropNode.getType().equals("default")) {
 				revertDragDrop = true;
@@ -366,7 +365,8 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 							.setType(getTreeNodeType_NEED_LEAF());
 				}
 
-				MessageDisplayer.info("Dragged " + dragNodeData, "Dropped on " + dropNodeData + " at " + dropIndex);
+				MessageDisplayer.info(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.DRAG_AND_DROP_SUCCESSFUL.TITLE", null,
+						getCurrentUserLocale()), "");
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 				revertDragDrop = true;

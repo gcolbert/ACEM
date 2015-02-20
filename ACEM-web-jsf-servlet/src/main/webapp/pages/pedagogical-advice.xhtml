@@ -81,19 +81,19 @@
 		<p:commandButton id="addPedagogicalNeedChildButton"
 			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
 			icon="ui-icon-plus" action="#{associateBean.associateNeedWithSelectedNode}"
-			disabled="#{(associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq associateBean.treeNodeType_ANSWER_LEAF) or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS))}"
+			disabled="#{(associateBean.selectedNode == null) or ( (associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq associateBean.treeNodeType_ANSWER_LEAF) or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS)))}"
 			update=":westForm:pedagogicalAdviceTree :southForm :contentForm">
 		</p:commandButton>
 		<p:commandButton id="addPedagogicalAnswerChildButton"
 			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
 			icon="ui-icon-plus" action="#{associateBean.associateAnswerWithSelectedNode}"
-			disabled="#{(associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq 'default') or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS) or (associateBean.selectedNode.type eq associateBean.treeNodeType_ANSWER_LEAF))}"
+			disabled="#{(associateBean.selectedNode == null) or ((associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq 'default') or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS) or (associateBean.selectedNode.type eq associateBean.treeNodeType_ANSWER_LEAF)))}"
 			update=":westForm:pedagogicalAdviceTree :southForm :contentForm">
 		</p:commandButton>
 		<p:commandButton id="deletePedagogicalAdviceChildButton"
 			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE']}"
 			icon="ui-icon-trash" action="#{associateBean.deleteSelectedNode}"
-			disabled="#{(associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq 'default') or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS) or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS))}"
+			disabled="#{(associateBean.selectedNode == null) or ((associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq 'default') or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS) or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS)))}"
 			update=":westForm:pedagogicalAdviceTree :southForm :contentForm">
 		</p:commandButton>
 	</ui:define>
