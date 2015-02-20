@@ -28,57 +28,6 @@
 
 	<ui:define name="west">
 		<p:outputPanel>
-<!-- 
-			<p:contextMenu for="pedagogicalAdviceTree" nodeType="default">
-				<p:menuitem
-					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
-					action="#{associateBean.associateNeedWithSelectedNode}"
-					icon="ui-icon-plus" />
-			</p:contextMenu>
-			<p:contextMenu for="pedagogicalAdviceTree"
-				nodeType="#{associateBean.treeNodeType_NEED_LEAF}">
-				<p:menuitem
-					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
-					action="#{associateBean.associateNeedWithSelectedNode}"
-					icon="ui-icon-plus" />
-				<p:menuitem
-					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
-					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
-					action="#{associateBean.associateAnswerWithSelectedNode}"
-					icon="ui-icon-plus" />
-				<p:menuitem
-					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE']}"
-					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
-					action="#{associateBean.deleteSelectedNode}"
-					icon="ui-icon-trash" />
-			</p:contextMenu>
-			<p:contextMenu for="pedagogicalAdviceTree"
-				nodeType="#{associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS}">
-				<p:menuitem
-					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_NEED']}"
-					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
-					action="#{associateBean.associateNeedWithSelectedNode}"
-					icon="ui-icon-plus" />
-			</p:contextMenu>
-			<p:contextMenu for="pedagogicalAdviceTree"
-				nodeType="#{associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS}">
-				<p:menuitem
-					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.ASSOCIATE_ANSWER']}"
-					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
-					action="#{associateBean.associateAnswerWithSelectedNode}"
-					icon="ui-icon-plus" />
-			</p:contextMenu>
-			<p:contextMenu for="pedagogicalAdviceTree"
-				nodeType="#{associateBean.treeNodeType_ANSWER_LEAF}">
-				<p:menuitem
-					value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE']}"
-					update="pedagogicalAdviceTree :contentForm:messagesDisplayer"
-					action="#{associateBean.deleteSelectedNode}"
-					icon="ui-icon-trash" />
-			</p:contextMenu>
--->
 			<p:tree id="pedagogicalAdviceTree" styleClass="pedagogicalAdviceTree" dynamic="true"
 				value="#{associateBean.treeRoot}" var="treeNodeData"
 				selectionMode="single" cache="false"
@@ -144,7 +93,7 @@
 		<p:commandButton id="deletePedagogicalAdviceChildButton"
 			value="#{msg['PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE']}"
 			icon="ui-icon-trash" action="#{associateBean.deleteSelectedNode}"
-			disabled="#{(associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS) or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS))}"
+			disabled="#{(associateBean.selectedNode != null) and ((associateBean.selectedNode.type eq 'default') or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_NEEDS) or (associateBean.selectedNode.type eq associateBean.treeNodeType_NEED_WITH_ASSOCIATED_ANSWERS))}"
 			update=":westForm:pedagogicalAdviceTree :southForm :contentForm">
 		</p:commandButton>
 	</ui:define>
@@ -162,20 +111,17 @@
 						alt="#{msg['MENU.PEDAGOGICAL_ADVICE']}" styleClass="pageIllustration" />
 					<p:panelGrid columns="1">
 						<h:outputText styleClass="section-title"
-							value="#{msg['PEDAGOGICAL_ADVICE.DESCRIPTION_LABEL']}" />
+							value="#{msg['PEDAGOGICAL_ADVICE.DESCRIPTION_LABEL']}" rendered="#{not empty associateBean.selectedAnswer.description}" />
 						<h:outputText
 							value="#{associateBean.selectedAnswer.description}" escape="false" />
 						<p:commandButton styleClass="blockButton" value="#{msg['APPLICATION.BUTTON.OPEN_MODIFY_DIALOG']}"
 							rendered="#{associateBean.currentUserViewBean.administrator}"
-							icon="ui-icon-pencil" update=":modifyPedagogicalAnswerForm:dialogModifyPedagogicalAnswerId"
-							oncomplete="PF('dialogModifyPedagogicalAnswer').show()">
-							<p:resetInput target=":modifyPedagogicalAnswerForm:dialogModifyPedagogicalAnswerId" />
+							icon="ui-icon-pencil" update=":modifyPedagogicalAdviceForm:dialogModifyPedagogicalAdviceId"
+							oncomplete="PF('dialogModifyPedagogicalAdvice').show()">
+							<p:resetInput target=":modifyPedagogicalAdviceForm:dialogModifyPedagogicalAdviceId" />
 						</p:commandButton>
 					</p:panelGrid>
 				</p:panelGrid>
-
-				<p:outputPanel styleClass="pedagogicalAdviceDescriptionPanel">
-				</p:outputPanel>
 
 				<h3 class="section-title"><h:outputText
 					value="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS_LABEL']}" /></h3>
@@ -275,18 +221,18 @@
 	</ui:define>
 
 	<ui:define name="customDialogOutFormWithoutForm">
-		<h:form id="modifyPedagogicalAnswerForm">
-			<p:dialog id="dialogModifyPedagogicalAnswerId" width="500"
+		<h:form id="modifyPedagogicalAdviceForm">
+			<p:dialog id="dialogModifyPedagogicalAdviceId" width="500"
 				header="#{msg['PEDAGOGICAL_ADVICE.MODIFY_PEDAGOGICAL_ADVICE_MODAL_WINDOW.HEADER']}"
-				widgetVar="dialogModifyPedagogicalAnswer" modal="true" height="auto">
+				widgetVar="dialogModifyPedagogicalAdvice" modal="true" height="auto">
 				<p:outputPanel rendered="#{associateBean.selectedAnswer != null}">
-					<h3 class="section-title"><p:outputLabel value="#{msg['PEDAGOGICAL_ADVICE.NAME_LABEL']}"/></h3>
+					<h3 class="section-title"><p:outputLabel for="name" value="#{msg['PEDAGOGICAL_ADVICE.NAME_LABEL']}"/></h3>
 					<p:inputTextarea id="name" styleClass="inputTextareaForDialog" required="true"
 						requiredMessage="#{msg['REQUIRED_FIELD']}" rows="2" cols="80"
 						value="#{associateBean.selectedAnswer.name}" />
 				</p:outputPanel>
 
-				<h3 class="section-title"><p:outputLabel value="#{msg['PEDAGOGICAL_ADVICE.DESCRIPTION_LABEL']}"/></h3>
+				<h3 class="section-title"><p:outputLabel for="description" value="#{msg['PEDAGOGICAL_ADVICE.DESCRIPTION_LABEL']}"/></h3>
 				<p:editor id="description"
 					value="#{associateBean.selectedAnswer.description}" height="300"
 					controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo link unlink"/>
@@ -296,7 +242,7 @@
 					icon="ui-icon-check" validateClient="true"
 					action="#{associateBean.onSaveSelectedPedagogicalAnswer}"
 					update="@form :westForm:pedagogicalAdviceTree :contentForm"
-					oncomplete="PF('dialogModifyPedagogicalAnswer').hide();" />
+					oncomplete="PF('dialogModifyPedagogicalAdvice').hide();" />
 			</p:dialog>
 		</h:form>
 	</ui:define>

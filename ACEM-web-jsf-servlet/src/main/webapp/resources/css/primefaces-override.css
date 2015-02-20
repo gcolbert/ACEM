@@ -1,6 +1,10 @@
 /*------------------------------------------------------------
 Override of Primefaces default css
 --------------------------------------------------------------*/
+.ui-growl {
+	z-index:9999999 !important;
+}
+
 .ui-button {
 	margin-right:0.5em;
 	margin-top:0.5em;

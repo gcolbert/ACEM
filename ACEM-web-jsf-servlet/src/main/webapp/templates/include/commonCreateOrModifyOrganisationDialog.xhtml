@@ -15,55 +15,58 @@
 		header="#{dialogHeader}"
 		widgetVar="#{widgetName}" modal="true" height="auto">
 		<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
-		<p:panelGrid columns="2"
-			rendered="#{associateBean.objectEdited != null}">
-			<h:outputLabel for="name"
-				value="#{msg['ORGANISATION.NAME_LABEL']}" />
-			<p:inputText id="name" required="true" size="50"
-				value="#{associateBean.objectEdited.name}" />
+		
+		<p:outputPanel rendered="#{associateBean.objectEdited != null}">
+			<h3 class="section-title">
+				<p:outputLabel for="name" value="#{msg['ORGANISATION.NAME_LABEL']}" />
+			</h3>
+			<p:inputTextarea id="name" styleClass="inputTextareaForDialog"
+				required="true" requiredMessage="#{msg['REQUIRED_FIELD']}" rows="2"
+				cols="80" value="#{associateBean.objectEdited.name}" />
 
-			<h:outputLabel for="shortname"
-				value="#{msg['ORGANISATION.SHORTNAME_LABEL']}" />
-			<p:inputText id="shortname" required="true" size="20"
+			<h3 class="section-title">
+				<p:outputLabel for="shortname" value="#{msg['ORGANISATION.SHORTNAME_LABEL']}" />
+			</h3>
+			<p:inputText id="shortname" required="true" size="30"
 				value="#{associateBean.objectEdited.shortname}" />
+		</p:outputPanel>
 
-			<h:outputLabel
-				value="#{msg['ORGANISATION.ICON_LABEL']}"
-				for="icon" />
-			<p:column rowspan="2">
-				<p:outputPanel id="iconOutputPanel">
-					<p:panel id="icon" styleClass="iconPanel">
-						<p:graphicImage
-							rendered="#{(not empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
-							alt="#{associateBean.objectEdited.name}"
-							cache="true" width="200" value="#{imagesController.image}">
-							<f:param name="imageFileName"
-								value="#{associateBean.objectEdited.iconFileName}" />
-						</p:graphicImage>
-						<p:graphicImage
-							rendered="#{not empty associateBean.temporaryFilePath}"
-							alt="#{associateBean.objectEdited.name}"
-							cache="true" width="200" value="#{imagesController.image}">
-							<f:param name="imageFilePath"
-								value="#{associateBean.temporaryFilePath}" />
-						</p:graphicImage>
-					</p:panel>
-					<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
-						icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
-						process="@this" />
-					<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
-						disabled="#{(empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
-						icon="ui-icon-trash" action="#{associateBean.removeObjectEditedIcon}"
-						update="@this icon"
-						process="@this" />
-				</p:outputPanel>
-			</p:column>
-		</p:panelGrid>
+		<h3 class="section-title">
+			<p:outputLabel for="icon" value="#{msg['ORGANISATION.ICON_LABEL']}"/>
+		</h3>
+		<p:outputPanel id="iconOutputPanel">
+			<p:panel id="icon" styleClass="iconPanel">
+				<p:graphicImage
+					rendered="#{(not empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
+					alt="#{associateBean.objectEdited.name}"
+					cache="true" width="200" value="#{imagesController.image}">
+					<f:param name="imageFileName"
+						value="#{associateBean.objectEdited.iconFileName}" />
+				</p:graphicImage>
+				<p:graphicImage
+					rendered="#{not empty associateBean.temporaryFilePath}"
+					alt="#{associateBean.objectEdited.name}"
+					cache="true" width="200" value="#{imagesController.image}">
+					<f:param name="imageFilePath"
+						value="#{associateBean.temporaryFilePath}" />
+				</p:graphicImage>
+			</p:panel>
+			<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+				icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+				process="@this" />
+			<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+				disabled="#{(empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
+				icon="ui-icon-trash" action="#{associateBean.removeObjectEditedIcon}"
+				update="@this icon"
+				process="@this" />
+		</p:outputPanel>
+
 		<p:commandButton styleClass="dialogValidationButton"
 			value="#{msg['APPLICATION.BUTTON.SAVE']}"
 			icon="ui-icon-check"
 			action="#{associateBean.onSaveOrganisation}"
 			process="@form"
+			validateClient="true"
 			update="${formToUpdate}:tabViewOrganisations :contentForm:messagesDisplayer"
 			oncomplete="PF('#{widgetName}').hide();" />
 	</p:dialog>

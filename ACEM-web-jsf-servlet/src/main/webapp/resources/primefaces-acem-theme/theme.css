@@ -1,7 +1,7 @@
 /*! jQuery UI - v1.10.4 - 2014-03-19
 * http://jqueryui.com
 * Includes: jquery.ui.theme.css
-* To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Lucida%20Grande%2CLucida%20Sans%2CArial%2Csans-serif&fwDefault=bold&fsDefault=1.1em&cornerRadius=6px&bgColorHeader=%23081F3A&bgTextureHeader=flat&bgImgOpacityHeader=25&borderColorHeader=%23061C36&fcHeader=%23ffffff&iconColorHeader=%23ffffff&bgColorContent=%23ffffff&bgTextureContent=flat&bgImgOpacityContent=100&borderColorContent=%23DDDDDD&fcContent=%23362b36&iconColorContent=%23B6B1B0&bgColorDefault=%23E6E1E0&bgTextureDefault=flat&bgImgOpacityDefault=80&borderColorDefault=%23DDDDDD&fcDefault=%235080cc&iconColorDefault=%237C9FCF&bgColorHover=%23c3d4ec&bgTextureHover=flat&bgImgOpacityHover=100&borderColorHover=%237C9FCF&fcHover=%235283c6&iconColorHover=%237C9FCF&bgColorActive=%237C9FCF&bgTextureActive=flat&bgImgOpacityActive=50&borderColorActive=%2393a9cc&fcActive=%23ffffff&iconColorActive=%23ffffff&bgColorHighlight=%23c8e646&bgTextureHighlight=inset_soft&bgImgOpacityHighlight=0&borderColorHighlight=%23B6B1B0&fcHighlight=%23363636&iconColorHighlight=%23081F3A&bgColorError=%23cd0b0a&bgTextureError=flat&bgImgOpacityError=15&borderColorError=%23cd0a0a&fcError=%23ffffff&iconColorError=%23ffffff&bgColorOverlay=%23eeeeee&bgTextureOverlay=hexagon&bgImgOpacityOverlay=90&opacityOverlay=80&bgColorShadow=%237C9FCF&bgTextureShadow=highlight_soft&bgImgOpacityShadow=70&opacityShadow=30&thicknessShadow=7px&offsetTopShadow=-7px&offsetLeftShadow=-7px&cornerRadiusShadow=8px
+* To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Lucida%20Grande%2CLucida%20Sans%2CArial%2Csans-serif&fwDefault=bold&fsDefault=1.1em&cornerRadius=6px&bgColorHeader=%23081F3A&bgTextureHeader=flat&bgImgOpacityHeader=25&borderColorHeader=%23061C36&fcHeader=%23ffffff&iconColorHeader=%23ffffff&bgColorContent=%23ffffff&bgTextureContent=flat&bgImgOpacityContent=100&borderColorContent=%23DDDDDD&fcContent=%23362b36&iconColorContent=%23B6B1B0&bgColorDefault=%23E6E1E0&bgTextureDefault=flat&bgImgOpacityDefault=80&borderColorDefault=%23DDDDDD&fcDefault=%235080cc&iconColorDefault=%237C9FCF&bgColorHover=%23c3d4ec&bgTextureHover=flat&bgImgOpacityHover=100&borderColorHover=%237C9FCF&fcHover=%235283c6&iconColorHover=%237C9FCF&bgColorActive=%237C9FCF&bgTextureActive=flat&bgImgOpacityActive=50&borderColorActive=%2393a9cc&fcActive=%23ffffff&iconColorActive=%23ffffff&bgColorHighlight=%23c8e646&bgTextureHighlight=inset_soft&bgImgOpacityHighlight=0&borderColorHighlight=%23B6B1B0&fcHighlight=%23363636&iconColorHighlight=%23081F3A&bgColorError=%23ffffff&bgTextureError=flat&bgImgOpacityError=15&borderColorError=%23cd0a0a&fcError=%23cd0a0a&iconColorError=%23cd0a0a&bgColorOverlay=%23eeeeee&bgTextureOverlay=hexagon&bgImgOpacityOverlay=90&opacityOverlay=80&bgColorShadow=%237C9FCF&bgTextureShadow=highlight_soft&bgImgOpacityShadow=70&opacityShadow=30&thicknessShadow=7px&offsetTopShadow=-7px&offsetLeftShadow=-7px&cornerRadiusShadow=8px
 * Copyright 2014 jQuery Foundation and other contributors; Licensed MIT */
 
 
@@ -110,18 +110,18 @@
 .ui-widget-content .ui-state-error,
 .ui-widget-header .ui-state-error {
 	border: 1px solid #cd0a0a;
-	background: #cd0b0a url("#{resource['primefaces-acem-theme:images/ui-bg_flat_15_cd0b0a_40x100.png']}") 50% 50% repeat-x;
-	color: #ffffff;
+	background: #ffffff url("#{resource['primefaces-acem-theme:images/ui-bg_flat_15_ffffff_40x100.png']}") 50% 50% repeat-x;
+	color: #cd0a0a;
 }
 .ui-state-error a,
 .ui-widget-content .ui-state-error a,
 .ui-widget-header .ui-state-error a {
-	color: #ffffff;
+	color: #cd0a0a;
 }
 .ui-state-error-text,
 .ui-widget-content .ui-state-error-text,
 .ui-widget-header .ui-state-error-text {
-	color: #ffffff;
+	color: #cd0a0a;
 }
 .ui-priority-primary,
 .ui-widget-content .ui-priority-primary,
