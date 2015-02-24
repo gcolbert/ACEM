@@ -69,15 +69,14 @@ import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.DocumentaryAndPedagogicalResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.PedagogicalAndDocumentaryResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ProfessionalTrainingViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.SoftwareDocumentationViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.UseModeViewBean;
-import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -133,7 +132,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	private ToolCategoryViewBean selectedToolCategoryViewBean;
 
 	private List<ToolCategoryViewBean> allToolCategoryViewBeans;
-	private ToolCategoryViewBean objectEdited;
+	private ToolCategoryViewBean objectEditedToolCategory;
 
 	/* ***********************************************************************/
 
@@ -143,6 +142,8 @@ public class MyToolsController extends AbstractContextAwareController implements
 	private static final String[] RESOURCE_TYPES = { "RESOURCE_TYPE_SOFTWARE", "RESOURCE_TYPE_SOFTWARE_DOCUMENTATION",
 			"RESOURCE_TYPE_EQUIPMENT", "RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE",
 			"RESOURCE_TYPE_PROFESSIONAL_TRAINING" };
+	
+	private ResourceViewBean objectEditedResource;
 	
 	/* ***********************************************************************/
 
@@ -267,20 +268,15 @@ public class MyToolsController extends AbstractContextAwareController implements
 		logger.info("Entering setSelectedToolCategoryViewBean");
 		selectedToolCategoryViewBean = toolCategoryViewBean;
 
-		// When the category changes, we have to lose the current selected resource
+		// When the category changes, we have to reset the currently selected resource
 		// in the datatable of this category
 		setSelectedResourceViewBean(null);
 
 		if (selectedToolCategoryViewBean != null) {
 			// We initialize the checkbox "category is a favorite category for the user"
 			if (getCurrentUserViewBean() instanceof TeacherViewBean) {
-				TeacherViewBean teacherViewBean = (TeacherViewBean) getCurrentUserViewBean();
-				if (teacherViewBean.getFavoriteToolCategoryViewBeans().contains(selectedToolCategoryViewBean)) {
-					selectedToolCategoryViewBean.setFavoriteToolCategory(true);
-				}
-				else {
-					selectedToolCategoryViewBean.setFavoriteToolCategory(false);
-				}
+				selectedToolCategoryViewBean.setFavoriteToolCategory(((TeacherViewBean) getCurrentUserViewBean())
+						.getFavoriteToolCategoryViewBeans().contains(selectedToolCategoryViewBean));
 			}
 
 			// We associate the ResourceViewBeans
@@ -289,17 +285,22 @@ public class MyToolsController extends AbstractContextAwareController implements
 				resource = resourcesService.retrieveResource(resource.getId(), true);
 				ResourceViewBean resourceViewBean = getResourceViewBean(resource);
 
+				// The organisation possessing the resource
 				resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource()));
 
+				// The organisation supporting the resource
 				if (resourceViewBean.getDomainBean().getOrganisationSupportingResource() != null) {
 					Organisation supportService = organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId(), true);
 					resourceViewBean.setOrganisationSupportingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(supportService));
 				}
 
+				// The organisations having access to the resource
+				// (NOTE : we don't repeat here the organisation possessing the resource)
 				for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
 					resourceViewBean.getOrganisationViewingResourceViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisation));
 				}
 
+				// The use modes of the resource
 				for (UseMode useMode : resourceViewBean.getDomainBean().getUseModes()) {
 					resourceViewBean.getUseModeViewBeans().add(new UseModeViewBean(useMode));
 				}
@@ -405,21 +406,21 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void prepareToolCategoryCreation() {
-		objectEdited = new ToolCategoryViewBean();
+		objectEditedToolCategory = new ToolCategoryViewBean();
 		selectedToolCategoryViewBean = null;
 		temporaryFilePath = null;
 		commonUploadOneDialog.reset();
 	}
 
 	public void prepareToolCategoryModification(ToolCategoryViewBean toolCategoryViewBean) {
-		objectEdited = toolCategoryViewBean;
+		objectEditedToolCategory = new ToolCategoryViewBean(resourcesService.retrieveResourceCategory(toolCategoryViewBean.getId(), true));
 		selectedToolCategoryViewBean = toolCategoryViewBean;
 		temporaryFilePath = null;
 		commonUploadOneDialog.reset();
 	}
 
-	public ToolCategoryViewBean getObjectEdited() {
-		return objectEdited;
+	public ToolCategoryViewBean getObjectEditedToolCategory() {
+		return objectEditedToolCategory;
 	}
 
 	public List<ToolCategoryViewBean> getAllToolCategoryViewBeans() {
@@ -434,7 +435,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void onSaveToolCategory() {
-		if (objectEdited.getDomainBean() == null) {
+		if (objectEditedToolCategory.getDomainBean() == null) {
 			createToolCategoryFromObjectEdited();
 		}
 		else {
@@ -449,10 +450,10 @@ public class MyToolsController extends AbstractContextAwareController implements
 			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
-		objectEdited.setIconFileName(iconFileName);
+		objectEditedToolCategory.setIconFileName(iconFileName);
 
-		ResourceCategory toolCategory = resourcesService.createResourceCategory(objectEdited.getName(),
-				objectEdited.getDescription(), iconFileName);
+		ResourceCategory toolCategory = resourcesService.createResourceCategory(objectEditedToolCategory.getName(),
+				objectEditedToolCategory.getDescription(), iconFileName);
 		if (toolCategory != null) {
 			ToolCategoryViewBean newToolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
 			allToolCategoryViewBeans.add(newToolCategoryViewBean);
@@ -462,15 +463,14 @@ public class MyToolsController extends AbstractContextAwareController implements
 					msgs.getMessage("TOOL_CATEGORIES.CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
 		}
 		else {
-			MessageDisplayer.info(
+			MessageDisplayer.error(
 					msgs.getMessage("TOOL_CATEGORIES.CREATION_FAILURE.TITLE", null, getCurrentUserLocale()),
-					msgs.getMessage("TOOL_CATEGORIES.CREATION_FAILURE.DETAILS", null, getCurrentUserLocale()));
+					msgs.getMessage("TOOL_CATEGORIES.CREATION_FAILURE.DETAILS", null, getCurrentUserLocale()),logger);
 		}
 	}
 
 	private void modifyToolCategoryFromObjectEdited() {
-		logger.info("onModifyToolCategory");
-		if (objectEdited != null) {
+		if (objectEditedToolCategory != null) {
 			String iconFileName = commonUploadOneDialog.getFileUploadedName();
 			if (!iconFileName.trim().isEmpty()) {
 				moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
@@ -478,13 +478,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 				commonUploadOneDialog.reset();
 				// We set the icon file name inside this block, because if the user
 				// didn't upload any icon, we keep the current icon.
-				objectEdited.setIconFileName(iconFileName);
+				objectEditedToolCategory.setIconFileName(iconFileName);
 			}
 
-			objectEdited.getDomainBean().setName(objectEdited.getName());
-			objectEdited.getDomainBean().setDescription(objectEdited.getDescription());
-			objectEdited.getDomainBean().setIconFileName(objectEdited.getIconFileName());
-			objectEdited.setDomainBean(resourcesService.updateResourceCategory(objectEdited.getDomainBean()));
+			objectEditedToolCategory.getDomainBean().setName(objectEditedToolCategory.getName());
+			objectEditedToolCategory.getDomainBean().setDescription(objectEditedToolCategory.getDescription());
+			objectEditedToolCategory.getDomainBean().setIconFileName(objectEditedToolCategory.getIconFileName());
+			objectEditedToolCategory.setDomainBean(resourcesService.updateResourceCategory(objectEditedToolCategory.getDomainBean()));
 			MessageDisplayer.info(
 					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
 					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
@@ -533,7 +533,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 				viewBean = new SoftwareViewBean((Software) resource);
 			}
 			else if (resource instanceof PedagogicalAndDocumentaryResource) {
-				viewBean = new DocumentaryAndPedagogicalResourceViewBean((PedagogicalAndDocumentaryResource) resource);
+				viewBean = new PedagogicalAndDocumentaryResourceViewBean((PedagogicalAndDocumentaryResource) resource);
 			}
 			else if (resource instanceof Equipment) {
 				viewBean = new EquipmentViewBean((Equipment) resource);
@@ -548,6 +548,10 @@ public class MyToolsController extends AbstractContextAwareController implements
 		return viewBean;
 	}
 
+	public ResourceViewBean getObjectEditedResource() {
+		return objectEditedResource;
+	}
+
 	public ResourceViewBean getSelectedResourceViewBean() {
 		return selectedResourceViewBean;
 	}
@@ -556,29 +560,87 @@ public class MyToolsController extends AbstractContextAwareController implements
 		selectedResourceViewBean = resourceViewBean;
 	}
 
-	public void prepareResourceCreation() {
+	public void prepareResourceCreation(String resourceType) {
+		logger.info("prepareResourceCreation, resourceType={}",resourceType);
+		if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
+			objectEditedResource = new SoftwareViewBean();
+		}
+		else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
+			objectEditedResource = new SoftwareDocumentationViewBean();
+		}
+		else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
+			objectEditedResource = new EquipmentViewBean();
+		}
+		else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE")) {
+			objectEditedResource = new PedagogicalAndDocumentaryResourceViewBean();
+		}
+		else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
+			objectEditedResource = new ProfessionalTrainingViewBean();
+		}
+		else {
+			logger.error("Unknown resourceType '{}'", resourceType);
+		}
 		selectedResourceViewBean = null;
 		temporaryFilePath = null;
 		commonUploadOneDialog.reset();
 	}
 
 	public void prepareResourceModification(ResourceViewBean resourceViewBean) {
+		String resourceType = resourceViewBean.getType();
+		if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
+			objectEditedResource = new SoftwareViewBean((Software)resourcesService.retrieveResource(resourceViewBean.getId(), true));
+		}
+		else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
+			objectEditedResource = new SoftwareDocumentationViewBean((SoftwareDocumentation)resourcesService.retrieveResource(resourceViewBean.getId(), true));
+		}
+		else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
+			objectEditedResource = new EquipmentViewBean((Equipment)resourcesService.retrieveResource(resourceViewBean.getId(), true));
+		}
+		else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE")) {
+			objectEditedResource = new PedagogicalAndDocumentaryResourceViewBean((PedagogicalAndDocumentaryResource)resourcesService.retrieveResource(resourceViewBean.getId(), true));
+		}
+		else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
+			objectEditedResource = new ProfessionalTrainingViewBean((ProfessionalTraining)resourcesService.retrieveResource(resourceViewBean.getId(), true));
+		}
+		else {
+			logger.error("Unknown resourceType '{}'", resourceType);
+		}
+		objectEditedResource.setOrganisationPossessingResourceViewBean(resourceViewBean.getOrganisationPossessingResourceViewBean());
+		objectEditedResource.setOrganisationSupportingResourceViewBean(resourceViewBean.getOrganisationSupportingResourceViewBean());
+		objectEditedResource.setOrganisationViewingResourceViewBeans(resourceViewBean.getOrganisationViewingResourceViewBeans());
+
 		selectedResourceViewBean = resourceViewBean;
 		temporaryFilePath = null;
 		commonUploadOneDialog.reset();
 	}
 
-	public void onCreateResource(String newResourceType, OrganisationViewBean newResourceOwnerOrganisation, OrganisationViewBean newResourceSupportOrganisation, String newResourceName) {
+	public void onSaveResource() {
+		if (objectEditedResource.getDomainBean() == null) {
+			createResourceFromObjectEdited();
+		}
+		else {
+			modifyResourceFromObjectEdited();
+		}
+	}
+
+	private void createResourceFromObjectEdited() {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
-		if (! iconFileName.trim().isEmpty()) {
+		if (!iconFileName.trim().isEmpty()) {
 			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
 			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
+		objectEditedResource.setIconFileName(iconFileName);
 
-		Resource resource = resourcesService.createResource(selectedToolCategoryId, newResourceOwnerOrganisation.getId(), newResourceSupportOrganisation.getId(), newResourceType, newResourceName, iconFileName);
+		Resource resource = resourcesService.createResource(selectedToolCategoryViewBean.getDomainBean(),
+				objectEditedResource.getOrganisationPossessingResourceViewBean().getDomainBean(),
+				objectEditedResource.getOrganisationSupportingResourceViewBean().getDomainBean(),
+				objectEditedResource.getType(),
+				objectEditedResource.getName(),
+				objectEditedResource.getIconFileName());
 		if (resource != null) {
 			ResourceViewBean resourceViewBean = getResourceViewBean(resource);
+			Collections.sort(selectedToolCategoryViewBean.getResourceViewBeans());
 
 			resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId(),true)));
 			resourceViewBean.setOrganisationSupportingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId(),true)));
@@ -588,22 +650,41 @@ public class MyToolsController extends AbstractContextAwareController implements
 			}
 
 			selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
+
+			MessageDisplayer.info(
+					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
+		}
+		else {
+			MessageDisplayer.error(
+					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_FAILURE.TITLE", null, getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_FAILURE.DETAILS", null, getCurrentUserLocale()),logger);
 		}
 	}
 
-	public void onModifySelectedResource() {
-		String iconFileName = commonUploadOneDialog.getFileUploadedName();
-		if (! iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
-			this.temporaryFilePath = null;
-			commonUploadOneDialog.reset();
-			// We set the icon file name inside this block, because if the user
-			// didn't upload any icon, we keep the current icon.
-			selectedResourceViewBean.setIconFileName(iconFileName);
+	private void modifyResourceFromObjectEdited() {
+		logger.info("modifyResourceFromObjectEdited");
+		if (objectEditedResource != null) {
+			String iconFileName = commonUploadOneDialog.getFileUploadedName();
+			if (!iconFileName.trim().isEmpty()) {
+				moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+				this.temporaryFilePath = null;
+				commonUploadOneDialog.reset();
+				// We set the icon file name inside this block, because if the user
+				// didn't upload any icon, we keep the current icon.
+				objectEditedResource.setIconFileName(iconFileName);
+			}
+
+			selectedToolCategoryViewBean.getResourceViewBeans().remove(selectedResourceViewBean);
+			selectedResourceViewBean.setDomainBean(resourcesService.updateResource(objectEditedResource.getDomainBean()));
+			selectedResourceViewBean.setOrganisationPossessingResourceViewBean(objectEditedResource.getOrganisationPossessingResourceViewBean());
+			selectedResourceViewBean.setOrganisationSupportingResourceViewBean(objectEditedResource.getOrganisationSupportingResourceViewBean());
+			selectedResourceViewBean.setOrganisationViewingResourceViewBeans(objectEditedResource.getOrganisationViewingResourceViewBeans());
+			selectedToolCategoryViewBean.getResourceViewBeans().add(selectedResourceViewBean);
+			MessageDisplayer.info(
+					msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
 		}
-		selectedResourceViewBean.setDomainBean(resourcesService.updateResource(selectedResourceViewBean.getDomainBean()));
-		selectedToolCategoryViewBean.getResourceViewBeans().remove(selectedResourceViewBean);
-		selectedToolCategoryViewBean.getResourceViewBeans().add(selectedResourceViewBean);
 	}
 
 	public void onDeleteSelectedResource() {
@@ -708,19 +789,16 @@ public class MyToolsController extends AbstractContextAwareController implements
 		return temporaryFilePath;
 	}
 
-	public void removeObjectEditedIcon() {
-		objectEdited.setIconFileName("");
+	public void removeObjectEditedToolCategoryIcon() {
+		objectEditedToolCategory.setIconFileName("");
 		resetTemporaryFilePath();
 	}
 
-	// TODO : merge with removeObjectEditedIcon
-	public void removeResourceIcon(ResourceViewBean resourceViewBean) {
-		if (resourceViewBean != null) {
-			resourceViewBean.setIconFileName("");
-		}
+	public void removeObjectEditedResourceIcon() {
+		objectEditedResource.setIconFileName("");
 		resetTemporaryFilePath();
 	}
-
+	
 	private void resetTemporaryFilePath() {
 		deleteTemporaryFileIfExists(this.temporaryFilePath);
 		this.temporaryFilePath = null;

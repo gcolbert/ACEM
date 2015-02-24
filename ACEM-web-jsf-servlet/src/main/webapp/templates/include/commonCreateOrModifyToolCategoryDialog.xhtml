@@ -18,20 +18,20 @@
 		height="auto">
 		<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 
-		<p:outputPanel rendered="#{associateBean.objectEdited != null}">
+		<p:outputPanel rendered="#{associateBean.objectEditedToolCategory != null}">
 			<h3 class="section-title">
 				<p:outputLabel for="name" value="#{msg['TOOL_CATEGORY.NAME_LABEL']}" />
 			</h3>
 			<p:inputTextarea id="name" styleClass="inputTextareaForDialog"
 				required="true" requiredMessage="#{msg['REQUIRED_FIELD']}" rows="2"
-				cols="80" value="#{associateBean.objectEdited.name}" />
+				cols="80" value="#{associateBean.objectEditedToolCategory.name}" />
 		</p:outputPanel>
 
 		<h3 class="section-title">
 			<p:outputLabel for="description" value="#{msg['TOOL_CATEGORY.DESCRIPTION_LABEL']}" />
 		</h3>
 		<p:editor id="description"
-			value="#{associateBean.objectEdited.description}" height="300"
+			value="#{associateBean.objectEditedToolCategory.description}" height="300"
 			controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo link unlink" />
 
 		<h3 class="section-title">
@@ -41,11 +41,11 @@
 		<p:outputPanel id="iconOutputPanel">
 			<p:panel id="icon" styleClass="iconPanel">
 				<p:graphicImage
-					rendered="#{(not empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
-					alt="#{associateBean.objectEdited.name}"
+					rendered="#{(not empty associateBean.objectEditedToolCategory.iconFileName) and (empty associateBean.temporaryFilePath)}"
+					alt="#{associateBean.objectEditedToolCategory.name}"
 					cache="true" width="200" value="#{imagesController.image}">
 					<f:param name="imageFileName"
-						value="#{associateBean.objectEdited.iconFileName}" />
+						value="#{associateBean.objectEditedToolCategory.iconFileName}" />
 				</p:graphicImage>
 				<p:graphicImage
 					rendered="#{not empty associateBean.temporaryFilePath}"
@@ -59,8 +59,8 @@
 				icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
 				process="@this" />
 			<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
-				disabled="#{(empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
-				icon="ui-icon-trash" action="#{associateBean.removeObjectEditedIcon}"
+				disabled="#{(empty associateBean.objectEditedToolCategory.iconFileName) and (empty associateBean.temporaryFilePath)}"
+				icon="ui-icon-trash" action="#{associateBean.removeObjectEditedToolCategoryIcon}"
 				update="@this icon"
 				process="@this" />
 		</p:outputPanel>

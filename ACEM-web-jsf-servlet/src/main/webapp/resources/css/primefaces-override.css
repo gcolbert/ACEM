@@ -17,27 +17,27 @@ Override of Primefaces default css
 	background:white;
 }
 
+.ui-menu {
+	min-width: 23em;
+}
+
 .ui-menu .ui-menuitem {
 	background-color:#878786;
 	margin-right:0.3em;
 }
+
 .ui-menu .ui-menuitem .ui-menuitem-text {
 	color:white;
 	font-weight:bold;
 }
 
-/* p:contextMenu */
-.ui-menu {
-	min-width: 18em;
-}
-
 .ui-menubar {
 	border:0; /* Remove the border for menu bars */
 }
-
-.ui-menubar .ui-menu-child .ui-menuitem-link {
-    box-sizing: border-box;
-    width: 100%; /* By default it is 92% */
+.ui-menuitem .ui-menuitem-link, /* This first selector matches overlay menus that appears when clicking a button*/
+.ui-menubar .ui-menu-child .ui-menuitem-link /* This second selector matches the menu bars with children menus */
+{
+    box-sizing: border-box; width: 100%; /* By default the links in overlaid menus are 92% wide which appears odd */
 }
 
 .ui-breadcrumb {

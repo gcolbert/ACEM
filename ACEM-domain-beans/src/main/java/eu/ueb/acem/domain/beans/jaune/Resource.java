@@ -41,9 +41,9 @@ public interface Resource extends Serializable, Comparable<Resource> {
 	void setDescription(String description);
 
 	String getIconFileName();
-	
+
 	void setIconFileName(String iconFileName);
-	
+
 	Set<ResourceCategory> getCategories();
 
 	void setCategories(Set<ResourceCategory> categories);
@@ -59,7 +59,7 @@ public interface Resource extends Serializable, Comparable<Resource> {
 	Organisation getOrganisationSupportingResource();
 
 	void setOrganisationSupportingResource(Organisation organisation);
-	
+
 	Set<Organisation> getOrganisationsHavingAccessToResource();
 
 	void setOrganisationsHavingAccessToResource(Set<Organisation> organisations);

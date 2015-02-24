@@ -109,59 +109,59 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Resource createResource(Long toolCategoryId, Long ownerOrganisationId, Long supportOrganisationId,
+	public Resource createResource(ResourceCategory resourceCategory, Organisation ownerOrganisation, Organisation supportOrganisation,
 			String resourceType, String name, String iconFileName) {
-		Organisation supportOrganisation = organisationsService.retrieveOrganisation(supportOrganisationId, true);
-		Organisation ownerOrganisation = organisationsService.retrieveOrganisation(ownerOrganisationId, true);
-		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId, true);
 		if ((ownerOrganisation != null) && (supportOrganisation != null) && (resourceCategory != null)) {
-			Resource entity = null;
+			Resource resource = null;
 			if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
-				entity = new SoftwareNode(name, iconFileName);
+				resource = new SoftwareNode(name, iconFileName);
 			}
 			else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
-				entity = new SoftwareDocumentationNode(name, iconFileName);
+				resource = new SoftwareDocumentationNode(name, iconFileName);
 			}
 			else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
-				entity = new EquipmentNode(name, iconFileName);
+				resource = new EquipmentNode(name, iconFileName);
 			}
 			else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE")) {
-				entity = new PedagogicalAndDocumentaryResourceNode(name, iconFileName);
+				resource = new PedagogicalAndDocumentaryResourceNode(name, iconFileName);
 			}
 			else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
-				entity = new ProfessionalTrainingNode(name, iconFileName);
+				resource = new ProfessionalTrainingNode(name, iconFileName);
 			}
 			else {
 				logger.error("Unknown resourceType '{}'", resourceType);
 			}
 
-			if (entity != null) {
-				entity.getCategories().add(resourceCategory);
-				resourceCategory.getResources().add(entity);
+			if (resource != null) {
+				resource.getCategories().add(resourceCategory);
+				resourceCategory.getResources().add(resource);
 				resourceCategory = resourceCategoryDAO.update(resourceCategory);
-	
-				entity.setOrganisationPossessingResource(ownerOrganisation);
+
+				resource.setOrganisationPossessingResource(ownerOrganisation);
+				ownerOrganisation.getPossessedResources().add(resource);
 				ownerOrganisation = organisationsService.updateOrganisation(ownerOrganisation);
-				entity.setOrganisationSupportingResource(supportOrganisation);
+
+				resource.setOrganisationSupportingResource(supportOrganisation);
+				supportOrganisation.getSupportedResources().add(resource);
 				supportOrganisation = organisationsService.updateOrganisation(supportOrganisation);
 				
 				if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
-					entity = softwareDAO.create((Software) entity);
+					resource = softwareDAO.create((Software) resource);
 				}
 				else if (resourceType.equals("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION")) {
-					entity = softwareDocumentationDAO.create((SoftwareDocumentation) entity);
+					resource = softwareDocumentationDAO.create((SoftwareDocumentation) resource);
 				}
 				else if (resourceType.equals("RESOURCE_TYPE_EQUIPMENT")) {
-					entity = equipmentDAO.create((Equipment) entity);
+					resource = equipmentDAO.create((Equipment) resource);
 				}
 				else if (resourceType.equals("RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE")) {
-					entity = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource) entity);
+					resource = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource) resource);
 				}
 				else if (resourceType.equals("RESOURCE_TYPE_PROFESSIONAL_TRAINING")) {
-					entity = professionalTrainingDAO.create((ProfessionalTraining) entity);
+					resource = professionalTrainingDAO.create((ProfessionalTraining) resource);
 				}
 			}
-			return entity;
+			return resource;
 		}
 		else {
 			return null;
@@ -371,8 +371,11 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public UseMode createUseMode(String name) {
-		return useModeDAO.create(new UseModeNode(name));
+	public UseMode createUseMode(String name, Organisation referredOrganisation) {
+		UseMode entity = new UseModeNode(name);
+		entity.setReferredOrganisation(referredOrganisation);
+		referredOrganisation.getUseModes().add(entity);
+		return useModeDAO.create(entity);
 	}
 
 	@Override
@@ -396,32 +399,35 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Boolean associateUseModeAndOrganisation(Long idUseMode, Long idOrganisation) {
-		UseMode useMode = retrieveUseMode(idUseMode, true);
-		Organisation referredOrganisation = organisationsService.retrieveOrganisation(idOrganisation, true);
+	public Boolean associateUseModeAndResource(UseMode useMode, Resource resource) {
+		if ((useMode != null) && (resource != null)) {
+			useMode.getResources().add(resource);
+			resource.getUseModes().add(useMode);
 
-		useMode.getReferredOrganisations().add(referredOrganisation);
-		referredOrganisation.getUseModes().add(useMode);
-		
-		useMode = updateUseMode(useMode);
-		referredOrganisation = organisationsService.updateOrganisation(referredOrganisation);
+			useMode = updateUseMode(useMode);
+			resource = updateResource(resource);
 
-		return ((useMode.getReferredOrganisations().contains(referredOrganisation)) && (referredOrganisation.getUseModes().contains(useMode)));
+			return ((useMode.getResources().contains(resource)) && (resource.getUseModes().contains(useMode)));
+		}
+		else {
+			return false;
+		}
 	}
 
 	@Override
-	public Boolean dissociateUseModeAndOrganisation(Long idUseMode, Long idOrganisation) {
-		UseMode useMode = retrieveUseMode(idUseMode, true);
-		Organisation referredOrganisation = organisationsService.retrieveOrganisation(idOrganisation, true);
-
-		useMode.getReferredOrganisations().remove(referredOrganisation);
-		referredOrganisation.getUseModes().remove(useMode);
-
-		useMode = updateUseMode(useMode);
-		referredOrganisation = organisationsService.updateOrganisation(referredOrganisation);
-
-		return ((!useMode.getReferredOrganisations().contains(referredOrganisation)) && (!referredOrganisation.getUseModes().contains(useMode)));
+	public Boolean dissociateUseModeAndResource(UseMode useMode, Resource resource) {
+		if ((useMode != null) && (resource != null)) {
+			useMode.getResources().remove(resource);
+			resource.getUseModes().remove(useMode);
+	
+			useMode = updateUseMode(useMode);
+			resource = updateResource(resource);
+	
+			return ((!useMode.getResources().contains(resource)) && (!resource.getUseModes().contains(useMode)));
+		}
+		else {
+			return false;
+		}
 	}
-	
-	
+
 }

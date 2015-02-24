@@ -19,6 +19,7 @@
 package eu.ueb.acem.domain.beans.jaune.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +29,7 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
@@ -52,8 +54,11 @@ public class UseModeNode extends AbstractNode implements UseMode {
 
 	private String description;
 
+	@RelatedTo(elementClass = ResourceNode.class, type = "resourceHasUseMode", direction = INCOMING)
+	private Set<Resource> resources = new HashSet<Resource>(0);
+	
 	@RelatedTo(elementClass = OrganisationNode.class, type = "refersToOrganisation", direction = OUTGOING)
-	private Set<Organisation> referredOrganisations = new HashSet<Organisation>(0);
+	private Organisation referredOrganisation;
 
 	public UseModeNode() {
 	}
@@ -83,13 +88,23 @@ public class UseModeNode extends AbstractNode implements UseMode {
 	}
 
 	@Override
-	public Set<Organisation> getReferredOrganisations() {
-		return referredOrganisations;
+	public Set<Resource> getResources() {
+		return resources;
 	}
 
 	@Override
-	public void setReferredOrganisations(Set<Organisation> organisations) {
-		this.referredOrganisations = organisations;
+	public void setResources(Set<Resource> resources) {
+		this.resources = resources;
 	}
-	
+
+	@Override
+	public Organisation getReferredOrganisation() {
+		return referredOrganisation;
+	}
+
+	@Override
+	public void setReferredOrganisation(Organisation organisation) {
+		this.referredOrganisation = organisation;
+	}
+
 }

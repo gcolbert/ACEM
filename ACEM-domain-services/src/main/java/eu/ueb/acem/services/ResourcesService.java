@@ -24,6 +24,7 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
@@ -46,7 +47,7 @@ public interface ResourcesService {
 
 	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(Long id);
 
-	Resource createResource(Long toolCategoryId, Long ownerOrganisationId, Long supportOrganisationId, String resourceType, String name, String iconFileName);
+	Resource createResource(ResourceCategory category, Organisation ownerOrganisation, Organisation supportOrganisation, String resourceType, String name, String iconFileName);
 
 	Resource updateResource(Resource resource);
 
@@ -66,7 +67,7 @@ public interface ResourcesService {
 
 	void saveResourceName(String resourceType, Long id, String label);
 
-	UseMode createUseMode(String name);
+	UseMode createUseMode(String name, Organisation referredOrganisation);
 
 	UseMode updateUseMode(UseMode resource);
 
@@ -74,8 +75,8 @@ public interface ResourcesService {
 
 	Boolean deleteUseMode(Long id);
 
-	Boolean associateUseModeAndOrganisation(Long idUseMode, Long idOrganisation);
-
-	Boolean dissociateUseModeAndOrganisation(Long idUseMode, Long idOrganisation);
+	Boolean associateUseModeAndResource(UseMode useMode, Resource resource);
+	
+	Boolean dissociateUseModeAndResource(UseMode useMode, Resource resource);
 
 }

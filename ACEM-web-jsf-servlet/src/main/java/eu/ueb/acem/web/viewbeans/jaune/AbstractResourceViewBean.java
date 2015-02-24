@@ -78,7 +78,9 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 	@Override
 	public void setName(String name) {
 		this.name = name;
-		this.getDomainBean().setName(name);
+		if (getDomainBean() != null) {
+			this.getDomainBean().setName(name);
+		}
 	}
 
 	@Override
@@ -89,7 +91,9 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 	@Override
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
-		getDomainBean().setIconFileName(iconFileName);
+		if (getDomainBean() != null) {
+			getDomainBean().setIconFileName(iconFileName);
+		}
 	}
 
 	@Override
@@ -100,7 +104,9 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 	@Override
 	public void setDescription(String description) {
 		this.description = description;
-		getDomainBean().setName(description);
+		if (getDomainBean() != null) {
+			getDomainBean().setName(description);
+		}
 	}
 
 	@Override
@@ -111,7 +117,9 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 	@Override
 	public void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean) {
 		this.organisationPossessingResourceViewBean = organisationViewBean;
-		getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
+		if (getDomainBean() != null) {
+			getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
+		}
 	}
 
 	@Override
@@ -122,7 +130,9 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 	@Override
 	public void setOrganisationSupportingResourceViewBean(OrganisationViewBean organisationViewBean) {
 		this.organisationSupportingResourceViewBean = organisationViewBean;
-		getDomainBean().setOrganisationSupportingResource(organisationViewBean.getDomainBean());
+		if (getDomainBean() != null) {
+			getDomainBean().setOrganisationSupportingResource(organisationViewBean.getDomainBean());
+		}
 	}
 
 	@Override

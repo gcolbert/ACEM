@@ -67,6 +67,7 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 		neo4jOperations.fetch(entity.getCategories());
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+		neo4jOperations.fetch(entity.getOrganisationSupportingResource());
 		neo4jOperations.fetch(entity.getUseModes());
 	}
 

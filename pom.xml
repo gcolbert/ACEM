@@ -8,15 +8,15 @@
 	<packaging>pom</packaging>
 	<description>Atelier de Création d'Enseignement Multimodal</description>
 	<properties>
-		<cglib-version>2.2.2</cglib-version>
+		<cglib-version>3.1</cglib-version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
-		<commons-logging.version>1.1.3</commons-logging.version>
+		<commons-logging.version>1.2</commons-logging.version>
 		<java.version>1.7</java.version>
 		<javax.validation-version>1.1.0.Final</javax.validation-version>
 		<javax.inject-version>1</javax.inject-version>
 		<junit-version>4.11</junit-version>
 		<!-- TODO 1 Pick the version of jetty you want. -->
-		<jetty.version>9.2.3.v20140905</jetty.version>
+		<jetty.version>9.2.8.v20150217</jetty.version>
 		<log4j.version>2.1</log4j.version>
 		<maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
 		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
@@ -24,11 +24,11 @@
 		<maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
 		<slf4j.version>1.7.10</slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.1.4.RELEASE</spring.version>
+		<spring.version>4.1.5.RELEASE</spring.version>
 		<spring-security.version>3.2.5.RELEASE</spring-security.version>
 	</properties>
+	<!-- TODO 2 Configure repo2.maven.org as a repository. -->
 	<repositories>
-		<!-- TODO 2 Configure repo2.maven.org as a repository. -->
 		<repository>
 			<id>repo2_maven_org</id>
 			<url>http://repo2.maven.org/maven2</url>
@@ -46,6 +46,12 @@
 		<defaultGoal>install</defaultGoal>
 		<pluginManagement>
 			<plugins>
+				<!-- TODO 4 Enable the jetty-maven-plugin plugin. -->
+				<plugin>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>${jetty.version}</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
@@ -65,6 +71,7 @@
 						<target>${java.version}</target>
 					</configuration>
 				</plugin>
+				<!-- 
 				<plugin>
 					<artifactId>maven-eclipse-plugin</artifactId>
 					<version>${maven-eclipse-plugin.version}</version>
@@ -90,11 +97,7 @@
 						<wtpversion>2.0</wtpversion>
 					</configuration>
 				</plugin>
-				<plugin>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-maven-plugin</artifactId>
-					<version>${jetty.version}</version>
-				</plugin>
+				 -->
 			</plugins>
 		</pluginManagement>
 	</build>

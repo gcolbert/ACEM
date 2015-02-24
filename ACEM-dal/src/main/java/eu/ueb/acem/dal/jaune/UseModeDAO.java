@@ -56,7 +56,8 @@ public class UseModeDAO extends AbstractDAO<UseMode, UseModeNode> {
 
 	@Override
 	protected final void initializeCollections(UseMode entity) {
-		neo4jOperations.fetch(entity.getReferredOrganisations());
+		neo4jOperations.fetch(entity.getReferredOrganisation());
+		neo4jOperations.fetch(entity.getResources());
 	}
 
 }

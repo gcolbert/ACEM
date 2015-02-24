@@ -17,6 +17,7 @@
 		<javax.servlet.version>3.0.1</javax.servlet.version>
 		<apache-myfaces.version>2.2.5</apache-myfaces.version>
 		<joda-time.version>2.3</joda-time.version>
+		<maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
 		<maven-war-plugin.version>2.5</maven-war-plugin.version>
 		<ocpsoft-rewrite.version>2.0.12.Final</ocpsoft-rewrite.version>
 		<omnifaces.version>1.8.1</omnifaces.version>
@@ -29,6 +30,7 @@
 		<log.output>stdout</log.output>
 		<log.file>/tmp/${project.parent.artifactId}.log</log.file>
 		<cache.path>/tmp/${project.parent.artifactId}/cache</cache.path>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> <!-- Encoding of FailSafe plugin reports -->
 	</properties>
 	<repositories>
 		<repository>
@@ -215,6 +217,12 @@
 			<version>${junit-version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-failsafe-plugin</artifactId>
+			<version>${maven-failsafe-plugin.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>install</defaultGoal>
@@ -232,6 +240,19 @@
 					<warName>${project.parent.artifactId}</warName>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-failsafe-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>			
 		</plugins>
 	</build>
 </project>

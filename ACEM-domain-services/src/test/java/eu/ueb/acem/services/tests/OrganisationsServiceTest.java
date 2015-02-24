@@ -1,3 +1,21 @@
+/**
+ *     Copyright Grégoire COLBERT 2013
+ * 
+ *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
+ * 
+ *     ACEM is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     ACEM is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
+ */
 package eu.ueb.acem.services.tests;
 
 import javax.inject.Inject;
@@ -17,6 +35,7 @@ import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
@@ -159,40 +178,21 @@ public class OrganisationsServiceTest extends TestCase {
 	}
 
 	/**
-	 * AssociateOrganisationWithUseMode
+	 * AssociateOrganisationAndUseMode
 	 */
 	@Test
 	@Transactional
 	@Rollback(true)
 	public final void t07_TestAssociateOrganisationAndUseMode() {
-		AdministrativeDepartment administrativeDepartment1 = organisationsService.createAdministrativeDepartment("my administrativeDepartment", "ad", null);
-		UseMode useMode1 = resourcesService.createUseMode("this is a use mode referring an administrative department");
-		assertTrue("The association of the Organisation and UseMode failed", resourcesService.associateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
+		Organisation referredOrganisation = organisationsService.createAdministrativeDepartment("my administrativeDepartment", "ad", null);
+		UseMode useMode = resourcesService.createUseMode("this is a use mode referring an organisation", referredOrganisation);
+		assertTrue("The use mode must reference the organisation", useMode.getReferredOrganisation().equals(referredOrganisation));
+		assertTrue("The organisation must reference the use mode", referredOrganisation.getUseModes().contains(useMode));
 
-		AdministrativeDepartment administrativeDepartment1bis = organisationsService.retrieveAdministrativeDepartment(administrativeDepartment1.getId(), true);
-		UseMode useMode1bis = resourcesService.retrieveUseMode(useMode1.getId(), true);
+		AdministrativeDepartment administrativeDepartment1bis = organisationsService.retrieveAdministrativeDepartment(referredOrganisation.getId(), true);
+		UseMode useMode1bis = resourcesService.retrieveUseMode(useMode.getId(), true);
 		assertTrue("The administrative department doesn't reference the use mode.", administrativeDepartment1bis.getUseModes().contains(useMode1bis));
-		assertTrue("The use mode doesn't reference the administrative department.", useMode1bis.getReferredOrganisations().contains(administrativeDepartment1bis));
+		assertTrue("The use mode doesn't reference the administrative department.", useMode1bis.getReferredOrganisation().equals(administrativeDepartment1bis));
 	}
 
-	/**
-	 * DissociateOrganisationWithUseMode
-	 */
-	@Test
-	@Transactional
-	@Rollback(true)
-	public final void t08_TestDissociateOrganisationAndUseMode() {
-		AdministrativeDepartment administrativeDepartment1 = organisationsService.createAdministrativeDepartment("my administrativeDepartment", "ad", null);
-		UseMode useMode1 = resourcesService.createUseMode("this is a use mode referring an administrative department");
-
-		assertTrue("The association of the administrative department and use mode failed", resourcesService.associateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
-
-		assertTrue("The dissociation of the administrative department and use mode failed", resourcesService.dissociateUseModeAndOrganisation(useMode1.getId(), administrativeDepartment1.getId()));
-
-		AdministrativeDepartment administrativeDepartment1bis = organisationsService.retrieveAdministrativeDepartment(administrativeDepartment1.getId(), true);
-		UseMode useMode1bis = resourcesService.retrieveUseMode(useMode1.getId(), true);
-		assertFalse("The administrative department still references the use mode.",administrativeDepartment1bis.getUseModes().contains(useMode1bis));
-		assertFalse("The use mode still references the administrative department.",useMode1bis.getReferredOrganisations().contains(administrativeDepartment1bis));
-	}
-	
 }

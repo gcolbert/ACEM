@@ -31,17 +31,21 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 public interface UseMode extends Serializable {
 
 	Long getId();
-	
+
 	String getName();
 
 	void setName(String name);
-	
+
 	String getDescription();
-	
+
 	void setDescription(String description);
 
-	Set<Organisation> getReferredOrganisations();
+	Organisation getReferredOrganisation();
 
-	void setReferredOrganisations(Set<Organisation> organisations);
-	
+	void setReferredOrganisation(Organisation organisation);
+
+	Set<Resource> getResources();
+
+	void setResources(Set<Resource> resource);
+
 }

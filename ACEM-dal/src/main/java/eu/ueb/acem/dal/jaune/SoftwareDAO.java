@@ -65,6 +65,7 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 		neo4jOperations.fetch(entity.getCategories());
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+		neo4jOperations.fetch(entity.getOrganisationSupportingResource());
 		neo4jOperations.fetch(entity.getUseModes());
 		neo4jOperations.fetch(entity.getDocumentations());
 	}

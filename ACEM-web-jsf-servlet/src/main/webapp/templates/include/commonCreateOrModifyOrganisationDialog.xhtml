@@ -15,7 +15,7 @@
 		header="#{dialogHeader}"
 		widgetVar="#{widgetName}" modal="true" height="auto">
 		<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
-		
+
 		<p:outputPanel rendered="#{associateBean.objectEdited != null}">
 			<h3 class="section-title">
 				<p:outputLabel for="name" value="#{msg['ORGANISATION.NAME_LABEL']}" />

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<!-- Controller associated with this view -->
+	<ui:param name="associateBean" value="#{associateBean}"/>
+	<ui:param name="formToUpdate" value="#{formToUpdate}"/>
+	<ui:param name="dialogHeader" value="#{dialogHeader}"/>
+	<ui:param name="widgetName" value="#{widgetName}"/>
+
+	<!-- ********** CREATE/MODIFY RESOURCE ********** -->
+	<p:dialog id="idDialogCreateOrModifyResource"
+		header="#{dialogHeader}"
+		widgetVar="#{widgetName}" modal="true"
+		height="auto">
+		<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
+
+		<p:outputPanel rendered="#{associateBean.objectEditedResource != null}">
+
+			<h3 class="section-title">
+				<h:outputLabel for="categoryForTheExistingResource"
+					value="#{msg['RESOURCE.CATEGORY_LABEL']}" />
+			</h3>
+			<h:outputText id="categoryForTheExistingResource"
+				value="#{associateBean.selectedToolCategoryViewBean.name}" />
+
+			<h3 class="section-title">
+				<h:outputLabel for="type" value="#{msg['RESOURCE.TYPE_LABEL']}" />
+			</h3>
+			<h:outputText id="type" value="#{msg[associateBean.objectEditedResource.type]}"/>
+
+			<h3 class="section-title">
+				<p:outputLabel for="name" value="#{msg['RESOURCE.NAME_LABEL']}" />
+			</h3>
+			<p:inputTextarea id="name" styleClass="inputTextareaForDialog"
+				required="true" requiredMessage="#{msg['REQUIRED_FIELD']}" rows="2"
+				cols="80" value="#{associateBean.objectEditedResource.name}" />
+		</p:outputPanel>
+
+		<h3 class="section-title">
+			<p:outputLabel for="icon" value="#{msg['RESOURCE.ICON_LABEL']}"/>
+		</h3>
+		<p:outputPanel id="iconOutputPanel">
+			<p:panel id="icon" styleClass="iconPanel">
+				<p:graphicImage
+					rendered="#{(not empty associateBean.objectEditedResource.iconFileName) and (empty associateBean.temporaryFilePath)}"
+					alt="#{associateBean.objectEditedResource.name}"
+					cache="true" width="200" value="#{imagesController.image}">
+					<f:param name="imageFileName"
+						value="#{associateBean.objectEditedResource.iconFileName}" />
+				</p:graphicImage>
+				<p:graphicImage
+					rendered="#{not empty associateBean.temporaryFilePath}"
+					alt="#{associateBean.commonUploadOneDialog.fileUploadedName}"
+					cache="true" width="200" value="#{imagesController.image}">
+					<f:param name="imageFilePath"
+						value="#{associateBean.temporaryFilePath}" />
+				</p:graphicImage>
+			</p:panel>
+			<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+				icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+				process="@this" />
+			<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+				disabled="#{(empty associateBean.objectEditedResource.iconFileName) and (empty associateBean.temporaryFilePath)}"
+				icon="ui-icon-trash" action="#{associateBean.removeObjectEditedResourceIcon}"
+				update="@this icon"
+				process="@this" />
+
+			<h3 class="section-title">
+				<p:outputLabel for="ownerOrganisation" value="#{msg['RESOURCE.OWNER_ORGANISATION_LABEL']}"/>
+			</h3>
+			<p:selectOneMenu id="ownerOrganisation"
+				required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
+				editable="false" immediate="true"
+				value="#{associateBean.objectEditedResource.organisationPossessingResourceViewBean}"
+				converter="OrganisationConverter">
+				<f:selectItem
+					itemLabel="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_OWNER_ORGANISATION']}"
+					itemValue="" itemDisabled="true" noSelectionOption="true" />
+				<f:selectItems
+					value="#{associateBean.allOrganisationViewBeans}"
+					var="organisationViewBean"
+					itemLabel="#{organisationViewBean.name}"
+					itemValue="#{organisationViewBean}" />
+			</p:selectOneMenu>
+
+			<h3 class="section-title">
+				<p:outputLabel for="supportOrganisation"
+					value="#{msg['RESOURCE.SUPPORT_ORGANISATION_LABEL']}" />
+			</h3>
+			<p:selectOneMenu id="supportOrganisation"
+				required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
+				editable="false" immediate="true"
+				value="#{associateBean.objectEditedResource.organisationSupportingResourceViewBean}"
+				converter="OrganisationConverter">
+				<f:selectItem
+					itemLabel="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_ORGANISATION']}"
+					itemValue="" itemDisabled="true" noSelectionOption="true" />
+				<f:selectItems
+					value="#{associateBean.allOrganisationViewBeans}"
+					var="organisationViewBean"
+					itemLabel="#{organisationViewBean.name}"
+					itemValue="#{organisationViewBean}" />
+			</p:selectOneMenu>
+
+
+			<h3 class="section-title">
+				<p:outputLabel for="useModes"
+					value="#{msg['RESOURCE.USE_MODES_LABEL']}" />
+			</h3>
+			<p:dataTable id="useModes"
+				value="#{associateBean.objectEditedResource.useModeViewBeans}"
+				emptyMessage="#{msg['APPLICATION.MESSAGE.NO_RECORD']}"
+				var="useMode">
+				<p:column
+					headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.USE_MODES']}">
+					<h:outputText value="#{useMode.name}" />
+				</p:column>
+			</p:dataTable>
+
+		</p:outputPanel>
+
+		<p:commandButton styleClass="dialogValidationButton"
+			value="#{msg['APPLICATION.BUTTON.SAVE']}"
+			icon="ui-icon-check"
+			action="#{associateBean.onSaveResource}"
+			process="@form"
+			validateClient="true"
+			update="${formToUpdate}:toolsDataTable :contentForm:messagesDisplayer"
+			oncomplete="PF('#{widgetName}').hide();" />
+
+<!-- 
+		<h3 class="section-title">
+			<p:outputLabel for="description" value="#{msg['TOOL_CATEGORY.DESCRIPTION_LABEL']}" />
+		</h3>
+		<p:editor id="description"
+			value="#{associateBean.objectEdited.description}" height="300"
+			controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo link unlink" />
+
+		<h3 class="section-title">
+			<p:outputLabel for="icon"
+				value="#{msg['TOOL_CATEGORY.ICON_LABEL']}" />
+		</h3>
+		<p:outputPanel id="iconOutputPanel">
+			<p:panel id="icon" styleClass="iconPanel">
+				<p:graphicImage
+					rendered="#{(not empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
+					alt="#{associateBean.objectEdited.name}"
+					cache="true" width="200" value="#{imagesController.image}">
+					<f:param name="imageFileName"
+						value="#{associateBean.objectEdited.iconFileName}" />
+				</p:graphicImage>
+				<p:graphicImage
+					rendered="#{not empty associateBean.temporaryFilePath}"
+					alt="#{associateBean.commonUploadOneDialog.fileUploadedName}"
+					cache="true" width="200" value="#{imagesController.image}">
+					<f:param name="imageFilePath"
+						value="#{associateBean.temporaryFilePath}" />
+				</p:graphicImage>
+			</p:panel>
+			<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+				icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+				process="@this" />
+			<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
+				disabled="#{(empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
+				icon="ui-icon-trash" action="#{associateBean.removeObjectEditedIcon}"
+				update="@this icon"
+				process="@this" />
+		</p:outputPanel>
+
+		<p:commandButton styleClass="dialogValidationButton"
+			value="#{msg['APPLICATION.BUTTON.SAVE']}"
+			icon="ui-icon-check" validateClient="true"
+			action="#{associateBean.onSaveToolCategory}"
+			update="#{formToUpdate}:accordionPanelForToolCategories :contentForm:messagesDisplayer"
+			process="@form"
+			oncomplete="PF('#{widgetName}').hide();">
+		</p:commandButton>
+ -->
+	</p:dialog>
+</ui:composition>

@@ -65,6 +65,7 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 		neo4jOperations.fetch(entity.getCategories());
 		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+		neo4jOperations.fetch(entity.getOrganisationSupportingResource());
 		neo4jOperations.fetch(entity.getUseModes());
 		neo4jOperations.fetch(entity.getStorageLocations());
 	}
