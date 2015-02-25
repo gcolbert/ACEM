@@ -31,6 +31,7 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  */
 public interface ResourceViewBean extends Pickable, Comparable<ResourceViewBean> {
 
+	@Override
 	Long getId();
 
 	String getType();

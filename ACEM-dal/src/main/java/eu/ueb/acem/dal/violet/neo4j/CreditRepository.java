@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.violet.neo4j.CreditNode;
  */
 public interface CreditRepository extends GenericRepository<CreditNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Credit) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Credit) WHERE n.name=({name}) RETURN n")
 	Iterable<CreditNode> findByName(@Param("name") String name);
 

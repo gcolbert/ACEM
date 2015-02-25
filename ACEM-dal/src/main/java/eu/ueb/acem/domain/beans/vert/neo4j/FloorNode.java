@@ -19,6 +19,10 @@
 package eu.ueb.acem.domain.beans.vert.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -27,6 +31,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.vert.Building;
 import eu.ueb.acem.domain.beans.vert.Floor;
+import eu.ueb.acem.domain.beans.vert.Room;
 
 /**
  * @author Grégoire Colbert
@@ -50,9 +55,12 @@ public class FloorNode extends PhysicalSpaceNode implements Floor {
 	@RelatedTo(elementClass = BuildingNode.class, type = "isPartOfBuilding", direction = OUTGOING)
 	private Building building;
 
+	@RelatedTo(elementClass = RoomNode.class, type = "isPartOfFloor", direction = INCOMING)
+	private Set<Room> rooms = new HashSet<Room>(0);
+
 	public FloorNode() {
 	}
-	
+
 	public FloorNode(Integer number) { 
 		this.number = number;
 	}
@@ -66,7 +74,7 @@ public class FloorNode extends PhysicalSpaceNode implements Floor {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public Integer getNumber() {
 		return number;
@@ -80,6 +88,16 @@ public class FloorNode extends PhysicalSpaceNode implements Floor {
 	@Override
 	public Building getBuilding() {
 		return building;
+	}
+
+	@Override
+	public Set<Room> getRooms() {
+		return rooms;
+	}
+
+	@Override
+	public void setRooms(Set<Room> rooms) {
+		this.rooms = rooms;
 	}
 
 }

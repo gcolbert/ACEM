@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.vert.neo4j.FloorNode;
  */
 public interface FloorRepository extends GenericRepository<FloorNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Floor) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Floor) WHERE n.name=({name}) RETURN n")
 	Iterable<FloorNode> findByName(@Param("name") String name);
 

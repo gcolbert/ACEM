@@ -32,7 +32,7 @@ import eu.ueb.acem.domain.beans.violet.Class;
 public interface Teacher extends Person {
 
 	Set<ResourceCategory> getFavoriteToolCategories();
-	
+
 	void setFavoriteToolCategories(Set<ResourceCategory> favoriteToolCategories);
 
 	Set<Class> getClasses();

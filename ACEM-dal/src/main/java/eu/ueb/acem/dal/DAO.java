@@ -28,7 +28,7 @@ import java.util.Collection;
 public interface DAO<ID, E> {
 
 	Boolean exists(ID id);
-	
+
 	E create(E entity);
 
 	E retrieveById(ID id);

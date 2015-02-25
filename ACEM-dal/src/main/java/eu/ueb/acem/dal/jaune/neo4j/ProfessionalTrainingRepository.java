@@ -34,9 +34,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  */
 public interface ProfessionalTrainingRepository extends GenericRepository<ProfessionalTrainingNode> {
 
+	@Override
 	@Query(value = "MATCH (n:ProfessionalTraining) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:ProfessionalTraining) WHERE n.name=({name}) RETURN n")
 	Iterable<ProfessionalTrainingNode> findByName(@Param("name") String name);
 

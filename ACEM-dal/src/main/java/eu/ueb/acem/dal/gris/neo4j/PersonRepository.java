@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
  */
 public interface PersonRepository extends GenericRepository<PersonNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Person) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Person) WHERE n.name=({name}) RETURN n")
 	Iterable<PersonNode> findByName(@Param("name") String name);
 

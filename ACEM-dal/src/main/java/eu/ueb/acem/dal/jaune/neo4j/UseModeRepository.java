@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
  */
 public interface UseModeRepository extends GenericRepository<UseModeNode> {
 
+	@Override
 	@Query(value = "MATCH (n:UseMode) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:UseMode) WHERE n.name=({name}) RETURN n")
 	Iterable<UseModeNode> findByName(@Param("name") String name);
 

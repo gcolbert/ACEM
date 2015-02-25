@@ -98,8 +98,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Person updatePerson(Person person) {
-		Person updatedEntity = personDAO.update(person);
-		return updatedEntity;
+		return personDAO.update(person);
 	}
 
 	@Override
@@ -107,7 +106,7 @@ public class UsersServiceImpl implements UsersService {
 		if (personDAO.exists(id)) {
 			personDAO.delete(personDAO.retrieveById(id));
 		}
-		return (!personDAO.exists(id));
+		return !personDAO.exists(id);
 	}
 
 	@Override
@@ -122,8 +121,7 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public Teacher updateTeacher(Teacher teacher) {
-		Teacher updatedEntity = teacherDAO.update(teacher);
-		return updatedEntity;
+		return teacherDAO.update(teacher);
 	}
 
 	@Override
@@ -131,7 +129,7 @@ public class UsersServiceImpl implements UsersService {
 		if (teacherDAO.exists(id)) {
 			teacherDAO.delete(teacherDAO.retrieveById(id));
 		}
-		return (!teacherDAO.exists(id));
+		return !teacherDAO.exists(id);
 	}
 
 	@Override

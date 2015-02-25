@@ -102,7 +102,7 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	 * @see eu.ueb.acem.web.controllers.AbstractDomainAwareBean#getCurrentUser()
 	 */
 	@Override
-	public Person getCurrentUser() throws Exception {
+	public Person getCurrentUser() {
 		return sessionController.getCurrentUser();
 	}
 

@@ -57,7 +57,7 @@ public class MyServicesController extends AbstractContextAwareController impleme
 
 	@Override
 	public String getPageTitle() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(msgs.getMessage("MENU.MY_SERVICES",null,getCurrentUserLocale()));
 		if (getSelectedServiceViewBean() != null) {
 			sb.append(" - ");

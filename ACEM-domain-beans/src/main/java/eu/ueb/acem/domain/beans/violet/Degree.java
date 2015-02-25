@@ -29,13 +29,13 @@ import java.util.Set;
 public interface Degree extends Serializable, Comparable<Degree> {
 
 	Long getId();
-	
+
 	String getName();
 
 	void setName(String name);
 
 	Set<Credit> getCredits();
-	
+
 	void setCredits(Set<Credit> credits);
 
 }

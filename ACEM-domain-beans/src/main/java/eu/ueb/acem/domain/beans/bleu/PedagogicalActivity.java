@@ -37,9 +37,9 @@ public interface PedagogicalActivity extends Serializable, Comparable<Pedagogica
 	void setName(String name);
 
 	Long getPositionInScenario();
-	
+
 	void setPositionInScenario(Long positionInScenario);
-	
+
 	String getObjective();
 
 	void setObjective(String objectif);
@@ -59,5 +59,5 @@ public interface PedagogicalActivity extends Serializable, Comparable<Pedagogica
 	Set<ResourceCategory> getResourceCategories();
 
 	void setResourceCategories(Set<ResourceCategory> resourceCategories);
-	
+
 }

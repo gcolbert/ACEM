@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.vert.neo4j.BuildingNode;
  */
 public interface BuildingRepository extends GenericRepository<BuildingNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Building) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Building) WHERE n.name=({name}) RETURN n")
 	Iterable<BuildingNode> findByName(@Param("name") String name);
 

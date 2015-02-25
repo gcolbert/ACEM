@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.vert.neo4j.RoomNode;
  */
 public interface RoomRepository extends GenericRepository<RoomNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Room) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Room) WHERE n.name=({name}) RETURN n")
 	Iterable<RoomNode> findByName(@Param("name") String name);
 

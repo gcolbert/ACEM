@@ -24,8 +24,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -52,9 +50,6 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -1233433427413840564L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(PedagogicalScenarioNode.class);
 
 	private Long creationDate;
 
@@ -135,35 +130,6 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	public void setEvaluationModes(String evaluationModes) {
 		this.evaluationModes = evaluationModes;
 	}
-
-//	@Override
-//	public void addPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-//		if (!pedagogicalActivities.contains(pedagogicalActivity)) {
-//			pedagogicalActivities.add(pedagogicalActivity);
-//			pedagogicalActivity.setPositionInScenario(new Long(this.pedagogicalActivities.size() + 1));
-//		}
-//		if (!pedagogicalActivity.getScenarios().contains(this)) {
-//			pedagogicalActivity.addScenario(this);
-//		}
-//		renumberPedagogicalActivities();
-//	}
-//
-//	@Override
-//	public void removePedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-//		pedagogicalActivities.remove(pedagogicalActivity);
-//		pedagogicalActivity.removeScenario(this);
-//		renumberPedagogicalActivities();
-//	}
-//
-//	private void renumberPedagogicalActivities() {
-//		Long i = new Long(1);
-//		List<PedagogicalActivity> list = new ArrayList<PedagogicalActivity>(pedagogicalActivities);
-//		Collections.sort(list);
-//		for (PedagogicalActivity pedagogicalActivity : list) {
-//			pedagogicalActivity.setPositionInScenario(i);
-//			i++;
-//		}
-//	}
 
 	@Override
 	public Set<PedagogicalActivity> getPedagogicalActivities() {

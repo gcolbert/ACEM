@@ -20,8 +20,6 @@ package eu.ueb.acem.dal.violet;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
@@ -42,9 +40,6 @@ public class CreditDAO extends AbstractDAO<Credit, CreditNode> {
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -7183456920407343870L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(CreditDAO.class);
 
 	@Inject
 	private CreditRepository repository;

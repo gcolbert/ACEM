@@ -47,12 +47,13 @@ public class LdapUser implements Serializable, Comparable<LdapUser> {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
-		this.id=id;
+		this.id = id;
 	}
-	
+
 	/**
 	 * @return the firstName
 	 */
@@ -97,26 +98,28 @@ public class LdapUser implements Serializable, Comparable<LdapUser> {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+	@Override
 	public boolean equals(Object obj) {
 		return EqualsBuilder.reflectionEquals(this, obj);
 	}
 
+	@Override
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
+	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this,
-				ToStringStyle.MULTI_LINE_STYLE);
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
 	}
-	
+
 	/**
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-    public int compareTo(LdapUser other){
-		 return this.getId().compareTo(other.getId());
-    }	
-	
+	public int compareTo(LdapUser other) {
+		return this.getId().compareTo(other.getId());
+	}
+
 }

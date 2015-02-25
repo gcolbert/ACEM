@@ -24,8 +24,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
@@ -53,9 +51,6 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	 */
 	private static final long serialVersionUID = -4961037643458063514L;
 
-	@SuppressWarnings("unused")
-	private static Logger logger = LoggerFactory.getLogger(OrganisationNode.class);
-
 	private String shortname;
 
 	private String iconFileName;
@@ -73,7 +68,7 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 
 	@RelatedTo(elementClass = UseModeNode.class, type = "referredOrganisations", direction = INCOMING)
 	private Set<UseMode> referringUseModes = new HashSet<UseMode>(0);
-	
+
 	@RelatedTo(elementClass = PhysicalSpaceNode.class, type = "occupies", direction = OUTGOING)
 	private Set<PhysicalSpace> occupiedPhysicalSpaces = new HashSet<PhysicalSpace>(0);
 

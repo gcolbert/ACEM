@@ -6,6 +6,7 @@ public abstract class AbstractViewBean implements Pickable {
 
 	private Long id;
 
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -19,7 +20,6 @@ public abstract class AbstractViewBean implements Pickable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		// logger.debug("hashCode id={}, name={}, hashCode={}", getId(), getName(), result);
 		return result;
 	}
 
@@ -32,7 +32,6 @@ public abstract class AbstractViewBean implements Pickable {
 			return false;
 		}
 		AbstractViewBean other = (AbstractViewBean) obj;
-		// logger.debug("equals this.id={}, other.id={}",getId(),other.getId());
 		if (!getId().equals(other.getId())) {
 			return false;
 		}

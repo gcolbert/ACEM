@@ -20,8 +20,6 @@ package eu.ueb.acem.dal.violet;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
@@ -43,11 +41,8 @@ public class ClassDAO extends AbstractDAO<Class, ClassNode> {
 	 */
 	private static final long serialVersionUID = 3463144134744279313L;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ClassDAO.class);
-
 	@Inject
-	private ClassRepository repository;
+	private transient ClassRepository repository;
 
 	@Override
 	protected final GenericRepository<ClassNode> getRepository() {

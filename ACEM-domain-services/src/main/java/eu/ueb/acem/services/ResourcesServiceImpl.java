@@ -285,8 +285,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	@Override
 	public ResourceCategory updateResourceCategory(ResourceCategory resourceCategory) {
-		ResourceCategory updatedEntity = resourceCategoryDAO.update(resourceCategory);
-		return updatedEntity;
+		return resourceCategoryDAO.update(resourceCategory);
 	}
 
 	@Override
@@ -320,7 +319,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Resource> retrieveSoftwaresWithCategory(ResourceCategory category) {
+	public Collection<Software> retrieveSoftwaresWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return softwareDAO.retrieveAllWithCategory(category);
 		}
@@ -330,7 +329,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Resource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category) {
+	public Collection<SoftwareDocumentation> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return softwareDocumentationDAO.retrieveAllWithCategory(category);
 		}
@@ -340,7 +339,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Resource> retrieveEquipmentWithCategory(ResourceCategory category) {
+	public Collection<Equipment> retrieveEquipmentWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return equipmentDAO.retrieveAllWithCategory(category);
 		}
@@ -350,7 +349,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Resource> retrieveProfessionalTrainingsWithCategory(ResourceCategory category) {
+	public Collection<ProfessionalTraining> retrieveProfessionalTrainingsWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return professionalTrainingDAO.retrieveAllWithCategory(category);
 		}
@@ -360,7 +359,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<? extends Resource> retrievePedagogicalAndDocumentaryResourcesWithCategory(
+	public Collection<PedagogicalAndDocumentaryResource> retrievePedagogicalAndDocumentaryResourcesWithCategory(
 			ResourceCategory category) {
 		if (category != null) {
 			return pedagogicalAndDocumentaryResourcesDAO.retrieveAllWithCategory(category);
@@ -380,8 +379,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	@Override
 	public UseMode updateUseMode(UseMode resource) {
-		UseMode updatedEntity = useModeDAO.update(resource);
-		return updatedEntity;
+		return useModeDAO.update(resource);
 	}
 
 	@Override
@@ -407,7 +405,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 			useMode = updateUseMode(useMode);
 			resource = updateResource(resource);
 
-			return ((useMode.getResources().contains(resource)) && (resource.getUseModes().contains(useMode)));
+			return useMode.getResources().contains(resource) && resource.getUseModes().contains(useMode);
 		}
 		else {
 			return false;
@@ -423,7 +421,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 			useMode = updateUseMode(useMode);
 			resource = updateResource(resource);
 	
-			return ((!useMode.getResources().contains(resource)) && (!resource.getUseModes().contains(useMode)));
+			return !useMode.getResources().contains(resource) && !resource.getUseModes().contains(useMode);
 		}
 		else {
 			return false;

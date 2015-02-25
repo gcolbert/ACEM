@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.violet.neo4j.DegreeNode;
  */
 public interface DegreeRepository extends GenericRepository<DegreeNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Degree) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Degree) WHERE n.name=({name}) RETURN n")
 	Iterable<DegreeNode> findByName(@Param("name") String name);
 

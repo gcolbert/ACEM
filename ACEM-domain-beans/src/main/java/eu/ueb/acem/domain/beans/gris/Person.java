@@ -47,15 +47,15 @@ public interface Person extends Serializable, Comparable<Person> {
 	String getEmail();
 
 	void setEmail(String email);
-	
+
 	String getLanguage();
 
 	void setLanguage(String language);
 
 	Boolean isAdministrator();
-	
+
 	void setAdministrator(Boolean isAdministrator);
 
 	Set<Organisation> getWorksForOrganisations();
-	
+
 }

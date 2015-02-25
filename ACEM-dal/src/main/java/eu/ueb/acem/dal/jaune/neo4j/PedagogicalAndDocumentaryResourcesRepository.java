@@ -35,9 +35,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 public interface PedagogicalAndDocumentaryResourcesRepository extends
 		GenericRepository<PedagogicalAndDocumentaryResourceNode> {
 
+	@Override
 	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) WHERE n.name=({name}) RETURN n")
 	Iterable<PedagogicalAndDocumentaryResourceNode> findByName(@Param("name") String name);
 

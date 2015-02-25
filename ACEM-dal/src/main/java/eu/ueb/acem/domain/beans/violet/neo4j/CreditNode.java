@@ -110,5 +110,5 @@ public class CreditNode extends AbstractNode implements Credit {
 	public int compareTo(Credit o) {
 		return this.getName().compareTo(o.getName());
 	}
-	
+
 }

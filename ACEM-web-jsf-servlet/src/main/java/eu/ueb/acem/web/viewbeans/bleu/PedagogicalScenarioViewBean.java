@@ -156,9 +156,8 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 	}
 
 	public void setCreationDate(Long creationTimeStampInSeconds) {
-		DateTime creationDate = new DateTime(creationTimeStampInSeconds * 1000L);
 		DateTimeFormatter fmt = DateTimeFormat.mediumDateTime();
-		this.creationDate = fmt.print(creationDate);
+		this.creationDate = fmt.print(new DateTime(creationTimeStampInSeconds * 1000L));
 	}
 
 	public String getModificationDate() {
@@ -167,9 +166,8 @@ public class PedagogicalScenarioViewBean extends AbstractViewBean implements Ser
 
 	public void setModificationDate(Long modificationTimeStampInSeconds) {
 		if (modificationTimeStampInSeconds != null) {
-			DateTime modificationDate = new DateTime(modificationTimeStampInSeconds * 1000L);
 			DateTimeFormatter fmt = DateTimeFormat.mediumDateTime();
-			this.modificationDate = fmt.print(modificationDate);
+			this.modificationDate = fmt.print(new DateTime(modificationTimeStampInSeconds * 1000L));
 		}
 	}
 

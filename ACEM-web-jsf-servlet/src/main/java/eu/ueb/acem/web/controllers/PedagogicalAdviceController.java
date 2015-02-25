@@ -44,7 +44,7 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.services.NeedsAndAnswersService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
-import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
+import eu.ueb.acem.web.utils.PedagogicalAdviceTreeGenerator;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -78,10 +78,10 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	private ResourcesService resourcesService;
 
 	@Inject
-	private EditableTreeBean needsAndAnswersTreeBean;
+	private EditableTreeBean pedagogicalAdviceTreeBean;
 
 	@Inject
-	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
+	private PedagogicalAdviceTreeGenerator pedagogicalAdviceTreeGenerator;
 
 	@Inject
 	private PickListBean pickListBean;
@@ -100,19 +100,19 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	private List<ToolCategoryViewBean> toolCategoryViewBeansForSelectedAnswer;
 
 	public String getTreeNodeType_NEED_LEAF() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_LEAF();
+		return pedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_LEAF();
 	}
 
 	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS();
+		return pedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS();
 	}
 
 	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS();
+		return pedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS();
 	}
 
 	public String getTreeNodeType_ANSWER_LEAF() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_ANSWER_LEAF();
+		return pedagogicalAdviceTreeGenerator.getTreeNodeType_ANSWER_LEAF();
 	}
 
 	public PedagogicalAdviceController() {
@@ -125,7 +125,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	@PostConstruct
 	public void init() {
 		logger.info("entering init");
-		needsAndAnswersTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(msgs.getMessage(
+		pedagogicalAdviceTreeBean = pedagogicalAdviceTreeGenerator.createNeedAndAnswersTree(msgs.getMessage(
 				"PEDAGOGICAL_ADVICE.TREE.VISIBLE_ROOT.LABEL", null, getCurrentUserLocale()));
 
 		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
@@ -144,7 +144,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 
 	@Override
 	public String getPageTitle() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(msgs.getMessage("MENU.PEDAGOGICAL_ADVICE", null, getCurrentUserLocale()));
 		if (getSelectedPedagogicalAnswer() != null) {
 			sb.append(" - ");
@@ -158,11 +158,11 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	}
 
 	public EditableTreeBean getNeedsAndAnswersTreeBean() {
-		return needsAndAnswersTreeBean;
+		return pedagogicalAdviceTreeBean;
 	}
 
 	public TreeNode getTreeRoot() {
-		return needsAndAnswersTreeBean.getRoot();
+		return pedagogicalAdviceTreeBean.getRoot();
 	}
 
 	private void setSelectedNode(TreeNode selectedNode) {
@@ -181,7 +181,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	 */
 	public void onNodeExpand(NodeExpandEvent event) {
 		setSelectedNode(event.getTreeNode());
-		needsAndAnswersTreeBean.expandOnlyOneNode(event.getTreeNode());
+		pedagogicalAdviceTreeBean.expandOnlyOneNode(event.getTreeNode());
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	public void onNodeSelect(NodeSelectEvent event) {
 		setSelectedNode(event.getTreeNode());
 
-		needsAndAnswersTreeBean.expandOnlyOneNode(event.getTreeNode());
+		pedagogicalAdviceTreeBean.expandOnlyOneNode(event.getTreeNode());
 
 		if (event.getTreeNode().getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 			selectedPedagogicalNeed = null;
@@ -245,12 +245,11 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				if (needsAndAnswersService.deleteNode(((TreeNodeData) selectedNode.getData()).getId())) {
 					// If the selectedNode was the only child, we must change
 					// back the parent's type to be a "Need leaf"
-					if (selectedNode.getParent().getChildCount() == 1) {
-						if ((selectedNode.getParent().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS()))
-								|| (selectedNode.getParent().getType()
-										.equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS()))) {
-							((DefaultTreeNode) selectedNode.getParent()).setType(getTreeNodeType_NEED_LEAF());
-						}
+					if ((selectedNode.getParent().getChildCount() == 1)
+							&& ((selectedNode.getParent().getType()
+									.equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())) || (selectedNode.getParent()
+									.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())))) {
+						((DefaultTreeNode) selectedNode.getParent()).setType(getTreeNodeType_NEED_LEAF());
 					}
 					selectedNode.getParent().getChildren().remove(selectedNode);
 					selectedNode.setParent(null);
@@ -285,11 +284,11 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()),
 				((TreeNodeData) selectedNode.getData()).getId());
 
-		TreeNode newNode = needsAndAnswersTreeBean.addChild(getTreeNodeType_NEED_LEAF(), selectedNode, newNeed.getId(),
+		TreeNode newNode = pedagogicalAdviceTreeBean.addChild(getTreeNodeType_NEED_LEAF(), selectedNode, newNeed.getId(),
 				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()), "Need");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 		setSelectedNode(newNode);
-		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
+		pedagogicalAdviceTreeBean.expandOnlyOneNode(newNode);
 		logger.debug("leaving associateNeedWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.debug("------");
 	}
@@ -301,12 +300,12 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()),
 				((TreeNodeData) selectedNode.getData()).getId());
 
-		TreeNode newNode = needsAndAnswersTreeBean.addChild(getTreeNodeType_ANSWER_LEAF(), selectedNode,
+		TreeNode newNode = pedagogicalAdviceTreeBean.addChild(getTreeNodeType_ANSWER_LEAF(), selectedNode,
 				newAnswer.getId(),
 				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()), "Answer");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 		setSelectedNode(newNode);
-		needsAndAnswersTreeBean.expandOnlyOneNode(newNode);
+		pedagogicalAdviceTreeBean.expandOnlyOneNode(newNode);
 		logger.debug("leaving associateAnswerWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 		logger.debug("------");
 	}
@@ -330,11 +329,9 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				}
 				// If the original parent was a NEED_WITH_ASSOCIATED_ANSWERS
 				// with exactly one child -> NEED_LEAF
-				if (((TreeNodeData) dragNode.getData()).getParentBackup().getType()
-						.equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())
-						&& (((TreeNodeData) dragNode.getData()).getParentBackup().getChildCount() == 0)) {
-					((DefaultTreeNode) ((TreeNodeData) dragNode.getData()).getParentBackup())
-							.setType(getTreeNodeType_NEED_LEAF());
+				if (dragNodeData.getParentBackup().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())
+						&& (dragNodeData.getParentBackup().getChildCount() == 0)) {
+					((DefaultTreeNode) dragNodeData.getParentBackup()).setType(getTreeNodeType_NEED_LEAF());
 				}
 
 				MessageDisplayer.info(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.DRAG_AND_DROP_SUCCESSFUL.TITLE", null,
@@ -376,11 +373,9 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				}
 				// If the original parent was a NEED_WITH_ASSOCIATED_NEEDS with
 				// exactly one child -> NEED_LEAF
-				if (((TreeNodeData) dragNode.getData()).getParentBackup().getType()
-						.equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())
-						&& (((TreeNodeData) dragNode.getData()).getParentBackup().getChildCount() == 0)) {
-					((DefaultTreeNode) ((TreeNodeData) dragNode.getData()).getParentBackup())
-							.setType(getTreeNodeType_NEED_LEAF());
+				if (dragNodeData.getParentBackup().getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())
+						&& (dragNodeData.getParentBackup().getChildCount() == 0)) {
+					((DefaultTreeNode) dragNodeData.getParentBackup()).setType(getTreeNodeType_NEED_LEAF());
 				}
 
 				MessageDisplayer.info(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.DRAG_AND_DROP_SUCCESSFUL.TITLE", null,
@@ -405,18 +400,18 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 		if (revertDragDrop) {
 			// If the drag and drop isn't allowed, we have to restore the
 			// original parent for the dragNode
-			dragNode.setParent(((TreeNodeData) dragNode.getData()).getParentBackup());
+			dragNode.setParent(dragNodeData.getParentBackup());
 
 			// We delete the dragNode from the new parent's children
 			dropNode.getChildren().remove(dragNode);
 
 			// We add the dragNode to the backup parent's children
-			((TreeNodeData) dragNode.getData()).getParentBackup().getChildren().add(dragNode);
+			dragNodeData.getParentBackup().getChildren().add(dragNode);
 		}
 		else {
 			// Otherwise we update the "parentBackup" in the node data to
 			// reflect the new parent
-			((TreeNodeData) dragNode.getData()).setParentBackup(dragNode.getParent());
+			dragNodeData.setParentBackup(dragNode.getParent());
 		}
 	}
 

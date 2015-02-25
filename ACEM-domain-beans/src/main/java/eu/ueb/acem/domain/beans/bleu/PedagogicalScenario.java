@@ -50,9 +50,9 @@ public interface PedagogicalScenario extends Serializable, Comparable<Pedagogica
 	void setObjective(String objective);
 
 	String getEvaluationModes();
-	
+
 	void setEvaluationModes(String evaluationModes);
-	
+
 	Set<Teacher> getAuthors();
 
 	void setAuthors(Set<Teacher> authors);
@@ -68,5 +68,5 @@ public interface PedagogicalScenario extends Serializable, Comparable<Pedagogica
 	Set<Class> getClasses();
 
 	void setClasses(Set<Class> classes);
-	
+
 }

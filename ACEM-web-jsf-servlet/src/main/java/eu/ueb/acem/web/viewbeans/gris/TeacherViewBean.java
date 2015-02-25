@@ -60,6 +60,7 @@ public class TeacherViewBean extends PersonViewBean {
 		this.setDomainBean(teacher);
 	}
 
+	@Override
 	public Teacher getDomainBean() {
 		return domainBean;
 	}

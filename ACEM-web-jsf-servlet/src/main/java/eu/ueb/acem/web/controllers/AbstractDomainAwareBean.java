@@ -48,7 +48,7 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 	/**
 	 * For logging.
 	 */
-	private final Logger logger = LoggerFactory.getLogger(AbstractDomainAwareBean.class);
+	private static final Logger logger = LoggerFactory.getLogger(AbstractDomainAwareBean.class);
 
 	/**
 	 * see {@link DomainService}.
@@ -89,7 +89,7 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 	/**
 	 * @return the current user.
 	 */
-	protected Person getCurrentUser() throws Exception {
+	protected Person getCurrentUser() {
 		// this method should be overriden
 		return null;
 	}
@@ -98,12 +98,11 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 	 * @return the current user's locale.
 	 */
 	public Locale getCurrentUserLocale() {
-//		logger.debug(this.getClass().getName() + ".getCurrentUserLocale()");
 		Person currentUser = null;
 		try {
 			currentUser = getCurrentUser();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("big problem",e);
 		}
 		if (currentUser == null) {
 			logger.debug("no current user, return null");
@@ -115,7 +114,6 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 			return null;
 		}
 		Locale locale = new Locale(lang);
-//		logger.debug("language for user '" + currentUser.getLogin() + "' is '" + locale + "'");
 		return locale;
 	}
 

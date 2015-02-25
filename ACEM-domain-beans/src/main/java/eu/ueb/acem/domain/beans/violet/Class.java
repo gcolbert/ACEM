@@ -32,7 +32,7 @@ import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 public interface Class extends Serializable, Comparable<Class> {
 
 	Long getId();
-	
+
 	String getName();
 
 	void setName(String name);
@@ -68,5 +68,5 @@ public interface Class extends Serializable, Comparable<Class> {
 	Set<PedagogicalScenario> getPedagogicalScenarios();
 
 	void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios);
-	
+
 }

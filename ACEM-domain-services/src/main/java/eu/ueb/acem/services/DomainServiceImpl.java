@@ -20,8 +20,6 @@ package eu.ueb.acem.services;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,12 +40,6 @@ public class DomainServiceImpl implements DomainService, InitializingBean {
 	 * For Serialize.
 	 */
 	private static final long serialVersionUID = 5562208937407153456L;
-
-	/**
-	 * For Logging.
-	 */
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
 
 	@Inject
 	private TeacherDAO teacherDAO;

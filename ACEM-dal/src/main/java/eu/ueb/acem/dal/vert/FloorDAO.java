@@ -20,8 +20,6 @@ package eu.ueb.acem.dal.vert;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
@@ -43,9 +41,6 @@ public class FloorDAO extends AbstractDAO<Floor, FloorNode> {
 	 */
 	private static final long serialVersionUID = -916181043585068038L;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(FloorDAO.class);
-
 	@Inject
 	private FloorRepository repository;
 
@@ -57,6 +52,7 @@ public class FloorDAO extends AbstractDAO<Floor, FloorNode> {
 	@Override
 	protected final void initializeCollections(Floor entity) {
 		neo4jOperations.fetch(entity.getBuilding());
+		neo4jOperations.fetch(entity.getRooms());
 	}
 
 }

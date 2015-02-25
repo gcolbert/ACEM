@@ -40,15 +40,15 @@ import eu.ueb.acem.web.viewbeans.EditableTreeBean;
  * @since 2014-05-26
  * 
  */
-@Component("needsAndAnswersTreeGenerator")
+@Component("pedagogicalAdviceTreeGenerator")
 @Scope("singleton")
-public class NeedsAndAnswersTreeGenerator {
+public class PedagogicalAdviceTreeGenerator {
 
 	/**
 	 * For logging.
 	 */
 	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersTreeGenerator.class);
+	private static final Logger logger = LoggerFactory.getLogger(PedagogicalAdviceTreeGenerator.class);
 
 	private static final String TREE_NODE_TYPE_NEED_LEAF = "NeedLeaf";
 	private static final String TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS = "NeedWithAssociatedNeeds";
@@ -123,7 +123,7 @@ public class NeedsAndAnswersTreeGenerator {
 
 		// We look for children (needs) and recursively create them too
 		Collection<PedagogicalNeed> associatedPedagogicalNeeds = need.getChildren();
-		if (associatedPedagogicalNeeds.size() > 0) {
+		if (!associatedPedagogicalNeeds.isEmpty()) {
 			// TODO : When PF >= 5.2, call directly newNode.setType
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 			for (PedagogicalNeed needChild : associatedPedagogicalNeeds) {
@@ -132,7 +132,7 @@ public class NeedsAndAnswersTreeGenerator {
 		}
 
 		Collection<PedagogicalAnswer> associatedPedagogicalAnswers = need.getAnswers();
-		if (associatedPedagogicalAnswers.size() > 0) {
+		if (!associatedPedagogicalAnswers.isEmpty()) {
 			// TODO : When PF >= 5.2, call directly newNode.setType
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 			need.setAnswers((Set<PedagogicalAnswer>) associatedPedagogicalAnswers);

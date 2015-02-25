@@ -18,18 +18,14 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.io.IOException;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 
@@ -39,12 +35,6 @@ import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 @Controller("sessionController")
 @Scope("session")
 public class SessionController extends AbstractDomainAwareBean {
-
-	/**
-	 * For logging.
-	 */
-	@SuppressWarnings("unused")
-	private final Logger logger = LoggerFactory.getLogger(SessionController.class);
 
 	/**
 	 * For serialization.
@@ -69,13 +59,6 @@ public class SessionController extends AbstractDomainAwareBean {
 		super();
 	}
 
-	/**
-	 * @see eu.ueb.acem.web.controllers.AbstractDomainAwareBean#afterPropertiesSetInternal()
-	 */
-	@Override
-	public void afterPropertiesSetInternal() {
-	}
-
 	/*
 	 * ****************** CALLBACK ********************
 	 */
@@ -86,17 +69,12 @@ public class SessionController extends AbstractDomainAwareBean {
 	
 	public PersonViewBean getCurrentUserViewBean() {
 		if (currentUserViewBean == null) {
-			try {
-				Person user = getCurrentUser();
-				if (user instanceof Teacher) {
-					currentUserViewBean = new TeacherViewBean((Teacher) user);
-				}
-				else {
-					currentUserViewBean = new PersonViewBean(user);
-				}
+			Person user = getCurrentUser();
+			if (user instanceof Teacher) {
+				currentUserViewBean = new TeacherViewBean((Teacher) user);
 			}
-			catch (Exception e) {
-				e.printStackTrace();
+			else {
+				currentUserViewBean = new PersonViewBean(user);
 			}
 		}
 		return currentUserViewBean;
@@ -107,13 +85,11 @@ public class SessionController extends AbstractDomainAwareBean {
 	 * @throws Exception
 	 */
 	@Override
-	public Person getCurrentUser() throws Exception {
+	public Person getCurrentUser() {
 		if (this.auth == null) {
 			this.auth = SecurityContextHolder.getContext().getAuthentication();
 		}
-		Person user = getDomainService().getUser(auth.getName());
-		
-		return user;
+		return getDomainService().getUser(auth.getName());
 	}
 
 	/**
@@ -122,33 +98,6 @@ public class SessionController extends AbstractDomainAwareBean {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
-	}
-
-	/**
-	 * JSF callback.
-	 * 
-	 * @return a String.
-	 * @throws IOException
-	 */
-	public String logout() throws IOException {
-		/*-
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ExternalContext externalContext = facesContext.getExternalContext();
-		HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-		String returnUrl = request.getRequestURL().toString().replaceFirst("/stylesheets/[^/]*$", "");
-		String forwardUrl;
-		Validate.notNull(casLogoutUrl, "property casLogoutUrl of class " + getClass().getName() + " is null");
-		forwardUrl = String.format(casLogoutUrl, StringUtils.utf8UrlEncode(returnUrl));
-		// note: the session beans will be kept even when invalidating
-		// the session so they have to be reset (by the exception controller).
-		// We invalidate the session however for the other attributes.
-		request.getSession().invalidate();
-		request.getSession(true);
-		// calling this method will reset all the beans of the application
-		externalContext.redirect(forwardUrl);
-		facesContext.responseComplete();
-		*/
-		return null;
 	}
 
 	/*

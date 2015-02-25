@@ -55,6 +55,7 @@ public class ViewScope implements Scope {
 		}
 	}
 
+	@Override
 	public Object remove(String name) {
 		Map<String, Object> viewMap = getViewMap();
 		if (viewMap == null)
@@ -62,13 +63,16 @@ public class ViewScope implements Scope {
 		return FacesContext.getCurrentInstance().getViewRoot().getViewMap().remove(name);
 	}
 
+	@Override
 	public String getConversationId() {
 		return null;
 	}
 
+	@Override
 	public void registerDestructionCallback(String name, Runnable callback) {
 	}
 
+	@Override
 	public Object resolveContextualObject(String key) {
 		return null;
 	}

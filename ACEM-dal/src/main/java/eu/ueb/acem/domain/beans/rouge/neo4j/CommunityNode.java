@@ -22,8 +22,6 @@ import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -45,10 +43,7 @@ public class CommunityNode extends OrganisationNode implements Community {
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 1861762804925897713L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(CommunityNode.class);
-
+	
 	@Indexed
 	private String name;
 	

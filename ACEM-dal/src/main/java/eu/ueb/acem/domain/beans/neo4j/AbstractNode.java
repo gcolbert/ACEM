@@ -28,7 +28,6 @@ public abstract class AbstractNode implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-		//logger.debug("hashCode id={}, name={}, hashCode={}", getId(), getName(), result);
 		return result;
 	}
 
@@ -41,7 +40,6 @@ public abstract class AbstractNode implements Serializable {
 			return false;
 		}
 		AbstractNode other = (AbstractNode) obj;
-		//logger.debug("equals this.id={}, other.id={}",getId(),other.getId());
 		if (!getId().equals(other.getId())) {
 			return false;
 		}

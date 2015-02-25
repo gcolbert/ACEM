@@ -21,8 +21,6 @@ package eu.ueb.acem.services;
 import java.io.File;
 import java.nio.file.Path;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +34,6 @@ public class ImagesServiceImpl implements ImagesService {
 
 	@Value("${images.path}")
 	private String localPathToImagesFolder;
-	
-	@SuppressWarnings("unused")
-	private static Logger logger = LoggerFactory.getLogger(ImagesService.class);
 
 	@Override
 	public File getImage(String imageFileName) {

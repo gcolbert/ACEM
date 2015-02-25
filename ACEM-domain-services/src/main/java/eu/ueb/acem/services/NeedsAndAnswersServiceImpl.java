@@ -116,8 +116,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	public PedagogicalNeed updatePedagogicalNeed(PedagogicalNeed pedagogicalNeed) {
-		PedagogicalNeed updatedEntity = needDAO.update(pedagogicalNeed);
-		return updatedEntity;
+		return needDAO.update(pedagogicalNeed);
 	}
 
 	@Override
@@ -126,7 +125,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		if (needDAO.exists(id)) {
 			needDAO.delete(needDAO.retrieveById(id));
 		}
-		return (!needDAO.exists(id));
+		return !needDAO.exists(id);
 	}
 
 	@Override
@@ -151,8 +150,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	@Override
 	public PedagogicalAnswer updatePedagogicalAnswer(PedagogicalAnswer pedagogicalAnswer) {
-		PedagogicalAnswer updatedEntity = answerDAO.update(pedagogicalAnswer);
-		return updatedEntity;
+		return answerDAO.update(pedagogicalAnswer);
 	}
 
 	@Override
@@ -161,7 +159,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		if (answerDAO.exists(id)) {
 			answerDAO.delete(answerDAO.retrieveById(id));
 		}
-		return (!answerDAO.exists(id));
+		return !answerDAO.exists(id);
 	}
 
 	@Override
@@ -331,7 +329,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 		answer = answerDAO.update(answer);
 		resourceCategory = resourceCategoryDAO.update(resourceCategory);
-		return ((answer.getResourceCategories().contains(resourceCategory)) && (resourceCategory.getAnswers().contains(answer)));
+		return answer.getResourceCategories().contains(resourceCategory) && resourceCategory.getAnswers().contains(answer);
 	}
 
 	@Override
@@ -344,7 +342,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 		answer = answerDAO.update(answer);
 		resourceCategory = resourceCategoryDAO.update(resourceCategory);
-		return ((!answer.getResourceCategories().contains(resourceCategory)) && (!resourceCategory.getAnswers().contains(answer)));
+		return !answer.getResourceCategories().contains(resourceCategory) && !resourceCategory.getAnswers().contains(answer);
 	}
 
 }

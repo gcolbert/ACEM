@@ -30,11 +30,11 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 public interface PedagogicalAnswer extends PedagogicalAdvice, Comparable<PedagogicalAnswer> {
 
 	Set<PedagogicalNeed> getNeeds();
-	
+
 	void setNeeds(Set<PedagogicalNeed> needs);
 
 	Set<ResourceCategory> getResourceCategories();
 
 	void setResourceCategories(Set<ResourceCategory> resourceCategories);
-	
+
 }

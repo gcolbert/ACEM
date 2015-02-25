@@ -26,9 +26,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 public interface ResourceCategoryRepository extends GenericRepository<ResourceCategoryNode> {
 
+	@Override
 	@Query(value = "MATCH (n:ResourceCategory) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:ResourceCategory) WHERE n.name=({name}) RETURN n")
 	Iterable<ResourceCategoryNode> findByName(@Param("name") String name);
 

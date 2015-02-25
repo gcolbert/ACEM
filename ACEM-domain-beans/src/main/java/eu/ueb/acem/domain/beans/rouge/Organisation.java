@@ -47,13 +47,13 @@ public interface Organisation extends Serializable, Comparable<Organisation> {
 	void setIconFileName(String iconFileName);
 
 	String getContactMode();
-	
+
 	void setContactMode(String contactMode);
-	
+
 	Set<Resource> getPossessedResources();
 
 	void setPossessedResources(Set<Resource> possessedResources);
-	
+
 	Set<Resource> getSupportedResources();
 
 	void setSupportedResources(Set<Resource> supportedResources);
@@ -65,9 +65,9 @@ public interface Organisation extends Serializable, Comparable<Organisation> {
 	Set<UseMode> getUseModes();
 
 	void setUseModes(Set<UseMode> useModes);
-	
+
 	Set<PhysicalSpace> getOccupiedPhysicalSpaces();
 
 	void setOccupiedPhysicalSpaces(Set<PhysicalSpace> occupiedPhysicalSpaces);
-	
+
 }

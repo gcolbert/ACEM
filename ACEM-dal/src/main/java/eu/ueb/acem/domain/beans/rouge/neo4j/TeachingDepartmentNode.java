@@ -70,7 +70,7 @@ public class TeachingDepartmentNode extends OrganisationNode implements Teaching
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public Set<Institution> getInstitutions() {
 		return institutions;

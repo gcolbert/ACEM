@@ -23,8 +23,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -48,9 +46,6 @@ public class PersonNode extends AbstractNode implements Person {
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -5697929702791942609L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(PersonNode.class);
 
 	@Indexed
 	private String name;

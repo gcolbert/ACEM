@@ -5,8 +5,6 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 import java.io.Serializable;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +24,7 @@ public class LdapUserService implements Serializable {
 	 */
 	private static final long serialVersionUID = 6381776593382396819L;
 
-	/**
-	 * For Logging.
-	 */
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(LdapUserService.class);
-
-	private LdapTemplate ldapTemplate;
+	private transient LdapTemplate ldapTemplate;
 
 	private String uidAttribute;
 

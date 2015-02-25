@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
  */
 public interface ClassRepository extends GenericRepository<ClassNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Class) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Class) WHERE n.name=({name}) RETURN n")
 	Iterable<ClassNode> findByName(@Param("name") String name);
 

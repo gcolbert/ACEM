@@ -18,12 +18,18 @@
  */
 package eu.ueb.acem.domain.beans.vert;
 
+import java.util.Set;
+
 /**
- * @author Grégoire Colbert 
+ * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
 public interface Campus extends PhysicalSpace {
+
+	Set<Building> getBuildings();
+
+	void setBuildings(Set<Building> buildings);
 
 	Double getLatitude();
 

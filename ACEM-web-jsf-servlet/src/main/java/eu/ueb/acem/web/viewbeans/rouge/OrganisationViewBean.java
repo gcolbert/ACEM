@@ -28,6 +28,7 @@ import eu.ueb.acem.web.viewbeans.Pickable;
  */
 public interface OrganisationViewBean extends Pickable, Comparable<OrganisationViewBean> {
 
+	@Override
 	Long getId();
 
 	String getName();

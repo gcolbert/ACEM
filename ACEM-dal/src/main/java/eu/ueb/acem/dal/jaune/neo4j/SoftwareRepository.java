@@ -34,9 +34,11 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
  */
 public interface SoftwareRepository extends GenericRepository<SoftwareNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Software) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Software) WHERE n.name=({name}) RETURN n")
 	Iterable<SoftwareNode> findByName(@Param("name") String name);
 

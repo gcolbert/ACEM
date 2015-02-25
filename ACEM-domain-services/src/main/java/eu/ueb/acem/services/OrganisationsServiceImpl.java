@@ -198,26 +198,22 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 
 	@Override
 	public Community updateCommunity(Community community) {
-		Community updatedEntity = communityDAO.update(community);
-		return updatedEntity;
+		return communityDAO.update(community);
 	}
 
 	@Override
 	public Institution updateInstitution(Institution institution) {
-		Institution updatedEntity = institutionDAO.update(institution);
-		return updatedEntity;
+		return institutionDAO.update(institution);
 	}
 
 	@Override
 	public AdministrativeDepartment updateAdministrativeDepartment(AdministrativeDepartment administrativeDepartment) {
-		AdministrativeDepartment updatedAdministrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
-		return updatedAdministrativeDepartment;
+		return administrativeDepartmentDAO.update(administrativeDepartment);
 	}
 
 	@Override
 	public TeachingDepartment updateTeachingDepartment(TeachingDepartment teachingDepartment) {
-		TeachingDepartment updatedEntity = teachingDepartmentDAO.update(teachingDepartment);
-		return updatedEntity;
+		return teachingDepartmentDAO.update(teachingDepartment);
 	}
 
 	@Override
@@ -243,7 +239,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		if (communityDAO.exists(id)) {
 			communityDAO.delete(communityDAO.retrieveById(id));
 		}
-		return (!communityDAO.exists(id));
+		return !communityDAO.exists(id);
 	}
 
 	@Override
@@ -251,7 +247,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		if (institutionDAO.exists(id)) {
 			institutionDAO.delete(institutionDAO.retrieveById(id));
 		}
-		return (!institutionDAO.exists(id));
+		return !institutionDAO.exists(id);
 	}
 
 	@Override
@@ -259,7 +255,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		if (administrativeDepartmentDAO.exists(id)) {
 			administrativeDepartmentDAO.delete(administrativeDepartmentDAO.retrieveById(id));
 		}
-		return (!administrativeDepartmentDAO.exists(id));
+		return !administrativeDepartmentDAO.exists(id);
 	}
 
 	@Override
@@ -267,7 +263,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		if (teachingDepartmentDAO.exists(id)) {
 			teachingDepartmentDAO.delete(teachingDepartmentDAO.retrieveById(id));
 		}
-		return (!teachingDepartmentDAO.exists(id));
+		return !teachingDepartmentDAO.exists(id);
 	}
 
 	@Override
@@ -281,7 +277,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		institution = updateInstitution(institution);
 		community = updateCommunity(community);
 
-		return ((community.getInstitutions().contains(institution)) && (institution.getCommunities().contains(community)));
+		return community.getInstitutions().contains(institution) && institution.getCommunities().contains(community);
 	}
 
 	@Override
@@ -295,7 +291,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		community = updateCommunity(community);
 		institution = updateInstitution(institution);
 
-		return ((!community.getInstitutions().contains(institution)) && (!institution.getCommunities().contains(community)));
+		return !community.getInstitutions().contains(institution) && !institution.getCommunities().contains(community);
 	}
 
 	@Override
@@ -309,7 +305,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		institution = updateInstitution(institution);
 		administrativeDepartment = updateAdministrativeDepartment(administrativeDepartment);
 
-		return ((institution.getAdministrativeDepartments().contains(administrativeDepartment)) && (administrativeDepartment.getInstitutions().contains(institution)));
+		return institution.getAdministrativeDepartments().contains(administrativeDepartment) && administrativeDepartment.getInstitutions().contains(institution);
 	}
 
 	@Override
@@ -323,7 +319,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		institution = updateInstitution(institution);
 		administrativeDepartment = updateAdministrativeDepartment(administrativeDepartment);
 
-		return ((!institution.getAdministrativeDepartments().contains(administrativeDepartment)) && (!administrativeDepartment.getInstitutions().contains(institution)));
+		return !institution.getAdministrativeDepartments().contains(administrativeDepartment) && !administrativeDepartment.getInstitutions().contains(institution);
 	}
 
 	@Override
@@ -337,7 +333,7 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		institution = updateInstitution(institution);
 		teachingDepartment = updateTeachingDepartment(teachingDepartment);
 
-		return ((institution.getTeachingDepartments().contains(teachingDepartment)) && (teachingDepartment.getInstitutions().contains(institution)));
+		return institution.getTeachingDepartments().contains(teachingDepartment) && teachingDepartment.getInstitutions().contains(institution);
 	}
 
 	@Override
@@ -351,45 +347,59 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		institution = updateInstitution(institution);
 		teachingDepartment = updateTeachingDepartment(teachingDepartment);
 
-		return ((! institution.getTeachingDepartments().contains(teachingDepartment)) && (!teachingDepartment.getInstitutions().contains(institution)));
+		return !institution.getTeachingDepartments().contains(teachingDepartment) && !teachingDepartment.getInstitutions().contains(institution);
 	}
 
 	@Override
 	public Boolean isImplicitlySharingResourcesWith(Organisation organisation1, Organisation organisation2) {
+		Boolean implicitShare = false;
 		if (organisation1 instanceof Community) {
 			if (organisation2 instanceof Institution) {
-				if (((Institution) organisation2).getCommunities().contains(organisation1)) {
-					return true;
-				}
+				implicitShare = isImplicitlySharingResourcesWith((Community) organisation1, (Institution) organisation2);
 			}
 			else if (organisation2 instanceof AdministrativeDepartment) {
-				Set<Institution> intersection = new HashSet<Institution>(((AdministrativeDepartment) organisation2).getInstitutions());
-				intersection.retainAll(((Community) organisation1).getInstitutions());
-				if (! intersection.isEmpty()) {
-					return true;
-				}
+				implicitShare = isImplicitlySharingResourcesWith((Community) organisation1,
+						(AdministrativeDepartment) organisation2);
 			}
 			else if (organisation2 instanceof TeachingDepartment) {
-				Set<Institution> intersection = new HashSet<Institution>(((TeachingDepartment) organisation2).getInstitutions());
-				intersection.retainAll(((Community) organisation1).getInstitutions());
-				if (! intersection.isEmpty()) {
-					return true;
-				}
+				implicitShare = isImplicitlySharingResourcesWith((Community) organisation1,
+						(TeachingDepartment) organisation2);
 			}
 		}
 		else if (organisation1 instanceof Institution) {
 			if (organisation2 instanceof AdministrativeDepartment) {
-				if (((AdministrativeDepartment) organisation2).getInstitutions().contains(organisation1)) {
-					return true;
-				}
+				implicitShare = isImplicitlySharingResourcesWith((Institution) organisation1,
+						(AdministrativeDepartment) organisation2);
 			}
 			else if (organisation2 instanceof TeachingDepartment) {
-				if (((TeachingDepartment) organisation2).getInstitutions().contains(organisation1)) {
-					return true;
-				}
+				implicitShare = isImplicitlySharingResourcesWith((Institution) organisation1,
+						(TeachingDepartment) organisation2);
 			}
 		}
-		return false;
+		return implicitShare;
 	}
-	
+
+	private Boolean isImplicitlySharingResourcesWith(Community c, Institution i) {
+		return i.getCommunities().contains(c);
+	}
+
+	private Boolean isImplicitlySharingResourcesWith(Community c, AdministrativeDepartment ad) {
+		Set<Institution> intersection = new HashSet<Institution>(ad.getInstitutions());
+		intersection.retainAll(c.getInstitutions());
+		return !intersection.isEmpty();
+	}
+
+	private Boolean isImplicitlySharingResourcesWith(Community c, TeachingDepartment td) {
+		Set<Institution> intersection = new HashSet<Institution>(td.getInstitutions());
+		intersection.retainAll(c.getInstitutions());
+		return !intersection.isEmpty();
+	}
+
+	private Boolean isImplicitlySharingResourcesWith(Institution i, AdministrativeDepartment ad) {
+		return ad.getInstitutions().contains(i);
+	}
+
+	private Boolean isImplicitlySharingResourcesWith(Institution i, TeachingDepartment td) {
+		return td.getInstitutions().contains(i);
+	}
 }

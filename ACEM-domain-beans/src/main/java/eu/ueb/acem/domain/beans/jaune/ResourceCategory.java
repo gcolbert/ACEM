@@ -32,15 +32,15 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 public interface ResourceCategory extends Serializable, Comparable<ResourceCategory> {
 
 	Long getId();
-	
+
 	String getName();
 
 	void setName(String name);
 
 	String getDescription();
-	
+
 	void setDescription(String description);
-	
+
 	Set<Resource> getResources();
 
 	void setResources(Set<Resource> resources);
@@ -50,11 +50,11 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 	void setAnswers(Set<PedagogicalAnswer> answers);
 
 	String getIconFileName();
-	
+
 	void setIconFileName(String iconFileName);
-	
+
 	Set<PedagogicalActivity> getPedagogicalActivities();
 
 	void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities);
-	
+
 }

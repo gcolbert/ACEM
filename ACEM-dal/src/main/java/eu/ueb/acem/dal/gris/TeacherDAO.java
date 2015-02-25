@@ -20,8 +20,6 @@ package eu.ueb.acem.dal.gris;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
@@ -42,12 +40,6 @@ public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> {
 	 * For serialization
 	 */
 	private static final long serialVersionUID = 920105894951436261L;
-
-	/**
-	 * For Logging.
-	 */
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(TeacherDAO.class);
 
 	@Inject
 	private TeacherRepository repository;

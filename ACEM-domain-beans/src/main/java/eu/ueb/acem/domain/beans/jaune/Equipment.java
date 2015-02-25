@@ -36,9 +36,9 @@ public interface Equipment extends Resource {
 	void setQuantity(Integer quantity);
 
 	void setStorageLocations(Set<PhysicalSpace> storageLocations);
-	
+
 	Boolean isMobile();
-	
+
 	void setMobile(Boolean mobile);
-	
+
 }

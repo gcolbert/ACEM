@@ -20,8 +20,6 @@ package eu.ueb.acem.dal.gris;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
@@ -42,12 +40,6 @@ public class PersonDAO extends AbstractDAO<Person, PersonNode> {
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 1069286673672742458L;
-
-	/**
-	 * For Logging.
-	 */
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(PersonDAO.class);
 
 	@Inject
 	private PersonRepository repository;

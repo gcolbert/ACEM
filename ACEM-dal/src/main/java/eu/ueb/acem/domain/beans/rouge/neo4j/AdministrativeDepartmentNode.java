@@ -18,21 +18,16 @@
  */
 package eu.ueb.acem.domain.beans.rouge.neo4j;
 
-import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 
@@ -46,12 +41,6 @@ import eu.ueb.acem.domain.beans.rouge.Institution;
 public class AdministrativeDepartmentNode extends OrganisationNode implements AdministrativeDepartment {
 
 	/**
-	 * For logging.
-	 */
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(AdministrativeDepartmentNode.class);
-
-	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 3548058788461596320L;
@@ -62,9 +51,6 @@ public class AdministrativeDepartmentNode extends OrganisationNode implements Ad
 	@RelatedTo(elementClass = InstitutionNode.class, type = "administrativeDepartmentPartOfInstitution", direction = OUTGOING)
 	private Set<Institution> institutions = new HashSet<Institution>(0);
 
-	@RelatedTo(elementClass = PedagogicalAnswerNode.class, type="answeredByAdministrativeDepartment", direction = INCOMING)
-	private Set<PedagogicalAnswer> pedagogicalAnswers = new HashSet<PedagogicalAnswer>(0);
-	
 	public AdministrativeDepartmentNode() {
 	}
 

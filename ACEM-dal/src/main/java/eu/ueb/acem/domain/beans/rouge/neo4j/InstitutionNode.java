@@ -24,8 +24,6 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
@@ -49,9 +47,6 @@ public class InstitutionNode extends OrganisationNode implements Institution {
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 4218521116992739925L;
-
-	@SuppressWarnings("unused")
-	private static Logger logger = LoggerFactory.getLogger(InstitutionNode.class);
 
 	@Indexed
 	private String name;

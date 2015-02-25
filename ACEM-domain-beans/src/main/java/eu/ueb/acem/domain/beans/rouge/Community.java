@@ -30,5 +30,5 @@ public interface Community extends Organisation {
 	Set<Institution> getInstitutions();
 
 	void setInstitutions(Set<Institution> institutions);
-	
+
 }

@@ -19,6 +19,10 @@
 package eu.ueb.acem.domain.beans.vert.neo4j;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -27,6 +31,7 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.vert.Building;
 import eu.ueb.acem.domain.beans.vert.Campus;
+import eu.ueb.acem.domain.beans.vert.Floor;
 
 /**
  * @author Grégoire Colbert
@@ -47,6 +52,9 @@ public class BuildingNode extends PhysicalSpaceNode implements Building {
 
 	@RelatedTo(elementClass = CampusNode.class, type = "isInCampus", direction = OUTGOING)
 	private Campus campus;
+
+	@RelatedTo(elementClass = FloorNode.class, type = "isPartOfBuilding", direction = INCOMING)
+	private Set<Floor> floors = new HashSet<Floor>(0);
 
 	private Double latitude;
 	private Double longitude;
@@ -71,6 +79,16 @@ public class BuildingNode extends PhysicalSpaceNode implements Building {
 	@Override
 	public Campus getCampus() {
 		return campus;
+	}
+
+	@Override
+	public Set<Floor> getFloors() {
+		return floors;
+	}
+
+	@Override
+	public void setFloors(Set<Floor> floors) {
+		this.floors = floors;
 	}
 
 	@Override

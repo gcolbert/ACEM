@@ -61,7 +61,7 @@ import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
-import eu.ueb.acem.web.utils.NeedsAndAnswersTreeGenerator;
+import eu.ueb.acem.web.utils.PedagogicalAdviceTreeGenerator;
 import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
@@ -120,7 +120,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	/* ***********************************************************************/
 
 	@Inject
-	private NeedsAndAnswersTreeGenerator needsAndAnswersTreeGenerator;
+	private PedagogicalAdviceTreeGenerator pedagogicalAdviceTreeGenerator;
 	private EditableTreeBean pedagogicalUsesTreeBean;
 
 	@Inject
@@ -173,7 +173,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	@Override
 	public String getPageTitle() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(msgs.getMessage("MENU.MY_TOOLS",null,getCurrentUserLocale()));
 		if (getSelectedToolCategoryViewBean() != null) {
 			sb.append(" - ");
@@ -561,7 +561,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void prepareResourceCreation(String resourceType) {
-		logger.info("prepareResourceCreation, resourceType={}",resourceType);
 		if (resourceType.equals("RESOURCE_TYPE_SOFTWARE")) {
 			objectEditedResource = new SoftwareViewBean();
 		}
@@ -711,19 +710,19 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 * ****************** Pedagogical uses of selected tool category ********************
 	 */
 	public String getTreeNodeType_NEED_LEAF() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_LEAF();
+		return pedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_LEAF();
 	}
 
 	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS();
+		return pedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS();
 	}
 
 	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS();
+		return pedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS();
 	}
 
 	public String getTreeNodeType_ANSWER_LEAF() {
-		return needsAndAnswersTreeGenerator.getTreeNodeType_ANSWER_LEAF();
+		return pedagogicalAdviceTreeGenerator.getTreeNodeType_ANSWER_LEAF();
 	}
 	
 	public TreeNode getPedagogicalUsesTreeRoot() {
@@ -739,7 +738,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	private void setPedagogicalUsesTreeRoot(ResourceCategory resourceCategory) {
 		logger.info("Entering setPedagogicalUsesTreeRoot");
-		pedagogicalUsesTreeBean = needsAndAnswersTreeGenerator.createNeedAndAnswersTree(null);
+		pedagogicalUsesTreeBean = pedagogicalAdviceTreeGenerator.createNeedAndAnswersTree(null);
 		Set<Long> idsOfLeavesToKeep = new HashSet<Long>();
 		for (PedagogicalAnswer answer : resourceCategory.getAnswers()) {
 			idsOfLeavesToKeep.add(answer.getId());

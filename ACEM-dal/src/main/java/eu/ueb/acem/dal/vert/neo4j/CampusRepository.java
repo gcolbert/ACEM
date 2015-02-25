@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
  */
 public interface CampusRepository extends GenericRepository<CampusNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Campus) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Campus) WHERE n.name=({name}) RETURN n")
 	Iterable<CampusNode> findByName(@Param("name") String name);
 

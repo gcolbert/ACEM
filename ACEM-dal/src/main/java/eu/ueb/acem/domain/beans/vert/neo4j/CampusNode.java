@@ -18,10 +18,17 @@
  */
 package eu.ueb.acem.domain.beans.vert.neo4j;
 
+import static org.neo4j.graphdb.Direction.INCOMING;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
+import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.vert.Building;
 import eu.ueb.acem.domain.beans.vert.Campus;
 
 /**
@@ -41,6 +48,9 @@ public class CampusNode extends PhysicalSpaceNode implements Campus {
 	@Indexed
 	private String name;
 
+	@RelatedTo(elementClass = BuildingNode.class, type = "isInCampus", direction = INCOMING)
+	private Set<Building> buildings = new HashSet<Building>(0);
+
 	private Double latitude;
 	private Double longitude;
 
@@ -59,6 +69,16 @@ public class CampusNode extends PhysicalSpaceNode implements Campus {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public Set<Building> getBuildings() {
+		return buildings;
+	}
+
+	@Override
+	public void setBuildings(Set<Building> buildings) {
+		this.buildings = buildings;
 	}
 
 	@Override

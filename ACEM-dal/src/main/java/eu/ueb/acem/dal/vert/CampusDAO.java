@@ -20,8 +20,6 @@ package eu.ueb.acem.dal.vert;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
@@ -43,9 +41,6 @@ public class CampusDAO extends AbstractDAO<Campus, CampusNode> {
 	 */
 	private static final long serialVersionUID = 7713450512674141045L;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(CampusDAO.class);
-
 	@Inject
 	private CampusRepository repository;
 
@@ -56,7 +51,7 @@ public class CampusDAO extends AbstractDAO<Campus, CampusNode> {
 
 	@Override
 	protected final void initializeCollections(Campus entity) {
-
+		neo4jOperations.fetch(entity.getBuildings());
 	}
 
 }

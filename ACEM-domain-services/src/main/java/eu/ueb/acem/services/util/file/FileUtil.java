@@ -22,6 +22,9 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.ueb.acem.services.exceptions.ServiceException;
 
 /**
@@ -32,6 +35,11 @@ import eu.ueb.acem.services.exceptions.ServiceException;
  */
 public final class FileUtil {
 
+	/**
+	 * For logging.
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
+	
 	/**
 	 * Constructor.
 	 */
@@ -47,22 +55,17 @@ public final class FileUtil {
 		}
 		File fc = new File(FileUtil.getNormalizedFilePath(parentDirectory + "/"
 				+ directory));
-		if (!fc.exists()) {
-			if (!fc.mkdir()) {
+		if (!fc.exists() && !fc.mkdir()) {
 				throw new ServiceException("SERVICE_DIRECTORY_NOT_CREATED");
-			}
 		}
-
 	}
 
 	public static void renameDirectoryOrFile(String sourcePath,
 			String targetPath) throws ServiceException {
 		File f = new File(sourcePath);
-		System.out.println("*** renameDirectoryOrFile s " + sourcePath);
 		if (!f.exists()) {
 			throw new ServiceException("SERVICE_PARENTDIRECTORY_NOT_EXISTS");
 		}
-		System.out.println("*** renameDirectoryOrFile t " + targetPath);
 		if (!f.renameTo(new File(targetPath))) {
 			throw new ServiceException(
 					"SERVICE_DIRECTORY_OR_FILE_RENAME_FAILED");
@@ -406,7 +409,6 @@ public final class FileUtil {
 		File tempFile = new File(getNormalizedFilePath(tmpImgPath));
 		while (tempFile.exists()) {
 			num = (int) (Math.random() * 999999 + 1);
-			// imgName = new Integer(num).toString();
 			imgName = Integer.valueOf(num).toString();
 			tmpImgPath = pathTempDirectory + File.separator + imgName + "."
 					+ extension;
@@ -459,6 +461,7 @@ public final class FileUtil {
 				int height = reader.getHeight(reader.getMinIndex());
 				return new Dimension(width, height);
 			} catch (IOException e) {
+				logger.error("getImageDimension({}) raised I/O Exception", imgFile, e);
 			} finally {
 				reader.dispose();
 			}

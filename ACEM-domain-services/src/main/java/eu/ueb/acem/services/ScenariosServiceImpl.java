@@ -22,8 +22,6 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.bleu.PedagogicalActivityDAO;
@@ -42,9 +40,6 @@ import eu.ueb.acem.domain.beans.gris.Teacher;
  */
 @Service("scenariosService")
 public class ScenariosServiceImpl implements ScenariosService {
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ScenariosServiceImpl.class);
 
 	@Inject
 	private PedagogicalScenarioDAO pedagogicalScenarioDAO;
@@ -85,8 +80,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 
 	@Override
 	public PedagogicalScenario updateScenario(PedagogicalScenario pedagogicalScenario) {
-		PedagogicalScenario updatedEntity = pedagogicalScenarioDAO.update(pedagogicalScenario);
-		return updatedEntity;
+		return pedagogicalScenarioDAO.update(pedagogicalScenario);
 	}
 
 	@Override
@@ -120,7 +114,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 			}
 			pedagogicalScenarioDAO.delete(scenario);
 		}
-		return (!pedagogicalScenarioDAO.exists(id));
+		return !pedagogicalScenarioDAO.exists(id);
 	}
 
 	@Override
@@ -140,8 +134,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 
 	@Override
 	public PedagogicalActivity updatePedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		PedagogicalActivity updatedEntity = pedagogicalActivityDAO.update(pedagogicalActivity);
-		return updatedEntity;
+		return pedagogicalActivityDAO.update(pedagogicalActivity);
 	}
 
 	@Override
@@ -149,7 +142,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 		if (pedagogicalActivityDAO.exists(id)) {
 			pedagogicalActivityDAO.delete(pedagogicalActivityDAO.retrieveById(id));
 		}
-		return (!pedagogicalActivityDAO.exists(id));
+		return !pedagogicalActivityDAO.exists(id);
 	}
 
 }

@@ -24,8 +24,6 @@ import java.util.Iterator;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
@@ -49,9 +47,6 @@ public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation,
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 9174057115460081629L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(SoftwareDocumentationDAO.class);
 
 	@Inject
 	private SoftwareDocumentationRepository repository;

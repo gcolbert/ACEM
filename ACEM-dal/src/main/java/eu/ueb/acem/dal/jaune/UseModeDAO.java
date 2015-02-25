@@ -20,8 +20,6 @@ package eu.ueb.acem.dal.jaune;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
@@ -42,9 +40,6 @@ public class UseModeDAO extends AbstractDAO<UseMode, UseModeNode> {
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -1874254078249425495L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(UseModeDAO.class);
 
 	@Inject
 	private UseModeRepository repository;

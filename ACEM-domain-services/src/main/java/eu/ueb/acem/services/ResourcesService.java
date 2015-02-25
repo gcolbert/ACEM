@@ -21,8 +21,13 @@ package eu.ueb.acem.services;
 import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.Software;
+import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -55,15 +60,15 @@ public interface ResourcesService {
 
 	Boolean deleteResource(Long id);
 
-	Collection<? extends Resource> retrieveSoftwaresWithCategory(ResourceCategory category);
+	Collection<Software> retrieveSoftwaresWithCategory(ResourceCategory category);
 
-	Collection<? extends Resource> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
+	Collection<SoftwareDocumentation> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
 
-	Collection<? extends Resource> retrieveEquipmentWithCategory(ResourceCategory category);
+	Collection<Equipment> retrieveEquipmentWithCategory(ResourceCategory category);
 
-	Collection<? extends Resource> retrieveProfessionalTrainingsWithCategory(ResourceCategory category);
+	Collection<ProfessionalTraining> retrieveProfessionalTrainingsWithCategory(ResourceCategory category);
 
-	Collection<? extends Resource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category);
+	Collection<PedagogicalAndDocumentaryResource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category);
 
 	void saveResourceName(String resourceType, Long id, String label);
 

@@ -35,12 +35,12 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 	private static final long serialVersionUID = 6019747777770414715L;
 
 	@Inject
-	protected Neo4jOperations neo4jOperations;
+	protected transient Neo4jOperations neo4jOperations;
 
 	protected abstract GenericRepository<N> getRepository();
 
 	protected abstract void initializeCollections(E entity);
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public E create(E entity) {
@@ -51,8 +51,14 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 
 	@Override
 	public Boolean exists(Long id) {
-		// This line should be sufficient but https://jira.spring.io/browse/DATAGRAPH-438
-		//return (id != null) ? repository.exists(id) : false;
+		/*
+		 * We should use simply return (id != null) ? repository.exists(id) :
+		 * false; but this bug https://jira.spring.io/browse/DATAGRAPH-438
+		 * prevents the correct detection of the entity's class. It means that
+		 * the standard implementation of exists only checks if a node with this
+		 * id exists in the whole database, independently of the type that the
+		 * repository deals with.
+		 */
 		if (id == null) {
 			return false;
 		}
@@ -60,7 +66,7 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 			return getRepository().count(id) > 0 ? true : false;
 		}
 	}
-	
+
 	@Override
 	public E retrieveById(Long id) {
 		return (id != null) ? getRepository().findOne(id) : null;
@@ -84,7 +90,7 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 		}
 		return entities;
 	}
-	
+
 	@Override
 	public Collection<E> retrieveByName(String name, boolean initialize) {
 		Collection<E> entities = retrieveByName(name);

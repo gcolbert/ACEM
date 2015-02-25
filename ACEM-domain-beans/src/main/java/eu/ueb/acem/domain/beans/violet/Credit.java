@@ -29,7 +29,7 @@ import java.util.Set;
 public interface Credit extends Serializable, Comparable<Credit> {
 
 	Long getId();
-	
+
 	String getName();
 
 	void setName(String name);
@@ -37,9 +37,9 @@ public interface Credit extends Serializable, Comparable<Credit> {
 	String getDuration();
 
 	void setDuration(String duration);
-	
+
 	Set<Degree> getDegrees();
-	
+
 	void setDegrees(Set<Degree> degrees);
 
 	Set<Course> getCourses();

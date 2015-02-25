@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
  */
 public interface TeacherRepository extends GenericRepository<TeacherNode> {
 
+	@Override
 	@Query(value = "MATCH (n:Teacher) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:Teacher) WHERE n.name=({name}) RETURN n")
 	Iterable<TeacherNode> findByName(@Param("name") String name);
 

@@ -20,8 +20,6 @@ package eu.ueb.acem.dal.jaune;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
@@ -42,9 +40,6 @@ public class ResourceCategoryDAO extends AbstractDAO<ResourceCategory, ResourceC
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -340108444569929110L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ResourceCategoryDAO.class);
 
 	@Inject
 	private ResourceCategoryRepository repository;

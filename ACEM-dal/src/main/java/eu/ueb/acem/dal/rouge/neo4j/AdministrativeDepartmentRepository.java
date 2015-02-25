@@ -31,9 +31,11 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
  */
 public interface AdministrativeDepartmentRepository extends GenericRepository<AdministrativeDepartmentNode> {
 
+	@Override
 	@Query(value = "MATCH (n:AdministrativeDepartment) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
+	@Override
 	@Query(value = "MATCH (n:AdministrativeDepartment) WHERE n.name=({name}) RETURN n")
 	Iterable<AdministrativeDepartmentNode> findByName(@Param("name") String name);
 	
