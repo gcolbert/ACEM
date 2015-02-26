@@ -51,7 +51,9 @@ public class CourseDAO extends AbstractDAO<Course, CourseNode> {
 
 	@Override
 	protected final void initializeCollections(Course entity) {
-		neo4jOperations.fetch(entity.getCredit());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getCredit());
+		}
 	}
 
 }

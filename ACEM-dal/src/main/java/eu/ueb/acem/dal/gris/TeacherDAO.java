@@ -51,10 +51,12 @@ public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> {
 
 	@Override
 	protected final void initializeCollections(Teacher entity) {
-		neo4jOperations.fetch(entity.getFavoriteToolCategories());
-		neo4jOperations.fetch(entity.getScenarios());
-		neo4jOperations.fetch(entity.getClasses());
-		neo4jOperations.fetch(entity.getWorksForOrganisations());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getFavoriteToolCategories());
+			neo4jOperations.fetch(entity.getScenarios());
+			neo4jOperations.fetch(entity.getClasses());
+			neo4jOperations.fetch(entity.getWorksForOrganisations());
+		}
 	}
 
 	public Teacher retrieveByLogin(String id, boolean initialize) {

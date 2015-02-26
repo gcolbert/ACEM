@@ -51,12 +51,14 @@ public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> {
 
 	@Override
 	protected final void initializeCollections(Institution entity) {
-		neo4jOperations.fetch(entity.getPossessedResources());
-		neo4jOperations.fetch(entity.getViewedResources());
-		neo4jOperations.fetch(entity.getUseModes());
-		neo4jOperations.fetch(entity.getCommunities());
-		neo4jOperations.fetch(entity.getAdministrativeDepartments());
-		neo4jOperations.fetch(entity.getTeachingDepartments());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getPossessedResources());
+			neo4jOperations.fetch(entity.getViewedResources());
+			neo4jOperations.fetch(entity.getUseModes());
+			neo4jOperations.fetch(entity.getCommunities());
+			neo4jOperations.fetch(entity.getAdministrativeDepartments());
+			neo4jOperations.fetch(entity.getTeachingDepartments());
+		}
 	}
 
 }

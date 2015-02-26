@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -42,8 +43,16 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * 
  */
 @Service("usersService")
-public class UsersServiceImpl implements UsersService {
+public class UsersServiceImpl implements UsersService, Serializable {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 1969594272542872653L;
+
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 	
 	@Inject

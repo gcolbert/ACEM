@@ -58,19 +58,19 @@ public class PedagogicalAdviceTreeGenerator {
 	@Inject
 	private NeedsAndAnswersService needsAndAnswersService;
 
-	public String getTreeNodeType_NEED_LEAF() {
+	public static final String getTreeNodeType_NEED_LEAF() {
 		return TREE_NODE_TYPE_NEED_LEAF;
 	}
 
-	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
+	public static final String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
 		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_NEEDS;
 	}
 
-	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
+	public static final String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
 		return TREE_NODE_TYPE_NEED_WITH_ASSOCIATED_ANSWERS;
 	}
 
-	public String getTreeNodeType_ANSWER_LEAF() {
+	public static final String getTreeNodeType_ANSWER_LEAF() {
 		return TREE_NODE_TYPE_ANSWER_LEAF;
 	}
 
@@ -119,7 +119,8 @@ public class PedagogicalAdviceTreeGenerator {
 	private TreeNode createChild(EditableTreeBean treeBean, PedagogicalNeed need, TreeNode parentNode) {
 		// We create the root node for this branch
 		need = needsAndAnswersService.retrievePedagogicalNeed(need.getId(), true);
-		TreeNode newNode = treeBean.addChild(getTreeNodeType_NEED_LEAF(), parentNode, need.getId(), need.getName(), "Need");
+		TreeNode newNode = treeBean.addChild(getTreeNodeType_NEED_LEAF(), parentNode, need.getId(), need.getName(),
+				"PedagogicalNeed");
 
 		// We look for children (needs) and recursively create them too
 		Collection<PedagogicalNeed> associatedPedagogicalNeeds = need.getChildren();
@@ -137,7 +138,8 @@ public class PedagogicalAdviceTreeGenerator {
 			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 			need.setAnswers((Set<PedagogicalAnswer>) associatedPedagogicalAnswers);
 			for (PedagogicalAnswer answer : associatedPedagogicalAnswers) {
-				treeBean.addChild(getTreeNodeType_ANSWER_LEAF(), newNode, answer.getId(), answer.getName(), "Answer");
+				treeBean.addChild(getTreeNodeType_ANSWER_LEAF(), newNode, answer.getId(), answer.getName(),
+						"PedagogicalAnswer");
 			}
 		}
 		

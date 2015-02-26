@@ -19,6 +19,7 @@
 package eu.ueb.acem.services;
 
 import java.io.File;
+import java.io.Serializable;
 import java.nio.file.Path;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +31,12 @@ import org.springframework.stereotype.Service;
  * 
  */
 @Service("imagesService")
-public class ImagesServiceImpl implements ImagesService {
+public class ImagesServiceImpl implements ImagesService, Serializable {
+
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -312455060796407344L;
 
 	@Value("${images.path}")
 	private String localPathToImagesFolder;

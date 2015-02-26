@@ -36,8 +36,10 @@ public interface ResourceViewBean extends Pickable, Comparable<ResourceViewBean>
 
 	String getType();
 	
+	String getTypePluralFormMessageKey();
+
 	String getName();
-	
+
 	void setName(String name);
 
 	Resource getDomainBean();
@@ -67,4 +69,5 @@ public interface ResourceViewBean extends Pickable, Comparable<ResourceViewBean>
 	List<UseModeViewBean> getUseModeViewBeans();
 	
 	void setUseModeViewBeans(List<UseModeViewBean> useModeViewBeans);
+
 }

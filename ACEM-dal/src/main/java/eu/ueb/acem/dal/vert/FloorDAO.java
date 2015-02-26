@@ -51,8 +51,10 @@ public class FloorDAO extends AbstractDAO<Floor, FloorNode> {
 
 	@Override
 	protected final void initializeCollections(Floor entity) {
-		neo4jOperations.fetch(entity.getBuilding());
-		neo4jOperations.fetch(entity.getRooms());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getBuilding());
+			neo4jOperations.fetch(entity.getRooms());
+		}
 	}
 
 }

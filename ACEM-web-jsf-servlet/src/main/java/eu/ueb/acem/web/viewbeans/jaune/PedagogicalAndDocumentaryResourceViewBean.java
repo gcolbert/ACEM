@@ -20,8 +20,7 @@ package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.inject.Named;
 
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 
@@ -30,15 +29,13 @@ import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
  * @since 2014-03-19
  * 
  */
+@Named
 public class PedagogicalAndDocumentaryResourceViewBean extends AbstractResourceViewBean implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 9043064613804072989L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(PedagogicalAndDocumentaryResourceViewBean.class);
 
 	private PedagogicalAndDocumentaryResource domainBean;
 
@@ -65,5 +62,4 @@ public class PedagogicalAndDocumentaryResourceViewBean extends AbstractResourceV
 	public String getType() {
 		return "RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE";
 	}
-
 }

@@ -1,5 +1,7 @@
 package eu.ueb.acem.services.auth;
 
+import java.io.Serializable;
+
 import eu.ueb.acem.domain.beans.ldap.LdapUser;
 
 import javax.naming.directory.Attributes;
@@ -13,7 +15,12 @@ import org.springframework.ldap.core.AttributesMapper;
  * @author rlorthio
  *
  */
-public class LdapAttributesForMapping implements AttributesMapper<LdapUser> {
+public class LdapAttributesForMapping implements AttributesMapper<LdapUser>, Serializable {
+
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -6946533694863497869L;
 
 	private String uidAttribute;
 

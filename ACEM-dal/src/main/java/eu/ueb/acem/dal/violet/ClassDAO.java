@@ -42,7 +42,7 @@ public class ClassDAO extends AbstractDAO<Class, ClassNode> {
 	private static final long serialVersionUID = 3463144134744279313L;
 
 	@Inject
-	private transient ClassRepository repository;
+	private ClassRepository repository;
 
 	@Override
 	protected final GenericRepository<ClassNode> getRepository() {
@@ -51,9 +51,11 @@ public class ClassDAO extends AbstractDAO<Class, ClassNode> {
 
 	@Override
 	protected final void initializeCollections(Class entity) {
-		neo4jOperations.fetch(entity.getCourse());
-		neo4jOperations.fetch(entity.getPedagogicalScenarios());
-		neo4jOperations.fetch(entity.getLocation());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getCourse());
+			neo4jOperations.fetch(entity.getPedagogicalScenarios());
+			neo4jOperations.fetch(entity.getLocation());
+		}
 	}
 
 }

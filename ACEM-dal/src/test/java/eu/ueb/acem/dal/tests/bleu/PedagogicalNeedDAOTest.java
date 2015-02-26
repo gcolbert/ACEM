@@ -25,8 +25,6 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -36,7 +34,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
 import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 
@@ -58,15 +58,10 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Inject
 	private PedagogicalNeedDAO needDAO;
 
+	@Inject
+	private PedagogicalAnswerDAO answerDAO;
+
 	public PedagogicalNeedDAOTest() {
-	}
-
-	@Before
-	public void before() {
-	}
-
-	@After
-	public void after() {
 	}
 
 	/**
@@ -96,7 +91,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t02_TestPedagogicalNeedDAORetrieve() {
+	public final void t02a_TestPedagogicalNeedDAORetrieve() {
 		// We create a new object in the datastore
 		PedagogicalNeed need1 = needDAO.create(new PedagogicalNeedNode("t02 need"));
 		assertEquals(new Long(1), needDAO.count());
@@ -112,6 +107,22 @@ public class PedagogicalNeedDAOTest extends TestCase {
 		assertTrue(needs.contains(need1));
 
 		assertTrue(needDAO.retrieveByName(need1.getName()).contains(need1));
+	}
+
+	/**
+	 * Retrieve an A entity from DAO<B>
+	 */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public final void t02b_TestRetrieveUsingWrongDAO() {
+		// We create a new object in the datastore
+		PedagogicalNeed need1 = needDAO.create(new PedagogicalNeedNode("a need"));
+		assertEquals(new Long(1), needDAO.count());
+
+		// We retrieve our PedagogicalNeed from the PedagogicalAnswer DAO
+		PedagogicalAnswer nodeThatShouldBeNull = answerDAO.retrieveById(need1.getId());
+		assertNull("An entity retrieved through the wrong DAO should be null.", nodeThatShouldBeNull);
 	}
 
 	/**

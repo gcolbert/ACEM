@@ -51,8 +51,10 @@ public class CreditDAO extends AbstractDAO<Credit, CreditNode> {
 
 	@Override
 	protected final void initializeCollections(Credit entity) {
-		neo4jOperations.fetch(entity.getCourses());
-		neo4jOperations.fetch(entity.getDegrees());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getCourses());
+			neo4jOperations.fetch(entity.getDegrees());
+		}
 	}
 
 }

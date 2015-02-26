@@ -94,7 +94,7 @@ public class EditableTreeBean implements Serializable {
 	 *            The node type of the new node (supported types are defined by
 	 *            the tree controller)
 	 * @param parent
-	 *            The node of the parent
+	 *            The parent of the new node
 	 * @param id
 	 *            The identifier of the underlying domain bean (so that we can,
 	 *            for example, save the label if the user modifies it)
@@ -154,10 +154,20 @@ public class EditableTreeBean implements Serializable {
 		}
 	}
 
-	public TreeNode getNodeWithId(Long id) {
+	/**
+	 * This method accesses the Map of all nodes in order to return the node
+	 * (value) having the given id (key).
+	 */
+	private TreeNode getNodeWithId(Long id) {
 		return allNodes.get(id);
 	}
 
+	/**
+	 * This method takes as parameter a set of node identifiers. It will modify
+	 * this instance of EditableTreeBean so that only the given leaves and their
+	 * parents remain. All nodes which are not in the given set, and which are
+	 * not parents of the given nodes, will be deleted.
+	 */
 	public void retainLeavesAndParents(Set<Long> idsOfLeavesToKeep) {
 		Set<TreeNode> nodesToKeep = new HashSet<TreeNode>();
 		for (Long id : idsOfLeavesToKeep) {
@@ -173,6 +183,10 @@ public class EditableTreeBean implements Serializable {
 		retainChildren(root, nodesToKeep);
 	}
 
+	/**
+	 * This method recursively explores the given node and remove all children
+	 * which are not in the given Set of TreeNodes to keep.
+	 */
 	private void retainChildren(TreeNode node, Set<TreeNode> nodesToKeep) {
 		node.getChildren().retainAll(nodesToKeep);
 		for (TreeNode child : node.getChildren()) {
@@ -245,9 +259,9 @@ public class EditableTreeBean implements Serializable {
 		/**
 		 * By convention, the CSS class returned by the TreeNodeData class will
 		 * be equal to the "concept" parameter that was used to construct it.
-		 * For example, if you create a node with the concept "Answer", then you
-		 * have to use a CSS class equal to ".Answer" to give a style to this
-		 * node.
+		 * For example, if you create a node with the concept
+		 * "PedagogicalAnswer", then you have to use a CSS class equal to
+		 * ".PedagogicalAnswer" to give a style to this node.
 		 * 
 		 * @return the concept
 		 */

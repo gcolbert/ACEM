@@ -100,19 +100,19 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	private List<ToolCategoryViewBean> toolCategoryViewBeansForSelectedAnswer;
 
 	public String getTreeNodeType_NEED_LEAF() {
-		return pedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_LEAF();
+		return PedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_LEAF();
 	}
 
 	public String getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS() {
-		return pedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS();
+		return PedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS();
 	}
 
 	public String getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS() {
-		return pedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS();
+		return PedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS();
 	}
 
 	public String getTreeNodeType_ANSWER_LEAF() {
-		return pedagogicalAdviceTreeGenerator.getTreeNodeType_ANSWER_LEAF();
+		return PedagogicalAdviceTreeGenerator.getTreeNodeType_ANSWER_LEAF();
 	}
 
 	public PedagogicalAdviceController() {
@@ -337,7 +337,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				MessageDisplayer.info(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.DRAG_AND_DROP_SUCCESSFUL.TITLE", null,
 						getCurrentUserLocale()), "");
 			}
-			else if (dropNode.getType().equals("default")) {
+			else if ("default".equals(dropNode.getType())) {
 				revertDragDrop = true;
 				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
 						getCurrentUserLocale()), msgs.getMessage(
@@ -363,7 +363,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 			// Here we know that dragNode is NEED_LEAF,
 			// NEED_WITH_ASSOCIATED_NEEDS or NEED_WITH_ASSOCIATED_ANSWERS
 			if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())
-					|| (dropNode.getType().equals(getTreeNodeType_NEED_LEAF()) || (dropNode.getType().equals("default")))) {
+					|| (dropNode.getType().equals(getTreeNodeType_NEED_LEAF()) || ("default".equals(dropNode.getType())))) {
 				needsAndAnswersService.changeParentOfNeedOrAnswer(dragNodeData.getId(), dropNodeData.getId());
 
 				// If the dropNode was a NEED_LEAF, we change its type to

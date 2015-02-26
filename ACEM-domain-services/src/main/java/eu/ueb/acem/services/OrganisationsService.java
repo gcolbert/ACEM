@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.rouge.Community;
@@ -31,7 +32,7 @@ import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
  * @since 2013-11-20
  * 
  */
-public interface OrganisationsService {
+public interface OrganisationsService extends Serializable {
 
 	Long countCommunities();
 

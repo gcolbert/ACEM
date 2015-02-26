@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -34,7 +36,7 @@ import eu.ueb.acem.services.auth.LdapUserService;
  * @since 2013-11-25
  */
 @Service("domainService")
-public class DomainServiceImpl implements DomainService, InitializingBean {
+public class DomainServiceImpl implements DomainService, Serializable, InitializingBean {
 
 	/**
 	 * For Serialize.

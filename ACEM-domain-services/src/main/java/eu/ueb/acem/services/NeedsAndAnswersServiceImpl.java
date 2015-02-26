@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -50,8 +51,16 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
  * 
  */
 @Service("needsAndAnswersService")
-public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
+public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Serializable {
 
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 3642737254578203234L;
+
+	/**
+	 * For logging.
+	 */
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
 
 	@Inject
@@ -73,7 +82,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	private ResourcesService resourcesService;
 
 	public NeedsAndAnswersServiceImpl() {
-
 	}
 
 	@Override
@@ -200,64 +208,64 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	@Transactional
 	public void changeParentOfNeedOrAnswer(Long id, Long idNewParent) {
 		logger.debug("entering changeParentOfNeed({}, {})", id, idNewParent);
-		// The "visible root node" has id=null, and we must not allow the user
-		// to move it
-		if (id != null) {
+		// The "visible root node" has id=null, but it is forbidden to move it.
+		// Moreover, the id parameter must identify an existing entity.
+		if ((id != null) && (needDAO.exists(id) || answerDAO.exists(id))) {
 			PedagogicalNeed need = null;
 			PedagogicalAnswer answer = null;
-			if (needDAO.exists(id) || answerDAO.exists(id)) {
-				Collection<PedagogicalNeed> parents = null;
-				if (needDAO.exists(id)) {
-					need = needDAO.retrieveById(id);
-					parents = need.getParents();
+			Collection<PedagogicalNeed> parents = null;
+			if (needDAO.exists(id)) {
+				need = needDAO.retrieveById(id);
+				parents = need.getParents();
+			}
+			else if (answerDAO.exists(id)) {
+				answer = answerDAO.retrieveById(id);
+				parents = answer.getNeeds();
+			}
+			// We remove the parents of the moved node
+			if (parents != null) {
+				logger.debug("The moved node has parents that we should unlink");
+				Iterator<PedagogicalNeed> iterator = parents.iterator();
+				while (iterator.hasNext()) {
+					iterator.next();
+					iterator.remove();
+					logger.info("parent is unlinked");
 				}
-				else if (answerDAO.exists(id)) {
-					answer = answerDAO.retrieveById(id);
-					parents = answer.getNeeds();
-				}
-				if (parents != null) {
-					logger.debug("The moved node has parents that we should unlink");
-					Iterator<PedagogicalNeed> iterator = parents.iterator();
-					if (iterator != null) {
-						while (iterator.hasNext()) {
-							iterator.next();
-							iterator.remove();
-							logger.info("parent is unlinked");
-						}
-					}
-				} else {
-					logger.debug("The moved node has no parents (!?)");
-				}
-				if (idNewParent != null) {
-					if (needDAO.exists(idNewParent)) {
-						PedagogicalNeed newParent = needDAO.retrieveById(idNewParent);
-						logger.debug("newParent={}", newParent);
-						if (need != null) {
-							newParent.getChildren().add(need);
-							need.getParents().add(newParent);
-						}
-						else if (answer != null) {
-							newParent.getAnswers().add(answer);
-							answer.getNeeds().add(newParent);
-						}
-						newParent = needDAO.update(newParent);
-					}
-					else {
-						logger.debug("The new parent is not a PedagogicalNeed (!?)");
-					}
-				}
+			} else {
+				logger.debug("The moved node has no parents (!?)");
+			}
+			// We have removed the parents of the moved node
+			// Now we have to connect its new parent
+			// Please note that the parent is always a PedagogicalNeed
+			// according to the current domain model.
+			if ((idNewParent != null) && (needDAO.exists(idNewParent))) {
+				PedagogicalNeed newParent = needDAO.retrieveById(idNewParent);
+				logger.debug("newParent={}", newParent);
 				if (need != null) {
-					need = needDAO.update(need);
-					logger.debug("Need is updated");
+					newParent.getChildren().add(need);
+					need.getParents().add(newParent);
 				}
-				else  if (answer != null) {
-					answer = answerDAO.update(answer);
-					logger.debug("Answer is updated");
+				else if (answer != null) {
+					newParent.getAnswers().add(answer);
+					answer.getNeeds().add(newParent);
 				}
+				newParent = needDAO.update(newParent);
 			}
 			else {
-				logger.error("There is no PedagogicalNeed, nor PedagogicalAnswer, with id={}", id);
+				logger.debug("The new parent is not a PedagogicalNeed (!?)");
 			}
+			// We have to update the need or the answer
+			if (need != null) {
+				need = needDAO.update(need);
+				logger.debug("Need is updated");
+			}
+			else  if (answer != null) {
+				answer = answerDAO.update(answer);
+				logger.debug("Answer is updated");
+			}
+		}
+		else {
+			logger.error("There is no PedagogicalNeed, nor PedagogicalAnswer, with id={}", id);
 		}
 		logger.debug("leaving changeParentOfNeed({}, {})", id, idNewParent);
 	}
@@ -308,7 +316,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		}
 		return scenarios;
 	}
-	
+
 	@Override
 	public Collection<Resource> getResourcesRelatedToAnswer(Long id) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(id);

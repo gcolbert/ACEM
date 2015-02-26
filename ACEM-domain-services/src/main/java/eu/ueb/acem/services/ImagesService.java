@@ -19,6 +19,7 @@
 package eu.ueb.acem.services;
 
 import java.io.File;
+import java.io.Serializable;
 import java.nio.file.Path;
 
 /**
@@ -26,7 +27,7 @@ import java.nio.file.Path;
  * @since 2014-03-20
  * 
  */
-public interface ImagesService {
+public interface ImagesService extends Serializable {
 
 	File getImage(String imageFileName);
 

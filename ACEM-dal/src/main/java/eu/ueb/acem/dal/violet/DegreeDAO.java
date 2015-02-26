@@ -51,7 +51,9 @@ public class DegreeDAO extends AbstractDAO<Degree, DegreeNode> {
 
 	@Override
 	protected final void initializeCollections(Degree entity) {
-		neo4jOperations.fetch(entity.getCredits());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getCredits());
+		}
 	}
 
 }

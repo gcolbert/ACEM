@@ -51,9 +51,11 @@ public class ResourceCategoryDAO extends AbstractDAO<ResourceCategory, ResourceC
 
 	@Override
 	protected final void initializeCollections(ResourceCategory entity) {
-		neo4jOperations.fetch(entity.getAnswers());
-		neo4jOperations.fetch(entity.getPedagogicalActivities());
-		neo4jOperations.fetch(entity.getResources());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getAnswers());
+			neo4jOperations.fetch(entity.getPedagogicalActivities());
+			neo4jOperations.fetch(entity.getResources());
+		}
 	}
 
 }

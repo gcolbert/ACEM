@@ -69,59 +69,59 @@
 	<ui:define name="west">
 		<p:outputPanel styleClass="toolCategoriesOutputPanel">
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_EQUIPMENT')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType(equipmentViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
 					url="resources/images/my-tools/my-tools.equipments.png"
-					alt="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}"
+					alt="#{msg['RESOURCE_TYPE_EQUIPMENT.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
-						value="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.EQUIPMENT.LABEL']}" /></span>
+						value="#{msg['RESOURCE_TYPE_EQUIPMENT.PLURAL']}" /></span>
 			</p:commandLink>
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_SOFTWARE')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType(softwareViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
 					url="resources/images/my-tools/my-tools.softwares.png"
-					alt="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}"
+					alt="#{msg['RESOURCE_TYPE_SOFTWARE.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
-						value="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE.LABEL']}" /></span>
+						value="#{msg['RESOURCE_TYPE_SOFTWARE.PLURAL']}" /></span>
 			</p:commandLink>
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_SOFTWARE_DOCUMENTATION')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType(softwareDocumentationViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
 					url="resources/images/my-tools/my-tools.software-documentations.png"
-					alt="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}"
+					alt="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
-						value="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.SOFTWARE_DOCUMENTATION.LABEL']}" /></span>
+						value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION.PLURAL']}" /></span>
 			</p:commandLink>
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType(pedagogicalAndDocumentaryResourceViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
 					url="resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
-					alt="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}"
+					alt="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
-						value="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.PEDAGOGICAL_AND_DOCUMENTARY_RESOURCES.LABEL']}" /></span>
+						value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE.PLURAL']}" /></span>
 			</p:commandLink>
 			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType('RESOURCE_TYPE_PROFESSIONAL_TRAINING')}"
+				action="#{associateBean.prepareToolCategoryTreeForResourceType(professionalTrainingViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
 				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
 				<h:graphicImage
 					url="resources/images/my-tools/my-tools.professional-trainings.png"
-					alt="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}"
+					alt="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
-						value="#{msg['MY_TOOLS.TREE.VISIBLE_ROOTS.PROFESSIONAL_TRAININGS.LABEL']}" /></span>
+						value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING.PLURAL']}" /></span>
 			</p:commandLink>
 		</p:outputPanel>
 
@@ -249,19 +249,19 @@
 						icon="ui-icon-plusthick"/>
 				    <p:menu styleClass="overlayMenu" overlay="true" trigger="createResourceButton" my="left top" at="left bottom">
 				        <p:submenu label="#{msg['MY_TOOLS.EDIT_RESOURCE_MODAL_WINDOW.SELECT_TOOL_TYPE']}">
-							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE']}" actionListener="#{associateBean.prepareResourceCreation('RESOURCE_TYPE_SOFTWARE')}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE']}" actionListener="#{associateBean.prepareResourceCreation(softwareViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION']}" actionListener="#{associateBean.prepareResourceCreation('RESOURCE_TYPE_SOFTWARE_DOCUMENTATION')}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION']}" actionListener="#{associateBean.prepareResourceCreation(softwareDocumentationViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_EQUIPMENT']}" actionListener="#{associateBean.prepareResourceCreation('RESOURCE_TYPE_EQUIPMENT')}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_EQUIPMENT']}" actionListener="#{associateBean.prepareResourceCreation(equipmentViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE']}" actionListener="#{associateBean.prepareResourceCreation('RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE')}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE']}" actionListener="#{associateBean.prepareResourceCreation(pedagogicalAndDocumentaryResourceViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING']}" actionListener="#{associateBean.prepareResourceCreation('RESOURCE_TYPE_PROFESSIONAL_TRAINING')}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING']}" actionListener="#{associateBean.prepareResourceCreation(professionalTrainingViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
 				        </p:submenu>

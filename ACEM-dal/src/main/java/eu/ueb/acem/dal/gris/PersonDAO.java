@@ -51,7 +51,9 @@ public class PersonDAO extends AbstractDAO<Person, PersonNode> {
 
 	@Override
 	protected final void initializeCollections(Person entity) {
-		neo4jOperations.fetch(entity.getWorksForOrganisations());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getWorksForOrganisations());
+		}
 	}
 
 	public Person retrieveByLogin(String id, boolean initialize) {

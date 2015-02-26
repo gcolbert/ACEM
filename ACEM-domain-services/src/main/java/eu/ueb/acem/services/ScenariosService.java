@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
@@ -30,7 +31,7 @@ import eu.ueb.acem.domain.beans.gris.Person;
  * @since 2013-11-20
  * 
  */
-public interface ScenariosService {
+public interface ScenariosService extends Serializable {
 
 	Long countScenarios();
 

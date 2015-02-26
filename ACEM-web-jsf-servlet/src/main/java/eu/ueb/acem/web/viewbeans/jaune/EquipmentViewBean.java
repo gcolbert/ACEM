@@ -20,8 +20,7 @@ package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.inject.Named;
 
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 
@@ -30,15 +29,13 @@ import eu.ueb.acem.domain.beans.jaune.Equipment;
  * @since 2014-02-25
  * 
  */
+@Named
 public class EquipmentViewBean extends AbstractResourceViewBean implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -555050946530463265L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(EquipmentViewBean.class);
 
 	private Equipment domainBean;
 
@@ -65,5 +62,4 @@ public class EquipmentViewBean extends AbstractResourceViewBean implements Seria
 	public String getType() {
 		return "RESOURCE_TYPE_EQUIPMENT";
 	}
-
 }

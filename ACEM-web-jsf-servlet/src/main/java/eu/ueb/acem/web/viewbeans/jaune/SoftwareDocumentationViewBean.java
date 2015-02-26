@@ -20,8 +20,7 @@ package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.inject.Named;
 
 import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 
@@ -30,15 +29,13 @@ import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
  * @since 2014-03-19
  * 
  */
+@Named
 public class SoftwareDocumentationViewBean extends AbstractResourceViewBean implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 2189588973638154852L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(SoftwareDocumentationViewBean.class);
 
 	private SoftwareDocumentation domainBean;
 
@@ -69,5 +66,4 @@ public class SoftwareDocumentationViewBean extends AbstractResourceViewBean impl
 	public String getType() {
 		return "RESOURCE_TYPE_SOFTWARE_DOCUMENTATION";
 	}
-
 }

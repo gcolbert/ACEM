@@ -51,7 +51,9 @@ public class CampusDAO extends AbstractDAO<Campus, CampusNode> {
 
 	@Override
 	protected final void initializeCollections(Campus entity) {
-		neo4jOperations.fetch(entity.getBuildings());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getBuildings());
+		}
 	}
 
 }

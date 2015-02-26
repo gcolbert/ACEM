@@ -18,10 +18,11 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 
@@ -30,7 +31,7 @@ import eu.ueb.acem.domain.beans.jaune.Resource;
  * @since 2013-11-20
  * 
  */
-public interface NeedsAndAnswersService {
+public interface NeedsAndAnswersService extends Serializable {
 
 	Boolean deleteNode(Long id);
 	

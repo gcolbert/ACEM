@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -39,7 +40,12 @@ import eu.ueb.acem.domain.beans.gris.Teacher;
  * 
  */
 @Service("scenariosService")
-public class ScenariosServiceImpl implements ScenariosService {
+public class ScenariosServiceImpl implements ScenariosService, Serializable {
+
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = 7105659785242719915L;
 
 	@Inject
 	private PedagogicalScenarioDAO pedagogicalScenarioDAO;

@@ -69,7 +69,12 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 
 	@Override
 	public E retrieveById(Long id) {
-		return (id != null) ? getRepository().findOne(id) : null;
+		if (exists(id)) {
+			return getRepository().findOne(id);
+		}
+		else {
+			return null;
+		}
 	}
 
 	@Override

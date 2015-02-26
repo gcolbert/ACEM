@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -49,7 +50,12 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
  * 
  */
 @Service("organisationsService")
-public class OrganisationsServiceImpl implements OrganisationsService {
+public class OrganisationsServiceImpl implements OrganisationsService, Serializable {
+
+	/**
+	 * For serialization.
+	 */
+	private static final long serialVersionUID = -4629646991379337991L;
 
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationsServiceImpl.class);
 

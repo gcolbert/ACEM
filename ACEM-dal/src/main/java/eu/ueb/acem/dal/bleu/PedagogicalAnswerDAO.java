@@ -51,8 +51,10 @@ public class PedagogicalAnswerDAO extends AbstractDAO<PedagogicalAnswer, Pedagog
 
 	@Override
 	protected final void initializeCollections(PedagogicalAnswer entity) {
-		neo4jOperations.fetch(entity.getResourceCategories());
-		neo4jOperations.fetch(entity.getNeeds());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getResourceCategories());
+			neo4jOperations.fetch(entity.getNeeds());
+		}
 	}
 
 }

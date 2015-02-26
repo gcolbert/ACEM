@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.gris.Person;
@@ -28,7 +29,7 @@ import eu.ueb.acem.domain.beans.gris.Teacher;
  * @since 2013-11-20
  * 
  */
-public interface UsersService {
+public interface UsersService extends Serializable {
 
 	Long countPersons();
 	

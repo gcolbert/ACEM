@@ -47,8 +47,7 @@ public final class FileUtil {
 		super();
 	}
 
-	public static void createDirectory(String parentDirectory, String directory)
-			throws ServiceException {
+	public static void createDirectory(String parentDirectory, String directory) {
 		File f = new File(parentDirectory);
 		if (!f.exists()) {
 			throw new ServiceException("SERVICE_PARENTDIRECTORY_NOT_EXISTS");
@@ -61,7 +60,7 @@ public final class FileUtil {
 	}
 
 	public static void renameDirectoryOrFile(String sourcePath,
-			String targetPath) throws ServiceException {
+			String targetPath) {
 		File f = new File(sourcePath);
 		if (!f.exists()) {
 			throw new ServiceException("SERVICE_PARENTDIRECTORY_NOT_EXISTS");

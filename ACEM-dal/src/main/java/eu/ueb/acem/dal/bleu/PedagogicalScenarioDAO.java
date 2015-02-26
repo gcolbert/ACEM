@@ -57,9 +57,11 @@ public class PedagogicalScenarioDAO extends AbstractDAO<PedagogicalScenario, Ped
 
 	@Override
 	protected final void initializeCollections(PedagogicalScenario entity) {
-		neo4jOperations.fetch(entity.getPedagogicalActivities());
-		neo4jOperations.fetch(entity.getAuthors());
-		neo4jOperations.fetch(entity.getClasses());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getPedagogicalActivities());
+			neo4jOperations.fetch(entity.getAuthors());
+			neo4jOperations.fetch(entity.getClasses());
+		}
 	}
 
 	public Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author) {

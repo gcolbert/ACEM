@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.services;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
@@ -36,14 +37,24 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * @since 2013-11-20
  * 
  */
-public interface ResourcesService {
+public interface ResourcesService extends Serializable {
+
+	String getResourceType_RESOURCE_TYPE_SOFTWARE();
+
+	String getResourceType_RESOURCE_TYPE_SOFTWARE_DOCUMENTATION();
+
+	String getResourceType_RESOURCE_TYPE_EQUIPMENT();
+
+	String getResourceType_RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE();
+
+	String getResourceType_RESOURCE_TYPE_PROFESSIONAL_TRAINING();
 
 	ResourceCategory createResourceCategory(String name, String description, String iconFileName);
 
-	ResourceCategory retrieveResourceCategory(Long id, boolean initialize); 
+	ResourceCategory retrieveResourceCategory(Long id, boolean initialize);
 
 	ResourceCategory updateResourceCategory(ResourceCategory resourceCategory);
-	
+
 	Boolean deleteResourceCategory(Long id);
 
 	Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType);
@@ -52,7 +63,8 @@ public interface ResourcesService {
 
 	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(Long id);
 
-	Resource createResource(ResourceCategory category, Organisation ownerOrganisation, Organisation supportOrganisation, String resourceType, String name, String iconFileName);
+	Resource createResource(ResourceCategory category, Organisation ownerOrganisation,
+			Organisation supportOrganisation, String resourceType, String name, String iconFileName);
 
 	Resource updateResource(Resource resource);
 
@@ -68,7 +80,8 @@ public interface ResourcesService {
 
 	Collection<ProfessionalTraining> retrieveProfessionalTrainingsWithCategory(ResourceCategory category);
 
-	Collection<PedagogicalAndDocumentaryResource> retrievePedagogicalAndDocumentaryResourcesWithCategory(ResourceCategory category);
+	Collection<PedagogicalAndDocumentaryResource> retrievePedagogicalAndDocumentaryResourcesWithCategory(
+			ResourceCategory category);
 
 	void saveResourceName(String resourceType, Long id, String label);
 
@@ -81,7 +94,7 @@ public interface ResourcesService {
 	Boolean deleteUseMode(Long id);
 
 	Boolean associateUseModeAndResource(UseMode useMode, Resource resource);
-	
+
 	Boolean dissociateUseModeAndResource(UseMode useMode, Resource resource);
 
 }

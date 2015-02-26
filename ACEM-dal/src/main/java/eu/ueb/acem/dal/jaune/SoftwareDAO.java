@@ -56,12 +56,14 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 
 	@Override
 	protected final void initializeCollections(Software entity) {
-		neo4jOperations.fetch(entity.getCategories());
-		neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
-		neo4jOperations.fetch(entity.getOrganisationPossessingResource());
-		neo4jOperations.fetch(entity.getOrganisationSupportingResource());
-		neo4jOperations.fetch(entity.getUseModes());
-		neo4jOperations.fetch(entity.getDocumentations());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getCategories());
+			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
+			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
+			neo4jOperations.fetch(entity.getOrganisationSupportingResource());
+			neo4jOperations.fetch(entity.getUseModes());
+			neo4jOperations.fetch(entity.getDocumentations());
+		}
 	}
 
 	/**

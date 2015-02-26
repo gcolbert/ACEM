@@ -20,8 +20,7 @@ package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.inject.Named;
 
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 
@@ -30,15 +29,13 @@ import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
  * @since 2014-04-23
  * 
  */
+@Named
 public class ProfessionalTrainingViewBean extends AbstractResourceViewBean implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -884629268063400124L;
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ProfessionalTrainingViewBean.class);
 
 	private ProfessionalTraining domainBean;
 
@@ -65,5 +62,4 @@ public class ProfessionalTrainingViewBean extends AbstractResourceViewBean imple
 	public String getType() {
 		return "RESOURCE_TYPE_PROFESSIONAL_TRAINING";
 	}
-
 }

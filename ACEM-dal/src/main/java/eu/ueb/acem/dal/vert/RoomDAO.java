@@ -52,7 +52,9 @@ public class RoomDAO extends AbstractDAO<Room, RoomNode> {
 
 	@Override
 	protected final void initializeCollections(Room entity) {
-		neo4jOperations.fetch(entity.getFloor());
+		if (entity != null) {
+			neo4jOperations.fetch(entity.getFloor());
+		}
 	}
 
 }

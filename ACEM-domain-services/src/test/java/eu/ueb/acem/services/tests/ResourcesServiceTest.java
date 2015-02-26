@@ -68,7 +68,7 @@ public class ResourcesServiceTest extends TestCase {
 		ResourceCategory category = resourcesService.createResourceCategory("Interactive whiteboards", "Interactive whiteboards are computerized whiteboards.", null);
 
 		// Finally we create the resource
-		Resource resource = resourcesService.createResource(category, ownerOrganisation, supportOrganisation, "RESOURCE_TYPE_EQUIPMENT", "Interactive whiteboard number 42", null);
+		Resource resource = resourcesService.createResource(category, ownerOrganisation, supportOrganisation,  resourcesService.getResourceType_RESOURCE_TYPE_EQUIPMENT(), "Interactive whiteboard number 42", null);
 
 		// We reload the resource and initialize the collections (because the
 		// asserts only check the pointers and don't access the objects inside
@@ -112,7 +112,7 @@ public class ResourcesServiceTest extends TestCase {
 		ResourceCategory category = resourcesService.createResourceCategory("Interactive whiteboards", "Interactive whiteboards are computerized whiteboards.", null);
 
 		// Finally we create the resource
-		Resource resource = resourcesService.createResource(category, ownerOrganisation, supportOrganisation, "RESOURCE_TYPE_EQUIPMENT", "Interactive whiteboard number 42", null);
+		Resource resource = resourcesService.createResource(category, ownerOrganisation, supportOrganisation, resourcesService.getResourceType_RESOURCE_TYPE_EQUIPMENT(), "Interactive whiteboard number 42", null);
 
 		// It's time to check whether the associations have been done correctly
 		assertTrue("The resource must know its possessing organisation", resource.getOrganisationPossessingResource().equals(ownerOrganisation));
