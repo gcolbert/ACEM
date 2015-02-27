@@ -65,11 +65,11 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(MyScenariosController.class);
 
-	private PedagogicalScenarioViewBean selectedScenarioViewBean;
+	private PedagogicalScenarioViewBean selectedPedagogicalScenarioViewBean;
 
-	private PedagogicalActivityViewBean selectedPedagogicalActivityViewBean;
-
-	private PedagogicalScenarioViewBean objectEditedScenario;
+	private PedagogicalScenarioViewBean objectEditedPedagogicalScenarioViewBean;
+	
+	private PedagogicalActivityViewBean objectEditedPedagogicalActivityViewBean;
 
 	@Inject
 	private ScenariosService scenariosService;
@@ -102,23 +102,76 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	@Override
 	public String getPageTitle() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(msgs.getMessage("MENU.MY_SCENARIOS",null,getCurrentUserLocale()));
-		if (getSelectedScenarioViewBean() != null) {
+		sb.append(msgs.getMessage("MENU.MY_SCENARIOS", null, getCurrentUserLocale()));
+		if (getSelectedPedagogicalScenarioViewBean() != null) {
 			sb.append(" - ");
-			sb.append(getSelectedScenarioViewBean().getName());
+			sb.append(getSelectedPedagogicalScenarioViewBean().getName());
 		}
 		return sb.toString();
 	}
 
-	public PickListBean getPickListBean() {
-		return pickListBean;
+	/*
+	 * ****************** Pedagogical scenarios ********************
+	 */
+	public Long getSelectedScenarioId() {
+		if (getSelectedPedagogicalScenarioViewBean() != null) {
+			return getSelectedPedagogicalScenarioViewBean().getId();
+		}
+		else {
+			return null;
+		}
+	}
+
+//	public void setSelectedScenarioId(Long scenarioId) {
+//		// TODO : méthode qui pourrait servir à avoir l'id du scénario
+//		// sélectionné dans l'URL
+//		logger.info("Entering setSelectedScenarioId, scenarioId = {}", scenarioId);
+//		PedagogicalScenarioViewBean scenarioViewBean = pedagogicalScenarioViewBeans.getTableEntries().get(
+//				scenarioId.intValue());
+//		setSelectedScenarioViewBean(scenarioViewBean);
+//		logger.info("Leaving setSelectedScenarioId, scenarioId = {}", scenarioId);
+//	}
+
+	public List<PedagogicalScenarioViewBean> getScenarioViewBeans() {
+		return pedagogicalScenarioViewBeans.getTableEntries();
+	}
+
+	public PedagogicalScenarioViewBean getSelectedPedagogicalScenarioViewBean() {
+		return selectedPedagogicalScenarioViewBean;
+	}
+
+	public void setSelectedPedagogicalScenarioViewBean(PedagogicalScenarioViewBean selectedScenarioViewBean) {
+		this.selectedPedagogicalScenarioViewBean = selectedScenarioViewBean;
+		if (this.selectedPedagogicalScenarioViewBean != null) {
+			// We create the pedagogicalActivityViewBeans associated with the
+			// selected scenario
+			this.selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().clear();
+			for (PedagogicalActivity pedagogicalActivity : this.selectedPedagogicalScenarioViewBean.getDomainBean()
+					.getPedagogicalActivities()) {
+				pedagogicalActivity = scenariosService.retrievePedagogicalActivity(pedagogicalActivity.getId(), true);
+				PedagogicalActivityViewBean pedagogicalActivityViewBean = new PedagogicalActivityViewBean(
+						pedagogicalActivity);
+				this.selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().add(pedagogicalActivityViewBean);
+				for (ResourceCategory resourceCategory : pedagogicalActivityViewBean.getDomainBean()
+						.getResourceCategories()) {
+					ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(resourceCategory);
+					pedagogicalActivityViewBean.getToolCategoryViewBeans().add(toolCategoryViewBean);
+				}
+				Collections.sort(pedagogicalActivityViewBean.getToolCategoryViewBeans());
+			}
+			Collections.sort(this.selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans());
+		}
+	}
+
+	public void onScenarioRowSelect(SelectEvent event) {
+		setSelectedPedagogicalScenarioViewBean((PedagogicalScenarioViewBean) event.getObject());
 	}
 
 	public void deleteSelectedScenario() {
-		if (selectedScenarioViewBean != null) {
-			if (scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(selectedScenarioViewBean.getId(), getCurrentUser().getId())) {
-				((Teacher)getCurrentUserViewBean().getDomainBean()).getScenarios().remove(selectedScenarioViewBean);
-				pedagogicalScenarioViewBeans.getTableEntries().remove(selectedScenarioViewBean);
+		if (selectedPedagogicalScenarioViewBean != null) {
+			if (scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(selectedPedagogicalScenarioViewBean.getId(), getCurrentUser().getId())) {
+				((Teacher)getCurrentUserViewBean().getDomainBean()).getScenarios().remove(selectedPedagogicalScenarioViewBean);
+				pedagogicalScenarioViewBeans.getTableEntries().remove(selectedPedagogicalScenarioViewBean);
 				MessageDisplayer.info(
 						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
 						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
@@ -129,85 +182,36 @@ public class MyScenariosController extends AbstractContextAwareController implem
 						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()),
 						logger);
 			}
-			selectedScenarioViewBean = null;
+			selectedPedagogicalScenarioViewBean = null;
 		}
-	}
-
-	public Long getSelectedScenarioId() {
-		if (getSelectedScenarioViewBean() != null) {
-			return getSelectedScenarioViewBean().getId();
-		}
-		else {
-			return null;
-		}
-	}
-
-	public void setSelectedScenarioId(Long scenarioId) {
-// TODO : méthode qui pourrait servir à avoir l'id du scénario sélectionné dans l'URL
-//		logger.info("Entering setSelectedScenarioId, scenarioId = {}", scenarioId);
-//		PedagogicalScenarioViewBean scenarioViewBean = this.scenarioViewBeans.getTableEntries().get(scenarioId.intValue());
-//		setSelectedScenarioViewBean(scenarioViewBean);
-//		logger.info("Leaving setSelectedScenarioId, scenarioId = {}", scenarioId);
-	}
-
-	public List<PedagogicalScenarioViewBean> getScenarioViewBeans() {
-		return pedagogicalScenarioViewBeans.getTableEntries();
-	}
-
-	public PedagogicalScenarioViewBean getSelectedScenarioViewBean() {
-		return selectedScenarioViewBean;
-	}
-
-	public void setSelectedScenarioViewBean(PedagogicalScenarioViewBean selectedScenarioViewBean) {
-		this.selectedScenarioViewBean = selectedScenarioViewBean;
-		if (this.selectedScenarioViewBean != null) {
-			// We create the pedagogicalActivityViewBeans associated with the selected scenario
-			this.selectedScenarioViewBean.getPedagogicalActivityViewBeans().clear();
-			for (PedagogicalActivity pedagogicalActivity : this.selectedScenarioViewBean.getDomainBean().getPedagogicalActivities()) {
-				pedagogicalActivity = scenariosService.retrievePedagogicalActivity(pedagogicalActivity.getId(), true);
-				PedagogicalActivityViewBean pedagogicalActivityViewBean = new PedagogicalActivityViewBean(pedagogicalActivity);
-				this.selectedScenarioViewBean.getPedagogicalActivityViewBeans().add(pedagogicalActivityViewBean);
-				for (ResourceCategory resourceCategory : pedagogicalActivityViewBean.getDomainBean().getResourceCategories()) {
-					ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(resourceCategory);
-					pedagogicalActivityViewBean.getToolCategoryViewBeans().add(toolCategoryViewBean);
-				}
-				Collections.sort(pedagogicalActivityViewBean.getToolCategoryViewBeans());
-			}
-			Collections.sort(this.selectedScenarioViewBean.getPedagogicalActivityViewBeans());
-		}
-	}
-
-	public PedagogicalActivityViewBean getSelectedPedagogicalActivityViewBean() {
-		return selectedPedagogicalActivityViewBean;
-	}
-
-	public void setSelectedPedagogicalActivityViewBean(PedagogicalActivityViewBean selectedActivityViewBean) {
-		this.selectedPedagogicalActivityViewBean = selectedActivityViewBean;
-	}
-
-	public void onScenarioRowSelect(SelectEvent event) {
-		setSelectedScenarioViewBean((PedagogicalScenarioViewBean) event.getObject());
 	}
 
 	public void prepareCreatePedagogicalScenario() {
-		objectEditedScenario = new PedagogicalScenarioViewBean();
-		selectedScenarioViewBean = null;
+		objectEditedPedagogicalScenarioViewBean = new PedagogicalScenarioViewBean();
+		selectedPedagogicalScenarioViewBean = null;
 	}
 
 	public void prepareModifyPedagogicalScenario() {
-		objectEditedScenario = new PedagogicalScenarioViewBean(scenariosService.retrievePedagogicalScenario(
-				selectedScenarioViewBean.getId(), true));
+		objectEditedPedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(scenariosService.retrievePedagogicalScenario(
+				selectedPedagogicalScenarioViewBean.getId(), true));
+	}
+
+	/*
+	 * ****************** Create/modify scenario dialogs ***********
+	 */
+	public PedagogicalScenarioViewBean getObjectEditedPedagogicalScenarioViewBean() {
+		return objectEditedPedagogicalScenarioViewBean;
 	}
 
 	public void onSavePedagogicalScenario() {
-		if (objectEditedScenario.getDomainBean()==null) {
+		if (objectEditedPedagogicalScenarioViewBean.getDomainBean()==null) {
 			// Create
 			PedagogicalScenario scenario = scenariosService.createScenario((Teacher) getCurrentUser(),
-					objectEditedScenario.getName(), objectEditedScenario.getObjective());
+					objectEditedPedagogicalScenarioViewBean.getName(), objectEditedPedagogicalScenarioViewBean.getObjective());
 			if (scenario != null) {
 				PedagogicalScenarioViewBean pedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(scenario);
 				pedagogicalScenarioViewBeans.getTableEntries().add(pedagogicalScenarioViewBean);
-				setSelectedScenarioViewBean(pedagogicalScenarioViewBean);
+				setSelectedPedagogicalScenarioViewBean(pedagogicalScenarioViewBean);
 				MessageDisplayer.info(msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE",
 						null, getCurrentUserLocale()), msgs.getMessage(
 						"MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
@@ -221,52 +225,31 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		}
 		else {
 			// Update
-			selectedScenarioViewBean.setEvaluationModes(objectEditedScenario.getEvaluationModes());
-			selectedScenarioViewBean.setScenario(scenariosService.updateScenario(selectedScenarioViewBean.getDomainBean()));
+			selectedPedagogicalScenarioViewBean.setEvaluationModes(objectEditedPedagogicalScenarioViewBean.getEvaluationModes());
+			selectedPedagogicalScenarioViewBean.setScenario(scenariosService.updateScenario(selectedPedagogicalScenarioViewBean.getDomainBean()));
 			MessageDisplayer.info(
 					msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
 					msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 		}
 		pedagogicalScenarioViewBeans.sortReverseOrder();
 	}
-
-	public void onSaveSelectedPedagogicalActivity() {
-		if (selectedPedagogicalActivityViewBean.getDomainBean()==null) {
-			// Create
-			PedagogicalActivity newPedagogicalActivity = scenariosService.createPedagogicalActivity(selectedPedagogicalActivityViewBean.getName());
-			newPedagogicalActivity.setObjective(selectedPedagogicalActivityViewBean.getObjective());
-			newPedagogicalActivity.setPositionInScenario(new Long(selectedScenarioViewBean.getPedagogicalActivityViewBeans().size()+1));
-			newPedagogicalActivity.setDuration(selectedPedagogicalActivityViewBean.getDuration());
-			newPedagogicalActivity.setInstructions(selectedPedagogicalActivityViewBean.getInstructions());
-			newPedagogicalActivity.getScenarios().add(selectedScenarioViewBean.getDomainBean());
-			for (ToolCategoryViewBean toolCategoryViewBean : selectedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
-				newPedagogicalActivity.getResourceCategories().add(toolCategoryViewBean.getDomainBean());
-				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(newPedagogicalActivity);
-			}
-			selectedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(newPedagogicalActivity));
-			selectedScenarioViewBean.getPedagogicalActivityViewBeans().add(selectedPedagogicalActivityViewBean);
-		}
-		else {
-			// Update
-			selectedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().clear();
-			for (ToolCategoryViewBean toolCategoryViewBean : selectedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
-				selectedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().add(toolCategoryViewBean.getDomainBean());
-				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(selectedPedagogicalActivityViewBean.getDomainBean());
-			}
-			selectedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(selectedPedagogicalActivityViewBean.getDomainBean()));
-		}
-		MessageDisplayer.info(
-				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
-	}
-
-	public PedagogicalScenarioViewBean getObjectEditedScenario() {
-		return objectEditedScenario;
-	}
 	
+	/*
+	 * ****************** Pedagogical activities *******************
+	 */
+	public PedagogicalActivityViewBean getObjectEditedPedagogicalActivityViewBean() {
+		return objectEditedPedagogicalActivityViewBean;
+	}
+
 	public void prepareCreatePedagogicalActivity() {
-		selectedPedagogicalActivityViewBean = new PedagogicalActivityViewBean();
+		objectEditedPedagogicalActivityViewBean = new PedagogicalActivityViewBean();
 		preparePicklistToolCategoryViewBeansForPedagogicalActivity(null);
+	}
+
+	public void prepareModifyPedagogicalActivity(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
+		objectEditedPedagogicalActivityViewBean = new PedagogicalActivityViewBean(scenariosService.retrievePedagogicalActivity(
+				pedagogicalActivityViewBean.getId(), true));
+		preparePicklistToolCategoryViewBeansForPedagogicalActivity(pedagogicalActivityViewBean);
 	}
 
 	public void preparePicklistToolCategoryViewBeansForPedagogicalActivity(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
@@ -288,11 +271,11 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	public void onDeletePedagogicalActivity(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
 		if (pedagogicalActivityViewBean != null) {
 			if (scenariosService.deletePedagogicalActivity(pedagogicalActivityViewBean.getDomainBean().getId())) {
-				int positionOfDeletedActivity = selectedScenarioViewBean.getPedagogicalActivityViewBeans().indexOf(pedagogicalActivityViewBean);
-				selectedScenarioViewBean.getPedagogicalActivityViewBeans().remove(pedagogicalActivityViewBean);
+				int positionOfDeletedActivity = selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().indexOf(pedagogicalActivityViewBean);
+				selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().remove(pedagogicalActivityViewBean);
 				// We renumber the remaining pedagogical activities of the selected scenario
-				for (int i = positionOfDeletedActivity; i < selectedScenarioViewBean.getPedagogicalActivityViewBeans().size(); i++) {
-					PedagogicalActivityViewBean pedagogicalActivityViewBeanNeedingANewPosition = selectedScenarioViewBean.getPedagogicalActivityViewBeans().get(i);
+				for (int i = positionOfDeletedActivity; i < selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().size(); i++) {
+					PedagogicalActivityViewBean pedagogicalActivityViewBeanNeedingANewPosition = selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().get(i);
 					PedagogicalActivity pedagogicalActivity = pedagogicalActivityViewBeanNeedingANewPosition.getDomainBean();
 					pedagogicalActivity.setPositionInScenario(new Long(i+1));
 					pedagogicalActivity = scenariosService.updatePedagogicalActivity(pedagogicalActivity);
@@ -315,12 +298,51 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		List<ToolCategoryViewBean> listOfMovedViewBeans = (List<ToolCategoryViewBean>) event.getItems();
 		for (ToolCategoryViewBean movedToolCategoryViewBean : listOfMovedViewBeans) {
 			if (event.isAdd()) {
-				selectedPedagogicalActivityViewBean.getToolCategoryViewBeans().add(movedToolCategoryViewBean);
+				objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans().add(movedToolCategoryViewBean);
 			}
 			else {
-				selectedPedagogicalActivityViewBean.getToolCategoryViewBeans().remove(movedToolCategoryViewBean);
+				objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans().remove(movedToolCategoryViewBean);
 			}
 		}
+	}
+
+	/*
+	 * ****************** Create/modify activity dialog ************
+	 */
+	public PickListBean getPickListBean() {
+		return pickListBean;
+	}
+
+	public void onSavePedagogicalActivity() {
+		if (objectEditedPedagogicalActivityViewBean.getDomainBean()==null) {
+			// Create
+			PedagogicalActivity newPedagogicalActivity = scenariosService.createPedagogicalActivity(objectEditedPedagogicalActivityViewBean.getName());
+			newPedagogicalActivity.setObjective(objectEditedPedagogicalActivityViewBean.getObjective());
+			newPedagogicalActivity.setPositionInScenario(new Long(selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().size()+1));
+			newPedagogicalActivity.setDuration(objectEditedPedagogicalActivityViewBean.getDuration());
+			newPedagogicalActivity.setInstructions(objectEditedPedagogicalActivityViewBean.getInstructions());
+			newPedagogicalActivity.getScenarios().add(selectedPedagogicalScenarioViewBean.getDomainBean());
+			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
+				newPedagogicalActivity.getResourceCategories().add(toolCategoryViewBean.getDomainBean());
+				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(newPedagogicalActivity);
+			}
+			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(newPedagogicalActivity));
+		}
+		else {
+			// Update
+			objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().clear();
+			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
+				objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().add(toolCategoryViewBean.getDomainBean());
+				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(objectEditedPedagogicalActivityViewBean.getDomainBean());
+			}
+			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(objectEditedPedagogicalActivityViewBean.getDomainBean()));
+		}
+		selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().set(
+				objectEditedPedagogicalActivityViewBean.getPositionInScenario().intValue()-1,
+				objectEditedPedagogicalActivityViewBean);
+		MessageDisplayer.info(
+				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
+				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
 	}
 
 }
