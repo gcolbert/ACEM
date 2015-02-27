@@ -26,7 +26,9 @@ import eu.ueb.acem.web.viewbeans.AbstractViewBean;
  * @since 2015-01-30
  * 
  */
-public abstract class AbstractOrganisationViewBean extends AbstractViewBean implements OrganisationViewBean {
+public abstract class AbstractOrganisationViewBean<E extends Organisation> extends AbstractViewBean implements OrganisationViewBean {
+
+	private E domainBean;
 
 	private String name;
 
@@ -37,10 +39,14 @@ public abstract class AbstractOrganisationViewBean extends AbstractViewBean impl
 	private String contactMode;
 
 	@Override
-	public abstract Organisation getDomainBean();
+	public E getDomainBean() {
+		return domainBean;
+	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setDomainBean(Organisation organisation) {
+		this.domainBean = (E) organisation;
 		setId(organisation.getId());
 		setName(organisation.getName());
 		setShortname(organisation.getShortname());

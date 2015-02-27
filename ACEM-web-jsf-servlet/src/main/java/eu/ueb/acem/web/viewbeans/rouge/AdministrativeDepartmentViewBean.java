@@ -21,21 +21,18 @@ package eu.ueb.acem.web.viewbeans.rouge;
 import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
-import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-25
  * 
  */
-public class AdministrativeDepartmentViewBean extends AbstractOrganisationViewBean implements Serializable {
+public class AdministrativeDepartmentViewBean extends AbstractOrganisationViewBean<AdministrativeDepartment> implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -5647852694643666952L;
-
-	private AdministrativeDepartment domainBean;
 
 	public AdministrativeDepartmentViewBean() {
 	}
@@ -43,17 +40,6 @@ public class AdministrativeDepartmentViewBean extends AbstractOrganisationViewBe
 	public AdministrativeDepartmentViewBean(AdministrativeDepartment domainBean) {
 		this();
 		setDomainBean(domainBean);
-	}
-
-	@Override
-	public AdministrativeDepartment getDomainBean() {
-		return domainBean;
-	}
-
-	@Override
-	public void setDomainBean(Organisation domainBean) {
-		this.domainBean = (AdministrativeDepartment) domainBean;
-		super.setDomainBean(domainBean);
 	}
 
 }

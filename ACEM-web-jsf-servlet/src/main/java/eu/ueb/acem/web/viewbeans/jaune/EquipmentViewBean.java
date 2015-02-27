@@ -30,14 +30,12 @@ import eu.ueb.acem.domain.beans.jaune.Equipment;
  * 
  */
 @Named
-public class EquipmentViewBean extends AbstractResourceViewBean implements Serializable {
+public class EquipmentViewBean extends AbstractResourceViewBean<Equipment> implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -555050946530463265L;
-
-	private Equipment domainBean;
 
 	public EquipmentViewBean() {
 		super();
@@ -47,16 +45,6 @@ public class EquipmentViewBean extends AbstractResourceViewBean implements Seria
 	public EquipmentViewBean(Equipment equipment) {
 		this();
 		setDomainBean(equipment);
-	}
-
-	@Override
-	public Equipment getDomainBean() {
-		return domainBean;
-	}
-
-	public void setDomainBean(Equipment domainBean) {
-		this.domainBean = domainBean;
-		super.setDomainBean(domainBean);
 	}
 
 }

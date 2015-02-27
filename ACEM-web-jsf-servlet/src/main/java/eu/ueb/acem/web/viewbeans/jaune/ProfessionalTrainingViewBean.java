@@ -30,14 +30,12 @@ import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
  * 
  */
 @Named
-public class ProfessionalTrainingViewBean extends AbstractResourceViewBean implements Serializable {
+public class ProfessionalTrainingViewBean extends AbstractResourceViewBean<ProfessionalTraining> implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -884629268063400124L;
-
-	private ProfessionalTraining domainBean;
 
 	public ProfessionalTrainingViewBean() {
 		super();
@@ -47,16 +45,6 @@ public class ProfessionalTrainingViewBean extends AbstractResourceViewBean imple
 	public ProfessionalTrainingViewBean(ProfessionalTraining professionalTraining) {
 		this();
 		setDomainBean(professionalTraining);
-	}
-
-	@Override
-	public ProfessionalTraining getDomainBean() {
-		return domainBean;
-	}
-
-	public void setDomainBean(ProfessionalTraining domainBean) {
-		this.domainBean = domainBean;
-		super.setDomainBean(domainBean);
 	}
 
 }

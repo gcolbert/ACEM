@@ -72,15 +72,14 @@ public class MyServicesController extends AbstractContextAwareController impleme
 
 	public void setSelectedServiceId(Long serviceId) {
 		logger.info("Entering setSelectedServiceId, serviceId = {}", serviceId);
-		selectedServiceId = serviceId;
-
 		Organisation service = organisationsService.retrieveOrganisation(serviceId, true);
 		if (service != null) {
+			selectedServiceId = serviceId;
 			setSelectedServiceViewBean(OrganisationViewBeanGenerator.getViewBean(service));
 		}
 		else {
 			selectedServiceId = null;
-			selectedServiceViewBean = null;
+			setSelectedServiceViewBean(null);
 		}
 		logger.info("Leaving setSelectedToolCategoryId, serviceId = {}", serviceId);
 	}

@@ -45,7 +45,7 @@ public class DaoUserDetailsService implements UserDetailsService, Serializable {
 	 * @return userDetail for Spring
 	 * @throws UsernameNotFoundException
 	 */
-	public UserDetails loadUserByUser(Person targetUser) throws UsernameNotFoundException {
+	public UserDetails loadUserByUser(Person targetUser) {
 
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 

@@ -53,7 +53,7 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	 * For logging.
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
-	
+
 	@Inject
 	private UserDAO<Long, Teacher> teacherDAO;
 

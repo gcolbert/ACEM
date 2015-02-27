@@ -31,7 +31,9 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  * @since 2015-01-30
  * 
  */
-public abstract class AbstractResourceViewBean extends AbstractViewBean implements ResourceViewBean {
+public abstract class AbstractResourceViewBean<E extends Resource> extends AbstractViewBean implements ResourceViewBean {
+
+	private E domainBean;
 
 	private String type;
 
@@ -55,7 +57,9 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 	}
 
 	@Override
-	public abstract Resource getDomainBean();
+	public E getDomainBean() {
+		return domainBean;
+	}
 
 	@Override
 	public String getType() {
@@ -71,8 +75,10 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 		return getType() + ".PLURAL";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void setDomainBean(Resource resource) {
+		this.domainBean = (E)resource;
 		setId(resource.getId());
 		setName(resource.getName());
 		setIconFileName(resource.getIconFileName());

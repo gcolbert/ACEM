@@ -22,7 +22,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.primefaces.event.FileUploadEvent;
@@ -31,8 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.services.util.file.FileUtil;
-
-
 
 /**
  * A visual bean for the dialog Upload.
@@ -142,6 +143,48 @@ public class CommonUploadOneDialog implements Serializable {
 	 */
 	public void cancelAction() {
 		logger.debug("CommonUploadOneDialog cancelAction ");
+	}
+
+	/*
+	 * ***** UTILITIES FOR CONTROLLERS IMPLEMENTING COMMON UPLOAD ONE *****
+	 */
+
+	/**
+	 * Method used in controllers implementing CommonUploadOneDialogInterface,
+	 * to move the image from "temporaryFilePath" to the images's directory, and
+	 * to give it the name "imageFileName", when saving the modified object.
+	 * 
+	 * @param temporaryFilePath
+	 *            a path to the temporary file to move, including filename
+	 * @param imageFileName
+	 *            the filename to give to the file once written in the
+	 *            ImagesDirectory
+	 */
+	public void moveUploadedIconToImagesFolder(Path temporaryFilePath, String imageFileName) {
+		// We move the file from the temporary folder to the images folder,
+		// and give it its original file name
+		String destinationFilePath = FileUtil.getNormalizedFilePath(caller.getDomainService().getImagesDirectory()
+				+ File.separator + imageFileName);
+		if (Files.notExists(Paths.get(destinationFilePath), LinkOption.NOFOLLOW_LINKS)) {
+			FileUtil.renameDirectoryOrFile(temporaryFilePath.toString(), destinationFilePath);
+		}
+	}
+
+	/**
+	 * Method used in controllers implementing CommonUploadOneDialogInterface,
+	 * to delete the temporary file after the user closes the create/modify
+	 * dialog without saving the modified object.
+	 * 
+	 * @param temporaryFilePath
+	 *            A path (including filename) to the temporary file to delete.
+	 */
+	public void deleteTemporaryFileIfExists(Path temporaryFilePath) {
+		if (temporaryFilePath != null) {
+			File oldFile = temporaryFilePath.toFile();
+			if (oldFile.exists()) {
+				oldFile.delete();
+			}
+		}
 	}
 
 }

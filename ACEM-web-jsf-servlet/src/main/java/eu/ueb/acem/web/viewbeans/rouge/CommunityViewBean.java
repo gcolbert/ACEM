@@ -21,21 +21,18 @@ package eu.ueb.acem.web.viewbeans.rouge;
 import java.io.Serializable;
 
 import eu.ueb.acem.domain.beans.rouge.Community;
-import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-25
  * 
  */
-public class CommunityViewBean extends AbstractOrganisationViewBean implements Serializable {
+public class CommunityViewBean extends AbstractOrganisationViewBean<Community> implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -5804352947613671276L;
-
-	private Community domainBean;
 
 	public CommunityViewBean() {
 	}
@@ -43,17 +40,6 @@ public class CommunityViewBean extends AbstractOrganisationViewBean implements S
 	public CommunityViewBean(Community domainBean) {
 		this();
 		setDomainBean(domainBean);
-	}
-
-	@Override
-	public Community getDomainBean() {
-		return domainBean;
-	}
-
-	@Override
-	public void setDomainBean(Organisation domainBean) {
-		this.domainBean = (Community) domainBean;
-		super.setDomainBean(domainBean);
 	}
 
 }

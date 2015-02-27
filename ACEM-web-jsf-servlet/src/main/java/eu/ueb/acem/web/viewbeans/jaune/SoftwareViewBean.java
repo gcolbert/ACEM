@@ -30,14 +30,12 @@ import eu.ueb.acem.domain.beans.jaune.Software;
  * 
  */
 @Named
-public class SoftwareViewBean extends AbstractResourceViewBean implements Serializable {
+public class SoftwareViewBean extends AbstractResourceViewBean<Software> implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -4282575138784718297L;
-
-	private Software domainBean;
 
 	public SoftwareViewBean() {
 		super();
@@ -47,16 +45,6 @@ public class SoftwareViewBean extends AbstractResourceViewBean implements Serial
 	public SoftwareViewBean(Software software) {
 		this();
 		setDomainBean(software);
-	}
-
-	@Override
-	public Software getDomainBean() {
-		return domainBean;
-	}
-
-	public void setDomainBean(Software domainBean) {
-		this.domainBean = domainBean;
-		super.setDomainBean(domainBean);
 	}
 
 }

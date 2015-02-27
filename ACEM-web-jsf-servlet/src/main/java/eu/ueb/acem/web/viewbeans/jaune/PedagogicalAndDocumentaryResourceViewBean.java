@@ -30,14 +30,12 @@ import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
  * 
  */
 @Named
-public class PedagogicalAndDocumentaryResourceViewBean extends AbstractResourceViewBean implements Serializable {
+public class PedagogicalAndDocumentaryResourceViewBean extends AbstractResourceViewBean<PedagogicalAndDocumentaryResource> implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 9043064613804072989L;
-
-	private PedagogicalAndDocumentaryResource domainBean;
 
 	public PedagogicalAndDocumentaryResourceViewBean() {
 		super();
@@ -47,16 +45,6 @@ public class PedagogicalAndDocumentaryResourceViewBean extends AbstractResourceV
 	public PedagogicalAndDocumentaryResourceViewBean(PedagogicalAndDocumentaryResource documentaryAndPedagogicalResource) {
 		this();
 		setDomainBean(documentaryAndPedagogicalResource);
-	}
-	
-	@Override
-	public PedagogicalAndDocumentaryResource getDomainBean() {
-		return domainBean;
-	}
-
-	public void setDomainBean(PedagogicalAndDocumentaryResource domainBean) {
-		this.domainBean = domainBean;
-		super.setDomainBean(domainBean);
 	}
 
 }

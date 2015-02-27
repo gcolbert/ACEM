@@ -113,8 +113,7 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 			logger.debug("language not set for user '" + currentUser.getLogin() + "', return null");
 			return null;
 		}
-		Locale locale = new Locale(lang);
-		return locale;
+		return new Locale(lang);
 	}
 
 	/**

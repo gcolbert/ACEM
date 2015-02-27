@@ -42,9 +42,9 @@ public interface OrganisationViewBean extends Pickable, Comparable<OrganisationV
 	String getIconFileName();
 
 	void setIconFileName(String iconFileName);
-	
+
 	String getContactMode();
-	
+
 	void setContactMode(String contactMode);
 
 	Organisation getDomainBean();

@@ -386,7 +386,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	private void onCreateOrganisation() {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (!iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			commonUploadOneDialog.moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
 			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
@@ -458,7 +458,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	private void onModifyOrganisation() {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (!iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, commonUploadOneDialog.getFileUploadedName());
+			commonUploadOneDialog.moveUploadedIconToImagesFolder(this.temporaryFilePath, commonUploadOneDialog.getFileUploadedName());
 			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 			// We set the icon file name inside this block, because if the user
@@ -835,7 +835,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	 */
 	@Override
 	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath, String originalFileName) {
-		deleteTemporaryFileIfExists(this.temporaryFilePath);
+		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 
 		// Memorize new one
 		this.temporaryFilePath = temporaryFilePath;
@@ -859,7 +859,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	}
 
 	private void resetTemporaryFilePath() {
-		deleteTemporaryFileIfExists(this.temporaryFilePath);
+		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 		this.temporaryFilePath = null;
 		commonUploadOneDialog.reset();
 	}
@@ -871,7 +871,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	 */
 	public void onCloseDialogWithUploadedFile(CloseEvent event) {
 		// Remove previously uploaded file if it exists
-		deleteTemporaryFileIfExists(this.temporaryFilePath);
+		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 	}
 
 }

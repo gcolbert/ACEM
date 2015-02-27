@@ -18,12 +18,6 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.Validate;
@@ -32,7 +26,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.services.util.file.FileUtil;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
@@ -123,48 +116,6 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	 */
 	public SessionController getSessionController() {
 		return sessionController;
-	}
-
-	/*
-	 * ***** UTILITIES FOR CONTROLLERS IMPLEMENTING COMMON UPLOAD ONE *****
-	 */
-
-	/**
-	 * Method used in controllers implementing CommonUploadOneDialogInterface,
-	 * to move the image from "temporaryFilePath" to the images's directory, and
-	 * to give it the name "imageFileName", when saving the modified object.
-	 * 
-	 * @param temporaryFilePath
-	 *            a path to the temporary file to move, including filename
-	 * @param imageFileName
-	 *            the filename to give to the file once written in the
-	 *            ImagesDirectory
-	 */
-	protected void moveUploadedIconToImagesFolder(Path temporaryFilePath, String imageFileName) {
-		// We move the file from the temporary folder to the images folder,
-		// and give it its original file name
-		String destinationFilePath = FileUtil.getNormalizedFilePath(getDomainService().getImagesDirectory()
-				+ File.separator + imageFileName);
-		if (Files.notExists(Paths.get(destinationFilePath), LinkOption.NOFOLLOW_LINKS)) {
-			FileUtil.renameDirectoryOrFile(temporaryFilePath.toString(), destinationFilePath);
-		}
-	}
-
-	/**
-	 * Method used in controllers implementing CommonUploadOneDialogInterface,
-	 * to delete the temporary file after the user closes the create/modify
-	 * dialog without saving the modified object.
-	 * 
-	 * @param temporaryFilePath
-	 *            A path (including filename) to the temporary file to delete.
-	 */
-	protected void deleteTemporaryFileIfExists(Path temporaryFilePath) {
-		if (temporaryFilePath != null) {
-			File oldFile = temporaryFilePath.toFile();
-			if (oldFile.exists()) {
-				oldFile.delete();
-			}
-		}
 	}
 
 }

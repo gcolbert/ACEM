@@ -421,7 +421,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	private void createToolCategoryFromObjectEdited() {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (!iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			commonUploadOneDialog.moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
 			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
@@ -448,7 +448,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		if (objectEditedToolCategory != null) {
 			String iconFileName = commonUploadOneDialog.getFileUploadedName();
 			if (!iconFileName.trim().isEmpty()) {
-				moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+				commonUploadOneDialog.moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
 				this.temporaryFilePath = null;
 				commonUploadOneDialog.reset();
 				// We set the icon file name inside this block, because if the user
@@ -595,7 +595,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	private void createResourceFromObjectEdited() {
 		String iconFileName = commonUploadOneDialog.getFileUploadedName();
 		if (!iconFileName.trim().isEmpty()) {
-			moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+			commonUploadOneDialog.moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
 			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
 		}
@@ -636,7 +636,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		if (objectEditedResource != null) {
 			String iconFileName = commonUploadOneDialog.getFileUploadedName();
 			if (!iconFileName.trim().isEmpty()) {
-				moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
+				commonUploadOneDialog.moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
 				this.temporaryFilePath = null;
 				commonUploadOneDialog.reset();
 				// We set the icon file name inside this block, because if the user
@@ -738,7 +738,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath,
 			String originalFileName) {
 		// Remove previously uploaded file if it exists
-		deleteTemporaryFileIfExists(this.temporaryFilePath);
+		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 
 		// Memorize new one
 		this.temporaryFilePath = temporaryFilePath;
@@ -767,9 +767,9 @@ public class MyToolsController extends AbstractContextAwareController implements
 		objectEditedResource.setIconFileName("");
 		resetTemporaryFilePath();
 	}
-	
+
 	private void resetTemporaryFilePath() {
-		deleteTemporaryFileIfExists(this.temporaryFilePath);
+		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 		this.temporaryFilePath = null;
 		commonUploadOneDialog.reset();
 	}
@@ -780,7 +780,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 */
 	public void onCloseDialogWithUploadedFile(CloseEvent event) {
 		// Remove previously uploaded file if it exists
-		deleteTemporaryFileIfExists(this.temporaryFilePath);
+		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 	}
 
 }
