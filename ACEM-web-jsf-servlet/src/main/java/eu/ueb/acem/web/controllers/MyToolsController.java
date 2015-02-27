@@ -20,7 +20,6 @@ package eu.ueb.acem.web.controllers;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -61,8 +60,8 @@ import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
-import eu.ueb.acem.web.utils.PedagogicalAdviceTreeGenerator;
 import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
+import eu.ueb.acem.web.utils.PedagogicalAdviceTreeGenerator;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
