@@ -118,9 +118,10 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	public final void t02b_TestRetrieveUsingWrongDAO() {
 		// We create a new object in the datastore
 		PedagogicalNeed need1 = pedagogicalNeedDAO.create(new PedagogicalNeedNode("a need"));
-		assertEquals(new Long(1), pedagogicalNeedDAO.count());
+		assertEquals("There must be exactly one object in the datastore", new Long(1), pedagogicalNeedDAO.count());
 
 		// We retrieve our PedagogicalNeed from a wrong DAO
+		assertEquals("There must be exactly zero object dealt by the wrongDAO", new Long(0), wrongDAO.count());
 		PedagogicalAnswer nodeThatShouldBeNull = wrongDAO.retrieveById(need1.getId());
 		assertNull("An entity retrieved through the wrong DAO should be null.", nodeThatShouldBeNull);
 	}
