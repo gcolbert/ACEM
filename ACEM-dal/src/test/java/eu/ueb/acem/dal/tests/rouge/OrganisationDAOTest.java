@@ -35,7 +35,6 @@ import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
-import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
@@ -63,10 +62,6 @@ public class OrganisationDAOTest extends TestCase {
 
 	@Inject
 	private DAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
-
-	@Inject
-	@SuppressWarnings("unused")
-	private DAO<Long, TeachingDepartment> teachingDepartmentDAO;
 
 	public OrganisationDAOTest() {
 
