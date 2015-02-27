@@ -33,6 +33,8 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  */
 public abstract class AbstractResourceViewBean extends AbstractViewBean implements ResourceViewBean {
 
+	private String type;
+
 	private String name;
 
 	private String description;
@@ -54,9 +56,15 @@ public abstract class AbstractResourceViewBean extends AbstractViewBean implemen
 
 	@Override
 	public abstract Resource getDomainBean();
-	
+
 	@Override
-	public abstract String getType();
+	public String getType() {
+		return type; 
+	}
+
+	protected final void setType(String type) {
+		this.type = type;
+	}
 
 	@Override
 	public String getTypePluralFormMessageKey() {

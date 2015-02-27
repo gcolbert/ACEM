@@ -24,8 +24,6 @@ import javax.inject.Inject;
 
 import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -35,15 +33,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.ResourceDAO;
-import eu.ueb.acem.dal.jaune.UseModeDAO;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
@@ -61,36 +59,27 @@ public class ResourceDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(ResourceDAOTest.class);
 
 	@Inject
-	@SuppressWarnings("unused")
-	private UseModeDAO useModeDAO;
+	private DAO<Long, UseMode> useModeDAO;
 
 	@Inject
-	private ResourceCategoryDAO resourceCategoryDAO;
+	private DAO<Long, ResourceCategory> resourceCategoryDAO;
 
 	@Inject
-	private ResourceDAO<Long,Software> softwareDAO;
+	private ResourceDAO<Long, Software> softwareDAO;
 
 	@Inject
-	private ResourceDAO<Long,SoftwareDocumentation> softwareDocumentationDAO;
+	private ResourceDAO<Long, SoftwareDocumentation> softwareDocumentationDAO;
 
 	@Inject
-	private ResourceDAO<Long,Equipment> equipmentDAO;
+	private ResourceDAO<Long, Equipment> equipmentDAO;
 
 	@Inject
-	private ResourceDAO<Long,PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResourcesDAO;
+	private ResourceDAO<Long, PedagogicalAndDocumentaryResource> pedagogicalAndDocumentaryResourcesDAO;
 
 	@Inject
-	private ResourceDAO<Long,ProfessionalTraining> professionalTrainingDAO;
+	private ResourceDAO<Long, ProfessionalTraining> professionalTrainingDAO;
 
 	public ResourceDAOTest() {
-	}
-
-	@Before
-	public void before() {
-	}
-
-	@After
-	public void after() {
 	}
 
 	/**

@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
  * 
  */
 @Repository("teacherDAO")
-public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> {
+public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> implements UserDAO<Long, Teacher> {
 
 	/**
 	 * For serialization
@@ -59,6 +59,7 @@ public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> {
 		}
 	}
 
+	@Override
 	public Teacher retrieveByLogin(String id, boolean initialize) {
 		Teacher entity = repository.findByLogin(id);
 		if (initialize) {

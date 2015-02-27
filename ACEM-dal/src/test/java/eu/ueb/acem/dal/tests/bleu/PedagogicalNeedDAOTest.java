@@ -34,7 +34,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
@@ -56,10 +56,10 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalNeedDAOTest.class);
 
 	@Inject
-	private PedagogicalNeedDAO needDAO;
+	private PedagogicalNeedDAO<Long, PedagogicalNeed> needDAO;
 
 	@Inject
-	private PedagogicalAnswerDAO answerDAO;
+	private DAO<Long, PedagogicalAnswer> answerDAO;
 
 	public PedagogicalNeedDAOTest() {
 	}

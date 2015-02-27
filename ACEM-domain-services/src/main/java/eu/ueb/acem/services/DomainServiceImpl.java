@@ -26,8 +26,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.gris.TeacherDAO;
+import eu.ueb.acem.dal.gris.UserDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 import eu.ueb.acem.services.auth.LdapUserService;
 
@@ -44,7 +45,7 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 	private static final long serialVersionUID = 5562208937407153456L;
 
 	@Inject
-	private TeacherDAO teacherDAO;
+	private UserDAO<Long, Teacher> teacherDAO;
 
 	/**
 	 * {@link ldapUserService}.

@@ -16,20 +16,17 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.bleu;
-
-import java.util.Collection;
+package eu.ueb.acem.dal.gris;
 
 import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.domain.beans.gris.Person;
 
 /**
  * @author Grégoire Colbert
  * @since 2015-02-27
  * 
  */
-public interface PedagogicalScenarioDAO<ID, E> extends DAO<ID, E> {
+public interface UserDAO<ID, E> extends DAO<ID, E> {
 
-	Collection<E> retrieveScenariosWithAuthor(Person author);
+	E retrieveByLogin(String login, boolean initialize);
 
 }

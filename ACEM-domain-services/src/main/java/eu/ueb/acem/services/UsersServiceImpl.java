@@ -28,12 +28,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.gris.PersonDAO;
-import eu.ueb.acem.dal.gris.TeacherDAO;
-import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.dal.gris.UserDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -56,10 +55,10 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 	
 	@Inject
-	private TeacherDAO teacherDAO;
+	private UserDAO<Long, Teacher> teacherDAO;
 
 	@Inject
-	private PersonDAO personDAO;
+	private UserDAO<Long, Person> personDAO;
 
 	@Inject
 	private OrganisationsService organisationsService;

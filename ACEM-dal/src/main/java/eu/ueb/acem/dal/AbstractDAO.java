@@ -49,16 +49,18 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 		return e;
 	}
 
+	/**
+	 * We should use simply return (id != null) ? repository.exists(id) : false;
+	 * but this bug https://jira.spring.io/browse/DATAGRAPH-438 prevents the
+	 * correct detection of the entity's class. It means that the standard
+	 * implementation of exists only checks if a node with this id exists in the
+	 * whole database, independently of the type that the repository deals with.
+	 * 
+	 * @return true if there's an entity with the given id in the current DAO,
+	 *         false otherwise
+	 */
 	@Override
 	public Boolean exists(Long id) {
-		/*
-		 * We should use simply return (id != null) ? repository.exists(id) :
-		 * false; but this bug https://jira.spring.io/browse/DATAGRAPH-438
-		 * prevents the correct detection of the entity's class. It means that
-		 * the standard implementation of exists only checks if a node with this
-		 * id exists in the whole database, independently of the type that the
-		 * repository deals with.
-		 */
 		if (id == null) {
 			return false;
 		}

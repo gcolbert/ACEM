@@ -20,7 +20,7 @@ package eu.ueb.acem.web.viewbeans.jaune;
 
 import java.io.Serializable;
 
-import javax.faces.bean.ManagedBean;
+import javax.inject.Named;
 
 import eu.ueb.acem.domain.beans.jaune.Software;
 
@@ -29,7 +29,7 @@ import eu.ueb.acem.domain.beans.jaune.Software;
  * @since 2014-02-25
  * 
  */
-@ManagedBean
+@Named
 public class SoftwareViewBean extends AbstractResourceViewBean implements Serializable {
 
 	/**
@@ -41,6 +41,7 @@ public class SoftwareViewBean extends AbstractResourceViewBean implements Serial
 
 	public SoftwareViewBean() {
 		super();
+		setType("RESOURCE_TYPE_SOFTWARE");
 	}
 
 	public SoftwareViewBean(Software software) {
@@ -56,11 +57,6 @@ public class SoftwareViewBean extends AbstractResourceViewBean implements Serial
 	public void setDomainBean(Software domainBean) {
 		this.domainBean = domainBean;
 		super.setDomainBean(domainBean);
-	}
-
-	@Override
-	public String getType() {
-		return "RESOURCE_TYPE_SOFTWARE";
 	}
 
 }

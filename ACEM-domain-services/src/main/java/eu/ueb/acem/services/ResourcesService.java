@@ -83,8 +83,6 @@ public interface ResourcesService extends Serializable {
 	Collection<PedagogicalAndDocumentaryResource> retrievePedagogicalAndDocumentaryResourcesWithCategory(
 			ResourceCategory category);
 
-	void saveResourceName(String resourceType, Long id, String label);
-
 	UseMode createUseMode(String name, Organisation referredOrganisation);
 
 	UseMode updateUseMode(UseMode resource);

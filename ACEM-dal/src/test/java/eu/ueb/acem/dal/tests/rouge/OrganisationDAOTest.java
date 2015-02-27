@@ -31,13 +31,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
-import eu.ueb.acem.dal.rouge.CommunityDAO;
-import eu.ueb.acem.dal.rouge.InstitutionDAO;
-import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
@@ -58,17 +56,17 @@ public class OrganisationDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationDAOTest.class);
 
 	@Inject
-	private CommunityDAO communityDAO;
+	private DAO<Long, Community> communityDAO;
 
 	@Inject
-	private InstitutionDAO institutionDAO;
+	private DAO<Long, Institution> institutionDAO;
 
 	@Inject
-	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
+	private DAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
 
 	@Inject
 	@SuppressWarnings("unused")
-	private TeachingDepartmentDAO teachingDepartmentDAO;
+	private DAO<Long, TeachingDepartment> teachingDepartmentDAO;
 
 	public OrganisationDAOTest() {
 

@@ -16,7 +16,10 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.gris;
+package eu.ueb.acem.dal.bleu;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -24,45 +27,49 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.gris.neo4j.PersonRepository;
-import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
+import eu.ueb.acem.dal.bleu.neo4j.PedagogicalNeedRepository;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-12-11
+ * @since 2013-11-20
  * 
  */
-@Repository("personDAO")
-public class PersonDAO extends AbstractDAO<Person, PersonNode> implements UserDAO<Long, Person> {
+@Repository("pedagogicalNeedDAO")
+public class PedagogicalNeedDAOImpl extends AbstractDAO<PedagogicalNeed, PedagogicalNeedNode> implements PedagogicalNeedDAO<Long, PedagogicalNeed> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 1069286673672742458L;
+	private static final long serialVersionUID = -2890608278433660504L;
 
 	@Inject
-	private PersonRepository repository;
+	private PedagogicalNeedRepository repository;
 
 	@Override
-	protected final GenericRepository<PersonNode> getRepository() {
+	protected final GenericRepository<PedagogicalNeedNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Person entity) {
+	protected final void initializeCollections(PedagogicalNeed entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getWorksForOrganisations());
+			neo4jOperations.fetch(entity.getChildren());
+			neo4jOperations.fetch(entity.getAnswers());
+			neo4jOperations.fetch(entity.getParents());
 		}
 	}
 
 	@Override
-	public Person retrieveByLogin(String id, boolean initialize) {
-		Person entity = repository.findByLogin(id);
-		if (initialize) {
-			initializeCollections(entity);
+	public Set<PedagogicalNeed> retrieveNeedsAtRoot() {
+		Set<PedagogicalNeedNode> nodes = repository.findRoots();
+		Set<PedagogicalNeed> needs = new HashSet<PedagogicalNeed>();
+		for (PedagogicalNeedNode need : nodes) {
+			initializeCollections(need);
+			needs.add(need);
 		}
-		return entity;
+		return needs;
 	}
 
 }

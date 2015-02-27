@@ -26,14 +26,9 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.rouge.AdministrativeDepartmentDAO;
-import eu.ueb.acem.dal.rouge.CommunityDAO;
-import eu.ueb.acem.dal.rouge.InstitutionDAO;
-import eu.ueb.acem.dal.rouge.TeachingDepartmentDAO;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -57,19 +52,17 @@ public class OrganisationsServiceImpl implements OrganisationsService, Serializa
 	 */
 	private static final long serialVersionUID = -4629646991379337991L;
 
-	private static final Logger logger = LoggerFactory.getLogger(OrganisationsServiceImpl.class);
+	@Inject
+	private DAO<Long, Community> communityDAO;
 
 	@Inject
-	private CommunityDAO communityDAO;
+	private DAO<Long, Institution> institutionDAO;
 
 	@Inject
-	private InstitutionDAO institutionDAO;
+	private DAO<Long, TeachingDepartment> teachingDepartmentDAO;
 
 	@Inject
-	private TeachingDepartmentDAO teachingDepartmentDAO;
-
-	@Inject
-	private AdministrativeDepartmentDAO administrativeDepartmentDAO;
+	private DAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
 	
 	@Override
 	public Long countCommunities() {
@@ -113,22 +106,17 @@ public class OrganisationsServiceImpl implements OrganisationsService, Serializa
 
 	@Override
 	public Organisation retrieveOrganisation(Long idOrganisation, boolean initialize) {
-		logger.debug("retrieveOrganisation({},{})", idOrganisation, initialize);
 		Organisation organisation = null;
 		if (communityDAO.exists(idOrganisation)) {
-			logger.debug("organisation found using communityDAO");
 			organisation = communityDAO.retrieveById(idOrganisation, initialize);
 		}
 		else if (institutionDAO.exists(idOrganisation)) {
-			logger.debug("organisation found using institutionDAO");
 			organisation = institutionDAO.retrieveById(idOrganisation, initialize);
 		}
 		else if (administrativeDepartmentDAO.exists(idOrganisation)) {
-			logger.debug("organisation found using administrativeDepartmentDAO");
 			organisation = administrativeDepartmentDAO.retrieveById(idOrganisation, initialize);
 		}
 		else if (teachingDepartmentDAO.exists(idOrganisation)) {
-			logger.debug("organisation found using teachingDepartmentDAO");
 			organisation = teachingDepartmentDAO.retrieveById(idOrganisation, initialize);
 		}
 		return organisation;

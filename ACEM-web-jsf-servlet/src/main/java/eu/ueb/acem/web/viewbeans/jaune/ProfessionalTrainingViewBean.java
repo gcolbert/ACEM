@@ -41,6 +41,7 @@ public class ProfessionalTrainingViewBean extends AbstractResourceViewBean imple
 
 	public ProfessionalTrainingViewBean() {
 		super();
+		setType("RESOURCE_TYPE_PROFESSIONAL_TRAINING");
 	}
 
 	public ProfessionalTrainingViewBean(ProfessionalTraining professionalTraining) {
@@ -58,8 +59,4 @@ public class ProfessionalTrainingViewBean extends AbstractResourceViewBean imple
 		super.setDomainBean(domainBean);
 	}
 
-	@Override
-	public String getType() {
-		return "RESOURCE_TYPE_PROFESSIONAL_TRAINING";
-	}
 }

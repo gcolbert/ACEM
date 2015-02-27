@@ -31,11 +31,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.bleu.PedagogicalActivityDAO;
-import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
-import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
-import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
@@ -64,20 +61,20 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
 
 	@Inject
-	private PedagogicalNeedDAO needDAO;
+	private PedagogicalNeedDAO<Long, PedagogicalNeed> needDAO;
 
 	@Inject
-	private PedagogicalAnswerDAO answerDAO;
-	
+	private DAO<Long, PedagogicalAnswer> answerDAO;
+
 	@Inject
-	private ResourceCategoryDAO resourceCategoryDAO;
-	
+	private DAO<Long, ResourceCategory> resourceCategoryDAO;
+
 	@Inject
-	private PedagogicalScenarioDAO pedagogicalScenarioDAO;
-	
+	private DAO<Long, PedagogicalScenario> pedagogicalScenarioDAOImpl;
+
 	@Inject
-	private PedagogicalActivityDAO pedagogicalActivityDAO;
-	
+	private DAO<Long, PedagogicalActivity> pedagogicalActivityDAO;
+
 	@Inject
 	private ResourcesService resourcesService;
 
@@ -309,7 +306,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 			for (PedagogicalActivity pedagogicalActivity : resourceCategory.getPedagogicalActivities()) {
 				pedagogicalActivity = pedagogicalActivityDAO.retrieveById(pedagogicalActivity.getId(), true);
 				for (PedagogicalScenario pedagogicalScenario : pedagogicalActivity.getScenarios()) {
-					pedagogicalScenario = pedagogicalScenarioDAO.retrieveById(pedagogicalScenario.getId(), true);
+					pedagogicalScenario = pedagogicalScenarioDAOImpl.retrieveById(pedagogicalScenario.getId(), true);
 					scenarios.add(pedagogicalScenario);
 				}
 			}
