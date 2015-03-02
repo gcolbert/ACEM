@@ -21,6 +21,9 @@ package eu.ueb.acem.web.viewbeans.jaune;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.web.viewbeans.AbstractViewBean;
@@ -32,6 +35,8 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  * 
  */
 public abstract class AbstractResourceViewBean<E extends Resource> extends AbstractViewBean implements ResourceViewBean {
+
+	private static final Logger logger = LoggerFactory.getLogger(AbstractResourceViewBean.class);
 
 	private E domainBean;
 
@@ -136,7 +141,7 @@ public abstract class AbstractResourceViewBean<E extends Resource> extends Abstr
 	@Override
 	public void setOrganisationPossessingResourceViewBean(OrganisationViewBean organisationViewBean) {
 		this.organisationPossessingResourceViewBean = organisationViewBean;
-		if (getDomainBean() != null) {
+		if ((organisationViewBean != null) && (getDomainBean() != null)) {
 			getDomainBean().setOrganisationPossessingResource(organisationViewBean.getDomainBean());
 		}
 	}
@@ -149,7 +154,7 @@ public abstract class AbstractResourceViewBean<E extends Resource> extends Abstr
 	@Override
 	public void setOrganisationSupportingResourceViewBean(OrganisationViewBean organisationViewBean) {
 		this.organisationSupportingResourceViewBean = organisationViewBean;
-		if (getDomainBean() != null) {
+		if ((organisationViewBean != null) && (getDomainBean() != null)) {
 			getDomainBean().setOrganisationSupportingResource(organisationViewBean.getDomainBean());
 		}
 	}

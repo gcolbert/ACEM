@@ -249,19 +249,19 @@
 						icon="ui-icon-plusthick"/>
 				    <p:menu styleClass="overlayMenu" overlay="true" trigger="createResourceButton" my="left top" at="left bottom">
 				        <p:submenu label="#{msg['MY_TOOLS.EDIT_RESOURCE_MODAL_WINDOW.SELECT_TOOL_TYPE']}">
-							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE']}" actionListener="#{associateBean.prepareResourceCreation(softwareViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE']}" action="#{associateBean.prepareResourceCreation(softwareViewBean)}" update="selectedToolCategoryOutputPanel :createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION']}" actionListener="#{associateBean.prepareResourceCreation(softwareDocumentationViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION']}" action="#{associateBean.prepareResourceCreation(softwareDocumentationViewBean)}" update="selectedToolCategoryOutputPanel :createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_EQUIPMENT']}" actionListener="#{associateBean.prepareResourceCreation(equipmentViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_EQUIPMENT']}" action="#{associateBean.prepareResourceCreation(equipmentViewBean)}" update="selectedToolCategoryOutputPanel :createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE']}" actionListener="#{associateBean.prepareResourceCreation(pedagogicalAndDocumentaryResourceViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE']}" action="#{associateBean.prepareResourceCreation(pedagogicalAndDocumentaryResourceViewBean)}" update="selectedToolCategoryOutputPanel :createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING']}" actionListener="#{associateBean.prepareResourceCreation(professionalTrainingViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING']}" action="#{associateBean.prepareResourceCreation(professionalTrainingViewBean)}" update="selectedToolCategoryOutputPanel :createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
 				        </p:submenu>
