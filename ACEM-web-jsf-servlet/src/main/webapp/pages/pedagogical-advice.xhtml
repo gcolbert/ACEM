@@ -107,7 +107,7 @@
 				<h2><h:outputText value="#{associateBean.selectedPedagogicalAdvice.name}"/></h2>
 
 				<p:panelGrid columns="2" styleClass="pedagogicalAdvicePanelGrid">
-					<h:graphicImage url="resources/images/pedagogical-advice.png"
+					<h:graphicImage url="/resources/images/pedagogical-advice.png"
 						alt="#{msg['MENU.PEDAGOGICAL_ADVICE']}" styleClass="pageIllustration" />
 					<p:panelGrid columns="1">
 						<h:outputText styleClass="section-title"
@@ -133,7 +133,7 @@
 						var="toolCategoryViewBean">
 						<p:column
 							headerText="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.ASSOCIATED_TOOLS.COLUMNS.TOOL_CATEGORY']}">
-							<h:link id="goToToolCategoryBtn" outcome="my-tools">
+							<h:link id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
 								<f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
 								<h:outputText value="#{toolCategoryViewBean.name}" />
 								<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
@@ -165,7 +165,7 @@
 						var="scenario">
 						<p:column
 							headerText="#{msg['PEDAGOGICAL_ADVICE.SCENARIOS_EXAMPLES.COLUMNS.TITLE']}">
-							<h:link id="goToScenarioBtn" outcome="my-scenarios">
+							<h:link id="goToScenarioBtn" outcome="pretty:my-scenarios-param">
 								<f:param name="scenarioId" value="#{scenario.id}" />
 								<h:outputText value="#{scenario.name}" />
 								<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"

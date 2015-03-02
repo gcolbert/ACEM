@@ -20,6 +20,10 @@ html {
 	display:block;
 }
 
+.homePageLargeBlockLink {
+	text-decoration:none;
+}
+
 /*
 .app-header {
 	color:white;

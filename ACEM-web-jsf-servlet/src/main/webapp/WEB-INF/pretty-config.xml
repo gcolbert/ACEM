@@ -9,57 +9,63 @@
 	</url-mapping>
 
 	<url-mapping id="pedagogical-advice">
-		<pattern value="/pedagogical-advice" />
+		<pattern value="/pedagogical-advice/" />
 		<view-id value="/pages/pedagogical-advice.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="my-tools">
-		<pattern value="/my-tools" />
+		<pattern value="/my-tools/" />
 		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
 
+<!-- 
+	<url-mapping id="my-tools-with-type">
+		<pattern value="/my-tools/#{toolTypeKey}" />
+		<view-id value="/pages/my-tools.xhtml?toolTypeKey=#{toolTypeKey}" />
+	</url-mapping>
+-->
 	<url-mapping id="my-tools-param">
-		<pattern value="/my-tools?toolCategoryId=#{toolCategoryId}" />
+		<pattern value="/my-tools/#{toolCategoryId : toolCategoryId}/" />
 		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="my-services">
-		<pattern value="/my-services" />
+		<pattern value="/my-services/" />
 		<view-id value="/pages/my-services.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="my-scenarios">
-		<pattern value="/my-scenarios" />
+		<pattern value="/my-scenarios/" />
 		<view-id value="/pages/my-scenarios.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="my-scenarios-param">
-		<pattern value="/my-scenarios?scenarioId=#{scenarioId}" />
+		<pattern value="/my-scenarios/#{scenarioId : scenarioId}" />
 		<view-id value="/pages/my-scenarios.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="my-teachings">
-		<pattern value="/my-teachings" />
+		<pattern value="/my-teachings/" />
 		<view-id value="/pages/my-teachings.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="scenarios-library">
-		<pattern value="/scenarios-library" />
+		<pattern value="/scenarios-library/" />
 		<view-id value="/pages/scenarios-library.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="administration">
-		<pattern value="/administration" />
+		<pattern value="/administration/" />
 		<view-id value="/pages/administration.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="adminOrganisations">
-		<pattern value="/administration/organisations" />
+		<pattern value="/administration/organisations/" />
 		<view-id value="/pages/adminOrganisations.xhtml" />
 	</url-mapping>
 
 	<url-mapping id="adminUsers">
-		<pattern value="/administration/users" />
+		<pattern value="/administration/users/" />
 		<view-id value="/pages/adminUsers.xhtml" />
 	</url-mapping>
 

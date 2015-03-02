@@ -41,7 +41,7 @@
 				<ui:repeat id="favoriteToolCategories"
 					value="#{associateBean.currentUserViewBean.favoriteToolCategoryViewBeans}"
 					var="toolCategoryViewBean">
-					<h:outputLink id="goToToolCategoryBtn" outcome="my-tools">
+					<h:outputLink id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
 						<f:param name="toolCategoryId"
 							value="#{toolCategoryViewBean.id}" />
 						<h:outputText value="#{toolCategoryViewBean.name}"
@@ -71,9 +71,9 @@
 			<p:commandLink styleClass="toolCategoryMenuEntry"
 				action="#{associateBean.prepareToolCategoryTreeForResourceType(equipmentViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
+				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','EQUIPMENT');">
 				<h:graphicImage
-					url="resources/images/my-tools/my-tools.equipments.png"
+					url="/resources/images/my-tools/my-tools.equipments.png"
 					alt="#{msg['RESOURCE_TYPE_EQUIPMENT.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
@@ -82,9 +82,9 @@
 			<p:commandLink styleClass="toolCategoryMenuEntry"
 				action="#{associateBean.prepareToolCategoryTreeForResourceType(softwareViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
+				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','SOFTWARE');">
 				<h:graphicImage
-					url="resources/images/my-tools/my-tools.softwares.png"
+					url="/resources/images/my-tools/my-tools.softwares.png"
 					alt="#{msg['RESOURCE_TYPE_SOFTWARE.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
@@ -93,9 +93,9 @@
 			<p:commandLink styleClass="toolCategoryMenuEntry"
 				action="#{associateBean.prepareToolCategoryTreeForResourceType(softwareDocumentationViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
+				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','SOFTWARE_DOCUMENTATION');">
 				<h:graphicImage
-					url="resources/images/my-tools/my-tools.software-documentations.png"
+					url="/resources/images/my-tools/my-tools.software-documentations.png"
 					alt="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
@@ -104,9 +104,9 @@
 			<p:commandLink styleClass="toolCategoryMenuEntry"
 				action="#{associateBean.prepareToolCategoryTreeForResourceType(pedagogicalAndDocumentaryResourceViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
+				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE');">
 				<h:graphicImage
-					url="resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
+					url="/resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
 					alt="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
@@ -115,9 +115,9 @@
 			<p:commandLink styleClass="toolCategoryMenuEntry"
 				action="#{associateBean.prepareToolCategoryTreeForResourceType(professionalTrainingViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','my-tools');">
+				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','PROFESSIONAL_TRAINING');">
 				<h:graphicImage
-					url="resources/images/my-tools/my-tools.professional-trainings.png"
+					url="/resources/images/my-tools/my-tools.professional-trainings.png"
 					alt="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
@@ -135,7 +135,7 @@
 			</p:treeNode>
 			<p:treeNode type="CategoryNode"
 				styleClass="#{treeNodeData.styleClass}">
-				<h:link id="goToToolCategoryBtn" outcome="my-tools">
+				<h:link id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
 					<f:param name="toolCategoryId" value="#{treeNodeData.id}" />
 					<h:outputText value="#{treeNodeData.label}" />
 				</h:link>
@@ -327,7 +327,7 @@
 					var="scenario">
 					<p:column
 						headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.SCENARIOS.COLUMNS.TITLE']}">
-						<h:link id="goToScenarioBtn" outcome="my-scenarios">
+						<h:link id="goToScenarioBtn" outcome="pretty:my-scenarios-param">
 							<f:param name="scenarioId" value="#{scenario.id}" />
 							<h:outputText value="#{scenario.name}" />
 							<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"

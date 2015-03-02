@@ -10,61 +10,37 @@
 			styleClass="#{mainMenuController.getMenuitemStyleClass('home')}"
 			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		<p:submenu label="#{msg['MENU.GET_SOME_ADVICES']}" icon="ui-icon-help">
-			<p:menuitem value="#{msg['MENU.PEDAGOGICAL_ADVICE']}" url="/pedagogical-advice"
+			<p:menuitem value="#{msg['MENU.PEDAGOGICAL_ADVICE']}" outcome="pedagogical-advice"
 				styleClass="#{mainMenuController.getMenuitemStyleClass('pedagogical-advice')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-			<p:menuitem value="#{msg['MENU.SCENARIOS_LIBRARY']}" url="/scenarios-library"
+			<p:menuitem value="#{msg['MENU.SCENARIOS_LIBRARY']}" outcome="scenarios-library"
 				styleClass="#{mainMenuController.getMenuitemStyleClass('scenarios-library')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
-			<p:menuitem value="#{msg['MENU.MY_SERVICES']}" url="/my-services"
+			<p:menuitem value="#{msg['MENU.MY_SERVICES']}" outcome="my-services"
 				styleClass="#{mainMenuController.getMenuitemStyleClass('my-services')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		</p:submenu>
 		<p:submenu label="#{msg['MENU.PREPARE_MY_CLASS']}" icon="ui-icon-pencil">
-			<p:menuitem value="#{msg['MENU.MY_TEACHINGS']}" url="/my-teachings"
+			<p:menuitem value="#{msg['MENU.MY_TEACHINGS']}" outcome="my-teachings"
 				styleClass="#{mainMenuController.getMenuitemStyleClass('my-teachings')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-	 		<p:menuitem value="#{msg['MENU.MY_SCENARIOS']}" url="/my-scenarios"
+	 		<p:menuitem value="#{msg['MENU.MY_SCENARIOS']}" outcome="my-scenarios"
 				styleClass="#{mainMenuController.getMenuitemStyleClass('my-scenarios')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		</p:submenu>
 		<p:submenu label="#{msg['MENU.USE_THE_TOOLS']}" icon="ui-icon-wrench">
-			<p:menuitem value="#{msg['MENU.MY_TOOLS']}" url="/my-tools"
+			<p:menuitem value="#{msg['MENU.MY_TOOLS']}" outcome="my-tools"
 				styleClass="#{mainMenuController.getMenuitemStyleClass('my-tools')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		</p:submenu>
-		<p:submenu label="#{msg['MENU.ADMIN']}" url="/administration">
-			<p:menuitem value="#{msg['MENU.ADMIN_ORGANISATIONS']}" url="/administration/organisations"
+		<p:submenu label="#{msg['MENU.ADMIN']}" outcome="administration">
+			<p:menuitem value="#{msg['MENU.ADMIN_ORGANISATIONS']}" outcome="adminOrganisations"
 				styleClass="#{mainMenuController.getMenuitemStyleClass('organisations')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-			<p:menuitem value="#{msg['MENU.ADMIN_USERS']}" url="/administration/users"
+			<p:menuitem value="#{msg['MENU.ADMIN_USERS']}" outcome="adminUsers"
 				styleClass="#{mainMenuController.getMenuitemStyleClass('users')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		</p:submenu>
-
-		<!-- 
-		<p:menuitem value="#{msg['MENU.MY_TEACHINGS']}" url="/my-teachings"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('my-teachings')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
- 		<p:menuitem value="#{msg['MENU.MY_SCENARIOS']}" url="/my-scenarios"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('my-scenarios')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-		<p:menuitem value="#{msg['MENU.MY_TOOLS']}" url="/my-tools"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('my-tools')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-		<p:menuitem value="#{msg['MENU.MY_SERVICES']}" url="/my-services"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('my-services')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-		<p:menuitem value="#{msg['MENU.SCENARIOS_LIBRARY']}" url="/scenarios-library"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('scenarios-library')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
-		<p:menuitem value="#{msg['MENU.PEDAGOGICAL_ADVICE']}" url="/pedagogical-advice"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('pedagogical-advice')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-		<p:menuitem value="#{msg['MENU.ADMIN']}" url="/administration"
-			styleClass="#{mainMenuController.getMenuitemStyleClass('administration')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-		 -->
 	</p:menubar>
 	<!-- BreadCrumb : Home + 2 levels -->
 	<p:breadCrumb>

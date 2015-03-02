@@ -36,7 +36,7 @@
 					<p:panelGrid columns="1" styleClass="toolCategoryDescriptionPanelGrid">
 						<h:outputText value="#{toolCategoryViewBean.description}"/>
 
-						<h:link id="goToToolsBtn" outcome="my-tools">
+						<h:link id="goToToolsBtn" outcome="pretty:my-tools-param">
 							<f:param name="toolCategoryId"
 								value="#{toolCategoryViewBean.id}" />
 							<h:outputText

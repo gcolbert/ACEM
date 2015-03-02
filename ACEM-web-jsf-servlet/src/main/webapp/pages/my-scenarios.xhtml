@@ -40,7 +40,7 @@
 		<p:panelGrid columns="1" styleClass="userScenariosPanel">
 			<p:commandButton value="#{msg['APPLICATION.BUTTON.OPEN_CREATE_DIALOG']}"
 				action="#{associateBean.prepareCreatePedagogicalScenario}"
-				icon="ui-icon-plusthick"
+				icon="ui-icon-plusthick" widgetVar="testButton"
 				update=":contentForm:selectedScenarioOutputPanel :createOrModifyPedagogicalScenarioForm:idDialogCreateOrModifyPedagogicalScenario"
 				oncomplete="PF('dialogEditScenario').show()">
 				<p:resetInput target=":createOrModifyPedagogicalScenarioForm:idDialogCreateOrModifyPedagogicalScenario" />
@@ -51,18 +51,38 @@
 					value="#{associateBean.scenarioViewBeans}"
 					var="scenarioViewBean" rowKey="#{scenarioViewBean.id}"
 					selection="#{associateBean.selectedPedagogicalScenarioViewBean}"
-					selectionMode="single">
+					selectionMode="single" widgetVar="widgetScenariosDataTable">
 					<p:ajax event="rowSelect"
 						listener="#{associateBean.onScenarioRowSelect}"
-						update=":contentForm :southForm" />
+						update="backupForScenarioId :contentForm :southForm" />
 					<p:column styleClass="userScenariosScrollPanelColumn"
 						headerText="#{msg['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
+						<h:inputHidden id="backupForScenarioId" value="#{scenarioViewBean.id}"/>
 						<h:outputText id="scenario" value="#{scenarioViewBean.name}" />
-						<p:tooltip for="scenario" value="#{scenarioViewBean.objective}" />  
+						<p:tooltip for="scenario" value="#{scenarioViewBean.objective}" />
 					</p:column>
 				</p:dataTable>
 			</p:scrollPanel>
 		</p:panelGrid>
+		<script type="text/javascript">
+		function updateHistory(selectedRows) {
+			history.pushState('','',selectedRows);
+		}
+		jQuery(document).ready(function(jQuery) {
+			if (PF('widgetScenariosDataTable')) {
+				var f = PF('widgetScenariosDataTable').onRowClick; // initial callback
+				PF('widgetScenariosDataTable').onRowClick = function(event, rowElement) {
+					// Call initial callback (we have to use apply because the method is using 'this')
+					f.apply(PF('widgetScenariosDataTable'), [event, rowElement]);
+					var selectedRows = PF('widgetScenariosDataTable').selection; // array of selected row keys
+					updateHistory(selectedRows); // Your callback
+				}
+			}
+			else {
+				alert("widgetScenariosDataTable doesn't exist (quite a problem if you believe me)");
+			};
+		});
+		</script>
 	</ui:define>
 
 	<!-- Actions for selected scenario in footer -->
@@ -156,7 +176,7 @@
 						<ui:repeat id="requiredToolCategories"
 							value="#{pedagogicalActivityViewBean.toolCategoryViewBeans}"
 							var="toolCategoryViewBean">
-							<h:link id="goToToolCategoryBtn" outcome="my-tools">
+							<h:link id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
 								<f:param name="toolCategoryId"
 									value="#{toolCategoryViewBean.id}" />
 								<h:outputText value="#{toolCategoryViewBean.name}"

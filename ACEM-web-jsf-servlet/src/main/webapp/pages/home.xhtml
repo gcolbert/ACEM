@@ -43,36 +43,42 @@
 		<p:panelGrid styleClass="presentationPanelGrid" columns="3">
 			<p:column>
 				<p:panelGrid columns="1" styleClass="pagesDescriptionsPanelGrid">
-					<p:panelGrid columns="2">
-						<h:graphicImage url="resources/images/my-teachings.png"
-							alt="#{msg['MENU.MY_TEACHINGS']}" styleClass="pageIllustration" />
-						<p:panelGrid columns="1">
-							<h:outputText styleClass="section-title"
-								value="#{msg['MENU.MY_TEACHINGS']}" />
-							<h:outputText
-								value="#{msg['HOME.PRESENTATION.MY_TEACHINGS_TEXT']}" />
+					<h:link outcome="my-teachings" styleClass="homePageLargeBlockLink">
+						<p:panelGrid columns="2">
+							<h:graphicImage url="resources/images/my-teachings.png"
+								alt="#{msg['MENU.MY_TEACHINGS']}" styleClass="pageIllustration" />
+							<p:panelGrid columns="1">
+									<h:outputText styleClass="section-title"
+										value="#{msg['MENU.MY_TEACHINGS']}" />
+									<h:outputText
+										value="#{msg['HOME.PRESENTATION.MY_TEACHINGS_TEXT']}" />
+							</p:panelGrid>
 						</p:panelGrid>
-					</p:panelGrid>
-					<p:panelGrid columns="2">
-						<h:graphicImage url="resources/images/my-scenarios.png"
-							alt="#{msg['MENU.MY_SCENARIOS']}" styleClass="pageIllustration" />
-						<p:panelGrid columns="1">
-							<h:outputText styleClass="section-title"
-								value="#{msg['MENU.MY_SCENARIOS']}" />
-							<h:outputText
-								value="#{msg['HOME.PRESENTATION.MY_SCENARIOS_TEXT']}" />
+					</h:link>
+					<h:link outcome="my-scenarios" styleClass="homePageLargeBlockLink">
+						<p:panelGrid columns="2">
+							<h:graphicImage url="resources/images/my-scenarios.png"
+								alt="#{msg['MENU.MY_SCENARIOS']}" styleClass="pageIllustration" />
+							<p:panelGrid columns="1">
+								<h:outputText styleClass="section-title"
+									value="#{msg['MENU.MY_SCENARIOS']}" />
+								<h:outputText
+									value="#{msg['HOME.PRESENTATION.MY_SCENARIOS_TEXT']}" />
+							</p:panelGrid>
 						</p:panelGrid>
-					</p:panelGrid>
-					<p:panelGrid columns="2">
-						<h:graphicImage url="resources/images/scenarios-library.png"
-							alt="#{msg['MENU.SCENARIOS_LIBRARY']}" styleClass="pageIllustration" />
-						<p:panelGrid columns="1">
-							<h:outputText styleClass="section-title"
-								value="#{msg['MENU.SCENARIOS_LIBRARY']}" />
-							<h:outputText
-								value="#{msg['HOME.PRESENTATION.SCENARIOS_LIBRARY_TEXT']}" />
+					</h:link>
+					<h:link outcome="scenarios-library" styleClass="homePageLargeBlockLink">
+						<p:panelGrid columns="2">
+							<h:graphicImage url="resources/images/scenarios-library.png"
+								alt="#{msg['MENU.SCENARIOS_LIBRARY']}" styleClass="pageIllustration" />
+							<p:panelGrid columns="1">
+								<h:outputText styleClass="section-title"
+									value="#{msg['MENU.SCENARIOS_LIBRARY']}" />
+								<h:outputText
+									value="#{msg['HOME.PRESENTATION.SCENARIOS_LIBRARY_TEXT']}" />
+							</p:panelGrid>
 						</p:panelGrid>
-					</p:panelGrid>
+					</h:link>
 				</p:panelGrid>
 			</p:column>
 			<p:column>
@@ -86,37 +92,43 @@
 			</p:column>
 			<p:column>
 				<p:panelGrid columns="1" styleClass="pagesDescriptionsPanelGrid">
-					<p:panelGrid columns="2">
-						<h:graphicImage url="resources/images/pedagogical-advice.png"
-							alt="#{msg['MENU.PEDAGOGICAL_ADVICE']}" styleClass="pageIllustration" />
-						<p:panelGrid columns="1">
-							<h:outputText styleClass="section-title"
-								value="#{msg['MENU.PEDAGOGICAL_ADVICE']}" />
-							<h:outputText
-								value="#{msg['HOME.PRESENTATION.PEDAGOGICAL_ADVICE_TEXT']}" />
+					<h:link outcome="pedagogical-advice" styleClass="homePageLargeBlockLink">
+						<p:panelGrid columns="2">
+							<h:graphicImage url="resources/images/pedagogical-advice.png"
+								alt="#{msg['MENU.PEDAGOGICAL_ADVICE']}" styleClass="pageIllustration" />
+							<p:panelGrid columns="1">
+								<h:outputText styleClass="section-title"
+									value="#{msg['MENU.PEDAGOGICAL_ADVICE']}" />
+								<h:outputText
+									value="#{msg['HOME.PRESENTATION.PEDAGOGICAL_ADVICE_TEXT']}" />
+							</p:panelGrid>
 						</p:panelGrid>
-					</p:panelGrid>
-					<p:panelGrid columns="2">
-						<h:graphicImage url="resources/images/my-tools.png"
-							alt="#{msg['MENU.MY_TOOLS']}" styleClass="pageIllustration" />
-						<p:panelGrid columns="1">
-							<h:outputText styleClass="section-title"
-								value="#{msg['MENU.MY_TOOLS']}" />
-							<h:outputText
-								value="#{msg['HOME.PRESENTATION.MY_TOOLS_TEXT']}" />
+					</h:link>
+					<h:link outcome="my-tools" styleClass="homePageLargeBlockLink">
+						<p:panelGrid columns="2">
+							<h:graphicImage url="resources/images/my-tools.png"
+								alt="#{msg['MENU.MY_TOOLS']}" styleClass="pageIllustration" />
+							<p:panelGrid columns="1">
+								<h:outputText styleClass="section-title"
+									value="#{msg['MENU.MY_TOOLS']}" />
+								<h:outputText
+									value="#{msg['HOME.PRESENTATION.MY_TOOLS_TEXT']}" />
+							</p:panelGrid>
 						</p:panelGrid>
-					</p:panelGrid>
-					<p:panelGrid columns="2">
-						<h:graphicImage
-							url="resources/images/administrative-departments.png"
-							alt="#{msg['MENU.MY_SERVICES']}" styleClass="pageIllustration" />
-						<p:panelGrid columns="1">
-							<h:outputText styleClass="section-title"
-								value="#{msg['MENU.MY_SERVICES']}" />
-							<h:outputText
-								value="#{msg['HOME.PRESENTATION.SERVICES_TEXT']}" />
+					</h:link>
+					<h:link outcome="my-services" styleClass="homePageLargeBlockLink">
+						<p:panelGrid columns="2">
+							<h:graphicImage
+								url="resources/images/administrative-departments.png"
+								alt="#{msg['MENU.MY_SERVICES']}" styleClass="pageIllustration" />
+							<p:panelGrid columns="1">
+								<h:outputText styleClass="section-title"
+									value="#{msg['MENU.MY_SERVICES']}" />
+								<h:outputText
+									value="#{msg['HOME.PRESENTATION.SERVICES_TEXT']}" />
+							</p:panelGrid>
 						</p:panelGrid>
-					</p:panelGrid>
+					</h:link>
 				</p:panelGrid>
 			</p:column>
 		</p:panelGrid>

@@ -122,15 +122,14 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		}
 	}
 
-//	public void setSelectedScenarioId(Long scenarioId) {
-//		// TODO : méthode qui pourrait servir à avoir l'id du scénario
-//		// sélectionné dans l'URL
-//		logger.info("Entering setSelectedScenarioId, scenarioId = {}", scenarioId);
-//		PedagogicalScenarioViewBean scenarioViewBean = pedagogicalScenarioViewBeans.getTableEntries().get(
-//				scenarioId.intValue());
-//		setSelectedScenarioViewBean(scenarioViewBean);
-//		logger.info("Leaving setSelectedScenarioId, scenarioId = {}", scenarioId);
-//	}
+	public void setSelectedScenarioId(Long scenarioId) {
+		logger.info("Entering setSelectedScenarioId, scenarioId = {}", scenarioId);
+		PedagogicalScenario scenario = scenariosService.retrievePedagogicalScenario(scenarioId,  true);
+		if (scenario != null) {
+			setSelectedPedagogicalScenarioViewBean(new PedagogicalScenarioViewBean(scenario));
+		}
+		logger.info("Leaving setSelectedScenarioId, scenarioId = {}", scenarioId);
+	}
 
 	public List<PedagogicalScenarioViewBean> getScenarioViewBeans() {
 		return pedagogicalScenarioViewBeans.getTableEntries();
