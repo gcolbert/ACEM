@@ -98,6 +98,8 @@
 		                );
 		            }
 		            else {
+		            	// We retrieve the id from the href if there is no state saved
+		            	// for the popped history entry (initial load entry)
 		            	var href = window.location.href;
 		                PF('widgetScenariosDataTable').selectRow(
 			                    jQuery("tr[data-rk="+href.substr(href.lastIndexOf('/') + 1)+"]"),
