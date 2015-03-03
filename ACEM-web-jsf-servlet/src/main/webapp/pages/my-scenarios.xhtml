@@ -54,10 +54,9 @@
 					selectionMode="single" widgetVar="widgetScenariosDataTable">
 					<p:ajax event="rowSelect"
 						listener="#{associateBean.onScenarioRowSelect}"
-						update="backupForScenarioId :contentForm :southForm" />
+						update=":contentForm :southForm" />
 					<p:column styleClass="userScenariosScrollPanelColumn"
 						headerText="#{msg['MY_SCENARIOS.LIST.COLUMN_HEADER']}">
-						<h:inputHidden id="backupForScenarioId" value="#{scenarioViewBean.id}"/>
 						<h:outputText id="scenario" value="#{scenarioViewBean.name}" />
 						<p:tooltip for="scenario" value="#{scenarioViewBean.objective}" />
 					</p:column>
@@ -65,22 +64,44 @@
 			</p:scrollPanel>
 		</p:panelGrid>
 		<script type="text/javascript">
-		function updateHistory(selectedRows) {
-			history.pushState('','',selectedRows);
-		}
 		jQuery(document).ready(function(jQuery) {
-			if (PF('widgetScenariosDataTable')) {
-				var f = PF('widgetScenariosDataTable').onRowClick; // initial callback
-				PF('widgetScenariosDataTable').onRowClick = function(event, rowElement) {
-					// Call initial callback (we have to use apply because the method is using 'this')
-					f.apply(PF('widgetScenariosDataTable'), [event, rowElement]);
-					var selectedRows = PF('widgetScenariosDataTable').selection; // array of selected row keys
-					updateHistory(selectedRows); // Your callback
-				}
-			}
-			else {
-				alert("widgetScenariosDataTable doesn't exist (quite a problem if you believe me)");
-			};
+		    function updateHistory(selectedRowKey, rowIndex) {
+		        history.pushState({
+                             selectedRowKey: selectedRowKey
+		                 },
+		                 document.title,
+		                 selectedRowKey);
+		    }
+		    if (PF('widgetScenariosDataTable')) {
+		        // initial callback
+		        var f = PF('widgetScenariosDataTable').onRowClick;
+		        PF('widgetScenariosDataTable').onRowClick = function(event, rowElement) {
+		            // Call initial callback (we have to use apply because
+		            // the method is using 'this')
+		            f.apply(PF('widgetScenariosDataTable'), [event, rowElement]);
+		            // array of selected row keys
+		            var selectedRowKey = PF('widgetScenariosDataTable').selection;
+		            // Your callback
+		            updateHistory(selectedRowKey, rowElement.rowIndex);
+		        };
+		        jQuery(window).bind('popstate', function(event) {
+		            if (event.originalEvent.state!=null) {
+		                // First we have to unselect all rows
+		                PF('widgetScenariosDataTable').unselectAllRows();
+		                // We select the row by passing the tr object that
+		                // has the correct rowKey value (this is safer than 
+		                // using the rowIndex if the user adds/deletes the 
+		                // datatable rows and then uses the browser's history)
+		                PF('widgetScenariosDataTable').selectRow(
+		                    jQuery("tr[data-rk="+event.originalEvent.state.selectedRowKey+"]"),
+		                    false
+		                );
+		            }
+		        });
+		    }
+		    else {
+		        console.error("widgetScenariosDataTable doesn't exist, we won't use the window.history object.");
+		    };
 		});
 		</script>
 	</ui:define>
