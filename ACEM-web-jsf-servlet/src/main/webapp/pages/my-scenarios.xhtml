@@ -65,9 +65,9 @@
 		</p:panelGrid>
 		<script type="text/javascript">
 		jQuery(document).ready(function(jQuery) {
-		    function updateHistory(selectedRowKey, rowIndex) {
+		    function updateHistory(selectedRowKey) {
 		        history.pushState({
-                             selectedRowKey: selectedRowKey
+		                 selectedRowKey: selectedRowKey
 		                 },
 		                 document.title,
 		                 selectedRowKey);
@@ -79,15 +79,15 @@
 		            // Call initial callback (we have to use apply because
 		            // the method is using 'this')
 		            f.apply(PF('widgetScenariosDataTable'), [event, rowElement]);
-		            // array of selected row keys
+		            // selected row key
 		            var selectedRowKey = PF('widgetScenariosDataTable').selection;
 		            // Your callback
-		            updateHistory(selectedRowKey, rowElement.rowIndex);
+		            updateHistory(selectedRowKey);
 		        };
 		        jQuery(window).bind('popstate', function(event) {
+	                PF('widgetScenariosDataTable').unselectAllRows();
 		            if (event.originalEvent.state!=null) {
 		                // First we have to unselect all rows
-		                PF('widgetScenariosDataTable').unselectAllRows();
 		                // We select the row by passing the tr object that
 		                // has the correct rowKey value (this is safer than 
 		                // using the rowIndex if the user adds/deletes the 
@@ -97,11 +97,18 @@
 		                    false
 		                );
 		            }
+		            else {
+		            	var href = window.location.href;
+		                PF('widgetScenariosDataTable').selectRow(
+			                    jQuery("tr[data-rk="+href.substr(href.lastIndexOf('/') + 1)+"]"),
+			                    false
+			                );
+		            }
 		        });
 		    }
 		    else {
-		        console.error("widgetScenariosDataTable doesn't exist, we won't use the window.history object.");
-		    };
+		        console.error("ERROR : widgetScenariosDataTable doesn't exist.");
+		    }
 		});
 		</script>
 	</ui:define>
