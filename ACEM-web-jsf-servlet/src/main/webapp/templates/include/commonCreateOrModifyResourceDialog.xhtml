@@ -21,10 +21,10 @@
 		<p:outputPanel rendered="#{associateBean.objectEditedResource != null}">
 
 			<h3 class="section-title">
-				<h:outputLabel for="categoryForTheExistingResource"
+				<h:outputLabel for="resourceCategory"
 					value="#{msg['RESOURCE.CATEGORY_LABEL']}" />
 			</h3>
-			<h:outputText id="categoryForTheExistingResource"
+			<h:outputText id="resourceCategory"
 				value="#{associateBean.selectedToolCategoryViewBean.name}" />
 
 			<h3 class="section-title">
@@ -106,7 +106,6 @@
 					itemValue="#{organisationViewBean}" />
 			</p:selectOneMenu>
 
-
 			<h3 class="section-title">
 				<p:outputLabel for="useModes"
 					value="#{msg['RESOURCE.USE_MODES_LABEL']}" />
@@ -131,54 +130,5 @@
 			validateClient="true"
 			update="${formToUpdate}:toolsDataTable :contentForm:messagesDisplayer"
 			oncomplete="PF('#{widgetName}').hide();" />
-
-<!-- 
-		<h3 class="section-title">
-			<p:outputLabel for="description" value="#{msg['TOOL_CATEGORY.DESCRIPTION_LABEL']}" />
-		</h3>
-		<p:editor id="description"
-			value="#{associateBean.objectEdited.description}" height="300"
-			controls="bold italic underline strikethrough subscript superscript size style color bullets numbering undo redo link unlink" />
-
-		<h3 class="section-title">
-			<p:outputLabel for="icon"
-				value="#{msg['TOOL_CATEGORY.ICON_LABEL']}" />
-		</h3>
-		<p:outputPanel id="iconOutputPanel">
-			<p:panel id="icon" styleClass="iconPanel">
-				<p:graphicImage
-					rendered="#{(not empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
-					alt="#{associateBean.objectEdited.name}"
-					cache="true" width="200" value="#{imagesController.image}">
-					<f:param name="imageFileName"
-						value="#{associateBean.objectEdited.iconFileName}" />
-				</p:graphicImage>
-				<p:graphicImage
-					rendered="#{not empty associateBean.temporaryFilePath}"
-					alt="#{associateBean.commonUploadOneDialog.fileUploadedName}"
-					cache="true" width="200" value="#{imagesController.image}">
-					<f:param name="imageFilePath"
-						value="#{associateBean.temporaryFilePath}" />
-				</p:graphicImage>
-			</p:panel>
-			<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
-				icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
-				process="@this" />
-			<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
-				disabled="#{(empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
-				icon="ui-icon-trash" action="#{associateBean.removeObjectEditedIcon}"
-				update="@this icon"
-				process="@this" />
-		</p:outputPanel>
-
-		<p:commandButton styleClass="dialogValidationButton"
-			value="#{msg['APPLICATION.BUTTON.SAVE']}"
-			icon="ui-icon-check" validateClient="true"
-			action="#{associateBean.onSaveToolCategory}"
-			update="#{formToUpdate}:accordionPanelForToolCategories :contentForm:messagesDisplayer"
-			process="@form"
-			oncomplete="PF('#{widgetName}').hide();">
-		</p:commandButton>
- -->
 	</p:dialog>
 </ui:composition>

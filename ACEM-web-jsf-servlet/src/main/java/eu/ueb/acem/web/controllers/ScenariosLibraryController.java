@@ -21,6 +21,8 @@ package eu.ueb.acem.web.controllers;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
+
 /**
  * @author Grégoire Colbert
  * @since 2015-01-06
@@ -37,8 +39,16 @@ public class ScenariosLibraryController extends AbstractContextAwareController i
 
 	@Override
 	public String getPageTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		sb.append(msgs.getMessage("MENU.SCENARIOS_LIBRARY",null,getCurrentUserLocale()));
+		if (getSelectedScenarioViewBean() != null) {
+			sb.append(" - ");
+			sb.append(getSelectedScenarioViewBean().getName());
+		}
+		return sb.toString();
 	}
-	
+
+	public PedagogicalScenarioViewBean getSelectedScenarioViewBean() {
+		return null; // TODO implement the method
+	}
 }

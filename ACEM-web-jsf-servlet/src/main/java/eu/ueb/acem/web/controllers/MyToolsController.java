@@ -65,7 +65,6 @@ import eu.ueb.acem.web.utils.PedagogicalAdviceTreeGenerator;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
-import eu.ueb.acem.web.viewbeans.EditableTreeBean.TreeNodeData;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
@@ -162,9 +161,11 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	@PostConstruct
 	public void init() {
+		logger.info("Entering init()");
 		this.commonUploadOneDialog = new CommonUploadOneDialog(this);
 		loadAllOrganisationViewBeans();
 		loadAllToolCategoryViewBeans();
+		logger.info("Leaving init()");
 	}
 
 	@Override
@@ -274,16 +275,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	public void setSelectedToolCategoryId(Long toolCategoryId) {
 		logger.info("Entering setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
-		selectedToolCategoryId = toolCategoryId;
-		if (toolCategoryId != null) {
-			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(toolCategoryId, true);
-			if (toolCategory != null) {
-				setSelectedToolCategoryViewBean(new ToolCategoryViewBean(toolCategory));
-			}
-			else {
-				selectedToolCategoryId = null;
-				selectedToolCategoryViewBean = null;
-			}
+		ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(toolCategoryId, true);
+		if (toolCategory != null) {
+			setSelectedToolCategoryViewBean(new ToolCategoryViewBean(toolCategory));
+		}
+		else {
+			selectedToolCategoryId = null;
+			selectedToolCategoryViewBean = null;
 		}
 		logger.info("Leaving setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
 	}
@@ -373,11 +371,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 		categoriesTreeSelectedNode = selectedNode;
 
 		categoriesTreeBean.expandOnlyOneNode(categoriesTreeSelectedNode);
-
-		if ((categoriesTreeSelectedNode != null)
-				&& (categoriesTreeSelectedNode.getType().equals(getTreeNodeType_CATEGORY()))) {
-			setSelectedToolCategoryId(((TreeNodeData) categoriesTreeSelectedNode.getData()).getId());
-		}
 	}
 
 	public void prepareToolCategoryCreation() {
@@ -672,7 +665,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void onToolRowSelect(SelectEvent event) {
-		logger.info("onToolRowSelect");
 		setSelectedResourceViewBean((ResourceViewBean) event.getObject());
 	}
 

@@ -10,14 +10,22 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
-	<ui:param name="displayWest" value="false" />
+	<ui:param name="displayWest" value="true" />
 	<ui:param name="displayEast" value="false" />
 	<ui:param name="displaySouth" value="false" />
 
 	<ui:param name="pageTitle" value="#{associateBean.pageTitle}" />
-	<ui:param name="titleWest" value="#{msg['MY_SCENARIOS.HEADER']}" />
-	<ui:param name="titleContent" value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.HEADER']}" />
+	<ui:param name="titleWest" value="West" />
+	<ui:param name="titleContent" value="Content" />
+	<ui:param name="titlePageOne" value="#{msg['MENU.SCENARIOS_LIBRARY']}"/>
+	<ui:param name="outcomePageOne" value="scenarios-library"/>
+	<ui:param name="titlePageTwo" value=""/>
+
+	<ui:define name="west">
+	West
+	</ui:define>
 
 	<ui:define name="content">
+	Hello
 	</ui:define>
 </ui:composition>

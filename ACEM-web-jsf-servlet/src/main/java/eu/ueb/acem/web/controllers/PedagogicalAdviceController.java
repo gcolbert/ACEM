@@ -285,7 +285,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				((TreeNodeData) selectedNode.getData()).getId());
 
 		TreeNode newNode = pedagogicalAdviceTreeBean.addChild(getTreeNodeType_NEED_LEAF(), selectedNode, newNeed.getId(),
-				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()), "Need");
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()), "PedagogicalNeed");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 		setSelectedNode(newNode);
 		pedagogicalAdviceTreeBean.expandOnlyOneNode(newNode);
@@ -302,7 +302,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 
 		TreeNode newNode = pedagogicalAdviceTreeBean.addChild(getTreeNodeType_ANSWER_LEAF(), selectedNode,
 				newAnswer.getId(),
-				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()), "Answer");
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()), "PedagogicalAnswer");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 		setSelectedNode(newNode);
 		pedagogicalAdviceTreeBean.expandOnlyOneNode(newNode);

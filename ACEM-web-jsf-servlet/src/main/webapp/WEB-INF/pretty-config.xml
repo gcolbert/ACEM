@@ -25,7 +25,7 @@
 	</url-mapping>
 -->
 	<url-mapping id="my-tools-param">
-		<pattern value="/my-tools/#{toolCategoryId : toolCategoryId}/" />
+		<pattern value="/my-tools/#{toolCategoryId : toolCategoryId}" />
 		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
 

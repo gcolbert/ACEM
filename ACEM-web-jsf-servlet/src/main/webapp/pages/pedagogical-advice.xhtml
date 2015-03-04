@@ -24,24 +24,27 @@
 	<ui:param name="titleContent" value="#{msg['PEDAGOGICAL_ADVICE.SELECTED_ANSWER.HEADER']}" />
 	<ui:param name="titleWest" value="#{msg['PEDAGOGICAL_ADVICE.TREE.HEADER']}" />
 	<ui:param name="titlePageOne" value="#{msg['MENU.PEDAGOGICAL_ADVICE']}"/>
-	<ui:param name="titlePageTwo" value=""/>
+	<ui:param name="outcomePageOne" value="pedagogical-advice"/>
+	<ui:param name="titlePageTwo" value="#{associateBean.selectedPedagogicalAdvice.name}"/>
 
 	<ui:define name="west">
 		<p:outputPanel>
 			<p:tree id="pedagogicalAdviceTree" styleClass="pedagogicalAdviceTree" dynamic="true"
 				value="#{associateBean.treeRoot}" var="treeNodeData"
 				selectionMode="single" cache="false"
-				draggable="true" droppable="true" dragdropScope="demo"
+				draggable="#{associateBean.currentUserViewBean.administrator}"
+				droppable="#{associateBean.currentUserViewBean.administrator}"
+				dragdropScope="demo"
 				update="contextMenuForNeeds">
 				<p:ajax event="dragdrop"
 					listener="#{associateBean.onDragDrop}"
 					update="@this :contentForm:messagesDisplayer" />
 				<p:ajax event="expand"
 					listener="#{associateBean.onNodeExpand}"
-					update="@this :contentForm:selectedNodeDetailsOutputPanel :contentForm:associatedToolCategoriesTable :southForm" />
+					update="@this :contentForm:selectedNodeDetailsOutputPanel :contentForm:associatedToolCategoriesTable :southForm :northForm" />
 				<p:ajax event="select"
 					listener="#{associateBean.onNodeSelect}"
-					update="@this :contentForm:selectedNodeDetailsOutputPanel :contentForm:associatedToolCategoriesTable :southForm" />
+					update="@this :contentForm:selectedNodeDetailsOutputPanel :contentForm:associatedToolCategoriesTable :southForm :northForm" />
 				<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 					<h:outputText value="#{treeNodeData.label}" />
 				</p:treeNode>
