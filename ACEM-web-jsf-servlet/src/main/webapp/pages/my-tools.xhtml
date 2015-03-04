@@ -42,7 +42,7 @@
 				<ui:repeat id="favoriteToolCategories"
 					value="#{associateBean.currentUserViewBean.favoriteToolCategoryViewBeans}"
 					var="toolCategoryViewBean">
-					<h:outputLink id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
+					<h:link id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
 						<f:param name="toolCategoryId"
 							value="#{toolCategoryViewBean.id}" />
 						<h:outputText value="#{toolCategoryViewBean.name}"
@@ -55,7 +55,7 @@
 							<f:param name="imageFileName"
 								value="#{toolCategoryViewBean.iconFileName}" />
 						</p:graphicImage>
-					</h:outputLink>
+					</h:link>
 					<p:tooltip for="goToToolCategoryBtn"
 						value="#{toolCategoryViewBean.name}" />
 				</ui:repeat>
