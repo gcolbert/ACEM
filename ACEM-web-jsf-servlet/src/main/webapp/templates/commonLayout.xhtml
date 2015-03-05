@@ -20,7 +20,7 @@
 		<title>#{pageTitle}</title>
 		<h:outputScript name="js/navigation.js" target="head" />
 		<h:outputScript library="javax.faces" name="jsf.js" target="head" />
-		<o:onloadScript>document.title='#{of:escapeJS(associateBean.pageTitle)}'</o:onloadScript>
+		<o:onloadScript rendered="#{associateBean!=''}">document.title='#{of:escapeJS(associateBean.pageTitle)}'</o:onloadScript>
 		<ui:insert name="header">
 		</ui:insert>
 	</h:head>
