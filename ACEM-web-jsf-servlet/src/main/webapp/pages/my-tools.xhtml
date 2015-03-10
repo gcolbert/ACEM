@@ -9,6 +9,10 @@
 		<f:viewParam name="toolCategoryId" value="#{myToolsController.selectedToolCategoryId}" />
 	</f:metadata>
 
+	<f:metadata>
+		<f:viewParam name="resourceType" value="#{myToolsController.selectedResourceTypeForCategoriesTree}" />
+	</f:metadata>
+
 	<!-- Controller associated with this view -->
 	<ui:param name="associateBean" value="#{myToolsController}" />
 
@@ -69,10 +73,12 @@
 
 	<ui:define name="west">
 		<p:outputPanel styleClass="toolCategoriesOutputPanel">
-			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType(equipmentViewBean)}"
-				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','');">
+			<p:remoteCommand
+				name="prepareToolCategoryTreeForResourceTypeEQUIPMENT"
+				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(equipmentViewBean)}"
+				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
+			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypeEQUIPMENT"
+				onclick="prepareToolCategoryTreeForResourceTypeEQUIPMENT();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'EQUIPMENT'},'','RESOURCE_TYPE_EQUIPMENT');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.equipments.png"
 					alt="#{msg['RESOURCE_TYPE_EQUIPMENT.PLURAL']}"
@@ -80,10 +86,13 @@
 				<span class="toolCategoryLabel"><h:outputText
 						value="#{msg['RESOURCE_TYPE_EQUIPMENT.PLURAL']}" /></span>
 			</p:commandLink>
-			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType(softwareViewBean)}"
-				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','');">
+
+			<p:remoteCommand
+				name="prepareToolCategoryTreeForResourceTypeSOFTWARE"
+				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(softwareViewBean)}"
+				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
+			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypeSOFTWARE"
+				onclick="prepareToolCategoryTreeForResourceTypeSOFTWARE();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'SOFTWARE'},'','RESOURCE_TYPE_SOFTWARE');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.softwares.png"
 					alt="#{msg['RESOURCE_TYPE_SOFTWARE.PLURAL']}"
@@ -91,10 +100,13 @@
 				<span class="toolCategoryLabel"><h:outputText
 						value="#{msg['RESOURCE_TYPE_SOFTWARE.PLURAL']}" /></span>
 			</p:commandLink>
-			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType(softwareDocumentationViewBean)}"
-				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','');">
+
+			<p:remoteCommand
+				name="prepareToolCategoryTreeForResourceTypeSOFTWARE_DOCUMENTATION"
+				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(softwareDocumentationViewBean)}"
+				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
+			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypeSOFTWARE_DOCUMENTATION"
+				onclick="prepareToolCategoryTreeForResourceTypeSOFTWARE_DOCUMENTATION();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'SOFTWARE_DOCUMENTATION'},'','RESOURCE_TYPE_SOFTWARE_DOCUMENTATION');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.software-documentations.png"
 					alt="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION.PLURAL']}"
@@ -102,10 +114,13 @@
 				<span class="toolCategoryLabel"><h:outputText
 						value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION.PLURAL']}" /></span>
 			</p:commandLink>
-			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType(pedagogicalAndDocumentaryResourceViewBean)}"
-				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','');">
+
+			<p:remoteCommand
+				name="prepareToolCategoryTreeForResourceTypePEDAGOGICAL_AND_DOCUMENTARY_RESOURCE"
+				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(pedagogicalAndDocumentaryResourceViewBean)}"
+				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
+			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypePEDAGOGICAL_AND_DOCUMENTARY_RESOURCE"
+				onclick="prepareToolCategoryTreeForResourceTypePEDAGOGICAL_AND_DOCUMENTARY_RESOURCE();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE'},'','RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
 					alt="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE.PLURAL']}"
@@ -113,10 +128,13 @@
 				<span class="toolCategoryLabel"><h:outputText
 						value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE.PLURAL']}" /></span>
 			</p:commandLink>
-			<p:commandLink styleClass="toolCategoryMenuEntry"
-				action="#{associateBean.prepareToolCategoryTreeForResourceType(professionalTrainingViewBean)}"
-				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel"
-				onclick="selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState('','','');">
+
+			<p:remoteCommand
+				name="prepareToolCategoryTreeForResourceTypePROFESSIONAL_TRAINING"
+				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(professionalTrainingViewBean)}"
+				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
+			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypePROFESSIONAL_TRAINING"
+				onclick="prepareToolCategoryTreeForResourceTypePROFESSIONAL_TRAINING();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'PROFESSIONAL_TRAINING'},'','RESOURCE_TYPE_PROFESSIONAL_TRAINING');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.professional-trainings.png"
 					alt="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING.PLURAL']}"
@@ -132,45 +150,81 @@
 			selectionMode="single" widgetVar="widgetCategoriesTree"
 			selection="#{associateBean.selectedNode}">
 			<p:ajax event="select"
-				listener="#{associateBean.setSelectedToolCategoryId(treeNodeData.id)}"
-				oncomplete="history.pushState({selectedNodeKey:jQuery('.ui-treenode-selected').attr('data-datakey')},'',jQuery('.ui-treenode-selected').attr('data-datakey'))"
-				update=":contentForm :northForm categoriesTree" />
+			    action="#{associateBean.setSelectedToolCategoryId(treeNodeData.id)}"
+                update=":contentForm :northForm categoriesTree"
+				/>
+				<!-- 
+				oncomplete="history.pushState({selectedNodeKey:jQuery('.ui-treenode-selected').attr('data-datakey')},'',jQuery('.ui-treenode-selected').attr('data-datakey'));"
+				-->
 			<p:treeNode type="default" styleClass="#{treeNodeData.styleClass}">
 				<h:outputText value="#{treeNodeData.label}" />
 			</p:treeNode>
 			<p:treeNode type="CategoryNode"
 				styleClass="#{treeNodeData.styleClass}">
-				<h:outputText value="#{treeNodeData.label}" />
 				<!-- 
+				<h:outputText value="#{treeNodeData.label}" />
+                -->
 				<h:link id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
 					<f:param name="toolCategoryId" value="#{treeNodeData.id}" />
 					<h:outputText value="#{treeNodeData.label}" />
 				</h:link>
-			    -->
 			</p:treeNode>
 		</p:tree>
 		<script type="text/javascript">
 		jQuery(document).ready(function(jQuery) {
 	        jQuery(window).bind('popstate', function(event) {
                 PF('widgetCategoriesTree').unselectAllNodes();
-	            if (event.originalEvent.state!=null) {
+	            if (event.originalEvent.state!==null) {
 	                // First we have to unselect all nodes
 	                // We select the node by passing the li object that
 	                // has the correct data-datakey attribute
-	                console.log(jQuery("li[data-datakey="+event.originalEvent.state.selectedNodeKey+"]"));
-	                PF('widgetCategoriesTree').selectNode(
-						jQuery("li[data-datakey="+event.originalEvent.state.selectedNodeKey+"]"),
-	                    false
-					);
+	                if (event.originalEvent.state.selectedNodeKey!==undefined) {
+		                PF('widgetCategoriesTree').selectNode(
+							jQuery("li[data-datakey="+event.originalEvent.state.selectedNodeKey+"]"),
+		                    false
+						);
+	                }
+	                else {
+	                	switch(event.originalEvent.state.selectedResourceType) {
+	                	case 'EQUIPMENT':
+	                		prepareToolCategoryTreeForResourceTypeEQUIPMENT();
+	                		selectMenuitemLink('.toolCategoriesOutputPanel',jQuery('#westForm\\:linkResourceTypeEQUIPMENT'));
+	                		break;
+	                	case 'SOFTWARE':
+	                		prepareToolCategoryTreeForResourceTypeSOFTWARE();
+	                		selectMenuitemLink('.toolCategoriesOutputPanel',jQuery('#westForm\\:linkResourceTypeSOFTWARE'));
+	                		break;
+	                	case 'SOFTWARE_DOCUMENTATION':
+	                		prepareToolCategoryTreeForResourceTypeSOFTWARE_DOCUMENTATION();
+	                		selectMenuitemLink('.toolCategoriesOutputPanel',jQuery('#westForm\\:linkResourceTypeSOFTWARE_DOCUMENTATION'));
+	                		break;
+	                	case 'PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE':
+	                		prepareToolCategoryTreeForResourceTypePEDAGOGICAL_AND_DOCUMENTARY_RESOURCE();
+	                		selectMenuitemLink('.toolCategoriesOutputPanel',jQuery('#westForm\\:linkResourceTypeRESOURCE'));
+	                		break;
+	                	case 'PROFESSIONAL_TRAINING':
+	                		prepareToolCategoryTreeForResourceTypePROFESSIONAL_TRAINING();
+	                		selectMenuitemLink('.toolCategoriesOutputPanel',jQuery('#westForm\\:linkResourceTypePROFESSIONAL_TRAINING'));
+	                		break;
+	                	default:
+	                		console.error("Unknown resource type "+event.originalEvent.state.selectedResourceType);
+	                		break;
+	                	}
+	                }
 	            }
 	            else {
 					// We retrieve the id from the href if there is no state saved
 	            	// for the popped history entry (initial load entry)
 	            	var href = window.location.href;
-					PF('widgetCategoriesTree').selectNode(
-		                    jQuery("li[data-datakey="+href.substr(href.lastIndexOf('/') + 1)+"]"),
-		                    false
-		                );
+					if (href.substr(href.lastIndexOf('/') + 1)!=="") {
+						PF('widgetCategoriesTree').selectNode(
+			                    jQuery("li[data-datakey="+href.substr(href.lastIndexOf('/') + 1)+"]"),
+			                    false
+			                );
+					}
+					else {
+						console.log("No state found and nothing after the last slash in href, so we have to hide the tree and unselect the category");
+				    }
 	            }
 	        });
 		});

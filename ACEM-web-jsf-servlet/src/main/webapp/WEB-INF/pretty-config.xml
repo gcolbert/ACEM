@@ -18,14 +18,13 @@
 		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
 
-<!-- 
-	<url-mapping id="my-tools-with-type">
-		<pattern value="/my-tools/#{toolTypeKey}" />
-		<view-id value="/pages/my-tools.xhtml?toolTypeKey=#{toolTypeKey}" />
+	<url-mapping id="my-tools-with-resource-type">
+		<pattern value="/my-tools/#{/[A-Z_]+/ resourceType}" />
+		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
--->
+
 	<url-mapping id="my-tools-param">
-		<pattern value="/my-tools/#{toolCategoryId : toolCategoryId}" />
+		<pattern value="/my-tools/#{/\\d+/ toolCategoryId}" />
 		<view-id value="/pages/my-tools.xhtml" />
 	</url-mapping>
 

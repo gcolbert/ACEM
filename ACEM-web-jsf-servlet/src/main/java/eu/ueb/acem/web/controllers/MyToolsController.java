@@ -125,6 +125,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	private EditableTreeBean categoriesTreeBean;
 	private static final String TREE_NODE_TYPE_CATEGORY = "CategoryNode";
 	private TreeNode categoriesTreeSelectedNode;
+	private String selectedResourceTypeForCategoriesTree;
 
 	private Long selectedToolCategoryId;
 	private ToolCategoryViewBean selectedToolCategoryViewBean;
@@ -236,6 +237,36 @@ public class MyToolsController extends AbstractContextAwareController implements
 	/*
 	 * ****************** Tool categories ********************
 	 */
+	public String getSelectedResourceTypeForCategoriesTree() {
+		return selectedResourceTypeForCategoriesTree;
+	}
+
+	public void setSelectedResourceTypeForCategoriesTree(String resourceType) {
+		if (resourcesService.getResourceType_RESOURCE_TYPE_EQUIPMENT().equals(resourceType)) {
+			selectedResourceTypeForCategoriesTree = resourceType;
+			prepareToolCategoryTreeForResourceType(new EquipmentViewBean());
+		}
+		else if (resourcesService.getResourceType_RESOURCE_TYPE_SOFTWARE().equals(resourceType)) {
+			selectedResourceTypeForCategoriesTree = resourceType;
+			prepareToolCategoryTreeForResourceType(new SoftwareViewBean());
+		}
+		else if (resourcesService.getResourceType_RESOURCE_TYPE_SOFTWARE_DOCUMENTATION().equals(resourceType)) {
+			selectedResourceTypeForCategoriesTree = resourceType;
+			prepareToolCategoryTreeForResourceType(new SoftwareDocumentationViewBean());
+		}
+		else if (resourcesService.getResourceType_RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE().equals(resourceType)) {
+			selectedResourceTypeForCategoriesTree = resourceType;
+			prepareToolCategoryTreeForResourceType(new PedagogicalAndDocumentaryResourceViewBean());
+		}
+		else if (resourcesService.getResourceType_RESOURCE_TYPE_PROFESSIONAL_TRAINING().equals(resourceType)) {
+			selectedResourceTypeForCategoriesTree = resourceType;
+			prepareToolCategoryTreeForResourceType(new ProfessionalTrainingViewBean());
+		}
+		else {
+			MessageDisplayer.warn("Wrong resource type","Unknown resource type '"+resourceType+"'");
+		}
+	}
+	
 	public void prepareToolCategoryTreeForResourceType(ResourceViewBean resourceViewBean) {
 		logger.info("Entering prepareToolCategoryTreeForResourceType for type={}", resourceViewBean.getType());
 		categoriesTreeBean.clear();
@@ -359,9 +390,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 	public String getTreeNodeType_CATEGORY() {
 		return TREE_NODE_TYPE_CATEGORY;
 	}
-	
+
 	public TreeNode getSelectedNode() {
 		return categoriesTreeSelectedNode;
+	}
+	
+	public Long getSelectedNodeId() {
+		return ((EditableTreeBean.TreeNodeData)categoriesTreeSelectedNode.getData()).getId();
 	}
 
 	public void setSelectedNode(TreeNode selectedNode) {
