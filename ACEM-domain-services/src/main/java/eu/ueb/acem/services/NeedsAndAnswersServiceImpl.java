@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
