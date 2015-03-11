@@ -224,6 +224,8 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		}
 		else {
 			// Update
+			selectedPedagogicalScenarioViewBean.setName(objectEditedPedagogicalScenarioViewBean.getName());
+			selectedPedagogicalScenarioViewBean.setObjective(objectEditedPedagogicalScenarioViewBean.getObjective());
 			selectedPedagogicalScenarioViewBean.setEvaluationModes(objectEditedPedagogicalScenarioViewBean.getEvaluationModes());
 			selectedPedagogicalScenarioViewBean.setScenario(scenariosService.updateScenario(selectedPedagogicalScenarioViewBean.getDomainBean()));
 			MessageDisplayer.info(
