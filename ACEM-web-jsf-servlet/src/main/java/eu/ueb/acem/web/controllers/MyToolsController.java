@@ -20,6 +20,7 @@ package eu.ueb.acem.web.controllers;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -39,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
@@ -57,7 +57,6 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
-import eu.ueb.acem.services.ScenariosService;
 import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
@@ -99,11 +98,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	@Inject
 	private UsersService usersService;
-
-	/* ***********************************************************************/
-
-	@Inject
-	private ScenariosService scenariosService;
 
 	/* ***********************************************************************/
 
@@ -369,14 +363,11 @@ public class MyToolsController extends AbstractContextAwareController implements
 			setPedagogicalUsesTreeRoot(selectedToolCategoryViewBean.getDomainBean());
 
 			// We associate the PedagogicalScenarioViewBeans
-			for (PedagogicalActivity pedagogicalActivity : selectedToolCategoryViewBean.getDomainBean().getPedagogicalActivities()) {
-				pedagogicalActivity = scenariosService.retrievePedagogicalActivity(pedagogicalActivity.getId(), true);
-				for (PedagogicalScenario pedagogicalScenario : pedagogicalActivity.getScenarios()) {
-					pedagogicalScenario = scenariosService.retrievePedagogicalScenario(pedagogicalScenario.getId(), true);
-					PedagogicalScenarioViewBean pedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(pedagogicalScenario);
-					if (! selectedToolCategoryViewBean.getScenarioViewBeans().contains(pedagogicalScenarioViewBean)) {
-						selectedToolCategoryViewBean.getScenarioViewBeans().add(pedagogicalScenarioViewBean);
-					}
+			Collection<PedagogicalScenario> pedagogicalScenarios = resourcesService.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryViewBean.getDomainBean());
+			for (PedagogicalScenario pedagogicalScenario : pedagogicalScenarios) {
+				PedagogicalScenarioViewBean pedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(pedagogicalScenario);
+				if (! selectedToolCategoryViewBean.getScenarioViewBeans().contains(pedagogicalScenarioViewBean)) {
+					selectedToolCategoryViewBean.getScenarioViewBeans().add(pedagogicalScenarioViewBean);
 				}
 			}
 		}

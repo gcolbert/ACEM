@@ -34,6 +34,7 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
  * @author Grégoire Colbert
@@ -41,7 +42,7 @@ import eu.ueb.acem.domain.beans.gris.Person;
  * 
  */
 @Repository("scenarioDAO")
-public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario, PedagogicalScenarioNode> implements PedagogicalScenarioDAO<Long, PedagogicalScenario> {
+public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario, PedagogicalScenarioNode> implements PedagogicalScenarioDAO<Long> {
 
 	/**
 	 * For serialization.
@@ -83,6 +84,21 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 	@Override
 	public Collection<PedagogicalScenario> retrieveScenariosAssociatedWithPedagogicalAnswer(PedagogicalAnswer pedagogicalAnswer) {
 		Iterable<PedagogicalScenarioNode> endResults = repository.findScenariosAssociatedWithPedagogicalAnswer(pedagogicalAnswer.getId());
+		Collection<PedagogicalScenario> collection = new HashSet<PedagogicalScenario>();
+		if (endResults.iterator() != null) {
+			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				PedagogicalScenario entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
+	}
+
+	@Override
+	public Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(ResourceCategory resourceCategory) {
+		Iterable<PedagogicalScenarioNode> endResults = repository.findScenariosAssociatedWithResourceCategory(resourceCategory.getId());
 		Collection<PedagogicalScenario> collection = new HashSet<PedagogicalScenario>();
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();

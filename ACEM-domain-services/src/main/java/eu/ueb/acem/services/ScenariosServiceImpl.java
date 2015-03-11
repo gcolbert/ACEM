@@ -48,7 +48,7 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 	private static final long serialVersionUID = 7105659785242719915L;
 
 	@Inject
-	private PedagogicalScenarioDAO<Long, PedagogicalScenario> pedagogicalScenarioDAO;
+	private PedagogicalScenarioDAO<Long> pedagogicalScenarioDAO;
 
 	@Inject
 	private DAO<Long, PedagogicalActivity> pedagogicalActivityDAO;

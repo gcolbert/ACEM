@@ -38,7 +38,6 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
-import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
@@ -69,7 +68,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	private DAO<Long, ResourceCategory> resourceCategoryDAO;
 
 	@Inject
-	private PedagogicalScenarioDAO<Long, PedagogicalScenario> pedagogicalScenarioDAO;
+	private PedagogicalScenarioDAO<Long> pedagogicalScenarioDAO;
 
 	public NeedsAndAnswersServiceImpl() {
 	}
@@ -291,23 +290,13 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	}
 
 	@Override
-	public Collection<PedagogicalScenario> getScenariosRelatedToAnswer(Long id) {
+	public Collection<PedagogicalScenario> retrieveScenariosRelatedToAnswer(Long id) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(id);
 		Collection<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>();
 		if (answer!=null) {
 			scenarios = pedagogicalScenarioDAO.retrieveScenariosAssociatedWithPedagogicalAnswer(answer);
 		}
 		return scenarios;
-	}
-
-	@Override
-	public Collection<Resource> getResourcesRelatedToAnswer(Long id) {
-		PedagogicalAnswer answer = answerDAO.retrieveById(id);
-		Collection<Resource> resources = new HashSet<Resource>();
-		for (ResourceCategory resourceCategory : answer.getResourceCategories()) {
-			resources.addAll(resourceCategory.getResources());
-		}
-		return resources;
 	}
 
 	@Override

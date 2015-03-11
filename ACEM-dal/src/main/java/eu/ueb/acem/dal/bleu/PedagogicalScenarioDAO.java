@@ -22,17 +22,21 @@ import java.util.Collection;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
  * @author Grégoire Colbert
  * @since 2015-02-27
  * 
  */
-public interface PedagogicalScenarioDAO<ID, E> extends DAO<ID, E> {
+public interface PedagogicalScenarioDAO<ID> extends DAO<ID, PedagogicalScenario> {
 
-	Collection<E> retrieveScenariosWithAuthor(Person author);
+	Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author);
 	
-	Collection<E> retrieveScenariosAssociatedWithPedagogicalAnswer(PedagogicalAnswer answer);
+	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithPedagogicalAnswer(PedagogicalAnswer answer);
+
+	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(ResourceCategory resourceCategory);
 
 }

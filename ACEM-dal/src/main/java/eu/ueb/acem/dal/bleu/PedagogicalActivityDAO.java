@@ -18,43 +18,14 @@
  */
 package eu.ueb.acem.dal.bleu;
 
-import javax.inject.Inject;
-
-import org.springframework.stereotype.Repository;
-
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.bleu.neo4j.PedagogicalActivityRepository;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-11-20
+ * @since 2015-02-27
  * 
  */
-@Repository("pedagogicalActivityDAO")
-public class PedagogicalActivityDAO extends AbstractDAO<PedagogicalActivity, PedagogicalActivityNode> {
-
-	/**
-	 * For serialization.
-	 */
-	private static final long serialVersionUID = -8533892314452651184L;
-
-	@Inject
-	private PedagogicalActivityRepository repository;
-
-	@Override
-	protected final GenericRepository<PedagogicalActivityNode> getRepository() {
-		return repository;
-	}
-
-	@Override
-	protected final void initializeCollections(PedagogicalActivity entity) {
-		if (entity != null) {
-			neo4jOperations.fetch(entity.getResourceCategories());
-			neo4jOperations.fetch(entity.getScenarios());
-		}
-	}
-
+public interface PedagogicalActivityDAO<ID> extends DAO<ID, PedagogicalActivity> {
+	
 }

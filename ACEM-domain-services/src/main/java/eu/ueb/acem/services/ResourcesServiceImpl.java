@@ -30,8 +30,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
 import eu.ueb.acem.dal.jaune.ResourceDAO;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
@@ -78,8 +78,11 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	private static final String RESOURCE_TYPE_PROFESSIONAL_TRAINING = "RESOURCE_TYPE_PROFESSIONAL_TRAINING";
 
 	@Inject
-	private DAO<Long, ResourceCategory> resourceCategoryDAO;
+	private PedagogicalScenarioDAO<Long> pedagogicalScenarioDAO;
 
+	@Inject
+	private DAO<Long, ResourceCategory> resourceCategoryDAO;
+	
 	@Inject
 	private DAO<Long, UseMode> useModeDAO;
 
@@ -329,13 +332,10 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	}
 
 	@Override
-	public Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(Long id) {
-		ResourceCategory toolCategory = retrieveResourceCategory(id, true);
+	public Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(ResourceCategory category) {
 		Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>(0);
-		if (toolCategory != null) {
-			for (PedagogicalActivity activity : toolCategory.getPedagogicalActivities()) {
-				scenarios.addAll(activity.getScenarios());
-			}
+		if (category != null) {
+			scenarios.addAll(pedagogicalScenarioDAO.retrieveScenariosAssociatedWithResourceCategory(category));
 		}
 		return scenarios;
 	}

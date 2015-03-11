@@ -61,7 +61,7 @@ public interface ResourcesService extends Serializable {
 
 	Collection<ResourceCategory> retrieveAllCategories();
 
-	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(Long id);
+	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(ResourceCategory category);
 
 	Resource createResource(ResourceCategory category, Organisation ownerOrganisation,
 			Organisation supportOrganisation, String resourceType, String name, String iconFileName);

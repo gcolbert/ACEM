@@ -24,7 +24,6 @@ import java.util.Collection;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.jaune.Resource;
 
 /**
  * @author Grégoire Colbert
@@ -71,9 +70,7 @@ public interface NeedsAndAnswersService extends Serializable {
 
 	void saveAnswerName(Long id, String newName);
 
-	Collection<PedagogicalScenario> getScenariosRelatedToAnswer(Long id);
-
-	Collection<Resource> getResourcesRelatedToAnswer(Long id);
+	Collection<PedagogicalScenario> retrieveScenariosRelatedToAnswer(Long id);
 
 	Boolean associateAnswerWithResourceCategory(Long answerId, Long toolCategoryId);
 

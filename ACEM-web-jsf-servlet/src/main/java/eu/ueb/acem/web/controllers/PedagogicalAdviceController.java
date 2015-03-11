@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -95,9 +94,8 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	@Inject
 	private SortableTableBean<PedagogicalScenarioViewBean> pedagogicalScenarioViewBeans;
 
+	private SortableTableBean<ToolCategoryViewBean> toolCategoryViewBeansForSelectedAnswer;
 	private SortableTableBean<ToolCategoryViewBean> toolCategoryViewBeans;
-
-	private List<ToolCategoryViewBean> toolCategoryViewBeansForSelectedAnswer;
 
 	public String getTreeNodeType_NEED_LEAF() {
 		return PedagogicalAdviceTreeGenerator.getTreeNodeType_NEED_LEAF();
@@ -116,9 +114,8 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	}
 
 	public PedagogicalAdviceController() {
-		toolCategoryViewBeansForSelectedAnswer = new ArrayList<ToolCategoryViewBean>();
+		toolCategoryViewBeansForSelectedAnswer = new SortableTableBean<ToolCategoryViewBean>();
 		toolCategoryViewBeans = new SortableTableBean<ToolCategoryViewBean>();
-
 		pedagogicalScenarioViewBeans = new SortableTableBean<PedagogicalScenarioViewBean>();
 	}
 
@@ -127,17 +124,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 		logger.info("entering init");
 		pedagogicalAdviceTreeBean = pedagogicalAdviceTreeGenerator.createNeedAndAnswersTree(msgs.getMessage(
 				"PEDAGOGICAL_ADVICE.TREE.VISIBLE_ROOT.LABEL", null, getCurrentUserLocale()));
-
-		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
-		logger.info("found {} tool categories", toolCategories.size());
-		toolCategoryViewBeans.getTableEntries().clear();
-		for (ResourceCategory toolCategory : toolCategories) {
-			logger.info("tool category = {}", toolCategory.getName());
-			ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
-			toolCategoryViewBeans.getTableEntries().add(toolCategoryViewBean);
-		}
-		toolCategoryViewBeans.sort();
-
+		toolCategoryViewBeans = getAllToolCategoryViewBeans();
 		logger.info("leaving init");
 		logger.info("------");
 	}
@@ -447,7 +434,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 			PedagogicalAnswer pedagogicalAnswer = needsAndAnswersService.retrievePedagogicalAnswer(
 					selectedPedagogicalAnswer.getId(), true);
 			pedagogicalScenarioViewBeans.getTableEntries().clear();
-			for (PedagogicalScenario scenario : needsAndAnswersService.getScenariosRelatedToAnswer(pedagogicalAnswer
+			for (PedagogicalScenario scenario : needsAndAnswersService.retrieveScenariosRelatedToAnswer(pedagogicalAnswer
 					.getId())) {
 				pedagogicalScenarioViewBeans.getTableEntries().add(new PedagogicalScenarioViewBean(scenario));
 			}
@@ -455,29 +442,26 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	}
 
 	public List<ToolCategoryViewBean> getToolCategoryViewBeansForSelectedAnswer() {
-		return toolCategoryViewBeansForSelectedAnswer;
+		return toolCategoryViewBeansForSelectedAnswer.getTableEntries();
 	}
 
 	private void setToolCategoryViewBeansForSelectedAnswer() {
 		if (selectedPedagogicalAnswer != null) {
-			toolCategoryViewBeansForSelectedAnswer.clear();
-			for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
-				if (selectedPedagogicalAnswer.getResourceCategories().contains(toolCategoryViewBean.getDomainBean())) {
-					toolCategoryViewBeansForSelectedAnswer.add(toolCategoryViewBean);
-				}
+			toolCategoryViewBeansForSelectedAnswer.getTableEntries().clear();
+			for (ResourceCategory toolCategory : selectedPedagogicalAnswer.getResourceCategories()) {
+				ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
+				toolCategoryViewBeansForSelectedAnswer.getTableEntries().add(toolCategoryViewBean);
 			}
+			toolCategoryViewBeansForSelectedAnswer.sort();
 		}
 	}
 
 	public void preparePicklistToolCategoryViewBeansForSelectedAnswer() {
-		logger.info("preparePicklistToolCategoryViewBeansForSelectedAnswer");
 		if ((selectedNode != null) && (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF()))) {
 			pickListBean.getPickListEntities().getSource().clear();
 			pickListBean.getPickListEntities().getSource().addAll(toolCategoryViewBeans.getTableEntries());
 			pickListBean.getPickListEntities().getTarget().clear();
-			PedagogicalAnswer selectedAnswer = needsAndAnswersService.retrievePedagogicalAnswer(
-					((TreeNodeData) selectedNode.getData()).getId(), true);
-			for (ResourceCategory toolCategoryForSelectedAnswer : selectedAnswer.getResourceCategories()) {
+			for (ResourceCategory toolCategoryForSelectedAnswer : selectedPedagogicalAnswer.getResourceCategories()) {
 				for (ToolCategoryViewBean toolCategoryViewBean : toolCategoryViewBeans.getTableEntries()) {
 					if (toolCategoryForSelectedAnswer.getId().equals(toolCategoryViewBean.getId())) {
 						pickListBean.getPickListEntities().getSource().remove(toolCategoryViewBean);
@@ -486,6 +470,16 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				}
 			}
 		}
+	}
+
+	private SortableTableBean<ToolCategoryViewBean> getAllToolCategoryViewBeans() {
+		Collection<ResourceCategory> toolCategories = resourcesService.retrieveAllCategories();
+		for (ResourceCategory toolCategory : toolCategories) {
+			ToolCategoryViewBean toolCategoryViewBean = new ToolCategoryViewBean(toolCategory);
+			toolCategoryViewBeans.getTableEntries().add(toolCategoryViewBean);
+		}
+		toolCategoryViewBeans.sort();
+		return toolCategoryViewBeans;
 	}
 
 	public void onTransferToolCategory(TransferEvent event) {
@@ -498,7 +492,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 						((TreeNodeData) selectedNode.getData()).getId(), movedToolCategoryViewBean.getId());
 				if (needsAndAnswersService.associateAnswerWithResourceCategory(((TreeNodeData) selectedNode.getData())
 						.getId(), movedToolCategoryViewBean.getDomainBean().getId())) {
-					toolCategoryViewBeansForSelectedAnswer.add(movedToolCategoryViewBean);
+					toolCategoryViewBeansForSelectedAnswer.getTableEntries().add(movedToolCategoryViewBean);
 					logger.info("association successful");
 				}
 				else {
@@ -512,7 +506,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 						((TreeNodeData) selectedNode.getData()).getLabel(), movedToolCategoryViewBean.getName());
 				if (needsAndAnswersService.dissociateAnswerWithResourceCategory(((TreeNodeData) selectedNode.getData())
 						.getId(), movedToolCategoryViewBean.getDomainBean().getId())) {
-					toolCategoryViewBeansForSelectedAnswer.remove(movedToolCategoryViewBean);
+					toolCategoryViewBeansForSelectedAnswer.getTableEntries().remove(movedToolCategoryViewBean);
 					logger.info("dissociation successful");
 				}
 				else {
