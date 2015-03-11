@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
+import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
@@ -70,13 +71,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	private DAO<Long, ResourceCategory> resourceCategoryDAO;
 
 	@Inject
-	private DAO<Long, PedagogicalScenario> pedagogicalScenarioDAOImpl;
-
-	@Inject
-	private DAO<Long, PedagogicalActivity> pedagogicalActivityDAO;
-
-	@Inject
-	private ResourcesService resourcesService;
+	private PedagogicalScenarioDAO<Long, PedagogicalScenario> pedagogicalScenarioDAO;
 
 	public NeedsAndAnswersServiceImpl() {
 	}
@@ -300,16 +295,9 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	@Override
 	public Collection<PedagogicalScenario> getScenariosRelatedToAnswer(Long id) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(id);
-		Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>();
-		for (ResourceCategory resourceCategory : answer.getResourceCategories()) {
-			resourceCategory = resourcesService.retrieveResourceCategory(resourceCategory.getId(), true);
-			for (PedagogicalActivity pedagogicalActivity : resourceCategory.getPedagogicalActivities()) {
-				pedagogicalActivity = pedagogicalActivityDAO.retrieveById(pedagogicalActivity.getId(), true);
-				for (PedagogicalScenario pedagogicalScenario : pedagogicalActivity.getScenarios()) {
-					pedagogicalScenario = pedagogicalScenarioDAOImpl.retrieveById(pedagogicalScenario.getId(), true);
-					scenarios.add(pedagogicalScenario);
-				}
-			}
+		Collection<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>();
+		if (answer!=null) {
+			scenarios = pedagogicalScenarioDAO.retrieveScenariosAssociatedWithPedagogicalAnswer(answer);
 		}
 		return scenarios;
 	}

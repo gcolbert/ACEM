@@ -30,6 +30,7 @@ import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.TimeTicker;
 import eu.ueb.acem.dal.bleu.neo4j.PedagogicalScenarioRepository;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Person;
@@ -67,6 +68,21 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 	@Override
 	public Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author) {
 		Iterable<PedagogicalScenarioNode> endResults = repository.findScenariosWithAuthor(author.getId());
+		Collection<PedagogicalScenario> collection = new HashSet<PedagogicalScenario>();
+		if (endResults.iterator() != null) {
+			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				PedagogicalScenario entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
+	}
+
+	@Override
+	public Collection<PedagogicalScenario> retrieveScenariosAssociatedWithPedagogicalAnswer(PedagogicalAnswer pedagogicalAnswer) {
+		Iterable<PedagogicalScenarioNode> endResults = repository.findScenariosAssociatedWithPedagogicalAnswer(pedagogicalAnswer.getId());
 		Collection<PedagogicalScenario> collection = new HashSet<PedagogicalScenario>();
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalScenarioNode> iterator = endResults.iterator();

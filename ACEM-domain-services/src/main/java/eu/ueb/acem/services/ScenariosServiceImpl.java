@@ -48,7 +48,7 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 	private static final long serialVersionUID = 7105659785242719915L;
 
 	@Inject
-	private PedagogicalScenarioDAO<Long, PedagogicalScenario> pedagogicalScenarioDAOImpl;
+	private PedagogicalScenarioDAO<Long, PedagogicalScenario> pedagogicalScenarioDAO;
 
 	@Inject
 	private DAO<Long, PedagogicalActivity> pedagogicalActivityDAO;
@@ -61,14 +61,14 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 
 	@Override
 	public Long countScenarios() {
-		return pedagogicalScenarioDAOImpl.count();
+		return pedagogicalScenarioDAO.count();
 	}
 
 	@Override
 	public PedagogicalScenario createScenario(Teacher author, String name, String objective) {
 		PedagogicalScenario scenario = new PedagogicalScenarioNode(name, objective);
 		scenario.getAuthors().add(author);
-		scenario = pedagogicalScenarioDAOImpl.create(scenario);
+		scenario = pedagogicalScenarioDAO.create(scenario);
 		author.getScenarios().add(scenario);
 		author = usersService.updateTeacher(author);
 		return scenario;
@@ -76,29 +76,29 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 
 	@Override
 	public PedagogicalScenario retrievePedagogicalScenario(Long id, boolean initialize) {
-		return pedagogicalScenarioDAOImpl.retrieveById(id, initialize);
+		return pedagogicalScenarioDAO.retrieveById(id, initialize);
 	}
 
 	@Override
 	public Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author) {
-		return pedagogicalScenarioDAOImpl.retrieveScenariosWithAuthor(author);
+		return pedagogicalScenarioDAO.retrieveScenariosWithAuthor(author);
 	}
 
 	@Override
 	public PedagogicalScenario updateScenario(PedagogicalScenario pedagogicalScenario) {
-		return pedagogicalScenarioDAOImpl.update(pedagogicalScenario);
+		return pedagogicalScenarioDAO.update(pedagogicalScenario);
 	}
 
 	@Override
 	public Boolean dissociateAuthorOrDeleteScenarioIfLastAuthor(Long idScenario, Long idAuthor) {
-		if (pedagogicalScenarioDAOImpl.exists(idScenario)) {
-			PedagogicalScenario scenario = pedagogicalScenarioDAOImpl.retrieveById(idScenario);
+		if (pedagogicalScenarioDAO.exists(idScenario)) {
+			PedagogicalScenario scenario = pedagogicalScenarioDAO.retrieveById(idScenario);
 			if (scenario.getAuthors().size() > 1) {
 				// It's not the last author, we just want to dissociate the author from the scenario
 				Teacher author = usersService.retrieveTeacher(idAuthor);
 				scenario.getAuthors().remove(author);
 				author.getScenarios().remove(scenario);
-				scenario = pedagogicalScenarioDAOImpl.update(scenario);
+				scenario = pedagogicalScenarioDAO.update(scenario);
 				return true;
 			}
 			else {
@@ -113,14 +113,14 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 	
 	@Override
 	public Boolean deleteScenario(Long id) {
-		if (pedagogicalScenarioDAOImpl.exists(id)) {
-			PedagogicalScenario scenario = pedagogicalScenarioDAOImpl.retrieveById(id);
+		if (pedagogicalScenarioDAO.exists(id)) {
+			PedagogicalScenario scenario = pedagogicalScenarioDAO.retrieveById(id);
 			for (PedagogicalActivity pedagogicalActivity : scenario.getPedagogicalActivities()) {
 				pedagogicalActivityDAO.delete(pedagogicalActivity);
 			}
-			pedagogicalScenarioDAOImpl.delete(scenario);
+			pedagogicalScenarioDAO.delete(scenario);
 		}
-		return !pedagogicalScenarioDAOImpl.exists(id);
+		return !pedagogicalScenarioDAO.exists(id);
 	}
 
 	@Override

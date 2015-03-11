@@ -21,6 +21,7 @@ package eu.ueb.acem.dal.bleu;
 import java.util.Collection;
 
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.gris.Person;
 
 /**
@@ -31,5 +32,7 @@ import eu.ueb.acem.domain.beans.gris.Person;
 public interface PedagogicalScenarioDAO<ID, E> extends DAO<ID, E> {
 
 	Collection<E> retrieveScenariosWithAuthor(Person author);
+	
+	Collection<E> retrieveScenariosAssociatedWithPedagogicalAnswer(PedagogicalAnswer answer);
 
 }

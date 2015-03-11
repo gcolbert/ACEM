@@ -44,4 +44,7 @@ public interface PedagogicalScenarioRepository extends GenericRepository<Pedagog
 	@Query(value = "START n=node({personId})  MATCH (n)-[:authorsScenario]->(scenario) RETURN scenario")
 	Set<PedagogicalScenarioNode> findScenariosWithAuthor(@Param("personId") Long id);
 
+	@Query(value = "START n=node({pedagogicalAnswerId}) MATCH (n:PedagogicalAnswer)-[:answeredUsingResourceCategory]->(:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForScenario]->(s:PedagogicalScenario) RETURN s")
+	Set<PedagogicalScenarioNode> findScenariosAssociatedWithPedagogicalAnswer(@Param("pedagogicalAnswerId") Long id);
+
 }
