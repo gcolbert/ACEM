@@ -260,7 +260,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 			MessageDisplayer.warn("Wrong resource type","Unknown resource type '"+resourceType+"'");
 		}
 	}
-	
+
 	public void prepareToolCategoryTreeForResourceType(ResourceViewBean resourceViewBean) {
 		logger.info("Entering prepareToolCategoryTreeForResourceType for type={}", resourceViewBean.getType());
 		categoriesTreeBean.clear();
@@ -332,7 +332,9 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 			// We associate the ResourceViewBeans
 			selectedToolCategoryViewBean.getResourceViewBeans().clear();
-			for (Resource resource : selectedToolCategoryViewBean.getDomainBean().getResources()) {
+			Collection<Resource> resourcesTheUserCanUse = resourcesService.getResourcesInCategoryForPerson(selectedToolCategoryViewBean.getDomainBean(), getCurrentUserViewBean().getDomainBean());
+			for (Resource resource : resourcesTheUserCanUse) {
+//			for (Resource resource : selectedToolCategoryViewBean.getDomainBean().getResources()) {
 				resource = resourcesService.retrieveResource(resource.getId(), true);
 				ResourceViewBean resourceViewBean = createResourceViewBean(resource);
 
@@ -377,7 +379,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	public TreeNode getCategoriesTreeRoot() {
 		return categoriesTreeBean.getRoot();
 	}
-	
+
 	public String getTreeNodeType_CATEGORY() {
 		return TREE_NODE_TYPE_CATEGORY;
 	}
@@ -385,7 +387,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	public TreeNode getSelectedNode() {
 		return categoriesTreeSelectedNode;
 	}
-	
+
 	public Long getSelectedNodeId() {
 		return ((EditableTreeBean.TreeNodeData)categoriesTreeSelectedNode.getData()).getId();
 	}

@@ -29,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.SoftwareDocumentationRepository;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
@@ -73,7 +74,7 @@ public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation,
 	 * entity.
 	 */
 	@Override
-	public Collection<ResourceCategory> getCategories() {
+	public Collection<ResourceCategory> retrieveCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
 		if (endResults.iterator() != null) {
@@ -88,6 +89,21 @@ public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation,
 	@Override
 	public Collection<SoftwareDocumentation> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<SoftwareDocumentationNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<SoftwareDocumentation> collection = new HashSet<SoftwareDocumentation>();
+		if (endResults.iterator() != null) {
+			Iterator<SoftwareDocumentationNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				SoftwareDocumentation entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
+	}
+
+	@Override
+	public Collection<SoftwareDocumentation> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<SoftwareDocumentationNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
 		Collection<SoftwareDocumentation> collection = new HashSet<SoftwareDocumentation>();
 		if (endResults.iterator() != null) {
 			Iterator<SoftwareDocumentationNode> iterator = endResults.iterator();

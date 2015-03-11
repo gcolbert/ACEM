@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
@@ -94,5 +95,7 @@ public interface ResourcesService extends Serializable {
 	Boolean associateUseModeAndResource(UseMode useMode, Resource resource);
 
 	Boolean dissociateUseModeAndResource(UseMode useMode, Resource resource);
+
+	Collection<Resource> getResourcesInCategoryForPerson(ResourceCategory category, Person person);
 
 }

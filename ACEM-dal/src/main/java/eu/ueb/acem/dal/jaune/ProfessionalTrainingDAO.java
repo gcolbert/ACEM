@@ -29,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.ProfessionalTrainingRepository;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
@@ -72,7 +73,7 @@ public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, P
 	 * entity.
 	 */
 	@Override
-	public Collection<ResourceCategory> getCategories() {
+	public Collection<ResourceCategory> retrieveCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
 		if (endResults.iterator() != null) {
@@ -87,6 +88,21 @@ public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, P
 	@Override
 	public Collection<ProfessionalTraining> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<ProfessionalTrainingNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();
+		if (endResults.iterator() != null) {
+			Iterator<ProfessionalTrainingNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				ProfessionalTraining entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
+	}
+
+	@Override
+	public Collection<ProfessionalTraining> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<ProfessionalTrainingNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
 		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();
 		if (endResults.iterator() != null) {
 			Iterator<ProfessionalTrainingNode> iterator = endResults.iterator();

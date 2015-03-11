@@ -33,6 +33,7 @@ import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
 import eu.ueb.acem.dal.jaune.ResourceDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
@@ -151,7 +152,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 					resourceType);
 		}
 		if (resourceDAO != null) {
-			categories.addAll(resourceDAO.getCategories());
+			categories.addAll(resourceDAO.retrieveCategories());
 		}
 		return categories;
 	}
@@ -240,6 +241,17 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 			logger.error("There is no resource with id='{}'", id);
 		}
 		return entity;
+	}
+
+	@Override
+	public Collection<Resource> getResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Collection<Resource> resources = new HashSet<Resource>();
+		resources.addAll(softwareDAO.retrieveResourcesInCategoryForPerson(category, person));
+		resources.addAll(softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(category, person));
+		resources.addAll(professionalTrainingDAO.retrieveResourcesInCategoryForPerson(category, person));
+		resources.addAll(pedagogicalAndDocumentaryResourcesDAO.retrieveResourcesInCategoryForPerson(category, person));
+		resources.addAll(equipmentDAO.retrieveResourcesInCategoryForPerson(category, person));
+		return resources;
 	}
 
 	@Override

@@ -43,10 +43,13 @@ public interface PedagogicalAndDocumentaryResourcesRepository extends
 	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) WHERE n.name=({name}) RETURN n")
 	Iterable<PedagogicalAndDocumentaryResourceNode> findByName(@Param("name") String name);
 
-	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
+	@Query(value = "MATCH (:PedagogicalAndDocumentaryResource)<-[:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 
 	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
 	Set<PedagogicalAndDocumentaryResourceNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
+
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:PedagogicalAndDocumentaryResource)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
+	Set<PedagogicalAndDocumentaryResourceNode> getResourcesInCategoryForPerson(@Param("categoryId") Long categoryId, @Param("personId") Long personId);
 
 }

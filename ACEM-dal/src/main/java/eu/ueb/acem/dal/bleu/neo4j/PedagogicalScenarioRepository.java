@@ -41,13 +41,13 @@ public interface PedagogicalScenarioRepository extends GenericRepository<Pedagog
 	@Query(value = "MATCH (n:PedagogicalScenario) WHERE n.name=({name}) RETURN n")
 	Iterable<PedagogicalScenarioNode> findByName(@Param("name") String name);
 
-	@Query(value = "START n=node({personId})  MATCH (n)-[:authorsScenario]->(scenario) RETURN scenario")
-	Set<PedagogicalScenarioNode> findScenariosWithAuthor(@Param("personId") Long id);
+	@Query(value = "MATCH (t:Teacher)-[:authorsScenario]->(s:PedagogicalScenario) WHERE id(t)=({teacherId}) RETURN s")
+	Set<PedagogicalScenarioNode> findScenariosWithAuthor(@Param("teacherId") Long id);
 
-	@Query(value = "START n=node({pedagogicalAnswerId}) MATCH (n:PedagogicalAnswer)-[:answeredUsingResourceCategory]->(:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForScenario]->(s:PedagogicalScenario) RETURN s")
+	@Query(value = "MATCH (a:PedagogicalAnswer)-[:answeredUsingResourceCategory]->(:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForScenario]->(s:PedagogicalScenario) WHERE id(a)=({pedagogicalAnswerId}) RETURN s")
 	Set<PedagogicalScenarioNode> findScenariosAssociatedWithPedagogicalAnswer(@Param("pedagogicalAnswerId") Long id);
 
-	@Query(value = "START n=node({resourceCategoryId}) MATCH (n:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForScenario]->(s:PedagogicalScenario) RETURN s")
+	@Query(value = "MATCH (c:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForScenario]->(s:PedagogicalScenario) WHERE id(c)=({resourceCategoryId}) RETURN s")
 	Set<PedagogicalScenarioNode> findScenariosAssociatedWithResourceCategory(@Param("resourceCategoryId") Long id);
 
 }

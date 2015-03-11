@@ -29,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.SoftwareRepository;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
@@ -70,7 +71,7 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 	 * Returns the categories containing at least one "Software" entity.
 	 */
 	@Override
-	public Collection<ResourceCategory> getCategories() {
+	public Collection<ResourceCategory> retrieveCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
 		if (endResults.iterator() != null) {
@@ -97,4 +98,18 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 		return collection;
 	}
 
+	@Override
+	public Collection<Software> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<SoftwareNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Collection<Software> collection = new HashSet<Software>();
+		if (endResults.iterator() != null) {
+			Iterator<SoftwareNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				Software entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
+	}
 }

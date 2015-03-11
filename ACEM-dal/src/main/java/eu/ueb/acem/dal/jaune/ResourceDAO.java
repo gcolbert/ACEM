@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
@@ -31,8 +32,10 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
  */
 public interface ResourceDAO<ID extends Serializable, E extends Resource> extends DAO<ID, E> {
 
-	Collection<ResourceCategory> getCategories();
+	Collection<ResourceCategory> retrieveCategories();
 
 	Collection<E> retrieveAllWithCategory(ResourceCategory category);
+
+	Collection<E> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person);
 
 }

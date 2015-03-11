@@ -29,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.EquipmentRepository;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
@@ -71,7 +72,7 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 	 * Returns the categories containing at least one "Equipment" entity.
 	 */
 	@Override
-	public Collection<ResourceCategory> getCategories() {
+	public Collection<ResourceCategory> retrieveCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
 		if (endResults.iterator() != null) {
@@ -86,6 +87,21 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 	@Override
 	public Collection<Equipment> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<EquipmentNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<Equipment> collection = new HashSet<Equipment>();
+		if (endResults.iterator() != null) {
+			Iterator<EquipmentNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				Equipment entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
+	}
+
+	@Override
+	public Collection<Equipment> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<EquipmentNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
 		Collection<Equipment> collection = new HashSet<Equipment>();
 		if (endResults.iterator() != null) {
 			Iterator<EquipmentNode> iterator = endResults.iterator();

@@ -42,10 +42,13 @@ public interface ProfessionalTrainingRepository extends GenericRepository<Profes
 	@Query(value = "MATCH (n:ProfessionalTraining) WHERE n.name=({name}) RETURN n")
 	Iterable<ProfessionalTrainingNode> findByName(@Param("name") String name);
 
-	@Query(value = "MATCH (n:ProfessionalTraining)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
+	@Query(value = "MATCH (:ProfessionalTraining)<-[:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 
 	@Query(value = "MATCH (n:ProfessionalTraining)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
 	Set<ProfessionalTrainingNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
+
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:ProfessionalTraining)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
+	Set<ProfessionalTrainingNode> getResourcesInCategoryForPerson(@Param("categoryId") Long categoryId, @Param("personId") Long personId);
 
 }

@@ -35,6 +35,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.dal.jaune.ResourceDAO;
+import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
+import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
@@ -42,9 +46,18 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
 
 /**
  * @author Grégoire Colbert
@@ -63,6 +76,24 @@ public class ResourceDAOTest extends TestCase {
 
 	@Inject
 	private DAO<Long, ResourceCategory> resourceCategoryDAO;
+
+	@Inject
+	private DAO<Long, Person> personDAO;
+
+	@Inject
+	private DAO<Long, Teacher> teacherDAO;
+	
+	@Inject
+	private DAO<Long, Community> communityDAO;
+
+	@Inject
+	private DAO<Long, Institution> institutionDAO;
+
+	@Inject
+	private DAO<Long, TeachingDepartment> teachingDepartmentDAO;
+
+	@Inject
+	private DAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
 
 	@Inject
 	private ResourceDAO<Long, Software> softwareDAO;
@@ -142,6 +173,206 @@ public class ResourceDAOTest extends TestCase {
 
 		softwareBis = softwareDAO.update(softwareBis);
 		assertFalse(softwareBis.getDocumentations().contains(softwareDocumentationBis));
+	}
+	
+	/**
+	 * Test resource retrieval by a person working (or not) for the organisation possessing the given resource
+	 */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public final void t03_TestResourceRetrievalByPersonWorkingForAnOrganisationThatIsPossessingTheResource() {
+		Person personWorkingForOrganisation = new PersonNode("Some user", "loginuser", "somepassword");
+		personWorkingForOrganisation = personDAO.create(personWorkingForOrganisation);
+
+		TeachingDepartment teachingDepartment = new TeachingDepartmentNode("Math", "M", null);
+		teachingDepartment = teachingDepartmentDAO.create(teachingDepartment);
+
+		ResourceCategory category = new ResourceCategoryNode("LMS", "Learning Management System", null);
+		category = resourceCategoryDAO.create(category);
+
+		Software software = new SoftwareNode("Moodle", null);
+		software = softwareDAO.create(software);
+
+		// We associate the person and the organisation
+		personWorkingForOrganisation.getWorksForOrganisations().add(teachingDepartment);
+		personWorkingForOrganisation = personDAO.update(personWorkingForOrganisation);
+
+		// We associate the organisation and the resource
+		teachingDepartment.getPossessedResources().add(software);
+		teachingDepartment = teachingDepartmentDAO.update(teachingDepartment);
+
+		// We associate the resource and the category
+		category.getResources().add(software);
+		category = resourceCategoryDAO.update(category);
+
+		Collection<Software> usableResourcesPersonWorking = softwareDAO.retrieveResourcesInCategoryForPerson(category,
+				personWorkingForOrganisation);
+		assertTrue("The person working for an organisation that possesses a resource must be able to retrieve it.",
+				usableResourcesPersonWorking.contains(software));
+
+		// A person who don't work for ANY organisation should not be
+		// able to use the resource, hence not be able to retrieve it
+		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
+		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
+
+		Collection<Software> usableResourcesPersonNotWorking = softwareDAO.retrieveResourcesInCategoryForPerson(
+				category, personNotWorkingForOrganisation);
+		assertFalse(
+				"The person, who do not work for an organisation that possesses a resource, must not be able to retrieve it.",
+				usableResourcesPersonNotWorking.contains(software));
+	}
+
+	/**
+	 * Test resource retrieval by a person working (or not) for the organisation supporting the given resource
+	 */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public final void t04_TestResourceRetrievalByPersonWorkingForAnOrganisationThatIsSupportingTheResource() {
+		Person personWorkingForOrganisation = new PersonNode("Some user", "loginuser", "somepassword");
+		personWorkingForOrganisation = personDAO.create(personWorkingForOrganisation);
+
+		AdministrativeDepartment administrativeDepartment = new AdministrativeDepartmentNode("The support service", "TSS", null);
+		administrativeDepartment = administrativeDepartmentDAO.create(administrativeDepartment);
+
+		ResourceCategory category = new ResourceCategoryNode("LMS", "Learning Management System", null);
+		category = resourceCategoryDAO.create(category);
+
+		SoftwareDocumentation softwareDocumentation = new SoftwareDocumentationNode("Moodle tutorial", null);
+		softwareDocumentation = softwareDocumentationDAO.create(softwareDocumentation);
+
+		// We associate the person and the organisation
+		personWorkingForOrganisation.getWorksForOrganisations().add(administrativeDepartment);
+		personWorkingForOrganisation = personDAO.update(personWorkingForOrganisation);
+
+		// We associate the organisation and the resource
+		administrativeDepartment.getSupportedResources().add(softwareDocumentation);
+		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
+
+		// We associate the resource and the category
+		category.getResources().add(softwareDocumentation);
+		category = resourceCategoryDAO.update(category);
+
+		Collection<SoftwareDocumentation> usableResourcesPersonWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(category,
+				personWorkingForOrganisation);
+		assertTrue("The person working for an organisation that supports a resource must be able to retrieve it.",
+				usableResourcesPersonWorking.contains(softwareDocumentation));
+
+		// A person who don't work for ANY organisation should not be
+		// able to use the resource, hence not be able to retrieve it
+		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
+		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
+
+		Collection<SoftwareDocumentation> usableResourcesPersonNotWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(
+				category, personNotWorkingForOrganisation);
+		assertFalse(
+				"The person, who do not work for an organisation that supports a resource, must not be able to retrieve it.",
+				usableResourcesPersonNotWorking.contains(softwareDocumentation));
+	}
+
+	/**
+	 * Test resource retrieval by a person working (or not) for the organisation having access to the given resource
+	 */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public final void t05_TestResourceRetrievalByPersonWorkingForAnOrganisationThatIsHavingAccessToTheResource() {
+		Person personWorkingForOrganisation = new PersonNode("Some user", "loginuser", "somepassword");
+		personWorkingForOrganisation = personDAO.create(personWorkingForOrganisation);
+
+		Institution institution = new InstitutionNode("University", "U", null);
+		institution = institutionDAO.create(institution);
+
+		ResourceCategory category = new ResourceCategoryNode("Interactive whiteboards", "Interactive whiteboards", null);
+		category = resourceCategoryDAO.create(category);
+
+		Equipment equipment = new EquipmentNode("A brand new interactive whiteboard", null);
+		equipment = equipmentDAO.create(equipment);
+
+		// We associate the person and the organisation
+		personWorkingForOrganisation.getWorksForOrganisations().add(institution);
+		personWorkingForOrganisation = personDAO.update(personWorkingForOrganisation);
+
+		// We associate the organisation and the resource
+		institution.getSupportedResources().add(equipment);
+		institution = institutionDAO.update(institution);
+
+		// We associate the resource and the category
+		category.getResources().add(equipment);
+		category = resourceCategoryDAO.update(category);
+
+		Collection<Equipment> usableResourcesPersonWorking = equipmentDAO.retrieveResourcesInCategoryForPerson(category,
+				personWorkingForOrganisation);
+		assertTrue("The person working for an organisation that has access to a resource must be able to retrieve it.",
+				usableResourcesPersonWorking.contains(equipment));
+
+		// A person who don't work for ANY organisation should not be
+		// able to use the resource, hence not be able to retrieve it
+		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
+		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
+
+		Collection<Equipment> usableResourcesPersonNotWorking = equipmentDAO.retrieveResourcesInCategoryForPerson(
+				category, personNotWorkingForOrganisation);
+		assertFalse(
+				"The person, who do not work for an organisation that has access to a resource, must not be able to retrieve it.",
+				usableResourcesPersonNotWorking.contains(equipment));
+	}
+
+	/**
+	 * Test resource retrieval by a person working for an organisation which is
+	 * associated with the organisation possessing/supporting/having access to a
+	 * resource.
+	 */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public final void t06_TestResourceRetrievalWithImplicitAccessThroughOrganisationsAssociations() {
+		Teacher mathTeacher = new TeacherNode("Prof. Euler", "euler", "euler");
+		mathTeacher = teacherDAO.create(mathTeacher);
+
+		Community community = new CommunityNode("Comunity", "COM", null);
+		community = communityDAO.create(community);
+
+		Institution institution = new InstitutionNode("University", "U", null);
+		institution = institutionDAO.create(institution);
+
+		TeachingDepartment mathDepartment = new TeachingDepartmentNode("Math", "M", null);
+		mathDepartment = teachingDepartmentDAO.create(mathDepartment);
+
+		ResourceCategory category = new ResourceCategoryNode("Interactive whiteboards", "Interactive whiteboards", null);
+		category = resourceCategoryDAO.create(category);
+
+		Equipment equipment = new EquipmentNode("A brand new interactive whiteboard", null);
+		equipment = equipmentDAO.create(equipment);
+
+		// We associate the math teacher and the math department
+		mathTeacher.getWorksForOrganisations().add(mathDepartment);
+		mathTeacher = teacherDAO.update(mathTeacher);
+
+		// We associate the math department with the university
+		mathDepartment.getInstitutions().add(institution);
+		institution.getTeachingDepartments().add(mathDepartment);
+		mathDepartment = teachingDepartmentDAO.update(mathDepartment);
+
+		// We associate the university with the community
+		institution.getCommunities().add(community);
+		community.getInstitutions().add(institution);
+		institution = institutionDAO.update(institution);
+
+		// We associate the community and the resource
+		community.getSupportedResources().add(equipment);
+		community = communityDAO.update(community);
+
+		// We associate the resource and the category
+		category.getResources().add(equipment);
+		category = resourceCategoryDAO.update(category);
+
+		Collection<Equipment> usableResourcesPersonWorking = equipmentDAO.retrieveResourcesInCategoryForPerson(category,
+				mathTeacher);
+		assertTrue(
+				"The math teacher working for the math department should be able to retrieve the interactive whiteboard possessed by the community, given the organisations are associated.",
+				usableResourcesPersonWorking.contains(equipment));
 	}
 
 }

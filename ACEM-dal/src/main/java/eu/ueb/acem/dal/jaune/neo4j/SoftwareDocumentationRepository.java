@@ -24,8 +24,8 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 
 /**
  * @author Grégoire Colbert
@@ -42,10 +42,13 @@ public interface SoftwareDocumentationRepository extends GenericRepository<Softw
 	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE n.name=({name}) RETURN n")
 	Iterable<SoftwareDocumentationNode> findByName(@Param("name") String name);
 
-	@Query(value = "MATCH (n:SoftwareDocumentation)<-[r:categoryContains]-(m:ResourceCategory) RETURN m")
+	@Query(value = "MATCH (:SoftwareDocumentation)<-[:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 
 	@Query(value = "MATCH (n:SoftwareDocumentation)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
 	Set<SoftwareDocumentationNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
-	
+
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:SoftwareDocumentation)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
+	Set<SoftwareDocumentationNode> getResourcesInCategoryForPerson(@Param("categoryId") Long categoryId, @Param("personId") Long personId);
+
 }

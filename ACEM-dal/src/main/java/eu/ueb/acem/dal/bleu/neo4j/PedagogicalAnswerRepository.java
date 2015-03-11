@@ -18,14 +18,11 @@
  */
 package eu.ueb.acem.dal.bleu.neo4j;
 
-import java.util.Set;
-
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 
 /**
  * @author Grégoire Colbert
@@ -41,8 +38,5 @@ public interface PedagogicalAnswerRepository extends GenericRepository<Pedagogic
 	@Override
 	@Query(value = "MATCH (n:PedagogicalAnswer) WHERE n.name=({name}) RETURN n")
 	Iterable<PedagogicalAnswerNode> findByName(@Param("name") String name);
-
-	@Query(value = "START answer=node({answerId}) MATCH (answer)-[:answeredUsingRessource]->(resource)<-[:stepRequiringResource]-(scenarioStep)-[:isPartOfScenario]->scenario RETURN scenario")
-	Set<PedagogicalScenarioNode> findScenariosRelatedToAnswer(@Param("answerId") Long id);
 
 }

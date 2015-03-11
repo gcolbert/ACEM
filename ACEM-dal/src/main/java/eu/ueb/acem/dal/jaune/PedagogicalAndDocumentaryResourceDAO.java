@@ -29,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.PedagogicalAndDocumentaryResourcesRepository;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
@@ -73,7 +74,7 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	 * "PedagogicalAndDocumentaryResource" entity.
 	 */
 	@Override
-	public Collection<ResourceCategory> getCategories() {
+	public Collection<ResourceCategory> retrieveCategories() {
 		Iterable<ResourceCategoryNode> endResults = repository.getCategories();
 		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
 		if (endResults.iterator() != null) {
@@ -99,5 +100,20 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 		}
 		return collection;
 	}
-	
+
+	@Override
+	public Collection<PedagogicalAndDocumentaryResource> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
+		if (endResults.iterator() != null) {
+			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				PedagogicalAndDocumentaryResource entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
+	}
+
 }
