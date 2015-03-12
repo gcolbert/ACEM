@@ -47,6 +47,7 @@ import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
@@ -206,21 +207,21 @@ public class ResourceDAOTest extends TestCase {
 		category.getResources().add(software);
 		category = resourceCategoryDAO.update(category);
 
-		Collection<Software> usableResourcesPersonWorking = softwareDAO.retrieveResourcesInCategoryForPerson(category,
+		Collection<Software> usableSoftwaresOfPersonWorking = softwareDAO.retrieveResourcesInCategoryForPerson(category,
 				personWorkingForOrganisation);
 		assertTrue("The person working for an organisation that possesses a resource must be able to retrieve it.",
-				usableResourcesPersonWorking.contains(software));
+				usableSoftwaresOfPersonWorking.contains(software));
 
 		// A person who don't work for ANY organisation should not be
 		// able to use the resource, hence not be able to retrieve it
 		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
 		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
 
-		Collection<Software> usableResourcesPersonNotWorking = softwareDAO.retrieveResourcesInCategoryForPerson(
+		Collection<Software> usableSoftwaresOfPersonNotWorking = softwareDAO.retrieveResourcesInCategoryForPerson(
 				category, personNotWorkingForOrganisation);
 		assertFalse(
 				"The person, who do not work for an organisation that possesses a resource, must not be able to retrieve it.",
-				usableResourcesPersonNotWorking.contains(software));
+				usableSoftwaresOfPersonNotWorking.contains(software));
 	}
 
 	/**
@@ -254,21 +255,21 @@ public class ResourceDAOTest extends TestCase {
 		category.getResources().add(softwareDocumentation);
 		category = resourceCategoryDAO.update(category);
 
-		Collection<SoftwareDocumentation> usableResourcesPersonWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(category,
+		Collection<SoftwareDocumentation> usableSoftwareDocumentationsOfPersonWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(category,
 				personWorkingForOrganisation);
 		assertTrue("The person working for an organisation that supports a resource must be able to retrieve it.",
-				usableResourcesPersonWorking.contains(softwareDocumentation));
+				usableSoftwareDocumentationsOfPersonWorking.contains(softwareDocumentation));
 
 		// A person who don't work for ANY organisation should not be
 		// able to use the resource, hence not be able to retrieve it
 		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
 		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
 
-		Collection<SoftwareDocumentation> usableResourcesPersonNotWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(
+		Collection<SoftwareDocumentation> usableSoftwareDocumentationsPersonNotWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(
 				category, personNotWorkingForOrganisation);
 		assertFalse(
 				"The person, who do not work for an organisation that supports a resource, must not be able to retrieve it.",
-				usableResourcesPersonNotWorking.contains(softwareDocumentation));
+				usableSoftwareDocumentationsPersonNotWorking.contains(softwareDocumentation));
 	}
 
 	/**
@@ -302,21 +303,21 @@ public class ResourceDAOTest extends TestCase {
 		category.getResources().add(equipment);
 		category = resourceCategoryDAO.update(category);
 
-		Collection<Equipment> usableResourcesPersonWorking = equipmentDAO.retrieveResourcesInCategoryForPerson(category,
+		Collection<Equipment> usableEquipmentsOfPersonWorking = equipmentDAO.retrieveResourcesInCategoryForPerson(category,
 				personWorkingForOrganisation);
 		assertTrue("The person working for an organisation that has access to a resource must be able to retrieve it.",
-				usableResourcesPersonWorking.contains(equipment));
+				usableEquipmentsOfPersonWorking.contains(equipment));
 
 		// A person who don't work for ANY organisation should not be
 		// able to use the resource, hence not be able to retrieve it
 		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
 		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
 
-		Collection<Equipment> usableResourcesPersonNotWorking = equipmentDAO.retrieveResourcesInCategoryForPerson(
+		Collection<Equipment> usableEquipmentsOfPersonNotWorking = equipmentDAO.retrieveResourcesInCategoryForPerson(
 				category, personNotWorkingForOrganisation);
 		assertFalse(
 				"The person, who do not work for an organisation that has access to a resource, must not be able to retrieve it.",
-				usableResourcesPersonNotWorking.contains(equipment));
+				usableEquipmentsOfPersonNotWorking.contains(equipment));
 	}
 
 	/**
@@ -328,11 +329,15 @@ public class ResourceDAOTest extends TestCase {
 	@Transactional
 	@Rollback(true)
 	public final void t06_TestResourceRetrievalWithImplicitAccessThroughOrganisationsAssociations() {
-		Teacher mathTeacher = new TeacherNode("Prof. Euler", "euler", "euler");
-		mathTeacher = teacherDAO.create(mathTeacher);
 
 		Community community = new CommunityNode("Comunity", "COM", null);
 		community = communityDAO.create(community);
+
+		// ***********************************************
+		// We create a math professor
+		// ***********************************************
+		Teacher mathTeacher = new TeacherNode("Prof. Euler", "euler", "euler");
+		mathTeacher = teacherDAO.create(mathTeacher);
 
 		Institution mathUniversity = new InstitutionNode("University of Math", "UM", null);
 		mathUniversity = institutionDAO.create(mathUniversity);
@@ -340,8 +345,8 @@ public class ResourceDAOTest extends TestCase {
 		TeachingDepartment mathDepartment = new TeachingDepartmentNode("Math", "MD", null);
 		mathDepartment = teachingDepartmentDAO.create(mathDepartment);
 
-		ResourceCategory category = new ResourceCategoryNode("Interactive whiteboards", "Interactive whiteboards", null);
-		category = resourceCategoryDAO.create(category);
+		ResourceCategory interactiveWhiteboards = new ResourceCategoryNode("Interactive whiteboards", "Interactive whiteboards", null);
+		interactiveWhiteboards = resourceCategoryDAO.create(interactiveWhiteboards);
 
 		Equipment equipment = new EquipmentNode("A brand new interactive whiteboard", null);
 		equipment = equipmentDAO.create(equipment);
@@ -365,16 +370,18 @@ public class ResourceDAOTest extends TestCase {
 		community = communityDAO.update(community);
 
 		// We associate the resource and the category
-		category.getResources().add(equipment);
-		category = resourceCategoryDAO.update(category);
+		interactiveWhiteboards.getResources().add(equipment);
+		interactiveWhiteboards = resourceCategoryDAO.update(interactiveWhiteboards);
 
-		Collection<Equipment> usableResourcesOfMathTeacher = equipmentDAO.retrieveResourcesInCategoryForPerson(category,
+		Collection<Equipment> usableEquipmentsOfMathTeacher = equipmentDAO.retrieveResourcesInCategoryForPerson(interactiveWhiteboards,
 				mathTeacher);
 		assertTrue(
 				"The math teacher working for the math department should be able to retrieve the interactive whiteboard possessed by the community, given the organisations are associated.",
-				usableResourcesOfMathTeacher.contains(equipment));
+				usableEquipmentsOfMathTeacher.contains(equipment));
 
-		// We create another professor
+		// *************************************************
+		// We create a biology professor
+		// *************************************************
 		Teacher biologyTeacher = new TeacherNode("Prof. Darwin", "darwin", "darwin");
 		biologyTeacher = teacherDAO.create(biologyTeacher);
 
@@ -385,21 +392,56 @@ public class ResourceDAOTest extends TestCase {
 		biologyTeacher.getWorksForOrganisations().add(biologyUniversity);
 		biologyTeacher = teacherDAO.update(biologyTeacher);
 
-		Collection<Equipment> usableResourcesOfBiologyTeacher = equipmentDAO.retrieveResourcesInCategoryForPerson(category,
+		Collection<Equipment> usableResourcesOfBiologyTeacher = equipmentDAO.retrieveResourcesInCategoryForPerson(interactiveWhiteboards,
 				biologyTeacher);
 		assertFalse(
 				"The biology teacher working for the biology department should not be able to retrieve the interactive whiteboard possessed by the community, given the math university and the community are not yet associated.",
 				usableResourcesOfBiologyTeacher.contains(equipment));
-		
+
 		// We associate the biology university with the community
 		biologyUniversity.getCommunities().add(community);
 		community.getInstitutions().add(biologyUniversity);
 		biologyUniversity = institutionDAO.update(biologyUniversity);
 
-		usableResourcesOfBiologyTeacher = equipmentDAO.retrieveResourcesInCategoryForPerson(category, biologyTeacher);
+		usableResourcesOfBiologyTeacher = equipmentDAO.retrieveResourcesInCategoryForPerson(interactiveWhiteboards, biologyTeacher);
 		assertTrue(
 				"The biology teacher working for the biology department should be able to retrieve the interactive whiteboard possessed by the community, given the math university and the community are now associated.",
 				usableResourcesOfBiologyTeacher.contains(equipment));
+
+		// ************************************************************************
+		// The biology university creates an Internet training for every person
+		// that works for the biology university (or for its departments)
+		// ************************************************************************
+		ProfessionalTraining internetTraining = new ProfessionalTrainingNode("How to use Google Images to mix fungi species", null);
+		internetTraining = professionalTrainingDAO.create(internetTraining);
+
+		ResourceCategory internetTrainings = new ResourceCategoryNode("Internet trainings", "Internet trainings", null);
+		internetTrainings.getResources().add(internetTraining);
+		internetTrainings = resourceCategoryDAO.create(internetTrainings);
+
+		biologyUniversity.getPossessedResources().add(internetTraining);
+		biologyUniversity = institutionDAO.update(biologyUniversity);
+
+		Collection<ProfessionalTraining> usableProfessionalTrainingsOfBiologyTeacher = professionalTrainingDAO.retrieveResourcesInCategoryForPerson(internetTrainings, biologyTeacher);
+		assertTrue(
+				"The biology teacher working for the biology university should be able to retrieve the Internet training possessed by the biology university.",
+				usableProfessionalTrainingsOfBiologyTeacher.contains(internetTraining));
+
+		Collection<ProfessionalTraining> usableProfessionalTrainingsOfMathTeacher = professionalTrainingDAO.retrieveResourcesInCategoryForPerson(internetTrainings, mathTeacher);
+		assertFalse(
+				"The math teacher working for the math department should not be able to retrieve the Internet training possessed by the biology university (even though they belong to the same community).",
+				usableProfessionalTrainingsOfMathTeacher.contains(internetTraining));
+
+		// ****************************************************************************
+		// The biology university shares its Internet training with the math university
+		// ****************************************************************************
+		mathUniversity.getViewedResources().add(internetTraining);
+		mathUniversity = institutionDAO.update(mathUniversity);
+
+		usableProfessionalTrainingsOfMathTeacher = professionalTrainingDAO.retrieveResourcesInCategoryForPerson(internetTrainings, mathTeacher);
+		assertTrue(
+				"The math teacher working for the math department should be able to retrieve the Internet training possessed by the biology university, because the biology university decided to share this resource with the math university.",
+				usableProfessionalTrainingsOfMathTeacher.contains(internetTraining));
 	}
 
 }
