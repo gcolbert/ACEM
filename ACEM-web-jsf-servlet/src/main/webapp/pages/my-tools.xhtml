@@ -335,25 +335,49 @@
 					<p:commandButton id="createResourceButton" type="button"
 						value="#{msg['MY_TOOLS.CREATE_RESOURCE_LABEL']}"
 						icon="ui-icon-plusthick"/>
-				    <p:menu styleClass="overlayMenu" overlay="true" trigger="createResourceButton" my="left top" at="left bottom">
-				        <p:submenu label="#{msg['MY_TOOLS.EDIT_RESOURCE_MODAL_WINDOW.SELECT_TOOL_TYPE']}">
-							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE']}" action="#{associateBean.prepareResourceCreation(softwareViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
-								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
+					<p:menu styleClass="overlayMenu" overlay="true"
+						trigger="createResourceButton" my="left top" at="left bottom">
+						<p:submenu
+							label="#{msg['MY_TOOLS.EDIT_RESOURCE_MODAL_WINDOW.SELECT_TOOL_TYPE']}">
+							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE']}"
+								action="#{associateBean.prepareResourceCreation(softwareViewBean)}"
+								update=":createResourceForm:idDialogCreateOrModifyResource"
+								oncomplete="PF('dialogCreateResource').show()">
+								<p:resetInput
+									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION']}" action="#{associateBean.prepareResourceCreation(softwareDocumentationViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
-								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
+							<p:menuitem
+								value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION']}"
+								action="#{associateBean.prepareResourceCreation(softwareDocumentationViewBean)}"
+								update=":createResourceForm:idDialogCreateOrModifyResource"
+								oncomplete="PF('dialogCreateResource').show()">
+								<p:resetInput
+									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_EQUIPMENT']}" action="#{associateBean.prepareResourceCreation(equipmentViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
-								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
+							<p:menuitem value="#{msg['RESOURCE_TYPE_EQUIPMENT']}"
+								action="#{associateBean.prepareResourceCreation(equipmentViewBean)}"
+								update=":createResourceForm:idDialogCreateOrModifyResource"
+								oncomplete="PF('dialogCreateResource').show()">
+								<p:resetInput
+									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE']}" action="#{associateBean.prepareResourceCreation(pedagogicalAndDocumentaryResourceViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
-								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
+							<p:menuitem
+								value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE']}"
+								action="#{associateBean.prepareResourceCreation(pedagogicalAndDocumentaryResourceViewBean)}"
+								update=":createResourceForm:idDialogCreateOrModifyResource"
+								oncomplete="PF('dialogCreateResource').show()">
+								<p:resetInput
+									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-							<p:menuitem value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING']}" action="#{associateBean.prepareResourceCreation(professionalTrainingViewBean)}" update=":createResourceForm:idDialogCreateOrModifyResource" oncomplete="PF('dialogCreateResource').show()">
-								<p:resetInput target=":createResourceForm:idDialogCreateOrModifyResource" />
+							<p:menuitem value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING']}"
+								action="#{associateBean.prepareResourceCreation(professionalTrainingViewBean)}"
+								update=":createResourceForm:idDialogCreateOrModifyResource"
+								oncomplete="PF('dialogCreateResource').show()">
+								<p:resetInput
+									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
-				        </p:submenu>
-				    </p:menu>
+						</p:submenu>
+					</p:menu>
 					<p:commandButton id="idModifyToolButton"
 						value="#{msg['MY_TOOLS.MODIFY_RESOURCE_LABEL']}"
 						icon="ui-icon-pencil" update=":modifyResourceForm:idDialogCreateOrModifyResource"
@@ -439,7 +463,6 @@
 	</ui:define>
 
 	<ui:define name="customDialogOutFormWithoutForm">
-
 		<h:form id="createToolCategoryForm">
 			<ui:include src="/templates/include/commonCreateOrModifyToolCategoryDialog.xhtml">
 				<ui:param name="associateBean" value="#{associateBean}"/>
@@ -490,7 +513,6 @@
 				</p:editor>
 			</p:dialog>
 		</h:form>
-
 	</ui:define>
 
 	<ui:define name="customDialogOutForm">

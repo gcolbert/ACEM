@@ -3,7 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	template="../templates/commonLayout.xhtml">
+	template="/templates/commonLayout.xhtml">
 
 	<!-- Controller associated with this view -->
 	<ui:param name="associateBean" value="#{adminOrganisationsController}" />
@@ -38,7 +38,7 @@
 					icon="ui-icon-plusthick"
 					action="#{associateBean.prepareCommunityCreation}"
 					update=":createOrganisationForm:idDialogCreateOrModifyOrganisation"
-					oncomplete="PF('dialogCreateOrganisation').show()" process="@this">
+					oncomplete="PF('dialogCreateOrganisation').show()">
 					<p:resetInput target=":createOrganisationForm:idDialogCreateOrModifyOrganisation" />
 				</p:commandButton>
 				<p:accordionPanel id="accordionPanelForCommunities" styleClass="administrationAccordionPanel"
@@ -65,8 +65,7 @@
 									icon="ui-icon-pencil"
 									action="#{associateBean.prepareCommunityModification(communityViewBean)}"
 									update=":modifyOrganisationForm:idDialogCreateOrModifyOrganisation"
-									oncomplete="PF('dialogModifyOrganisation').show()"
-									process="@this" />	
+									oncomplete="PF('dialogModifyOrganisation').show()" />
 								<p:commandButton id="deleteCommunityButton"
 									value="#{msg['APPLICATION.BUTTON.OPEN_DELETE_DIALOG']}"
 									icon="ui-icon-trash"
@@ -113,7 +112,7 @@
 					icon="ui-icon-plusthick"
 					action="#{associateBean.prepareInstitutionCreation}"
 					update=":createOrganisationForm:idDialogCreateOrModifyOrganisation"
-					oncomplete="PF('dialogCreateOrganisation').show()" process="@this">
+					oncomplete="PF('dialogCreateOrganisation').show()">
 					<p:resetInput
 						target=":createOrganisationForm:idDialogCreateOrModifyOrganisation" />
 				</p:commandButton>
@@ -225,8 +224,7 @@
 					icon="ui-icon-plusthick"
 					action="#{associateBean.prepareAdministrativeDepartmentCreation}"
 					update=":createOrganisationForm:idDialogCreateOrModifyOrganisation"
-					oncomplete="PF('dialogCreateOrganisation').show()"
-					process="@this">
+					oncomplete="PF('dialogCreateOrganisation').show()">
 					<p:resetInput
 						target=":createOrganisationForm:idDialogCreateOrModifyOrganisation" />
 				</p:commandButton>
@@ -300,8 +298,7 @@
 					icon="ui-icon-plusthick"
 					action="#{associateBean.prepareTeachingDepartmentCreation}"
 					update=":createOrganisationForm:idDialogCreateOrModifyOrganisation"
-					oncomplete="PF('dialogCreateOrganisation').show()"
-					process="@this">
+					oncomplete="PF('dialogCreateOrganisation').show()">
 					<p:resetInput
 						target=":createOrganisationForm:idDialogCreateOrModifyOrganisation" />
 				</p:commandButton>
@@ -427,7 +424,6 @@
 				<ui:param name="targetCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}"/>
 			</ui:include>
 		</h:form>
-
 	</ui:define>
 
 	<ui:define name="customDialogOutForm">

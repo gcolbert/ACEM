@@ -11,6 +11,7 @@
 	<ui:param name="widgetName" value="#{widgetName}"/>
 	<ui:param name="dialogHeader" value="#{dialogHeader}"/>
 
+	<!-- ********** CREATE/MODIFY ORGANISATION ********** -->
 	<p:dialog id="idDialogCreateOrModifyOrganisation"
 		header="#{dialogHeader}"
 		widgetVar="#{widgetName}" modal="true" height="auto">
@@ -45,7 +46,7 @@
 				</p:graphicImage>
 				<p:graphicImage
 					rendered="#{not empty associateBean.temporaryFilePath}"
-					alt="#{associateBean.objectEdited.name}"
+					alt="#{associateBean.commonUploadOneDialog.fileUploadedName}"
 					cache="true" width="200" value="#{imagesController.image}">
 					<f:param name="imageFilePath"
 						value="#{associateBean.temporaryFilePath}" />

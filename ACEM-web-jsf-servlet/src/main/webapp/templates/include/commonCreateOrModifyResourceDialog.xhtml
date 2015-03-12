@@ -8,14 +8,13 @@
 	<!-- Controller associated with this view -->
 	<ui:param name="associateBean" value="#{associateBean}"/>
 	<ui:param name="formToUpdate" value="#{formToUpdate}"/>
-	<ui:param name="dialogHeader" value="#{dialogHeader}"/>
 	<ui:param name="widgetName" value="#{widgetName}"/>
+	<ui:param name="dialogHeader" value="#{dialogHeader}"/>
 
 	<!-- ********** CREATE/MODIFY RESOURCE ********** -->
 	<p:dialog id="idDialogCreateOrModifyResource"
 		header="#{dialogHeader}"
-		widgetVar="#{widgetName}" modal="true"
-		height="auto">
+		widgetVar="#{widgetName}" modal="true" height="auto">
 		<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 
 		<p:outputPanel rendered="#{associateBean.objectEditedResource != null}">

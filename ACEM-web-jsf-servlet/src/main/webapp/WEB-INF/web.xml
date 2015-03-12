@@ -48,13 +48,13 @@
 		<description> The main servlet of the application. This class inherits
 			from the MyFaces implementation and handles exceptions thrown for
 			specific exception handling. </description>
-		<display-name>Faces Servlet</display-name>
-		<servlet-name>Faces Servlet</servlet-name>
+		<display-name>FacesServlet</display-name>
+		<servlet-name>FacesServlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-name>FacesServlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	<!-- 
@@ -98,20 +98,6 @@
 	<filter-mapping>
 	    <filter-name>facesExceptionFilter</filter-name>
 	    <servlet-name>facesServlet</servlet-name>
-	</filter-mapping>
-
-	<context-param>
-		<param-name>primefaces.UPLOADER</param-name>
-		<param-value>commons</param-value>
-	</context-param>
-	<filter>
-		<filter-name>PrimeFaces FileUpload Filter</filter-name>
-		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>PrimeFaces FileUpload Filter</filter-name>
-		<servlet-name>Faces Servlet</servlet-name>
-		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 
 	<welcome-file-list>

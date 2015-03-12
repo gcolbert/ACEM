@@ -97,7 +97,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	private PickListBean pickListBean;
 
 	/**
-	 * Dialog for upload of one zip file Selection
+	 * Dialog for upload of one file
 	 */
 	private CommonUploadOneDialog commonUploadOneDialog;
 
@@ -119,8 +119,10 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	}
 
 	@PostConstruct
-	public void initOrganisationsController() {
+	public void init() {
+		logger.debug("Entering init()");
 		this.commonUploadOneDialog = new CommonUploadOneDialog(this);
+		logger.debug("init, commonUploadOneDialog={}", this.commonUploadOneDialog);
 
 		Collection<Community> communities = organisationsService.retrieveAllCommunities();
 		communityViewBeans.getTableEntries().clear();
@@ -156,6 +158,8 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 			teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
 		}
 		teachingDepartmentViewBeans.sort();
+
+		logger.debug("Leaving init()");
 	}
 
 	@Override
@@ -826,6 +830,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	 */
 	@Override
 	public CommonUploadOneDialog getCommonUploadOneDialog() {
+		logger.info("AdminOrganisationsController, commonUploadOneDialog={}",commonUploadOneDialog);
 		return commonUploadOneDialog;
 	}
 
@@ -835,6 +840,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	 */
 	@Override
 	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath, String originalFileName) {
+		// Remove previously uploaded file if it exists
 		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 
 		// Memorize new one

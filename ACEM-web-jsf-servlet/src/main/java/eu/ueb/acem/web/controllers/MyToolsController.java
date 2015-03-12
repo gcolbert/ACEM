@@ -747,6 +747,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 */
 	@Override
 	public CommonUploadOneDialog getCommonUploadOneDialog() {
+		logger.info("MyToolsController, commonUploadOneDialog={}",commonUploadOneDialog);
 		return commonUploadOneDialog;
 	}
 
@@ -755,8 +756,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 *      java.lang.String)
 	 */
 	@Override
-	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath,
-			String originalFileName) {
+	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath, String originalFileName) {
 		// Remove previously uploaded file if it exists
 		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 

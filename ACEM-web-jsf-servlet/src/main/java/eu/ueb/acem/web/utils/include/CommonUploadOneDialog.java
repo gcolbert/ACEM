@@ -110,6 +110,7 @@ public class CommonUploadOneDialog implements Serializable {
 	 * @param event
 	 */
 	public void handleFileUpload(FileUploadEvent event) {
+		logger.info("handleFileUpload");
 		fileUploaded = (UploadedFile) event.getFile();
 		if (caller != null){
 			Path temporaryFilePath = FileSystems.getDefault().getPath(FileUtil.getNormalizedFilePath(caller.getDomainService().getTemporaryDirectory() + File.separator
@@ -131,8 +132,10 @@ public class CommonUploadOneDialog implements Serializable {
 	 */
 	public String getFileUploadedName() {
 		if (fileUploaded != null) {
+			logger.info("CommonUpload controller, uploadedFileName={}",fileUploaded.getFileName());
 			return fileUploaded.getFileName();
 		} else {
+			logger.info("CommonUpload controller, uploadedFileName=null");
 			return "";
 		}
 	}
