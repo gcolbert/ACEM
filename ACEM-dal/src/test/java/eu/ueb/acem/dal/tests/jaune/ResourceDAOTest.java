@@ -334,10 +334,10 @@ public class ResourceDAOTest extends TestCase {
 		Community community = new CommunityNode("Comunity", "COM", null);
 		community = communityDAO.create(community);
 
-		Institution institution = new InstitutionNode("University", "U", null);
-		institution = institutionDAO.create(institution);
+		Institution mathUniversity = new InstitutionNode("University of Math", "UM", null);
+		mathUniversity = institutionDAO.create(mathUniversity);
 
-		TeachingDepartment mathDepartment = new TeachingDepartmentNode("Math", "M", null);
+		TeachingDepartment mathDepartment = new TeachingDepartmentNode("Math", "MD", null);
 		mathDepartment = teachingDepartmentDAO.create(mathDepartment);
 
 		ResourceCategory category = new ResourceCategoryNode("Interactive whiteboards", "Interactive whiteboards", null);
@@ -351,14 +351,14 @@ public class ResourceDAOTest extends TestCase {
 		mathTeacher = teacherDAO.update(mathTeacher);
 
 		// We associate the math department with the university
-		mathDepartment.getInstitutions().add(institution);
-		institution.getTeachingDepartments().add(mathDepartment);
+		mathDepartment.getInstitutions().add(mathUniversity);
+		mathUniversity.getTeachingDepartments().add(mathDepartment);
 		mathDepartment = teachingDepartmentDAO.update(mathDepartment);
 
 		// We associate the university with the community
-		institution.getCommunities().add(community);
-		community.getInstitutions().add(institution);
-		institution = institutionDAO.update(institution);
+		mathUniversity.getCommunities().add(community);
+		community.getInstitutions().add(mathUniversity);
+		mathUniversity = institutionDAO.update(mathUniversity);
 
 		// We associate the community and the resource
 		community.getSupportedResources().add(equipment);
@@ -368,11 +368,38 @@ public class ResourceDAOTest extends TestCase {
 		category.getResources().add(equipment);
 		category = resourceCategoryDAO.update(category);
 
-		Collection<Equipment> usableResourcesPersonWorking = equipmentDAO.retrieveResourcesInCategoryForPerson(category,
+		Collection<Equipment> usableResourcesOfMathTeacher = equipmentDAO.retrieveResourcesInCategoryForPerson(category,
 				mathTeacher);
 		assertTrue(
 				"The math teacher working for the math department should be able to retrieve the interactive whiteboard possessed by the community, given the organisations are associated.",
-				usableResourcesPersonWorking.contains(equipment));
+				usableResourcesOfMathTeacher.contains(equipment));
+
+		// We create another professor
+		Teacher biologyTeacher = new TeacherNode("Prof. Darwin", "darwin", "darwin");
+		biologyTeacher = teacherDAO.create(biologyTeacher);
+
+		Institution biologyUniversity = new InstitutionNode("University of Biology", "UB", null);
+		biologyUniversity = institutionDAO.create(biologyUniversity);
+
+		// We associate the biology teacher and the biology university
+		biologyTeacher.getWorksForOrganisations().add(biologyUniversity);
+		biologyTeacher = teacherDAO.update(biologyTeacher);
+
+		Collection<Equipment> usableResourcesOfBiologyTeacher = equipmentDAO.retrieveResourcesInCategoryForPerson(category,
+				biologyTeacher);
+		assertFalse(
+				"The biology teacher working for the biology department should not be able to retrieve the interactive whiteboard possessed by the community, given the math university and the community are not yet associated.",
+				usableResourcesOfBiologyTeacher.contains(equipment));
+		
+		// We associate the biology university with the community
+		biologyUniversity.getCommunities().add(community);
+		community.getInstitutions().add(biologyUniversity);
+		biologyUniversity = institutionDAO.update(biologyUniversity);
+
+		usableResourcesOfBiologyTeacher = equipmentDAO.retrieveResourcesInCategoryForPerson(category, biologyTeacher);
+		assertTrue(
+				"The biology teacher working for the biology department should be able to retrieve the interactive whiteboard possessed by the community, given the math university and the community are now associated.",
+				usableResourcesOfBiologyTeacher.contains(equipment));
 	}
 
 }
