@@ -90,6 +90,10 @@ Override of Primefaces default css
 	text-align:left; /* We want the headers of datatables to be aligned left (and not centered) */
 }
 
+.ui-datatable-empty-message {
+	color:#cd0a0a;
+}
+
 .ui-editor {
 	height:100%;
 	box-sizing:border-box;
