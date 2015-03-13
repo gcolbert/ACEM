@@ -393,6 +393,10 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 			commonUploadOneDialog.moveUploadedIconToImagesFolder(this.temporaryFilePath, iconFileName);
 			this.temporaryFilePath = null;
 			commonUploadOneDialog.reset();
+			// We set the icon file name inside this block, because if the user
+			// didn't upload any icon, we want the iconFileName to be null
+			// and not an empty string.
+			objectEdited.setIconFileName(iconFileName);
 		}
 
 		if (objectEdited instanceof CommunityViewBean) {
