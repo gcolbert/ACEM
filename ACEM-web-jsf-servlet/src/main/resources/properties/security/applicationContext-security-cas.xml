@@ -31,14 +31,14 @@
 
     <!-- HTTP security configurations -->
     <http entry-point-ref="casEntryPoint" use-expressions="true">
-		<intercept-url pattern="/home" access="permitAll"/>
-		<intercept-url pattern="/login" access="permitAll"/>
-        <intercept-url pattern="/pages/exceptions/**" access="permitAll"/>
-        <intercept-url pattern="/javax.faces.resource/**" access="permitAll"/>
-        <intercept-url pattern="/resources/**" access="permitAll"/>
-        <intercept-url pattern="/templates/**" access="permitAll"/>
-		<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
-		<intercept-url pattern="/administration*" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url access="permitAll" pattern="/home" />
+		<intercept-url access="permitAll" pattern="/login" />
+		<intercept-url access="permitAll" pattern="/pages/exceptions/**" />
+		<intercept-url access="permitAll" pattern="/javax.faces.resource/*" />
+		<intercept-url access="permitAll" pattern="/resources/**" />
+        <intercept-url access="permitAll" pattern="/templates/**"/>
+		<intercept-url access="hasRole('ROLE_USER')" pattern="/**" />
+		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration*" />
         <!-- 
         When the user is authentificated by CAS, but doesn't exist in the application database
         <intercept-url access="isAuthenticated()" pattern="/**"/>

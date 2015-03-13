@@ -8,6 +8,11 @@
 		<view-id value="/pages/home.xhtml" />
 	</url-mapping>
 
+	<url-mapping id="login">
+		<pattern value="/login" />
+		<view-id value="/pages/login.xhtml" />
+	</url-mapping>
+
 	<url-mapping id="pedagogical-advice">
 		<pattern value="/pedagogical-advice/" />
 		<view-id value="/pages/pedagogical-advice.xhtml" />

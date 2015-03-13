@@ -20,23 +20,21 @@
 
 	<!-- HTTP security configurations -->
 	<http use-expressions="true" auto-config='true'>
-		<intercept-url access="permitAll" pattern="/stylesheets/login.xhtml" />
-		<intercept-url access="permitAll" pattern="/stylesheets/logout.xhtml" />
-		<intercept-url access="permitAll" pattern="/stylesheets/exceptions/**" />
-		<intercept-url access="permitAll" pattern="/resources/**" />
-		<intercept-url access="permitAll" pattern="/media/**" />
+		<intercept-url access="permitAll" pattern="/home" />
+		<intercept-url access="permitAll" pattern="/login" />
+		<intercept-url access="permitAll" pattern="/logout" />
+		<intercept-url access="permitAll" pattern="/pages/exceptions/**" />
 		<intercept-url access="permitAll" pattern="/javax.faces.resource/*" />
-		<intercept-url access="isAuthenticated()" pattern="/" />
-		<intercept-url access="isAuthenticated()" pattern="/welcome*" />
-		<intercept-url access="isAuthenticated()" pattern="/configresources" />
-		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/stylesheets/admin/**" />
-		<intercept-url access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" pattern="/stylesheets/user/**" />
-		<intercept-url access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" pattern="/stylesheets/admin/projet.xhtml" />
-		<intercept-url access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" pattern="/stylesheets/project/**" />
+		<intercept-url access="permitAll" pattern="/resources/**" />
+        <intercept-url access="permitAll" pattern="/templates/**"/>
 		<intercept-url access="isAuthenticated()" pattern="/**" />
-		<logout logout-success-url='/stylesheets/logout.xhtml' />
-		<form-login login-page='/stylesheets/login.xhtml'
-			authentication-failure-url="/stylesheets/login.xhtml?auth=fail"
+		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration*" />
+		<intercept-url access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" pattern="/pages/user/**" />
+		<intercept-url access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" pattern="/pages/admin/projet.xhtml" />
+		<intercept-url access="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')" pattern="/pages/project/**" />
+		<logout logout-success-url='/logout' />
+		<form-login login-page='/pages/login.xhtml'
+			authentication-failure-url="/pages/login.xhtml?auth=fail"
 			default-target-url="/" login-processing-url="/j_spring_security_check" />
 	</http>
 
