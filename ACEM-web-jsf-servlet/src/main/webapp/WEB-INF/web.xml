@@ -6,10 +6,10 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 	<display-name>ACEM-web-jsf-servlet</display-name>
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:/properties/applicationContext.xml,classpath:/properties/applicationContext-security.xml</param-value>
-    </context-param>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:/properties/applicationContext.xml,classpath:/properties/applicationContext-security.xml</param-value>
+	</context-param>
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>classpath:/log4j2.xml</param-value>
@@ -57,7 +57,7 @@
 		<servlet-name>FacesServlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
- 	<listener>
+	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
 	<listener>
@@ -77,22 +77,22 @@
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
 		</init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>characterEncodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>springSecurityFilterChain</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-	<filter>
-	    <filter-name>facesExceptionFilter</filter-name>
-	    <filter-class>org.omnifaces.filter.FacesExceptionFilter</filter-class>
 	</filter>
 	<filter-mapping>
-	    <filter-name>facesExceptionFilter</filter-name>
-	    <servlet-name>facesServlet</servlet-name>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>facesExceptionFilter</filter-name>
+		<filter-class>org.omnifaces.filter.FacesExceptionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>facesExceptionFilter</filter-name>
+		<servlet-name>facesServlet</servlet-name>
 	</filter-mapping>
 
 	<welcome-file-list>
@@ -106,20 +106,20 @@
 		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
 		<location>/pages/page-not-found.xhtml</location>
 	</error-page>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/pages/403.xhtml</location>
-    </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/pages/exceptions/exception.xhtml</location>
-    </error-page>
-    <error-page>
-		<exception-type>java.lang.Throwable</exception-type>
-        <location>/pages/exceptions/exception.xhtml</location>
-    </error-page>
 	<error-page>
-	    <location>/pages/exceptions/exception.xhtml</location>
+		<error-code>403</error-code>
+		<location>/pages/403.xhtml</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/pages/exceptions/exception.xhtml</location>
+	</error-page>
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/pages/exceptions/exception.xhtml</location>
+	</error-page>
+	<error-page>
+		<location>/pages/exceptions/exception.xhtml</location>
 	</error-page>
 
 </web-app>
