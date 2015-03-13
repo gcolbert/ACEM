@@ -332,9 +332,18 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 			// We associate the ResourceViewBeans
 			selectedToolCategoryViewBean.getResourceViewBeans().clear();
-			Collection<Resource> resourcesTheUserCanUse = resourcesService.getResourcesInCategoryForPerson(selectedToolCategoryViewBean.getDomainBean(), getCurrentUserViewBean().getDomainBean());
+			Collection<Resource> resourcesTheUserCanUse = new HashSet<Resource>(0);
+			// If the user is an administrator, he sees all resources
+			if (getCurrentUserViewBean().getAdministrator()) {
+				resourcesTheUserCanUse.addAll(selectedToolCategoryViewBean.getDomainBean().getResources());
+			}
+			else {
+				// Otherwise he only sees a subset of the resources determined
+				// by the organisation he works for and the associations between
+				// this organisation and the other organisations.
+				resourcesTheUserCanUse.addAll(resourcesService.getResourcesInCategoryForPerson(selectedToolCategoryViewBean.getDomainBean(), getCurrentUserViewBean().getDomainBean()));
+			}
 			for (Resource resource : resourcesTheUserCanUse) {
-//			for (Resource resource : selectedToolCategoryViewBean.getDomainBean().getResources()) {
 				resource = resourcesService.retrieveResource(resource.getId(), true);
 				ResourceViewBean resourceViewBean = createResourceViewBean(resource);
 

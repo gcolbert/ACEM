@@ -121,12 +121,9 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 
 	@PostConstruct
 	public void init() {
-		logger.info("entering init");
 		pedagogicalAdviceTreeBean = pedagogicalAdviceTreeGenerator.createNeedAndAnswersTree(msgs.getMessage(
 				"PEDAGOGICAL_ADVICE.TREE.VISIBLE_ROOT.LABEL", null, getCurrentUserLocale()));
 		toolCategoryViewBeans = getAllToolCategoryViewBeans();
-		logger.info("leaving init");
-		logger.info("------");
 	}
 
 	@Override

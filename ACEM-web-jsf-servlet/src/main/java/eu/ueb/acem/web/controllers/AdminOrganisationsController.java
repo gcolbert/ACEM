@@ -120,9 +120,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 
 	@PostConstruct
 	public void init() {
-		logger.debug("Entering init()");
 		this.commonUploadOneDialog = new CommonUploadOneDialog(this);
-		logger.debug("init, commonUploadOneDialog={}", this.commonUploadOneDialog);
 
 		Collection<Community> communities = organisationsService.retrieveAllCommunities();
 		communityViewBeans.getTableEntries().clear();
@@ -158,8 +156,6 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 			teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
 		}
 		teachingDepartmentViewBeans.sort();
-
-		logger.debug("Leaving init()");
 	}
 
 	@Override
