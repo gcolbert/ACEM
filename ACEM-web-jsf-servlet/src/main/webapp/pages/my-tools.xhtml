@@ -342,7 +342,8 @@
 							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE']}"
 								action="#{associateBean.prepareResourceCreation(softwareViewBean)}"
 								update=":createResourceForm:idDialogCreateOrModifyResource"
-								oncomplete="PF('dialogCreateResource').show()">
+								oncomplete="PF('dialogCreateResource').show()"
+								process="@this">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
@@ -350,14 +351,16 @@
 								value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION']}"
 								action="#{associateBean.prepareResourceCreation(softwareDocumentationViewBean)}"
 								update=":createResourceForm:idDialogCreateOrModifyResource"
-								oncomplete="PF('dialogCreateResource').show()">
+								oncomplete="PF('dialogCreateResource').show()"
+								process="@this">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
 							<p:menuitem value="#{msg['RESOURCE_TYPE_EQUIPMENT']}"
 								action="#{associateBean.prepareResourceCreation(equipmentViewBean)}"
 								update=":createResourceForm:idDialogCreateOrModifyResource"
-								oncomplete="PF('dialogCreateResource').show()">
+								oncomplete="PF('dialogCreateResource').show()"
+								process="@this">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
@@ -365,14 +368,16 @@
 								value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE']}"
 								action="#{associateBean.prepareResourceCreation(pedagogicalAndDocumentaryResourceViewBean)}"
 								update=":createResourceForm:idDialogCreateOrModifyResource"
-								oncomplete="PF('dialogCreateResource').show()">
+								oncomplete="PF('dialogCreateResource').show()"
+								process="@this">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
 							<p:menuitem value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING']}"
 								action="#{associateBean.prepareResourceCreation(professionalTrainingViewBean)}"
 								update=":createResourceForm:idDialogCreateOrModifyResource"
-								oncomplete="PF('dialogCreateResource').show()">
+								oncomplete="PF('dialogCreateResource').show()"
+								process="@this">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
@@ -381,8 +386,8 @@
 					<p:commandButton id="idModifyToolButton"
 						value="#{msg['MY_TOOLS.MODIFY_RESOURCE_LABEL']}"
 						icon="ui-icon-pencil" update=":modifyResourceForm:idDialogCreateOrModifyResource"
-						action="#{associateBean.prepareResourceModification(associateBean.selectedResourceViewBean)}"
-						oncomplete="PF('dialogModifyResource').show()"
+						actionListener="#{associateBean.prepareResourceModification(associateBean.selectedResourceViewBean)}"
+						oncomplete="PF('dialogModifyResource').show()" process="@this"
 						disabled="#{associateBean.selectedResourceViewBean == null}">
 						<p:resetInput target=":modifyResourceForm:idDialogCreateOrModifyResource" />
 					</p:commandButton>
@@ -513,12 +518,13 @@
 				</p:editor>
 			</p:dialog>
 		</h:form>
-	</ui:define>
+		
+		<h:form id="uploadImageForm" enctype="multipart/form-data">
+			<ui:include src="/templates/include/commonUploadOneImageDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}" />
+			</ui:include>
+		</h:form>
 
-	<ui:define name="customDialogOutForm">
-		<ui:include src="/templates/include/commonUploadOneImageDialog.xhtml">
-			<ui:param name="associateBean" value="#{associateBean}" />
-		</ui:include>
 	</ui:define>
 
 </ui:composition>

@@ -424,12 +424,13 @@
 				<ui:param name="targetCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}"/>
 			</ui:include>
 		</h:form>
-	</ui:define>
+		
+		<h:form id="uploadImageForm" enctype="multipart/form-data">
+			<ui:include src="/templates/include/commonUploadOneImageDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}" />
+			</ui:include>
+		</h:form>
 
-	<ui:define name="customDialogOutForm">
-		<ui:include src="/templates/include/commonUploadOneImageDialog.xhtml">
-			<ui:param name="associateBean" value="#{associateBean}" />
-		</ui:include>
 	</ui:define>
 
 </ui:composition>

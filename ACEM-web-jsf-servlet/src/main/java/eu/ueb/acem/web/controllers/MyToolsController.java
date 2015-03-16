@@ -150,17 +150,18 @@ public class MyToolsController extends AbstractContextAwareController implements
 	/* ***********************************************************************/
 
 	public MyToolsController() {
+		logger.debug("Constructor");
 		allOrganisationViewBeans = new ArrayList<SelectItem>();
 		allToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
 
 	@PostConstruct
 	public void init() {
-		logger.info("Entering init()");
+		logger.debug("Entering init()");
 		this.commonUploadOneDialog = new CommonUploadOneDialog(this);
 		loadAllOrganisationViewBeans();
 		loadAllToolCategoryViewBeans();
-		logger.info("Leaving init()");
+		logger.debug("Leaving init()");
 	}
 
 	@Override
@@ -262,7 +263,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void prepareToolCategoryTreeForResourceType(ResourceViewBean resourceViewBean) {
-		logger.info("Entering prepareToolCategoryTreeForResourceType for type={}", resourceViewBean.getType());
+		logger.debug("Entering prepareToolCategoryTreeForResourceType for type={}", resourceViewBean.getType());
 		categoriesTreeBean.clear();
 		setSelectedToolCategoryId(null);
 		// When the category changes, we reset the selected category
@@ -291,7 +292,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 			}
 			categoriesTreeBean.getRoot().setExpanded(true);
 		}
-		logger.info("Leaving prepareToolCategoryTreeForResourceType");
+		logger.debug("Leaving prepareToolCategoryTreeForResourceType");
 	}
 
 	public Long getSelectedToolCategoryId() {
@@ -299,7 +300,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void setSelectedToolCategoryId(Long toolCategoryId) {
-		logger.info("Entering setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
+		logger.debug("Entering setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
 		ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(toolCategoryId, true);
 		if (toolCategory != null) {
 			setSelectedToolCategoryViewBean(new ToolCategoryViewBean(toolCategory));
@@ -308,7 +309,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 			selectedToolCategoryId = null;
 			selectedToolCategoryViewBean = null;
 		}
-		logger.info("Leaving setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
+		logger.debug("Leaving setSelectedToolCategoryId, toolCategoryId = {}", toolCategoryId);
 	}
 
 	public ToolCategoryViewBean getSelectedToolCategoryViewBean() {
@@ -316,7 +317,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void setSelectedToolCategoryViewBean(ToolCategoryViewBean toolCategoryViewBean) {
-		logger.info("Entering setSelectedToolCategoryViewBean");
+		logger.debug("Entering setSelectedToolCategoryViewBean");
 		selectedToolCategoryViewBean = toolCategoryViewBean;
 
 		// When the category changes, we have to reset the currently selected resource
@@ -382,7 +383,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 				}
 			}
 		}
-		logger.info("Leaving setSelectedToolCategoryViewBean");
+		logger.debug("Leaving setSelectedToolCategoryViewBean");
 	}
 
 	public TreeNode getCategoriesTreeRoot() {
@@ -662,7 +663,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	private void modifyResourceFromObjectEdited() {
-		logger.info("modifyResourceFromObjectEdited");
 		if (objectEditedResource != null) {
 			String iconFileName = commonUploadOneDialog.getFileUploadedName();
 			if (!iconFileName.trim().isEmpty()) {
@@ -736,14 +736,14 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	private void setPedagogicalUsesTreeRoot(ResourceCategory resourceCategory) {
-		logger.info("Entering setPedagogicalUsesTreeRoot");
+		logger.debug("Entering setPedagogicalUsesTreeRoot");
 		pedagogicalUsesTreeBean = pedagogicalAdviceTreeGenerator.createNeedAndAnswersTree(null);
 		Set<Long> idsOfLeavesToKeep = new HashSet<Long>();
 		for (PedagogicalAnswer answer : resourceCategory.getAnswers()) {
 			idsOfLeavesToKeep.add(answer.getId());
 		}
 		pedagogicalUsesTreeBean.retainLeavesAndParents(idsOfLeavesToKeep);
-		logger.info("Leaving setPedagogicalUsesTreeRoot");
+		logger.debug("Leaving setPedagogicalUsesTreeRoot");
 	}
 
 	/*
@@ -756,7 +756,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 */
 	@Override
 	public CommonUploadOneDialog getCommonUploadOneDialog() {
-		logger.info("MyToolsController, commonUploadOneDialog={}",commonUploadOneDialog);
 		return commonUploadOneDialog;
 	}
 

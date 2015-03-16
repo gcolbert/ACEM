@@ -107,6 +107,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	private Path temporaryFilePath;
 
 	public AdminOrganisationsController() {
+		logger.debug("Constructor");
 		communityViewBeans = new SortableTableBean<CommunityViewBean>();
 		institutionViewBeans = new SortableTableBean<InstitutionViewBean>();
 		administrativeDepartmentViewBeans = new SortableTableBean<AdministrativeDepartmentViewBean>();
@@ -120,6 +121,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 
 	@PostConstruct
 	public void init() {
+		logger.debug("Entering init");
 		this.commonUploadOneDialog = new CommonUploadOneDialog(this);
 
 		Collection<Community> communities = organisationsService.retrieveAllCommunities();
@@ -156,6 +158,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 			teachingDepartmentViewBeans.getTableEntries().add(teachingDepartmentViewBean);
 		}
 		teachingDepartmentViewBeans.sort();
+		logger.debug("Leaving init");
 	}
 
 	@Override
@@ -830,7 +833,6 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	 */
 	@Override
 	public CommonUploadOneDialog getCommonUploadOneDialog() {
-		logger.info("AdminOrganisationsController, commonUploadOneDialog={}",commonUploadOneDialog);
 		return commonUploadOneDialog;
 	}
 

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui:composition xmlns:f="http://java.sun.com/jsf/core"
+<ui:composition 
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
+
+	<ui:param name="associateBean" value="#{associateBean}"/>
 
 	<p:dialog header="#{msg['APPLICATION.TEXT.UPLOAD_IMAGE']}" modal="true"
 		closable="true" closeOnEscape="true" dynamic="true"
@@ -12,7 +13,7 @@
 			mode="advanced" skinSimple="true" auto="true"
 			oncomplete="PF('dialogUploadOneImage').hide();"
 			update=":contentForm:messagesDisplayer"
-			allowTypes="/(\.|\/)(gif|jpe?g|png)$/" process="@this"
+			allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 			label="#{msg['APPLICATION.BUTTON.CHOOSE']}" />
 		<p:commandButton value="#{msg['APPLICATION.BUTTON.CANCEL']}"
 			styleClass="ui-confirmdialog-no dialogValidationButton" icon="ui-icon-close"

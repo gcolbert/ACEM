@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context allowCasualMultipartParsing="true">
+  <!-- allowCasualMultipartParsing must be set to true,
+       because we use Servlet 3.0 builtin multipart/form-data
+       parser (and not Apache Commons Upload).
+       When this parameter is set to false, then inside a
+       Filter, like Pretty Faces is, Tomcat doesn't have
+       access to the HttpServletRequest#getParts()
+       method of Servlet 3.0.
+   -->
+</Context>

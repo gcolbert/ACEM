@@ -73,7 +73,7 @@
 			</h3>
 			<p:selectOneMenu id="ownerOrganisation"
 				required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
-				editable="false" immediate="true"
+				editable="false" 
 				value="#{associateBean.objectEditedResource.organisationPossessingResourceViewBean}"
 				converter="OrganisationConverter">
 				<f:selectItem
@@ -92,7 +92,7 @@
 			</h3>
 			<p:selectOneMenu id="supportOrganisation"
 				required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
-				editable="false" immediate="true"
+				editable="false" 
 				value="#{associateBean.objectEditedResource.organisationSupportingResourceViewBean}"
 				converter="OrganisationConverter">
 				<f:selectItem
@@ -125,7 +125,6 @@
 			value="#{msg['APPLICATION.BUTTON.SAVE']}"
 			icon="ui-icon-check"
 			action="#{associateBean.onSaveResource}"
-			process="@form"
 			validateClient="true"
 			update="${formToUpdate}:toolsDataTable :contentForm:messagesDisplayer"
 			oncomplete="PF('#{widgetName}').hide();" />

@@ -54,7 +54,7 @@
 			</p:panel>
 			<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
 				icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
-				process="@this" />
+				process="@this"/>
 			<p:commandButton id="deleteIconButton" title="#{msg['APPLICATION.BUTTON.DELETE']}"
 				disabled="#{(empty associateBean.objectEdited.iconFileName) and (empty associateBean.temporaryFilePath)}"
 				icon="ui-icon-trash" action="#{associateBean.removeObjectEditedIcon}"
