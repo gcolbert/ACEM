@@ -63,6 +63,7 @@ If you choose to initialize the database, then it is recommended that you instal
 4. Unzip the file "D:\ACEM-data.zip".
 
 If you want to install these images somewhere else, you will need to create a "config.properties" file in D:\ACEM\ACEM-web-jsf-servlet\src\main\resources\properties to override the following values:
+
     images.path=D:/ACEM-data/uploaded-content/images/
     tmp.path=D:/ACEM-data/upload-tmp/
 
@@ -81,5 +82,6 @@ How to run ACEM in Windows 7
 8. Open a web browser (e.g. Firefox) and go to http://localhost:8080/ACEM
 
 It should redirect you to the CAS authentication window. If you prefer manual accounts, add to your "config.properties":
+
     authentication.provider=daoAuthProvider
 
