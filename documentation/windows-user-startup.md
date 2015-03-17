@@ -31,7 +31,7 @@ Install Tomcat 7
 2. Unzip the file in D:\ACEM, it should create a folder named "apache-tomcat-7.0.59" (or the exact version you have);
 3. (Optional) Delete the Tomcat ZIP.
 
-Install ACEM
+Install ACEM web archive in Tomcat
 ---
 
 1. Download "ACEM.war" from GitHub;
@@ -67,12 +67,6 @@ If you want to install these images somewhere else, you will need to create a "c
     tmp.path=D:/ACEM-data/upload-tmp/
 
 The folders must be writable by the Tomcat process.
-
-Install ACEM.war in Tomcat 7 "webapps" directory
----
-
-1. Download the ACEM.war file from GitHub;
-2. Put the file in D:\ACEM\apache-tomcat-7.0.59\webapps
 
 How to run ACEM in Windows 7
 ===
