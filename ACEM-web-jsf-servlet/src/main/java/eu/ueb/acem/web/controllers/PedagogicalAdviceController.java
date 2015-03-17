@@ -405,6 +405,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 					|| selectedNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())
 					|| selectedNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())) {
 				needsAndAnswersService.updatePedagogicalNeed(selectedPedagogicalNeed);
+				((TreeNodeData)selectedNode.getData()).setLabel(selectedPedagogicalNeed.getName());
 				MessageDisplayer.info(msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.TITLE", null,
 						getCurrentUserLocale()), msgs.getMessage(
@@ -413,6 +414,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 			}
 			else if (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 				needsAndAnswersService.updatePedagogicalAnswer(selectedPedagogicalAnswer);
+				((TreeNodeData)selectedNode.getData()).setLabel(selectedPedagogicalAnswer.getName());
 				MessageDisplayer.info(msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.TITLE", null,
 						getCurrentUserLocale()), msgs.getMessage(
