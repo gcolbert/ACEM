@@ -11,7 +11,7 @@ Initialize database (optional)
 ------------------------------
 - If you want to start with an existing ACEM database, you can delete
 Neo4J's "data" folder, and unzip the file located at :
-[ACEM-dal/src/main/resources/database/data.zip](https://github.com/gcolbert/ACEM/blob/master/ACEM-dal/src/main/resources/database/data.zip)
+[ACEM/startup-dataset/UEB-init-database-fr/ACEM-neo4j-2.1.7-default-data-folder.zip](https://github.com/gcolbert/ACEM/blob/master/startup-dataset/UEB-init-database-fr/ACEM-neo4j-2.1.7-default-data-folder.zip)
 
 Install OpenJDK 7
 -----------------
@@ -125,4 +125,4 @@ Run the server using Eclipse and Tomcat
 
 - Click the start icon of the server.
 
-- In a web browser, go to http://localhost:8080/ACEM-web-jsf-servlet
+- In a web browser, go to http://localhost:8080/ACEM
