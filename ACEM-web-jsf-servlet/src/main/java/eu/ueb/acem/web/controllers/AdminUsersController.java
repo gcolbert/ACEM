@@ -184,6 +184,11 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	public void setAdministrator(PersonViewBean personViewBean) {
 		personViewBean.getDomainBean().setAdministrator(personViewBean.getAdministrator());
 		personViewBean.setDomainBean(usersService.updatePerson(personViewBean.getDomainBean()));
+		Object[] userName = { personViewBean.getName() };
+		MessageDisplayer.info(
+				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.TITLE"), null, getCurrentUserLocale()),
+				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.DETAILS"), userName, getCurrentUserLocale()));
+
 		// if the modified personViewBean is the currentUserViewBean, we update currentUserViewBean too
 		if (getSessionController().getCurrentUserViewBean().equals(personViewBean)) {
 			getSessionController().getCurrentUserViewBean().setAdministrator(personViewBean.getAdministrator());
