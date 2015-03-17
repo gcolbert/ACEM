@@ -28,7 +28,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.rouge.OrganisationDAO;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -53,16 +54,16 @@ public class OrganisationsServiceImpl implements OrganisationsService, Serializa
 	private static final long serialVersionUID = -4629646991379337991L;
 
 	@Inject
-	private DAO<Long, Community> communityDAO;
+	private OrganisationDAO<Long, Community> communityDAO;
 
 	@Inject
-	private DAO<Long, Institution> institutionDAO;
+	private OrganisationDAO<Long, Institution> institutionDAO;
 
 	@Inject
-	private DAO<Long, TeachingDepartment> teachingDepartmentDAO;
+	private OrganisationDAO<Long, TeachingDepartment> teachingDepartmentDAO;
 
 	@Inject
-	private DAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
+	private OrganisationDAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
 	
 	@Override
 	public Long countCommunities() {
@@ -345,6 +346,7 @@ public class OrganisationsServiceImpl implements OrganisationsService, Serializa
 	}
 
 	@Override
+	// TODO : should be replaced by a request in the DAL (if using Neo4j)
 	public Boolean isImplicitlySharingResourcesWith(Organisation organisation1, Organisation organisation2) {
 		Boolean implicitShare = false;
 		if (organisation1 instanceof Community) {
@@ -395,5 +397,15 @@ public class OrganisationsServiceImpl implements OrganisationsService, Serializa
 
 	private Boolean isImplicitlySharingResourcesWith(Institution i, TeachingDepartment td) {
 		return td.getInstitutions().contains(i);
+	}
+	
+	@Override
+	public Collection<Organisation> retrieveAllSupportServicesForPerson(Person person) {
+		Collection<Organisation> supportServices = new HashSet<Organisation>();
+		supportServices.addAll(communityDAO.retrieveSupportServicesForPerson(person));
+		supportServices.addAll(institutionDAO.retrieveSupportServicesForPerson(person));
+		supportServices.addAll(administrativeDepartmentDAO.retrieveSupportServicesForPerson(person));
+		supportServices.addAll(teachingDepartmentDAO.retrieveSupportServicesForPerson(person));
+		return supportServices;
 	}
 }

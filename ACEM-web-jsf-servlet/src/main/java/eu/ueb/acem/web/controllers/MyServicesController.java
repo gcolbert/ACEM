@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.util.Collection;
+
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -28,6 +31,7 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
+import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
@@ -51,10 +55,30 @@ public class MyServicesController extends AbstractContextAwareController impleme
 
 	@Inject
 	private OrganisationsService organisationsService;
-	
+
 	private Long selectedServiceId;
 	private OrganisationViewBean selectedServiceViewBean;
 
+	/**
+	 * List of all support services
+	 */
+	private SortableTableBean<OrganisationViewBean> supportServicesViewBeans;
+
+	public MyServicesController() {
+		supportServicesViewBeans = new SortableTableBean<OrganisationViewBean>();		
+	}
+	
+	@PostConstruct
+	public void init() {
+		Collection<Organisation> supportServicesForUser = organisationsService.retrieveAllSupportServicesForPerson(getCurrentUser());
+		supportServicesViewBeans.getTableEntries().clear();
+		for (Organisation organisation : supportServicesForUser) {
+			OrganisationViewBean supportServiceViewBean = OrganisationViewBeanGenerator.getViewBean(organisation);
+			supportServicesViewBeans.getTableEntries().add(supportServiceViewBean);
+		}
+		supportServicesViewBeans.sort();
+	}
+	
 	@Override
 	public String getPageTitle() {
 		StringBuilder sb = new StringBuilder();
@@ -92,4 +116,8 @@ public class MyServicesController extends AbstractContextAwareController impleme
 		this.selectedServiceViewBean = organisationViewBean;
 	}
 	
+	public SortableTableBean<OrganisationViewBean> getSupportServicesViewBeans() {
+		return supportServicesViewBeans;
+	}
+
 }

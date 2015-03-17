@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.rouge;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
@@ -25,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.CommunityRepository;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
 
@@ -34,7 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
  * 
  */
 @Repository("communityDAO")
-public class CommunityDAO extends AbstractDAO<Community, CommunityNode> {
+public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implements OrganisationDAO<Long, Community> {
 
 	/**
 	 * FOr serialization.
@@ -57,6 +62,19 @@ public class CommunityDAO extends AbstractDAO<Community, CommunityNode> {
 			neo4jOperations.fetch(entity.getUseModes());
 			neo4jOperations.fetch(entity.getInstitutions());
 		}
+	}
+
+	@Override
+	public Collection<Community> retrieveSupportServicesForPerson(Person person) {
+		Iterable<CommunityNode> endResults = repository.getSupportServicesForPerson(person.getId());
+		Collection<Community> collection = new HashSet<Community>();
+		if (endResults.iterator() != null) {
+			Iterator<CommunityNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 
 }

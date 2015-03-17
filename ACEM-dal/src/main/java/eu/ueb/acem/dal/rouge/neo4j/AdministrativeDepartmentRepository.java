@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.rouge.neo4j;
 
+import java.util.Set;
+
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -38,5 +40,8 @@ public interface AdministrativeDepartmentRepository extends GenericRepository<Ad
 	@Override
 	@Query(value = "MATCH (n:AdministrativeDepartment) WHERE n.name=({name}) RETURN n")
 	Iterable<AdministrativeDepartmentNode> findByName(@Param("name") String name);
-	
+
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Resource)<-[:supportsResource]-(s:AdministrativeDepartment) WHERE id(p)=({personId}) RETURN s")
+	Set<AdministrativeDepartmentNode> getSupportServicesForPerson(@Param("personId") Long personId);
+
 }

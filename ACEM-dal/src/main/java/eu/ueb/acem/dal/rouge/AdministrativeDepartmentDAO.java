@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.rouge;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
@@ -25,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.AdministrativeDepartmentRepository;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 
@@ -34,7 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
  * 
  */
 @Repository("administrativeDepartmentDAO")
-public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepartment, AdministrativeDepartmentNode> {
+public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepartment, AdministrativeDepartmentNode> implements OrganisationDAO<Long, AdministrativeDepartment> {
 
 	/**
 	 * For serialization.
@@ -57,6 +62,19 @@ public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepar
 			neo4jOperations.fetch(entity.getUseModes());
 			neo4jOperations.fetch(entity.getInstitutions());
 		}
+	}
+
+	@Override
+	public Collection<AdministrativeDepartment> retrieveSupportServicesForPerson(Person person) {
+		Iterable<AdministrativeDepartmentNode> endResults = repository.getSupportServicesForPerson(person.getId());
+		Collection<AdministrativeDepartment> collection = new HashSet<AdministrativeDepartment>();
+		if (endResults.iterator() != null) {
+			Iterator<AdministrativeDepartmentNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 
 }

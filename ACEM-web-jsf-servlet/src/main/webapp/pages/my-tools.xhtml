@@ -308,7 +308,7 @@
 					</p:column>
 					<p:column
 						headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.SUPPORT_ORGANISATION_NAME']}">
-						<h:link id="goToSupportServiceBtn" outcome="my-services"
+						<h:link id="goToSupportServiceBtn" outcome="pretty:my-services-param"
 							rendered="#{toolViewBean.organisationSupportingResourceViewBean != null}">
 							<f:param name="serviceId"
 								value="#{toolViewBean.organisationSupportingResourceViewBean.id}" />

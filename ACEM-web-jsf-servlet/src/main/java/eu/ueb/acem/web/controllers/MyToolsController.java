@@ -537,7 +537,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 * @param resource The Resource to use to construct the ResourceViewBean
 	 * @return the corresponding ResourceViewBean, or null if given resource is null
 	 */
-	public static ResourceViewBean createResourceViewBean(Resource resource) {
+	public ResourceViewBean createResourceViewBean(Resource resource) {
 		ResourceViewBean viewBean = null;
 		if (resource != null) {
 			if (resource instanceof Software) {

@@ -21,6 +21,7 @@ package eu.ueb.acem.services;
 import java.io.Serializable;
 import java.util.Collection;
 
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -103,5 +104,7 @@ public interface OrganisationsService extends Serializable {
 	Boolean dissociateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment);
 
 	Boolean isImplicitlySharingResourcesWith(Organisation organisation1, Organisation organisation2);
+
+	Collection<Organisation> retrieveAllSupportServicesForPerson(Person person);
 
 }

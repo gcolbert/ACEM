@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.tests.rouge;
 
+import java.util.Collection;
+
 import javax.inject.Inject;
 
 import junit.framework.TestCase;
@@ -32,12 +34,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.jaune.ResourceDAO;
+import eu.ueb.acem.dal.rouge.OrganisationDAO;
+import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
 import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
+import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
 
 /**
  * @author Grégoire Colbert
@@ -55,13 +65,22 @@ public class OrganisationDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(OrganisationDAOTest.class);
 
 	@Inject
-	private DAO<Long, Community> communityDAO;
+	private OrganisationDAO<Long, Community> communityDAO;
 
 	@Inject
-	private DAO<Long, Institution> institutionDAO;
+	private OrganisationDAO<Long, Institution> institutionDAO;
 
 	@Inject
-	private DAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
+	private OrganisationDAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
+
+	@Inject
+	private OrganisationDAO<Long, TeachingDepartment> teachingDepartmentDAO;
+
+	@Inject
+	private DAO<Long, Teacher> teacherDAO;
+
+	@Inject
+	private ResourceDAO<Long, Equipment> equipmentDAO;
 
 	public OrganisationDAOTest() {
 
@@ -154,4 +173,77 @@ public class OrganisationDAOTest extends TestCase {
 		assertTrue("The community was not found through the Community repository",
 				communityDAO.exists(community.getId()));
 	}
+
+	/**
+	 * Test support services retrieval.
+	 * The math teacher works for the math department, in a university associated to a community.
+	 * The community owns an equipment.
+	 * The equipment is supported by an AdministrativeDepartment.
+	 * Do the math teacher can "see" the service support?
+	 */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public final void t04_TestSupportServiceRetrievalWithImplicitAccessThroughOrganisationsAssociations() {
+
+		Community community = new CommunityNode("Comunity", "COM", null);
+		community = communityDAO.create(community);
+
+		// ***********************************************
+		// We create a math professor
+		// ***********************************************
+		Teacher mathTeacher = new TeacherNode("Prof. Euler", "euler", "euler");
+		mathTeacher = teacherDAO.create(mathTeacher);
+
+		Institution mathUniversity = new InstitutionNode("University of Math", "UM", null);
+		mathUniversity = institutionDAO.create(mathUniversity);
+
+		TeachingDepartment mathDepartment = new TeachingDepartmentNode("Math", "MD", null);
+		mathDepartment = teachingDepartmentDAO.create(mathDepartment);
+
+		AdministrativeDepartment nonRelevantAdministrativeDepartment = new AdministrativeDepartmentNode("Non relevant administrative department", "Any", null);
+		nonRelevantAdministrativeDepartment = administrativeDepartmentDAO.create(nonRelevantAdministrativeDepartment);
+
+		Equipment equipment = new EquipmentNode("A brand new interactive whiteboard", null);
+		equipment = equipmentDAO.create(equipment);
+
+		// We associate the math teacher and the math department
+		mathTeacher.getWorksForOrganisations().add(mathDepartment);
+		mathTeacher = teacherDAO.update(mathTeacher);
+
+		// We associate the math department with the university
+		mathDepartment.getInstitutions().add(mathUniversity);
+		mathUniversity.getTeachingDepartments().add(mathDepartment);
+		mathDepartment = teachingDepartmentDAO.update(mathDepartment);
+
+		// We associate the university with the community
+		mathUniversity.getCommunities().add(community);
+		community.getInstitutions().add(mathUniversity);
+		mathUniversity = institutionDAO.update(mathUniversity);
+
+		// We associate the community and the resource
+		community.getSupportedResources().add(equipment);
+		community = communityDAO.update(community);
+
+		// ***********************************************
+		// We create a support service for the equipment
+		// ***********************************************
+		AdministrativeDepartment supportService = new AdministrativeDepartmentNode("Support service", "S", null);
+		supportService = administrativeDepartmentDAO.create(supportService);
+
+		// We associate the equipment and the support service
+		supportService.getSupportedResources().add(equipment);
+		equipment.setOrganisationSupportingResource(supportService);
+		supportService = administrativeDepartmentDAO.update(supportService);
+
+		Collection<AdministrativeDepartment> supportServicesOfMathTeacher = administrativeDepartmentDAO.retrieveSupportServicesForPerson(mathTeacher);
+		assertEquals(
+				"The math teacher working for the math department should see exactly one support service from the administrativeDepartmentDAO.",
+				1,
+				supportServicesOfMathTeacher.size());
+		assertTrue(
+				"The math teacher working for the math department should see the support service for the equipment.",
+				supportServicesOfMathTeacher.contains(supportService));
+	}
+	
 }

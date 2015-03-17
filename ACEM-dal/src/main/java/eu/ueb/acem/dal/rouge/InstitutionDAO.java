@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.rouge;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
@@ -25,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.InstitutionRepository;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
 
@@ -34,7 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
  * 
  */
 @Repository("institutionDAO")
-public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> {
+public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> implements OrganisationDAO<Long, Institution> {
 
 	/**
 	 * FOr serialization.
@@ -59,6 +64,19 @@ public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> {
 			neo4jOperations.fetch(entity.getAdministrativeDepartments());
 			neo4jOperations.fetch(entity.getTeachingDepartments());
 		}
+	}
+
+	@Override
+	public Collection<Institution> retrieveSupportServicesForPerson(Person person) {
+		Iterable<InstitutionNode> endResults = repository.getSupportServicesForPerson(person.getId());
+		Collection<Institution> collection = new HashSet<Institution>();
+		if (endResults.iterator() != null) {
+			Iterator<InstitutionNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 
 }

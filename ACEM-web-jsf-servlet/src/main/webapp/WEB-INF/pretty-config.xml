@@ -38,6 +38,11 @@
 		<view-id value="/pages/my-services.xhtml" />
 	</url-mapping>
 
+	<url-mapping id="my-services-param">
+		<pattern value="/my-services/#{/\\d+/ serviceId}" />
+		<view-id value="/pages/my-services.xhtml" />
+	</url-mapping>
+
 	<url-mapping id="my-scenarios">
 		<pattern value="/my-scenarios/" />
 		<view-id value="/pages/my-scenarios.xhtml" />

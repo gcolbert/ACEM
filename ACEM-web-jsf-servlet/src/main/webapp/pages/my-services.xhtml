@@ -27,6 +27,12 @@
 	<ui:param name="titlePageTwo" value=""/>
 
  	<ui:define name="west">
+ 		<p:dataTable value="#{associateBean.supportServicesViewBeans.tableEntries}" var="organisationViewBean">
+			<p:column
+				headerText="TODO">
+				<h:outputText value="#{organisationViewBean.name}" />
+ 			</p:column>
+ 		</p:dataTable>
 	</ui:define>
 
  	<ui:define name="content">

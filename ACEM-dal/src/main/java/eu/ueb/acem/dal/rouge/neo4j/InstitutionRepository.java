@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.rouge.neo4j;
 
+import java.util.Set;
+
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -30,7 +32,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
  * 
  */
 public interface InstitutionRepository extends GenericRepository<InstitutionNode> {
-	
+
 	@Override
 	@Query(value = "MATCH (n:Institution) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
@@ -38,4 +40,8 @@ public interface InstitutionRepository extends GenericRepository<InstitutionNode
 	@Override
 	@Query(value = "MATCH (n:Institution) WHERE n.name=({name}) RETURN n")
 	Iterable<InstitutionNode> findByName(@Param("name") String name);
+
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Resource)<-[:supportsResource]-(s:Institution) WHERE id(p)=({personId}) RETURN s")
+	Set<InstitutionNode> getSupportServicesForPerson(@Param("personId") Long personId);
+
 }

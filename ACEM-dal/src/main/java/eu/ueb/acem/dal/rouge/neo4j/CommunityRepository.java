@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.rouge.neo4j;
 
+import java.util.Set;
+
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -38,5 +40,8 @@ public interface CommunityRepository extends GenericRepository<CommunityNode> {
 	@Override
 	@Query(value = "MATCH (n:Community) WHERE n.name=({name}) RETURN n")
 	Iterable<CommunityNode> findByName(@Param("name") String name);
-	
+
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Resource)<-[:supportsResource]-(s:Community) WHERE id(p)=({personId}) RETURN s")
+	Set<CommunityNode> getSupportServicesForPerson(@Param("personId") Long personId);
+
 }

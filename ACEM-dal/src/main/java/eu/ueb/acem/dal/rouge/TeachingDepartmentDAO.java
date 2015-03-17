@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.rouge;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
@@ -25,6 +29,7 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.rouge.neo4j.TeachingDepartmentRepository;
+import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
 
@@ -34,7 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
  * 
  */
 @Repository("teachingDepartmentDAO")
-public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, TeachingDepartmentNode> {
+public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, TeachingDepartmentNode> implements OrganisationDAO<Long, TeachingDepartment> {
 
 	/**
 	 * For serialization.
@@ -57,6 +62,19 @@ public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, Teach
 			neo4jOperations.fetch(entity.getUseModes());
 			neo4jOperations.fetch(entity.getInstitutions());
 		}
+	}
+
+	@Override
+	public Collection<TeachingDepartment> retrieveSupportServicesForPerson(Person person) {
+		Iterable<TeachingDepartmentNode> endResults = repository.getSupportServicesForPerson(person.getId());
+		Collection<TeachingDepartment> collection = new HashSet<TeachingDepartment>();
+		if (endResults.iterator() != null) {
+			Iterator<TeachingDepartmentNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
 	}
 
 }
