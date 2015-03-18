@@ -20,19 +20,19 @@
 
 	<!-- HTTP security configurations -->
 	<http use-expressions="true" auto-config='true'>
+		<intercept-url access="permitAll" pattern="/" /><!-- To permit "/" allows the use of web.xml's <welcome-file> -->
 		<intercept-url access="permitAll" pattern="/home" />
 		<intercept-url access="permitAll" pattern="/login" />
 		<intercept-url access="permitAll" pattern="/pages/exceptions/**" />
-		<intercept-url access="permitAll" pattern="/javax.faces.resource/*" />
+		<intercept-url access="permitAll" pattern="/javax.faces.resource/**" />
 		<intercept-url access="permitAll" pattern="/resources/**" />
-        <intercept-url access="permitAll" pattern="/templates/**"/>
+        <intercept-url access="permitAll" pattern="/j_spring_security_check"/>
+		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration/**" />
 		<intercept-url access="isAuthenticated()" pattern="/**" />
-		<intercept-url access="hasRole('ROLE_USER')" pattern="/**" />
-		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration*" />
 		<logout logout-success-url='/logout' />
 		<form-login login-page='/login'
 			authentication-failure-url="/login?auth=fail"
-			default-target-url="/" login-processing-url="/j_spring_security_check" />
+			default-target-url="/home" login-processing-url="/j_spring_security_check" />
 	</http>
 
 	<!-- Configure Authentication mechanism -->

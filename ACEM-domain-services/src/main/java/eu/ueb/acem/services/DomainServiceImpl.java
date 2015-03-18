@@ -22,8 +22,12 @@ import java.io.Serializable;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.gris.UserDAO;
@@ -44,6 +48,12 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 	 */
 	private static final long serialVersionUID = 5562208937407153456L;
 
+	/**
+	 * For logging.
+	 */
+	@SuppressWarnings("unused")
+	private static final Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
+	
 	@Inject
 	private UserDAO<Long, Teacher> teacherDAO;
 
@@ -66,6 +76,12 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 	private String imagesPath;
 
 	/**
+	 * The authentication used ("manual" or "cas")
+	 */
+	@Value("${security.mode}")
+	private String securityMode;
+
+	/**
 	 * Constructor.
 	 */
 	public DomainServiceImpl() {
@@ -73,16 +89,21 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		// nothing to do yet.
 	}
 
 	@Override
-	public Person getUser(String login) {
+	public Person getUser(String login) throws UsernameNotFoundException {
 		Person user = teacherDAO.retrieveByLogin(login, true);
-		if (user == null) {
-			user = teacherDAO.create(new TeacherNode(login, login, "pass"));
+		// If the user is missing from the database and the authentication mode is CAS
+		// then we want to automatically create the user in the database
+		if ((user == null) && "cas".equals(securityMode)) {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			user = teacherDAO.create(new TeacherNode(login, login, passwordEncoder.encode("pass")));
 			user.setLogin(login);
 			user.setLanguage("fr");
+		}
+		else if (user == null) {
+		    throw new UsernameNotFoundException("User not found");
 		}
 		return user;
 	}

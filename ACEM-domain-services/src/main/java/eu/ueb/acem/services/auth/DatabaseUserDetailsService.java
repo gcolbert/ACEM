@@ -71,8 +71,7 @@ public class DatabaseUserDetailsService implements AuthenticationUserDetailsServ
 	@Override
 	public UserDetails loadUserDetails(Authentication arg0) {
 		Person user = getDomainService().getUser(arg0.getName());
-		UserDetails d = loadUserByUser(user);
-		return d;
+		return loadUserByUser(user);
 	}
 
 }

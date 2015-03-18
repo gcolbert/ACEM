@@ -75,7 +75,6 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
-
 	<filter>
 		<filter-name>characterEncodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -84,7 +83,6 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
-
 	<filter-mapping>
 		<filter-name>characterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -104,7 +102,7 @@
 	</filter-mapping>
 
 	<welcome-file-list>
-		<welcome-file>pages/home.xhtml</welcome-file>
+		<welcome-file>/home</welcome-file>
 	</welcome-file-list>
 	<error-page>
 		<error-code>404</error-code>

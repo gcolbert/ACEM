@@ -40,14 +40,14 @@ public class SessionController extends AbstractDomainAwareBean {
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -5936434246704000653L;
-	
+
 	/*
 	 * ****************** PROPERTIES ********************
 	 */
 	private Authentication auth;
 
 	private PersonViewBean currentUserViewBean;
-	
+
 	/*
 	 * ****************** INIT ********************
 	 */
@@ -60,13 +60,20 @@ public class SessionController extends AbstractDomainAwareBean {
 	}
 
 	/*
-	 * ****************** CALLBACK ********************
-	 */
-
-	/*
 	 * ****************** METHODS ********************
 	 */
-	
+
+	/**
+	 * @return the current user, or null if guest.
+	 */
+	@Override
+	public Person getCurrentUser() {
+		if (this.auth == null) {
+			this.auth = SecurityContextHolder.getContext().getAuthentication();
+		}
+		return getDomainService().getUser(auth.getName());
+	}
+
 	public PersonViewBean getCurrentUserViewBean() {
 		if (currentUserViewBean == null) {
 			Person user = getCurrentUser();
@@ -81,28 +88,11 @@ public class SessionController extends AbstractDomainAwareBean {
 	}
 
 	/**
-	 * @return the current user, or null if guest.
-	 * @throws Exception
-	 */
-	@Override
-	public Person getCurrentUser() {
-		if (this.auth == null) {
-			this.auth = SecurityContextHolder.getContext().getAuthentication();
-		}
-		return getDomainService().getUser(auth.getName());
-	}
-
-	/**
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-
-	/*
-	 * ****************** ACCESSORS ********************
-	 */
-
 
 }

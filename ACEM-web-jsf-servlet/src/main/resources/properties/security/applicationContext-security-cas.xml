@@ -31,18 +31,15 @@
 
     <!-- HTTP security configurations -->
     <http entry-point-ref="casEntryPoint" use-expressions="true">
+		<intercept-url access="permitAll" pattern="/" /><!-- To permit "/" allows the use of web.xml's <welcome-file> -->
 		<intercept-url access="permitAll" pattern="/home" />
 		<intercept-url access="permitAll" pattern="/login" />
 		<intercept-url access="permitAll" pattern="/pages/exceptions/**" />
 		<intercept-url access="permitAll" pattern="/javax.faces.resource/*" />
 		<intercept-url access="permitAll" pattern="/resources/**" />
-        <intercept-url access="permitAll" pattern="/templates/**"/>
+		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration/**" />
 		<intercept-url access="hasRole('ROLE_USER')" pattern="/**" />
-		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration*" />
-        <!-- 
-        When the user is authentificated by CAS, but doesn't exist in the application database
-        <intercept-url access="isAuthenticated()" pattern="/**"/>
-        -->
+        <intercept-url access="isAuthenticated()" pattern="/**"/><!-- When the user is authentificated by CAS, but doesn't exist in the application database -->
         <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
         <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
         <custom-filter ref="casFilter" position="CAS_FILTER" />

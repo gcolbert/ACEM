@@ -3,6 +3,11 @@
   xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
                       http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
 
+	<url-mapping id="welcome">
+		<pattern value="/" />
+		<view-id value="/pages/home.xhtml" />
+	</url-mapping>
+
 	<url-mapping id="home">
 		<pattern value="/home" />
 		<view-id value="/pages/home.xhtml" />
@@ -91,6 +96,11 @@
 	<url-mapping id="exception">
 		<pattern value="/exception" />
 		<view-id value="/pages/exceptions/exception.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="page-not-found">
+		<pattern value="/page-not-found" />
+		<view-id value="/pages/page-not-found.xhtml" />
 	</url-mapping>
 
 </pretty-config>

@@ -21,12 +21,14 @@ package eu.ueb.acem.web.controllers;
 import java.io.Serializable;
 import java.util.Locale;
 
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import eu.ueb.acem.domain.beans.gris.Person;
@@ -55,7 +57,7 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 	 */
 	@Inject
 	private DomainService domainService;
-
+	
 	/**
 	 * Constructor.
 	 */
@@ -89,31 +91,27 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 	/**
 	 * @return the current user.
 	 */
-	protected Person getCurrentUser() {
-		// this method should be overriden
-		return null;
-	}
+	protected abstract Person getCurrentUser();
 
 	/**
 	 * @return the current user's locale.
 	 */
 	public Locale getCurrentUserLocale() {
-		Person currentUser = null;
-		try {
-			currentUser = getCurrentUser();
-		} catch (Exception e) {
-			logger.error("big problem",e);
-		}
-		if (currentUser == null) {
-			logger.debug("no current user, return null");
-			return null;
-		}
-		String lang = currentUser.getLanguage();
-		if (lang == null) {
-			logger.debug("language not set for user '" + currentUser.getLogin() + "', return null");
-			return null;
-		}
-		return new Locale(lang);
+		Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//		Person currentUser = getCurrentUser();
+//		if (currentUser == null) {
+//			locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//		}
+//		else {
+//			String lang = currentUser.getLanguage();
+//			if (lang == null) {
+//				locale = new Locale("fr");
+//			}
+//			else {
+//				locale = new Locale(lang);
+//			}
+//		}
+		return locale;
 	}
 
 	/**
