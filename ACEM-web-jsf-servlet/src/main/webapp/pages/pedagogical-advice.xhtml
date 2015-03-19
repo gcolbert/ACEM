@@ -220,8 +220,8 @@
 				icon="ui-icon-check"
 				actionListener="#{associateBean.setScenarioViewBeansRelatedToSelectedAnswer}"
 				onclick="PF('dialogAssociateResourceCategory').hide()"
-				update=":contentForm:examplesOfScenariosTable"
-				process="@this :defaultDialogForm:idDialogAssociateResourceCategoryWithAnswer" />
+				update="@this :contentForm:associatedToolCategoriesTable :contentForm:examplesOfScenariosTable"
+				process="@this" />
 		</p:dialog>
 	</ui:define>
 

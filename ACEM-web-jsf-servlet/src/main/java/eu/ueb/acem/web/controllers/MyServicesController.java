@@ -105,7 +105,7 @@ public class MyServicesController extends AbstractContextAwareController impleme
 			selectedServiceId = null;
 			setSelectedServiceViewBean(null);
 		}
-		logger.info("Leaving setSelectedToolCategoryId, serviceId = {}", serviceId);
+		logger.info("Leaving setSelectedServiceId, serviceId = {}", serviceId);
 	}
 
 	public OrganisationViewBean getSelectedServiceViewBean() {

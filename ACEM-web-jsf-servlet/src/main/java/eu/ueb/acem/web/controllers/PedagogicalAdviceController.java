@@ -499,6 +499,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				}
 				movedToolCategoryViewBean.setDomainBean(resourcesService.retrieveResourceCategory(
 						movedToolCategoryViewBean.getId(), true));
+				selectedPedagogicalAnswer.getResourceCategories().add(movedToolCategoryViewBean.getDomainBean());
 			}
 			else {
 				logger.info("We should dissociate answer {} and tool category {}",
@@ -513,6 +514,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				}
 				movedToolCategoryViewBean.setDomainBean(resourcesService.retrieveResourceCategory(
 						movedToolCategoryViewBean.getId(), true));
+				selectedPedagogicalAnswer.getResourceCategories().remove(movedToolCategoryViewBean.getDomainBean());
 			}
 		}
 	}
