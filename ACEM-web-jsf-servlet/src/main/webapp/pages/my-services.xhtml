@@ -30,7 +30,11 @@
  		<p:dataTable value="#{associateBean.supportServicesViewBeans.tableEntries}" var="organisationViewBean">
 			<p:column
 				headerText="TODO">
-				<h:outputText value="#{organisationViewBean.name}" />
+				<h:link id="goToServiceBtn" outcome="pretty:my-services-param">
+					<f:param name="serviceId"
+						value="#{organisationViewBean.id}" />
+					<h:outputText value="#{organisationViewBean.name}" />
+				</h:link>
  			</p:column>
  		</p:dataTable>
 	</ui:define>
