@@ -15,7 +15,7 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
-	<ui:param name="displayWest" value="true" />
+	<ui:param name="displayWest" value="#{associateBean.selectedServiceViewBean != null}" />
 	<ui:param name="displayEast" value="false" />
 	<ui:param name="displaySouth" value="false" />
 
@@ -26,20 +26,61 @@
 	<ui:param name="outcomePageOne" value="my-services"/>
 	<ui:param name="titlePageTwo" value=""/>
 
+	<ui:define name="header">
+		<script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+	</ui:define>
+
  	<ui:define name="west">
- 		<p:dataTable value="#{associateBean.supportServicesViewBeans.tableEntries}" var="organisationViewBean">
-			<p:column
-				headerText="TODO">
+	    <p:dataGrid value="#{associateBean.supportServicesViewBeans.tableEntries}" var="organisationViewBean" 
+	    	layout="grid" columns="1" rows="5" paginator="true" id="supportServices" styleClass="contentGrid"
+	        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	        rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+
+	        <p:panel styleClass="panelInGrid">
+				<p:graphicImage id="organisationIcon"
+					rendered="#{not empty organisationViewBean.iconFileName}"
+					styleClass="imageInGrid" 
+					alt="#{organisationViewBean.name}" cache="true" 
+					value="#{imagesController.image}">
+					<f:param name="imageFileName"
+						value="#{organisationViewBean.iconFileName}" />
+				</p:graphicImage>
 				<h:link id="goToServiceBtn" outcome="pretty:my-services-param">
 					<f:param name="serviceId"
 						value="#{organisationViewBean.id}" />
 					<h:outputText value="#{organisationViewBean.name}" />
 				</h:link>
- 			</p:column>
- 		</p:dataTable>
+	        </p:panel>
+
+	    </p:dataGrid>
 	</ui:define>
 
  	<ui:define name="content">
+ 		<p:outputPanel id="allServicesOutputPanel" rendered="#{associateBean.selectedServiceViewBean == null}">
+		    <p:dataGrid value="#{associateBean.supportServicesViewBeans.tableEntries}" var="organisationViewBean" 
+		    	layout="grid" columns="3" rows="12" paginator="true" id="supportServices" styleClass="contentGrid"
+		        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		        rowsPerPageTemplate="6,12,18" paginatorPosition="bottom">
+	
+		        <p:panel styleClass="panelInGrid">
+					<h:link id="goToServiceBtn" outcome="pretty:my-services-param">
+						<f:param name="serviceId"
+							value="#{organisationViewBean.id}" />
+						<p:graphicImage id="organisationIcon"
+							rendered="#{not empty organisationViewBean.iconFileName}"
+							styleClass="imageInGrid" 
+							alt="#{organisationViewBean.name}" cache="true"
+							value="#{imagesController.image}">
+							<f:param name="imageFileName"
+								value="#{organisationViewBean.iconFileName}" />
+						</p:graphicImage>
+						<h:outputText value="#{organisationViewBean.name}" />
+					</h:link>
+		        </p:panel>
+	
+		    </p:dataGrid>
+		</p:outputPanel>
+
  		<p:outputPanel id="selectedServiceOutputPanel">
 			<p:panel styleClass="selectedServicePanel"
 				id="selectedServicePanel"
@@ -65,6 +106,7 @@
 						</p:row>
 					</p:column>
 				</p:panelGrid>
+				<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:100%;height:200px; width:300px" />
 
 			</p:panel>
 		</p:outputPanel>
