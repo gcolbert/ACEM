@@ -145,8 +145,8 @@
 			value="#{associateBean.categoriesTreeRoot}" var="treeNodeData"
 			selectionMode="single" widgetVar="widgetCategoriesTree"
 			selection="#{associateBean.selectedNode}">
-			<p:ajax event="select" process="@this"
-			    action="#{associateBean.setSelectedToolCategoryId(treeNodeData.id)}"
+			<p:ajax event="select"
+			    listener="#{associateBean.setSelectedToolCategoryId(treeNodeData.id)}"
                 update=":contentForm :northForm categoriesTree"
 				oncomplete="history.pushState({selectedNodeKey:jQuery('.ui-treenode-selected').attr('data-datakey')},'',jQuery('.ui-treenode-selected').attr('data-datakey'));"
 				/>
@@ -155,10 +155,14 @@
 			</p:treeNode>
 			<p:treeNode type="CategoryNode"
 				styleClass="#{treeNodeData.styleClass}">
+				<h:outputText value="#{treeNodeData.label}" />
+				<!-- 
+				If not using Ajax, uncomment this
 				<p:commandLink  id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
 					<f:param name="toolCategoryId" value="#{treeNodeData.id}" />
 					<h:outputText value="#{treeNodeData.label}" />
 				</p:commandLink >
+				 -->
 			</p:treeNode>
 		</p:tree>
 		<script type="text/javascript">
