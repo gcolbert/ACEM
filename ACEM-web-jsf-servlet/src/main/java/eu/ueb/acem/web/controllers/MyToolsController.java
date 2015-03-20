@@ -491,6 +491,16 @@ public class MyToolsController extends AbstractContextAwareController implements
 			objectEditedToolCategory.getDomainBean().setDescription(objectEditedToolCategory.getDescription());
 			objectEditedToolCategory.getDomainBean().setIconFileName(objectEditedToolCategory.getIconFileName());
 			objectEditedToolCategory.setDomainBean(resourcesService.updateResourceCategory(objectEditedToolCategory.getDomainBean()));
+
+			// We have to update the ToolCategoryViewBean inside allToolCategoryViewBeans (which is used in the east panel)
+			int index = allToolCategoryViewBeans.indexOf(objectEditedToolCategory);
+			allToolCategoryViewBeans.set(index, objectEditedToolCategory);
+			
+			// We have to update selectedToolCategoryViewBean if it is equal to objectEditedToolCategory
+			if (selectedToolCategoryViewBean.equals(objectEditedToolCategory)) {
+				selectedToolCategoryViewBean = objectEditedToolCategory;
+			}
+			
 			MessageDisplayer.info(
 					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
 					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));

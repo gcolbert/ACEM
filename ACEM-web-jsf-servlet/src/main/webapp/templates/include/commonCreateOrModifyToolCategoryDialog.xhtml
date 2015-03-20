@@ -69,7 +69,7 @@
 			value="#{msg['APPLICATION.BUTTON.SAVE']}"
 			icon="ui-icon-check" validateClient="true"
 			action="#{associateBean.onSaveToolCategory}"
-			update="#{formToUpdate}:accordionPanelForToolCategories :contentForm:messagesDisplayer"
+			update="#{formToUpdate}:accordionPanelForToolCategories :northForm :contentForm"
 			process="@form"
 			oncomplete="PF('#{widgetName}').hide();">
 		</p:commandButton>
