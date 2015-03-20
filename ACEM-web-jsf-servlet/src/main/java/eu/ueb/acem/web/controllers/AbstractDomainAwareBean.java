@@ -28,7 +28,6 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import eu.ueb.acem.domain.beans.gris.Person;
@@ -50,6 +49,7 @@ public abstract class AbstractDomainAwareBean implements InitializingBean, Seria
 	/**
 	 * For logging.
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(AbstractDomainAwareBean.class);
 
 	/**
