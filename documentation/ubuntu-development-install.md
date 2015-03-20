@@ -17,10 +17,10 @@ Install OpenJDK 7
 -----------------
 - sudo apt-get install openjdk-7-jdk
 
-Install Maven 2
+Install Maven
 ---------------
 
-- sudo apt-get install maven2
+- sudo apt-get install maven
 
 Install Eclipse for Java EE
 ---------------------------
