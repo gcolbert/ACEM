@@ -21,7 +21,6 @@ package eu.ueb.acem.domain.beans.gris;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.violet.Class;
 
 /**
@@ -30,10 +29,6 @@ import eu.ueb.acem.domain.beans.violet.Class;
  * 
  */
 public interface Teacher extends Person {
-
-	Set<ResourceCategory> getFavoriteToolCategories();
-
-	void setFavoriteToolCategories(Set<ResourceCategory> favoriteToolCategories);
 
 	Set<Class> getClasses();
 

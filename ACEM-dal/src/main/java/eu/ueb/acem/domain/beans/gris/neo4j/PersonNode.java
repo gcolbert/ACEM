@@ -29,6 +29,8 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.neo4j.OrganisationNode;
@@ -53,6 +55,9 @@ public class PersonNode extends AbstractNode implements Person {
 	@RelatedTo(elementClass = OrganisationNode.class, type = "worksForOrganisation", direction = OUTGOING)
 	private Set<Organisation> worksForOrganisations = new HashSet<Organisation>(0);
 
+	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "hasFavoriteToolCategory", direction = OUTGOING)
+	private Set<ResourceCategory> favoriteToolCategories = new HashSet<ResourceCategory>(0);
+
 	@Indexed(unique = true)
 	private String login;
 
@@ -63,10 +68,13 @@ public class PersonNode extends AbstractNode implements Person {
 	private String language;
 
 	private Boolean administrator;
+	
+	private Boolean teacher;
 
 	public PersonNode() {
 		setLanguage("fr");
 		setAdministrator(false);
+		setTeacher(false);
 	}
 
 	public PersonNode(String name, String login, String password) {
@@ -141,6 +149,27 @@ public class PersonNode extends AbstractNode implements Person {
 		this.administrator = isAdministrator;
 	}
 
+	@Override
+	public Boolean isTeacher() {
+		return teacher;
+	}
+
+	@Override
+	public void setTeacher(Boolean isTeacher) {
+		this.teacher = isTeacher;
+	}
+
+	@Override
+	public Set<ResourceCategory> getFavoriteToolCategories() {
+		return favoriteToolCategories;
+	}
+
+	@Override
+	public void setFavoriteToolCategories(Set<ResourceCategory> favoriteToolCategories) {
+		this.favoriteToolCategories = favoriteToolCategories;
+	}
+
+	
 	@Override
 	public int compareTo(Person person) {
 		return getName().compareToIgnoreCase(person.getName());

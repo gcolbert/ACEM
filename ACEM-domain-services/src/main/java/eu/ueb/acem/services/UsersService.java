@@ -59,8 +59,8 @@ public interface UsersService extends Serializable {
 
 	Boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
 
-	Boolean addFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory);
+	Boolean addFavoriteToolCategoryForPerson(Long idTeacher, Long idToolCategory);
 	
-	Boolean removeFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory);
+	Boolean removeFavoriteToolCategoryForPerson(Long idTeacher, Long idToolCategory);
 
 }

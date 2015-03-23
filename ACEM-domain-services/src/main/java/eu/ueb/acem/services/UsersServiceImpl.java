@@ -28,7 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.gris.UserDAO;
+import eu.ueb.acem.dal.gris.PersonDAO;
+import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
@@ -55,10 +56,10 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 
 	@Inject
-	private UserDAO<Long, Teacher> teacherDAO;
+	private TeacherDAO teacherDAO;
 
 	@Inject
-	private UserDAO<Long, Person> personDAO;
+	private PersonDAO personDAO;
 
 	@Inject
 	private OrganisationsService organisationsService;
@@ -182,15 +183,20 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	}
 
 	@Override
-	public Boolean addFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory) {
-		logger.info("addFavoriteResourceForTeacher");
+	public Boolean addFavoriteToolCategoryForPerson(Long idPerson, Long idToolCategory) {
 		Boolean success = false;
-		if (personDAO.exists(idTeacher)) {
-			Teacher teacher = teacherDAO.retrieveById(idTeacher);
-			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory, true);
-			if (toolCategory != null) {
+		ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory, true);
+		if (toolCategory != null) {
+			if (teacherDAO.exists(idPerson)) {
+				Teacher teacher = teacherDAO.retrieveById(idPerson);
 				teacher.getFavoriteToolCategories().add(toolCategory);
 				teacher = teacherDAO.update(teacher);
+				success = true;
+			}
+			else if (personDAO.exists(idPerson)) {
+				Person person = personDAO.retrieveById(idPerson);
+				person.getFavoriteToolCategories().add(toolCategory);
+				person = personDAO.update(person);
 				success = true;
 			}
 		}
@@ -198,15 +204,20 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	}
 
 	@Override
-	public Boolean removeFavoriteToolCategoryForTeacher(Long idTeacher, Long idToolCategory) {
-		logger.info("removeFavoriteResourceForTeacher");
+	public Boolean removeFavoriteToolCategoryForPerson(Long idPerson, Long idToolCategory) {
 		Boolean success = false;
-		if (personDAO.exists(idTeacher)) {
-			Teacher teacher = teacherDAO.retrieveById(idTeacher);
-			ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory, true);
-			if (toolCategory != null) {
+		ResourceCategory toolCategory = resourcesService.retrieveResourceCategory(idToolCategory, true);
+		if (toolCategory != null) {
+			if (teacherDAO.exists(idPerson)) {
+				Teacher teacher = teacherDAO.retrieveById(idPerson);
 				teacher.getFavoriteToolCategories().remove(toolCategory);
 				teacher = teacherDAO.update(teacher);
+				success = true;
+			}
+			else if (personDAO.exists(idPerson)) {
+				Person person = personDAO.retrieveById(idPerson);
+				person.getFavoriteToolCategories().remove(toolCategory);
+				person = personDAO.update(person);
 				success = true;
 			}
 		}

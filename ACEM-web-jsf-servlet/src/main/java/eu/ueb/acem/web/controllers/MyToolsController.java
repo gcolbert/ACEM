@@ -65,7 +65,7 @@ import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
-import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
+import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.PedagogicalAndDocumentaryResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ProfessionalTrainingViewBean;
@@ -326,10 +326,8 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 		if (selectedToolCategoryViewBean != null) {
 			// We initialize the checkbox "category is a favorite category for the user"
-			if (getCurrentUserViewBean() instanceof TeacherViewBean) {
-				selectedToolCategoryViewBean.setFavoriteToolCategory(((TeacherViewBean) getCurrentUserViewBean())
-						.getFavoriteToolCategoryViewBeans().contains(selectedToolCategoryViewBean));
-			}
+			selectedToolCategoryViewBean.setFavoriteToolCategory(getCurrentUserViewBean()
+					.getFavoriteToolCategoryViewBeans().contains(selectedToolCategoryViewBean));
 
 			// We associate the ResourceViewBeans
 			selectedToolCategoryViewBean.getResourceViewBeans().clear();
@@ -524,17 +522,15 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void toggleFavoriteToolCategoryForCurrentUser(ToolCategoryViewBean toolCategoryViewBean) {
-		if (getCurrentUserViewBean() instanceof TeacherViewBean) {
-			TeacherViewBean currentUserViewBean = (TeacherViewBean)getCurrentUserViewBean();
-			if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
-				if (usersService.removeFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
-					currentUserViewBean.getFavoriteToolCategoryViewBeans().remove(toolCategoryViewBean);
-				}
+		PersonViewBean currentUserViewBean = getCurrentUserViewBean();
+		if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
+			if (usersService.removeFavoriteToolCategoryForPerson(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
+				currentUserViewBean.getFavoriteToolCategoryViewBeans().remove(toolCategoryViewBean);
 			}
-			else {
-				if (usersService.addFavoriteToolCategoryForTeacher(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
-					currentUserViewBean.getFavoriteToolCategoryViewBeans().add(toolCategoryViewBean);
-				}
+		}
+		else {
+			if (usersService.addFavoriteToolCategoryForPerson(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
+				currentUserViewBean.getFavoriteToolCategoryViewBeans().add(toolCategoryViewBean);
 			}
 		}
 	}

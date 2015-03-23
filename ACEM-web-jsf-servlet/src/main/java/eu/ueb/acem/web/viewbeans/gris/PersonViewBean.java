@@ -26,7 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.web.viewbeans.AbstractViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
@@ -45,6 +47,8 @@ public class PersonViewBean extends AbstractViewBean implements Serializable, Co
 
 	private List<OrganisationViewBean> organisationViewBeans;
 
+	private List<ToolCategoryViewBean> favoriteToolCategoryViewBeans;
+
 	private String name;
 
 	private String login;
@@ -56,9 +60,12 @@ public class PersonViewBean extends AbstractViewBean implements Serializable, Co
 	private String language;
 
 	private Boolean administrator;
+	
+	private Boolean teacher;
 
 	public PersonViewBean() {
-		this.organisationViewBeans = new ArrayList<OrganisationViewBean>();
+		organisationViewBeans = new ArrayList<OrganisationViewBean>();
+		favoriteToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
 
 	public PersonViewBean(Person person) {
@@ -79,6 +86,10 @@ public class PersonViewBean extends AbstractViewBean implements Serializable, Co
 		setEmail(domainBean.getEmail());
 		setLanguage(domainBean.getLanguage());
 		setAdministrator(domainBean.isAdministrator());
+		setTeacher(domainBean.isTeacher());
+		for (ResourceCategory toolCategory : domainBean.getFavoriteToolCategories()) {
+			favoriteToolCategoryViewBeans.add(new ToolCategoryViewBean(toolCategory));
+		}
 	}
 
 	public List<OrganisationViewBean> getOrganisationViewBeans() {
@@ -133,8 +144,16 @@ public class PersonViewBean extends AbstractViewBean implements Serializable, Co
 		this.administrator = administrator;
 	}
 
-	public Boolean getIsTeacher() {
-		return this instanceof TeacherViewBean;
+	public Boolean getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Boolean teacher) {
+		this.teacher = teacher;
+	}
+
+	public List<ToolCategoryViewBean> getFavoriteToolCategoryViewBeans() {
+		return favoriteToolCategoryViewBeans;
 	}
 
 	@Override

@@ -30,8 +30,6 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.violet.Class;
 import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
 
@@ -49,9 +47,6 @@ public class TeacherNode extends PersonNode implements Teacher {
 	 */
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "hasFavoriteToolCategory", direction = OUTGOING)
-	private Set<ResourceCategory> favoriteToolCategories = new HashSet<ResourceCategory>(0);
-
 	@RelatedTo(elementClass = ClassNode.class, type = "leadsClass", direction = OUTGOING)
 	private Set<Class> classes = new HashSet<Class>(0);
 
@@ -63,16 +58,7 @@ public class TeacherNode extends PersonNode implements Teacher {
 
 	public TeacherNode(String name, String login, String password) {
 		super(name, login, password);
-	}
-
-	@Override
-	public Set<ResourceCategory> getFavoriteToolCategories() {
-		return favoriteToolCategories;
-	}
-
-	@Override
-	public void setFavoriteToolCategories(Set<ResourceCategory> favoriteToolCategories) {
-		this.favoriteToolCategories = favoriteToolCategories;
+		setTeacher(true);
 	}
 	
 	@Override

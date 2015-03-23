@@ -33,7 +33,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.gris.UserDAO;
+import eu.ueb.acem.dal.gris.PersonDAO;
+import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
@@ -55,10 +56,10 @@ public class PersonDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(PersonDAOTest.class);
 
 	@Inject
-	private UserDAO<Long, Teacher> teacherDAO;
+	private TeacherDAO teacherDAO;
 
 	@Inject
-	private UserDAO<Long, Person> personDAO;
+	private PersonDAO personDAO;
 
 	public PersonDAOTest() {
 

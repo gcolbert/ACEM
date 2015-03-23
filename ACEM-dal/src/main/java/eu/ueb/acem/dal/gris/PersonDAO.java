@@ -34,7 +34,7 @@ import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
  * 
  */
 @Repository("personDAO")
-public class PersonDAO extends AbstractDAO<Person, PersonNode> implements UserDAO<Long, Person> {
+public class PersonDAO extends AbstractDAO<Person, PersonNode> {
 
 	/**
 	 * For serialization.
@@ -56,7 +56,6 @@ public class PersonDAO extends AbstractDAO<Person, PersonNode> implements UserDA
 		}
 	}
 
-	@Override
 	public Person retrieveByLogin(String id, boolean initialize) {
 		Person entity = repository.findByLogin(id);
 		if (initialize) {

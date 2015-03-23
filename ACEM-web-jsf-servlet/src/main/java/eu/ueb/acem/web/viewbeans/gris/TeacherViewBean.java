@@ -18,15 +18,10 @@
  */
 package eu.ueb.acem.web.viewbeans.gris;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -48,11 +43,8 @@ public class TeacherViewBean extends PersonViewBean {
 
 	private Teacher domainBean;
 
-	private List<ToolCategoryViewBean> favoriteToolCategoryViewBeans;
-
 	public TeacherViewBean() {
 		super();
-		favoriteToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
 	}
 
 	public TeacherViewBean(Teacher teacher) {
@@ -68,13 +60,6 @@ public class TeacherViewBean extends PersonViewBean {
 	public void setDomainBean(Teacher domainBean) {
 		super.setDomainBean(domainBean);
 		this.domainBean = domainBean;
-		for (ResourceCategory toolCategory : domainBean.getFavoriteToolCategories()) {
-			favoriteToolCategoryViewBeans.add(new ToolCategoryViewBean(toolCategory));
-		}
-	}
-
-	public List<ToolCategoryViewBean> getFavoriteToolCategoryViewBeans() {
-		return favoriteToolCategoryViewBeans;
 	}
 
 }

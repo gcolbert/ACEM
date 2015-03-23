@@ -41,8 +41,7 @@
 
 	<ui:define name="footer">
 		<p:outputPanel styleClass="bottomToolboxPanel">
-			<p:panel id="favoriteToolCategoriesPanel" styleClass="favoriteToolCategoriesPanel"
-				rendered="#{associateBean.currentUserViewBean.isTeacher}">
+			<p:panel id="favoriteToolCategoriesPanel" styleClass="favoriteToolCategoriesPanel">
 				<ui:repeat id="favoriteToolCategories"
 					value="#{associateBean.currentUserViewBean.favoriteToolCategoryViewBeans}"
 					var="toolCategoryViewBean">

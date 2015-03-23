@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.gris;
 import java.io.Serializable;
 import java.util.Set;
 
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -56,6 +57,14 @@ public interface Person extends Serializable, Comparable<Person> {
 
 	void setAdministrator(Boolean isAdministrator);
 
+	Boolean isTeacher();
+
+	void setTeacher(Boolean isTeacher);
+	
 	Set<Organisation> getWorksForOrganisations();
+
+	Set<ResourceCategory> getFavoriteToolCategories();
+
+	void setFavoriteToolCategories(Set<ResourceCategory> favoriteToolCategories);
 
 }
