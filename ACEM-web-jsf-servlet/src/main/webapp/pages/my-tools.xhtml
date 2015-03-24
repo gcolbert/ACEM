@@ -72,13 +72,13 @@
 				name="prepareToolCategoryTreeForResourceTypeEQUIPMENT" process="@this"
 				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(equipmentViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
-			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypeEQUIPMENT" process="@this"
+			<p:commandLink styleClass="resourceTypeMenuEntry" id="linkResourceTypeEQUIPMENT" process="@this"
 				onclick="prepareToolCategoryTreeForResourceTypeEQUIPMENT();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'EQUIPMENT'},'','RESOURCE_TYPE_EQUIPMENT');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.equipments.png"
 					alt="#{msg['RESOURCE_TYPE_EQUIPMENT.PLURAL']}"
-					styleClass="toolCategoryIcon" />
-				<span class="toolCategoryLabel"><h:outputText
+					styleClass="resourceTypeIcon" />
+				<span class="resourceTypeLabel"><h:outputText
 						value="#{msg['RESOURCE_TYPE_EQUIPMENT.PLURAL']}" /></span>
 			</p:commandLink>
 
@@ -86,13 +86,13 @@
 				name="prepareToolCategoryTreeForResourceTypeSOFTWARE" process="@this"
 				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(softwareViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
-			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypeSOFTWARE" process="@this"
+			<p:commandLink styleClass="resourceTypeMenuEntry" id="linkResourceTypeSOFTWARE" process="@this"
 				onclick="prepareToolCategoryTreeForResourceTypeSOFTWARE();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'SOFTWARE'},'','RESOURCE_TYPE_SOFTWARE');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.softwares.png"
 					alt="#{msg['RESOURCE_TYPE_SOFTWARE.PLURAL']}"
-					styleClass="toolCategoryIcon" />
-				<span class="toolCategoryLabel"><h:outputText
+					styleClass="resourceTypeIcon" />
+				<span class="resourceTypeLabel"><h:outputText
 						value="#{msg['RESOURCE_TYPE_SOFTWARE.PLURAL']}" /></span>
 			</p:commandLink>
 
@@ -100,13 +100,13 @@
 				name="prepareToolCategoryTreeForResourceTypeDOCUMENTATION" process="@this"
 				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(documentationViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
-			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypeDOCUMENTATION" process="@this"
+			<p:commandLink styleClass="resourceTypeMenuEntry" id="linkResourceTypeDOCUMENTATION" process="@this"
 				onclick="prepareToolCategoryTreeForResourceTypeDOCUMENTATION();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'DOCUMENTATION'},'','RESOURCE_TYPE_DOCUMENTATION');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.software-documentations.png"
 					alt="#{msg['RESOURCE_TYPE_DOCUMENTATION.PLURAL']}"
-					styleClass="toolCategoryIcon" />
-				<span class="toolCategoryLabel"><h:outputText
+					styleClass="resourceTypeIcon" />
+				<span class="resourceTypeLabel"><h:outputText
 						value="#{msg['RESOURCE_TYPE_DOCUMENTATION.PLURAL']}" /></span>
 			</p:commandLink>
 
@@ -114,13 +114,13 @@
 				name="prepareToolCategoryTreeForResourceTypePEDAGOGICAL_AND_DOCUMENTARY_RESOURCE" process="@this"
 				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(pedagogicalAndDocumentaryResourceViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
-			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypePEDAGOGICAL_AND_DOCUMENTARY_RESOURCE" process="@this"
+			<p:commandLink styleClass="resourceTypeMenuEntry" id="linkResourceTypePEDAGOGICAL_AND_DOCUMENTARY_RESOURCE" process="@this"
 				onclick="prepareToolCategoryTreeForResourceTypePEDAGOGICAL_AND_DOCUMENTARY_RESOURCE();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE'},'','RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.pedagogical-and-documentary-resources.png"
 					alt="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE.PLURAL']}"
-					styleClass="toolCategoryIcon" />
-				<span class="toolCategoryLabel"><h:outputText
+					styleClass="resourceTypeIcon" />
+				<span class="resourceTypeLabel"><h:outputText
 						value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE.PLURAL']}" /></span>
 			</p:commandLink>
 
@@ -128,13 +128,13 @@
 				name="prepareToolCategoryTreeForResourceTypePROFESSIONAL_TRAINING" process="@this"
 				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(professionalTrainingViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
-			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypePROFESSIONAL_TRAINING" process="@this"
+			<p:commandLink styleClass="resourceTypeMenuEntry" id="linkResourceTypePROFESSIONAL_TRAINING" process="@this"
 				onclick="prepareToolCategoryTreeForResourceTypePROFESSIONAL_TRAINING();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'PROFESSIONAL_TRAINING'},'','RESOURCE_TYPE_PROFESSIONAL_TRAINING');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.professional-trainings.png"
 					alt="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING.PLURAL']}"
-					styleClass="toolCategoryIcon" />
-				<span class="toolCategoryLabel"><h:outputText
+					styleClass="resourceTypeIcon" />
+				<span class="resourceTypeLabel"><h:outputText
 						value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING.PLURAL']}" /></span>
 			</p:commandLink>
 		</p:outputPanel>
@@ -253,7 +253,7 @@
 						value="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
 				</h:panelGroup>
 
-				<p:graphicImage id="toolCategoryIcon"
+				<p:graphicImage 
 					rendered="#{not empty associateBean.selectedToolCategoryViewBean.iconFileName}"
 					styleClass="toolImg"
 					alt="#{associateBean.selectedToolCategoryViewBean.name}"
