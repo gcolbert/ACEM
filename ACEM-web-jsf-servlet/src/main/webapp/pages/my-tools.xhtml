@@ -21,7 +21,7 @@
 	<ui:param name="northPanelCollapsible" value="true"/>
 	<ui:param name="northPanelCollapsed" value="false"/>
 	<ui:param name="displayWest" value="true" />
-	<ui:param name="westPanelSize" value="200" />
+	<ui:param name="westPanelSize" value="220" />
 	<ui:param name="westPanelCollapsible" value="true"/>
 	<ui:param name="westPanelCollapsed" value="#{associateBean.selectedToolCategoryId!=null}" />
 	<ui:param name="displayEast" value="#{associateBean.currentUserViewBean.administrator}" />
@@ -237,17 +237,9 @@
 			<p:panel styleClass="selectedToolCategoryPanel"
 				id="selectedToolCategoryPanel"
 				rendered="#{associateBean.selectedToolCategoryViewBean != null}">
+
 				<h2><h:outputText
 					value="#{associateBean.selectedToolCategoryViewBean.name}" /></h2>
-
-				<p:graphicImage id="toolCategoryIcon"
-					rendered="#{not empty associateBean.selectedToolCategoryViewBean.iconFileName}"
-					styleClass="toolImg"
-					alt="#{associateBean.selectedToolCategoryViewBean.name}"
-					cache="true" width="80" value="#{imagesController.image}">
-					<f:param name="imageFileName"
-						value="#{associateBean.selectedToolCategoryViewBean.iconFileName}" />
-				</p:graphicImage>
 
 				<h:panelGroup styleClass="favoriteToolCategory">
 					<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox"
@@ -261,38 +253,16 @@
 						value="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
 				</h:panelGroup>
 
-				<h:outputText value="#{associateBean.selectedToolCategoryViewBean.description}" escape="false" />
+				<p:graphicImage id="toolCategoryIcon"
+					rendered="#{not empty associateBean.selectedToolCategoryViewBean.iconFileName}"
+					styleClass="toolImg"
+					alt="#{associateBean.selectedToolCategoryViewBean.name}"
+					cache="true" width="80" value="#{imagesController.image}">
+					<f:param name="imageFileName"
+						value="#{associateBean.selectedToolCategoryViewBean.iconFileName}" />
+				</p:graphicImage>
 
-<!-- 
-				<p:panelGrid columns="2">
-					<p:graphicImage id="toolCategoryIcon"
-						rendered="#{not empty associateBean.selectedToolCategoryViewBean.iconFileName}"
-						styleClass="toolImg"
-						alt="#{associateBean.selectedToolCategoryViewBean.name}"
-						cache="true" width="80" value="#{imagesController.image}">
-						<f:param name="imageFileName"
-							value="#{associateBean.selectedToolCategoryViewBean.iconFileName}" />
-					</p:graphicImage>
-					<p:column>
-						<p:row>
-							<h:outputText value="#{associateBean.selectedToolCategoryViewBean.description}" escape="false" />
-						</p:row>
-						<p:row>
-							<h:panelGroup styleClass="favoriteToolCategory">
-								<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox"
-									styleClass="favoriteToolCategoryCheckbox"
-									value="#{associateBean.selectedToolCategoryViewBean.favoriteToolCategory}">
-									<p:ajax
-										update="@this :southForm:favoriteToolCategoriesPanel :contentForm:messagesDisplayer"
-										listener="#{associateBean.toggleFavoriteToolCategoryForCurrentUser(associateBean.selectedToolCategoryViewBean)}" />
-								</p:selectBooleanCheckbox>
-								<p:outputLabel for="favoriteToolCategoryCheckbox"
-									value="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
-							</h:panelGroup>
-						</p:row>
-					</p:column>
-				</p:panelGrid>
- -->
+				<p class="categoryDescription"><h:outputText value="#{associateBean.selectedToolCategoryViewBean.description}" escape="false" /></p>
  
 				<p:dataTable id="toolsDataTable" var="toolViewBean" dynamic="true" styleClass="resourcesDataTable"
 					value="#{associateBean.selectedToolCategoryViewBean.resourceViewBeans}"

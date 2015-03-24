@@ -100,6 +100,7 @@ html {
 	display:block;
 	margin:auto;
 }
+
 /***********/
 /* DIALOGS */
 /***********/
@@ -260,9 +261,15 @@ html {
 	box-shadow:none;
 	width:110px;
 }
+.selectedToolCategoryPanel h2 {
+	display:inline;
+}
 
 .selectedToolCategoryPanel .toolImg {
 	float:left;
+	margin-right:1em;
+	margin-top:1em;
+	margin-bottom:1em;
 }
 
 .resourcesDataTable {
@@ -311,10 +318,15 @@ html {
 }
 
 .favoriteToolCategory {
-	display:block;
+	display:inline;
 	margin-top:0.5em;
+	margin-left:1em;
 	width:100%;
 	font-weight:bold;
+}
+
+.categoryDescription {
+	margin:1em 0;
 }
 
 .favoriteToolCategoryCheckbox {
