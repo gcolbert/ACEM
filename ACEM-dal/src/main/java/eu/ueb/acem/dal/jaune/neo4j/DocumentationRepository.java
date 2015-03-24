@@ -25,14 +25,14 @@ import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface SoftwareDocumentationRepository extends GenericRepository<SoftwareDocumentationNode> {
+public interface DocumentationRepository extends GenericRepository<DocumentationNode> {
 
 	@Override
 	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE id(n)=({id}) RETURN count(n)")
@@ -40,15 +40,15 @@ public interface SoftwareDocumentationRepository extends GenericRepository<Softw
 
 	@Override
 	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE n.name=({name}) RETURN n")
-	Iterable<SoftwareDocumentationNode> findByName(@Param("name") String name);
+	Iterable<DocumentationNode> findByName(@Param("name") String name);
 
 	@Query(value = "MATCH (:SoftwareDocumentation)<-[:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 
 	@Query(value = "MATCH (n:SoftwareDocumentation)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
-	Set<SoftwareDocumentationNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
+	Set<DocumentationNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 
 	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:SoftwareDocumentation)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
-	Set<SoftwareDocumentationNode> getResourcesInCategoryForPerson(@Param("categoryId") Long categoryId, @Param("personId") Long personId);
+	Set<DocumentationNode> getResourcesInCategoryForPerson(@Param("categoryId") Long categoryId, @Param("personId") Long personId);
 
 }

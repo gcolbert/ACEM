@@ -44,12 +44,12 @@ import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
@@ -100,7 +100,7 @@ public class ResourceDAOTest extends TestCase {
 	private ResourceDAO<Long, Software> softwareDAO;
 
 	@Inject
-	private ResourceDAO<Long, SoftwareDocumentation> softwareDocumentationDAO;
+	private ResourceDAO<Long, Documentation> softwareDocumentationDAO;
 
 	@Inject
 	private ResourceDAO<Long, Equipment> equipmentDAO;
@@ -152,11 +152,11 @@ public class ResourceDAOTest extends TestCase {
 		Software software = new SoftwareNode("Moodle", null);
 		software = softwareDAO.create(software);
 
-		SoftwareDocumentation softwareDocumentation = new SoftwareDocumentationNode("Tutorial for Moodle", null);
+		Documentation softwareDocumentation = new DocumentationNode("Tutorial for Moodle", null);
 		softwareDocumentation = softwareDocumentationDAO.create(softwareDocumentation);
 
 		software.getDocumentations().add(softwareDocumentation);
-		softwareDocumentation.getSoftwares().add(software);
+		softwareDocumentation.getResources().add(software);
 
 		software = softwareDAO.update(software);
 		softwareDocumentation = softwareDocumentationDAO.update(softwareDocumentation);
@@ -164,12 +164,12 @@ public class ResourceDAOTest extends TestCase {
 		Software softwareBis = softwareDAO.retrieveById(software.getId(), true);
 		assertEquals(new Long(1), new Long(softwareBis.getDocumentations().size()));
 
-		SoftwareDocumentation softwareDocumentationBis = softwareDocumentationDAO.retrieveById(softwareDocumentation
+		Documentation softwareDocumentationBis = softwareDocumentationDAO.retrieveById(softwareDocumentation
 				.getId(), true);
 		assertTrue(softwareBis.getDocumentations().contains(softwareDocumentationBis));
 
 		softwareBis.getDocumentations().remove(softwareDocumentationBis);
-		softwareDocumentationBis.getSoftwares().remove(softwareBis);
+		softwareDocumentationBis.getResources().remove(softwareBis);
 		assertEquals(new Long(0), new Long(softwareBis.getDocumentations().size()));
 
 		softwareBis = softwareDAO.update(softwareBis);
@@ -240,7 +240,7 @@ public class ResourceDAOTest extends TestCase {
 		ResourceCategory category = new ResourceCategoryNode("LMS", "Learning Management System", null);
 		category = resourceCategoryDAO.create(category);
 
-		SoftwareDocumentation softwareDocumentation = new SoftwareDocumentationNode("Moodle tutorial", null);
+		Documentation softwareDocumentation = new DocumentationNode("Moodle tutorial", null);
 		softwareDocumentation = softwareDocumentationDAO.create(softwareDocumentation);
 
 		// We associate the person and the organisation
@@ -255,7 +255,7 @@ public class ResourceDAOTest extends TestCase {
 		category.getResources().add(softwareDocumentation);
 		category = resourceCategoryDAO.update(category);
 
-		Collection<SoftwareDocumentation> usableSoftwareDocumentationsOfPersonWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(category,
+		Collection<Documentation> usableSoftwareDocumentationsOfPersonWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(category,
 				personWorkingForOrganisation);
 		assertTrue("The person working for an organisation that supports a resource must be able to retrieve it.",
 				usableSoftwareDocumentationsOfPersonWorking.contains(softwareDocumentation));
@@ -265,7 +265,7 @@ public class ResourceDAOTest extends TestCase {
 		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
 		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
 
-		Collection<SoftwareDocumentation> usableSoftwareDocumentationsPersonNotWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(
+		Collection<Documentation> usableSoftwareDocumentationsPersonNotWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(
 				category, personNotWorkingForOrganisation);
 		assertFalse(
 				"The person, who do not work for an organisation that supports a resource, must not be able to retrieve it.",

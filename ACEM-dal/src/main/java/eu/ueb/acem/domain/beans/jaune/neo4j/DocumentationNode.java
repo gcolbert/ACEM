@@ -28,8 +28,8 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
+import eu.ueb.acem.domain.beans.jaune.Resource;
 
 /**
  * @author Grégoire Colbert
@@ -37,8 +37,8 @@ import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
  * 
  */
 @NodeEntity
-@TypeAlias("SoftwareDocumentation")
-public class SoftwareDocumentationNode extends ResourceNode implements SoftwareDocumentation {
+@TypeAlias("Documentation")
+public class DocumentationNode extends ResourceNode implements Documentation {
 
 	/**
 	 * For serialization.
@@ -48,26 +48,26 @@ public class SoftwareDocumentationNode extends ResourceNode implements SoftwareD
 	@Indexed
 	private String name;
 
-	@RelatedTo(elementClass = SoftwareNode.class, type = "documentsSoftware", direction = OUTGOING)
-	private Set<Software> softwares = new HashSet<Software>(0);
+	@RelatedTo(elementClass = ResourceNode.class, type = "documents", direction = OUTGOING)
+	private Set<Resource> resources = new HashSet<Resource>(0);
 
-	public SoftwareDocumentationNode() {
+	public DocumentationNode() {
 	}
 
-	public SoftwareDocumentationNode(String name, String iconFileName) {
+	public DocumentationNode(String name, String iconFileName) {
 		this();
 		setName(name);
 		setIconFileName(iconFileName);
 	}
 
 	@Override
-	public Set<Software> getSoftwares() {
-		return softwares;
+	public Set<Resource> getResources() {
+		return resources;
 	}
 	
 	@Override
-	public void setSoftwares(Set<Software> softwares) {
-		this.softwares = softwares;
+	public void setResources(Set<Resource> resources) {
+		this.resources = resources;
 	}
 
 	@Override

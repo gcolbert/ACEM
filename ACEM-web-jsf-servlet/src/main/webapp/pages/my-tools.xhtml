@@ -21,7 +21,7 @@
 	<ui:param name="northPanelCollapsible" value="true"/>
 	<ui:param name="northPanelCollapsed" value="false"/>
 	<ui:param name="displayWest" value="true" />
-	<ui:param name="westPanelSize" value="350" />
+	<ui:param name="westPanelSize" value="200" />
 	<ui:param name="westPanelCollapsible" value="true"/>
 	<ui:param name="westPanelCollapsed" value="#{associateBean.selectedToolCategoryId!=null}" />
 	<ui:param name="displayEast" value="#{associateBean.currentUserViewBean.administrator}" />
@@ -97,17 +97,17 @@
 			</p:commandLink>
 
 			<p:remoteCommand
-				name="prepareToolCategoryTreeForResourceTypeSOFTWARE_DOCUMENTATION" process="@this"
+				name="prepareToolCategoryTreeForResourceTypeDOCUMENTATION" process="@this"
 				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(softwareDocumentationViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
-			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypeSOFTWARE_DOCUMENTATION" process="@this"
-				onclick="prepareToolCategoryTreeForResourceTypeSOFTWARE_DOCUMENTATION();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'SOFTWARE_DOCUMENTATION'},'','RESOURCE_TYPE_SOFTWARE_DOCUMENTATION');">
+			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypeDOCUMENTATION" process="@this"
+				onclick="prepareToolCategoryTreeForResourceTypeDOCUMENTATION();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'DOCUMENTATION'},'','RESOURCE_TYPE_DOCUMENTATION');">
 				<h:graphicImage
 					url="/resources/images/my-tools/my-tools.software-documentations.png"
-					alt="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION.PLURAL']}"
+					alt="#{msg['RESOURCE_TYPE_DOCUMENTATION.PLURAL']}"
 					styleClass="toolCategoryIcon" />
 				<span class="toolCategoryLabel"><h:outputText
-						value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION.PLURAL']}" /></span>
+						value="#{msg['RESOURCE_TYPE_DOCUMENTATION.PLURAL']}" /></span>
 			</p:commandLink>
 
 			<p:remoteCommand
@@ -188,9 +188,9 @@
 	                		prepareToolCategoryTreeForResourceTypeSOFTWARE();
 	                		selectMenuitemLink('.toolCategoriesOutputPanel',jQuery('#westForm\\:linkResourceTypeSOFTWARE'));
 	                		break;
-	                	case 'SOFTWARE_DOCUMENTATION':
-	                		prepareToolCategoryTreeForResourceTypeSOFTWARE_DOCUMENTATION();
-	                		selectMenuitemLink('.toolCategoriesOutputPanel',jQuery('#westForm\\:linkResourceTypeSOFTWARE_DOCUMENTATION'));
+	                	case 'DOCUMENTATION':
+	                		prepareToolCategoryTreeForResourceTypeDOCUMENTATION();
+	                		selectMenuitemLink('.toolCategoriesOutputPanel',jQuery('#westForm\\:linkResourceTypeDOCUMENTATION'));
 	                		break;
 	                	case 'PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE':
 	                		prepareToolCategoryTreeForResourceTypePEDAGOGICAL_AND_DOCUMENTARY_RESOURCE();
@@ -240,6 +240,30 @@
 				<h2><h:outputText
 					value="#{associateBean.selectedToolCategoryViewBean.name}" /></h2>
 
+				<p:graphicImage id="toolCategoryIcon"
+					rendered="#{not empty associateBean.selectedToolCategoryViewBean.iconFileName}"
+					styleClass="toolImg"
+					alt="#{associateBean.selectedToolCategoryViewBean.name}"
+					cache="true" width="80" value="#{imagesController.image}">
+					<f:param name="imageFileName"
+						value="#{associateBean.selectedToolCategoryViewBean.iconFileName}" />
+				</p:graphicImage>
+
+				<h:panelGroup styleClass="favoriteToolCategory">
+					<p:selectBooleanCheckbox id="favoriteToolCategoryCheckbox"
+						styleClass="favoriteToolCategoryCheckbox"
+						value="#{associateBean.selectedToolCategoryViewBean.favoriteToolCategory}">
+						<p:ajax
+							update="@this :southForm:favoriteToolCategoriesPanel :contentForm:messagesDisplayer"
+							listener="#{associateBean.toggleFavoriteToolCategoryForCurrentUser(associateBean.selectedToolCategoryViewBean)}" />
+					</p:selectBooleanCheckbox>
+					<p:outputLabel for="favoriteToolCategoryCheckbox"
+						value="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.ADD_TO_MY_FAVORITE_TOOLS']}" />
+				</h:panelGroup>
+
+				<h:outputText value="#{associateBean.selectedToolCategoryViewBean.description}" escape="false" />
+
+<!-- 
 				<p:panelGrid columns="2">
 					<p:graphicImage id="toolCategoryIcon"
 						rendered="#{not empty associateBean.selectedToolCategoryViewBean.iconFileName}"
@@ -268,8 +292,9 @@
 						</p:row>
 					</p:column>
 				</p:panelGrid>
-
-				<p:dataTable id="toolsDataTable" var="toolViewBean" dynamic="true"
+ -->
+ 
+				<p:dataTable id="toolsDataTable" var="toolViewBean" dynamic="true" styleClass="resourcesDataTable"
 					value="#{associateBean.selectedToolCategoryViewBean.resourceViewBeans}"
 					selection="#{associateBean.selectedResourceViewBean}"
 					emptyMessage="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.LIST.NO_RECORDS_FOUND']}"
@@ -342,7 +367,7 @@
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
 							</p:menuitem>
 							<p:menuitem
-								value="#{msg['RESOURCE_TYPE_SOFTWARE_DOCUMENTATION']}"
+								value="#{msg['RESOURCE_TYPE_DOCUMENTATION']}"
 								action="#{associateBean.prepareResourceCreation(softwareDocumentationViewBean)}"
 								update=":createResourceForm:idDialogCreateOrModifyResource"
 								oncomplete="PF('dialogCreateResource').show()"

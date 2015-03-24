@@ -25,10 +25,10 @@ import java.util.Set;
  * @since 2013-11-20
  * 
  */
-public interface SoftwareDocumentation extends Resource {
+public interface Documentation extends Resource {
 
-	Set<Software> getSoftwares();
+	Set<Resource> getResources();
 
-	void setSoftwares(Set<Software> softwares);
+	void setResources(Set<Resource> resources);
 
 }

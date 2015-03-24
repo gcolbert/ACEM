@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 import javax.inject.Named;
 
-import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 
 /**
  * @author Grégoire Colbert
@@ -30,27 +30,27 @@ import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
  * 
  */
 @Named
-public class SoftwareDocumentationViewBean extends AbstractResourceViewBean<SoftwareDocumentation> implements Serializable {
+public class SoftwareDocumentationViewBean extends AbstractResourceViewBean<Documentation> implements Serializable {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 2189588973638154852L;
 
-	private SoftwareDocumentation domainBean;
+	private Documentation domainBean;
 
 	public SoftwareDocumentationViewBean() {
 		super();
-		setType("RESOURCE_TYPE_SOFTWARE_DOCUMENTATION");
+		setType("RESOURCE_TYPE_DOCUMENTATION");
 	}
 
-	public SoftwareDocumentationViewBean(SoftwareDocumentation softwareDocumentation) {
+	public SoftwareDocumentationViewBean(Documentation softwareDocumentation) {
 		this();
 		setDomainBean(softwareDocumentation);
 	}
 
 	@Override
-	public SoftwareDocumentation getDomainBean() {
+	public Documentation getDomainBean() {
 		return domainBean;
 	}
 

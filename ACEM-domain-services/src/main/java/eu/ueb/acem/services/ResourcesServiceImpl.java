@@ -40,13 +40,13 @@ import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
@@ -73,7 +73,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	private OrganisationsService organisationsService;
 	
 	private static final String RESOURCE_TYPE_SOFTWARE = "RESOURCE_TYPE_SOFTWARE";
-	private static final String RESOURCE_TYPE_SOFTWARE_DOCUMENTATION = "RESOURCE_TYPE_SOFTWARE_DOCUMENTATION";
+	private static final String RESOURCE_TYPE_DOCUMENTATION = "RESOURCE_TYPE_DOCUMENTATION";
 	private static final String RESOURCE_TYPE_EQUIPMENT = "RESOURCE_TYPE_EQUIPMENT";
 	private static final String RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE = "RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE";
 	private static final String RESOURCE_TYPE_PROFESSIONAL_TRAINING = "RESOURCE_TYPE_PROFESSIONAL_TRAINING";
@@ -100,7 +100,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	private ResourceDAO<Long, Software> softwareDAO;
 
 	@Inject
-	private ResourceDAO<Long, SoftwareDocumentation> softwareDocumentationDAO;
+	private ResourceDAO<Long, Documentation> softwareDocumentationDAO;
 
 	@Override
 	public final String getResourceType_RESOURCE_TYPE_SOFTWARE() {
@@ -108,8 +108,8 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	}
 
 	@Override
-	public final String getResourceType_RESOURCE_TYPE_SOFTWARE_DOCUMENTATION() {
-		return RESOURCE_TYPE_SOFTWARE_DOCUMENTATION;
+	public final String getResourceType_RESOURCE_TYPE_DOCUMENTATION() {
+		return RESOURCE_TYPE_DOCUMENTATION;
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 		case RESOURCE_TYPE_SOFTWARE:
 			resourceDAO = softwareDAO;
 			break;
-		case RESOURCE_TYPE_SOFTWARE_DOCUMENTATION:
+		case RESOURCE_TYPE_DOCUMENTATION:
 			resourceDAO = softwareDocumentationDAO;
 			break;
 		case RESOURCE_TYPE_EQUIPMENT:
@@ -166,8 +166,8 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 			case RESOURCE_TYPE_SOFTWARE:
 				resource = new SoftwareNode(name, iconFileName);
 				break;
-			case RESOURCE_TYPE_SOFTWARE_DOCUMENTATION:
-				resource = new SoftwareDocumentationNode(name, iconFileName);
+			case RESOURCE_TYPE_DOCUMENTATION:
+				resource = new DocumentationNode(name, iconFileName);
 				break;
 			case RESOURCE_TYPE_EQUIPMENT:
 				resource = new EquipmentNode(name, iconFileName);
@@ -200,8 +200,8 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 				case RESOURCE_TYPE_SOFTWARE:
 					resource = softwareDAO.create((Software) resource);
 					break;
-				case RESOURCE_TYPE_SOFTWARE_DOCUMENTATION:
-					resource = softwareDocumentationDAO.create((SoftwareDocumentation) resource);
+				case RESOURCE_TYPE_DOCUMENTATION:
+					resource = softwareDocumentationDAO.create((Documentation) resource);
 					break;
 				case RESOURCE_TYPE_EQUIPMENT:
 					resource = equipmentDAO.create((Equipment) resource);
@@ -260,8 +260,8 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 		if (resource instanceof Software) {
 			updatedResource = softwareDAO.update((Software) resource);
 		}
-		else if (resource instanceof SoftwareDocumentation) {
-			updatedResource = softwareDocumentationDAO.update((SoftwareDocumentation) resource);
+		else if (resource instanceof Documentation) {
+			updatedResource = softwareDocumentationDAO.update((Documentation) resource);
 		}
 		else if (resource instanceof Equipment) {
 			updatedResource = equipmentDAO.update((Equipment) resource);
@@ -285,7 +285,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 			success = !softwareDAO.exists(id);
 		}
 		else if (softwareDocumentationDAO.exists(id)) {
-			SoftwareDocumentation entity = softwareDocumentationDAO.retrieveById(id);
+			Documentation entity = softwareDocumentationDAO.retrieveById(id);
 			softwareDocumentationDAO.delete(entity);
 			success = !softwareDocumentationDAO.exists(id);
 		}
@@ -363,7 +363,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	}
 
 	@Override
-	public Collection<SoftwareDocumentation> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category) {
+	public Collection<Documentation> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return softwareDocumentationDAO.retrieveAllWithCategory(category);
 		}

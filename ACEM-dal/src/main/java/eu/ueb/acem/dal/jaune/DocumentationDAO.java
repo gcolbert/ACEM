@@ -28,21 +28,21 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.jaune.neo4j.SoftwareDocumentationRepository;
+import eu.ueb.acem.dal.jaune.neo4j.DocumentationRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareDocumentationNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-03-11
  * 
  */
-@Repository("softwareDocumentationDAO")
-public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation, SoftwareDocumentationNode> implements
-		ResourceDAO<Long, SoftwareDocumentation> {
+@Repository("documentationDAO")
+public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNode> implements
+		ResourceDAO<Long, Documentation> {
 
 	/**
 	 * For serialization.
@@ -50,22 +50,22 @@ public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation,
 	private static final long serialVersionUID = 9174057115460081629L;
 
 	@Inject
-	private SoftwareDocumentationRepository repository;
+	private DocumentationRepository repository;
 
 	@Override
-	protected final GenericRepository<SoftwareDocumentationNode> getRepository() {
+	protected final GenericRepository<DocumentationNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(SoftwareDocumentation entity) {
+	protected final void initializeCollections(Documentation entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getCategories());
 			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
 			neo4jOperations.fetch(entity.getOrganisationSupportingResource());
 			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getSoftwares());
+			neo4jOperations.fetch(entity.getResources());
 		}
 	}
 
@@ -87,13 +87,13 @@ public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation,
 	}
 
 	@Override
-	public Collection<SoftwareDocumentation> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<SoftwareDocumentationNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<SoftwareDocumentation> collection = new HashSet<SoftwareDocumentation>();
+	public Collection<Documentation> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<DocumentationNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<Documentation> collection = new HashSet<Documentation>();
 		if (endResults.iterator() != null) {
-			Iterator<SoftwareDocumentationNode> iterator = endResults.iterator();
+			Iterator<DocumentationNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				SoftwareDocumentation entity = iterator.next();
+				Documentation entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}
@@ -102,13 +102,13 @@ public class SoftwareDocumentationDAO extends AbstractDAO<SoftwareDocumentation,
 	}
 
 	@Override
-	public Collection<SoftwareDocumentation> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<SoftwareDocumentationNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
-		Collection<SoftwareDocumentation> collection = new HashSet<SoftwareDocumentation>();
+	public Collection<Documentation> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<DocumentationNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Collection<Documentation> collection = new HashSet<Documentation>();
 		if (endResults.iterator() != null) {
-			Iterator<SoftwareDocumentationNode> iterator = endResults.iterator();
+			Iterator<DocumentationNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				SoftwareDocumentation entity = iterator.next();
+				Documentation entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}

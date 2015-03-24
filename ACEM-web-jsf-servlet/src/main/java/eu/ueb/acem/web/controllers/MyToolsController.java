@@ -48,7 +48,7 @@ import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
@@ -245,7 +245,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 			selectedResourceTypeForCategoriesTree = resourceType;
 			prepareToolCategoryTreeForResourceType(new SoftwareViewBean());
 		}
-		else if (resourcesService.getResourceType_RESOURCE_TYPE_SOFTWARE_DOCUMENTATION().equals(resourceType)) {
+		else if (resourcesService.getResourceType_RESOURCE_TYPE_DOCUMENTATION().equals(resourceType)) {
 			selectedResourceTypeForCategoriesTree = resourceType;
 			prepareToolCategoryTreeForResourceType(new SoftwareDocumentationViewBean());
 		}
@@ -555,8 +555,8 @@ public class MyToolsController extends AbstractContextAwareController implements
 			else if (resource instanceof Equipment) {
 				viewBean = new EquipmentViewBean((Equipment) resource);
 			}
-			else if (resource instanceof SoftwareDocumentation) {
-				viewBean = new SoftwareDocumentationViewBean((SoftwareDocumentation) resource);
+			else if (resource instanceof Documentation) {
+				viewBean = new SoftwareDocumentationViewBean((Documentation) resource);
 			}
 			else if (resource instanceof ProfessionalTraining) {
 				viewBean = new ProfessionalTrainingViewBean((ProfessionalTraining) resource);

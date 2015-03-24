@@ -27,8 +27,8 @@ import java.util.Set;
  */
 public interface Software extends Resource {
 
-	Set<SoftwareDocumentation> getDocumentations();
+	Set<Documentation> getDocumentations();
 
-	void setDocumentations(Set<SoftwareDocumentation> softwareDocumentations);
+	void setDocumentations(Set<Documentation> softwareDocumentations);
 
 }

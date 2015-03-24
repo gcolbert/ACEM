@@ -7,7 +7,7 @@
 }
 
 html {
-	font-family: "lucida grande",tahoma,lucide,Arial,sans-serif;
+	font-family:"Liberation Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, sans-serif;;
 }
 
 .ui-layout-north > .ui-widget-header:first-of-type,
@@ -259,6 +259,14 @@ html {
 .toolCategoryMenuEntry.ui-state-active .toolCategoryIcon {
 	box-shadow:none;
 	width:110px;
+}
+
+.selectedToolCategoryPanel .toolImg {
+	float:left;
+}
+
+.resourcesDataTable {
+	clear:both;
 }
 
 .toolCategoryLabel {

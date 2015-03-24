@@ -29,7 +29,7 @@ import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -42,7 +42,7 @@ public interface ResourcesService extends Serializable {
 
 	String getResourceType_RESOURCE_TYPE_SOFTWARE();
 
-	String getResourceType_RESOURCE_TYPE_SOFTWARE_DOCUMENTATION();
+	String getResourceType_RESOURCE_TYPE_DOCUMENTATION();
 
 	String getResourceType_RESOURCE_TYPE_EQUIPMENT();
 
@@ -75,7 +75,7 @@ public interface ResourcesService extends Serializable {
 
 	Collection<Software> retrieveSoftwaresWithCategory(ResourceCategory category);
 
-	Collection<SoftwareDocumentation> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
+	Collection<Documentation> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
 
 	Collection<Equipment> retrieveEquipmentWithCategory(ResourceCategory category);
 

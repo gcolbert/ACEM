@@ -29,7 +29,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.SoftwareDocumentation;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 
 /**
  * @author Grégoire Colbert
@@ -48,8 +48,8 @@ public class SoftwareNode extends ResourceNode implements Software {
 	@Indexed
 	private String name;
 	
-	@RelatedTo(elementClass = SoftwareDocumentationNode.class, type = "documentsSoftware", direction = INCOMING)
-	private Set<SoftwareDocumentation> documentations = new HashSet<SoftwareDocumentation>(0);
+	@RelatedTo(elementClass = DocumentationNode.class, type = "documentsSoftware", direction = INCOMING)
+	private Set<Documentation> documentations = new HashSet<Documentation>(0);
 	
 	public SoftwareNode() {
 	}
@@ -71,12 +71,12 @@ public class SoftwareNode extends ResourceNode implements Software {
 	}
 
 	@Override
-	public Set<SoftwareDocumentation> getDocumentations() {
+	public Set<Documentation> getDocumentations() {
 		return documentations;
 	}
 
 	@Override
-	public void setDocumentations(Set<SoftwareDocumentation> softwareDocumentations) {
+	public void setDocumentations(Set<Documentation> softwareDocumentations) {
 		this.documentations = softwareDocumentations;
 	}
 	
