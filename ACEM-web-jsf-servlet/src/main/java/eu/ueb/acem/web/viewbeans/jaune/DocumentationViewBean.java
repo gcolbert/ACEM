@@ -30,7 +30,7 @@ import eu.ueb.acem.domain.beans.jaune.Documentation;
  * 
  */
 @Named
-public class SoftwareDocumentationViewBean extends AbstractResourceViewBean<Documentation> implements Serializable {
+public class DocumentationViewBean extends AbstractResourceViewBean<Documentation> implements Serializable {
 
 	/**
 	 * For serialization.
@@ -39,14 +39,14 @@ public class SoftwareDocumentationViewBean extends AbstractResourceViewBean<Docu
 
 	private Documentation domainBean;
 
-	public SoftwareDocumentationViewBean() {
+	public DocumentationViewBean() {
 		super();
 		setType("RESOURCE_TYPE_DOCUMENTATION");
 	}
 
-	public SoftwareDocumentationViewBean(Documentation softwareDocumentation) {
+	public DocumentationViewBean(Documentation documentation) {
 		this();
-		setDomainBean(softwareDocumentation);
+		setDomainBean(documentation);
 	}
 
 	@Override

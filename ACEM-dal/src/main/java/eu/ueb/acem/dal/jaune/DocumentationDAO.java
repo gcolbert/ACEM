@@ -65,12 +65,15 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNo
 			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
 			neo4jOperations.fetch(entity.getOrganisationSupportingResource());
 			neo4jOperations.fetch(entity.getUseModes());
+			// Resources that are documented by the Documentation entity
 			neo4jOperations.fetch(entity.getResources());
+            // Documentations about this Documentation entity should be empty
+			neo4jOperations.fetch(entity.getDocumentations());
 		}
 	}
 
 	/**
-	 * Returns the categories containing at least one "SoftwareDocumentation"
+	 * Returns the categories containing at least one "Documentation"
 	 * entity.
 	 */
 	@Override

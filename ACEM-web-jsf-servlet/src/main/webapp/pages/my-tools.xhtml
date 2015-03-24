@@ -98,7 +98,7 @@
 
 			<p:remoteCommand
 				name="prepareToolCategoryTreeForResourceTypeDOCUMENTATION" process="@this"
-				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(softwareDocumentationViewBean)}"
+				actionListener="#{associateBean.prepareToolCategoryTreeForResourceType(documentationViewBean)}"
 				update="categoriesTree :contentForm:selectedToolCategoryOutputPanel" />
 			<p:commandLink styleClass="toolCategoryMenuEntry" id="linkResourceTypeDOCUMENTATION" process="@this"
 				onclick="prepareToolCategoryTreeForResourceTypeDOCUMENTATION();selectMenuitemLink('.toolCategoriesOutputPanel',this); history.pushState({selectedResourceType: 'DOCUMENTATION'},'','RESOURCE_TYPE_DOCUMENTATION');">
@@ -368,7 +368,7 @@
 							</p:menuitem>
 							<p:menuitem
 								value="#{msg['RESOURCE_TYPE_DOCUMENTATION']}"
-								action="#{associateBean.prepareResourceCreation(softwareDocumentationViewBean)}"
+								action="#{associateBean.prepareResourceCreation(documentationViewBean)}"
 								update=":createResourceForm:idDialogCreateOrModifyResource"
 								oncomplete="PF('dialogCreateResource').show()"
 								process="@this">

@@ -100,7 +100,7 @@ public class ResourceDAOTest extends TestCase {
 	private ResourceDAO<Long, Software> softwareDAO;
 
 	@Inject
-	private ResourceDAO<Long, Documentation> softwareDocumentationDAO;
+	private ResourceDAO<Long, Documentation> documentationDAO;
 
 	@Inject
 	private ResourceDAO<Long, Equipment> equipmentDAO;
@@ -152,28 +152,29 @@ public class ResourceDAOTest extends TestCase {
 		Software software = new SoftwareNode("Moodle", null);
 		software = softwareDAO.create(software);
 
-		Documentation softwareDocumentation = new DocumentationNode("Tutorial for Moodle", null);
-		softwareDocumentation = softwareDocumentationDAO.create(softwareDocumentation);
+		Documentation documentation = new DocumentationNode("Tutorial for Moodle", null);
+		documentation = documentationDAO.create(documentation);
 
-		software.getDocumentations().add(softwareDocumentation);
-		softwareDocumentation.getResources().add(software);
+		software.getDocumentations().add(documentation);
+		documentation.getResources().add(software);
 
 		software = softwareDAO.update(software);
-		softwareDocumentation = softwareDocumentationDAO.update(softwareDocumentation);
+		documentation = documentationDAO.update(documentation);
 
 		Software softwareBis = softwareDAO.retrieveById(software.getId(), true);
 		assertEquals(new Long(1), new Long(softwareBis.getDocumentations().size()));
 
-		Documentation softwareDocumentationBis = softwareDocumentationDAO.retrieveById(softwareDocumentation
-				.getId(), true);
-		assertTrue(softwareBis.getDocumentations().contains(softwareDocumentationBis));
+		Documentation documentationBis = documentationDAO.retrieveById(documentation.getId(), true);
+		logger.info("documentation={}", documentation);
+		logger.info("documentationBis={}", documentationBis);
+		assertTrue(softwareBis.getDocumentations().contains(documentationBis));
 
-		softwareBis.getDocumentations().remove(softwareDocumentationBis);
-		softwareDocumentationBis.getResources().remove(softwareBis);
+		softwareBis.getDocumentations().remove(documentationBis);
+		documentationBis.getResources().remove(softwareBis);
 		assertEquals(new Long(0), new Long(softwareBis.getDocumentations().size()));
 
 		softwareBis = softwareDAO.update(softwareBis);
-		assertFalse(softwareBis.getDocumentations().contains(softwareDocumentationBis));
+		assertFalse(softwareBis.getDocumentations().contains(documentationBis));
 	}
 	
 	/**
@@ -240,36 +241,36 @@ public class ResourceDAOTest extends TestCase {
 		ResourceCategory category = new ResourceCategoryNode("LMS", "Learning Management System", null);
 		category = resourceCategoryDAO.create(category);
 
-		Documentation softwareDocumentation = new DocumentationNode("Moodle tutorial", null);
-		softwareDocumentation = softwareDocumentationDAO.create(softwareDocumentation);
+		Documentation documentation = new DocumentationNode("Moodle tutorial", null);
+		documentation = documentationDAO.create(documentation);
 
 		// We associate the person and the organisation
 		personWorkingForOrganisation.getWorksForOrganisations().add(administrativeDepartment);
 		personWorkingForOrganisation = personDAO.update(personWorkingForOrganisation);
 
 		// We associate the organisation and the resource
-		administrativeDepartment.getSupportedResources().add(softwareDocumentation);
+		administrativeDepartment.getSupportedResources().add(documentation);
 		administrativeDepartment = administrativeDepartmentDAO.update(administrativeDepartment);
 
 		// We associate the resource and the category
-		category.getResources().add(softwareDocumentation);
+		category.getResources().add(documentation);
 		category = resourceCategoryDAO.update(category);
 
-		Collection<Documentation> usableSoftwareDocumentationsOfPersonWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(category,
+		Collection<Documentation> usableDocumentationsOfPersonWorking = documentationDAO.retrieveResourcesInCategoryForPerson(category,
 				personWorkingForOrganisation);
 		assertTrue("The person working for an organisation that supports a resource must be able to retrieve it.",
-				usableSoftwareDocumentationsOfPersonWorking.contains(softwareDocumentation));
+				usableDocumentationsOfPersonWorking.contains(documentation));
 
 		// A person who don't work for ANY organisation should not be
 		// able to use the resource, hence not be able to retrieve it
 		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
 		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
 
-		Collection<Documentation> usableSoftwareDocumentationsPersonNotWorking = softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(
+		Collection<Documentation> usableDocumentationsPersonNotWorking = documentationDAO.retrieveResourcesInCategoryForPerson(
 				category, personNotWorkingForOrganisation);
 		assertFalse(
 				"The person, who do not work for an organisation that supports a resource, must not be able to retrieve it.",
-				usableSoftwareDocumentationsPersonNotWorking.contains(softwareDocumentation));
+				usableDocumentationsPersonNotWorking.contains(documentation));
 	}
 
 	/**

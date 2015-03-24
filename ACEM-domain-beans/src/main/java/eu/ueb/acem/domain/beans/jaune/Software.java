@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.domain.beans.jaune;
 
-import java.util.Set;
 
 /**
  * @author Grégoire Colbert
@@ -26,9 +25,5 @@ import java.util.Set;
  * 
  */
 public interface Software extends Resource {
-
-	Set<Documentation> getDocumentations();
-
-	void setDocumentations(Set<Documentation> softwareDocumentations);
 
 }

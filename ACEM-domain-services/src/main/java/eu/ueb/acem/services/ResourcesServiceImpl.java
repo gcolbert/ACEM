@@ -100,7 +100,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	private ResourceDAO<Long, Software> softwareDAO;
 
 	@Inject
-	private ResourceDAO<Long, Documentation> softwareDocumentationDAO;
+	private ResourceDAO<Long, Documentation> documentationDAO;
 
 	@Override
 	public final String getResourceType_RESOURCE_TYPE_SOFTWARE() {
@@ -136,7 +136,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 			resourceDAO = softwareDAO;
 			break;
 		case RESOURCE_TYPE_DOCUMENTATION:
-			resourceDAO = softwareDocumentationDAO;
+			resourceDAO = documentationDAO;
 			break;
 		case RESOURCE_TYPE_EQUIPMENT:
 			resourceDAO = equipmentDAO;
@@ -201,7 +201,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 					resource = softwareDAO.create((Software) resource);
 					break;
 				case RESOURCE_TYPE_DOCUMENTATION:
-					resource = softwareDocumentationDAO.create((Documentation) resource);
+					resource = documentationDAO.create((Documentation) resource);
 					break;
 				case RESOURCE_TYPE_EQUIPMENT:
 					resource = equipmentDAO.create((Equipment) resource);
@@ -225,8 +225,8 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 		if (softwareDAO.exists(id)) {
 			entity = softwareDAO.retrieveById(id, initialize);
 		}
-		else if (softwareDocumentationDAO.exists(id)) {
-			entity = softwareDocumentationDAO.retrieveById(id, initialize);
+		else if (documentationDAO.exists(id)) {
+			entity = documentationDAO.retrieveById(id, initialize);
 		}
 		else if (equipmentDAO.exists(id)) {
 			entity = equipmentDAO.retrieveById(id, initialize);
@@ -247,7 +247,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	public Collection<Resource> getResourcesInCategoryForPerson(ResourceCategory category, Person person) {
 		Collection<Resource> resources = new HashSet<Resource>();
 		resources.addAll(softwareDAO.retrieveResourcesInCategoryForPerson(category, person));
-		resources.addAll(softwareDocumentationDAO.retrieveResourcesInCategoryForPerson(category, person));
+		resources.addAll(documentationDAO.retrieveResourcesInCategoryForPerson(category, person));
 		resources.addAll(professionalTrainingDAO.retrieveResourcesInCategoryForPerson(category, person));
 		resources.addAll(pedagogicalAndDocumentaryResourcesDAO.retrieveResourcesInCategoryForPerson(category, person));
 		resources.addAll(equipmentDAO.retrieveResourcesInCategoryForPerson(category, person));
@@ -261,7 +261,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 			updatedResource = softwareDAO.update((Software) resource);
 		}
 		else if (resource instanceof Documentation) {
-			updatedResource = softwareDocumentationDAO.update((Documentation) resource);
+			updatedResource = documentationDAO.update((Documentation) resource);
 		}
 		else if (resource instanceof Equipment) {
 			updatedResource = equipmentDAO.update((Equipment) resource);
@@ -284,10 +284,10 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 			softwareDAO.delete(entity);
 			success = !softwareDAO.exists(id);
 		}
-		else if (softwareDocumentationDAO.exists(id)) {
-			Documentation entity = softwareDocumentationDAO.retrieveById(id);
-			softwareDocumentationDAO.delete(entity);
-			success = !softwareDocumentationDAO.exists(id);
+		else if (documentationDAO.exists(id)) {
+			Documentation entity = documentationDAO.retrieveById(id);
+			documentationDAO.delete(entity);
+			success = !documentationDAO.exists(id);
 		}
 		else if (equipmentDAO.exists(id)) {
 			Equipment entity = equipmentDAO.retrieveById(id);
@@ -363,12 +363,12 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	}
 
 	@Override
-	public Collection<Documentation> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category) {
+	public Collection<Documentation> retrieveDocumentationsWithCategory(ResourceCategory category) {
 		if (category != null) {
-			return softwareDocumentationDAO.retrieveAllWithCategory(category);
+			return documentationDAO.retrieveAllWithCategory(category);
 		}
 		else {
-			return softwareDocumentationDAO.retrieveAll();
+			return documentationDAO.retrieveAll();
 		}
 	}
 

@@ -75,7 +75,7 @@ public interface ResourcesService extends Serializable {
 
 	Collection<Software> retrieveSoftwaresWithCategory(ResourceCategory category);
 
-	Collection<Documentation> retrieveSoftwareDocumentationsWithCategory(ResourceCategory category);
+	Collection<Documentation> retrieveDocumentationsWithCategory(ResourceCategory category);
 
 	Collection<Equipment> retrieveEquipmentWithCategory(ResourceCategory category);
 

@@ -35,20 +35,20 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
 public interface DocumentationRepository extends GenericRepository<DocumentationNode> {
 
 	@Override
-	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE id(n)=({id}) RETURN count(n)")
+	@Query(value = "MATCH (n:Documentation) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
 
 	@Override
-	@Query(value = "MATCH (n:SoftwareDocumentation) WHERE n.name=({name}) RETURN n")
+	@Query(value = "MATCH (n:Documentation) WHERE n.name=({name}) RETURN n")
 	Iterable<DocumentationNode> findByName(@Param("name") String name);
 
-	@Query(value = "MATCH (:SoftwareDocumentation)<-[:categoryContains]-(m:ResourceCategory) RETURN m")
+	@Query(value = "MATCH (:Documentation)<-[:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 
-	@Query(value = "MATCH (n:SoftwareDocumentation)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
+	@Query(value = "MATCH (n:Documentation)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
 	Set<DocumentationNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 
-	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:SoftwareDocumentation)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Documentation)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
 	Set<DocumentationNode> getResourcesInCategoryForPerson(@Param("categoryId") Long categoryId, @Param("personId") Long personId);
 
 }
