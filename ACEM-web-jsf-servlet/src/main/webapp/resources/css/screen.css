@@ -360,6 +360,12 @@ html {
 	display:flex;
 }
 
+/*********************************/
+/* CREATE/MODIFY RESOURCE DIALOG */
+/*********************************/
+.dataTableUseModesForResource {
+}
+
 /***************/
 /* MY SERVICES */
 /***************/

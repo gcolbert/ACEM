@@ -44,7 +44,7 @@ public abstract class AbstractResourceViewBean<E extends Resource> extends Abstr
 	private String iconFileName;
 
 	private OrganisationViewBean organisationPossessingResourceViewBean;
-	
+
 	private OrganisationViewBean organisationSupportingResourceViewBean;
 
 	private List<OrganisationViewBean> organisationsViewingResourceViewBeans;

@@ -14,7 +14,7 @@
 	<!-- ********** CREATE/MODIFY RESOURCE ********** -->
 	<p:dialog id="idDialogCreateOrModifyResource"
 		header="#{dialogHeader}"
-		widgetVar="#{widgetName}" modal="true" height="auto">
+		widgetVar="#{widgetName}" modal="true" height="auto" width="50%">
 		<p:ajax event="close" listener="#{associateBean.onCloseDialogWithUploadedFile}" />
 
 		<p:outputPanel rendered="#{associateBean.objectEditedResource != null}">
@@ -67,66 +67,65 @@
 				icon="ui-icon-trash" action="#{associateBean.removeObjectEditedResourceIcon}"
 				update="@this icon"
 				process="@this" />
-
-			<h3 class="section-title">
-				<p:outputLabel for="ownerOrganisation" value="#{msg['RESOURCE.OWNER_ORGANISATION_LABEL']}"/>
-			</h3>
-			<p:selectOneMenu id="ownerOrganisation"
-				required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
-				editable="false" 
-				value="#{associateBean.objectEditedResource.organisationPossessingResourceViewBean}"
-				converter="OrganisationConverter">
-				<f:selectItem
-					itemLabel="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_OWNER_ORGANISATION']}"
-					itemValue="" itemDisabled="true" noSelectionOption="true" />
-				<f:selectItems
-					value="#{associateBean.allOrganisationViewBeans}"
-					var="organisationViewBean"
-					itemLabel="#{organisationViewBean.name}"
-					itemValue="#{organisationViewBean}" />
-			</p:selectOneMenu>
-
-			<h3 class="section-title">
-				<p:outputLabel for="supportOrganisation"
-					value="#{msg['RESOURCE.SUPPORT_ORGANISATION_LABEL']}" />
-			</h3>
-			<p:selectOneMenu id="supportOrganisation"
-				required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
-				editable="false" 
-				value="#{associateBean.objectEditedResource.organisationSupportingResourceViewBean}"
-				converter="OrganisationConverter">
-				<f:selectItem
-					itemLabel="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_ORGANISATION']}"
-					itemValue="" itemDisabled="true" noSelectionOption="true" />
-				<f:selectItems
-					value="#{associateBean.allOrganisationViewBeans}"
-					var="organisationViewBean"
-					itemLabel="#{organisationViewBean.name}"
-					itemValue="#{organisationViewBean}" />
-			</p:selectOneMenu>
-
-			<h3 class="section-title">
-				<p:outputLabel for="useModes"
-					value="#{msg['RESOURCE.USE_MODES_LABEL']}" />
-			</h3>
-			<p:dataTable id="useModes"
-				value="#{associateBean.objectEditedResource.useModeViewBeans}"
-				emptyMessage="#{msg['APPLICATION.MESSAGE.NO_RECORD']}"
-				var="useMode">
-				<p:column
-					headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.USE_MODES']}">
-					<h:outputText value="#{useMode.name}" />
-				</p:column>
-			</p:dataTable>
-
 		</p:outputPanel>
+
+		<h3 class="section-title">
+			<p:outputLabel for="ownerOrganisation" value="#{msg['RESOURCE.OWNER_ORGANISATION_LABEL']}"/>
+		</h3>
+		<p:selectOneMenu id="ownerOrganisation"
+			required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
+			editable="false" 
+			value="#{associateBean.objectEditedResource.organisationPossessingResourceViewBean}"
+			converter="OrganisationConverter">
+			<f:selectItem
+				itemLabel="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_OWNER_ORGANISATION']}"
+				itemValue="" itemDisabled="true" noSelectionOption="true" />
+			<f:selectItems
+				value="#{associateBean.allOrganisationViewBeans}"
+				var="organisationViewBean"
+				itemLabel="#{organisationViewBean.name}"
+				itemValue="#{organisationViewBean}" />
+		</p:selectOneMenu>
+
+		<h3 class="section-title">
+			<p:outputLabel for="supportOrganisation"
+				value="#{msg['RESOURCE.SUPPORT_ORGANISATION_LABEL']}" />
+		</h3>
+		<p:selectOneMenu id="supportOrganisation"
+			required="true" requiredMessage="#{msg['REQUIRED_FIELD']}"
+			editable="false" 
+			value="#{associateBean.objectEditedResource.organisationSupportingResourceViewBean}"
+			converter="OrganisationConverter">
+			<f:selectItem
+				itemLabel="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_ORGANISATION']}"
+				itemValue="" itemDisabled="true" noSelectionOption="true" />
+			<f:selectItems
+				value="#{associateBean.allOrganisationViewBeans}"
+				var="organisationViewBean"
+				itemLabel="#{organisationViewBean.name}"
+				itemValue="#{organisationViewBean}" />
+		</p:selectOneMenu>
+
+		<h3 class="section-title">
+			<p:outputLabel for="useModes"
+				value="#{msg['RESOURCE.USE_MODES_LABEL']}" />
+		</h3>
+		<p:dataTable id="useModes"
+			value="#{associateBean.objectEditedResource.useModeViewBeans}"
+			emptyMessage="#{msg['APPLICATION.MESSAGE.NO_RECORD']}"
+			var="useMode" styleClass="dataTableUseModesForResource">
+			<p:column
+				headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.USE_MODES']}">
+				<h:outputText value="#{useMode.name}" />
+			</p:column>
+		</p:dataTable>
 
 		<p:commandButton styleClass="dialogValidationButton"
 			value="#{msg['APPLICATION.BUTTON.SAVE']}"
 			icon="ui-icon-check"
 			action="#{associateBean.onSaveResource}"
 			validateClient="true" process="@form"
-			update="${formToUpdate}:toolsDataTable :contentForm:messagesDisplayer"
+			update="@this ${formToUpdate}:toolsDataTable :contentForm:messagesDisplayer"
 			oncomplete="PF('#{widgetName}').hide();" />
 	</p:dialog>
 </ui:composition>

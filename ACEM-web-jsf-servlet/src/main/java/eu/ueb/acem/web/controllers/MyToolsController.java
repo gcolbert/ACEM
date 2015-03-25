@@ -351,7 +351,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 				// The organisation supporting the resource
 				if (resourceViewBean.getDomainBean().getOrganisationSupportingResource() != null) {
-					Organisation supportService = organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId(), true);
+					Organisation supportService = organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId(), false);
 					resourceViewBean.setOrganisationSupportingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(supportService));
 				}
 
@@ -592,8 +592,22 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 *            freshly created ResourceViewBean
 	 */
 	public void prepareResourceCreation(ResourceViewBean freshlyCreatedResourceViewBean) {
-		objectEditedResource = freshlyCreatedResourceViewBean;
-		selectedResourceViewBean = null;
+		if (freshlyCreatedResourceViewBean instanceof EquipmentViewBean) {
+			objectEditedResource = new EquipmentViewBean();
+		}
+		else if (freshlyCreatedResourceViewBean instanceof SoftwareViewBean) {
+			objectEditedResource = new SoftwareViewBean();
+		}
+		else if (freshlyCreatedResourceViewBean instanceof PedagogicalAndDocumentaryResourceViewBean) {
+			objectEditedResource = new PedagogicalAndDocumentaryResourceViewBean();
+		}
+		else if (freshlyCreatedResourceViewBean instanceof DocumentationViewBean) {
+			objectEditedResource = new DocumentationViewBean();
+		}
+		else if (freshlyCreatedResourceViewBean instanceof ProfessionalTrainingViewBean) {
+			objectEditedResource = new ProfessionalTrainingViewBean();
+		}
+		setSelectedResourceViewBean(null);
 		temporaryFilePath = null;
 		commonUploadOneDialog.reset();
 	}
@@ -615,16 +629,18 @@ public class MyToolsController extends AbstractContextAwareController implements
 		objectEditedResource.setOrganisationSupportingResourceViewBean(resourceViewBean.getOrganisationSupportingResourceViewBean());
 		objectEditedResource.setOrganisationViewingResourceViewBeans(resourceViewBean.getOrganisationViewingResourceViewBeans());
 
-		selectedResourceViewBean = resourceViewBean;
+		setSelectedResourceViewBean(resourceViewBean);
 		temporaryFilePath = null;
 		commonUploadOneDialog.reset();
 	}
 
 	public void onSaveResource() {
 		if (objectEditedResource.getId() == null) {
+			logger.info("onSaveResource, we call createResourceFromObjectEdited");
 			createResourceFromObjectEdited();
 		}
 		else {
+			logger.info("onSaveResource, we call modifyResourceFromObjectEdited");
 			modifyResourceFromObjectEdited();
 		}
 	}
@@ -656,7 +672,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 			}
 
 			selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
-
+			
 			MessageDisplayer.info(
 					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
 					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
@@ -694,7 +710,9 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	public void onDeleteSelectedResource() {
 		if (resourcesService.deleteResource(getSelectedResourceViewBean().getDomainBean().getId())) {
+			selectedToolCategoryViewBean.getDomainBean().getResources().remove(getSelectedResourceViewBean().getDomainBean());
 			selectedToolCategoryViewBean.getResourceViewBeans().remove(getSelectedResourceViewBean());
+			setSelectedResourceViewBean(null);
 			MessageDisplayer.info(
 					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
 					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));

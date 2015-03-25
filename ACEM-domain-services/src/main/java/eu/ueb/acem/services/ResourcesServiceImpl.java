@@ -184,17 +184,24 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 			}
 
 			if (resource != null) {
-				resource.getCategories().add(resourceCategory);
-				resourceCategory.getResources().add(resource);
-				resourceCategory = resourceCategoryDAO.update(resourceCategory);
+				// Reloading the objects from the database avoids a strange
+				// bug that appeared on resource.getCategories().add(resourceCategory)
+				ResourceCategory resourceCategoryReloaded = resourceCategoryDAO.retrieveById(resourceCategory.getId(), true);
+				resource.getCategories().add(resourceCategoryReloaded);
+				resourceCategoryReloaded.getResources().add(resource);
+				resourceCategoryReloaded = resourceCategoryDAO.update(resourceCategoryReloaded);
 
-				resource.setOrganisationPossessingResource(ownerOrganisation);
-				ownerOrganisation.getPossessedResources().add(resource);
-				ownerOrganisation = organisationsService.updateOrganisation(ownerOrganisation);
+				// Reloading the objects from the database avoids a bug
+				Organisation ownerOrganisationReloaded = organisationsService.retrieveOrganisation(ownerOrganisation.getId(), true);
+				resource.setOrganisationPossessingResource(ownerOrganisationReloaded);
+				ownerOrganisationReloaded.getPossessedResources().add(resource);
+				ownerOrganisationReloaded = organisationsService.updateOrganisation(ownerOrganisationReloaded);
 
-				resource.setOrganisationSupportingResource(supportOrganisation);
-				supportOrganisation.getSupportedResources().add(resource);
-				supportOrganisation = organisationsService.updateOrganisation(supportOrganisation);
+				// Reloading the objects from the database avoids a bug
+				Organisation supportOrganisationReloaded = organisationsService.retrieveOrganisation(supportOrganisation.getId(), true);
+				resource.setOrganisationSupportingResource(supportOrganisationReloaded);
+				supportOrganisationReloaded.getSupportedResources().add(resource);
+				supportOrganisationReloaded = organisationsService.updateOrganisation(supportOrganisationReloaded);
 
 				switch (resourceType) {
 				case RESOURCE_TYPE_SOFTWARE:
