@@ -588,6 +588,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 * and do a big ugly switch on the received String to instanciate the
 	 * correct view bean below.
 	 * 
+	 * NOTE : this works once, but not twice, because the initialized bean
+	 * is reused (see http://stackoverflow.com/questions/29253863), so
+	 * I'm keeping a switch here to create a new view bean. If one day I use
+	 * CDI to manage the scopes (and not Spring), then putting @RequestScoped
+	 * in all the view beans inheriting from ResourceViewBean might allow me
+	 * to create a new view bean each time we click on "Create new resource".
+	 * 
 	 * @param freshlyCreatedResourceViewBean
 	 *            freshly created ResourceViewBean
 	 */
