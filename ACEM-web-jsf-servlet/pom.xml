@@ -14,6 +14,7 @@
 	<properties>
 		<ehcache.version>2.9.0</ehcache.version>
 		<javax.servlet.version>3.1.0</javax.servlet.version>
+		<javax.jstl.version>1.2</javax.jstl.version>
 		<apache-myfaces.version>2.2.7</apache-myfaces.version>
 		<joda-time.version>2.3</joda-time.version>
 		<maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
@@ -69,6 +70,11 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${javax.servlet.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${javax.jstl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.primefaces</groupId>
