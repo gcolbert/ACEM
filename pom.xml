@@ -24,8 +24,8 @@
 		<maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
 		<slf4j.version>1.7.10</slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.1.5.RELEASE</spring.version>
-		<spring-security.version>3.2.6.RELEASE</spring-security.version>
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<spring-security.version>4.0.0.RELEASE</spring-security.version>
 		<spring-security-saml2-core>1.0.0.RELEASE</spring-security-saml2-core>
 	</properties>
 	<!-- TODO 2 Configure repo2.maven.org as a repository. -->
