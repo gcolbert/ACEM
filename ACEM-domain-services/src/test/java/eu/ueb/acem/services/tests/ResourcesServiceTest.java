@@ -77,13 +77,16 @@ public class ResourcesServiceTest extends TestCase {
 
 		// It's time to check whether the associations have been done correctly
 		assertTrue("The resource must know its possessing organisation", resourceReloaded.getOrganisationPossessingResource().equals(ownerOrganisation));
-		assertTrue("The owner organisation must reference the resource", ownerOrganisation.getPossessedResources().contains(resourceReloaded));
+		Organisation ownerOrganisationReloaded = organisationsService.retrieveOrganisation(ownerOrganisation.getId(), true);
+		assertTrue("The owner organisation must reference the resource", ownerOrganisationReloaded.getPossessedResources().contains(resourceReloaded));
 
 		assertTrue("The resource must know its supporting organisation", resourceReloaded.getOrganisationSupportingResource().equals(supportOrganisation));
-		assertTrue("The support organisation must reference the resource", supportOrganisation.getSupportedResources().contains(resourceReloaded));
+		Organisation supportOrganisationReloaded = organisationsService.retrieveOrganisation(supportOrganisation.getId(), true);
+		assertTrue("The support organisation must reference the resource", supportOrganisationReloaded.getSupportedResources().contains(resourceReloaded));
 
-		assertTrue("The category must reference the resource", category.getResources().contains(resourceReloaded));
 		assertTrue("The resource must reference the category", resourceReloaded.getCategories().contains(category));
+		ResourceCategory categoryReloaded = resourcesService.retrieveResourceCategory(category.getId(), true);
+		assertTrue("The category must reference the resource", categoryReloaded.getResources().contains(resourceReloaded));
 
 		// We create an organisation that will have access to the resource
 		Organisation partnerOrganisation = organisationsService.createInstitution("Another institution", "AI", null);
@@ -114,15 +117,23 @@ public class ResourcesServiceTest extends TestCase {
 		// Finally we create the resource
 		Resource resource = resourcesService.createResource(category, ownerOrganisation, supportOrganisation, resourcesService.getResourceType_RESOURCE_TYPE_EQUIPMENT(), "Interactive whiteboard number 42", null);
 
+		// We reload the resource and initialize the collections (because the
+		// asserts only check the pointers and don't access the objects inside
+		// the collections, 'false' would work too)
+		Resource resourceReloaded = resourcesService.retrieveResource(resource.getId(), true);
+		
 		// It's time to check whether the associations have been done correctly
-		assertTrue("The resource must know its possessing organisation", resource.getOrganisationPossessingResource().equals(ownerOrganisation));
-		assertTrue("The owner organisation must reference the resource", ownerOrganisation.getPossessedResources().contains(resource));
+		assertTrue("The resource must know its possessing organisation", resourceReloaded.getOrganisationPossessingResource().equals(ownerOrganisation));
+		Organisation ownerOrganisationReloaded = organisationsService.retrieveOrganisation(ownerOrganisation.getId(), true);
+		assertTrue("The owner organisation must reference the resource", ownerOrganisationReloaded.getPossessedResources().contains(resourceReloaded));
 
-		assertTrue("The resource must know its supporting organisation", resource.getOrganisationSupportingResource().equals(supportOrganisation));
-		assertTrue("The support organisation must reference the resource", supportOrganisation.getSupportedResources().contains(resource));
+		assertTrue("The resource must know its supporting organisation", resourceReloaded.getOrganisationSupportingResource().equals(supportOrganisation));
+		Organisation supportOrganisationReloaded = organisationsService.retrieveOrganisation(supportOrganisation.getId(), true);
+		assertTrue("The support organisation must reference the resource", supportOrganisationReloaded.getSupportedResources().contains(resourceReloaded));
 
-		assertTrue("The category must reference the resource", category.getResources().contains(resource));
-		assertTrue("The resource must reference the category", resource.getCategories().contains(category));
+		assertTrue("The resource must reference the category", resourceReloaded.getCategories().contains(category));
+		ResourceCategory categoryReloaded = resourcesService.retrieveResourceCategory(category.getId(), true);
+		assertTrue("The category must reference the resource", categoryReloaded.getResources().contains(resourceReloaded));
 
 		// Now we create a use mode for our resource
 		UseMode useMode = resourcesService.createUseMode(
@@ -130,7 +141,6 @@ public class ResourcesServiceTest extends TestCase {
 						supportOrganisation);
 		
 		UseMode useModeReloaded = resourcesService.retrieveUseMode(useMode.getId(), false);
-		Resource resourceReloaded = resourcesService.retrieveResource(resource.getId(), false);
 		assertTrue("The association of the use mode and the resource has failed", resourcesService.associateUseModeAndResource(useModeReloaded, resourceReloaded));
 		assertTrue("The use mode must reference the resource", useModeReloaded.getResources().contains(resourceReloaded));
 		assertTrue("The resource must reference the use mode", resourceReloaded.getUseModes().contains(useModeReloaded));
