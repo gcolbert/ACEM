@@ -42,7 +42,7 @@
         <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
         <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
         <custom-filter ref="casFilter" position="CAS_FILTER" />
-        <logout logout-success-url="/logout"/>
+        <logout logout-url="/logout" logout-success-url="/home"/>
         <session-management invalid-session-url="/timeout">  
             <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />  
         </session-management> 

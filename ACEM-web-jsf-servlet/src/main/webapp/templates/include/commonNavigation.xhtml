@@ -41,6 +41,14 @@
 				styleClass="#{mainMenuController.getMenuitemStyleClass('users')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		</p:submenu>
+		<p:menuitem value="#{msg['MENU.LOGIN']}" outcome="login"
+		    rendered="#{! request.isUserInRole('ROLE_USER')}"
+			styleClass="#{mainMenuController.getMenuitemStyleClass('login')}"
+			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+		<p:menuitem value="#{msg['MENU.LOGOUT']}" outcome="logout"
+		    rendered="#{request.isUserInRole('ROLE_USER')}"
+			styleClass="#{mainMenuController.getMenuitemStyleClass('logout')}"
+			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 	</p:menubar>
 	<!-- BreadCrumb : Home + 2 levels -->
 	<p:breadCrumb>

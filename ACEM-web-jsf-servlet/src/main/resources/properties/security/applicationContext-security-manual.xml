@@ -29,7 +29,7 @@
         <intercept-url access="permitAll" pattern="/j_spring_security_check"/>
 		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration/**" />
 		<intercept-url access="isAuthenticated()" pattern="/**" />
-		<logout logout-success-url='/logout' />
+		<logout logout-url="/logout" logout-success-url='/home' />
 		<form-login login-page='/login'
 			authentication-failure-url="/login?auth=fail"
 			default-target-url="/home" login-processing-url="/j_spring_security_check" />
