@@ -31,6 +31,8 @@
 
     <!-- HTTP security configurations -->
     <http entry-point-ref="casEntryPoint" use-expressions="true" auto-config="true">
+		<!-- For Spring Security 4.x, we need to disable csrf, otherwise AJAX requests get 403:-->
+		<csrf disabled="true"/>
 		<intercept-url access="permitAll" pattern="/" /><!-- To permit "/" allows the use of web.xml's <welcome-file> -->
 		<intercept-url access="permitAll" pattern="/home" />
 		<intercept-url access="permitAll" pattern="/login" />
@@ -45,7 +47,8 @@
         <logout logout-url="/logout" logout-success-url="/home"/>
         <session-management invalid-session-url="/timeout">  
             <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />  
-        </session-management> 
+        </session-management>
+		<csrf />
     </http>
 
     <!-- Configure Authentication mechanism -->

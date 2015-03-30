@@ -19,7 +19,9 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- HTTP security configurations -->
-	<http use-expressions="true" auto-config='true'>
+	<http use-expressions="true" auto-config='true' disable-url-rewriting="false">
+		<!-- For Spring Security 4.x, we need to disable csrf, otherwise AJAX requests get 403:-->
+		<csrf disabled="true"/>
 		<intercept-url access="permitAll" pattern="/" /><!-- To permit "/" allows the use of web.xml's <welcome-file> -->
 		<intercept-url access="permitAll" pattern="/home" />
 		<intercept-url access="permitAll" pattern="/login" />
@@ -31,8 +33,11 @@
 		<intercept-url access="isAuthenticated()" pattern="/**" />
 		<logout logout-url="/logout" logout-success-url='/home' />
 		<form-login login-page='/login'
+			username-parameter="j_username"
+			password-parameter="j_password"
+			login-processing-url="/j_spring_security_check"
 			authentication-failure-url="/login?auth=fail"
-			default-target-url="/home" login-processing-url="/j_spring_security_check" />
+			default-target-url="/home"  />
 	</http>
 
 	<!-- Configure Authentication mechanism -->
