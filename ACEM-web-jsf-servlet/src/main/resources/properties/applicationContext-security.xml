@@ -8,10 +8,10 @@
                            http://www.springframework.org/schema/security/spring-security.xsd">
 
 <!-- Import du fichier Spring pour une authentification manuelle -->	
+<!-- 
 	<import resource="security/applicationContext-security-manual.xml" />
+ -->
 
 <!-- Import du fichier Spring pour une authentification cas -->	
-<!-- 
 	<import resource="security/applicationContext-security-cas.xml" />
- -->
 </beans>
