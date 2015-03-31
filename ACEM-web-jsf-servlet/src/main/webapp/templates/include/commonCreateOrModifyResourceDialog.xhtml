@@ -78,7 +78,7 @@
 			value="#{associateBean.objectEditedResource.organisationPossessingResourceViewBean}"
 			converter="OrganisationConverter">
 			<f:selectItem
-				itemLabel="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_OWNER_ORGANISATION']}"
+				itemLabel="#{msg['MY_TOOLS.EDIT_RESOURCE_MODAL_WINDOW.SELECT_OWNER_ORGANISATION']}"
 				itemValue="" itemDisabled="true" noSelectionOption="true" />
 			<f:selectItems
 				value="#{associateBean.allOrganisationViewBeans}"
@@ -97,7 +97,7 @@
 			value="#{associateBean.objectEditedResource.organisationSupportingResourceViewBean}"
 			converter="OrganisationConverter">
 			<f:selectItem
-				itemLabel="#{msg['MY_TOOLS.MODIFY_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_ORGANISATION']}"
+				itemLabel="#{msg['MY_TOOLS.EDIT_RESOURCE_MODAL_WINDOW.SELECT_SUPPORT_ORGANISATION']}"
 				itemValue="" itemDisabled="true" noSelectionOption="true" />
 			<f:selectItems
 				value="#{associateBean.allOrganisationViewBeans}"
@@ -105,6 +105,23 @@
 				itemLabel="#{organisationViewBean.name}"
 				itemValue="#{organisationViewBean}" />
 		</p:selectOneMenu>
+
+		<h3 class="section-title">
+			<p:outputLabel for="accessOrganisations"
+				value="#{msg['RESOURCE.ORGANISATIONS_HAVING_ACCESS_TO_RESOURCE_LABEL']}" />
+		</h3>
+		<p:dataTable id="accessOrganisations"
+			value="#{associateBean.objectEditedResource.organisationViewingResourceViewBeans}"
+			emptyMessage="#{msg['APPLICATION.MESSAGE.NO_RECORD']}"
+			var="organisationViewBean" styleClass="dataTableUseModesForResource">
+			<p:column
+				headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATIONS_HAVING_ACCESS_TO_RESOURCE']}">
+				<h:outputText value="#{organisationViewBean.name}" />
+			</p:column>
+		</p:dataTable>
+		<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+			icon="ui-icon-cart" oncomplete="PF('dialogAssociateOrganisationsHavingAccessToResource').show()"
+			process="@this" />
 
 		<h3 class="section-title">
 			<p:outputLabel for="useModes"
@@ -119,6 +136,9 @@
 				<h:outputText value="#{useMode.name}" />
 			</p:column>
 		</p:dataTable>
+		<p:commandButton title="#{msg['APPLICATION.BUTTON.SELECT']}"
+			icon="ui-icon-cart" oncomplete="PF('dialogUploadOneImage').show()"
+			process="@this" />
 
 		<p:commandButton styleClass="dialogValidationButton"
 			value="#{msg['APPLICATION.BUTTON.SAVE']}"

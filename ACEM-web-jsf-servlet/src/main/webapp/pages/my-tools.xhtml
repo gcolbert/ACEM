@@ -292,7 +292,7 @@
 								value="#{toolViewBean.iconFileName}" />
 						</p:graphicImage>
 					</p:column>
-					<p:column
+					<p:column rendered="#{associateBean.currentUserViewBean.administrator}"
 						headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.OWNER_ORGANISATION_NAME']}">
 						<h:outputText
 							value="#{toolViewBean.organisationPossessingResourceViewBean.name}" />
@@ -312,8 +312,11 @@
 								for="goToSupportServiceBtn" />
 						</h:link>
 					</p:column>
-					<p:column
+					<p:column rendered="#{associateBean.currentUserViewBean.administrator}"
 						headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.ORGANISATIONS_HAVING_ACCESS_TO_RESOURCE']}">
+						<ui:repeat value="#{toolViewBean.organisationViewingResourceViewBeans}" var="organisationViewBean">
+							<li>#{organisationViewBean.name}</li>
+						</ui:repeat>
 					</p:column>
 					<p:column
 						headerText="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.USE_MODES']}">
@@ -333,7 +336,7 @@
 							<p:menuitem value="#{msg['RESOURCE_TYPE_SOFTWARE']}"
 								process="@this"
 								actionListener="#{associateBean.prepareResourceCreation(softwareViewBean)}"
-								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton"
+								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton :associateOrganisationsHavingAccessToResourceForm:idDialogAssociateOrganisations"
 								oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
@@ -342,7 +345,7 @@
 								value="#{msg['RESOURCE_TYPE_DOCUMENTATION']}"
 								process="@this"
 								actionListener="#{associateBean.prepareResourceCreation(documentationViewBean)}"
-								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton"
+								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton :associateOrganisationsHavingAccessToResourceForm:idDialogAssociateOrganisations"
 								oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
@@ -350,7 +353,7 @@
 							<p:menuitem value="#{msg['RESOURCE_TYPE_EQUIPMENT']}"
 								process="@this"
 								actionListener="#{associateBean.prepareResourceCreation(equipmentViewBean)}"
-								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton"
+								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton :associateOrganisationsHavingAccessToResourceForm:idDialogAssociateOrganisations"
 								oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
@@ -359,7 +362,7 @@
 								value="#{msg['RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE']}"
 								process="@this"
 								actionListener="#{associateBean.prepareResourceCreation(pedagogicalAndDocumentaryResourceViewBean)}"
-								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton"
+								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton :associateOrganisationsHavingAccessToResourceForm:idDialogAssociateOrganisations"
 								oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
@@ -367,7 +370,7 @@
 							<p:menuitem value="#{msg['RESOURCE_TYPE_PROFESSIONAL_TRAINING']}"
 								process="@this"
 								actionListener="#{associateBean.prepareResourceCreation(professionalTrainingViewBean)}"
-								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton"
+								update=":createResourceForm:idDialogCreateOrModifyResource toolsDataTable idModifyToolButton idDeleteToolButton :associateOrganisationsHavingAccessToResourceForm:idDialogAssociateOrganisations"
 								oncomplete="PF('dialogCreateResource').show()">
 								<p:resetInput
 									target=":createResourceForm:idDialogCreateOrModifyResource" />
@@ -380,7 +383,7 @@
 						icon="ui-icon-pencil"
 						process="@this"
 						actionListener="#{associateBean.prepareResourceModification(associateBean.selectedResourceViewBean)}"
- 						update=":modifyResourceForm:idDialogCreateOrModifyResource"
+ 						update=":modifyResourceForm:idDialogCreateOrModifyResource :associateOrganisationsHavingAccessToResourceForm:idDialogAssociateOrganisations"
 						oncomplete="PF('dialogModifyResource').show()">
 						<p:resetInput target=":modifyResourceForm:idDialogCreateOrModifyResource" />
 					</p:commandButton>
@@ -515,6 +518,17 @@
 		<h:form id="uploadImageForm" enctype="multipart/form-data">
 			<ui:include src="/templates/include/commonUploadOneImageDialog.xhtml">
 				<ui:param name="associateBean" value="#{associateBean}" />
+			</ui:include>
+		</h:form>
+
+		<h:form id="associateOrganisationsHavingAccessToResourceForm">
+			<ui:include src="/templates/include/commonAssociateOrganisationsDialog.xhtml">
+				<ui:param name="associateBean" value="#{associateBean}" />
+				<ui:param name="widgetName" value="dialogAssociateOrganisationsHavingAccessToResource"/>
+				<ui:param name="dialogHeader" value="#{msg['MY_TOOLS.EDIT_RESOURCE_MODAL_WINDOW.SELECT_ORGANISATIONS_HAVING_ACCESS_TO_RESOURCE']}"/>
+				<ui:param name="sourceCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.AVAILABLE']}"/>
+				<ui:param name="targetCaption" value="#{msg['ADMINISTRATION.ORGANISATIONS.ASSOCIATE_TEACHING_DEPARTMENT_MODAL_WINDOW.PICKLIST_HEADER.ASSOCIATED']}"/>
+				<ui:param name="componentToUpdate" value=":createResourceForm:accessOrganisations :modifyResourceForm:accessOrganisations"/>
 			</ui:include>
 		</h:form>
 

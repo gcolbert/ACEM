@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import org.omnifaces.util.Ajax;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TransferEvent;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +43,13 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
@@ -64,16 +65,18 @@ import eu.ueb.acem.web.utils.PedagogicalAdviceTreeGenerator;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface;
 import eu.ueb.acem.web.viewbeans.EditableTreeBean;
+import eu.ueb.acem.web.viewbeans.PickListBean;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
+import eu.ueb.acem.web.viewbeans.jaune.DocumentationViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.EquipmentViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.PedagogicalAndDocumentaryResourceViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ProfessionalTrainingViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ResourceViewBean;
-import eu.ueb.acem.web.viewbeans.jaune.DocumentationViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.SoftwareViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.UseModeViewBean;
+import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
  * @author Grégoire Colbert
@@ -134,7 +137,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 	private ResourceViewBean selectedResourceViewBean;
 	
 	private ResourceViewBean objectEditedResource;
-	
+
+	/**
+	 * Picklist for choosing organisations having access to a resource
+	 */
+	@Inject
+	private PickListBean pickListBean;
+
 	/* ***********************************************************************/
 
 	/**
@@ -614,6 +623,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		else if (freshlyCreatedResourceViewBean instanceof ProfessionalTrainingViewBean) {
 			objectEditedResource = new ProfessionalTrainingViewBean();
 		}
+		preparePicklistOrganisationViewBeans();
 		setSelectedResourceViewBean(null);
 		temporaryFilePath = null;
 		commonUploadOneDialog.reset();
@@ -631,11 +641,12 @@ public class MyToolsController extends AbstractContextAwareController implements
 		// and we instanciate a new ResourceViewBean above it
 		objectEditedResource = createResourceViewBean(resource);
 
-		// We initialize objectEditedResource to 
+		// We initialize Organisations attached to objectEditedResource
 		objectEditedResource.setOrganisationPossessingResourceViewBean(resourceViewBean.getOrganisationPossessingResourceViewBean());
 		objectEditedResource.setOrganisationSupportingResourceViewBean(resourceViewBean.getOrganisationSupportingResourceViewBean());
 		objectEditedResource.setOrganisationViewingResourceViewBeans(resourceViewBean.getOrganisationViewingResourceViewBeans());
 
+		preparePicklistOrganisationViewBeans();
 		setSelectedResourceViewBean(resourceViewBean);
 		temporaryFilePath = null;
 		commonUploadOneDialog.reset();
@@ -668,18 +679,21 @@ public class MyToolsController extends AbstractContextAwareController implements
 				objectEditedResource.getName(),
 				objectEditedResource.getIconFileName());
 		if (resource != null) {
+			for (OrganisationViewBean organisationViewBean : objectEditedResource.getOrganisationViewingResourceViewBeans()) {
+				resource.getOrganisationsHavingAccessToResource().add(organisationViewBean.getDomainBean());
+			}
+			resource = resourcesService.updateResource(resource);
+
 			ResourceViewBean resourceViewBean = createResourceViewBean(resource);
-			Collections.sort(selectedToolCategoryViewBean.getResourceViewBeans());
-
-			resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId(),true)));
-			resourceViewBean.setOrganisationSupportingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId(),true)));
-
-			for (Organisation organisation : resourceViewBean.getDomainBean().getOrganisationsHavingAccessToResource()) {
-				resourceViewBean.getOrganisationViewingResourceViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(organisation.getId(),true)));
+			resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId(),false)));
+			resourceViewBean.setOrganisationSupportingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId(),false)));
+			for (Organisation organisation : resource.getOrganisationsHavingAccessToResource()) {
+				resourceViewBean.getOrganisationViewingResourceViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(organisation.getId(),false)));
 			}
 
 			selectedToolCategoryViewBean.getResourceViewBeans().add(resourceViewBean);
-			
+			Collections.sort(selectedToolCategoryViewBean.getResourceViewBeans());
+
 			MessageDisplayer.info(
 					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
 					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
@@ -703,15 +717,32 @@ public class MyToolsController extends AbstractContextAwareController implements
 				objectEditedResource.setIconFileName(iconFileName);
 			}
 
-			selectedToolCategoryViewBean.getResourceViewBeans().remove(selectedResourceViewBean);
-			selectedResourceViewBean.setDomainBean(resourcesService.updateResource(objectEditedResource.getDomainBean()));
-			selectedResourceViewBean.setOrganisationPossessingResourceViewBean(objectEditedResource.getOrganisationPossessingResourceViewBean());
-			selectedResourceViewBean.setOrganisationSupportingResourceViewBean(objectEditedResource.getOrganisationSupportingResourceViewBean());
-			selectedResourceViewBean.setOrganisationViewingResourceViewBeans(objectEditedResource.getOrganisationViewingResourceViewBeans());
-			selectedToolCategoryViewBean.getResourceViewBeans().add(selectedResourceViewBean);
-			MessageDisplayer.info(
-					msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
-					msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
+			Resource resource = resourcesService.updateResource(objectEditedResource.getDomainBean());
+			if (resource != null) {
+				resource.getOrganisationsHavingAccessToResource().clear();
+				for (OrganisationViewBean organisationViewBean : objectEditedResource.getOrganisationViewingResourceViewBeans()) {
+					resource.getOrganisationsHavingAccessToResource().add(organisationViewBean.getDomainBean());
+				}
+				resource = resourcesService.updateResource(resource);
+
+				ResourceViewBean resourceViewBean = createResourceViewBean(resource);
+				resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId(),false)));
+				resourceViewBean.setOrganisationSupportingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationSupportingResource().getId(),false)));
+				for (Organisation organisation : resource.getOrganisationsHavingAccessToResource()) {
+					resourceViewBean.getOrganisationViewingResourceViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(organisation.getId(),false)));
+				}
+				selectedResourceViewBean = resourceViewBean;
+				Collections.sort(selectedToolCategoryViewBean.getResourceViewBeans());
+
+				MessageDisplayer.info(
+						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
+						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
+			}
+			else {
+				MessageDisplayer.error(
+						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_FAILURE.TITLE", null, getCurrentUserLocale()),
+						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_FAILURE.DETAILS", null, getCurrentUserLocale()),logger);
+			}
 		}
 	}
 
@@ -734,6 +765,42 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	public void onToolRowSelect(SelectEvent event) {
 		setSelectedResourceViewBean((ResourceViewBean) event.getObject());
+	}
+
+	public PickListBean getPickListBean() {
+		return pickListBean;
+	}
+
+	public void preparePicklistOrganisationViewBeans() {
+		List<OrganisationViewBean> allOrganisationViewBeans = new ArrayList<OrganisationViewBean>();
+		for (Organisation organisation : organisationsService.retrieveAllOrganisations()) {
+			allOrganisationViewBeans.add(OrganisationViewBeanGenerator.getViewBean(organisation));
+		}
+		Collections.sort(allOrganisationViewBeans);
+		pickListBean.getPickListEntities().getSource().clear();
+		pickListBean.getPickListEntities().getSource().addAll(allOrganisationViewBeans);
+		pickListBean.getPickListEntities().getTarget().clear();
+		if (getObjectEditedResource().getDomainBean() != null) {
+			for (OrganisationViewBean organisationViewBean : allOrganisationViewBeans) {
+				if (getObjectEditedResource().getDomainBean().getOrganisationsHavingAccessToResource().contains(organisationViewBean.getDomainBean())) {
+					pickListBean.getPickListEntities().getSource().remove(organisationViewBean);
+					pickListBean.getPickListEntities().getTarget().add(organisationViewBean);
+				}
+			}
+		}
+	}
+
+	public void onTransfer(TransferEvent event) {
+		@SuppressWarnings("unchecked")
+		List<OrganisationViewBean> listOfMovedViewBeans = (List<OrganisationViewBean>) event.getItems();
+		for (OrganisationViewBean movedOrganisationViewBean : listOfMovedViewBeans) {
+			if (event.isAdd()) {
+				objectEditedResource.getOrganisationViewingResourceViewBeans().add(movedOrganisationViewBean);
+			}
+			else {
+				objectEditedResource.getOrganisationViewingResourceViewBeans().remove(movedOrganisationViewBean);
+			}
+		}
 	}
 
 	/*

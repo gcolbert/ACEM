@@ -11,6 +11,7 @@
 	<ui:param name="dialogHeader" value="#{dialogHeader}"/>
 	<ui:param name="sourceCaption" value="#{sourceCaption}"/>
 	<ui:param name="targetCaption" value="#{targetCaption}"/>
+	<ui:param name="componentToUpdate" value="#{componentToUpdate}"/>
 
 	<p:dialog id="idDialogAssociateOrganisations"
 		header="#{dialogHeader}"
@@ -32,7 +33,7 @@
 			<f:facet name="targetCaption">#{targetCaption}</f:facet>
 			<p:ajax event="transfer"
 				listener="#{associateBean.onTransfer}"
-				update="@this :contentForm:tabViewOrganisations :contentForm:messagesDisplayer"
+				update="@this #{componentToUpdate} :contentForm:messagesDisplayer"
 				process="@this" />
 		</p:pickList>
 		<p:commandButton styleClass="dialogValidationButton"

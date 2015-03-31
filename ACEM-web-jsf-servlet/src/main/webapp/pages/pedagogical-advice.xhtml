@@ -34,8 +34,7 @@
 				selectionMode="single" cache="false"
 				draggable="#{associateBean.currentUserViewBean.administrator}"
 				droppable="#{associateBean.currentUserViewBean.administrator}"
-				dragdropScope="demo"
-				update="contextMenuForNeeds">
+				dragdropScope="demo">
 				<p:ajax event="dragdrop"
 					listener="#{associateBean.onDragDrop}"
 					update="@this :contentForm:messagesDisplayer" />
