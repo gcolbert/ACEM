@@ -165,8 +165,6 @@ public class ResourceDAOTest extends TestCase {
 		assertEquals(new Long(1), new Long(softwareBis.getDocumentations().size()));
 
 		Documentation documentationBis = documentationDAO.retrieveById(documentation.getId(), true);
-		logger.info("documentation={}", documentation);
-		logger.info("documentationBis={}", documentationBis);
 		assertTrue(softwareBis.getDocumentations().contains(documentationBis));
 
 		softwareBis.getDocumentations().remove(documentationBis);
