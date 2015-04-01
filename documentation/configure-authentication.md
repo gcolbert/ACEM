@@ -32,9 +32,9 @@ Modifying the configuration to authenticate the users using the database require
 
 2) Edit ACEM-web-jsf-servlet/src/main/resources/properties/applicationContext-security.xml to be like:
 
-    &lt;import resource="security/applicationContext-security-manual.xml" /&gt;
+    <import resource="security/applicationContext-security-manual.xml" />
 
-    &lt;!-- 
-    &lt;import resource="security/applicationContext-security-cas.xml" /&gt;
-    --&gt;
+    <!-- 
+    <import resource="security/applicationContext-security-cas.xml" />
+    -->
 
