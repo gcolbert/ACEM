@@ -24,16 +24,17 @@ Switching from CAS to Manual
 
 Modifying the configuration to authenticate the users using the database requires the following steps:
 
-1. Edit ACEM-web-jsf-servlet/src/main/resources/properties/config.properties like this:
+1) Edit ACEM-web-jsf-servlet/src/main/resources/properties/config.properties like this:
 
     security.mode=manual
 
     authentication.provider=daoAuthProvider
 
-2. Edit ACEM-web-jsf-servlet/src/main/resources/properties/applicationContext-security.xml to be like:
+2) Edit ACEM-web-jsf-servlet/src/main/resources/properties/applicationContext-security.xml to be like:
 
     &lt;import resource="security/applicationContext-security-manual.xml" /&gt;
 
     &lt;!-- 
-	 &lt;import resource="security/applicationContext-security-cas.xml" /&gt;
+    &lt;import resource="security/applicationContext-security-cas.xml" /&gt;
     --&gt;
+
