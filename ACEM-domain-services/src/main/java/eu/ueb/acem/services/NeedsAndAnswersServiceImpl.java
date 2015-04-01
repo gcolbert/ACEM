@@ -212,8 +212,8 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 				parents = answer.getNeeds();
 			}
 			// We remove the parents of the moved node
-			if (parents != null) {
-				logger.debug("The moved node has parents that we should unlink");
+			if (! parents.isEmpty()) {
+				logger.debug("The moved node has parents that we should unlink: {}", parents);
 				Iterator<PedagogicalNeed> iterator = parents.iterator();
 				while (iterator.hasNext()) {
 					iterator.next();
@@ -221,7 +221,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 					logger.info("parent is unlinked");
 				}
 			} else {
-				logger.debug("The moved node has no parents (!?)");
+				logger.debug("The moved node has no parents (must be a child of the root).");
 			}
 			// We have removed the parents of the moved node
 			// Now we have to connect its new parent
@@ -241,7 +241,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 				newParent = needDAO.update(newParent);
 			}
 			else {
-				logger.debug("The new parent is not a PedagogicalNeed (!?)");
+				logger.debug("The new parent is not a PedagogicalNeed (must be the root).");
 			}
 			// We have to update the need or the answer
 			if (need != null) {
