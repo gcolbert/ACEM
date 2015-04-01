@@ -72,15 +72,4 @@ public class MainMenuController implements Serializable {
 		return selectedComponent;
 	}
 
-	public String getLoginUrl() {
-		String outcome = "";
-		if ("cas".equals(securityMode)) {
-			outcome = "/login/cas";
-		}
-		else {
-			outcome = "/login";
-		}
-		return outcome;
-	}
-
 }

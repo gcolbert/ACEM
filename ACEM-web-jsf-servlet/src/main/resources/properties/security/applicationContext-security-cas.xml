@@ -24,7 +24,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:util="http://www.springframework.org/schema/util"
-    xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+    xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
@@ -43,6 +43,7 @@
         <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
         <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
         <custom-filter ref="casFilter" position="CAS_FILTER" />
+        <form-login login-page="/login-page-should-not-be-generated-when-using-cas" />
         <logout logout-url="/logout" logout-success-url="/home"/>
     </http>
 
@@ -64,12 +65,12 @@
 
     <b:bean id="serviceProperties"
         class="org.springframework.security.cas.ServiceProperties"
-        p:service="${cas.service.host}/login"
+        p:service="${cas.service.host}/login/cas"
         p:authenticateAllArtifacts="true"/>
     <b:bean id="casEntryPoint"
         class="org.springframework.security.cas.web.CasAuthenticationEntryPoint"
         p:serviceProperties-ref="serviceProperties"
-        p:loginUrl="${cas.server.host}/login/cas" />
+        p:loginUrl="${cas.server.host}/login" />
     <b:bean id="casFilter"
         class="org.springframework.security.cas.web.CasAuthenticationFilter"
         p:authenticationManager-ref="authenticationManager"

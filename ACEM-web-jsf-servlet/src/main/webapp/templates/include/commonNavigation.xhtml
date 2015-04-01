@@ -44,7 +44,7 @@
 				styleClass="#{associateBean.getMenuitemStyleClass('users')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		</p:submenu>
-		<p:menuitem value="#{msg['MENU.LOGIN']}" url="#{associateBean.loginUrl}"
+		<p:menuitem value="#{msg['MENU.LOGIN']}" url="/login"
 			rendered="#{! request.isUserInRole('ROLE_USER')}"
 			styleClass="#{associateBean.getMenuitemStyleClass('login')}"
 			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
