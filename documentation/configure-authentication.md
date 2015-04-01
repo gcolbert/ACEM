@@ -1,10 +1,17 @@
 How to configure authentication
 ===
 
-ACEM can use the following authentications schemes:
+ACEM can use the following profiles to configure authentication scheme :
 
-* CAS (the default)
-* Manual (the login/passwords are retrieved from the ACEM database)
+* auth-manual : where the login/passwords are retrieved from the ACEM database (the default)
+* auth-cas : where the authentication is done by a CAS server
+
+Switching from Manual to CAS
+--
+
+You just have to pass the system property "spring.profiles.active" the value "auth-cas".
+Deleting the system property, or not specifying it, will use the default value, which
+is defined in web.xml.
 
 Configuring CAS
 --
@@ -18,23 +25,4 @@ where "http://www.my-domain.edu/ACEM" is the address that the users can use to r
 You need to specify your CAS server with, for example :
 
     cas.server.host=http://cas.my-domain.edu
-
-Switching from CAS to Manual
---
-
-Modifying the configuration to authenticate the users using the database requires the following steps:
-
-1) Edit ACEM-web-jsf-servlet/src/main/resources/properties/config.properties like this:
-
-    security.mode=manual
-
-    authentication.provider=daoAuthProvider
-
-2) Edit ACEM-web-jsf-servlet/src/main/resources/properties/applicationContext-security.xml to be like:
-
-    <import resource="security/applicationContext-security-manual.xml" />
-
-    <!-- 
-    <import resource="security/applicationContext-security-cas.xml" />
-    -->
 

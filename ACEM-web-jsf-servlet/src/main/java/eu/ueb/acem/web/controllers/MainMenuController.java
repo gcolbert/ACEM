@@ -24,7 +24,6 @@ import javax.faces.context.FacesContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -41,9 +40,6 @@ public class MainMenuController implements Serializable {
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -7218568142478270516L;
-
-	@Value("${security.mode}")
-	private String securityMode;
 
 	/**
 	 * For logging.

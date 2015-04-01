@@ -16,9 +16,7 @@
 	</context-param>
 	<context-param>
 		<param-name>javax.faces.CONFIG_FILES</param-name>
-		<param-value>
-			/WEB-INF/navigation-rules.xml
-		</param-value>
+		<param-value>/WEB-INF/navigation-rules.xml</param-value>
 	</context-param>
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
@@ -43,6 +41,10 @@
 	<context-param>
 		<param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
 		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>spring.profiles.default</param-name>
+		<param-value>auth-manual</param-value>
 	</context-param>
 
 	<servlet>

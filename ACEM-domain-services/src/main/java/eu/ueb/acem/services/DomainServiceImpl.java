@@ -19,6 +19,8 @@
 package eu.ueb.acem.services;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,6 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +45,7 @@ import eu.ueb.acem.services.auth.LdapUserService;
  * @since 2013-11-25
  */
 @Service("domainService")
-public class DomainServiceImpl implements DomainService, Serializable, InitializingBean {
+public class DomainServiceImpl implements DomainService, Serializable, InitializingBean, EnvironmentAware {
 
 	/**
 	 * For Serialize.
@@ -53,7 +57,7 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 	 */
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
-	
+
 	@Inject
 	private PersonDAO personDAO;
 
@@ -65,6 +69,8 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 	 */
 	@Inject
 	private LdapUserService ldapUserService;
+	
+	private Environment environment;
 
 	/**
 	 * The path for the tmp directory
@@ -79,19 +85,38 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 	private String imagesPath;
 
 	/**
-	 * The authentication used ("manual" or "cas")
+	 * Auto create users?
 	 */
-	@Value("${security.mode}")
-	private String securityMode;
+	private Boolean autoCreateUsers;
 
 	/**
 	 * Constructor.
 	 */
 	public DomainServiceImpl() {
+		autoCreateUsers = false;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		List<String> activeProfiles = Arrays.asList(environment.getActiveProfiles());
+		List<String> defaultProfiles = Arrays.asList(environment.getDefaultProfiles());
+		if (activeProfiles.contains("auth-manual")) {
+			autoCreateUsers = false;
+		}
+		else if (activeProfiles.contains("auth-cas")) {
+			autoCreateUsers = true;
+		}
+		else {
+			if (defaultProfiles.contains("auth-manual")) {
+				autoCreateUsers = false;
+			}
+			else if (defaultProfiles.contains("auth-cas")) {
+				autoCreateUsers = true;
+			}
+			else {
+				autoCreateUsers = false;
+			}
+		}
 	}
 
 	@Override
@@ -100,9 +125,10 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 		if (user==null) {
 			user = personDAO.retrieveByLogin(login,true);
 		}
-		// If the user is missing from the database and the authentication mode is CAS
-		// then we want to automatically create the user in the database
-		if ((user == null) && "cas".equals(securityMode)) {
+		// If the user is missing from the database but the authentication mode
+		// guarantees a legit authentication, then we want to automatically
+		// create a user account.
+		if ((user == null) && autoCreateUsers) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			user = teacherDAO.create(new TeacherNode(login, login, passwordEncoder.encode("pass")));
 			user.setLogin(login);
@@ -136,6 +162,11 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 	@Override
 	public String getImagesDirectory() {
 		return this.imagesPath;
+	}
+
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
 	}
 	
 }

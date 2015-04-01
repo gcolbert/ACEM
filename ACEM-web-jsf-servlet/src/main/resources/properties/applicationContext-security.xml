@@ -7,11 +7,14 @@
                            http://www.springframework.org/schema/security
                            http://www.springframework.org/schema/security/spring-security.xsd">
 
-<!-- Import du fichier Spring pour une authentification manuelle -->	
-<!-- 
-	<import resource="security/applicationContext-security-manual.xml" />
- -->
+	<!-- Spring Security configuration for database authentication -->	
+	<beans profile="auth-manual">
+		<import resource="security/applicationContext-security-manual.xml" />
+	</beans>
 
-<!-- Import du fichier Spring pour une authentification cas -->	
-	<import resource="security/applicationContext-security-cas.xml" />
+	<!-- Spring Security configuration for CAS authentication -->
+	<beans profile="auth-cas">
+		<import resource="security/applicationContext-security-cas.xml" />
+	</beans>
+
 </beans>

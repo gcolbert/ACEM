@@ -42,12 +42,12 @@
 
 	<!-- Configure Authentication mechanism -->
 	<authentication-manager alias="authenticationManager">
-		<authentication-provider ref="${authentication.provider}" />
+		<authentication-provider ref="authProvider" />
 	</authentication-manager>
 
 	<b:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-	<b:bean id="daoAuthProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+	<b:bean id="authProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
 		<b:property name="userDetailsService">
 			<b:bean class="eu.ueb.acem.services.auth.DaoUserDetailsService">
 				<b:property name="domainService" ref="domainService" />

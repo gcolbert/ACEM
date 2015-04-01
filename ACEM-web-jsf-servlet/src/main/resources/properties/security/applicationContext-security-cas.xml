@@ -49,7 +49,7 @@
 
     <!-- Configure Authentication mechanism -->
 	<authentication-manager alias="authenticationManager">
-	  <authentication-provider ref="${authentication.provider}"/>
+	  <authentication-provider ref="authProvider"/>
 	</authentication-manager>
 
     <!-- This filter handles a Single Logout Request from the CAS Server -->
@@ -97,9 +97,9 @@
      -->
     <b:bean id="pgtStorage" class="org.jasig.cas.client.proxy.ProxyGrantingTicketStorageImpl"/>
 
-    <b:bean id="casAuthProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider"
+    <b:bean id="authProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider"
         p:serviceProperties-ref="serviceProperties"
-        p:key="casAuthProviderKey">
+        p:key="authProviderKey">
         <b:property name="authenticationUserDetailsService">
             <b:bean class="eu.ueb.acem.services.auth.DatabaseUserDetailsService">
         		<b:property name="domainService" ref="domainService"/>
