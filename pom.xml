@@ -16,13 +16,13 @@
 		<javax.inject-version>1</javax.inject-version>
 		<junit-version>4.12</junit-version>
 		<!-- TODO 1 Pick the version of jetty you want. -->
-		<jetty.version>9.2.9.v20150224</jetty.version>
-		<log4j.version>2.1</log4j.version>
+		<jetty.version>9.3.0.M2</jetty.version>
+		<log4j.version>2.2</log4j.version>
 		<maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
 		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
 		<maven-jar-plugin.version>2.5</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
-		<slf4j.version>1.7.10</slf4j.version>
+		<slf4j.version>1.7.12</slf4j.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<spring-security.version>4.0.0.RELEASE</spring-security.version>
