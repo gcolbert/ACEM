@@ -57,7 +57,7 @@ import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
  * 
  */
 @Controller("pedagogicalAdviceController")
-@Scope("session")
+@Scope("view")
 public class PedagogicalAdviceController extends AbstractContextAwareController implements PageController {
 
 	/**
