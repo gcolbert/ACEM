@@ -14,6 +14,7 @@ Modifying the default configuration to authenticate the users using the data acc
 1. Edit ACEM-web-jsf-servlet/src/main/resources/properties/config.properties like this:
 
     security.mode=manual
+
     authentication.provider=daoAuthProvider
 2. Edit ACEM-web-jsf-servlet/src/main/resources/properties/applicationContext-security.xml to be like:
 
