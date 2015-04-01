@@ -29,11 +29,11 @@ Modifying the configuration to authenticate the users using the database require
     security.mode=manual
 
     authentication.provider=daoAuthProvider
-    
+
 2. Edit ACEM-web-jsf-servlet/src/main/resources/properties/applicationContext-security.xml to be like:
 
-    <import resource="security/applicationContext-security-manual.xml" />
+    &lt;import resource="security/applicationContext-security-manual.xml" /&gt;
 
-    <!-- 
-	 <import resource="security/applicationContext-security-cas.xml" />
-    -->
+    &lt;!-- 
+	 &lt;import resource="security/applicationContext-security-cas.xml" /&gt;
+    --&gt;
