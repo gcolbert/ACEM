@@ -21,6 +21,7 @@ package eu.ueb.acem.web.controllers;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
@@ -44,8 +45,6 @@ public class SessionController extends AbstractDomainAwareBean {
 	/*
 	 * ****************** PROPERTIES ********************
 	 */
-	private Authentication auth;
-
 	private PersonViewBean currentUserViewBean;
 
 	/*
@@ -68,10 +67,14 @@ public class SessionController extends AbstractDomainAwareBean {
 	 */
 	@Override
 	public Person getCurrentUser() {
-		if (this.auth == null) {
-			this.auth = SecurityContextHolder.getContext().getAuthentication();
+		Person currentUser = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean authorized = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
+				|| authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
+		if (authorized) {
+			currentUser = getDomainService().getUser(authentication.getName());
 		}
-		return getDomainService().getUser(auth.getName());
+		return currentUser;
 	}
 
 	public PersonViewBean getCurrentUserViewBean() {
@@ -80,7 +83,7 @@ public class SessionController extends AbstractDomainAwareBean {
 			if (user instanceof Teacher) {
 				currentUserViewBean = new TeacherViewBean((Teacher) user);
 			}
-			else {
+			else if (user instanceof Person) {
 				currentUserViewBean = new PersonViewBean(user);
 			}
 		}

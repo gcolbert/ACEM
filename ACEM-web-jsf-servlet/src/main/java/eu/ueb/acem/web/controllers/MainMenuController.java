@@ -18,8 +18,6 @@
  */
 package eu.ueb.acem.web.controllers;
 
-import java.io.Serializable;
-
 import javax.faces.context.FacesContext;
 
 import org.slf4j.Logger;
@@ -34,7 +32,7 @@ import org.springframework.stereotype.Controller;
  */
 @Controller("mainMenuController")
 @Scope("session")
-public class MainMenuController implements Serializable {
+public class MainMenuController extends AbstractContextAwareController {
 
 	/**
 	 * For serialization.

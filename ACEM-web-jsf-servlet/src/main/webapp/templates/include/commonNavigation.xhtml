@@ -36,13 +36,15 @@
 				styleClass="#{associateBean.getMenuitemStyleClass('my-tools')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		</p:submenu>
-		<p:submenu label="#{msg['MENU.ADMIN']}" outcome="administration">
-			<p:menuitem value="#{msg['MENU.ADMIN_ORGANISATIONS']}" outcome="adminOrganisations"
+		<p:submenu label="#{msg['MENU.ADMIN']}" outcome="administration"
+			rendered="#{(associateBean.currentUserViewBean != null) and associateBean.currentUserViewBean.administrator}">
+			<p:menuitem value="#{msg['MENU.ADMIN_ORGANISATIONS']}"
+				outcome="adminOrganisations"
 				styleClass="#{associateBean.getMenuitemStyleClass('organisations')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
 			<p:menuitem value="#{msg['MENU.ADMIN_USERS']}" outcome="adminUsers"
 				styleClass="#{associateBean.getMenuitemStyleClass('users')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
 		</p:submenu>
 		<p:menuitem value="#{msg['MENU.LOGIN']}" url="/login"
 			rendered="#{! request.isUserInRole('ROLE_USER')}"
