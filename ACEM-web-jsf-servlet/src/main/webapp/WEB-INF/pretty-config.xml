@@ -78,24 +78,4 @@
 		<view-id value="/pages/adminUsers.xhtml" />
 	</url-mapping>
 
-	<url-mapping id="timeout">
-		<pattern value="/timeout" />
-		<view-id value="/pages/timeout.xhtml" />
-	</url-mapping>
-
-	<url-mapping id="logout">
-		<pattern value="/logout" />
-		<view-id value="/pages/logout.xhtml" />
-	</url-mapping>
-
-	<url-mapping id="exception">
-		<pattern value="/exception" />
-		<view-id value="/pages/exceptions/exception.xhtml" />
-	</url-mapping>
-
-	<url-mapping id="page-not-found">
-		<pattern value="/page-not-found" />
-		<view-id value="/pages/page-not-found.xhtml" />
-	</url-mapping>
-
 </pretty-config>

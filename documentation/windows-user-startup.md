@@ -21,7 +21,7 @@ The environment variables JAVA_HOME and JRE_HOME must be set for Tomcat 7 to run
 3. Click on the left column on "Change my environment variables";
 4. Select "New";
 5. Set a variable named "JAVA_HOME" to "C:\Program Files\Java\jdk1.8.0_40" (or the exact version you have);
-6. Set a variable named "JRE_HOME" to "C:\Program Files\Java\jre1.8.0.40" (or the exact version you have).
+6. Set a variable named "JRE_HOME" to "C:\Program Files\Java\jre1.8.0_40" (or the exact version you have).
 7. Click OK.
 
 Install Tomcat 7

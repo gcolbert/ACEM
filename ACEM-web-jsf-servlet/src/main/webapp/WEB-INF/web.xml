@@ -111,26 +111,6 @@
 		<welcome-file>/home</welcome-file>
 	</welcome-file-list>
 	<error-page>
-		<error-code>404</error-code>
-		<location>/pages/page-not-found.xhtml</location>
-	</error-page>
-	<error-page>
-		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
-		<location>/pages/page-not-found.xhtml</location>
-	</error-page>
-	<error-page>
-		<error-code>403</error-code>
-		<location>/pages/403.xhtml</location>
-	</error-page>
-	<error-page>
-		<error-code>500</error-code>
-		<location>/pages/exceptions/exception.xhtml</location>
-	</error-page>
-	<error-page>
-		<exception-type>java.lang.Throwable</exception-type>
-		<location>/pages/exceptions/exception.xhtml</location>
-	</error-page>
-	<error-page>
 		<location>/pages/exceptions/exception.xhtml</location>
 	</error-page>
 

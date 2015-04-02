@@ -24,20 +24,12 @@
 		<csrf disabled="true"/>
 		<intercept-url access="permitAll" pattern="/" /><!-- To permit "/" allows the use of web.xml's <welcome-file> -->
 		<intercept-url access="permitAll" pattern="/home" />
-		<intercept-url access="permitAll" pattern="/login" />
 		<intercept-url access="permitAll" pattern="/pages/exceptions/**" />
 		<intercept-url access="permitAll" pattern="/javax.faces.resource/**" />
 		<intercept-url access="permitAll" pattern="/resources/**" />
-        <intercept-url access="permitAll" pattern="/j_spring_security_check"/>
 		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration/**" />
 		<intercept-url access="isAuthenticated()" pattern="/**" />
 		<logout logout-url="/logout" logout-success-url='/home' />
-		<form-login login-page='/login'
-			username-parameter="j_username"
-			password-parameter="j_password"
-			login-processing-url="/j_spring_security_check"
-			authentication-failure-url="/login?auth=fail"
-			default-target-url="/home"  />
 	</http>
 
 	<!-- Configure Authentication mechanism -->
