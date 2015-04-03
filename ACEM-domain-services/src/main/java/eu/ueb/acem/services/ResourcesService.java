@@ -60,6 +60,8 @@ public interface ResourcesService extends Serializable {
 
 	Collection<ResourceCategory> retrieveCategoriesForResourceType(String resourceType);
 
+	Collection<ResourceCategory> retrieveCategoriesForResourceTypeAndPerson(String resourceType, Person person);
+
 	Collection<ResourceCategory> retrieveAllCategories();
 
 	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(ResourceCategory category);

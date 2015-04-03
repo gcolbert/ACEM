@@ -85,6 +85,23 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 		return collection;
 	}
 
+	/**
+	 * Returns the categories containing at least one "Equipment" entity that
+	 * the given person can see.
+	 */
+	@Override
+	public Collection<ResourceCategory> retrieveCategoriesForPerson(Person person) {
+		Iterable<ResourceCategoryNode> endResults = repository.getCategoriesForPerson(person.getId());
+		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
+		if (endResults.iterator() != null) {
+			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
+	}
+
 	@Override
 	public Collection<Equipment> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<EquipmentNode> endResults = repository.getEntitiesWithCategory(category.getId());

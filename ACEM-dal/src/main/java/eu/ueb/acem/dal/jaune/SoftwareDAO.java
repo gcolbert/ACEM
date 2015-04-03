@@ -83,6 +83,25 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 		return collection;
 	}
 
+	/**
+	 * Returns the categories containing at least one "Software" entity.
+	 */
+	@Override
+	public Collection<ResourceCategory> retrieveCategoriesForPerson(Person person) {
+		Iterable<ResourceCategoryNode> endResults = repository.getCategoriesForPerson(person.getId());
+		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
+		if (endResults.iterator() != null) {
+			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
+	}
+
+	/**
+	 * Returns the categories containing at least one "Software" entity that the given person can see.
+	 */
 	@Override
 	public Collection<Software> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<SoftwareNode> endResults = repository.getEntitiesWithCategory(category.getId());

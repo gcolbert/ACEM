@@ -33,6 +33,8 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 public interface ResourceDAO<ID extends Serializable, E extends Resource> extends DAO<ID, E> {
 
 	Collection<ResourceCategory> retrieveCategories();
+	
+	Collection<ResourceCategory> retrieveCategoriesForPerson(Person person);
 
 	Collection<E> retrieveAllWithCategory(ResourceCategory category);
 

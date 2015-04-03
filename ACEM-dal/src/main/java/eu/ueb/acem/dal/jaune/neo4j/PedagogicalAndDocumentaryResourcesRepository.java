@@ -36,20 +36,23 @@ public interface PedagogicalAndDocumentaryResourcesRepository extends
 		GenericRepository<PedagogicalAndDocumentaryResourceNode> {
 
 	@Override
-	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) WHERE id(n)=({id}) RETURN count(n)")
+	@Query(value = "MATCH (r:PedagogicalAndDocumentaryResource) WHERE id(r)=({id}) RETURN count(r)")
 	Long count(@Param("id") Long id);
 
 	@Override
-	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource) WHERE n.name=({name}) RETURN n")
+	@Query(value = "MATCH (r:PedagogicalAndDocumentaryResource) WHERE r.name=({name}) RETURN r")
 	Iterable<PedagogicalAndDocumentaryResourceNode> findByName(@Param("name") String name);
 
-	@Query(value = "MATCH (:PedagogicalAndDocumentaryResource)<-[:categoryContains]-(m:ResourceCategory) RETURN m")
+	@Query(value = "MATCH (:PedagogicalAndDocumentaryResource)<-[:categoryContains]-(c:ResourceCategory) RETURN c")
 	Set<ResourceCategoryNode> getCategories();
 
-	@Query(value = "MATCH (n:PedagogicalAndDocumentaryResource)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(:PedagogicalAndDocumentaryResource)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) RETURN c")
+	Set<ResourceCategoryNode> getCategoriesForPerson(@Param("personId") Long personId);
+
+	@Query(value = "MATCH (r:PedagogicalAndDocumentaryResource)<-[:categoryContains]-(c:ResourceCategory) WHERE id(c)=({categoryId}) RETURN r")
 	Set<PedagogicalAndDocumentaryResourceNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 
-	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:PedagogicalAndDocumentaryResource)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:PedagogicalAndDocumentaryResource)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
 	Set<PedagogicalAndDocumentaryResourceNode> getResourcesInCategoryForPerson(@Param("categoryId") Long categoryId, @Param("personId") Long personId);
 
 }

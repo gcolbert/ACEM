@@ -158,6 +158,36 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	}
 
 	@Override
+	public Collection<ResourceCategory> retrieveCategoriesForResourceTypeAndPerson(String resourceType, Person person) {
+		Set<ResourceCategory> categories = new HashSet<ResourceCategory>();
+		ResourceDAO<Long, ? extends Resource> resourceDAO = null;
+		switch (resourceType) {
+		case RESOURCE_TYPE_SOFTWARE:
+			resourceDAO = softwareDAO;
+			break;
+		case RESOURCE_TYPE_DOCUMENTATION:
+			resourceDAO = documentationDAO;
+			break;
+		case RESOURCE_TYPE_EQUIPMENT:
+			resourceDAO = equipmentDAO;
+			break;
+		case RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE:
+			resourceDAO = pedagogicalAndDocumentaryResourcesDAO;
+			break;
+		case RESOURCE_TYPE_PROFESSIONAL_TRAINING:
+			resourceDAO = professionalTrainingDAO;
+			break;
+		default:
+			logger.error("retrieveCategoriesForResourceType, don't know which DAO to call for resourceType '{}'.",
+					resourceType);
+		}
+		if (resourceDAO != null) {
+			categories.addAll(resourceDAO.retrieveCategoriesForPerson(person));
+		}
+		return categories;
+	}
+
+	@Override
 	public Resource createResource(ResourceCategory resourceCategory, Organisation ownerOrganisation, Organisation supportOrganisation,
 			String resourceType, String name, String iconFileName) {
 		Resource resource = null;

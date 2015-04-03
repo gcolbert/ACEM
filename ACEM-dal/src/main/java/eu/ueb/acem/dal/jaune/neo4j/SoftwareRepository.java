@@ -45,10 +45,13 @@ public interface SoftwareRepository extends GenericRepository<SoftwareNode> {
 	@Query(value = "MATCH (:Software)<-[:categoryContains]-(m:ResourceCategory) RETURN m")
 	Set<ResourceCategoryNode> getCategories();
 
-	@Query(value = "MATCH (n:Software)<-[:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(:Software)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) RETURN c")
+	Set<ResourceCategoryNode> getCategoriesForPerson(@Param("personId") Long personId);
+
+	@Query(value = "MATCH (r:Software)<-[:categoryContains]-(c:ResourceCategory) WHERE id(c)=({categoryId}) RETURN r")
 	Set<SoftwareNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 
-	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Software)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Software)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
 	Set<SoftwareNode> getResourcesInCategoryForPerson(@Param("categoryId") Long categoryId, @Param("personId") Long personId);
 
 }

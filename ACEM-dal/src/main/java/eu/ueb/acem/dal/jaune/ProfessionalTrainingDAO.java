@@ -86,6 +86,23 @@ public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, P
 		return collection;
 	}
 
+	/**
+	 * Returns the categories containing at least one "ProfessionalTraining"
+	 * entity that the given person can see.
+	 */
+	@Override
+	public Collection<ResourceCategory> retrieveCategoriesForPerson(Person person) {
+		Iterable<ResourceCategoryNode> endResults = repository.getCategoriesForPerson(person.getId());
+		Collection<ResourceCategory> collection = new HashSet<ResourceCategory>();
+		if (endResults.iterator() != null) {
+			Iterator<ResourceCategoryNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				collection.add(iterator.next());
+			}
+		}
+		return collection;
+	}
+
 	@Override
 	public Collection<ProfessionalTraining> retrieveAllWithCategory(ResourceCategory category) {
 		Iterable<ProfessionalTrainingNode> endResults = repository.getEntitiesWithCategory(category.getId());

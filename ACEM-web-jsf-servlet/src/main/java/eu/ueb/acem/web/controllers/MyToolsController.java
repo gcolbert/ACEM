@@ -278,7 +278,19 @@ public class MyToolsController extends AbstractContextAwareController implements
 		// When the category changes, we reset the selected category
 		setSelectedToolCategoryViewBean(null);
 
-		List<ResourceCategory> resourceCategoriesForCurrentType = new ArrayList<ResourceCategory>(resourcesService.retrieveCategoriesForResourceType(resourceViewBean.getType()));
+		List<ResourceCategory> resourceCategoriesForCurrentType = new ArrayList<ResourceCategory>();
+		// If the user is an administrator, he sees all the resources
+		if (getCurrentUserViewBean().getAdministrator()) {
+			resourceCategoriesForCurrentType.addAll(resourcesService.retrieveCategoriesForResourceType(resourceViewBean
+					.getType()));
+		}
+		else {
+			// Otherwise he only sees a subset of the resources determined
+			// by the organisation he works for and the associations between
+			// this organisation and the other organisations.
+			resourceCategoriesForCurrentType.addAll(resourcesService.retrieveCategoriesForResourceTypeAndPerson(
+					resourceViewBean.getType(), getCurrentUserViewBean().getDomainBean()));
+		}
 		Collections.sort(resourceCategoriesForCurrentType);
 
 		// For future reference, we keep the code that allows to repeat the

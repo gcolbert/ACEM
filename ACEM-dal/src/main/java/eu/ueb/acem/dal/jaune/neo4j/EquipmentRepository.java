@@ -35,20 +35,23 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 public interface EquipmentRepository extends GenericRepository<EquipmentNode> {
 
 	@Override
-	@Query(value = "MATCH (n:Equipment) WHERE id(n)=({id}) RETURN count(n)")
+	@Query(value = "MATCH (r:Equipment) WHERE id(r)=({id}) RETURN count(r)")
 	Long count(@Param("id") Long id);
 
 	@Override
-	@Query(value = "MATCH (n:Equipment) WHERE n.name=({name}) RETURN n")
+	@Query(value = "MATCH (r:Equipment) WHERE r.name=({name}) RETURN r")
 	Iterable<EquipmentNode> findByName(@Param("name") String name);
 	
-	@Query(value = "MATCH (:Equipment)<-[:categoryContains]-(m:ResourceCategory) RETURN m")
+	@Query(value = "MATCH (:Equipment)<-[:categoryContains]-(c:ResourceCategory) RETURN c")
 	Set<ResourceCategoryNode> getCategories();
 
-	@Query(value = "MATCH (n:Equipment)<-[r:categoryContains]-(m:ResourceCategory) WHERE id(m)=({categoryId}) RETURN n")
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(:Equipment)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) RETURN c")
+	Set<ResourceCategoryNode> getCategoriesForPerson(@Param("personId") Long personId);
+
+	@Query(value = "MATCH (r:Equipment)<-[:categoryContains]-(c:ResourceCategory) WHERE id(c)=({categoryId}) RETURN r")
 	Set<EquipmentNode> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 
-	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Equipment)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
+	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Equipment)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
 	Set<EquipmentNode> getResourcesInCategoryForPerson(@Param("categoryId") Long categoryId, @Param("personId") Long personId);
 
 }
