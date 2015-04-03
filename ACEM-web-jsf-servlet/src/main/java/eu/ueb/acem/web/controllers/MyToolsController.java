@@ -743,8 +743,10 @@ public class MyToolsController extends AbstractContextAwareController implements
 				for (Organisation organisation : resource.getOrganisationsHavingAccessToResource()) {
 					resourceViewBean.getOrganisationViewingResourceViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisationsService.retrieveOrganisation(organisation.getId(),false)));
 				}
-				selectedResourceViewBean = resourceViewBean;
+				int selectedResourcePosition = selectedToolCategoryViewBean.getResourceViewBeans().lastIndexOf(selectedResourceViewBean);
+				selectedToolCategoryViewBean.getResourceViewBeans().set(selectedResourcePosition, resourceViewBean);
 				Collections.sort(selectedToolCategoryViewBean.getResourceViewBeans());
+				selectedResourceViewBean = resourceViewBean;
 
 				MessageDisplayer.info(
 						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
