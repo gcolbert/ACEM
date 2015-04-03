@@ -63,11 +63,6 @@
 		<view-id value="/pages/scenarios-library.xhtml" />
 	</url-mapping>
 
-	<url-mapping id="administration">
-		<pattern value="/administration/" />
-		<view-id value="/pages/administration.xhtml" />
-	</url-mapping>
-
 	<url-mapping id="adminOrganisations">
 		<pattern value="/administration/organisations/" />
 		<view-id value="/pages/adminOrganisations.xhtml" />
