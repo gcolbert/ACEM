@@ -21,7 +21,7 @@
 		<maven-war-plugin.version>2.5</maven-war-plugin.version>
 		<ocpsoft-rewrite.version>2.0.12.Final</ocpsoft-rewrite.version>
 		<omnifaces.version>1.8.1</omnifaces.version>
-		<primefaces.version>5.1</primefaces.version>
+		<primefaces.version>5.2.RC3</primefaces.version>
 		<primefaces-themes.version>1.0.10</primefaces-themes.version>
 
 		<tomcat.host>localhost</tomcat.host>

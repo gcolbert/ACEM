@@ -125,8 +125,7 @@ public class PedagogicalAdviceTreeGenerator {
 		// We look for children (needs) and recursively create them too
 		Collection<PedagogicalNeed> associatedPedagogicalNeeds = need.getChildren();
 		if (!associatedPedagogicalNeeds.isEmpty()) {
-			// TODO : When PF >= 5.2, call directly newNode.setType
-			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
+			newNode.setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 			for (PedagogicalNeed needChild : associatedPedagogicalNeeds) {
 				createChild(treeBean, needChild, newNode);
 			}
@@ -134,8 +133,7 @@ public class PedagogicalAdviceTreeGenerator {
 
 		Collection<PedagogicalAnswer> associatedPedagogicalAnswers = need.getAnswers();
 		if (!associatedPedagogicalAnswers.isEmpty()) {
-			// TODO : When PF >= 5.2, call directly newNode.setType
-			((DefaultTreeNode) newNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
+			newNode.setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 			need.setAnswers((Set<PedagogicalAnswer>) associatedPedagogicalAnswers);
 			for (PedagogicalAnswer answer : associatedPedagogicalAnswers) {
 				treeBean.addChild(getTreeNodeType_ANSWER_LEAF(), newNode, answer.getId(), answer.getName(),
