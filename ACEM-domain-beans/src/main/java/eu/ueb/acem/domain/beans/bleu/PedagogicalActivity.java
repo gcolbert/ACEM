@@ -42,11 +42,11 @@ public interface PedagogicalActivity extends Serializable, Comparable<Pedagogica
 
 	String getObjective();
 
-	void setObjective(String objectif);
+	void setObjective(String objective);
 
 	String getInstructions();
 
-	void setInstructions(String descriptif);
+	void setInstructions(String instructions);
 
 	String getDuration();
 
