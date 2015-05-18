@@ -8,6 +8,7 @@
 
 html {
 	font-family:"Liberation Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, sans-serif;;
+	font-size:80%;
 }
 
 .ui-layout-north > .ui-widget-header:first-of-type,
@@ -24,53 +25,6 @@ html {
 	text-decoration:none;
 }
 
-/*
-.app-header {
-	color:white;
-	background-image:url("../resources/images/BandeauNumeriqueAccueil2013.png");
-	background-repeat: no-repeat;
-	background-size: 100% 100%, auto auto;
-	padding:1em;
-}
-
-.app-header .logo {
-	display:inline-block;
-	width:60px;
-	border-right:1px solid white;
-}
-
-.app-header .logo img {
-	height:50px;
-	padding-right:1em;
-}
-
-.app-header .titreEtDescription {
-	display:inline-block;
-	vertical-align:top;
-	margin-left:1em;
-}
-
-.app-header .span_bigTitre {
-	font-size:2em;
-	font-weight: bold;
-}
-
-.app-header .span_titre {
-	font-style: italic;
-}
-
-.app-header .span_version {
-	font-size: 0.8em;
-}
-
-.app-header .descriptionAppli {
-}
-
-.app-header .span_currentUser {
-	float: right;
-	font-weight: bold;
-}
-*/
 .section-title {
 	font-weight:bold;
 	color:#2B558B;
