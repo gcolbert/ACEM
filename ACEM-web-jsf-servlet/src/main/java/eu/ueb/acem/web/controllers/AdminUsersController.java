@@ -120,7 +120,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	 */
 	@Value("${ldap.emailAttribute}")
 	private String mailLdapAttribute;
-	
+
 	public AdminUsersController() {
 		personViewBeans = new ArrayList<PersonViewBean>();
 	}
@@ -128,16 +128,11 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	@PostConstruct
 	public void init() {
 		personViewBeans.clear();
-		Collection<Person> persons = usersService.retrieveAllPersons();
-		for (Person person : persons) {
+		Collection<Teacher> teachers = usersService.retrieveAllTeachers();
+		for (Person person : teachers) {
 			PersonViewBean personViewBean;
-			if (person instanceof Teacher) {
-				Teacher teacher = (Teacher)person;
-				personViewBean = new TeacherViewBean(teacher);
-			}
-			else {
-				personViewBean = new PersonViewBean(person);
-			}
+			Teacher teacher = (Teacher)person;
+			personViewBean = new TeacherViewBean(teacher);
 			for (Organisation organisation : person.getWorksForOrganisations()) {
 				personViewBean.getOrganisationViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisation));
 			}
@@ -345,7 +340,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 				Teacher teacher = usersService.createTeacher(selectedLdapUser.getFirstName()+" "+selectedLdapUser.getLastName(), selectedLdapUser.getId(), "pass");
 				teacher.setEmail(selectedLdapUser.getEmail());
 				teacher = usersService.updateTeacher(teacher);
-				PersonViewBean personViewBean = new PersonViewBean(teacher);
+				PersonViewBean personViewBean = new TeacherViewBean(teacher);
 				personViewBeans.add(personViewBean);
 				Collections.sort(personViewBeans);
 			}

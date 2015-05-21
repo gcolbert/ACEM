@@ -77,4 +77,9 @@ public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepar
 		return collection;
 	}
 
+	@Override
+	public AdministrativeDepartment create(String name, String shortname, String iconFileName) {
+		return super.create(new AdministrativeDepartmentNode(name, shortname, iconFileName));
+	}
+
 }

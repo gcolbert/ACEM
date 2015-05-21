@@ -32,7 +32,7 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
  */
 public interface NeedsAndAnswersService extends Serializable {
 
-	Boolean deleteNode(Long id);
+	Boolean deletePedagogicalNeedOrPedagogicalAnswer(Long id);
 	
 	Long countNeeds();
 

@@ -39,4 +39,6 @@ public interface PedagogicalScenarioDAO<ID> extends DAO<ID, PedagogicalScenario>
 
 	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(ResourceCategory resourceCategory);
 
+	PedagogicalScenario create(String name, String objective);
+
 }

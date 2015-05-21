@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.gris;
+package eu.ueb.acem.dal.jaune;
 
 import javax.inject.Inject;
 
@@ -24,53 +24,43 @@ import org.springframework.stereotype.Repository;
 
 import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.gris.neo4j.TeacherRepository;
-import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
+import eu.ueb.acem.dal.jaune.neo4j.ResourceCategoryRepository;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-12-11
+ * @since 2014-04-09
  * 
  */
-@Repository("teacherDAO")
-public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> implements PersonDAO<Long, Teacher> {
+@Repository("resourceCategoryDAO")
+public class ResourceCategoryDAOImpl extends AbstractDAO<ResourceCategory, ResourceCategoryNode> implements ResourceCategoryDAO<Long> {
 
 	/**
-	 * For serialization
+	 * For serialization.
 	 */
-	private static final long serialVersionUID = 920105894951436261L;
+	private static final long serialVersionUID = -340108444569929110L;
 
 	@Inject
-	private TeacherRepository repository;
+	private ResourceCategoryRepository repository;
 
 	@Override
-	protected final GenericRepository<TeacherNode> getRepository() {
+	protected final GenericRepository<ResourceCategoryNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Teacher entity) {
+	protected final void initializeCollections(ResourceCategory entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getFavoriteToolCategories());
-			neo4jOperations.fetch(entity.getScenarios());
-			neo4jOperations.fetch(entity.getClasses());
-			neo4jOperations.fetch(entity.getWorksForOrganisations());
+			neo4jOperations.fetch(entity.getAnswers());
+			neo4jOperations.fetch(entity.getPedagogicalActivities());
+			neo4jOperations.fetch(entity.getResources());
 		}
 	}
 
 	@Override
-	public Teacher retrieveByLogin(String id, boolean initialize) {
-		Teacher entity = repository.findByLogin(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
+	public ResourceCategory create(String name, String description, String iconFileName) {
+		return super.create(new ResourceCategoryNode(name, description, iconFileName));
 	}
-
-	@Override
-	public Teacher create(String name, String login, String encodedPassword) {
-		return super.create(new TeacherNode(name, login, encodedPassword));
-	}
-
+	
 }

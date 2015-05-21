@@ -29,10 +29,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.gris.PersonDAO;
-import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
@@ -56,10 +54,7 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 
 	@Inject
-	private TeacherDAO teacherDAO;
-
-	@Inject
-	private PersonDAO personDAO;
+	private PersonDAO<Long, Teacher> teacherDAO;
 
 	@Inject
 	private OrganisationsService organisationsService;
@@ -76,46 +71,12 @@ public class UsersServiceImpl implements UsersService, Serializable {
 
 	@Override
 	public Person retrievePersonByLogin(String login) {
-		Person person = personDAO.retrieveByLogin(login, false);
-		return person;
+		return teacherDAO.retrieveByLogin(login, false);
 	}
 
 	@Override
 	public Long countTeachers() {
 		return teacherDAO.count();
-	}
-
-	@Override
-	public Long countPersons() {
-		return personDAO.count();
-	}
-
-	@Override
-	public Person createPerson(String name, String login, String password) {
-		return personDAO.create(new PersonNode(name, login, password));
-	}
-
-	@Override
-	public Collection<Person> retrieveAllPersons() {
-		return personDAO.retrieveAll();
-	}
-	
-	@Override
-	public Person retrievePerson(Long id) {
-		return personDAO.retrieveById(id);
-	}
-
-	@Override
-	public Person updatePerson(Person person) {
-		return personDAO.update(person);
-	}
-
-	@Override
-	public Boolean deletePerson(Long id) {
-		if (personDAO.exists(id)) {
-			personDAO.delete(personDAO.retrieveById(id));
-		}
-		return !personDAO.exists(id);
 	}
 
 	@Override
@@ -126,6 +87,19 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	@Override
 	public Teacher retrieveTeacher(Long id) {
 		return teacherDAO.retrieveById(id);
+	}
+
+	@Override
+	public Person updatePerson(Person person) {
+		Person updatedPerson = null;
+		if (person instanceof Teacher) {
+			updatedPerson = updateTeacher((Teacher) person);
+		}
+		else {
+			logger.error("Unknown concrete type of Person interface.");
+			updatedPerson = null;
+		}
+		return updatedPerson;
 	}
 
 	@Override
@@ -145,12 +119,12 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	public Boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
 		logger.debug("associateUserWorkingForOrganisation");
 		boolean success = false;
-		if (personDAO.exists(idPerson)) {
-			Person person = personDAO.retrieveById(idPerson);
+		if (teacherDAO.exists(idPerson)) {
+			Teacher teacher = teacherDAO.retrieveById(idPerson);
 			Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation, true);
 			if (organisation != null) {
-				person.getWorksForOrganisations().add(organisation);
-				person = personDAO.update(person);
+				teacher.getWorksForOrganisations().add(organisation);
+				teacher = teacherDAO.update(teacher);
 				organisation = organisationsService.updateOrganisation(organisation);
 				success = true;
 				logger.debug("association successful");
@@ -166,12 +140,12 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	public Boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
 		logger.debug("dissociateUserWorkingForOrganisation");
 		boolean success = false;
-		if (personDAO.exists(idPerson)) {
-			Person person = personDAO.retrieveById(idPerson);
+		if (teacherDAO.exists(idPerson)) {
+			Teacher teacher = teacherDAO.retrieveById(idPerson);
 			Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation, true);
 			if (organisation != null) {
-				person.getWorksForOrganisations().remove(organisation);
-				person = personDAO.update(person);
+				teacher.getWorksForOrganisations().remove(organisation);
+				teacher = teacherDAO.update(teacher);
 				success = true;
 				logger.debug("dissociation successful");
 			}
@@ -193,12 +167,6 @@ public class UsersServiceImpl implements UsersService, Serializable {
 				teacher = teacherDAO.update(teacher);
 				success = true;
 			}
-			else if (personDAO.exists(idPerson)) {
-				Person person = personDAO.retrieveById(idPerson);
-				person.getFavoriteToolCategories().add(toolCategory);
-				person = personDAO.update(person);
-				success = true;
-			}
 		}
 		return success;
 	}
@@ -214,14 +182,13 @@ public class UsersServiceImpl implements UsersService, Serializable {
 				teacher = teacherDAO.update(teacher);
 				success = true;
 			}
-			else if (personDAO.exists(idPerson)) {
-				Person person = personDAO.retrieveById(idPerson);
-				person.getFavoriteToolCategories().remove(toolCategory);
-				person = personDAO.update(person);
-				success = true;
-			}
 		}
 		return success;
+	}
+
+	@Override
+	public Collection<Teacher> retrieveAllTeachers() {
+		return teacherDAO.retrieveAll();
 	}
 
 }

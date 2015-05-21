@@ -56,7 +56,7 @@ public class PedagogicalNeedDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(PedagogicalNeedDAOTest.class);
 
 	@Inject
-	private PedagogicalNeedDAO<Long, PedagogicalNeed> pedagogicalNeedDAO;
+	private PedagogicalNeedDAO<Long> pedagogicalNeedDAO;
 
 	@Inject
 	private DAO<Long, PedagogicalAnswer> wrongDAO;

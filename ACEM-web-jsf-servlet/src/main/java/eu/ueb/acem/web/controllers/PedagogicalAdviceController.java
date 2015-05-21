@@ -226,7 +226,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 			// Business-level constraint : we don't make possible to recursively
 			// delete nodes
 			if (selectedNode.isLeaf()) {
-				if (needsAndAnswersService.deleteNode(((TreeNodeData) selectedNode.getData()).getId())) {
+				if (needsAndAnswersService.deletePedagogicalNeedOrPedagogicalAnswer(((TreeNodeData) selectedNode.getData()).getId())) {
 					// If the selectedNode was the only child, we must change
 					// back the parent's type to be a "Need leaf"
 					if ((selectedNode.getParent().getChildCount() == 1)

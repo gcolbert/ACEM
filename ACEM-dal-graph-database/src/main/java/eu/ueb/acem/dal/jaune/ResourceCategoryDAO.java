@@ -18,44 +18,16 @@
  */
 package eu.ueb.acem.dal.jaune;
 
-import javax.inject.Inject;
-
-import org.springframework.stereotype.Repository;
-
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.jaune.neo4j.ResourceCategoryRepository;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2014-04-09
+ * @since 2015-05-21
  * 
  */
-@Repository("resourceCategoryDAO")
-public class ResourceCategoryDAO extends AbstractDAO<ResourceCategory, ResourceCategoryNode> {
+public interface ResourceCategoryDAO<ID> extends DAO<ID, ResourceCategory> {
 
-	/**
-	 * For serialization.
-	 */
-	private static final long serialVersionUID = -340108444569929110L;
-
-	@Inject
-	private ResourceCategoryRepository repository;
-
-	@Override
-	protected final GenericRepository<ResourceCategoryNode> getRepository() {
-		return repository;
-	}
-
-	@Override
-	protected final void initializeCollections(ResourceCategory entity) {
-		if (entity != null) {
-			neo4jOperations.fetch(entity.getAnswers());
-			neo4jOperations.fetch(entity.getPedagogicalActivities());
-			neo4jOperations.fetch(entity.getResources());
-		}
-	}
+	ResourceCategory create(String name, String description, String iconFileName);
 
 }

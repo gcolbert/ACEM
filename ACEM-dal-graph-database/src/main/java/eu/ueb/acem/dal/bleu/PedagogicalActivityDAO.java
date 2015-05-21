@@ -27,5 +27,7 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
  * 
  */
 public interface PedagogicalActivityDAO<ID> extends DAO<ID, PedagogicalActivity> {
-	
+
+	PedagogicalActivity create(String name);
+
 }

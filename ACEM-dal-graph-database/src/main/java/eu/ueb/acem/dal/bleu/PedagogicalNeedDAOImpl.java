@@ -37,7 +37,7 @@ import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
  * 
  */
 @Repository("pedagogicalNeedDAO")
-public class PedagogicalNeedDAOImpl extends AbstractDAO<PedagogicalNeed, PedagogicalNeedNode> implements PedagogicalNeedDAO<Long, PedagogicalNeed> {
+public class PedagogicalNeedDAOImpl extends AbstractDAO<PedagogicalNeed, PedagogicalNeedNode> implements PedagogicalNeedDAO<Long> {
 
 	/**
 	 * For serialization.
@@ -70,6 +70,16 @@ public class PedagogicalNeedDAOImpl extends AbstractDAO<PedagogicalNeed, Pedagog
 			needs.add(need);
 		}
 		return needs;
+	}
+
+	@Override
+	public PedagogicalNeed create(String name) {
+		return super.create(new PedagogicalNeedNode(name));
+	}
+
+	@Override
+	public PedagogicalNeed create(String name, String description) {
+		return super.create(new PedagogicalNeedNode(name, description));
 	}
 
 }

@@ -22,54 +22,50 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 
 /**
  * @author Grégoire Colbert
- * @since 2015-05-19
+ * @since 2015-05-20
  * 
  */
-@Entity(name = "PedagogicalNeed")
-@Table(name = "PedagogicalNeed")
-public class PedagogicalNeedEntity extends AbstractEntity implements PedagogicalNeed {
+@Entity
+public class PedagogicalAnswerEntity extends AbstractEntity implements PedagogicalAnswer {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 6134742686995586546L;
+	private static final long serialVersionUID = 574796833190766677L;
 
 	private String name;
 
 	private String description;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<PedagogicalNeed> parents = new HashSet<PedagogicalNeed>(0);
+//	@RelatedTo(elementClass = PedagogicalNeedNode.class, type = "needAnsweredBy", direction = INCOMING)
+	@ManyToMany
+	private Set<PedagogicalNeed> pedagogicalNeeds = new HashSet<PedagogicalNeed>(0);
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<PedagogicalNeed> children = new HashSet<PedagogicalNeed>(0);
+//	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "answeredUsingResourceCategory", direction = OUTGOING)
+	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<PedagogicalAnswer> answers = new HashSet<PedagogicalAnswer>(0);
-
-	public PedagogicalNeedEntity() {
+	public PedagogicalAnswerEntity() {
 	}
 
-	public PedagogicalNeedEntity(String name) {
+	public PedagogicalAnswerEntity(String name) {
 		this();
 		setName(name);
 	}
 
-	public PedagogicalNeedEntity(String name, String description) {
+	public PedagogicalAnswerEntity(String name, String description) {
 		this(name);
 		setDescription(description);
 	}
-	
+
 	@Override
 	public String getName() {
 		return name;
@@ -91,38 +87,28 @@ public class PedagogicalNeedEntity extends AbstractEntity implements Pedagogical
 	}
 
 	@Override
-	public Set<PedagogicalNeed> getParents() {
-		return parents;
+	public Set<PedagogicalNeed> getNeeds() {
+		return pedagogicalNeeds;
 	}
 
 	@Override
-	public void setParents(Set<PedagogicalNeed> parents) {
-		this.parents = parents;
+	public void setNeeds(Set<PedagogicalNeed> needs) {
+		this.pedagogicalNeeds = needs;
+	}
+	
+	@Override
+	public Set<ResourceCategory> getResourceCategories() {
+		return resourceCategories;
 	}
 
 	@Override
-	public Set<PedagogicalNeed> getChildren() {
-		return children;
+	public void setResourceCategories(Set<ResourceCategory> resourceCategories) {
+		this.resourceCategories = resourceCategories;
 	}
 
 	@Override
-	public void setChildren(Set<PedagogicalNeed> children) {
-		this.children = children;
-	}
-
-	@Override
-	public Set<PedagogicalAnswer> getAnswers() {
-		return answers;
-	}
-
-	@Override
-	public void setAnswers(Set<PedagogicalAnswer> answers) {
-		this.answers = answers;
-	}
-
-	@Override
-	public int compareTo(PedagogicalNeed o) {
-		return getName().compareTo(o.getName());
+	public int compareTo(PedagogicalAnswer o) {
+		return this.compareTo(o);
 	}
 
 }

@@ -57,4 +57,9 @@ public class PedagogicalActivityDAOImpl extends AbstractDAO<PedagogicalActivity,
 		}
 	}
 
+	@Override
+	public PedagogicalActivity create(String name) {
+		return super.create(new PedagogicalActivityNode(name));
+	}
+
 }

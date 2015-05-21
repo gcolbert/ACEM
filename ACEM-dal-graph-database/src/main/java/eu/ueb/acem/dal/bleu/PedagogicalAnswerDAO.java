@@ -18,43 +18,18 @@
  */
 package eu.ueb.acem.dal.bleu;
 
-import javax.inject.Inject;
-
-import org.springframework.stereotype.Repository;
-
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.bleu.neo4j.PedagogicalAnswerRepository;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-11-26
+ * @since 2015-05-21
  * 
  */
-@Repository("pedagogicalAnswerDAO")
-public class PedagogicalAnswerDAO extends AbstractDAO<PedagogicalAnswer, PedagogicalAnswerNode> {
+public interface PedagogicalAnswerDAO<ID> extends DAO<ID, PedagogicalAnswer> {
 
-	/**
-	 * For serialization.
-	 */
-	private static final long serialVersionUID = -4117462676183855035L;
+	PedagogicalAnswer create(String name);
 
-	@Inject
-	private PedagogicalAnswerRepository repository;
-
-	@Override
-	protected final GenericRepository<PedagogicalAnswerNode> getRepository() {
-		return repository;
-	}
-
-	@Override
-	protected final void initializeCollections(PedagogicalAnswer entity) {
-		if (entity != null) {
-			neo4jOperations.fetch(entity.getResourceCategories());
-			neo4jOperations.fetch(entity.getNeeds());
-		}
-	}
+	PedagogicalAnswer create(String name, String description);
 
 }

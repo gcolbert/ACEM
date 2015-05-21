@@ -79,4 +79,9 @@ public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> im
 		return collection;
 	}
 
+	@Override
+	public Institution create(String name, String shortname, String iconFileName) {
+		return super.create(new InstitutionNode(name, shortname, iconFileName));
+	}
+
 }

@@ -40,4 +40,6 @@ public interface ResourceDAO<ID extends Serializable, E extends Resource> extend
 
 	Collection<E> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person);
 
+	Resource create(String name, String iconFileName);
+
 }

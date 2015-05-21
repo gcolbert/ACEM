@@ -169,7 +169,6 @@ public class PersonNode extends AbstractNode implements Person {
 		this.favoriteToolCategories = favoriteToolCategories;
 	}
 
-	
 	@Override
 	public int compareTo(Person person) {
 		return getName().compareToIgnoreCase(person.getName());

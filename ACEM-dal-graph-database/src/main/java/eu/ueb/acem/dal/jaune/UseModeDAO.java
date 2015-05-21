@@ -18,43 +18,16 @@
  */
 package eu.ueb.acem.dal.jaune;
 
-import javax.inject.Inject;
-
-import org.springframework.stereotype.Repository;
-
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.jaune.neo4j.UseModeRepository;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2014-03-19
+ * @since 2015-05-21
  * 
  */
-@Repository("useModeDAO")
-public class UseModeDAO extends AbstractDAO<UseMode, UseModeNode> {
+public interface UseModeDAO<ID> extends DAO<ID, UseMode> {
 
-	/**
-	 * For serialization.
-	 */
-	private static final long serialVersionUID = -1874254078249425495L;
-
-	@Inject
-	private UseModeRepository repository;
-
-	@Override
-	protected final GenericRepository<UseModeNode> getRepository() {
-		return repository;
-	}
-
-	@Override
-	protected final void initializeCollections(UseMode entity) {
-		if (entity != null) {
-			neo4jOperations.fetch(entity.getReferredOrganisation());
-			neo4jOperations.fetch(entity.getResources());
-		}
-	}
+	UseMode create(String name);
 
 }

@@ -33,4 +33,6 @@ public interface OrganisationDAO<ID extends Serializable, E extends Organisation
 
 	Collection<E> retrieveSupportServicesForPerson(Person person);
 
+	E create(String name, String shortname, String iconFileName);
+
 }

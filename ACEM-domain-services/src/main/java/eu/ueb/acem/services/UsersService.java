@@ -31,26 +31,14 @@ import eu.ueb.acem.domain.beans.gris.Teacher;
  */
 public interface UsersService extends Serializable {
 
-	Long countPersons();
-	
-	Person createPerson(String name, String login, String password);
-
-	Collection<Person> retrieveAllPersons();
-	
-	Person retrievePerson(Long id);
-
-	Person retrievePersonByLogin(String login);
-
-	Person updatePerson(Person person);
-
-	Boolean deletePerson(Long id);
-
 	Long countTeachers();
 	
 	Teacher createTeacher(String name, String login, String password);
 	
 	Teacher retrieveTeacher(Long id);
 	
+	Person updatePerson(Person domainBean);
+
 	Teacher updateTeacher(Teacher teacher);
 
 	Boolean deleteTeacher(Long id);
@@ -62,5 +50,9 @@ public interface UsersService extends Serializable {
 	Boolean addFavoriteToolCategoryForPerson(Long idTeacher, Long idToolCategory);
 	
 	Boolean removeFavoriteToolCategoryForPerson(Long idTeacher, Long idToolCategory);
+
+	Collection<Teacher> retrieveAllTeachers();
+
+	Person retrievePersonByLogin(String login);
 
 }

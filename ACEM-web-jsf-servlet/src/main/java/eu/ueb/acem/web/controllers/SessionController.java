@@ -83,9 +83,6 @@ public class SessionController extends AbstractDomainAwareBean {
 			if (user instanceof Teacher) {
 				currentUserViewBean = new TeacherViewBean((Teacher) user);
 			}
-			else if (user instanceof Person) {
-				currentUserViewBean = new PersonViewBean(user);
-			}
 		}
 		return currentUserViewBean;
 	}

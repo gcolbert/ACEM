@@ -31,6 +31,7 @@ import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.PedagogicalAndDocumentaryResourcesRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
@@ -132,6 +133,11 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 			}
 		}
 		return collection;
+	}
+
+	@Override
+	public Resource create(String name, String iconFileName) {
+		return super.create(new PedagogicalAndDocumentaryResourceNode(name, iconFileName));
 	}
 
 }

@@ -33,23 +33,24 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.gris.PersonDAO;
+import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
 import eu.ueb.acem.dal.jaune.ResourceDAO;
+import eu.ueb.acem.dal.jaune.UseModeDAO;
+import eu.ueb.acem.dal.rouge.OrganisationDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.Documentation;
-import eu.ueb.acem.domain.beans.jaune.UseMode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
@@ -73,28 +74,25 @@ public class ResourceDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(ResourceDAOTest.class);
 
 	@Inject
-	private DAO<Long, UseMode> useModeDAO;
+	private UseModeDAO<Long> useModeDAO;
 
 	@Inject
-	private DAO<Long, ResourceCategory> resourceCategoryDAO;
+	private ResourceCategoryDAO<Long> resourceCategoryDAO;
 
 	@Inject
-	private DAO<Long, Person> personDAO;
-
-	@Inject
-	private DAO<Long, Teacher> teacherDAO;
+	private PersonDAO<Long, Teacher> teacherDAO;
 	
 	@Inject
-	private DAO<Long, Community> communityDAO;
+	private OrganisationDAO<Long, Community> communityDAO;
 
 	@Inject
-	private DAO<Long, Institution> institutionDAO;
+	private OrganisationDAO<Long, Institution> institutionDAO;
 
 	@Inject
-	private DAO<Long, TeachingDepartment> teachingDepartmentDAO;
+	private OrganisationDAO<Long, TeachingDepartment> teachingDepartmentDAO;
 
 	@Inject
-	private DAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
+	private OrganisationDAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
 
 	@Inject
 	private ResourceDAO<Long, Software> softwareDAO;
@@ -182,8 +180,7 @@ public class ResourceDAOTest extends TestCase {
 	@Transactional
 	@Rollback(true)
 	public final void t03_TestResourceRetrievalByPersonWorkingForAnOrganisationThatIsPossessingTheResource() {
-		Person personWorkingForOrganisation = new PersonNode("Some user", "loginuser", "somepassword");
-		personWorkingForOrganisation = personDAO.create(personWorkingForOrganisation);
+		Teacher personWorkingForOrganisation = teacherDAO.create("Some user", "loginuser", "somepassword");
 
 		TeachingDepartment teachingDepartment = new TeachingDepartmentNode("Math", "M", null);
 		teachingDepartment = teachingDepartmentDAO.create(teachingDepartment);
@@ -196,7 +193,7 @@ public class ResourceDAOTest extends TestCase {
 
 		// We associate the person and the organisation
 		personWorkingForOrganisation.getWorksForOrganisations().add(teachingDepartment);
-		personWorkingForOrganisation = personDAO.update(personWorkingForOrganisation);
+		personWorkingForOrganisation = teacherDAO.update(personWorkingForOrganisation);
 
 		// We associate the organisation and the resource
 		teachingDepartment.getPossessedResources().add(software);
@@ -211,10 +208,9 @@ public class ResourceDAOTest extends TestCase {
 		assertTrue("The person working for an organisation that possesses a resource must be able to retrieve it.",
 				usableSoftwaresOfPersonWorking.contains(software));
 
-		// A person who don't work for ANY organisation should not be
+		// A person who doesn't work for ANY organisation should not be
 		// able to use the resource, hence not be able to retrieve it
-		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
-		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
+		Teacher personNotWorkingForOrganisation = teacherDAO.create("Another user", "anotherlogin", "anotherpassword");
 
 		Collection<Software> usableSoftwaresOfPersonNotWorking = softwareDAO.retrieveResourcesInCategoryForPerson(
 				category, personNotWorkingForOrganisation);
@@ -230,8 +226,7 @@ public class ResourceDAOTest extends TestCase {
 	@Transactional
 	@Rollback(true)
 	public final void t04_TestResourceRetrievalByPersonWorkingForAnOrganisationThatIsSupportingTheResource() {
-		Person personWorkingForOrganisation = new PersonNode("Some user", "loginuser", "somepassword");
-		personWorkingForOrganisation = personDAO.create(personWorkingForOrganisation);
+		Teacher personWorkingForOrganisation = teacherDAO.create("Some user", "loginuser", "somepassword");
 
 		AdministrativeDepartment administrativeDepartment = new AdministrativeDepartmentNode("The support service", "TSS", null);
 		administrativeDepartment = administrativeDepartmentDAO.create(administrativeDepartment);
@@ -244,7 +239,7 @@ public class ResourceDAOTest extends TestCase {
 
 		// We associate the person and the organisation
 		personWorkingForOrganisation.getWorksForOrganisations().add(administrativeDepartment);
-		personWorkingForOrganisation = personDAO.update(personWorkingForOrganisation);
+		personWorkingForOrganisation = teacherDAO.update(personWorkingForOrganisation);
 
 		// We associate the organisation and the resource
 		administrativeDepartment.getSupportedResources().add(documentation);
@@ -261,8 +256,7 @@ public class ResourceDAOTest extends TestCase {
 
 		// A person who don't work for ANY organisation should not be
 		// able to use the resource, hence not be able to retrieve it
-		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
-		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
+		Teacher personNotWorkingForOrganisation = teacherDAO.create("Another user", "anotherlogin", "anotherpassword");
 
 		Collection<Documentation> usableDocumentationsPersonNotWorking = documentationDAO.retrieveResourcesInCategoryForPerson(
 				category, personNotWorkingForOrganisation);
@@ -278,8 +272,7 @@ public class ResourceDAOTest extends TestCase {
 	@Transactional
 	@Rollback(true)
 	public final void t05_TestResourceRetrievalByPersonWorkingForAnOrganisationThatIsHavingAccessToTheResource() {
-		Person personWorkingForOrganisation = new PersonNode("Some user", "loginuser", "somepassword");
-		personWorkingForOrganisation = personDAO.create(personWorkingForOrganisation);
+		Teacher personWorkingForOrganisation = teacherDAO.create("Some user", "loginuser", "somepassword");
 
 		Institution institution = new InstitutionNode("University", "U", null);
 		institution = institutionDAO.create(institution);
@@ -292,7 +285,7 @@ public class ResourceDAOTest extends TestCase {
 
 		// We associate the person and the organisation
 		personWorkingForOrganisation.getWorksForOrganisations().add(institution);
-		personWorkingForOrganisation = personDAO.update(personWorkingForOrganisation);
+		personWorkingForOrganisation = teacherDAO.update(personWorkingForOrganisation);
 
 		// We associate the organisation and the resource
 		institution.getSupportedResources().add(equipment);
@@ -309,8 +302,7 @@ public class ResourceDAOTest extends TestCase {
 
 		// A person who don't work for ANY organisation should not be
 		// able to use the resource, hence not be able to retrieve it
-		Person personNotWorkingForOrganisation = new PersonNode("Another user", "anotherlogin", "anotherpassword");
-		personNotWorkingForOrganisation = personDAO.create(personNotWorkingForOrganisation);
+		Teacher personNotWorkingForOrganisation = teacherDAO.create("Another user", "anotherlogin", "anotherpassword");
 
 		Collection<Equipment> usableEquipmentsOfPersonNotWorking = equipmentDAO.retrieveResourcesInCategoryForPerson(
 				category, personNotWorkingForOrganisation);

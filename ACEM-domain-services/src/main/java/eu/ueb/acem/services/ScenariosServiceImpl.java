@@ -25,12 +25,10 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.bleu.PedagogicalActivityDAO;
 import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalScenarioNode;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 
@@ -51,7 +49,7 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 	private PedagogicalScenarioDAO<Long> pedagogicalScenarioDAO;
 
 	@Inject
-	private DAO<Long, PedagogicalActivity> pedagogicalActivityDAO;
+	private PedagogicalActivityDAO<Long> pedagogicalActivityDAO;
 
 	@Inject
 	private UsersService usersService;
@@ -66,7 +64,7 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 
 	@Override
 	public PedagogicalScenario createScenario(Teacher author, String name, String objective) {
-		PedagogicalScenario scenario = new PedagogicalScenarioNode(name, objective);
+		PedagogicalScenario scenario = pedagogicalScenarioDAO.create(name, objective);
 		scenario.getAuthors().add(author);
 		scenario = pedagogicalScenarioDAO.create(scenario);
 		author.getScenarios().add(scenario);
@@ -130,7 +128,7 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 
 	@Override
 	public PedagogicalActivity createPedagogicalActivity(String name) {
-		return pedagogicalActivityDAO.create(new PedagogicalActivityNode(name));
+		return pedagogicalActivityDAO.create(name);
 	}
 
 	@Override

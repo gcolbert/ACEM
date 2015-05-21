@@ -35,9 +35,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.gris.PersonDAO;
-import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.services.auth.LdapUserService;
 
 /**
@@ -59,10 +58,7 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 	private static final Logger logger = LoggerFactory.getLogger(DomainServiceImpl.class);
 
 	@Inject
-	private PersonDAO personDAO;
-
-	@Inject
-	private TeacherDAO teacherDAO;
+	private PersonDAO<Long, Teacher> teacherDAO;
 	
 	/**
 	 * {@link ldapUserService}.
@@ -122,15 +118,12 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 	@Override
 	public Person getUser(String login) throws UsernameNotFoundException {
 		Person user = teacherDAO.retrieveByLogin(login, true);
-		if (user==null) {
-			user = personDAO.retrieveByLogin(login,true);
-		}
 		// If the user is missing from the database but the authentication mode
 		// guarantees a legit authentication, then we want to automatically
 		// create a user account.
 		if ((user == null) && autoCreateUsers) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			user = teacherDAO.create(new TeacherNode(login, login, passwordEncoder.encode("pass")));
+			user = teacherDAO.create(login, login, passwordEncoder.encode("pass"));
 			user.setLogin(login);
 			user.setLanguage("fr");
 		}

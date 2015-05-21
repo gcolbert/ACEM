@@ -77,4 +77,9 @@ public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, Teach
 		return collection;
 	}
 
+	@Override
+	public TeachingDepartment create(String name, String shortname, String iconFileName) {
+		return super.create(new TeachingDepartmentNode(name, shortname, iconFileName));
+	}
+
 }

@@ -77,4 +77,9 @@ public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implemen
 		return collection;
 	}
 
+	@Override
+	public Community create(String name, String shortname, String iconFileName) {
+		return super.create(new CommunityNode(name, shortname, iconFileName));
+	}
+
 }

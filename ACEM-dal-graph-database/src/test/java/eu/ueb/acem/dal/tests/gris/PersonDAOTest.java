@@ -34,10 +34,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.dal.gris.PersonDAO;
-import eu.ueb.acem.dal.gris.TeacherDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 
 /**
@@ -56,10 +54,7 @@ public class PersonDAOTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(PersonDAOTest.class);
 
 	@Inject
-	private TeacherDAO teacherDAO;
-
-	@Inject
-	private PersonDAO personDAO;
+	private PersonDAO<Long, Teacher> teacherDAO;
 
 	public PersonDAOTest() {
 
@@ -102,18 +97,18 @@ public class PersonDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t02_TestRetrieveByLogin() {
 		// We create a new object in the datastore
-		Person person1 = new PersonNode("Grégoire Colbert", "gcolbert", "pass");
-		person1.setAdministrator(true);
+		Teacher teacher1 = new TeacherNode("Grégoire Colbert", "gcolbert", "pass");
+		teacher1.setAdministrator(true);
 
 		// We save our object
-		person1 = personDAO.update(person1);
+		teacher1 = teacherDAO.update(teacher1);
 
 		// We don't need to initialize the associated collections for this test
-		Person person1bis = personDAO.retrieveByLogin(person1.getLogin(), false);
+		Person person1bis = teacherDAO.retrieveByLogin(teacher1.getLogin(), false);
 
 		assertNotNull(person1bis);
-		assertEquals(person1bis, person1);
-		assertEquals(person1bis.getName(), person1.getName());
+		assertEquals(person1bis, teacher1);
+		assertEquals(person1bis.getName(), teacher1.getName());
 	}
 
 }

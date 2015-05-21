@@ -30,10 +30,11 @@ import eu.ueb.acem.dal.AbstractDAO;
 import eu.ueb.acem.dal.GenericRepository;
 import eu.ueb.acem.dal.jaune.neo4j.DocumentationRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Documentation;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+import eu.ueb.acem.domain.beans.jaune.Resource;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
@@ -134,6 +135,11 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNo
 			}
 		}
 		return collection;
+	}
+
+	@Override
+	public Resource create(String name, String iconFileName) {
+		return super.create(new DocumentationNode(name, iconFileName));
 	}
 
 }

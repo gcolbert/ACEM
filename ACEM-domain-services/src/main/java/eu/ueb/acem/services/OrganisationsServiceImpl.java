@@ -35,10 +35,6 @@ import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
-import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
 
 /**
  * @author Grégoire Colbert
@@ -87,22 +83,22 @@ public class OrganisationsServiceImpl implements OrganisationsService, Serializa
 
 	@Override
 	public Community createCommunity(String name, String shortname, String iconFileName) {
-		return communityDAO.create(new CommunityNode(name, shortname, iconFileName));
+		return communityDAO.create(name, shortname, iconFileName);
 	}
 
 	@Override
 	public Institution createInstitution(String name, String shortname, String iconFileName) {
-		return institutionDAO.create(new InstitutionNode(name, shortname, iconFileName));
+		return institutionDAO.create(name, shortname, iconFileName);
 	}
 
 	@Override
 	public AdministrativeDepartment createAdministrativeDepartment(String name, String shortname, String iconFileName) {
-		return administrativeDepartmentDAO.create(new AdministrativeDepartmentNode(name, shortname, iconFileName));
+		return administrativeDepartmentDAO.create(name, shortname, iconFileName);
 	}
 
 	@Override
 	public TeachingDepartment createTeachingDepartment(String name, String shortname, String iconFileName) {
-		return teachingDepartmentDAO.create(new TeachingDepartmentNode(name, shortname, iconFileName));
+		return teachingDepartmentDAO.create(name, shortname, iconFileName);
 	}
 
 	@Override

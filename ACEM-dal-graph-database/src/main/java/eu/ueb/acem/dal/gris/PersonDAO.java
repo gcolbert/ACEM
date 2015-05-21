@@ -18,50 +18,20 @@
  */
 package eu.ueb.acem.dal.gris;
 
-import javax.inject.Inject;
+import java.io.Serializable;
 
-import org.springframework.stereotype.Repository;
-
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.gris.neo4j.PersonRepository;
+import eu.ueb.acem.dal.DAO;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-12-11
+ * @since 2015-05-21
  * 
  */
-@Repository("personDAO")
-public class PersonDAO extends AbstractDAO<Person, PersonNode> {
+public interface PersonDAO<ID extends Serializable, E extends Person> extends DAO<ID, E> {
 
-	/**
-	 * For serialization.
-	 */
-	private static final long serialVersionUID = 1069286673672742458L;
+	E create(String name, String login, String encodedPassword);
 
-	@Inject
-	private PersonRepository repository;
-
-	@Override
-	protected final GenericRepository<PersonNode> getRepository() {
-		return repository;
-	}
-
-	@Override
-	protected final void initializeCollections(Person entity) {
-		if (entity != null) {
-			neo4jOperations.fetch(entity.getWorksForOrganisations());
-		}
-	}
-
-	public Person retrieveByLogin(String id, boolean initialize) {
-		Person entity = repository.findByLogin(id);
-		if (initialize) {
-			initializeCollections(entity);
-		}
-		return entity;
-	}
+	E retrieveByLogin(String id, boolean initialize);
 
 }

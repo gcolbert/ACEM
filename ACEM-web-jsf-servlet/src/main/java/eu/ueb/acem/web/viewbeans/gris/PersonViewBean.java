@@ -18,16 +18,10 @@
  */
 package eu.ueb.acem.web.viewbeans.gris;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.web.viewbeans.AbstractViewBean;
+import eu.ueb.acem.web.viewbeans.Pickable;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
@@ -36,129 +30,42 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
  * @since 2014-02-25
  * 
  */
-public class PersonViewBean extends AbstractViewBean implements Serializable, Comparable<PersonViewBean> {
+public interface PersonViewBean extends Pickable, Comparable<PersonViewBean> {
 
-	private static final long serialVersionUID = 4401967530594259861L;
+	Person getDomainBean();
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(PersonViewBean.class);
+	void setDomainBean(Person domainBean);
 
-	private Person domainBean;
+	List<OrganisationViewBean> getOrganisationViewBeans();
 
-	private List<OrganisationViewBean> organisationViewBeans;
+	String getName();
 
-	private List<ToolCategoryViewBean> favoriteToolCategoryViewBeans;
+	void setName(String name);
 
-	private String name;
+	String getLogin();
 
-	private String login;
+	void setLogin(String login);
 
-	private String password;
+	String getPassword();
 
-	private String email;
+	void setPassword(String password);
 
-	private String language;
+	String getEmail();
 
-	private Boolean administrator;
+	void setEmail(String email);
 	
-	private Boolean teacher;
+	String getLanguage();
 
-	public PersonViewBean() {
-		organisationViewBeans = new ArrayList<OrganisationViewBean>();
-		favoriteToolCategoryViewBeans = new ArrayList<ToolCategoryViewBean>();
-	}
+	void setLanguage(String language);
 
-	public PersonViewBean(Person person) {
-		this();
-		setDomainBean(person);
-	}
+	Boolean getAdministrator();
 
-	public Person getDomainBean() {
-		return domainBean;
-	}
+	void setAdministrator(Boolean administrator);
 
-	public void setDomainBean(Person domainBean) {
-		this.domainBean = domainBean;
-		setId(domainBean.getId());
-		setName(domainBean.getName());
-		setLogin(domainBean.getLogin());
-		setPassword(domainBean.getPassword());
-		setEmail(domainBean.getEmail());
-		setLanguage(domainBean.getLanguage());
-		setAdministrator(domainBean.isAdministrator());
-		setTeacher(domainBean.isTeacher());
-		for (ResourceCategory toolCategory : domainBean.getFavoriteToolCategories()) {
-			favoriteToolCategoryViewBeans.add(new ToolCategoryViewBean(toolCategory));
-		}
-	}
+	Boolean getTeacher();
 
-	public List<OrganisationViewBean> getOrganisationViewBeans() {
-		return organisationViewBeans;
-	}
+	void setTeacher(Boolean teacher);
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-	public Boolean getAdministrator() {
-		return administrator;
-	}
-
-	public void setAdministrator(Boolean administrator) {
-		this.administrator = administrator;
-	}
-
-	public Boolean getTeacher() {
-		return teacher;
-	}
-
-	public void setTeacher(Boolean teacher) {
-		this.teacher = teacher;
-	}
-
-	public List<ToolCategoryViewBean> getFavoriteToolCategoryViewBeans() {
-		return favoriteToolCategoryViewBeans;
-	}
-
-	@Override
-	public int compareTo(PersonViewBean o) {
-		return getDomainBean().compareTo(o.getDomainBean());
-	}
+	List<ToolCategoryViewBean> getFavoriteToolCategoryViewBeans();
 
 }

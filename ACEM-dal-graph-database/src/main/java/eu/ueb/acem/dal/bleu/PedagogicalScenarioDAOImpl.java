@@ -118,6 +118,13 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 	}
 
 	@Override
+	public PedagogicalScenario create(String name, String description) {
+		PedagogicalScenario entity = new PedagogicalScenarioNode(name, description);
+		entity.setCreationDate(TimeTicker.tick());
+		return super.create(entity);
+	}
+
+	@Override
 	public PedagogicalScenario update(PedagogicalScenario entity) {
 		entity.setModificationDate(TimeTicker.tick());
 		return super.update(entity);
