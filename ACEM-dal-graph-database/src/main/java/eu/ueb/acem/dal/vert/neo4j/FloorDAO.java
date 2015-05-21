@@ -16,43 +16,43 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.violet;
+package eu.ueb.acem.dal.vert.neo4j;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.violet.neo4j.DegreeRepository;
-import eu.ueb.acem.domain.beans.violet.Degree;
-import eu.ueb.acem.domain.beans.violet.neo4j.DegreeNode;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.domain.beans.vert.Floor;
+import eu.ueb.acem.domain.beans.vert.neo4j.FloorNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
-@Repository("diplomaDAO")
-public class DegreeDAO extends AbstractDAO<Degree, DegreeNode> {
+@Repository("floorDAO")
+public class FloorDAO extends AbstractDAO<Floor, FloorNode> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 20097765170954629L;
+	private static final long serialVersionUID = -916181043585068038L;
 
 	@Inject
-	private DegreeRepository repository;
+	private FloorRepository repository;
 
 	@Override
-	protected final GenericRepository<DegreeNode> getRepository() {
+	protected final GenericRepository<FloorNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Degree entity) {
+	protected final void initializeCollections(Floor entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getCredits());
+			neo4jOperations.fetch(entity.getBuilding());
+			neo4jOperations.fetch(entity.getRooms());
 		}
 	}
 

@@ -31,10 +31,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.violet.ClassDAO;
-import eu.ueb.acem.dal.violet.CourseDAO;
-import eu.ueb.acem.dal.violet.CreditDAO;
-import eu.ueb.acem.dal.violet.DegreeDAO;
+import eu.ueb.acem.dal.violet.neo4j.ClassDAO;
+import eu.ueb.acem.dal.violet.neo4j.CourseDAO;
+import eu.ueb.acem.dal.violet.neo4j.CreditDAO;
+import eu.ueb.acem.dal.violet.neo4j.DegreeDAO;
 
 /**
  * @author Grégoire Colbert

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal;
+package eu.ueb.acem.dal.neo4j;
 
 import java.io.Serializable;
 

@@ -16,15 +16,14 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.violet;
+package eu.ueb.acem.dal.violet.neo4j;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.violet.neo4j.CourseRepository;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.neo4j.CourseNode;
 

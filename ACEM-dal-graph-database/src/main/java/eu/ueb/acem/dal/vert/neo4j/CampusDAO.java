@@ -16,45 +16,42 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.violet;
+package eu.ueb.acem.dal.vert.neo4j;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.violet.neo4j.ClassRepository;
-import eu.ueb.acem.domain.beans.violet.Class;
-import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.domain.beans.vert.Campus;
+import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
-@Repository("classDAO")
-public class ClassDAO extends AbstractDAO<Class, ClassNode> {
+@Repository("campusDAO")
+public class CampusDAO extends AbstractDAO<Campus, CampusNode> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 3463144134744279313L;
+	private static final long serialVersionUID = 7713450512674141045L;
 
 	@Inject
-	private ClassRepository repository;
+	private CampusRepository repository;
 
 	@Override
-	protected final GenericRepository<ClassNode> getRepository() {
+	protected final GenericRepository<CampusNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Class entity) {
+	protected final void initializeCollections(Campus entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getCourse());
-			neo4jOperations.fetch(entity.getPedagogicalScenarios());
-			neo4jOperations.fetch(entity.getLocation());
+			neo4jOperations.fetch(entity.getBuildings());
 		}
 	}
 

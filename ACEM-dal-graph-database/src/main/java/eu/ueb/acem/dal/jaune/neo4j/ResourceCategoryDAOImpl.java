@@ -16,45 +16,51 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.vert;
-
+package eu.ueb.acem.dal.jaune.neo4j;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.vert.neo4j.RoomRepository;
-import eu.ueb.acem.domain.beans.vert.Room;
-import eu.ueb.acem.domain.beans.vert.neo4j.RoomNode;
+import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2014-02-07
+ * @since 2014-04-09
  * 
  */
-@Repository("roomDAO")
-public class RoomDAO extends AbstractDAO<Room, RoomNode> {
+@Repository("resourceCategoryDAO")
+public class ResourceCategoryDAOImpl extends AbstractDAO<ResourceCategory, ResourceCategoryNode> implements ResourceCategoryDAO<Long> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 8372049333627234514L;
+	private static final long serialVersionUID = -340108444569929110L;
 
 	@Inject
-	private RoomRepository repository;
+	private ResourceCategoryRepository repository;
 
 	@Override
-	protected final GenericRepository<RoomNode> getRepository() {
+	protected final GenericRepository<ResourceCategoryNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Room entity) {
+	protected final void initializeCollections(ResourceCategory entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getFloor());
+			neo4jOperations.fetch(entity.getAnswers());
+			neo4jOperations.fetch(entity.getPedagogicalActivities());
+			neo4jOperations.fetch(entity.getResources());
 		}
 	}
 
+	@Override
+	public ResourceCategory create(String name, String description, String iconFileName) {
+		return super.create(new ResourceCategoryNode(name, description, iconFileName));
+	}
+	
 }

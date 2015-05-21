@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.rouge;
+package eu.ueb.acem.dal.rouge.neo4j;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,52 +26,50 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.rouge.neo4j.InstitutionRepository;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.dal.rouge.OrganisationDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.rouge.Institution;
-import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
-@Repository("institutionDAO")
-public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> implements OrganisationDAO<Long, Institution> {
+@Repository("communityDAO")
+public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implements OrganisationDAO<Long, Community> {
 
 	/**
 	 * FOr serialization.
 	 */
-	private static final long serialVersionUID = -1248475351876837707L;
+	private static final long serialVersionUID = -6005681827386719691L;
 
 	@Inject
-	private InstitutionRepository repository;
+	private CommunityRepository repository;
 
 	@Override
-	protected final GenericRepository<InstitutionNode> getRepository() {
+	protected final GenericRepository<CommunityNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Institution entity) {
+	protected final void initializeCollections(Community entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getPossessedResources());
 			neo4jOperations.fetch(entity.getViewedResources());
 			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getCommunities());
-			neo4jOperations.fetch(entity.getAdministrativeDepartments());
-			neo4jOperations.fetch(entity.getTeachingDepartments());
+			neo4jOperations.fetch(entity.getInstitutions());
 		}
 	}
 
 	@Override
-	public Collection<Institution> retrieveSupportServicesForPerson(Person person) {
-		Iterable<InstitutionNode> endResults = repository.getSupportServicesForPerson(person.getId());
-		Collection<Institution> collection = new HashSet<Institution>();
+	public Collection<Community> retrieveSupportServicesForPerson(Person person) {
+		Iterable<CommunityNode> endResults = repository.getSupportServicesForPerson(person.getId());
+		Collection<Community> collection = new HashSet<Community>();
 		if (endResults.iterator() != null) {
-			Iterator<InstitutionNode> iterator = endResults.iterator();
+			Iterator<CommunityNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -80,8 +78,8 @@ public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> im
 	}
 
 	@Override
-	public Institution create(String name, String shortname, String iconFileName) {
-		return super.create(new InstitutionNode(name, shortname, iconFileName));
+	public Community create(String name, String shortname, String iconFileName) {
+		return super.create(new CommunityNode(name, shortname, iconFileName));
 	}
 
 }

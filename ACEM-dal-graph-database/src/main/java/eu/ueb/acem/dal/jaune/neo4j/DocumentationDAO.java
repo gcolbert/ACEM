@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune;
+package eu.ueb.acem.dal.jaune.neo4j;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,14 +26,14 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.jaune.neo4j.EquipmentRepository;
+import eu.ueb.acem.dal.jaune.ResourceDAO;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.jaune.Equipment;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
@@ -41,37 +41,41 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * @since 2014-03-11
  * 
  */
-@Repository("equipmentDAO")
-public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implements ResourceDAO<Long, Equipment> {
+@Repository("documentationDAO")
+public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNode> implements
+		ResourceDAO<Long, Documentation> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = -8561396431760674336L;
+	private static final long serialVersionUID = 9174057115460081629L;
 
 	@Inject
-	private EquipmentRepository repository;
+	private DocumentationRepository repository;
 
 	@Override
-	protected final GenericRepository<EquipmentNode> getRepository() {
+	protected final GenericRepository<DocumentationNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Equipment entity) {
+	protected final void initializeCollections(Documentation entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getCategories());
 			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
 			neo4jOperations.fetch(entity.getOrganisationSupportingResource());
 			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getStorageLocations());
+			// Resources that are documented by the Documentation entity
+			neo4jOperations.fetch(entity.getResources());
+            // Documentations about this Documentation entity should be empty
 			neo4jOperations.fetch(entity.getDocumentations());
 		}
 	}
 
 	/**
-	 * Returns the categories containing at least one "Equipment" entity.
+	 * Returns the categories containing at least one "Documentation"
+	 * entity.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategories() {
@@ -87,8 +91,8 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 	}
 
 	/**
-	 * Returns the categories containing at least one "Equipment" entity that
-	 * the given person can see.
+	 * Returns the categories containing at least one "Documentation" entity
+	 * that the given person can see.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategoriesForPerson(Person person) {
@@ -104,13 +108,13 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 	}
 
 	@Override
-	public Collection<Equipment> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<EquipmentNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<Equipment> collection = new HashSet<Equipment>();
+	public Collection<Documentation> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<DocumentationNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<Documentation> collection = new HashSet<Documentation>();
 		if (endResults.iterator() != null) {
-			Iterator<EquipmentNode> iterator = endResults.iterator();
+			Iterator<DocumentationNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				Equipment entity = iterator.next();
+				Documentation entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}
@@ -119,13 +123,13 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 	}
 
 	@Override
-	public Collection<Equipment> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<EquipmentNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
-		Collection<Equipment> collection = new HashSet<Equipment>();
+	public Collection<Documentation> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<DocumentationNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Collection<Documentation> collection = new HashSet<Documentation>();
 		if (endResults.iterator() != null) {
-			Iterator<EquipmentNode> iterator = endResults.iterator();
+			Iterator<DocumentationNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				Equipment entity = iterator.next();
+				Documentation entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}
@@ -135,7 +139,7 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 
 	@Override
 	public Resource create(String name, String iconFileName) {
-		return super.create(new EquipmentNode(name, iconFileName));
+		return super.create(new DocumentationNode(name, iconFileName));
 	}
 
 }

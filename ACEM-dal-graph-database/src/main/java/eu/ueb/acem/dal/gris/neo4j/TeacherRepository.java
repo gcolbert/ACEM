@@ -21,7 +21,7 @@ package eu.ueb.acem.dal.gris.neo4j;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.query.Param;
 
-import eu.ueb.acem.dal.GenericRepository;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 
 /**

@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.rouge;
+package eu.ueb.acem.dal.rouge.neo4j;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,36 +26,36 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.rouge.neo4j.CommunityRepository;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.dal.rouge.OrganisationDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.rouge.Community;
-import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
+import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
-@Repository("communityDAO")
-public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implements OrganisationDAO<Long, Community> {
+@Repository("administrativeDepartmentDAO")
+public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepartment, AdministrativeDepartmentNode> implements OrganisationDAO<Long, AdministrativeDepartment> {
 
 	/**
-	 * FOr serialization.
+	 * For serialization.
 	 */
-	private static final long serialVersionUID = -6005681827386719691L;
+	private static final long serialVersionUID = 515628413371430770L;
 
 	@Inject
-	private CommunityRepository repository;
+	private AdministrativeDepartmentRepository repository;
 
 	@Override
-	protected final GenericRepository<CommunityNode> getRepository() {
+	protected final GenericRepository<AdministrativeDepartmentNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Community entity) {
+	protected final void initializeCollections(AdministrativeDepartment entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getPossessedResources());
 			neo4jOperations.fetch(entity.getViewedResources());
@@ -65,11 +65,11 @@ public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implemen
 	}
 
 	@Override
-	public Collection<Community> retrieveSupportServicesForPerson(Person person) {
-		Iterable<CommunityNode> endResults = repository.getSupportServicesForPerson(person.getId());
-		Collection<Community> collection = new HashSet<Community>();
+	public Collection<AdministrativeDepartment> retrieveSupportServicesForPerson(Person person) {
+		Iterable<AdministrativeDepartmentNode> endResults = repository.getSupportServicesForPerson(person.getId());
+		Collection<AdministrativeDepartment> collection = new HashSet<AdministrativeDepartment>();
 		if (endResults.iterator() != null) {
-			Iterator<CommunityNode> iterator = endResults.iterator();
+			Iterator<AdministrativeDepartmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -78,8 +78,8 @@ public class CommunityDAO extends AbstractDAO<Community, CommunityNode> implemen
 	}
 
 	@Override
-	public Community create(String name, String shortname, String iconFileName) {
-		return super.create(new CommunityNode(name, shortname, iconFileName));
+	public AdministrativeDepartment create(String name, String shortname, String iconFileName) {
+		return super.create(new AdministrativeDepartmentNode(name, shortname, iconFileName));
 	}
 
 }

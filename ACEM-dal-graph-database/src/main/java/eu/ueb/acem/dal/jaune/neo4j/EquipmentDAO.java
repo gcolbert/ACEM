@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune;
+package eu.ueb.acem.dal.jaune.neo4j;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,14 +26,14 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.jaune.neo4j.PedagogicalAndDocumentaryResourcesRepository;
+import eu.ueb.acem.dal.jaune.ResourceDAO;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
+import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
 
 /**
@@ -41,39 +41,37 @@ import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
  * @since 2014-03-11
  * 
  */
-@Repository("pedagogicalAndDocumentaryResourceDAO")
-public class PedagogicalAndDocumentaryResourceDAO extends
-		AbstractDAO<PedagogicalAndDocumentaryResource, PedagogicalAndDocumentaryResourceNode> implements
-		ResourceDAO<Long, PedagogicalAndDocumentaryResource> {
+@Repository("equipmentDAO")
+public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implements ResourceDAO<Long, Equipment> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 3560652375213346842L;
+	private static final long serialVersionUID = -8561396431760674336L;
 
 	@Inject
-	private PedagogicalAndDocumentaryResourcesRepository repository;
+	private EquipmentRepository repository;
 
 	@Override
-	protected final GenericRepository<PedagogicalAndDocumentaryResourceNode> getRepository() {
+	protected final GenericRepository<EquipmentNode> getRepository() {
 		return repository;
 	}
-	
+
 	@Override
-	protected final void initializeCollections(PedagogicalAndDocumentaryResource entity) {
+	protected final void initializeCollections(Equipment entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getCategories());
 			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
 			neo4jOperations.fetch(entity.getOrganisationSupportingResource());
 			neo4jOperations.fetch(entity.getUseModes());
+			neo4jOperations.fetch(entity.getStorageLocations());
 			neo4jOperations.fetch(entity.getDocumentations());
 		}
 	}
 
 	/**
-	 * Returns the categories containing at least one
-	 * "PedagogicalAndDocumentaryResource" entity.
+	 * Returns the categories containing at least one "Equipment" entity.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategories() {
@@ -89,8 +87,8 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	}
 
 	/**
-	 * Returns the categories containing at least one
-	 * "PedagogicalAndDocumentaryResource" entity that the given person can see.
+	 * Returns the categories containing at least one "Equipment" entity that
+	 * the given person can see.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategoriesForPerson(Person person) {
@@ -106,13 +104,13 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	}
 
 	@Override
-	public Collection<PedagogicalAndDocumentaryResource> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
+	public Collection<Equipment> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<EquipmentNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<Equipment> collection = new HashSet<Equipment>();
 		if (endResults.iterator() != null) {
-			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
+			Iterator<EquipmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				PedagogicalAndDocumentaryResource entity = iterator.next();
+				Equipment entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}
@@ -121,13 +119,13 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	}
 
 	@Override
-	public Collection<PedagogicalAndDocumentaryResource> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
-		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
+	public Collection<Equipment> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<EquipmentNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Collection<Equipment> collection = new HashSet<Equipment>();
 		if (endResults.iterator() != null) {
-			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
+			Iterator<EquipmentNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				PedagogicalAndDocumentaryResource entity = iterator.next();
+				Equipment entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}
@@ -137,7 +135,7 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 
 	@Override
 	public Resource create(String name, String iconFileName) {
-		return super.create(new PedagogicalAndDocumentaryResourceNode(name, iconFileName));
+		return super.create(new EquipmentNode(name, iconFileName));
 	}
 
 }

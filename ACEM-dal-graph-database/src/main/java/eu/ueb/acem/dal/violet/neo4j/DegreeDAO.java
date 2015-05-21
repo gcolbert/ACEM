@@ -16,50 +16,43 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.bleu;
+package eu.ueb.acem.dal.violet.neo4j;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.bleu.neo4j.PedagogicalActivityRepository;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.domain.beans.violet.Degree;
+import eu.ueb.acem.domain.beans.violet.neo4j.DegreeNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2013-11-20
+ * @since 2014-02-07
  * 
  */
-@Repository("pedagogicalActivityDAO")
-public class PedagogicalActivityDAOImpl extends AbstractDAO<PedagogicalActivity, PedagogicalActivityNode> implements PedagogicalActivityDAO<Long> {
+@Repository("diplomaDAO")
+public class DegreeDAO extends AbstractDAO<Degree, DegreeNode> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = -8533892314452651184L;
+	private static final long serialVersionUID = 20097765170954629L;
 
 	@Inject
-	private PedagogicalActivityRepository repository;
+	private DegreeRepository repository;
 
 	@Override
-	protected final GenericRepository<PedagogicalActivityNode> getRepository() {
+	protected final GenericRepository<DegreeNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(PedagogicalActivity entity) {
+	protected final void initializeCollections(Degree entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getResourceCategories());
-			neo4jOperations.fetch(entity.getScenarios());
+			neo4jOperations.fetch(entity.getCredits());
 		}
-	}
-
-	@Override
-	public PedagogicalActivity create(String name) {
-		return super.create(new PedagogicalActivityNode(name));
 	}
 
 }

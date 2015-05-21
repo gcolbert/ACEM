@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal;
+package eu.ueb.acem.dal.neo4j;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -26,6 +26,8 @@ import java.util.Iterator;
 import javax.inject.Inject;
 
 import org.springframework.data.neo4j.template.Neo4jOperations;
+
+import eu.ueb.acem.dal.DAO;
 
 public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Serializable {
 

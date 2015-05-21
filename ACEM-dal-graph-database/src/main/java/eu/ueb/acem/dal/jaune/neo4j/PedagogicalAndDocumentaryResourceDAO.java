@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune;
+package eu.ueb.acem.dal.jaune.neo4j;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,38 +26,41 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.jaune.neo4j.SoftwareRepository;
+import eu.ueb.acem.dal.jaune.ResourceDAO;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.Software;
+import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-03-11
+ * 
  */
-@Repository("softwareDAO")
-public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements ResourceDAO<Long, Software> {
+@Repository("pedagogicalAndDocumentaryResourceDAO")
+public class PedagogicalAndDocumentaryResourceDAO extends
+		AbstractDAO<PedagogicalAndDocumentaryResource, PedagogicalAndDocumentaryResourceNode> implements
+		ResourceDAO<Long, PedagogicalAndDocumentaryResource> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 9036527207136169412L;
+	private static final long serialVersionUID = 3560652375213346842L;
 
 	@Inject
-	private SoftwareRepository repository;
+	private PedagogicalAndDocumentaryResourcesRepository repository;
 
 	@Override
-	protected final GenericRepository<SoftwareNode> getRepository() {
+	protected final GenericRepository<PedagogicalAndDocumentaryResourceNode> getRepository() {
 		return repository;
 	}
-
+	
 	@Override
-	protected final void initializeCollections(Software entity) {
+	protected final void initializeCollections(PedagogicalAndDocumentaryResource entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getCategories());
 			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
@@ -69,7 +72,8 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 	}
 
 	/**
-	 * Returns the categories containing at least one "Software" entity.
+	 * Returns the categories containing at least one
+	 * "PedagogicalAndDocumentaryResource" entity.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategories() {
@@ -85,7 +89,8 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 	}
 
 	/**
-	 * Returns the categories containing at least one "Software" entity.
+	 * Returns the categories containing at least one
+	 * "PedagogicalAndDocumentaryResource" entity that the given person can see.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategoriesForPerson(Person person) {
@@ -100,17 +105,14 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 		return collection;
 	}
 
-	/**
-	 * Returns the categories containing at least one "Software" entity that the given person can see.
-	 */
 	@Override
-	public Collection<Software> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<SoftwareNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<Software> collection = new HashSet<Software>();
+	public Collection<PedagogicalAndDocumentaryResource> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
 		if (endResults.iterator() != null) {
-			Iterator<SoftwareNode> iterator = endResults.iterator();
+			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				Software entity = iterator.next();
+				PedagogicalAndDocumentaryResource entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}
@@ -119,13 +121,13 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 	}
 
 	@Override
-	public Collection<Software> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<SoftwareNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
-		Collection<Software> collection = new HashSet<Software>();
+	public Collection<PedagogicalAndDocumentaryResource> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<PedagogicalAndDocumentaryResourceNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
 		if (endResults.iterator() != null) {
-			Iterator<SoftwareNode> iterator = endResults.iterator();
+			Iterator<PedagogicalAndDocumentaryResourceNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				Software entity = iterator.next();
+				PedagogicalAndDocumentaryResource entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}
@@ -135,6 +137,7 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 
 	@Override
 	public Resource create(String name, String iconFileName) {
-		return super.create(new SoftwareNode(name, iconFileName));
+		return super.create(new PedagogicalAndDocumentaryResourceNode(name, iconFileName));
 	}
+
 }

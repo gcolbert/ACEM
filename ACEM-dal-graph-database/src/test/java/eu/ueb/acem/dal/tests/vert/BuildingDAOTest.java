@@ -31,7 +31,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.vert.BuildingDAO;
+import eu.ueb.acem.dal.vert.neo4j.BuildingDAO;
 import eu.ueb.acem.domain.beans.vert.Building;
 import eu.ueb.acem.domain.beans.vert.neo4j.BuildingNode;
 

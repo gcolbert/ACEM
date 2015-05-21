@@ -16,51 +16,45 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune;
+package eu.ueb.acem.dal.violet.neo4j;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.jaune.neo4j.ResourceCategoryRepository;
-import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.violet.neo4j.ClassNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2014-04-09
+ * @since 2014-02-07
  * 
  */
-@Repository("resourceCategoryDAO")
-public class ResourceCategoryDAOImpl extends AbstractDAO<ResourceCategory, ResourceCategoryNode> implements ResourceCategoryDAO<Long> {
+@Repository("classDAO")
+public class ClassDAO extends AbstractDAO<Class, ClassNode> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = -340108444569929110L;
+	private static final long serialVersionUID = 3463144134744279313L;
 
 	@Inject
-	private ResourceCategoryRepository repository;
+	private ClassRepository repository;
 
 	@Override
-	protected final GenericRepository<ResourceCategoryNode> getRepository() {
+	protected final GenericRepository<ClassNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(ResourceCategory entity) {
+	protected final void initializeCollections(Class entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getAnswers());
-			neo4jOperations.fetch(entity.getPedagogicalActivities());
-			neo4jOperations.fetch(entity.getResources());
+			neo4jOperations.fetch(entity.getCourse());
+			neo4jOperations.fetch(entity.getPedagogicalScenarios());
+			neo4jOperations.fetch(entity.getLocation());
 		}
 	}
 
-	@Override
-	public ResourceCategory create(String name, String description, String iconFileName) {
-		return super.create(new ResourceCategoryNode(name, description, iconFileName));
-	}
-	
 }

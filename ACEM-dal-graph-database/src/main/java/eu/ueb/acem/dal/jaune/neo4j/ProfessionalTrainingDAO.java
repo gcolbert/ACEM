@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune;
+package eu.ueb.acem.dal.jaune.neo4j;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,9 +26,9 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.jaune.neo4j.ProfessionalTrainingRepository;
+import eu.ueb.acem.dal.jaune.ResourceDAO;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.Resource;

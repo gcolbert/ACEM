@@ -16,44 +16,50 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.vert;
+package eu.ueb.acem.dal.bleu.neo4j;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.vert.neo4j.CampusRepository;
-import eu.ueb.acem.domain.beans.vert.Campus;
-import eu.ueb.acem.domain.beans.vert.neo4j.CampusNode;
+import eu.ueb.acem.dal.bleu.PedagogicalActivityDAO;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalActivityNode;
 
 /**
  * @author Grégoire Colbert
- * @since 2014-02-07
+ * @since 2013-11-20
  * 
  */
-@Repository("campusDAO")
-public class CampusDAO extends AbstractDAO<Campus, CampusNode> {
+@Repository("pedagogicalActivityDAO")
+public class PedagogicalActivityDAOImpl extends AbstractDAO<PedagogicalActivity, PedagogicalActivityNode> implements PedagogicalActivityDAO<Long> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 7713450512674141045L;
+	private static final long serialVersionUID = -8533892314452651184L;
 
 	@Inject
-	private CampusRepository repository;
+	private PedagogicalActivityRepository repository;
 
 	@Override
-	protected final GenericRepository<CampusNode> getRepository() {
+	protected final GenericRepository<PedagogicalActivityNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Campus entity) {
+	protected final void initializeCollections(PedagogicalActivity entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getBuildings());
+			neo4jOperations.fetch(entity.getResourceCategories());
+			neo4jOperations.fetch(entity.getScenarios());
 		}
+	}
+
+	@Override
+	public PedagogicalActivity create(String name) {
+		return super.create(new PedagogicalActivityNode(name));
 	}
 
 }

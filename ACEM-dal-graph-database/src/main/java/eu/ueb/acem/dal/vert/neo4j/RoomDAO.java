@@ -16,44 +16,43 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.violet;
+package eu.ueb.acem.dal.vert.neo4j;
+
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.violet.neo4j.CreditRepository;
-import eu.ueb.acem.domain.beans.violet.Credit;
-import eu.ueb.acem.domain.beans.violet.neo4j.CreditNode;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.domain.beans.vert.Room;
+import eu.ueb.acem.domain.beans.vert.neo4j.RoomNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
-@Repository("creditDAO")
-public class CreditDAO extends AbstractDAO<Credit, CreditNode> {
+@Repository("roomDAO")
+public class RoomDAO extends AbstractDAO<Room, RoomNode> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = -7183456920407343870L;
+	private static final long serialVersionUID = 8372049333627234514L;
 
 	@Inject
-	private CreditRepository repository;
+	private RoomRepository repository;
 
 	@Override
-	protected final GenericRepository<CreditNode> getRepository() {
+	protected final GenericRepository<RoomNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Credit entity) {
+	protected final void initializeCollections(Room entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getCourses());
-			neo4jOperations.fetch(entity.getDegrees());
+			neo4jOperations.fetch(entity.getFloor());
 		}
 	}
 

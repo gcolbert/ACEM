@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune;
+package eu.ueb.acem.dal.jaune.neo4j;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,56 +26,50 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.AbstractDAO;
-import eu.ueb.acem.dal.GenericRepository;
-import eu.ueb.acem.dal.jaune.neo4j.DocumentationRepository;
+import eu.ueb.acem.dal.jaune.ResourceDAO;
+import eu.ueb.acem.dal.neo4j.AbstractDAO;
+import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
+import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
+import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
 
 /**
  * @author Grégoire Colbert
  * @since 2014-03-11
- * 
  */
-@Repository("documentationDAO")
-public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNode> implements
-		ResourceDAO<Long, Documentation> {
+@Repository("softwareDAO")
+public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements ResourceDAO<Long, Software> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 9174057115460081629L;
+	private static final long serialVersionUID = 9036527207136169412L;
 
 	@Inject
-	private DocumentationRepository repository;
+	private SoftwareRepository repository;
 
 	@Override
-	protected final GenericRepository<DocumentationNode> getRepository() {
+	protected final GenericRepository<SoftwareNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(Documentation entity) {
+	protected final void initializeCollections(Software entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getCategories());
 			neo4jOperations.fetch(entity.getOrganisationsHavingAccessToResource());
 			neo4jOperations.fetch(entity.getOrganisationPossessingResource());
 			neo4jOperations.fetch(entity.getOrganisationSupportingResource());
 			neo4jOperations.fetch(entity.getUseModes());
-			// Resources that are documented by the Documentation entity
-			neo4jOperations.fetch(entity.getResources());
-            // Documentations about this Documentation entity should be empty
 			neo4jOperations.fetch(entity.getDocumentations());
 		}
 	}
 
 	/**
-	 * Returns the categories containing at least one "Documentation"
-	 * entity.
+	 * Returns the categories containing at least one "Software" entity.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategories() {
@@ -91,8 +85,7 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNo
 	}
 
 	/**
-	 * Returns the categories containing at least one "Documentation" entity
-	 * that the given person can see.
+	 * Returns the categories containing at least one "Software" entity.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategoriesForPerson(Person person) {
@@ -107,14 +100,17 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNo
 		return collection;
 	}
 
+	/**
+	 * Returns the categories containing at least one "Software" entity that the given person can see.
+	 */
 	@Override
-	public Collection<Documentation> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<DocumentationNode> endResults = repository.getEntitiesWithCategory(category.getId());
-		Collection<Documentation> collection = new HashSet<Documentation>();
+	public Collection<Software> retrieveAllWithCategory(ResourceCategory category) {
+		Iterable<SoftwareNode> endResults = repository.getEntitiesWithCategory(category.getId());
+		Collection<Software> collection = new HashSet<Software>();
 		if (endResults.iterator() != null) {
-			Iterator<DocumentationNode> iterator = endResults.iterator();
+			Iterator<SoftwareNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				Documentation entity = iterator.next();
+				Software entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}
@@ -123,13 +119,13 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNo
 	}
 
 	@Override
-	public Collection<Documentation> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<DocumentationNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
-		Collection<Documentation> collection = new HashSet<Documentation>();
+	public Collection<Software> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
+		Iterable<SoftwareNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Collection<Software> collection = new HashSet<Software>();
 		if (endResults.iterator() != null) {
-			Iterator<DocumentationNode> iterator = endResults.iterator();
+			Iterator<SoftwareNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
-				Documentation entity = iterator.next();
+				Software entity = iterator.next();
 				initializeCollections(entity);
 				collection.add(entity);
 			}
@@ -139,7 +135,6 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNo
 
 	@Override
 	public Resource create(String name, String iconFileName) {
-		return super.create(new DocumentationNode(name, iconFileName));
+		return super.create(new SoftwareNode(name, iconFileName));
 	}
-
 }
