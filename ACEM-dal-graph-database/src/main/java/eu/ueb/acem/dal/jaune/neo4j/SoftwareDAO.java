@@ -30,7 +30,6 @@ import eu.ueb.acem.dal.jaune.ResourceDAO;
 import eu.ueb.acem.dal.neo4j.AbstractDAO;
 import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
@@ -134,7 +133,7 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 	}
 
 	@Override
-	public Resource create(String name, String iconFileName) {
+	public Software create(String name, String iconFileName) {
 		return super.create(new SoftwareNode(name, iconFileName));
 	}
 }

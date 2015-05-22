@@ -31,7 +31,6 @@ import eu.ueb.acem.dal.neo4j.AbstractDAO;
 import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.Documentation;
-import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
@@ -138,7 +137,7 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNo
 	}
 
 	@Override
-	public Resource create(String name, String iconFileName) {
+	public Documentation create(String name, String iconFileName) {
 		return super.create(new DocumentationNode(name, iconFileName));
 	}
 

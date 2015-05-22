@@ -72,6 +72,10 @@ public class ClassNode extends AbstractNode implements Class {
 	public ClassNode() {
 	}
 
+	public ClassNode(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public String getName() {
 		return name;

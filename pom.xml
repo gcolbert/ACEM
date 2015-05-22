@@ -102,9 +102,10 @@
 		</pluginManagement>
 	</build>
 	<modules>
+		<module>ACEM-domain-beans</module>
 		<module>ACEM-dal-graph-database</module>
 		<module>ACEM-dal-relational-database</module>
-		<module>ACEM-domain-beans</module>
+ 		<module>ACEM-dal-common</module>
 		<module>ACEM-domain-services</module>
 		<module>ACEM-web-jsf-servlet</module>
   </modules>

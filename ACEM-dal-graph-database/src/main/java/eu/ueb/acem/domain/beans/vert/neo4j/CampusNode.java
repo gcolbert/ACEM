@@ -56,9 +56,15 @@ public class CampusNode extends PhysicalSpaceNode implements Campus {
 
 	public CampusNode() {
 	}
-	
+
 	public CampusNode(String name) {
 		this.name = name;
+	}
+
+	public CampusNode(String name, Double latitude, Double longitude) {
+		this(name);
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 	@Override

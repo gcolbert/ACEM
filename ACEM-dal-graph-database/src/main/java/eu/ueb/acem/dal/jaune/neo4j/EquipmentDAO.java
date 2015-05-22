@@ -31,7 +31,6 @@ import eu.ueb.acem.dal.neo4j.AbstractDAO;
 import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
-import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
 import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
@@ -134,7 +133,7 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 	}
 
 	@Override
-	public Resource create(String name, String iconFileName) {
+	public Equipment create(String name, String iconFileName) {
 		return super.create(new EquipmentNode(name, iconFileName));
 	}
 

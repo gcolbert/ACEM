@@ -99,6 +99,13 @@
 		<!-- Test -->
 		<dependency>
 			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-common</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-dal-graph-database</artifactId>
 			<version>${project.version}</version>
 			<type>test-jar</type>
