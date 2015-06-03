@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:context="http://www.springframework.org/schema/context"    
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+	<context:annotation-config />
+	<context:component-scan base-package="eu.ueb.acem.dal, eu.ueb.acem.domain.beans" />
+
+	<!--
+		PersistenceAnnotationBeanPostProcessor looks for @PersistenceContext
+		to set entity manager in dao
+	-->
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="JDBCDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" lazy-init="true">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="maxActive" value="100"/>
+		<property name="maxIdle" value="30"/>
+		<property name="maxWait" value="100"/>
+		<property name="url" value="jdbc:hsqldb:file:database-test/ACEM-test-database" />
+		<property name="username" value="admin" />
+		<property name="password" value="secret" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="JDBCDataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true" />
+				<property name="generateDdl" value="true" />
+				<property name="database" value="HSQL" />
+			</bean>
+		</property>
+		<property name="persistenceXmlLocation" value="classpath*:/dal-relational-database-test-persistence.xml" />
+		<property name="jpaProperties" ref="jpaProperties" />
+	</bean>
+
+	<jee:jndi-lookup id="JNDIDataSource" jndi-name="JDBCDataSource" lookup-on-startup="false" expected-type="javax.sql.DataSource"/>
+
+	<jpa:repositories base-package="eu.ueb.acem.dal.*.jpa" transaction-manager-ref="txManager"/>
+
+	<tx:annotation-driven transaction-manager="txManager"/>
+
+ 	<util:properties id="jpaProperties">
+		<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+		<prop key="hibernate.cache.use_query_cache">false</prop>
+		<prop key="hibernate.cache.use_second_level_cache">false</prop>
+		<prop key="hibernate.show_sql">true</prop>
+	</util:properties>
+
+</beans>

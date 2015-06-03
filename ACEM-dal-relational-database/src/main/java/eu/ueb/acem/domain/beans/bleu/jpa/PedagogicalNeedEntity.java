@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -42,19 +43,20 @@ public class PedagogicalNeedEntity extends AbstractEntity implements Pedagogical
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 6134742686995586546L;
+	private static final long serialVersionUID = 831188826416445449L;
 
 	private String name;
 
 	private String description;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = PedagogicalNeedEntity.class, fetch = FetchType.LAZY)
+	@JoinTable(name="PedagogicalNeed_relationships")
 	private Set<PedagogicalNeed> parents = new HashSet<PedagogicalNeed>(0);
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = PedagogicalNeedEntity.class, fetch = FetchType.LAZY, mappedBy="parents")
 	private Set<PedagogicalNeed> children = new HashSet<PedagogicalNeed>(0);
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = PedagogicalAnswerEntity.class, fetch = FetchType.LAZY)
 	private Set<PedagogicalAnswer> answers = new HashSet<PedagogicalAnswer>(0);
 
 	public PedagogicalNeedEntity() {

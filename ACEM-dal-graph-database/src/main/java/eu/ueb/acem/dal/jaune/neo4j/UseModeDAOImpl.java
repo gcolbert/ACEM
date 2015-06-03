@@ -52,7 +52,6 @@ public class UseModeDAOImpl extends AbstractDAO<UseMode, UseModeNode> implements
 	@Override
 	protected final void initializeCollections(UseMode entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getReferredOrganisation());
 			neo4jOperations.fetch(entity.getResources());
 		}
 	}

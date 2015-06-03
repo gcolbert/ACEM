@@ -22,11 +22,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
+import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
 import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 
 /**
@@ -34,23 +37,23 @@ import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
  * @since 2015-05-20
  * 
  */
-@Entity
+@Entity(name = "PedagogicalAnswer")
+@Table(name = "PedagogicalAnswer")
 public class PedagogicalAnswerEntity extends AbstractEntity implements PedagogicalAnswer {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = 574796833190766677L;
+	private static final long serialVersionUID = -8984075611788924122L;
 
 	private String name;
 
 	private String description;
 
-//	@RelatedTo(elementClass = PedagogicalNeedNode.class, type = "needAnsweredBy", direction = INCOMING)
-	@ManyToMany
+	@ManyToMany(targetEntity = PedagogicalNeedEntity.class, fetch = FetchType.LAZY, mappedBy = "answers")
 	private Set<PedagogicalNeed> pedagogicalNeeds = new HashSet<PedagogicalNeed>(0);
 
-//	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "answeredUsingResourceCategory", direction = OUTGOING)
+	@ManyToMany(targetEntity = ResourceCategoryEntity.class, fetch = FetchType.LAZY)
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
 	public PedagogicalAnswerEntity() {
@@ -98,12 +101,13 @@ public class PedagogicalAnswerEntity extends AbstractEntity implements Pedagogic
 	
 	@Override
 	public Set<ResourceCategory> getResourceCategories() {
-		return resourceCategories;
+		//return resourceCategories;
+		return null;
 	}
 
 	@Override
 	public void setResourceCategories(Set<ResourceCategory> resourceCategories) {
-		this.resourceCategories = resourceCategories;
+		//this.resourceCategories = resourceCategories;
 	}
 
 	@Override

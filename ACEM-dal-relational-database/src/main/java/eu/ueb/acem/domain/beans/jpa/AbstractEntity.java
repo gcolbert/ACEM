@@ -5,9 +5,11 @@ import java.io.Serializable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@MappedSuperclass
 public abstract class AbstractEntity implements Serializable {
 
 	/**

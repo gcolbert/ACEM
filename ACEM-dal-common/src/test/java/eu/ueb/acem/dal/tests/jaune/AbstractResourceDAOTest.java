@@ -165,11 +165,15 @@ public abstract class AbstractResourceDAOTest extends TestCase {
 
 		// We associate the organisation and the resource
 		teachingDepartment.getPossessedResources().add(software);
+		software.setOrganisationPossessingResource(teachingDepartment);
 		teachingDepartment = getTeachingDepartmentDAO().update(teachingDepartment);
+		software = getSoftwareDAO().update(software);
 
 		// We associate the resource and the category
 		category.getResources().add(software);
+		software.getCategories().add(category);
 		category = getResourceCategoryDAO().update(category);
+		software = getSoftwareDAO().update(software);
 
 		Collection<Software> usableSoftwaresOfPersonWorking = getSoftwareDAO().retrieveResourcesInCategoryForPerson(category,
 				personWorkingForOrganisation);
@@ -208,11 +212,15 @@ public abstract class AbstractResourceDAOTest extends TestCase {
 
 		// We associate the organisation and the resource
 		administrativeDepartment.getSupportedResources().add(documentation);
+		documentation.setOrganisationSupportingResource(administrativeDepartment);
 		administrativeDepartment = getAdministrativeDepartmentDAO().update(administrativeDepartment);
+		documentation = getDocumentationDAO().update(documentation);
 
 		// We associate the resource and the category
 		category.getResources().add(documentation);
+		documentation.getCategories().add(category);
 		category = getResourceCategoryDAO().update(category);
+		documentation = getDocumentationDAO().update(documentation);
 
 		Collection<Documentation> usableDocumentationsOfPersonWorking = getDocumentationDAO().retrieveResourcesInCategoryForPerson(category,
 				personWorkingForOrganisation);
@@ -250,8 +258,8 @@ public abstract class AbstractResourceDAOTest extends TestCase {
 		personWorkingForOrganisation = getTeacherDAO().update(personWorkingForOrganisation);
 
 		// We associate the organisation and the resource
-		institution.getSupportedResources().add(equipment);
-		institution = getInstitutionDAO().update(institution);
+		equipment.setOrganisationSupportingResource(institution);
+		equipment = getEquipmentDAO().update(equipment);
 
 		// We associate the resource and the category
 		category.getResources().add(equipment);
@@ -283,7 +291,7 @@ public abstract class AbstractResourceDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t06_TestResourceRetrievalWithImplicitAccessThroughOrganisationsAssociations() {
 
-		Community community = getCommunityDAO().create("Comunity", "COM", null);
+		Community community = getCommunityDAO().create("Community", "COM", null);
 
 		// ***********************************************
 		// We create a math professor
@@ -296,8 +304,10 @@ public abstract class AbstractResourceDAOTest extends TestCase {
 
 		ResourceCategory interactiveWhiteboards = getResourceCategoryDAO().create("Interactive whiteboards", "Interactive whiteboards", null);
 
-		Equipment equipment = getEquipmentDAO().create("A brand new interactive whiteboard", null);
+		Equipment equipmentSupportedByCommunity = getEquipmentDAO().create("A brand new interactive whiteboard", null);
 
+		Equipment equipmentPossessedByMathUniversity = getEquipmentDAO().create("A shiny math electronic whiteboard", null);
+		
 		// We associate the math teacher and the math department
 		mathTeacher.getWorksForOrganisations().add(mathDepartment);
 		mathTeacher = getTeacherDAO().update(mathTeacher);
@@ -306,25 +316,42 @@ public abstract class AbstractResourceDAOTest extends TestCase {
 		mathDepartment.getInstitutions().add(mathUniversity);
 		mathUniversity.getTeachingDepartments().add(mathDepartment);
 		mathDepartment = getTeachingDepartmentDAO().update(mathDepartment);
+		mathUniversity =  getInstitutionDAO().update(mathUniversity);
 
 		// We associate the university with the community
 		mathUniversity.getCommunities().add(community);
 		community.getInstitutions().add(mathUniversity);
 		mathUniversity = getInstitutionDAO().update(mathUniversity);
-
-		// We associate the community and the resource
-		community.getSupportedResources().add(equipment);
 		community = getCommunityDAO().update(community);
 
-		// We associate the resource and the category
-		interactiveWhiteboards.getResources().add(equipment);
-		interactiveWhiteboards = getResourceCategoryDAO().update(interactiveWhiteboards);
+		// We associate the community and the resource it supports
+		community.getSupportedResources().add(equipmentSupportedByCommunity);
+		equipmentSupportedByCommunity.setOrganisationSupportingResource(community);
+		community = getCommunityDAO().update(community);
+		equipmentSupportedByCommunity = getEquipmentDAO().update(equipmentSupportedByCommunity);
 
+		// We associate the university and the resource it possesses
+		mathUniversity.getPossessedResources().add(equipmentPossessedByMathUniversity);
+		equipmentPossessedByMathUniversity.setOrganisationPossessingResource(mathUniversity);
+		mathUniversity = getInstitutionDAO().update(mathUniversity);
+		equipmentPossessedByMathUniversity = getEquipmentDAO().update(equipmentPossessedByMathUniversity);
+
+		// We associate the resource and the category
+		interactiveWhiteboards.getResources().add(equipmentSupportedByCommunity);
+		equipmentSupportedByCommunity = getEquipmentDAO().update(equipmentSupportedByCommunity);
+		interactiveWhiteboards.getResources().add(equipmentPossessedByMathUniversity);
+		equipmentPossessedByMathUniversity = getEquipmentDAO().update(equipmentPossessedByMathUniversity);
+		interactiveWhiteboards = getResourceCategoryDAO().update(interactiveWhiteboards);
+		
 		Collection<Equipment> usableEquipmentsOfMathTeacher = getEquipmentDAO().retrieveResourcesInCategoryForPerson(interactiveWhiteboards,
 				mathTeacher);
+		//assertEquals("There should be two equipments available for the math teacher", 2L, usableEquipmentsOfMathTeacher.size());
 		assertTrue(
-				"The math teacher working for the math department should be able to retrieve the interactive whiteboard possessed by the community, given the organisations are associated.",
-				usableEquipmentsOfMathTeacher.contains(equipment));
+				"The math teacher working for the math department should be able to retrieve the interactive whiteboard possessed by the math university, given the organisations are associated.",
+				usableEquipmentsOfMathTeacher.contains(equipmentPossessedByMathUniversity));
+		assertTrue(
+				"The math teacher working for the math department should be able to retrieve the interactive whiteboard supported by the community, given the organisations are associated.",
+				usableEquipmentsOfMathTeacher.contains(equipmentSupportedByCommunity));
 
 		// *************************************************
 		// We create a biology professor
@@ -340,18 +367,19 @@ public abstract class AbstractResourceDAOTest extends TestCase {
 		Collection<Equipment> usableResourcesOfBiologyTeacher = getEquipmentDAO().retrieveResourcesInCategoryForPerson(interactiveWhiteboards,
 				biologyTeacher);
 		assertFalse(
-				"The biology teacher working for the biology department should not be able to retrieve the interactive whiteboard possessed by the community, given the math university and the community are not yet associated.",
-				usableResourcesOfBiologyTeacher.contains(equipment));
+				"The biology teacher working for the biology university should not be able to retrieve the interactive whiteboard supported by the community, given the biology university and the community are not yet associated.",
+				usableResourcesOfBiologyTeacher.contains(equipmentSupportedByCommunity));
 
 		// We associate the biology university with the community
 		biologyUniversity.getCommunities().add(community);
 		community.getInstitutions().add(biologyUniversity);
 		biologyUniversity = getInstitutionDAO().update(biologyUniversity);
+		community = getCommunityDAO().update(community);
 
 		usableResourcesOfBiologyTeacher = getEquipmentDAO().retrieveResourcesInCategoryForPerson(interactiveWhiteboards, biologyTeacher);
 		assertTrue(
-				"The biology teacher working for the biology department should be able to retrieve the interactive whiteboard possessed by the community, given the math university and the community are now associated.",
-				usableResourcesOfBiologyTeacher.contains(equipment));
+				"The biology teacher working for the biology university should be able to retrieve the interactive whiteboard supported by the community, given the biology university and the community are now associated.",
+				usableResourcesOfBiologyTeacher.contains(equipmentSupportedByCommunity));
 
 		// ************************************************************************
 		// The biology university creates an Internet training for every person
@@ -361,10 +389,14 @@ public abstract class AbstractResourceDAOTest extends TestCase {
 
 		ResourceCategory internetTrainings = getResourceCategoryDAO().create("Internet trainings", "Internet trainings", null);
 		internetTrainings.getResources().add(internetTraining);
+		internetTraining.getCategories().add(internetTrainings);
 		internetTrainings = getResourceCategoryDAO().update(internetTrainings);
+		internetTraining = getProfessionalTrainingDAO().update(internetTraining);
 
 		biologyUniversity.getPossessedResources().add(internetTraining);
+		internetTraining.setOrganisationPossessingResource(biologyUniversity);
 		biologyUniversity = getInstitutionDAO().update(biologyUniversity);
+		internetTraining = getProfessionalTrainingDAO().update(internetTraining);
 
 		Collection<ProfessionalTraining> usableProfessionalTrainingsOfBiologyTeacher = getProfessionalTrainingDAO().retrieveResourcesInCategoryForPerson(internetTrainings, biologyTeacher);
 		assertTrue(
@@ -380,7 +412,9 @@ public abstract class AbstractResourceDAOTest extends TestCase {
 		// The biology university shares its Internet training with the math university
 		// ****************************************************************************
 		mathUniversity.getViewedResources().add(internetTraining);
+		internetTraining.getOrganisationsHavingAccessToResource().add(mathUniversity);
 		mathUniversity = getInstitutionDAO().update(mathUniversity);
+		internetTraining = getProfessionalTrainingDAO().update(internetTraining);
 
 		usableProfessionalTrainingsOfMathTeacher = getProfessionalTrainingDAO().retrieveResourcesInCategoryForPerson(internetTrainings, mathTeacher);
 		assertTrue(

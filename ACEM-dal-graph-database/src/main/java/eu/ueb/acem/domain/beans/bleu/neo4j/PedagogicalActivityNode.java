@@ -52,7 +52,7 @@ public class PedagogicalActivityNode extends AbstractNode implements Pedagogical
 	private String name;
 
 	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "activityForScenario", direction = OUTGOING)
-	private Set<PedagogicalScenario> scenarios = new HashSet<PedagogicalScenario>(0);
+	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
 
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "activityRequiringResourceFromCategory", direction = OUTGOING)
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
@@ -72,12 +72,12 @@ public class PedagogicalActivityNode extends AbstractNode implements Pedagogical
 
 	@Override
 	public Set<PedagogicalScenario> getScenarios() {
-		return scenarios;
+		return pedagogicalScenarios;
 	}
 
 	@Override
 	public void setScenarios(Set<PedagogicalScenario> scenarios) {
-		this.scenarios = scenarios;
+		this.pedagogicalScenarios = scenarios;
 	}
 
 	@Override

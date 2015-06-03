@@ -127,7 +127,7 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 	
 	@Override
 	public void setOrganisationPossessingResource(Organisation organisation) {
-		this.organisationPossessingResource = (OrganisationNode)organisation;
+		this.organisationPossessingResource = organisation;
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 
 	@Override
 	public void setOrganisationSupportingResource(Organisation organisation) {
-		this.organisationSupportingResource = (OrganisationNode)organisation;
+		this.organisationSupportingResource = organisation;
 	}
 
 	@Override
