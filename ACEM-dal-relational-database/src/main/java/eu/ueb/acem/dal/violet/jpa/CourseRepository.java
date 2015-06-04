@@ -16,18 +16,23 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.jaune.jpa;
+package eu.ueb.acem.dal.violet.jpa;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.jpa.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
+import eu.ueb.acem.domain.beans.violet.jpa.CourseEntity;
 
-public interface ResourceCategoryRepository extends GenericRepository<ResourceCategoryEntity> {
+/**
+ * @author Grégoire Colbert
+ * @since 2015-06-04
+ * 
+ */
+public interface CourseRepository extends GenericRepository<CourseEntity> {
 
 	@Override
-	@Query("SELECT rc FROM ResourceCategory rc WHERE rc.name = :name")
-	Iterable<ResourceCategoryEntity> findByName(@Param("name") String name);
+	@Query("SELECT d FROM Course d WHERE d.name = :name")
+	Iterable<CourseEntity> findByName(@Param("name") String name);
 
 }

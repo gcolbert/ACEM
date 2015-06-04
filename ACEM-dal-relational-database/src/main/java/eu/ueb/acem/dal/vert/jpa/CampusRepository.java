@@ -32,10 +32,6 @@ import eu.ueb.acem.domain.beans.vert.jpa.CampusEntity;
 public interface CampusRepository extends GenericRepository<CampusEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM Campus WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT d FROM Campus d WHERE d.name = :name")
 	Iterable<CampusEntity> findByName(@Param("name") String name);
 

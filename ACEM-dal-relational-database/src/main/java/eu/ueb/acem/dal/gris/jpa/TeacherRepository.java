@@ -32,10 +32,6 @@ import eu.ueb.acem.domain.beans.gris.jpa.TeacherEntity;
 public interface TeacherRepository extends GenericRepository<TeacherEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM Teacher t WHERE t.id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT t FROM Teacher t WHERE t.name = :name")
 	Iterable<TeacherEntity> findByName(@Param("name") String name);
 

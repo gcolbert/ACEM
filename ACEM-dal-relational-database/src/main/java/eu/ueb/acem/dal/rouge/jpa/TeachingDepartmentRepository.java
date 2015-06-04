@@ -34,10 +34,6 @@ import eu.ueb.acem.domain.beans.rouge.jpa.TeachingDepartmentEntity;
 public interface TeachingDepartmentRepository extends GenericRepository<TeachingDepartmentEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM TeachingDepartment WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT d FROM TeachingDepartment d WHERE d.name = :name")
 	Iterable<TeachingDepartmentEntity> findByName(@Param("name") String name);
 

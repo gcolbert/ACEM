@@ -31,10 +31,6 @@ import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalActivityEntity;
 public interface PedagogicalActivityRepository extends GenericRepository<PedagogicalActivityEntity> {
 
 	@Override
-	@Query("SELECT count(pa) FROM PedagogicalActivity pa WHERE pa.id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT pa FROM PedagogicalActivity pa WHERE pa.name = :name")
 	Iterable<PedagogicalActivityEntity> findByName(@Param("name") String name);
 

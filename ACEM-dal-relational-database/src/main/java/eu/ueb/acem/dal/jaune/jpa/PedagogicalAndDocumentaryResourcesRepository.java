@@ -36,10 +36,6 @@ public interface PedagogicalAndDocumentaryResourcesRepository extends
 		GenericRepository<PedagogicalAndDocumentaryResourceEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM PedagogicalAndDocumentaryResource WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT padr FROM PedagogicalAndDocumentaryResource padr WHERE padr.name = :name")
 	Iterable<PedagogicalAndDocumentaryResourceEntity> findByName(@Param("name") String name);
 

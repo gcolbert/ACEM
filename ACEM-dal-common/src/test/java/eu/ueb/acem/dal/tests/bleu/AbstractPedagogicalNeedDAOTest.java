@@ -114,9 +114,11 @@ public abstract class AbstractPedagogicalNeedDAOTest extends TestCase {
 		// We create a new object in the datastore
 		PedagogicalNeed need1 = getPedagogicalNeedDAO().create("a need");
 		assertEquals("There must be exactly one object in the datastore", new Long(1), getPedagogicalNeedDAO().count());
+		assertTrue("The entity should exists for its own DAO.", getPedagogicalNeedDAO().exists(need1.getId()));
 
 		// We retrieve our PedagogicalNeed from a wrong DAO
 		assertEquals("There must be exactly zero object dealt by the wrongDAO", new Long(0), wrongDAO.count());
+		assertFalse("The entity should NOT exists for other DAOs.", wrongDAO.exists(need1.getId()));
 		PedagogicalAnswer nodeThatShouldBeNull = wrongDAO.retrieveById(need1.getId());
 		assertNull("An entity retrieved through the wrong DAO should be null.", nodeThatShouldBeNull);
 	}
@@ -323,7 +325,9 @@ public abstract class AbstractPedagogicalNeedDAOTest extends TestCase {
 		PedagogicalNeed need1 = getPedagogicalNeedDAO().create("t09 need 1");
 		PedagogicalNeed need11 = getPedagogicalNeedDAO().create("t09 need 1.1");
 		need1.getChildren().add(need11);
+		need11.getParents().add(need1);
 		getPedagogicalNeedDAO().update(need1);
+		getPedagogicalNeedDAO().update(need11);
 
 		// Here we want to test the children of the reloaded PedagogicalNeed,
 		// that's why the second parameter of retrieveById is set to 'true'
@@ -336,11 +340,12 @@ public abstract class AbstractPedagogicalNeedDAOTest extends TestCase {
 		// Let's test if setting the second parameter to 'false' works as expected
 		//------------------------------------------------------------------------
 		// NOTE : this test works with Spring Data Neo4j, not with Spring Data JPA
+		// because JPA always fetch the fields (only the collections are lazy).
 		//------------------------------------------------------------------------
 //		PedagogicalNeed need1ter = getPedagogicalNeedDAO().retrieveById(need1.getId(), false);
 //		for (PedagogicalNeed need1child : need1ter.getChildren()) {
 //			// If it was false, getName() would return null here
-//			assertNull("The child's name should be null because we called retrieveById with initialize=false",
+//			assertEquals("The child's name should be null because we called retrieveById with initialize=false",null,
 //					need1child.getName());
 //		}
 	}

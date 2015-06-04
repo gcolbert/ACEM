@@ -34,10 +34,6 @@ import eu.ueb.acem.domain.beans.rouge.jpa.CommunityEntity;
 public interface CommunityRepository extends GenericRepository<CommunityEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM Community WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT d FROM Community d WHERE d.name = :name")
 	Iterable<CommunityEntity> findByName(@Param("name") String name);
 

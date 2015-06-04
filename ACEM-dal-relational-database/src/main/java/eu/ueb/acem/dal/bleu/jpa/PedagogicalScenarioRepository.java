@@ -33,10 +33,6 @@ import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalScenarioEntity;
 public interface PedagogicalScenarioRepository extends GenericRepository<PedagogicalScenarioEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM PedagogicalScenario WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT ps FROM PedagogicalScenario ps WHERE ps.name = :name")
 	Iterable<PedagogicalScenarioEntity> findByName(@Param("name") String name);
 

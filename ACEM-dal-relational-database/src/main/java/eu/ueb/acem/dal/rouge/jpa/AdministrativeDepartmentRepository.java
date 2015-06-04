@@ -34,10 +34,6 @@ import eu.ueb.acem.domain.beans.rouge.jpa.AdministrativeDepartmentEntity;
 public interface AdministrativeDepartmentRepository extends GenericRepository<AdministrativeDepartmentEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM AdministrativeDepartment WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT d FROM AdministrativeDepartment d WHERE d.name = :name")
 	Iterable<AdministrativeDepartmentEntity> findByName(@Param("name") String name);
 

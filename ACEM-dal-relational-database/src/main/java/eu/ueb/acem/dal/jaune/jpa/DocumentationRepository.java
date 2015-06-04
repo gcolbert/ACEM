@@ -35,10 +35,6 @@ import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
 public interface DocumentationRepository extends GenericRepository<DocumentationEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM Documentation WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT d FROM Documentation d WHERE d.name = :name")
 	Iterable<DocumentationEntity> findByName(@Param("name") String name);
 

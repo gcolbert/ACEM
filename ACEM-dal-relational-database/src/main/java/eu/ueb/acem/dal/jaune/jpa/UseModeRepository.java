@@ -32,10 +32,6 @@ import eu.ueb.acem.domain.beans.jaune.jpa.UseModeEntity;
 public interface UseModeRepository extends GenericRepository<UseModeEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM UseMode WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT um FROM UseMode um WHERE um.name = :name")
 	Iterable<UseModeEntity> findByName(@Param("name") String name);
 

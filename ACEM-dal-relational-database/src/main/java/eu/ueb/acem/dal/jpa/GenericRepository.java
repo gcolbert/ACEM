@@ -33,6 +33,4 @@ public interface GenericRepository<N> extends Serializable, JpaRepository<N, Lon
 
 	Iterable<N> findByName(String name);
 
-	Long count(Long id);
-
 }

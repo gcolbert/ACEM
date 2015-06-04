@@ -32,10 +32,6 @@ import eu.ueb.acem.domain.beans.vert.jpa.BuildingEntity;
 public interface BuildingRepository extends GenericRepository<BuildingEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM Building WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT d FROM Building d WHERE d.name = :name")
 	Iterable<BuildingEntity> findByName(@Param("name") String name);
 

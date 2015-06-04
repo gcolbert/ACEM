@@ -34,10 +34,6 @@ import eu.ueb.acem.domain.beans.rouge.jpa.InstitutionEntity;
 public interface InstitutionRepository extends GenericRepository<InstitutionEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM Institution WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT d FROM Institution d WHERE d.name = :name")
 	Iterable<InstitutionEntity> findByName(@Param("name") String name);
 

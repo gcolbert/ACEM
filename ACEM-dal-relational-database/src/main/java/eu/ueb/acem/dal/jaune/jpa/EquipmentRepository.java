@@ -35,10 +35,6 @@ import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
 public interface EquipmentRepository extends GenericRepository<EquipmentEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM Equipment WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT e FROM Equipment e WHERE e.name = :name")
 	Iterable<EquipmentEntity> findByName(@Param("name") String name);
 	

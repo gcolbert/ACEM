@@ -32,10 +32,6 @@ import eu.ueb.acem.domain.beans.vert.jpa.FloorEntity;
 public interface FloorRepository extends GenericRepository<FloorEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM Floor WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT d FROM Floor d WHERE d.name = :name")
 	Iterable<FloorEntity> findByName(@Param("name") String name);
 

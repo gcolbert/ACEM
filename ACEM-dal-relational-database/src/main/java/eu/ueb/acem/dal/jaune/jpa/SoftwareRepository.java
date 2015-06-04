@@ -35,10 +35,6 @@ import eu.ueb.acem.domain.beans.jaune.jpa.SoftwareEntity;
 public interface SoftwareRepository extends GenericRepository<SoftwareEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM Software WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT s FROM Software s WHERE s.name = :name")
 	Iterable<SoftwareEntity> findByName(@Param("name") String name);
 

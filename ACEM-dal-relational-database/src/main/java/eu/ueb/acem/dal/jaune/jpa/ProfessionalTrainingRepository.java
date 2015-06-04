@@ -35,10 +35,6 @@ import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
 public interface ProfessionalTrainingRepository extends GenericRepository<ProfessionalTrainingEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM ProfessionalTraining WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT pt FROM ProfessionalTraining pt WHERE pt.name = :name")
 	Iterable<ProfessionalTrainingEntity> findByName(@Param("name") String name);
 

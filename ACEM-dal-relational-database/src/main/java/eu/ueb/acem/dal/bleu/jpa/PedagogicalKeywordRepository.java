@@ -31,10 +31,6 @@ import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalKeywordEntity;
 public interface PedagogicalKeywordRepository extends GenericRepository<PedagogicalKeywordEntity> {
 
 	@Override
-	@Query("SELECT count(*) FROM PedagogicalKeyword WHERE id = :id")
-	Long count(@Param("id") Long id);
-
-	@Override
 	@Query("SELECT pk FROM PedagogicalKeyword pk WHERE pk.name = :name")
 	Iterable<PedagogicalKeywordEntity> findByName(@Param("name") String name);
 
