@@ -120,7 +120,7 @@ public interface ProfessionalTrainingRepository extends GenericRepository<Profes
 			+ "                              SELECT c.id FROM Community c, Institution i, Person u "
 			+ "                              WHERE u.id = :personId "
 			+ "                                AND i MEMBER OF u.worksForOrganisations "
-			+ "                                AND i MEMBER OF c.institutions"
+			+ "                                AND c MEMBER OF i.communities"
 			+ "                            )"
 			+ "             )"
 			)
@@ -130,7 +130,6 @@ public interface ProfessionalTrainingRepository extends GenericRepository<Profes
 	@Query("SELECT r FROM ProfessionalTraining r, ResourceCategory rc WHERE rc.id = :categoryId AND rc MEMBER OF r.categories")
 	Set<ProfessionalTrainingEntity> getEntitiesWithCategory(@Param("categoryId") Long categoryId);
 
-	// TODO réécrire
 	//@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:ProfessionalTraining)<-[:categoryContains]-(c:ResourceCategory) WHERE id(p)=({personId}) AND id(c)=({categoryId}) RETURN r")
 	@Query("SELECT DISTINCT (d) FROM ProfessionalTraining d JOIN d.categories rc "
 			+ "WHERE rc.id = :categoryId "
@@ -207,7 +206,7 @@ public interface ProfessionalTrainingRepository extends GenericRepository<Profes
 			+ "                              SELECT c.id FROM Community c, Institution i, Person u "
 			+ "                              WHERE u.id = :personId "
 			+ "                                AND i MEMBER OF u.worksForOrganisations "
-			+ "                                AND i MEMBER OF c.institutions"
+			+ "                                AND c MEMBER OF i.communities"
 			+ "                            )"
 			+ "             )"
 			+ "      )"

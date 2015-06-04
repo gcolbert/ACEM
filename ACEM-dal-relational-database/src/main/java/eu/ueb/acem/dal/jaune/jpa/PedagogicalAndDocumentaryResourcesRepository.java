@@ -121,7 +121,7 @@ public interface PedagogicalAndDocumentaryResourcesRepository extends
 			+ "                              SELECT c.id FROM Community c, Institution i, Person u "
 			+ "                              WHERE u.id = :personId "
 			+ "                                AND i MEMBER OF u.worksForOrganisations "
-			+ "                                AND i MEMBER OF c.institutions"
+			+ "                                AND c MEMBER OF i.communities"
 			+ "                            )"
 			+ "             )"
 			)
@@ -207,7 +207,7 @@ public interface PedagogicalAndDocumentaryResourcesRepository extends
 			+ "                              SELECT c.id FROM Community c, Institution i, Person u "
 			+ "                              WHERE u.id = :personId "
 			+ "                                AND i MEMBER OF u.worksForOrganisations "
-			+ "                                AND i MEMBER OF c.institutions"
+			+ "                                AND c MEMBER OF i.communities"
 			+ "                            )"
 			+ "             )"
 			+ "      )"

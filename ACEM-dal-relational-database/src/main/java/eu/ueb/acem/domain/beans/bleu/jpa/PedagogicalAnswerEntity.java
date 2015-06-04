@@ -101,13 +101,12 @@ public class PedagogicalAnswerEntity extends AbstractEntity implements Pedagogic
 	
 	@Override
 	public Set<ResourceCategory> getResourceCategories() {
-		//return resourceCategories;
-		return null;
+		return resourceCategories;
 	}
 
 	@Override
 	public void setResourceCategories(Set<ResourceCategory> resourceCategories) {
-		//this.resourceCategories = resourceCategories;
+		this.resourceCategories = resourceCategories;
 	}
 
 	@Override

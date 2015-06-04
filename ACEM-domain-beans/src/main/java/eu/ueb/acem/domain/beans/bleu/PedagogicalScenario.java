@@ -57,6 +57,10 @@ public interface PedagogicalScenario extends Serializable, Comparable<Pedagogica
 
 	void setAuthors(Set<Teacher> authors);
 
+	Set<PedagogicalKeyword> getPedagogicalKeywords();
+
+	void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords);
+
 	Boolean isPublished();
 
 	void setPublished(Boolean published);

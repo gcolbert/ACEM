@@ -30,6 +30,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
@@ -71,6 +72,9 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	@RelatedTo(elementClass = TeacherNode.class, type = "authorsScenario", direction = INCOMING)
 	private Set<Teacher> authors = new HashSet<Teacher>(0);
 
+	@RelatedTo(elementClass = PedagogicalKeywordNode.class, type = "hasKeyword", direction = OUTGOING)
+	private Set<PedagogicalKeyword> pedagogicalKeywords = new HashSet<PedagogicalKeyword>(0);
+	
 	public PedagogicalScenarioNode() {
 		published = false;
 	}
@@ -149,6 +153,16 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	@Override
 	public void setAuthors(Set<Teacher> authors) {
 		this.authors = authors;
+	}
+
+	@Override
+	public Set<PedagogicalKeyword> getPedagogicalKeywords() {
+		return pedagogicalKeywords;
+	}
+
+	@Override
+	public void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords) {
+		this.pedagogicalKeywords = pedagogicalKeywords;
 	}
 
 	@Override

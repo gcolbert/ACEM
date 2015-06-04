@@ -63,6 +63,7 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 			neo4jOperations.fetch(entity.getPedagogicalActivities());
 			neo4jOperations.fetch(entity.getAuthors());
 			neo4jOperations.fetch(entity.getClasses());
+			neo4jOperations.fetch(entity.getPedagogicalKeywords());
 		}
 	}
 

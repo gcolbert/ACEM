@@ -52,7 +52,6 @@ public class BuildingDAOImpl extends AbstractDAO<Building, BuildingNode> impleme
 	@Override
 	protected final void initializeCollections(Building entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getCampus());
 			neo4jOperations.fetch(entity.getFloors());
 		}
 	}

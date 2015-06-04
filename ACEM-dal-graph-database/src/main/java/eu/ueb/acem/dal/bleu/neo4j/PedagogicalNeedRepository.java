@@ -36,7 +36,7 @@ public interface PedagogicalNeedRepository extends GenericRepository<Pedagogical
 	@Override
 	@Query(value = "MATCH (n:PedagogicalNeed) WHERE id(n)=({id}) RETURN count(n)")
 	Long count(@Param("id") Long id);
-	
+
 	@Override
 	@Query(value = "MATCH (n:PedagogicalNeed) WHERE n.name=({name}) RETURN n")
 	Iterable<PedagogicalNeedNode> findByName(@Param("name") String name);

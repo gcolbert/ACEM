@@ -27,6 +27,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.jpa.TeacherEntity;
@@ -66,6 +67,9 @@ public class PedagogicalScenarioEntity extends AbstractEntity implements Pedagog
 
 	@ManyToMany(targetEntity = TeacherEntity.class, fetch = FetchType.LAZY)
 	private Set<Teacher> authors = new HashSet<Teacher>(0);
+
+	@ManyToMany(targetEntity = PedagogicalKeywordEntity.class, fetch = FetchType.LAZY)
+	private Set<PedagogicalKeyword> pedagogicalKeywords = new HashSet<PedagogicalKeyword>(0);
 
 	public PedagogicalScenarioEntity() {
 		published = false;
@@ -145,6 +149,16 @@ public class PedagogicalScenarioEntity extends AbstractEntity implements Pedagog
 	@Override
 	public void setAuthors(Set<Teacher> authors) {
 		this.authors = authors;
+	}
+
+	@Override
+	public Set<PedagogicalKeyword> getPedagogicalKeywords() {
+		return pedagogicalKeywords;
+	}
+
+	@Override
+	public void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords) {
+		this.pedagogicalKeywords = pedagogicalKeywords;
 	}
 
 	@Override

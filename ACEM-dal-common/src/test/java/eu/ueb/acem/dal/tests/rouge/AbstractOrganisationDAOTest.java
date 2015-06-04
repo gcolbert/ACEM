@@ -186,15 +186,19 @@ public abstract class AbstractOrganisationDAOTest extends TestCase {
 		mathDepartment.getInstitutions().add(mathUniversity);
 		mathUniversity.getTeachingDepartments().add(mathDepartment);
 		mathDepartment = getTeachingDepartmentDAO().update(mathDepartment);
+		mathUniversity =  getInstitutionDAO().update(mathUniversity);
 
 		// We associate the university with the community
 		mathUniversity.getCommunities().add(community);
 		community.getInstitutions().add(mathUniversity);
 		mathUniversity = getInstitutionDAO().update(mathUniversity);
+		community = getCommunityDAO().update(community);
 
 		// We associate the community and the resource
-		community.getSupportedResources().add(equipment);
+		community.getPossessedResources().add(equipment);
+		equipment.setOrganisationPossessingResource(community);
 		community = getCommunityDAO().update(community);
+		equipment = getEquipmentDAO().update(equipment);
 
 		// ***********************************************
 		// We create a support service for the equipment
@@ -205,6 +209,7 @@ public abstract class AbstractOrganisationDAOTest extends TestCase {
 		supportService.getSupportedResources().add(equipment);
 		equipment.setOrganisationSupportingResource(supportService);
 		supportService = getAdministrativeDepartmentDAO().update(supportService);
+		equipment = getEquipmentDAO().update(equipment);
 
 		Collection<AdministrativeDepartment> supportServicesOfMathTeacher = getAdministrativeDepartmentDAO().retrieveSupportServicesForPerson(mathTeacher);
 		assertEquals(

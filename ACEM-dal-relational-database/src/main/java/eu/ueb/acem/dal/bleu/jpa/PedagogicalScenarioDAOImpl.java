@@ -62,6 +62,7 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 			entity.getPedagogicalActivities().size();
 			entity.getAuthors().size();
 			entity.getClasses().size();
+			entity.getPedagogicalKeywords().size();
 		}
 	}
 

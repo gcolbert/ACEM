@@ -12,6 +12,8 @@
 		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalScenarioEntity</class>
 		<class>eu.ueb.acem.domain.beans.bleu.PedagogicalActivity</class>
 		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalActivityEntity</class>
+		<class>eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword</class>
+		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalKeywordEntity</class>
 		<class>eu.ueb.acem.domain.beans.gris.Person</class>
 		<class>eu.ueb.acem.domain.beans.gris.jpa.PersonEntity</class>
 		<class>eu.ueb.acem.domain.beans.gris.Teacher</class>
