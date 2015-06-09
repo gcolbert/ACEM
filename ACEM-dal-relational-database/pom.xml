@@ -39,19 +39,8 @@
 		<!-- Compilation -->
 		<dependency>
 			<groupId>eu.ueb</groupId>
-			<artifactId>ACEM-domain-beans</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-dal-common</artifactId>
 			<version>${project.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>${javax.inject-version}</version>
 		</dependency>
 		<!-- JPA provider (Hibernate) -->
 		<dependency>

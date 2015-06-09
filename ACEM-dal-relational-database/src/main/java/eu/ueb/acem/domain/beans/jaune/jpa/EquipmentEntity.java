@@ -24,7 +24,6 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
@@ -36,7 +35,6 @@ import eu.ueb.acem.domain.beans.vert.jpa.PhysicalSpaceEntity;
  * 
  */
 @Entity(name = "Equipment")
-@Table(name = "Equipment")
 public class EquipmentEntity extends ResourceEntity implements Equipment {
 
 	/**

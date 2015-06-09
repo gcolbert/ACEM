@@ -34,7 +34,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.gris.PersonDAO;
+import eu.ueb.acem.dal.common.gris.PersonDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.services.auth.LdapUserService;

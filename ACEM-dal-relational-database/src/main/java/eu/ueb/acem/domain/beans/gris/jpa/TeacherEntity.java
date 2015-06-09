@@ -24,7 +24,6 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalScenarioEntity;
@@ -38,7 +37,6 @@ import eu.ueb.acem.domain.beans.violet.jpa.ClassEntity;
  * 
  */
 @Entity(name = "Teacher")
-@Table(name = "Teacher")
 public class TeacherEntity extends PersonEntity implements Teacher {
 
 	/**

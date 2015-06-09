@@ -54,7 +54,7 @@ public abstract class OrganisationEntity extends AbstractEntity implements Organ
 
 	private String contactMode;
 
-	@OneToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY, mappedBy = "organisationPossessingResource")
 	private Set<Resource> possessedResources = new HashSet<Resource>(0);
 
 	@OneToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY, mappedBy = "organisationSupportingResource")

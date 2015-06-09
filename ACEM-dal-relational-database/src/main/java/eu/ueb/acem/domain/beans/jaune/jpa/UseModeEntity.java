@@ -52,7 +52,7 @@ public class UseModeEntity extends AbstractEntity implements UseMode {
 	private String description;
 
 	//@RelatedTo(elementClass = ResourceNode.class, type = "resourceHasUseMode", direction = INCOMING)
-	@ManyToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY, mappedBy = "useModes")
 	private Set<Resource> resources = new HashSet<Resource>(0);
 
 	//@RelatedTo(elementClass = OrganisationNode.class, type = "refersToOrganisation", direction = OUTGOING)

@@ -19,7 +19,6 @@
 package eu.ueb.acem.domain.beans.jaune.jpa;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.jaune.Software;
 
@@ -29,7 +28,6 @@ import eu.ueb.acem.domain.beans.jaune.Software;
  * 
  */
 @Entity(name = "Software")
-@Table(name = "Software")
 public class SoftwareEntity extends ResourceEntity implements Software {
 
 	/**

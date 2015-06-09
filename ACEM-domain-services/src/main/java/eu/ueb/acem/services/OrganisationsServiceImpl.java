@@ -28,7 +28,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.rouge.OrganisationDAO;
+import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;

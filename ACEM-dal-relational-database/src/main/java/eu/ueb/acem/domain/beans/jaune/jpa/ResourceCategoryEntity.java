@@ -55,14 +55,14 @@ public class ResourceCategoryEntity extends AbstractEntity implements ResourceCa
 	
 	private String description;
 
-	@ManyToMany(targetEntity = PedagogicalAnswerEntity.class, fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = PedagogicalAnswerEntity.class, fetch = FetchType.LAZY, mappedBy = "resourceCategories")
 	private Set<PedagogicalAnswer> answers = new HashSet<PedagogicalAnswer>(0);
 
 	@ManyToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "ResourceCategory_Resource")
 	private Set<Resource> resources = new HashSet<Resource>(0);
 
-	@ManyToMany(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY, mappedBy = "resourceCategories")
 	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
 	public ResourceCategoryEntity() {

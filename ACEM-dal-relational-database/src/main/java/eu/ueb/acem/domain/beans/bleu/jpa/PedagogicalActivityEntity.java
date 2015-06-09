@@ -48,7 +48,7 @@ public class PedagogicalActivityEntity extends AbstractEntity implements Pedagog
 
 	private String name;
 
-	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY, mappedBy = "pedagogicalActivities")
 	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
 
 	@ManyToMany(targetEntity = ResourceCategoryEntity.class, fetch = FetchType.LAZY)

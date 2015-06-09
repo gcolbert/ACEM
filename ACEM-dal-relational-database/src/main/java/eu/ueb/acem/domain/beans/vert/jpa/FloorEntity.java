@@ -25,7 +25,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.vert.Building;
 import eu.ueb.acem.domain.beans.vert.Floor;
@@ -37,7 +36,6 @@ import eu.ueb.acem.domain.beans.vert.Room;
  * 
  */
 @Entity(name = "Floor")
-@Table(name = "Floor")
 public class FloorEntity extends PhysicalSpaceEntity implements Floor {
 
 	/**

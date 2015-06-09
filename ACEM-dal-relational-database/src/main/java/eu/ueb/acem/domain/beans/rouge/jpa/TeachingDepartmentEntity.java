@@ -24,7 +24,6 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
@@ -35,7 +34,6 @@ import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
  * 
  */
 @Entity(name = "TeachingDepartment")
-@Table(name = "TeachingDepartment")
 public class TeachingDepartmentEntity extends OrganisationEntity implements TeachingDepartment {
 
 	/**

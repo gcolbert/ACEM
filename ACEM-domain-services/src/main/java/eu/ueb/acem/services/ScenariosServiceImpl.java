@@ -25,8 +25,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.bleu.PedagogicalActivityDAO;
-import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalActivityDAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalScenarioDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Person;

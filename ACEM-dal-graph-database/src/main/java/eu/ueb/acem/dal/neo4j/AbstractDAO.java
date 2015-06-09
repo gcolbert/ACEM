@@ -27,7 +27,7 @@ import javax.inject.Inject;
 
 import org.springframework.data.neo4j.template.Neo4jOperations;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.common.DAO;
 
 public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Serializable {
 

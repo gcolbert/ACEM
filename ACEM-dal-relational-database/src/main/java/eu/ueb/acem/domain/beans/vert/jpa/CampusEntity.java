@@ -24,7 +24,6 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.vert.Building;
 import eu.ueb.acem.domain.beans.vert.Campus;
@@ -35,7 +34,6 @@ import eu.ueb.acem.domain.beans.vert.Campus;
  * 
  */
 @Entity(name = "Campus")
-@Table(name = "Campus")
 public class CampusEntity extends PhysicalSpaceEntity implements Campus {
 
 	/**

@@ -28,10 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.gris.PersonDAO;
+import eu.ueb.acem.dal.common.gris.PersonDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -81,7 +80,7 @@ public class UsersServiceImpl implements UsersService, Serializable {
 
 	@Override
 	public Teacher createTeacher(String name, String login, String password) {
-		return teacherDAO.create(new TeacherNode(name, login, password));
+		return teacherDAO.create(name, login, password);
 	}
 
 	@Override

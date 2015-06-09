@@ -29,10 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
-import eu.ueb.acem.dal.jaune.ResourceCategoryDAO;
-import eu.ueb.acem.dal.jaune.ResourceDAO;
-import eu.ueb.acem.dal.jaune.UseModeDAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalScenarioDAO;
+import eu.ueb.acem.dal.common.jaune.ResourceCategoryDAO;
+import eu.ueb.acem.dal.common.jaune.ResourceDAO;
+import eu.ueb.acem.dal.common.jaune.UseModeDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.Documentation;

@@ -19,7 +19,6 @@
 package eu.ueb.acem.domain.beans.jaune.jpa;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 
@@ -29,7 +28,6 @@ import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
  * 
  */
 @Entity(name = "PedagogicalAndDocumentaryResource")
-@Table(name = "PedagogicalAndDocumentaryResource")
 public class PedagogicalAndDocumentaryResourceEntity extends ResourceEntity implements PedagogicalAndDocumentaryResource {
 
 	/**

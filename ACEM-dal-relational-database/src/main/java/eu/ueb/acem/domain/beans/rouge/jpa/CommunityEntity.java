@@ -24,7 +24,6 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -35,7 +34,6 @@ import eu.ueb.acem.domain.beans.rouge.Institution;
  * 
  */
 @Entity(name = "Community")
-@Table(name = "Community")
 public class CommunityEntity extends OrganisationEntity implements Community {
 
 	/**

@@ -30,10 +30,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.bleu.PedagogicalAnswerDAO;
-import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
-import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
+import eu.ueb.acem.dal.common.DAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalAnswerDAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalNeedDAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalScenarioDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
@@ -111,6 +111,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	}
 
 	@Override
+	@Transactional
 	public PedagogicalNeed updatePedagogicalNeed(PedagogicalNeed pedagogicalNeed) {
 		return needDAO.update(pedagogicalNeed);
 	}

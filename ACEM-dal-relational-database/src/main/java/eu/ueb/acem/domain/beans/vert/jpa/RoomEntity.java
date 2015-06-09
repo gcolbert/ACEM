@@ -21,7 +21,6 @@ package eu.ueb.acem.domain.beans.vert.jpa;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.vert.Floor;
 import eu.ueb.acem.domain.beans.vert.Room;
@@ -32,7 +31,6 @@ import eu.ueb.acem.domain.beans.vert.Room;
  * 
  */
 @Entity(name = "Room")
-@Table(name = "Room")
 public class RoomEntity extends PhysicalSpaceEntity implements Room {
 
 	/**

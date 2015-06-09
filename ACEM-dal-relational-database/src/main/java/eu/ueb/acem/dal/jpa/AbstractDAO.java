@@ -26,7 +26,7 @@ import java.util.Iterator;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import eu.ueb.acem.dal.DAO;
+import eu.ueb.acem.dal.common.DAO;
 
 public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Serializable {
 

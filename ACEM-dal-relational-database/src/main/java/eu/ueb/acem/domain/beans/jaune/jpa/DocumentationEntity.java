@@ -25,7 +25,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Resource;
@@ -36,7 +35,6 @@ import eu.ueb.acem.domain.beans.jaune.Resource;
  * 
  */
 @Entity(name = "Documentation")
-@Table(name = "Documentation")
 public class DocumentationEntity extends ResourceEntity implements Documentation {
 
 	/**

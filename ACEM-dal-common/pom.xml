@@ -37,7 +37,6 @@
 			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-domain-beans</artifactId>
 			<version>${project.version}</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>

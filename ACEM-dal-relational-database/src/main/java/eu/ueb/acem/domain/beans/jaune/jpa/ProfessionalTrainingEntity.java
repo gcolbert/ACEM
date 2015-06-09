@@ -20,7 +20,6 @@
 package eu.ueb.acem.domain.beans.jaune.jpa;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 
@@ -30,7 +29,6 @@ import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
  * 
  */
 @Entity(name = "ProfessionalTraining")
-@Table(name = "ProfessionalTraining")
 public class ProfessionalTrainingEntity extends ResourceEntity implements ProfessionalTraining {
 
 	/**

@@ -18,16 +18,10 @@
 						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
 						>
 
-	<import resource="classpath*:META-INF/ACEM-dal-graph-database-context.xml"/>
-
-	<import resource="classpath*:META-INF/ACEM-dal-relational-database-context.xml"/>
-
-	<context:annotation-config/>
-
 	<tx:annotation-driven />
 
-	<context:component-scan base-package="eu.ueb.acem.dal"/>
-<!-- 
+	<context:component-scan base-package="eu.ueb.acem.dal.common"/>
+
 	<beans profile="graph-database">
 		<import resource="classpath*:META-INF/ACEM-dal-graph-database-context.xml"/>
 	</beans>
@@ -35,5 +29,5 @@
 	<beans profile="relational-database">
 		<import resource="classpath*:META-INF/ACEM-dal-relational-database-context.xml"/>
 	</beans>
- -->
+
 </beans>
