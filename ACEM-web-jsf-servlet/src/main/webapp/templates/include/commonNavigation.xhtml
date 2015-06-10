@@ -47,11 +47,11 @@
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
 		</p:submenu>
 		<p:menuitem value="#{msg['MENU.LOGIN']}" url="/login"
-			rendered="#{! request.isUserInRole('ROLE_USER')}"
+			rendered="#{! request.isUserInRole('USER')}"
 			styleClass="#{associateBean.getMenuitemStyleClass('login')}"
 			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		<p:menuitem value="#{msg['MENU.LOGOUT']}" url="/logout"
-			rendered="#{request.isUserInRole('ROLE_USER')}"
+			rendered="#{request.isUserInRole('USER')}"
 			styleClass="#{associateBean.getMenuitemStyleClass('logout')}"
 			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 	</p:menubar>
