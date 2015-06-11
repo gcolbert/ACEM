@@ -14,8 +14,9 @@ ACEM was initially developed with Spring Data Neo4j. Spring Data Neo4j uses one 
 
 Spring Data JPA is a Java standard and as such, could be preferred by your organization's administrators. This is the reason why we added support for relational databases.
 
-Building the project for the relational database
+Relational database
 --
+####Building
 No configuration is required, simply use:
 
     mvn install
@@ -24,30 +25,29 @@ which is equivalent to:
 
     mvn install -Dspring.profiles.active=relational-database
 
-Building the project for the graph database
+####Running with Tomcat
+No configuration is required.
+
+If you don't give the "spring.profiles.active" environment variable, Tomcat will search in "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" and use the parameter `spring.profiles.default`. The default values are "auth-manual,relational-database", which explains why no configuration is required for a relational database.
+
+Graph database
 --
+####Building
 To successfully build the project for use with the graph database, you **must** define the property "spring.profiles.active" and pass it the "graph-database" value, which you do with:
 
     mvn install -Dspring.profiles.active=graph-database
 
-###Changing the default database for build process
+####Changing the default database for build process
 
 If you want to set the graph database as default, then you have to modify two files:
 
 1. ACEM-dal-common/src/main/resources/META-INF/ACEM-dal-common-context.xml
-2. ACEM-dal-common/src/test/resources/META-INF/dal-common-test-context.xml
+2. ACEM-dal-common/src/test/resources/dal-common-test-context.xml
 
 In each file, remove "default" from `<beans profile="relational-database, default">` and add it to the second conditional import, that is, you should have `<beans profile="relational-database">` and `<beans profile="graph-database, default">`.
 
-Running the project with Tomcat for the relational database
---
-No configuration is required.
-
-If you don't give the "spring.profiles.active" environment variable, Tomcat will read the value of "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" content to see if it can find the parameter `spring.profiles.default`. The default values are "auth-manual,relational-database".
-
-Running the project with Tomcat for the graph database
---
-You must edit "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" and put the filter "OpenEntityManagerInViewFilter" inside comments, e.g. :
+####Running with Tomcat
+Prior to run Tomcat, you must edit "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" and comment out the filter "OpenEntityManagerInViewFilter", e.g. :
 
 	<!--
 	<filter>
@@ -64,3 +64,8 @@ Leaving this filter enabled will result in the following exception when Tomcat s
 
     No qualifying bean of type [javax.persistence.EntityManagerFactory] is defined
 
+Once the "OpenEntityManagerInViewFilter" is commented out, you have to set Tomcat's environment variable "spring.profiles.active" to contain the value "graph-database". This tells the application server to import the Data Access Layer configuration from the module "ACEM-dal-graph-database" and not from "ACEM-dal-relational-database".
+ 
+####Changing the default database for run time
+
+If you want to set the graph database as default for Tomcat, you have to edit "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" and modify the parameter named "spring.profiles.default" to contain "graph-database" instead of "relational-database".
