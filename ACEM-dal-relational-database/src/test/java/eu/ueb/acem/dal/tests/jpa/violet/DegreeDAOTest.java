@@ -20,12 +20,15 @@ package eu.ueb.acem.dal.tests.jpa.violet;
 
 import javax.inject.Inject;
 
+import org.springframework.test.context.ActiveProfiles;
+
 import eu.ueb.acem.dal.common.violet.ClassDAO;
 import eu.ueb.acem.dal.common.violet.CourseDAO;
 import eu.ueb.acem.dal.common.violet.CreditDAO;
 import eu.ueb.acem.dal.common.violet.DegreeDAO;
 import eu.ueb.acem.dal.tests.common.violet.AbstractDegreeDAOTest;
 
+@ActiveProfiles(profiles = "relational-database")
 public class DegreeDAOTest extends AbstractDegreeDAOTest {
 
 	@Inject

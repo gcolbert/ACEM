@@ -38,6 +38,16 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-relational-database</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-graph-database</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 			<version>${spring.version}</version>
@@ -95,6 +105,20 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-relational-database</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-graph-database</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
@@ -119,54 +143,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<profiles>
-		<profile>
-			<id>relational-database</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>relational-database</name>
-				</property>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>eu.ueb</groupId>
-					<artifactId>ACEM-dal-relational-database</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>eu.ueb</groupId>
-					<artifactId>ACEM-dal-relational-database</artifactId>
-					<version>${project.version}</version>
-					<type>test-jar</type>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>graph-database</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-				<property>
-					<name>graph-database</name>
-				</property>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>eu.ueb</groupId>
-					<artifactId>ACEM-dal-graph-database</artifactId>
-					<version>${project.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>eu.ueb</groupId>
-					<artifactId>ACEM-dal-graph-database</artifactId>
-					<version>${project.version}</version>
-					<type>test-jar</type>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
 	<build>
 		<plugins>
 			<plugin>

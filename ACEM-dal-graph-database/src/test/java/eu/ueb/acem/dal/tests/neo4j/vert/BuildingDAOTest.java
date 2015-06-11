@@ -20,9 +20,12 @@ package eu.ueb.acem.dal.tests.neo4j.vert;
 
 import javax.inject.Inject;
 
+import org.springframework.test.context.ActiveProfiles;
+
 import eu.ueb.acem.dal.common.vert.BuildingDAO;
 import eu.ueb.acem.dal.tests.common.vert.AbstractBuildingDAOTest;
 
+@ActiveProfiles(profiles = "graph-database")
 public class BuildingDAOTest extends AbstractBuildingDAOTest {
 
 	@Inject

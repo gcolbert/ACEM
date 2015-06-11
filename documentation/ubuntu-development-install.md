@@ -31,7 +31,7 @@ Install Eclipse for Java EE
 
 - tar -xzf eclipse-jee-kepler-SR1-linux-gtk-x86_64.tar.gz 
 
-- there's currently a bug in Ubuntu not displaying Eclipse menu.
+- in older versions of Ubuntu, Eclipse menus were not visible.
 Workaround : create a file "eclipse-with-menus.sh" inside the "eclipse" folder.
 
         #!/bin/bash
@@ -110,8 +110,6 @@ Run the server using Eclipse and Tomcat
 - Once the server is installed, double-click on it.
 
 - In the "Server Locations" panel, choose "Use Tomcat installation (takes control of Tomcat installation)".
-
-- Change the deploy-path from "wtpwebapps" to "webapps".
 
 - In the "Timeouts" panel on the right, increase the "Start (in seconds)" value to 200. Do the same thing for the "Stop (in seconds)" value.
 

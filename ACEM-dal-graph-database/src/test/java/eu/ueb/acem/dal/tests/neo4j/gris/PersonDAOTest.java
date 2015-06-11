@@ -20,10 +20,13 @@ package eu.ueb.acem.dal.tests.neo4j.gris;
 
 import javax.inject.Inject;
 
+import org.springframework.test.context.ActiveProfiles;
+
 import eu.ueb.acem.dal.common.gris.PersonDAO;
 import eu.ueb.acem.dal.tests.common.gris.AbstractPersonDAOTest;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 
+@ActiveProfiles(profiles = "graph-database")
 public class PersonDAOTest extends AbstractPersonDAOTest {
 
 	@Inject

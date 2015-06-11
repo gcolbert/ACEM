@@ -74,6 +74,16 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-relational-database</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-graph-database</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.myfaces.core</groupId>
 			<artifactId>myfaces-api</artifactId>
 			<version>${apache-myfaces.version}</version>
@@ -207,6 +217,20 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-relational-database</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-graph-database</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
 			<artifactId>ACEM-dal-common</artifactId>
 			<version>${project.version}</version>
 			<type>test-jar</type>
@@ -231,44 +255,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<profiles>
-		<profile>
-			<id>relational-database</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>relational-database</name>
-				</property>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>eu.ueb</groupId>
-					<artifactId>ACEM-dal-relational-database</artifactId>
-					<version>${project.version}</version>
-					<type>test-jar</type>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
-		</profile>
-		<profile>
-			<id>graph-database</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-				<property>
-					<name>graph-database</name>
-				</property>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>eu.ueb</groupId>
-					<artifactId>ACEM-dal-graph-database</artifactId>
-					<version>${project.version}</version>
-					<type>test-jar</type>
-					<scope>test</scope>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<resources>

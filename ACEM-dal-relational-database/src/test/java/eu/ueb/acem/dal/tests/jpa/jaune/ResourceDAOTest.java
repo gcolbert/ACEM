@@ -20,6 +20,8 @@ package eu.ueb.acem.dal.tests.jpa.jaune;
 
 import javax.inject.Inject;
 
+import org.springframework.test.context.ActiveProfiles;
+
 import eu.ueb.acem.dal.common.gris.PersonDAO;
 import eu.ueb.acem.dal.common.jaune.ResourceCategoryDAO;
 import eu.ueb.acem.dal.common.jaune.ResourceDAO;
@@ -37,6 +39,7 @@ import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
+@ActiveProfiles(profiles = "relational-database")
 public class ResourceDAOTest extends AbstractResourceDAOTest {
 
 	@Inject

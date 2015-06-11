@@ -20,9 +20,12 @@ package eu.ueb.acem.dal.tests.jpa.vert;
 
 import javax.inject.Inject;
 
+import org.springframework.test.context.ActiveProfiles;
+
 import eu.ueb.acem.dal.common.vert.BuildingDAO;
 import eu.ueb.acem.dal.tests.common.vert.AbstractBuildingDAOTest;
 
+@ActiveProfiles(profiles = "relational-database")
 public class BuildingDAOTest extends AbstractBuildingDAOTest {
 
 	@Inject

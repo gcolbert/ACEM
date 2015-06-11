@@ -22,8 +22,16 @@
 
 	<context:component-scan base-package="eu.ueb.acem.dal.common"/>
 
-	<import resource="classpath*:dal-graph-database-test-context.xml"/>
+	<!-- Import "dal-relational-database-test-context.xml if the "relational-database" 
+		Spring profile is active, or use it if no active profile is found -->
+	<beans profile="relational-database, default">
+		<import resource="classpath*:dal-relational-database-test-context.xml"/>
+	</beans>
 
-	<import resource="classpath*:dal-relational-database-test-context.xml"/>
+	<!-- Import "dal-graph-database-test-context.xml if the "graph-database" 
+		Spring profile is active -->
+	<beans profile="graph-database">
+		<import resource="classpath*:dal-graph-database-test-context.xml"/>
+	</beans>
 
 </beans>

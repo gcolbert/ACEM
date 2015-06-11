@@ -20,9 +20,12 @@ package eu.ueb.acem.dal.tests.neo4j.bleu;
 
 import javax.inject.Inject;
 
+import org.springframework.test.context.ActiveProfiles;
+
 import eu.ueb.acem.dal.common.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.dal.tests.common.bleu.AbstractPedagogicalNeedDAOTest;
 
+@ActiveProfiles(profiles = "graph-database")
 public class PedagogicalNeedDAOTest extends AbstractPedagogicalNeedDAOTest {
 
 	@Inject

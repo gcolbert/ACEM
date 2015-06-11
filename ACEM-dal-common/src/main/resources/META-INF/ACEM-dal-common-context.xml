@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright Université Européenne de Bretagne 2012-2015
   All rights reserved. This program and the accompanying materials
@@ -22,12 +22,16 @@
 
 	<context:component-scan base-package="eu.ueb.acem.dal.common"/>
 
-	<beans profile="graph-database">
-		<import resource="classpath*:META-INF/ACEM-dal-graph-database-context.xml"/>
+	<!-- Import "META-INF/ACEM-dal-relational-database-context.xml if the "relational-database" 
+		Spring profile is active, or use it if no active profile is found -->
+	<beans profile="relational-database, default">
+		<import resource="classpath*:META-INF/ACEM-dal-relational-database-context.xml" />
 	</beans>
 
-	<beans profile="relational-database">
-		<import resource="classpath*:META-INF/ACEM-dal-relational-database-context.xml"/>
+	<!-- Import "META-INF/ACEM-dal-graph-database-context.xml if the "graph-database" 
+		Spring profile is active -->
+	<beans profile="graph-database">
+		<import resource="classpath*:META-INF/ACEM-dal-graph-database-context.xml" />
 	</beans>
 
 </beans>

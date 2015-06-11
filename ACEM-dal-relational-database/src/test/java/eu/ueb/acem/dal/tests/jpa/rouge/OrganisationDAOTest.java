@@ -20,6 +20,8 @@ package eu.ueb.acem.dal.tests.jpa.rouge;
 
 import javax.inject.Inject;
 
+import org.springframework.test.context.ActiveProfiles;
+
 import eu.ueb.acem.dal.common.gris.PersonDAO;
 import eu.ueb.acem.dal.common.jaune.ResourceDAO;
 import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
@@ -31,6 +33,7 @@ import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
+@ActiveProfiles(profiles = "relational-database")
 public class OrganisationDAOTest extends AbstractOrganisationDAOTest {
 
 	@Inject

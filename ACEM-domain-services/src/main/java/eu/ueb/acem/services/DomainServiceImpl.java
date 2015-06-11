@@ -59,7 +59,7 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 
 	@Inject
 	private PersonDAO<Long, Teacher> teacherDAO;
-	
+
 	/**
 	 * {@link ldapUserService}.
 	 */
@@ -117,18 +117,24 @@ public class DomainServiceImpl implements DomainService, Serializable, Initializ
 
 	@Override
 	public Person getUser(String login) throws UsernameNotFoundException {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		Person user = teacherDAO.retrieveByLogin(login, true);
+		// If the "admin" account gets deleted, we recreate it.
+		if (user==null && login.equals("admin")) {
+			user = teacherDAO.create("Administrator", "admin", passwordEncoder.encode("admin"));
+			user.setAdministrator(true);
+			user = teacherDAO.update((Teacher)user);
+		}
 		// If the user is missing from the database but the authentication mode
-		// guarantees a legit authentication, then we want to automatically
-		// create a user account.
+		// guarantees a legit authentication (e.g. CAS), then we want to
+		// automatically create a user account.
 		if ((user == null) && autoCreateUsers) {
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			user = teacherDAO.create(login, login, passwordEncoder.encode("pass"));
 			user.setLogin(login);
 			user.setLanguage("fr");
 		}
 		else if (user == null) {
-		    throw new UsernameNotFoundException("User not found");
+			throw new UsernameNotFoundException("User not found");
 		}
 		return user;
 	}

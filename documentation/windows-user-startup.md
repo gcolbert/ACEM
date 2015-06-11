@@ -81,4 +81,4 @@ How to run ACEM in Windows 7
 7. Double click on "startup" and wait until you see "Startup time: XXXX ms" (takes around 40 seconds)
 8. Open a web browser (e.g. Firefox) and go to http://localhost:8080/ACEM
 
-It should redirect you to the CAS authentication window. If you prefer manual accounts, please read [Configure authentication](configure-authentication.md).
+It should redirect you to the manual login form. If you prefer to use CAS, please read [Configure authentication](configure-authentication.md).
