@@ -28,6 +28,8 @@
 
 	<context:component-scan base-package="eu.ueb.acem.dal.jpa" />
 
+	<bean id="acemOpenEntityManagerInViewFilter" class="org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter"/>
+
 	<!--
 		PersistenceAnnotationBeanPostProcessor looks for @PersistenceContext
 		to set entity manager in dao

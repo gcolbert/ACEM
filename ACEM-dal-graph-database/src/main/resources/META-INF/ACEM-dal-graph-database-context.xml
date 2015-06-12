@@ -28,6 +28,9 @@
 
 	<context:component-scan base-package="eu.ueb.acem.dal.neo4j"/>
 
+	<!-- Spring Data Neo4j doesn't need the OpenEntityManagerInViewFilter -->
+	<bean id="acemOpenEntityManagerInViewFilter" class="eu.ueb.acem.dal.utils.spring.DoNothingFilter"/>
+
   	<neo4j:repositories base-package="eu.ueb.acem.dal.neo4j.*"/>
 
  	<!-- CHOIX 1 : pour utiliser une base temporaire créée dynamiquement dans le répertoire "target/neo4j-db" -->

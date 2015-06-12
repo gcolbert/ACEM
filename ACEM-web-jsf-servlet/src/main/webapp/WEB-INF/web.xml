@@ -85,6 +85,7 @@
 		<dispatcher>INCLUDE</dispatcher>
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+
 	<filter>
 		<filter-name>characterEncodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -107,14 +108,21 @@
 		<servlet-name>facesServlet</servlet-name>
 	</filter-mapping>
 
-	<!-- Enable this filter when using Spring Data JPA (relational database). 
-		Disable this filter when using Spring Data Neo4j (graph database). -->
+	<!-- This filter allows to toggle the "OpenEntityManagerInViewFilter" based 
+		on the value of the Spring profile ("relational-database" or "graph-database"). 
+		The Spring bean named "acemOpenEntityManagerInViewFilter" is created in the 
+		ACEM-dal-relational-database and ACEM-dal-graph-database modules. The genuine 
+		org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter is created 
+		only when Spring profile is "relational-database" : it's then used to reopen 
+		a transaction manager session with lazily loaded collections. When Spring 
+		profile is "graph-database", we instanciate the DoNothingFilter class which 
+		is inside eu.ueb.acem.dal.utils.spring package. -->
 	<filter>
-		<filter-name>OpenEntityManagerInViewFilter</filter-name>
-		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+		<filter-name>acemOpenEntityManagerInViewFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>OpenEntityManagerInViewFilter</filter-name>
+		<filter-name>acemOpenEntityManagerInViewFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
