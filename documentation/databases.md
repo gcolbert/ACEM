@@ -43,15 +43,27 @@ In each file, remove "default" from `<beans profile="relational-database, defaul
 
 Running the server with a relational database
 --
-Edit `ACEM-web-jsf-servlet/src/main/resources/properties/config.properties` with your database and set the variables according to your configuration. You can use `ACEM-web-jsf-servlet/src/main/resources/properties/default.properties` as a model.
+Running Tomcat with the relational database:
 
-If you don't set the "spring.profiles.active" environment variable, Tomcat will search in "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" and use the parameter `spring.profiles.default` to know what database he should use. The default profiles are "auth-manual,relational-database", so you don't need to specify the "relational-database" profile.
+1. Edit `ACEM-web-jsf-servlet/src/main/resources/properties/config.properties` with your database and set the variables according to your configuration. You can use `ACEM-web-jsf-servlet/src/main/resources/properties/default.properties` and copy the default properties.
+
+2. Run your database server.
+
+3. Deploy ACEM's WAR and start Tomcat.
+
+*Note*: if you don't set the "spring.profiles.active" environment variable, Tomcat will search in "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" and use the parameter `spring.profiles.default` to know what database he should use. The default profiles are "auth-manual,relational-database".
 
 Running the server with a graph database
 --
-Edit `ACEM-web-jsf-servlet/src/main/resources/properties/config.properties` with your database and set the variables according to your configuration. You can use `ACEM-web-jsf-servlet/src/main/resources/properties/default.properties` as a model.
+Running Tomcat with the graph database:
 
-If you want to set the graph database as default, you have to set Tomcat's environment variable "spring.profiles.active" to contain the value "graph-database". This tells the application server to import the Data Access Layer configuration from the module "ACEM-dal-graph-database" and not from "ACEM-dal-relational-database".
+1. Edit `ACEM-web-jsf-servlet/src/main/resources/properties/config.properties` with your database and set the variables according to your configuration. You can use `ACEM-web-jsf-servlet/src/main/resources/properties/default.properties` and copy the default properties.
 
-####Changing the default database for run time
+2. For using Neo4j, you **must** set Tomcat's environment variable "spring.profiles.active" with the value "graph-database".
+
+3. Run Neo4j.
+
+4. Deploy ACEM's WAR and start Tomcat.
+
+####Changing the default run time database
 If you want to set the graph database as default for Tomcat, you have to edit "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" and modify the parameter named "spring.profiles.default": it should contain "graph-database" instead of "relational-database".
