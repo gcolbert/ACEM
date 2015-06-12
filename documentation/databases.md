@@ -47,7 +47,7 @@ If you want to set the graph database as default, then you have to modify two fi
 In each file, remove "default" from `<beans profile="relational-database, default">` and add it to the second conditional import, that is, you should have `<beans profile="relational-database">` and `<beans profile="graph-database, default">`.
 
 ####Running with Tomcat
-Prior to run Tomcat, you must edit "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" and comment out the filter "OpenEntityManagerInViewFilter", e.g. :
+Prior to running Tomcat, you must edit "ACEM-web-jsf-servlet/src/main/webapp/WEB-INF/web.xml" and comment out the filter "OpenEntityManagerInViewFilter", e.g. :
 
 	<!--
 	<filter>
