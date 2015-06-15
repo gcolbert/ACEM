@@ -74,16 +74,6 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>eu.ueb</groupId>
-			<artifactId>ACEM-dal-relational-database</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>eu.ueb</groupId>
-			<artifactId>ACEM-dal-graph-database</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.myfaces.core</groupId>
 			<artifactId>myfaces-api</artifactId>
 			<version>${apache-myfaces.version}</version>
