@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -53,6 +54,7 @@ public class ResourceCategoryEntity extends AbstractEntity implements ResourceCa
 	
 	private String iconFileName;
 	
+	@Lob
 	private String description;
 
 	@ManyToMany(targetEntity = PedagogicalAnswerEntity.class, fetch = FetchType.LAZY, mappedBy = "resourceCategories")

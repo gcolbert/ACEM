@@ -53,6 +53,6 @@ public interface UsersService extends Serializable {
 
 	Collection<Teacher> retrieveAllTeachers();
 
-	Person retrievePersonByLogin(String login);
+	Teacher retrieveTeacherByLogin(String login);
 
 }

@@ -40,6 +40,10 @@ public interface NeedsAndAnswersService extends Serializable {
 
 	PedagogicalNeed createPedagogicalNeed(String name, String description);
 
+	PedagogicalNeed createPedagogicalNeed(String name, PedagogicalNeed parent);
+
+	PedagogicalNeed createPedagogicalNeed(String name, String description, PedagogicalNeed parent);
+
 	Collection<PedagogicalNeed> retrieveNeedsAtRoot();
 
 	PedagogicalNeed retrievePedagogicalNeed(Long id, boolean initialize);
@@ -54,6 +58,10 @@ public interface NeedsAndAnswersService extends Serializable {
 
 	PedagogicalAnswer createPedagogicalAnswer(String name, String description);
 
+	PedagogicalAnswer createPedagogicalAnswer(String name, PedagogicalNeed parent);
+
+	PedagogicalAnswer createPedagogicalAnswer(String name, String description, PedagogicalNeed parent);
+
 	PedagogicalAnswer retrievePedagogicalAnswer(Long id, boolean initialize);
 
 	PedagogicalAnswer updatePedagogicalAnswer(PedagogicalAnswer answer);
@@ -62,13 +70,9 @@ public interface NeedsAndAnswersService extends Serializable {
 
 	PedagogicalNeed createOrUpdateNeed(Long id, String name, Long idParent);
 
-	void saveNeedName(Long id, String newName);
-	
 	void changeParentOfNeedOrAnswer(Long id, Long idNewParent);
 
 	PedagogicalAnswer createOrUpdateAnswer(Long id, String name, Long idAssociatedNeed);
-
-	void saveAnswerName(Long id, String newName);
 
 	Collection<PedagogicalScenario> retrieveScenariosRelatedToAnswer(Long id);
 

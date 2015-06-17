@@ -335,7 +335,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	 */
 	public void addFromLdapAction() {
 		if (selectedLdapUser != null) {
-			Person person = usersService.retrievePersonByLogin(selectedLdapUser.getId());
+			Person person = usersService.retrieveTeacherByLogin(selectedLdapUser.getId());
 			if (person == null) {
 				Teacher teacher = usersService.createTeacher(selectedLdapUser.getFirstName()+" "+selectedLdapUser.getLastName(), selectedLdapUser.getId(), "pass");
 				teacher.setEmail(selectedLdapUser.getEmail());

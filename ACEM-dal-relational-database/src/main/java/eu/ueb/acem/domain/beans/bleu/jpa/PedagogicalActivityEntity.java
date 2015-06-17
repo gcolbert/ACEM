@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -55,8 +56,14 @@ public class PedagogicalActivityEntity extends AbstractEntity implements Pedagog
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
 	private Long positionInScenario;
+
+	@Lob
 	private String objective;
+
+	@Lob
 	private String instructions;
+
+	@Lob
 	private String duration;
 
 	public PedagogicalActivityEntity() {

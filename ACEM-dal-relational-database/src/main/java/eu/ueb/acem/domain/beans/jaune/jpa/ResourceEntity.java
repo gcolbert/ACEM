@@ -21,8 +21,10 @@ package eu.ueb.acem.domain.beans.jaune.jpa;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -40,6 +42,7 @@ import eu.ueb.acem.domain.beans.rouge.jpa.OrganisationEntity;
  * 
  */
 @Entity(name = "Resource")
+@DiscriminatorColumn(length=50)
 public abstract class ResourceEntity extends AbstractEntity implements Resource {
 
 	/**
@@ -49,6 +52,7 @@ public abstract class ResourceEntity extends AbstractEntity implements Resource 
 
 	private String iconFileName;
 
+	@Lob
 	private String description;
 
 	//@RelatedTo(elementClass = ResourceCategoryNode.class, type = "categoryContains", direction = INCOMING)

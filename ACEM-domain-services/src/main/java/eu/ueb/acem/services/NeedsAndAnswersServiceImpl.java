@@ -99,7 +99,31 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	public PedagogicalNeed createPedagogicalNeed(String name, String description) {
 		return needDAO.create(name, description);
 	}
-	
+
+	@Override
+	public PedagogicalNeed createPedagogicalNeed(String name, PedagogicalNeed parent) {
+		PedagogicalNeed need = needDAO.create(name);
+		if ((need != null) && (parent != null)) {
+			need.getParents().add(parent);
+			parent.getChildren().add(need);
+			need = needDAO.update(need);
+			parent = needDAO.update(parent);
+		}
+		return need;
+	}
+
+	@Override
+	public PedagogicalNeed createPedagogicalNeed(String name, String description, PedagogicalNeed parent) {
+		PedagogicalNeed need = needDAO.create(name, description);
+		if ((need != null) && (parent != null)) {
+			need.getParents().add(parent);
+			parent.getChildren().add(need);
+			need = needDAO.update(need);
+			parent = needDAO.update(parent);
+		}
+		return need;
+	}
+
 	@Override
 	public Collection<PedagogicalNeed> retrieveNeedsAtRoot() {
 		return needDAO.retrieveNeedsAtRoot();
@@ -138,6 +162,30 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	@Override
 	public PedagogicalAnswer createPedagogicalAnswer(String name, String description) {
 		return answerDAO.create(name, description);
+	}
+
+	@Override
+	public PedagogicalAnswer createPedagogicalAnswer(String name, PedagogicalNeed parent) {
+		PedagogicalAnswer answer = answerDAO.create(name);
+		if ((answer != null) && (parent != null)) {
+			answer.getNeeds().add(parent);
+			parent.getAnswers().add(answer);
+			answer = answerDAO.update(answer);
+			parent = needDAO.update(parent);
+		}
+		return answer;
+	}
+
+	@Override
+	public PedagogicalAnswer createPedagogicalAnswer(String name, String description, PedagogicalNeed parent) {
+		PedagogicalAnswer answer = answerDAO.create(name, description);
+		if ((answer != null) && (parent != null)) {
+			answer.getNeeds().add(parent);
+			parent.getAnswers().add(answer);
+			answer = answerDAO.update(answer);
+			parent = needDAO.update(parent);
+		}
+		return answer;
 	}
 
 	@Override
@@ -185,18 +233,9 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	}
 
 	@Override
-	public void saveNeedName(Long id, String newName) {
-		if (needDAO.exists(id)) {
-			PedagogicalNeed need = needDAO.retrieveById(id);
-			need.setName(newName);
-			need = needDAO.update(need);
-		}
-	}
-
-	@Override
 	@Transactional
 	public void changeParentOfNeedOrAnswer(Long id, Long idNewParent) {
-		logger.debug("entering changeParentOfNeed({}, {})", id, idNewParent);
+		logger.debug("entering changeParentOfNeedOrAnswer({}, {})", id, idNewParent);
 		// The "visible root node" has id=null, but it is forbidden to move it.
 		// Moreover, the id parameter must identify an existing entity.
 		if ((id != null) && (needDAO.exists(id) || answerDAO.exists(id))) {
@@ -256,7 +295,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 		else {
 			logger.error("There is no PedagogicalNeed, nor PedagogicalAnswer, with id={}", id);
 		}
-		logger.debug("leaving changeParentOfNeed({}, {})", id, idNewParent);
+		logger.debug("leaving changeParentOfNeedOrAnswer({}, {})", id, idNewParent);
 	}
 
 	@Override
@@ -278,15 +317,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 			answerDAO.update(answer);
 		}
 		return answer;
-	}
-
-	@Override
-	public void saveAnswerName(Long id, String newName) {
-		if (answerDAO.exists(id)) {
-			PedagogicalAnswer answer = answerDAO.retrieveById(id);
-			answer.setName(newName);
-			answer = answerDAO.update(answer);
-		}
 	}
 
 	@Override

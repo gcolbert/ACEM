@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/commonLayout.xhtml">
+
+	<!-- Controller associated with this view -->
+	<ui:param name="associateBean" value="#{adminDatabaseController}" />
+
+	<!-- Control display of the layouts -->
+	<ui:param name="displayNorth" value="true" />
+	<ui:param name="northPanelCollapsible" value="true"/>
+	<ui:param name="northPanelCollapsed" value="false"/>
+
+	<ui:param name="displayWest" value="false" />
+
+	<ui:param name="displayEast" value="false" />
+
+	<ui:param name="displaySouth" value="false" />
+
+	<ui:param name="pageTitle" value="#{associateBean.pageTitle}" />
+	<ui:param name="titleContent" value="#{msg['ADMINISTRATION.DATABASE.HEADER']}" />
+	<ui:param name="titlePageOne" value="#{msg['MENU.ADMIN']}"/>
+	<ui:param name="titlePageTwo" value="#{msg['MENU.ADMIN_DATABASE']}"/>
+
+	<ui:define name="content">
+
+		<p:commandButton value="Init database for Université Européenne de Bretagne"
+			action="#{associateBean.initDatabase}" icon="ui-icon-power" update="messagesDisplayer">
+			<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+		</p:commandButton>
+
+	</ui:define>
+
+</ui:composition>

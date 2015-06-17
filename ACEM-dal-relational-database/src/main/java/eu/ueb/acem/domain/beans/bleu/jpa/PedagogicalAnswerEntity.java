@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -48,6 +49,7 @@ public class PedagogicalAnswerEntity extends AbstractEntity implements Pedagogic
 
 	private String name;
 
+	@Lob
 	private String description;
 
 	@ManyToMany(targetEntity = PedagogicalNeedEntity.class, fetch = FetchType.LAZY, mappedBy = "answers")

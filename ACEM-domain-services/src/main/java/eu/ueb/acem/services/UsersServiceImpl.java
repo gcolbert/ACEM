@@ -69,7 +69,7 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	}
 
 	@Override
-	public Person retrievePersonByLogin(String login) {
+	public Teacher retrieveTeacherByLogin(String login) {
 		return teacherDAO.retrieveByLogin(login, false);
 	}
 

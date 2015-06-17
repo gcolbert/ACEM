@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -55,8 +56,12 @@ public class PedagogicalScenarioEntity extends AbstractEntity implements Pedagog
 
 	private String name;
 
+	@Lob
 	private String objective;
+
+	@Lob
 	private String evaluationModes;
+
 	private Boolean published;
 
 	@ManyToMany(targetEntity = ClassEntity.class, fetch = FetchType.LAZY)
