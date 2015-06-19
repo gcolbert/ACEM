@@ -62,6 +62,8 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationEn
 		if (entity != null) {
 			entity.getCategories().size();
 			entity.getOrganisationsHavingAccessToResource().size();
+			entity.getOrganisationPossessingResource();
+			entity.getOrganisationSupportingResource();
 			entity.getUseModes().size();
 			// Resources that are documented by the Documentation entity
 			entity.getResources().size();

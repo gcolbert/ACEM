@@ -328,6 +328,8 @@ public class MyScenariosController extends AbstractContextAwareController implem
 				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(newPedagogicalActivity);
 			}
 			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(newPedagogicalActivity));
+			selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().add(
+					objectEditedPedagogicalActivityViewBean);
 		}
 		else {
 			// Update
@@ -337,10 +339,10 @@ public class MyScenariosController extends AbstractContextAwareController implem
 				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(objectEditedPedagogicalActivityViewBean.getDomainBean());
 			}
 			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(objectEditedPedagogicalActivityViewBean.getDomainBean()));
+			selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().set(
+					objectEditedPedagogicalActivityViewBean.getPositionInScenario().intValue()-1,
+					objectEditedPedagogicalActivityViewBean);
 		}
-		selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().set(
-				objectEditedPedagogicalActivityViewBean.getPositionInScenario().intValue()-1,
-				objectEditedPedagogicalActivityViewBean);
 		MessageDisplayer.info(
 				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
 				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));

@@ -62,6 +62,8 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	protected final void initializeCollections(PedagogicalAndDocumentaryResource entity) {
 		if (entity != null) {
 			entity.getCategories().size();
+			entity.getOrganisationPossessingResource();
+			entity.getOrganisationSupportingResource();
 			entity.getOrganisationsHavingAccessToResource().size();
 			entity.getUseModes().size();
 			entity.getDocumentations().size();

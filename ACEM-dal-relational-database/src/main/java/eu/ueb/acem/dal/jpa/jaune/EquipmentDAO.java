@@ -60,6 +60,8 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentEntity> implem
 	protected final void initializeCollections(Equipment entity) {
 		if (entity != null) {
 			entity.getCategories().size();
+			entity.getOrganisationPossessingResource();
+			entity.getOrganisationSupportingResource();
 			entity.getOrganisationsHavingAccessToResource().size();
 			entity.getUseModes().size();
 			entity.getStorageLocations().size();

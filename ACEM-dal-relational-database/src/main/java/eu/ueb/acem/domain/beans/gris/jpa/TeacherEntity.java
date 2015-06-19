@@ -47,7 +47,7 @@ public class TeacherEntity extends PersonEntity implements Teacher {
 	@ManyToMany(targetEntity = ClassEntity.class,  fetch = FetchType.LAZY)
 	private Set<Class> classes = new HashSet<Class>(0);
 
-	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY)
+	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY, mappedBy = "authors")
 	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
 
 	public TeacherEntity() {
@@ -57,7 +57,7 @@ public class TeacherEntity extends PersonEntity implements Teacher {
 		super(name, login, password);
 		setTeacher(true);
 	}
-	
+
 	@Override
 	public Set<PedagogicalScenario> getScenarios() {
 		return pedagogicalScenarios;
@@ -67,7 +67,7 @@ public class TeacherEntity extends PersonEntity implements Teacher {
 	public void setScenarios(Set<PedagogicalScenario> pedagogicalScenarios) {
 		this.pedagogicalScenarios = pedagogicalScenarios;
 	}
-	
+
 	@Override
 	public Set<Class> getClasses() {
 		return classes;

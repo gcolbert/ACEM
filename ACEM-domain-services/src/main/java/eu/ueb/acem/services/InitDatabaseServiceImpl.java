@@ -153,10 +153,11 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		Resource viaELearning = resourcesService.createResource(classesVirtuelles, ueb, ur1_dsi, resourcesService.getResourceType_RESOURCE_TYPE_SOFTWARE(), "VIA eLearning", "ressource-svi-via.jpg");
 		Resource tbiLorient = resourcesService.createResource(tableauxBlancsInteractifs, ubs, ubs, resourcesService.getResourceType_RESOURCE_TYPE_EQUIPMENT(), "Tableau blanc numérique (Maison de la Recherche, paquebot à Lorient)", null);
 		Resource lairedu = resourcesService.createResource(ressourcesMultimedia, ur2, ur2_crea, resourcesService.getResourceType_RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE(), "L'Aire d'U", "ressource-lairedu.jpg");
+		ueb = organisationsService.retrieveCommunity(ueb.getId(), true);
 		lairedu.getOrganisationsHavingAccessToResource().add(ueb);
 		ueb.getViewedResources().add(lairedu);
-		organisationsService.updateCommunity(ueb);
-		resourcesService.updateResource(lairedu);
+		ueb = organisationsService.updateCommunity(ueb);
+		lairedu = resourcesService.updateResource(lairedu);
 		Resource wikiRadio = resourcesService.createResource(ressourcesMultimedia, ueb, ueb, resourcesService.getResourceType_RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE(), "WikiRadio", "ressource-wikiradio.png");
 		Resource formationVisio = resourcesService.createResource(visioconferencesWebconferences, telecomBretagne, tb_dsi, resourcesService.getResourceType_RESOURCE_TYPE_PROFESSIONAL_TRAINING(), "Formation Visio (Inwicast, équipements)", null);
 		Resource sallesImmersives18places = resourcesService.createResource(visioconferencesWebconferences, ueb, ueb, resourcesService.getResourceType_RESOURCE_TYPE_EQUIPMENT(), "Trois salles de téléprésence immersive de 18 places (1 à Lorient, 1 à Brest, 1 à Rennes", "ressource-salle-immersive.jpg");
@@ -183,7 +184,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		activity2.setDuration("2 semaines à distance");
 		activity2.getResourceCategories().add(plateformesApprentissage);
 		plateformesApprentissage.getPedagogicalActivities().add(activity2);
-		resourcesService.updateResourceCategory(plateformesApprentissage);
+		plateformesApprentissage = resourcesService.updateResourceCategory(plateformesApprentissage);
 		activity2.getScenarios().add(pedagogicalScenario);
 		pedagogicalScenario.getPedagogicalActivities().add(activity2);
 		activity2 = scenariosService.updatePedagogicalActivity(activity2);
@@ -195,7 +196,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		activity3.setDuration("1 semaine à distance");
 		activity3.getResourceCategories().add(plateformesApprentissage);
 		plateformesApprentissage.getPedagogicalActivities().add(activity3);
-		resourcesService.updateResourceCategory(plateformesApprentissage);
+		plateformesApprentissage = resourcesService.updateResourceCategory(plateformesApprentissage);
 		activity3.getScenarios().add(pedagogicalScenario);
 		pedagogicalScenario.getPedagogicalActivities().add(activity3);
 		activity3 = scenariosService.updatePedagogicalActivity(activity3);
@@ -231,10 +232,11 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 
 		PedagogicalNeed need1_3 = needsAndAnswersService.createPedagogicalNeed("Construire des supports de cours", need1);
 		// answer1_3_1 == "Créer un espace de cours sur la plateforme d'apprentissage"
-		answer1_2_1.getNeeds().add(need1_3);
+		need1_3 = needsAndAnswersService.retrievePedagogicalNeed(need1_3.getId(), true);
 		need1_3.getAnswers().add(answer1_2_1);
-		needsAndAnswersService.updatePedagogicalAnswer(answer1_2_1);
-		needsAndAnswersService.updatePedagogicalNeed(need1_3);
+		answer1_2_1.getNeeds().add(need1_3);
+		answer1_2_1 = needsAndAnswersService.updatePedagogicalAnswer(answer1_2_1);
+		need1_3 = needsAndAnswersService.updatePedagogicalNeed(need1_3);
 		// -------
 
 		PedagogicalNeed need1_4 = needsAndAnswersService.createPedagogicalNeed("Préparer un scénario", need1);
@@ -275,28 +277,32 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		PedagogicalNeed need2 = needsAndAnswersService.createPedagogicalNeed("Animer un cours");
 		PedagogicalNeed need2_1 = needsAndAnswersService.createPedagogicalNeed("Tutorer un cours à distance", need2);
 		// answer2_1_1 == "Utiliser une classe virtuelle"
-		answer1_2_4.getNeeds().add(need2_1);
+		need2_1 = needsAndAnswersService.retrievePedagogicalNeed(need2_1.getId(), true);
 		need2_1.getAnswers().add(answer1_2_4);
-		needsAndAnswersService.updatePedagogicalAnswer(answer1_2_4);
-		needsAndAnswersService.updatePedagogicalNeed(need2_1);
+		answer1_2_4.getNeeds().add(need2_1);
+		answer1_2_4 = needsAndAnswersService.updatePedagogicalAnswer(answer1_2_4);
+		need2_1 = needsAndAnswersService.updatePedagogicalNeed(need2_1);
 		// -------
 		// answer2_1_2 == "Utiliser la visioconférence"
-		answer1_2_3.getNeeds().add(need2_1);
+		need2_1 = needsAndAnswersService.retrievePedagogicalNeed(need2_1.getId(), true);
 		need2_1.getAnswers().add(answer1_2_3);
-		needsAndAnswersService.updatePedagogicalAnswer(answer1_2_3);
-		needsAndAnswersService.updatePedagogicalNeed(need2_1);
+		answer1_2_3.getNeeds().add(need2_1);
+		answer1_2_3 = needsAndAnswersService.updatePedagogicalAnswer(answer1_2_3);
+		need2_1 = needsAndAnswersService.updatePedagogicalNeed(need2_1);
 		// -------
 		// answer2_1_3 == "Utiliser une salle immersive"
-		answer1_2_2.getNeeds().add(need2_1);
+		need2_1 = needsAndAnswersService.retrievePedagogicalNeed(need2_1.getId(), true);
 		need2_1.getAnswers().add(answer1_2_2);
-		needsAndAnswersService.updatePedagogicalAnswer(answer1_2_2);
-		needsAndAnswersService.updatePedagogicalNeed(need2_1);
+		answer1_2_2.getNeeds().add(need2_1);
+		answer1_2_2 = needsAndAnswersService.updatePedagogicalAnswer(answer1_2_2);
+		need2_1 = needsAndAnswersService.updatePedagogicalNeed(need2_1);
 		// -------
 		// answer2_1_4 == "Utiliser le forum d'un espace de cours d'une plateforme d'apprentissage
-		answer1_6_2.getNeeds().add(need2_1);
+		need2_1 = needsAndAnswersService.retrievePedagogicalNeed(need2_1.getId(), true);
 		need2_1.getAnswers().add(answer1_6_2);
-		needsAndAnswersService.updatePedagogicalAnswer(answer1_6_2);
-		needsAndAnswersService.updatePedagogicalNeed(need2_1);
+		answer1_6_2.getNeeds().add(need2_1);
+		answer1_6_2 = needsAndAnswersService.updatePedagogicalAnswer(answer1_6_2);
+		need2_1 = needsAndAnswersService.updatePedagogicalNeed(need2_1);
 		// -------
 
 		PedagogicalNeed need2_2 = needsAndAnswersService.createPedagogicalNeed("Partager des documents avec les étudiants", need2);
@@ -323,10 +329,11 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_3_1_1.getId(), boitiersDeVote.getId());
 		PedagogicalNeed need2_3_2 = needsAndAnswersService.createPedagogicalNeed("Interagir avec les étudiants en distanciel", need2_3);
 		// answer2_3_1_2 == "Utiliser une classe virtuelle"
-		answer1_2_4.getNeeds().add(need2_3_2);
+		need2_3_2 = needsAndAnswersService.retrievePedagogicalNeed(need2_3_2.getId(), true);
 		need2_3_2.getAnswers().add(answer1_2_4);
-		needsAndAnswersService.updatePedagogicalAnswer(answer1_2_4);
-		needsAndAnswersService.updatePedagogicalNeed(need2_3_2);
+		answer1_2_4.getNeeds().add(need2_3_2);
+		answer1_2_4 = needsAndAnswersService.updatePedagogicalAnswer(answer1_2_4);
+		need2_3_2 = needsAndAnswersService.updatePedagogicalNeed(need2_3_2);
 		// -------
 
 		PedagogicalNeed need2_4 = needsAndAnswersService.createPedagogicalNeed("Faire collaborer les étudiants", need2);

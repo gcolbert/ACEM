@@ -59,6 +59,8 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareEntity> implement
 	protected final void initializeCollections(Software entity) {
 		if (entity != null) {
 			entity.getCategories().size();
+			entity.getOrganisationPossessingResource();
+			entity.getOrganisationSupportingResource();
 			entity.getOrganisationsHavingAccessToResource().size();
 			entity.getUseModes().size();
 			entity.getDocumentations().size();

@@ -61,6 +61,8 @@ public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, P
 	protected final void initializeCollections(ProfessionalTraining entity) {
 		if (entity != null) {
 			entity.getCategories().size();
+			entity.getOrganisationPossessingResource();
+			entity.getOrganisationSupportingResource();
 			entity.getOrganisationsHavingAccessToResource().size();
 			entity.getUseModes().size();
 			entity.getDocumentations().size();

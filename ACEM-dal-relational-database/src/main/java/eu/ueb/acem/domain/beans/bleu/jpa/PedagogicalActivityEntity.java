@@ -23,6 +23,7 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -49,7 +50,8 @@ public class PedagogicalActivityEntity extends AbstractEntity implements Pedagog
 
 	private String name;
 
-	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY, mappedBy = "pedagogicalActivities")
+	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY)
+	@JoinTable(name = "PedagogicalScenario_PedagogicalActivity")
 	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
 
 	@ManyToMany(targetEntity = ResourceCategoryEntity.class, fetch = FetchType.LAZY)

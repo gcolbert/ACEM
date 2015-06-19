@@ -92,7 +92,8 @@ public abstract class AbstractEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		//return ToStringBuilder.reflectionToString(this);
+		return new ToStringBuilder(this).append("id",id).toString();
 	}
 
 }

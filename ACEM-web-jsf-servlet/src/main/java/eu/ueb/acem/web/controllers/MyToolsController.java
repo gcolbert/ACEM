@@ -368,7 +368,8 @@ public class MyToolsController extends AbstractContextAwareController implements
 				ResourceViewBean resourceViewBean = createResourceViewBean(resource);
 
 				// The organisation possessing the resource
-				resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(resourceViewBean.getDomainBean().getOrganisationPossessingResource()));
+				Organisation possessingOrganisation = organisationsService.retrieveOrganisation(resourceViewBean.getDomainBean().getOrganisationPossessingResource().getId(), false);
+				resourceViewBean.setOrganisationPossessingResourceViewBean(OrganisationViewBeanGenerator.getViewBean(possessingOrganisation));
 
 				// The organisation supporting the resource
 				if (resourceViewBean.getDomainBean().getOrganisationSupportingResource() != null) {

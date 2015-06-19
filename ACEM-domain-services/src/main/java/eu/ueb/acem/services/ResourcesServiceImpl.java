@@ -229,19 +229,19 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 
 				switch (resourceType) {
 				case RESOURCE_TYPE_SOFTWARE:
-					resource = softwareDAO.create((Software) resource);
+					resource = softwareDAO.update((Software) resource);
 					break;
 				case RESOURCE_TYPE_DOCUMENTATION:
-					resource = documentationDAO.create((Documentation) resource);
+					resource = documentationDAO.update((Documentation) resource);
 					break;
 				case RESOURCE_TYPE_EQUIPMENT:
-					resource = equipmentDAO.create((Equipment) resource);
+					resource = equipmentDAO.update((Equipment) resource);
 					break;
 				case RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE:
-					resource = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource) resource);
+					resource = pedagogicalAndDocumentaryResourcesDAO.update((PedagogicalAndDocumentaryResource) resource);
 					break;
 				case RESOURCE_TYPE_PROFESSIONAL_TRAINING:
-					resource = professionalTrainingDAO.create((ProfessionalTraining) resource);
+					resource = professionalTrainingDAO.update((ProfessionalTraining) resource);
 					break;
 				default:
 				}
