@@ -8,8 +8,6 @@
 	xmlns:of="http://omnifaces.org/functions">
 
 <ui:param name="eastPanelSize" value="400" />
-<ui:param name="titleNorth"
-	value="#{msg['APPLICATION.TITLE']} - #{msg['APPLICATION.DESCRIPTION']} (#{msg['APPLICATION.VERSION']} #{applicationService.version})" />
 
 <f:view locale="#{sessionController.currentUserLocale}">
 
@@ -37,11 +35,11 @@
 		<p:layout fullPage="true" id="layoutcontent">
 
 			<!-- Navigation and breadCrumb -->
-			<p:layoutUnit id="layoutNorth" position="north"
-				header="#{titleNorth}" collapsible="#{northPanelCollapsible}"
+			<p:layoutUnit id="layoutNorth" position="north" gutter="0"
+				header="" collapsible="true"
 				collapsed="#{northPanelCollapsed}" rendered="#{displayNorth}">
 				<h:form id="northForm">
-					<ui:insert name="header">
+					<ui:insert name="commonHeader">
 						<ui:include src="include/commonHeader.xhtml">
 						</ui:include>
 					</ui:insert>

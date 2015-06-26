@@ -17,6 +17,12 @@ html {
 	background: url("../resources/images/BandeauNumeriqueAccueil2013.png") no-repeat scroll 100% 100% #03132C;
 }
 
+.commonHeader {
+	padding:0.5em 0 0em 0.5em;
+	font-weight:bold;
+	font-size:1.1em;
+}
+
 .blockButton {
 	display:block;
 }

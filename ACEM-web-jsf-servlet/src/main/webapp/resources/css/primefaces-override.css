@@ -1,6 +1,10 @@
 /*------------------------------------------------------------
 Override of Primefaces default css
 --------------------------------------------------------------*/
+.ui-layout-unit {
+	border:0;
+}
+
 .ui-growl {
 	z-index:9999999 !important;
 }
@@ -19,8 +23,11 @@ Override of Primefaces default css
 
 .ui-menu {
 	min-width: 23em;
+	padding:0 0.2em;
 }
-
+.ui-layout-north .ui-helper-clearfix::after {
+	display:none;
+}
 .ui-menu .ui-menuitem {
 	background-color:#878786;
 	margin-right:0.3em;
@@ -33,15 +40,25 @@ Override of Primefaces default css
 
 .ui-menubar {
 	border:0; /* Remove the border for menu bars */
+	display:inline-block;
 }
 .ui-menuitem .ui-menuitem-link, /* This first selector matches overlay menus that appears when clicking a button*/
 .ui-menubar .ui-menu-child .ui-menuitem-link /* This second selector matches the menu bars with children menus */
 {
-    box-sizing: border-box; width: 100%; /* By default the links in overlaid menus are 92% wide which appears odd */
+	box-sizing: border-box; width: 100%; /* By default the links in overlaid menus are 92% wide which appears odd */
 }
 
 .ui-breadcrumb {
 	margin:0 0.3em;
+	border:none;
+	background:none;
+	display:inline-block;
+}
+.ui-breadcrumb .ui-icon {
+	background-image:url("/ACEM/javax.faces.resource/images/ui-icons_B6B1B0_256x240.png.xhtml?ln=primefaces-acem-theme");
+}
+.ui-breadcrumb a {
+	color:#081F3A;
 }
 
 .ui-layout-north {
@@ -49,6 +66,10 @@ Override of Primefaces default css
 	overflow:visible;             /* Let menu be visible over content layout */
 	border: none;                 /* Remove the border for north layout (top) */
 	padding:0;                    /* Remove the padding for north layout (top) */
+}
+
+.ui-layout-north .ui-layout-unit-header {
+	display:none;                 /* We hide the north header */
 }
 
 .ui-layout-north .ui-layout-unit-content {
