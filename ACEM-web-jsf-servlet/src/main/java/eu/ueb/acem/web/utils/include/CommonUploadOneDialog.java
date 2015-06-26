@@ -27,7 +27,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -113,7 +113,7 @@ public class CommonUploadOneDialog implements Serializable {
 		fileUploaded = (UploadedFile) event.getFile();
 		if (caller != null){
 			Path temporaryFilePath = FileSystems.getDefault().getPath(FileUtil.getNormalizedFilePath(caller.getDomainService().getTemporaryDirectory() + File.separator
-					+ fileUploaded.getFileName() + RandomUtils.nextInt(0,100000)));
+					+ fileUploaded.getFileName() + RandomUtils.nextInt(100000)));
 			try {
 				FileUtil.copyInputStream(temporaryFilePath.toString(), fileUploaded.getInputstream());
 			} catch (IOException e) {
