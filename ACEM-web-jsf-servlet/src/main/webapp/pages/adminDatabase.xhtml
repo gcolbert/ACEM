@@ -3,6 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
 	template="/templates/commonLayout.xhtml">
 
 	<!-- Controller associated with this view -->
@@ -10,8 +11,6 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
-	<ui:param name="northPanelCollapsible" value="true"/>
-	<ui:param name="northPanelCollapsed" value="false"/>
 
 	<ui:param name="displayWest" value="false" />
 
@@ -27,10 +26,18 @@
 	<ui:define name="content">
 
 		<p:commandButton value="Init database for Université Européenne de Bretagne"
-			action="#{associateBean.initDatabase}" icon="ui-icon-power" update="messagesDisplayer">
+			action="#{associateBean.initDatabase}" icon="ui-icon-power" update="@none"
+			onstart="PF('blockUIWidget').block()" oncomplete="PF('blockUIWidget').unblock()">
 			<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
 		</p:commandButton>
 
+		<pe:blockUI widgetVar="blockUIWidget">  
+		    <h:panelGrid columns="2">
+		        <p:graphicImage style="margin-right: 12px; vertical-align: middle;"
+								name="ajax-loader.gif" library="images"/>
+		        <h:outputText value="Please wait..." style="white-space: nowrap;"/>  
+		    </h:panelGrid>  
+		</pe:blockUI>  
 	</ui:define>
 
 </ui:composition>
