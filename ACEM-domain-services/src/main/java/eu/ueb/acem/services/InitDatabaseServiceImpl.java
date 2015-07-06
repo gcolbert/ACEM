@@ -34,6 +34,7 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
  * @author Grégoire Colbert
@@ -102,6 +103,48 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		organisationsService.associateInstitutionAndAdministrativeDepartment(ur1.getId(), ur1_suptice.getId());
 		organisationsService.associateInstitutionAndAdministrativeDepartment(ur1.getId(), ur1_dsi.getId());
 		organisationsService.associateInstitutionAndAdministrativeDepartment(ur2.getId(), ur2_crea.getId());
+
+		TeachingDepartment ur1_medecine = organisationsService.createTeachingDepartment("UR1-Faculté de médecine", "UR1-MEDECINE", null);
+		TeachingDepartment ur1_pharmacie = organisationsService.createTeachingDepartment("UR1-Faculté de pharmacie", "UR1-PHARMACIE", null);
+		TeachingDepartment ur1_odontologie = organisationsService.createTeachingDepartment("UR1-Faculté d'odontologie", "UR1-ODONTOLOGIE", null);
+		TeachingDepartment ur1_droit_et_science_politique = organisationsService.createTeachingDepartment("UR1-Faculté de droit et de science politique", "UR1-DROIT-SCIENCE-POLITIQUE", null);
+		TeachingDepartment ur1_economie = organisationsService.createTeachingDepartment("UR1-Faculté des sciences économiques", "UR1-ECONOMIE", null);
+		TeachingDepartment ur1_philosophie = organisationsService.createTeachingDepartment("UR1-UFR de philosophie", "UR1-PHILOSOPHIE", null);
+		TeachingDepartment ur1_spm = organisationsService.createTeachingDepartment("UR1-UFR Sciences et Propriétés de la Matière", "UR1-SPM", null);
+		TeachingDepartment ur1_sve = organisationsService.createTeachingDepartment("UR1-UFR Sciences de la Vie et de l'Environnement", "UR1-SVE", null);
+		TeachingDepartment ur1_maths = organisationsService.createTeachingDepartment("UR1-UFR Mathématiques", "UR1-MATHS", null);
+		TeachingDepartment ur1_istic = organisationsService.createTeachingDepartment("UR1-UFR Informatique Électronique", "UR1-ISTIC", null);
+
+		TeachingDepartment ur1_igr_iae = organisationsService.createTeachingDepartment("UR1-Institut de Gestion de Rennes (IGR-IAE)", "UR1-IGR-IAE", "logo-igr-iae.jpg");
+		TeachingDepartment ur1_ipag = organisationsService.createTeachingDepartment("UR1-Institut de Préparation à l'Administration Générale (IPAG)", "UR1-IPAG", null);
+		TeachingDepartment ur1_iut_rennes = organisationsService.createTeachingDepartment("UR1-IUT de Rennes", "UR1-IUT-RENNES", "logo-iut-rennes.png");
+		TeachingDepartment ur1_iut_lannion = organisationsService.createTeachingDepartment("UR1-IUT de Lannion", "UR1-IUT-LANNION", "logo-iut-lannion.jpg");
+		TeachingDepartment ur1_iut_saint_malo = organisationsService.createTeachingDepartment("UR1-IUT de Saint-Malo", "UR1-IUT-SAINT-MALO", "logo-iut-saint-malo.jpg");
+		TeachingDepartment ur1_iut_saint_brieuc = organisationsService.createTeachingDepartment("UR1-IUT de Saint-Brieuc", "UR1-IUT-SAINT-BRIEUC", "logo-iut-saint-brieuc.jpg");
+
+		TeachingDepartment ur1_enssat = organisationsService.createTeachingDepartment("UR1-École Nationale Supérieure de Sciences Appliquées et de Technologie (ENSSAT)", "UR1-ENSSAT", "logo-enssat.png");
+		TeachingDepartment ur1_esir = organisationsService.createTeachingDepartment("UR1-École Supérieure d'Ingénieurs de Rennes (ESIR)", "UR1-ESIR", "logo-esir.png");
+		TeachingDepartment ur1_osur = organisationsService.createTeachingDepartment("UR1-Observatoire des Sciences de l'Univers de Rennes (OSUR)", "UR1-OSUR", "logo-osur.jpg");
+
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_medecine.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_pharmacie.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_odontologie.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_droit_et_science_politique.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_economie.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_philosophie.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_spm.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_sve.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_maths.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_istic.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_igr_iae.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_ipag.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_iut_rennes.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_iut_lannion.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_iut_saint_malo.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_iut_saint_brieuc.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_enssat.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_esir.getId());
+		organisationsService.associateInstitutionAndTeachingDepartment(ur1.getId(), ur1_osur.getId());
 
 		// *******************
 		// RESOURCE CATEGORIES

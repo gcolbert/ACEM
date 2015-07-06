@@ -46,6 +46,9 @@
 		<param-name>spring.profiles.default</param-name>
 		<param-value>auth-manual,relational-database</param-value>
 	</context-param>
+	<session-config> 
+		<session-timeout>120</session-timeout>  <!-- For 120 minutes -->
+	</session-config>
 
 	<servlet>
 		<description> The main servlet of the application. This class inherits

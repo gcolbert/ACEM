@@ -3,6 +3,7 @@ Override of Primefaces default css
 --------------------------------------------------------------*/
 .ui-layout-unit {
 	border:0;
+	padding:0 0.2em;
 }
 
 .ui-growl {
@@ -58,7 +59,7 @@ Override of Primefaces default css
 	background-image:url("/ACEM/javax.faces.resource/images/ui-icons_B6B1B0_256x240.png.xhtml?ln=primefaces-acem-theme");
 }
 .ui-breadcrumb a {
-	color:#081F3A;
+	color:#2B558B;
 }
 
 .ui-layout-north {

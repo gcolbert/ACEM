@@ -23,7 +23,7 @@
 	<parent>
 		<artifactId>ACEM</artifactId>
 		<groupId>eu.ueb</groupId>
-		<version>0.2.0-SNAPSHOT</version>
+		<version>0.2.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>ACEM-dal-relational-database</artifactId>
 	<description>Data Access Layer (using Spring Data JPA)</description>
