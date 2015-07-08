@@ -48,6 +48,7 @@
 		<property name="username" value="admin" />
 		<property name="password" value="secret" />
 		<property name="testOnBorrow" value="true"/>
+		<property name="validationQuery" value="SELECT 1"/>
 	</bean>
 
 	<bean id="entityManagerFactory"
