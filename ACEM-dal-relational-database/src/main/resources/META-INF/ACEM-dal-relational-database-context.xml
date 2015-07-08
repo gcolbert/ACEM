@@ -49,6 +49,7 @@
 		<property name="url" value="${jdbc.connection.url}" />
 		<property name="username" value="${jdbc.connection.username}" />
 		<property name="password" value="${jdbc.connection.password}" />
+		<property name="testOnBorrow" value="true"/>
 	</bean>
 
 	<bean id="entityManagerFactory"
