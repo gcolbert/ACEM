@@ -30,8 +30,10 @@ import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalActivityEntity;
 import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalAnswerEntity;
+import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalSessionEntity;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
@@ -51,9 +53,9 @@ public class ResourceCategoryEntity extends AbstractEntity implements ResourceCa
 	private static final long serialVersionUID = 9065345649480029375L;
 
 	private String name;
-	
+
 	private String iconFileName;
-	
+
 	@Lob
 	private String description;
 
@@ -63,6 +65,9 @@ public class ResourceCategoryEntity extends AbstractEntity implements ResourceCa
 	@ManyToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "ResourceCategory_Resource")
 	private Set<Resource> resources = new HashSet<Resource>(0);
+
+	@ManyToMany(targetEntity = PedagogicalSessionEntity.class, fetch = FetchType.LAZY, mappedBy = "resourceCategories")
+	private Set<PedagogicalSession> pedagogicalSessions = new HashSet<PedagogicalSession>(0);
 
 	@ManyToMany(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY, mappedBy = "resourceCategories")
 	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
@@ -135,10 +140,20 @@ public class ResourceCategoryEntity extends AbstractEntity implements ResourceCa
 	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
 		this.pedagogicalActivities = pedagogicalActivities;
 	}
-	
+
+	@Override
+	public Set<PedagogicalSession> getPedagogicalSessions() {
+		return pedagogicalSessions;
+	}
+
+	@Override
+	public void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions) {
+		this.pedagogicalSessions = pedagogicalSessions;
+	}
+
 	@Override
 	public int compareTo(ResourceCategory o) {
 		return getName().compareTo(o.getName());
 	}
-	
+
 }

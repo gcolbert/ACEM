@@ -18,8 +18,6 @@
  */
 package eu.ueb.acem.dal.common.vert;
 
-import java.io.Serializable;
-
 import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.vert.Building;
 
@@ -27,7 +25,7 @@ import eu.ueb.acem.domain.beans.vert.Building;
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
-public interface BuildingDAO<ID extends Serializable> extends DAO<ID, Building> {
+public interface BuildingDAO<ID> extends DAO<ID, Building> {
 
 	Building create(String name, Double latitude, Double longitude);
 

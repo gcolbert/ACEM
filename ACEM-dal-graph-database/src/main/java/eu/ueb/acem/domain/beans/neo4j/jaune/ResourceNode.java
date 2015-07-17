@@ -28,11 +28,13 @@ import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
+import eu.ueb.acem.domain.beans.neo4j.bleu.TeachingModeNode;
 import eu.ueb.acem.domain.beans.neo4j.rouge.OrganisationNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
@@ -71,6 +73,9 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 
 	@RelatedTo(elementClass = DocumentationNode.class, type = "documents", direction = INCOMING)
 	private Set<Documentation> documentations;
+
+	@RelatedTo(elementClass = TeachingModeNode.class, type = "resourceForTeachingMode", direction = OUTGOING)
+	private TeachingMode teachingMode;
 
 	public ResourceNode() {
 	}
@@ -158,6 +163,16 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 	@Override
 	public void setDocumentations(Set<Documentation> documentations) {
 		this.documentations = documentations;
+	}
+
+	@Override
+	public TeachingMode getTeachingMode() {
+		return teachingMode;
+	}
+
+	@Override
+	public void setTeachingMode(TeachingMode teachingMode) {
+		this.teachingMode = teachingMode;
 	}
 
 	@Override

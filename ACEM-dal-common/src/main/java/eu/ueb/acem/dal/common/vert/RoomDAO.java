@@ -18,8 +18,6 @@
  */
 package eu.ueb.acem.dal.common.vert;
 
-import java.io.Serializable;
-
 import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.vert.Room;
 
@@ -27,7 +25,7 @@ import eu.ueb.acem.domain.beans.vert.Room;
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
-public interface RoomDAO<ID extends Serializable> extends DAO<ID, Room> {
+public interface RoomDAO<ID> extends DAO<ID, Room> {
 
 	Room create(String name, Integer roomCapacity, Boolean hasWifiAccess);
 

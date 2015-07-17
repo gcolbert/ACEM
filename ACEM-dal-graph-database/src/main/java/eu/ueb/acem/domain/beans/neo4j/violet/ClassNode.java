@@ -18,24 +18,19 @@
  */
 package eu.ueb.acem.domain.beans.neo4j.violet;
 
-import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
-import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalScenarioNode;
+import eu.ueb.acem.domain.beans.bleu.TeachingMode;
+import eu.ueb.acem.domain.beans.neo4j.bleu.TeachingModeNode;
 import eu.ueb.acem.domain.beans.neo4j.vert.PhysicalSpaceNode;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
-import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.violet.Course;
 
 /**
  * @author Grégoire Colbert
@@ -44,7 +39,7 @@ import eu.ueb.acem.domain.beans.violet.Class;
  */
 @NodeEntity
 @TypeAlias("Class")
-public class ClassNode extends AbstractNode implements Class {
+public class ClassNode extends TeachingUnitNode implements Class {
 
 	/**
 	 * For serialization.
@@ -54,20 +49,17 @@ public class ClassNode extends AbstractNode implements Class {
 	@Indexed
 	private String name;
 
-	@RelatedTo(elementClass = CourseNode.class, type = "isPartOfCourse", direction = OUTGOING)
+	@RelatedTo(elementClass = CourseNode.class, type = "classPartOfCourse", direction = OUTGOING)
 	private Course course;
 
 	@RelatedTo(elementClass = PhysicalSpaceNode.class, type = "classHappensInLocation", direction = OUTGOING)
 	private PhysicalSpace location;
 
-	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "scenarioUsedForClass", direction = INCOMING)
-	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
-	
 	private String date;
 	private String time;
-	private String duration;
-	private String teachingMode;
-	private Integer numberOfLearners;
+
+	@RelatedTo(elementClass = TeachingModeNode.class, type = "classHasTeachingMode", direction = OUTGOING)
+	private TeachingMode teachingMode;
 
 	public ClassNode() {
 	}
@@ -85,7 +77,7 @@ public class ClassNode extends AbstractNode implements Class {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public String getDate() {
 		return date;
@@ -107,33 +99,13 @@ public class ClassNode extends AbstractNode implements Class {
 	}
 
 	@Override
-	public String getDuration() {
-		return duration;
-	}
-
-	@Override
-	public void setDuration(String duree) {
-		this.duration = duree;
-	}
-
-	@Override
-	public String getTeachingMode() {
+	public TeachingMode getTeachingMode() {
 		return teachingMode;
 	}
 
 	@Override
-	public void setTeachingMode(String teachingMode) {
+	public void setTeachingMode(TeachingMode teachingMode) {
 		this.teachingMode = teachingMode;
-	}
-
-	@Override
-	public Integer getNumberOfLearners() {
-		return numberOfLearners;
-	}
-
-	@Override
-	public void setNumberOfLearners(Integer nbApprenants) {
-		this.numberOfLearners = nbApprenants;
 	}
 
 	@Override
@@ -154,21 +126,6 @@ public class ClassNode extends AbstractNode implements Class {
 	@Override
 	public void setLocation(PhysicalSpace location) {
 		this.location = location;
-	}
-
-	@Override
-	public Set<PedagogicalScenario> getPedagogicalScenarios() {
-		return pedagogicalScenarios;
-	}
-
-	@Override
-	public void setPedagogicalScenarios(Set<PedagogicalScenario> scenarios) {
-		this.pedagogicalScenarios = scenarios;
-	}
-
-	@Override
-	public int compareTo(Class o) {
-		return this.getName().compareTo(o.getName());
 	}
 
 }

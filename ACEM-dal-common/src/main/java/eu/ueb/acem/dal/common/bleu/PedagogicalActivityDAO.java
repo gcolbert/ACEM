@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.dal.common.bleu;
 
-import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 
 /**
@@ -26,8 +25,6 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
  * @since 2015-02-27
  * 
  */
-public interface PedagogicalActivityDAO<ID> extends DAO<ID, PedagogicalActivity> {
-
-	PedagogicalActivity create(String name);
+public interface PedagogicalActivityDAO<ID> extends PedagogicalUnitDAO<ID, PedagogicalActivity> {
 
 }

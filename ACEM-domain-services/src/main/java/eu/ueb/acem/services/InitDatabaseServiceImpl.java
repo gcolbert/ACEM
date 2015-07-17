@@ -28,6 +28,9 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
+import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -63,6 +66,9 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 
 	@Inject
 	private ScenariosService scenariosService;
+
+	@Inject
+	private TeachingModesService teachingModesService;
 
 	@Override
 	public void initDatabase() {
@@ -208,42 +214,56 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		// *********
 		// SCENARIOS
 		// *********
+		TeachingMode teachingModeOnlineCourse = teachingModesService.createTeachingMode("Distanciel", "Cours à distance");
+		TeachingMode teachingModeOnsiteCourse = teachingModesService.createTeachingMode("Présentiel", "Cours en présentiel");
+
 		Teacher teacher = usersService.retrieveTeacherByLogin("admin");
+
 		PedagogicalScenario pedagogicalScenario = scenariosService.createScenario(teacher, "Étude d'une théorie et argumentation", "Développer la capacité à s'approprier une problématique scientifique");
-		pedagogicalScenario.setEvaluationModes("<span style=\"font-weight: bold;\">Travaux remis par les étudiants :</span> chaque étudiant aura remis un travail de groupe (synthèse d'un texte et note critique de lecture) et un travail individuel (feed-back à un autre groupe).<br> <span style=\"font-weight: bold;\"><br> Forme du feed-back :</span> le feed-back donné par l'enseignant aux étudiants est formulé à la demande ou de façon informelle via le forum de discussion du cours.<br> <br> <span style=\"font-weight: bold;\">Technologies utilisées :</span> forum de discussion<br> <br> <span style=\"font-weight: bold;\">Critères d'évaluation :</span><br> <ul><li>Pour le travail de groupe : précision et exhaustivité de la synthèse de lecture, clarté et structure de la comparaison des textes, articulation de l'argumentation;</li><li>Pour le travail individuel : clarté et structure du feed-back fourni, pertinence et précision des suggestions d'amélioration.</li></ul>");
+
+		PedagogicalSequence pedagogicalSequence1 = scenariosService.createPedagogicalSequence("Sequence 1");
+		pedagogicalScenario.getFirstPedagogicalSequences().add(pedagogicalSequence1);
+		pedagogicalSequence1.setPedagogicalScenario(pedagogicalScenario);
+
+		PedagogicalSession pedagogicalSession1 = scenariosService.createPedagogicalSession("Séance 1");
+		pedagogicalSession1.setObjective("À la fin de la séance, les étudiants seront capables de définir et d'expliquer les principales notions relatives à une théorie présentée en classe.");
+		pedagogicalSession1.getPedagogicalSequences().add(pedagogicalSequence1);
+		pedagogicalSequence1.setFirstPedagogicalSession(pedagogicalSession1);
 		PedagogicalActivity activity1 = scenariosService.createPedagogicalActivity("Appropriation de la problématique");
-		activity1.setPositionInScenario(1L);
-		activity1.setObjective("À la fin de la séance, les étudiants seront capables de définir et d'expliquer les principales notions relatives à une théorie présentée en classe.");
 		activity1.setInstructions("Les étudiants sont invités à poser des questions et à participer à de courtes discussions par petits groupes.");
-		activity1.setDuration("Séance de cours de 2 heures en présentiel");
-		activity1.getScenarios().add(pedagogicalScenario);
-		pedagogicalScenario.getPedagogicalActivities().add(activity1);
+		activity1.setTeachingMode(teachingModeOnsiteCourse);
+		activity1.setDuration(2*60L); // 2 hours
+		activity1.setPedagogicalSession(pedagogicalSession1);
+		pedagogicalSession1.setFirstPedagogicalActivity(activity1);
 		activity1 = scenariosService.updatePedagogicalActivity(activity1);
 
 		PedagogicalActivity activity2 = scenariosService.createPedagogicalActivity("Comparaison d'articles scientifiques");
-		activity2.setPositionInScenario(2L);
 		activity2.setObjective("À la fin de cette activité, les étudiants seront capables de comparer des articles scientifiques et de participer à une discussion argumentée à propos des résultats de recherche présentés dans ces articles.");
 		activity2.setInstructions("Les étudiants forment des groupes de deux et choisissent deux articles parmi une liste qui leur est proposée. Ils rédigent une courte synthèse de chaque article (500 mots) et élaborent une note argumentée (1000 mots) qui compare les deux articles du point de vue des notions théoriques qu'ils utilisent, de leur méthode de recherche respective et de leurs résultats. Ils partagent leur texte avec les autres étudiants dans un forum de discussion sur la plate-forme d'enseignement de l'institution.");
-		activity2.setDuration("2 semaines à distance");
+		activity2.setTeachingMode(teachingModeOnlineCourse);
+		activity2.setDuration(2*7*24*60L); // 2 weeks
 		activity2.getResourceCategories().add(plateformesApprentissage);
 		plateformesApprentissage.getPedagogicalActivities().add(activity2);
 		plateformesApprentissage = resourcesService.updateResourceCategory(plateformesApprentissage);
-		activity2.getScenarios().add(pedagogicalScenario);
-		pedagogicalScenario.getPedagogicalActivities().add(activity2);
+		activity2.setPedagogicalSession(pedagogicalSession1);
+		activity1.setNextPedagogicalActivity(activity2);
 		activity2 = scenariosService.updatePedagogicalActivity(activity2);
 
 		PedagogicalActivity activity3 = scenariosService.createPedagogicalActivity("Capacité à argumenter");
-		activity3.setPositionInScenario(3L);
 		activity3.setObjective("À la fin de cette étape, les étudiants seront capables d'élaborer un feed-back argumenté et une critique constructive du travail de leurs collègues, et de tenir compte du feed-back qui leur est donné pour améliorer leur propre travail.");
 		activity3.setInstructions("Chaque étudiant se voit attribuer la lecture d'une texte d'un autre groupe que le sien. Il lit le texte et rédige un résumé de 250 mots à l'attention des auteurs en précisant les points forts, les points à améliorer et des suggestions concrètes d'amélioration. Il partage son feed-back sur le forum de discussion de la plate-forme d'apprentissage.");
-		activity3.setDuration("1 semaine à distance");
+		activity3.setTeachingMode(teachingModeOnlineCourse);
+		activity3.setDuration(1*7*24*60L); // 1 week
 		activity3.getResourceCategories().add(plateformesApprentissage);
 		plateformesApprentissage.getPedagogicalActivities().add(activity3);
 		plateformesApprentissage = resourcesService.updateResourceCategory(plateformesApprentissage);
-		activity3.getScenarios().add(pedagogicalScenario);
-		pedagogicalScenario.getPedagogicalActivities().add(activity3);
+		activity3.setPedagogicalSession(pedagogicalSession1);
+		activity2.setNextPedagogicalActivity(activity3);
 		activity3 = scenariosService.updatePedagogicalActivity(activity3);
-		
+
+		pedagogicalSession1 = scenariosService.updatePedagogicalSession(pedagogicalSession1);
+		pedagogicalSequence1 = scenariosService.updatePedagogicalSequence(pedagogicalSequence1);
+		pedagogicalScenario.setEvaluationModes("<span style=\"font-weight: bold;\">Travaux remis par les étudiants :</span> chaque étudiant aura remis un travail de groupe (synthèse d'un texte et note critique de lecture) et un travail individuel (feed-back à un autre groupe).<br> <span style=\"font-weight: bold;\"><br> Forme du feed-back :</span> le feed-back donné par l'enseignant aux étudiants est formulé à la demande ou de façon informelle via le forum de discussion du cours.<br> <br> <span style=\"font-weight: bold;\">Technologies utilisées :</span> forum de discussion<br> <br> <span style=\"font-weight: bold;\">Critères d'évaluation :</span><br> <ul><li>Pour le travail de groupe : précision et exhaustivité de la synthèse de lecture, clarté et structure de la comparaison des textes, articulation de l'argumentation;</li><li>Pour le travail individuel : clarté et structure du feed-back fourni, pertinence et précision des suggestions d'amélioration.</li></ul>");
 		pedagogicalScenario = scenariosService.updateScenario(pedagogicalScenario);
 
 		// ******************

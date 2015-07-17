@@ -18,8 +18,6 @@
  */
 package eu.ueb.acem.dal.common.vert;
 
-import java.io.Serializable;
-
 import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.vert.Floor;
 
@@ -27,7 +25,7 @@ import eu.ueb.acem.domain.beans.vert.Floor;
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
-public interface FloorDAO<ID extends Serializable> extends DAO<ID, Floor> {
+public interface FloorDAO<ID> extends DAO<ID, Floor> {
 
 	Floor create(Integer number);
 

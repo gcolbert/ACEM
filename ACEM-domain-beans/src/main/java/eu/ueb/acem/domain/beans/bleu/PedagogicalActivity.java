@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.domain.beans.bleu;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -28,36 +27,22 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
  * @since 2013-11-20
  * 
  */
-public interface PedagogicalActivity extends Serializable, Comparable<PedagogicalActivity> {
-
-	Long getId();
-
-	String getName();
-
-	void setName(String name);
-
-	Long getPositionInScenario();
-
-	void setPositionInScenario(Long positionInScenario);
-
-	String getObjective();
-
-	void setObjective(String objective);
+public interface PedagogicalActivity extends PedagogicalUnit {
 
 	String getInstructions();
 
 	void setInstructions(String instructions);
 
-	String getDuration();
+	PedagogicalSession getPedagogicalSession();
 
-	void setDuration(String duree);
-
-	Set<PedagogicalScenario> getScenarios();
-
-	void setScenarios(Set<PedagogicalScenario> scenarios);
+	void setPedagogicalSession(PedagogicalSession pedagogicalSession);
 
 	Set<ResourceCategory> getResourceCategories();
 
 	void setResourceCategories(Set<ResourceCategory> resourceCategories);
+
+	PedagogicalActivity getNextPedagogicalActivity();
+
+	void setNextPedagogicalActivity(PedagogicalActivity pedagogicalActivity);
 
 }

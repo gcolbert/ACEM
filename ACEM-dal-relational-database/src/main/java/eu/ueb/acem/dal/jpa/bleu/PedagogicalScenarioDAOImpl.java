@@ -59,9 +59,9 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 	@Override
 	protected final void initializeCollections(PedagogicalScenario entity) {
 		if (entity != null) {
-			entity.getPedagogicalActivities().size();
+			entity.getFirstPedagogicalSequences().size();
 			entity.getAuthors().size();
-			entity.getClasses().size();
+			entity.getTeachingUnits().size();
 			entity.getPedagogicalKeywords().size();
 		}
 	}
@@ -118,8 +118,15 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 	}
 
 	@Override
-	public PedagogicalScenario create(String name, String description) {
-		PedagogicalScenario entity = new PedagogicalScenarioEntity(name, description);
+	public PedagogicalScenario create(String name) {
+		PedagogicalScenario entity = new PedagogicalScenarioEntity(name);
+		entity.setCreationDate(TimeTicker.tick());
+		return super.create(entity);
+	}
+
+	@Override
+	public PedagogicalScenario create(String name, String objective) {
+		PedagogicalScenario entity = new PedagogicalScenarioEntity(name, objective);
 		entity.setCreationDate(TimeTicker.tick());
 		return super.create(entity);
 	}

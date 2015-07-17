@@ -26,16 +26,14 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.gris.jpa.TeacherEntity;
-import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
-import eu.ueb.acem.domain.beans.violet.Class;
-import eu.ueb.acem.domain.beans.violet.jpa.ClassEntity;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
+import eu.ueb.acem.domain.beans.violet.jpa.TeachingUnitEntity;
 
 /**
  * @author Grégoire Colbert
@@ -43,89 +41,40 @@ import eu.ueb.acem.domain.beans.violet.jpa.ClassEntity;
  * 
  */
 @Entity(name = "PedagogicalScenario")
-@Table(name = "PedagogicalScenario")
-public class PedagogicalScenarioEntity extends AbstractEntity implements PedagogicalScenario {
+public class PedagogicalScenarioEntity extends PedagogicalUnitEntity implements PedagogicalScenario {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -512829316498046439L;
 
-	private Long creationDate;
-
-	private Long modificationDate;
-
-	private String name;
-
-	@Lob
-	private String objective;
-
 	@Lob
 	private String evaluationModes;
 
 	private Boolean published;
 
-	@ManyToMany(targetEntity = ClassEntity.class, fetch = FetchType.LAZY)
-	private Set<Class> classes = new HashSet<Class>(0);
-
-	@ManyToMany(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY, mappedBy="pedagogicalScenarios")
-	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
+	@OneToMany(targetEntity = TeachingUnitEntity.class, mappedBy = "pedagogicalScenario")
+	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
 	@ManyToMany(targetEntity = TeacherEntity.class, fetch = FetchType.LAZY)
-	@JoinTable(name = "PedagogicalScenario_Teacher")
+	@JoinTable(name = "Teachers_PedagogicalScenarios")
 	private Set<Teacher> authors = new HashSet<Teacher>(0);
 
-	@ManyToMany(targetEntity = PedagogicalKeywordEntity.class, fetch = FetchType.LAZY)
-	private Set<PedagogicalKeyword> pedagogicalKeywords = new HashSet<PedagogicalKeyword>(0);
+	@OneToMany(targetEntity = PedagogicalSequenceEntity.class, mappedBy = "pedagogicalScenario")
+	private Set<PedagogicalSequence> firstPedagogicalSequences;
 
 	public PedagogicalScenarioEntity() {
 		published = false;
 	}
 
-	public PedagogicalScenarioEntity(String name, String objective) {
+	public PedagogicalScenarioEntity(String name) {
 		this();
-		this.name = name;
-		this.objective = objective;
+		setName(name);
 	}
 
-	@Override
-	public Long getCreationDate() {
-		return creationDate;
-	}
-
-	@Override
-	public void setCreationDate(Long date) {
-		this.creationDate = date;
-	}
-
-	@Override
-	public Long getModificationDate() {
-		return modificationDate;
-	}
-
-	@Override
-	public void setModificationDate(Long date) {
-		this.modificationDate = date;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getObjective() {
-		return objective;
-	}
-
-	@Override
-	public void setObjective(String objective) {
-		this.objective = objective;
+	public PedagogicalScenarioEntity(String name, String objective) {
+		this(name);
+		setObjective(objective);
 	}
 
 	@Override
@@ -139,16 +88,6 @@ public class PedagogicalScenarioEntity extends AbstractEntity implements Pedagog
 	}
 
 	@Override
-	public Set<PedagogicalActivity> getPedagogicalActivities() {
-		return pedagogicalActivities;
-	}
-
-	@Override
-	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
-		this.pedagogicalActivities = pedagogicalActivities;
-	}
-
-	@Override
 	public Set<Teacher> getAuthors() {
 		return authors;
 	}
@@ -156,16 +95,6 @@ public class PedagogicalScenarioEntity extends AbstractEntity implements Pedagog
 	@Override
 	public void setAuthors(Set<Teacher> authors) {
 		this.authors = authors;
-	}
-
-	@Override
-	public Set<PedagogicalKeyword> getPedagogicalKeywords() {
-		return pedagogicalKeywords;
-	}
-
-	@Override
-	public void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords) {
-		this.pedagogicalKeywords = pedagogicalKeywords;
 	}
 
 	@Override
@@ -179,35 +108,38 @@ public class PedagogicalScenarioEntity extends AbstractEntity implements Pedagog
 	}
 
 	@Override
-	public Set<Class> getClasses() {
-		return classes;
+	public Set<TeachingUnit> getTeachingUnits() {
+		return teachingUnits;
 	}
 
 	@Override
-	public void setClasses(Set<Class> classes) {
-		this.classes = classes;
+	public void setTeachingUnits(Set<TeachingUnit> teachingUnits) {
+		this.teachingUnits = teachingUnits;
 	}
-	
+
 	@Override
-	public int compareTo(PedagogicalScenario o) {
-		int returnValue;
-		if ((getModificationDate() != null) && (o.getModificationDate() != null)) {
-			returnValue = getModificationDate().compareTo(o.getModificationDate());
-		}
-		else {
-			if (getModificationDate() != null) {
-				returnValue = getModificationDate().compareTo(o.getCreationDate());
-			}
-			else {
-				if (o.getModificationDate() != null) {
-					returnValue = getCreationDate().compareTo(o.getModificationDate());
-				}
-				else {
-					returnValue = getCreationDate().compareTo(o.getCreationDate());
-				}
-			}
-		}
-		return returnValue;
+	public Set<PedagogicalSequence> getFirstPedagogicalSequences() {
+		return firstPedagogicalSequences;
+	}
+
+	@Override
+	public void setFirstPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences) {
+		this.firstPedagogicalSequences = pedagogicalSequences;
+	}
+
+//	@Override
+//	public Set<PedagogicalSequence> getAllPedagogicalSequences() {
+//		return allPedagogicalSequences;
+//	}
+
+	@Override
+	public PedagogicalScenario getNextPedagogicalScenario() {
+		return (PedagogicalScenario)getNext();
+	}
+
+	@Override
+	public void setNextPedagogicalScenario(PedagogicalScenario pedagogicalScenario) {
+		setNext(pedagogicalScenario);
 	}
 
 }

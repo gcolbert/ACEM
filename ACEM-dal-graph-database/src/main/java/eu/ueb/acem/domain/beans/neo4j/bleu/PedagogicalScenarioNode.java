@@ -29,14 +29,12 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.neo4j.gris.TeacherNode;
-import eu.ueb.acem.domain.beans.neo4j.violet.ClassNode;
-import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.neo4j.violet.TeachingUnitNode;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
  * @author Grégoire Colbert
@@ -45,64 +43,40 @@ import eu.ueb.acem.domain.beans.violet.Class;
  */
 @NodeEntity
 @TypeAlias("PedagogicalScenario")
-public class PedagogicalScenarioNode extends AbstractNode implements PedagogicalScenario {
+public class PedagogicalScenarioNode extends PedagogicalUnitNode implements PedagogicalScenario {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -1233433427413840564L;
 
-	private Long creationDate;
-
-	private Long modificationDate;
-
 	@Indexed
 	private String name;
 
-	private String objective;
 	private String evaluationModes;
 	private Boolean published;
 
-	@RelatedTo(elementClass = ClassNode.class, type = "scenarioUsedForClass", direction = OUTGOING)
-	private Set<Class> classes = new HashSet<Class>(0);
+	@RelatedTo(elementClass = TeachingUnitNode.class, type = "scenarioUsedForTeachingUnit", direction = OUTGOING)
+	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
-	@RelatedTo(elementClass = PedagogicalActivityNode.class, type = "activityForScenario", direction = INCOMING)
-	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
+	@RelatedTo(elementClass = PedagogicalSequenceNode.class, type = "sequenceForScenario", direction = INCOMING)
+	private Set<PedagogicalSequence> firstPedagogicalSequences = new HashSet<PedagogicalSequence>(0);
 
 	@RelatedTo(elementClass = TeacherNode.class, type = "authorsScenario", direction = INCOMING)
 	private Set<Teacher> authors = new HashSet<Teacher>(0);
 
-	@RelatedTo(elementClass = PedagogicalKeywordNode.class, type = "hasKeyword", direction = OUTGOING)
-	private Set<PedagogicalKeyword> pedagogicalKeywords = new HashSet<PedagogicalKeyword>(0);
-	
 	public PedagogicalScenarioNode() {
 		published = false;
 	}
 
-	public PedagogicalScenarioNode(String name, String objective) {
+	public PedagogicalScenarioNode(String name) {
 		this();
-		this.name = name;
-		this.objective = objective;
+		setName(name);
 	}
 
-	@Override
-	public Long getCreationDate() {
-		return creationDate;
-	}
-
-	@Override
-	public void setCreationDate(Long date) {
-		this.creationDate = date;
-	}
-
-	@Override
-	public Long getModificationDate() {
-		return modificationDate;
-	}
-
-	@Override
-	public void setModificationDate(Long date) {
-		this.modificationDate = date;
+	public PedagogicalScenarioNode(String name, String objective) {
+		this(name);
+		setObjective(objective);
 	}
 
 	@Override
@@ -116,16 +90,6 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	}
 
 	@Override
-	public String getObjective() {
-		return objective;
-	}
-
-	@Override
-	public void setObjective(String objective) {
-		this.objective = objective;
-	}
-
-	@Override
 	public String getEvaluationModes() {
 		return evaluationModes;
 	}
@@ -133,16 +97,6 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	@Override
 	public void setEvaluationModes(String evaluationModes) {
 		this.evaluationModes = evaluationModes;
-	}
-
-	@Override
-	public Set<PedagogicalActivity> getPedagogicalActivities() {
-		return pedagogicalActivities;
-	}
-
-	@Override
-	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
-		this.pedagogicalActivities = pedagogicalActivities;
 	}
 
 	@Override
@@ -156,16 +110,6 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	}
 
 	@Override
-	public Set<PedagogicalKeyword> getPedagogicalKeywords() {
-		return pedagogicalKeywords;
-	}
-
-	@Override
-	public void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords) {
-		this.pedagogicalKeywords = pedagogicalKeywords;
-	}
-
-	@Override
 	public Boolean isPublished() {
 		return published;
 	}
@@ -176,35 +120,33 @@ public class PedagogicalScenarioNode extends AbstractNode implements Pedagogical
 	}
 
 	@Override
-	public Set<Class> getClasses() {
-		return classes;
+	public Set<PedagogicalSequence> getFirstPedagogicalSequences() {
+		return firstPedagogicalSequences;
 	}
 
 	@Override
-	public void setClasses(Set<Class> classes) {
-		this.classes = classes;
+	public void setFirstPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences) {
+		this.firstPedagogicalSequences = pedagogicalSequences;
 	}
-	
+
 	@Override
-	public int compareTo(PedagogicalScenario o) {
-		int returnValue;
-		if ((getModificationDate() != null) && (o.getModificationDate() != null)) {
-			returnValue = getModificationDate().compareTo(o.getModificationDate());
-		}
-		else {
-			if (getModificationDate() != null) {
-				returnValue = getModificationDate().compareTo(o.getCreationDate());
-			}
-			else {
-				if (o.getModificationDate() != null) {
-					returnValue = getCreationDate().compareTo(o.getModificationDate());
-				}
-				else {
-					returnValue = getCreationDate().compareTo(o.getCreationDate());
-				}
-			}
-		}
-		return returnValue;
+	public Set<TeachingUnit> getTeachingUnits() {
+		return teachingUnits;
+	}
+
+	@Override
+	public void setTeachingUnits(Set<TeachingUnit> teachingUnits) {
+		this.teachingUnits = teachingUnits;
+	}
+
+	@Override
+	public PedagogicalScenario getNextPedagogicalScenario() {
+		return (PedagogicalScenario)getNext();
+	}
+
+	@Override
+	public void setNextPedagogicalScenario(PedagogicalScenario pedagogicalScenario) {
+		setNext(pedagogicalScenario);
 	}
 
 }

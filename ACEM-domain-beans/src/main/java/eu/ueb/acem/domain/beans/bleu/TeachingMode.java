@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.domain.beans.bleu;
 
+
 /**
  * @author Grégoire Colbert
  * @since 2015-06-15

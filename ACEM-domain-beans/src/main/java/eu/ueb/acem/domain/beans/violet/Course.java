@@ -18,25 +18,21 @@
  */
 package eu.ueb.acem.domain.beans.violet;
 
-import java.io.Serializable;
+import java.util.Set;
+
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface Course extends Serializable, Comparable<Course> {
-
-	Long getId();
-
-	String getName();
-
-	void setName(String name);
-
-	String getDuration();
-
-	void setDuration(String duration);
+public interface Course extends TeachingUnit {
 
 	Credit getCredit();
 
+	void setCredit(Credit credit);
+
+	Set<Class> getClasses();
+	
+	void setClasses(Set<Class> classes);
 }

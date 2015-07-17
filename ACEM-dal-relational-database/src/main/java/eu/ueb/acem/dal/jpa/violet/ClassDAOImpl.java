@@ -53,14 +53,14 @@ public class ClassDAOImpl extends AbstractDAO<Class, ClassEntity> implements Cla
 	protected final void initializeCollections(Class entity) {
 		if (entity != null) {
 			entity.getCourse();
-			entity.getPedagogicalScenarios().size();
+			entity.getPedagogicalScenario();
 			entity.getLocation();
 		}
 	}
 
 	@Override
 	public Class create(String name) {
-		return super.create(new ClassEntity());
+		return super.create(new ClassEntity(name));
 	}
 
 }

@@ -20,7 +20,6 @@ package eu.ueb.acem.dal.common.bleu;
 
 import java.util.Collection;
 
-import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Person;
@@ -31,14 +30,12 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
  * @since 2015-02-27
  * 
  */
-public interface PedagogicalScenarioDAO<ID> extends DAO<ID, PedagogicalScenario> {
+public interface PedagogicalScenarioDAO<ID> extends PedagogicalUnitDAO<ID, PedagogicalScenario> {
 
 	Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author);
 	
 	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithPedagogicalAnswer(PedagogicalAnswer answer);
 
 	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(ResourceCategory resourceCategory);
-
-	PedagogicalScenario create(String name, String objective);
 
 }

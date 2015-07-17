@@ -24,9 +24,12 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
+import eu.ueb.acem.domain.beans.violet.jpa.TeachingUnitEntity;
 
 /**
  * @author Grégoire Colbert
@@ -45,6 +48,9 @@ public class TeachingDepartmentEntity extends OrganisationEntity implements Teac
 
 	@ManyToMany(targetEntity = InstitutionEntity.class, fetch = FetchType.LAZY, mappedBy = "teachingDepartments")
 	private Set<Institution> institutions = new HashSet<Institution>(0);
+
+	@OneToMany(targetEntity = TeachingUnitEntity.class, fetch = FetchType.LAZY, mappedBy = "teachingDepartment")
+	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
 	public TeachingDepartmentEntity() {
 	}
@@ -74,6 +80,16 @@ public class TeachingDepartmentEntity extends OrganisationEntity implements Teac
 	@Override
 	public void setInstitutions(Set<Institution> institutions) {
 		this.institutions = institutions;
+	}
+
+	@Override
+	public Set<TeachingUnit> getTeachingUnits() {
+		return teachingUnits;
+	}
+
+	@Override
+	public void setTeachingUnits(Set<TeachingUnit> teachingUnits) {
+		this.teachingUnits = teachingUnits;
 	}
 
 }

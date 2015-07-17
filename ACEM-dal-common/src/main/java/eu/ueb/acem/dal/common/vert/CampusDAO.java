@@ -18,8 +18,6 @@
  */
 package eu.ueb.acem.dal.common.vert;
 
-import java.io.Serializable;
-
 import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.vert.Campus;
 
@@ -27,7 +25,7 @@ import eu.ueb.acem.domain.beans.vert.Campus;
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
-public interface CampusDAO<ID extends Serializable> extends DAO<ID, Campus> {
+public interface CampusDAO<ID> extends DAO<ID, Campus> {
 
 	Campus create(String name, Double latitude, Double longitude);
 

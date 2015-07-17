@@ -53,13 +53,18 @@ public class PedagogicalActivityDAOImpl extends AbstractDAO<PedagogicalActivity,
 	protected final void initializeCollections(PedagogicalActivity entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getResourceCategories());
-			neo4jOperations.fetch(entity.getScenarios());
+			neo4jOperations.fetch(entity.getPedagogicalSession());
 		}
 	}
 
 	@Override
 	public PedagogicalActivity create(String name) {
 		return super.create(new PedagogicalActivityNode(name));
+	}
+
+	@Override
+	public PedagogicalActivity create(String name, String objective) {
+		return super.create(new PedagogicalActivityNode(name, objective));
 	}
 
 }

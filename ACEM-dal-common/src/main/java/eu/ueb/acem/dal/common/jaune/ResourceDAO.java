@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.dal.common.jaune;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import eu.ueb.acem.dal.common.DAO;
@@ -30,7 +29,7 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
  * @author Grégoire Colbert
  * @since 2014-03-11
  */
-public interface ResourceDAO<ID extends Serializable, E extends Resource> extends DAO<ID, E> {
+public interface ResourceDAO<ID, E extends Resource> extends DAO<ID, E> {
 
 	Collection<ResourceCategory> retrieveCategories();
 	

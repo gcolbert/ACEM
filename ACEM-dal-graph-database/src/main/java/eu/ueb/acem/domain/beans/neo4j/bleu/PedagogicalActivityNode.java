@@ -29,9 +29,8 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
 
 /**
@@ -41,7 +40,7 @@ import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
  */
 @NodeEntity
 @TypeAlias("PedagogicalActivity")
-public class PedagogicalActivityNode extends AbstractNode implements PedagogicalActivity {
+public class PedagogicalActivityNode extends PedagogicalUnitNode implements PedagogicalActivity {
 
 	/**
 	 * For serialization.
@@ -51,16 +50,13 @@ public class PedagogicalActivityNode extends AbstractNode implements Pedagogical
 	@Indexed
 	private String name;
 
-	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "activityForScenario", direction = OUTGOING)
-	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
+	@RelatedTo(elementClass = PedagogicalSessionNode.class, type = "activityForSession", direction = OUTGOING)
+	private PedagogicalSession pedagogicalSession;
 
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "activityRequiringResourceFromCategory", direction = OUTGOING)
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
-	private Long positionInScenario;
-	private String objective;
 	private String instructions;
-	private String duration;
 
 	public PedagogicalActivityNode() {
 	}
@@ -70,24 +66,9 @@ public class PedagogicalActivityNode extends AbstractNode implements Pedagogical
 		setName(name);
 	}
 
-	@Override
-	public Set<PedagogicalScenario> getScenarios() {
-		return pedagogicalScenarios;
-	}
-
-	@Override
-	public void setScenarios(Set<PedagogicalScenario> scenarios) {
-		this.pedagogicalScenarios = scenarios;
-	}
-
-	@Override
-	public Long getPositionInScenario() {
-		return positionInScenario;
-	}
-
-	@Override
-	public void setPositionInScenario(Long positionInScenario) {
-		this.positionInScenario = positionInScenario;
+	public PedagogicalActivityNode(String name, String objective) {
+		this(name);
+		setObjective(objective);
 	}
 
 	@Override
@@ -101,16 +82,6 @@ public class PedagogicalActivityNode extends AbstractNode implements Pedagogical
 	}
 
 	@Override
-	public String getObjective() {
-		return objective;
-	}
-
-	@Override
-	public void setObjective(String objective) {
-		this.objective = objective;
-	}
-
-	@Override
 	public String getInstructions() {
 		return instructions;
 	}
@@ -118,16 +89,6 @@ public class PedagogicalActivityNode extends AbstractNode implements Pedagogical
 	@Override
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
-	}
-
-	@Override
-	public String getDuration() {
-		return duration;
-	}
-
-	@Override
-	public void setDuration(String duration) {
-		this.duration = duration;
 	}
 
 	@Override
@@ -141,8 +102,23 @@ public class PedagogicalActivityNode extends AbstractNode implements Pedagogical
 	}
 
 	@Override
-	public int compareTo(PedagogicalActivity o) {
-		return (int) (positionInScenario - o.getPositionInScenario());
+	public PedagogicalSession getPedagogicalSession() {
+		return pedagogicalSession;
+	}
+
+	@Override
+	public void setPedagogicalSession(PedagogicalSession pedagogicalSession) {
+		this.pedagogicalSession = pedagogicalSession;
+	}
+
+	@Override
+	public PedagogicalActivity getNextPedagogicalActivity() {
+		return (PedagogicalActivity)getNext();
+	}
+
+	@Override
+	public void setNextPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
+		setNext(pedagogicalActivity);
 	}
 
 }

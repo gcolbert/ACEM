@@ -53,14 +53,14 @@ public class ClassDAOImpl extends AbstractDAO<Class, ClassNode> implements Class
 	protected final void initializeCollections(Class entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getCourse());
-			neo4jOperations.fetch(entity.getPedagogicalScenarios());
+			neo4jOperations.fetch(entity.getPedagogicalScenario());
 			neo4jOperations.fetch(entity.getLocation());
 		}
 	}
 
 	@Override
 	public Class create(String name) {
-		return super.create(new ClassNode());
+		return super.create(new ClassNode(name));
 	}
 
 }

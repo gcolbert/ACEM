@@ -18,8 +18,8 @@
  */
 package eu.ueb.acem.domain.beans.neo4j.violet;
 
-import static org.neo4j.graphdb.Direction.OUTGOING;
 import static org.neo4j.graphdb.Direction.INCOMING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +29,6 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Credit;
 import eu.ueb.acem.domain.beans.violet.Degree;
@@ -41,7 +40,7 @@ import eu.ueb.acem.domain.beans.violet.Degree;
  */
 @NodeEntity
 @TypeAlias("Credit")
-public class CreditNode extends AbstractNode implements Credit {
+public class CreditNode extends TeachingUnitNode implements Credit {
 
 	/**
 	 * For serialization.
@@ -51,12 +50,10 @@ public class CreditNode extends AbstractNode implements Credit {
 	@Indexed
 	private String name;
 
-	private String duration;
-
-	@RelatedTo(elementClass = DegreeNode.class, type = "isPartOfDegree", direction = OUTGOING)
+	@RelatedTo(elementClass = DegreeNode.class, type = "creditPartOfDegree", direction = OUTGOING)
 	private Set<Degree> degrees = new HashSet<Degree>(0);
 
-	@RelatedTo(elementClass = CourseNode.class, type = "isPartOfCredit", direction = INCOMING)
+	@RelatedTo(elementClass = CourseNode.class, type = "coursePartOfCredit", direction = INCOMING)
 	private Set<Course> courses;
 
 	public CreditNode() {
@@ -77,16 +74,6 @@ public class CreditNode extends AbstractNode implements Credit {
 	}
 
 	@Override
-	public String getDuration() {
-		return duration;
-	}
-
-	@Override
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
-
-	@Override
 	public Set<Degree> getDegrees() {
 		return degrees;
 	}
@@ -104,11 +91,6 @@ public class CreditNode extends AbstractNode implements Credit {
 	@Override
 	public void setCourses(Set<Course> courses) {
 		this.courses = courses;
-	}
-
-	@Override
-	public int compareTo(Credit o) {
-		return this.getName().compareTo(o.getName());
 	}
 
 }

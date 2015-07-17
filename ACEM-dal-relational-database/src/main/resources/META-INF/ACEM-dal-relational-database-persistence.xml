@@ -8,8 +8,14 @@
 		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalNeedEntity</class>
 		<class>eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer</class>
 		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalAnswerEntity</class>
+		<class>eu.ueb.acem.domain.beans.bleu.PedagogicalUnit</class>
+		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalUnitEntity</class>
 		<class>eu.ueb.acem.domain.beans.bleu.PedagogicalScenario</class>
 		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalScenarioEntity</class>
+		<class>eu.ueb.acem.domain.beans.bleu.PedagogicalSequence</class>
+		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalSequenceEntity</class>
+		<class>eu.ueb.acem.domain.beans.bleu.PedagogicalSession</class>
+		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalSessionEntity</class>
 		<class>eu.ueb.acem.domain.beans.bleu.PedagogicalActivity</class>
 		<class>eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalActivityEntity</class>
 		<class>eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword</class>
@@ -58,6 +64,8 @@
 		<class>eu.ueb.acem.domain.beans.vert.jpa.BuildingEntity</class>
 		<class>eu.ueb.acem.domain.beans.vert.Campus</class>
 		<class>eu.ueb.acem.domain.beans.vert.jpa.CampusEntity</class>
+		<class>eu.ueb.acem.domain.beans.violet.TeachingUnit</class>
+		<class>eu.ueb.acem.domain.beans.violet.jpa.TeachingUnit</class>
 		<class>eu.ueb.acem.domain.beans.violet.Degree</class>
 		<class>eu.ueb.acem.domain.beans.violet.jpa.DegreeEntity</class>
 		<class>eu.ueb.acem.domain.beans.violet.Credit</class>

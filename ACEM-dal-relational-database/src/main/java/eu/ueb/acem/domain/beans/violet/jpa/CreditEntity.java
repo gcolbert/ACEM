@@ -25,9 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
-import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Credit;
 import eu.ueb.acem.domain.beans.violet.Degree;
@@ -38,17 +36,12 @@ import eu.ueb.acem.domain.beans.violet.Degree;
  * 
  */
 @Entity(name = "Credit")
-@Table(name = "Credit")
-public class CreditEntity extends AbstractEntity implements Credit {
+public class CreditEntity extends TeachingUnitEntity implements Credit {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 6318566194747849738L;
-
-	private String name;
-
-	private String duration;
 
 	//@RelatedTo(elementClass = DegreeNode.class, type = "isPartOfDegree", direction = OUTGOING)
 	@ManyToMany(targetEntity = DegreeEntity.class, fetch = FetchType.LAZY)
@@ -62,27 +55,7 @@ public class CreditEntity extends AbstractEntity implements Credit {
 	}
 
 	public CreditEntity(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getDuration() {
-		return duration;
-	}
-
-	@Override
-	public void setDuration(String duration) {
-		this.duration = duration;
+		setName(name);
 	}
 
 	@Override
@@ -103,11 +76,6 @@ public class CreditEntity extends AbstractEntity implements Credit {
 	@Override
 	public void setCourses(Set<Course> courses) {
 		this.courses = courses;
-	}
-
-	@Override
-	public int compareTo(Credit o) {
-		return this.getName().compareTo(o.getName());
 	}
 
 }

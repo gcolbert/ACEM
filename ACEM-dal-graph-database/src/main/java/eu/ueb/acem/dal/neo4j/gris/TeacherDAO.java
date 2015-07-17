@@ -53,8 +53,8 @@ public class TeacherDAO extends AbstractDAO<Teacher, TeacherNode> implements Per
 	protected final void initializeCollections(Teacher entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getFavoriteToolCategories());
-			neo4jOperations.fetch(entity.getScenarios());
-			neo4jOperations.fetch(entity.getClasses());
+			neo4jOperations.fetch(entity.getPedagogicalScenarios());
+			neo4jOperations.fetch(entity.getTeachingUnits());
 			neo4jOperations.fetch(entity.getWorksForOrganisations());
 		}
 	}

@@ -46,17 +46,14 @@ public class InstitutionEntity extends OrganisationEntity implements Institution
 
 	private String name;
 
-	//@RelatedTo(elementClass = CommunityNode.class, type = "institutionMemberOfCommunity", direction = OUTGOING)
 	@ManyToMany(targetEntity = CommunityEntity.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "institutions_communities")
 	private Set<Community> communities = new HashSet<Community>(0);
 
-	//@RelatedTo(elementClass = TeachingDepartmentNode.class, type = "teachingDepartmentPartOfInstitution", direction = INCOMING)
 	@ManyToMany(targetEntity = TeachingDepartmentEntity.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "institutions_teachingDepartments")
 	private Set<TeachingDepartment> teachingDepartments = new HashSet<TeachingDepartment>(0);
 
-	//@RelatedTo(elementClass = AdministrativeDepartmentNode.class, type = "administrativeDepartmentPartOfInstitution", direction = INCOMING)
 	@ManyToMany(targetEntity = AdministrativeDepartmentEntity.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "institutions_administrativeDepartments")
 	private Set<AdministrativeDepartment> administrativeDepartments = new HashSet<AdministrativeDepartment>(0);

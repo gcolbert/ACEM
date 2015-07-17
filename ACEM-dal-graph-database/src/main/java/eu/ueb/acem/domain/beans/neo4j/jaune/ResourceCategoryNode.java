@@ -31,11 +31,13 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalActivityNode;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalAnswerNode;
+import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalSessionNode;
 
 /**
  * @author Grégoire Colbert
@@ -60,10 +62,13 @@ public class ResourceCategoryNode extends AbstractNode implements ResourceCatego
 
 	@RelatedTo(elementClass = PedagogicalAnswerNode.class, type = "answeredUsingResourceCategory", direction = INCOMING)
 	private Set<PedagogicalAnswer> answers = new HashSet<PedagogicalAnswer>(0);
-	
+
 	@RelatedTo(elementClass = ResourceNode.class, type = "categoryContains", direction = OUTGOING)
 	private Set<Resource> resources = new HashSet<Resource>(0);
-	
+
+	@RelatedTo(elementClass = PedagogicalSessionNode.class, type="sessionRequiringResourceFromCategory", direction = INCOMING)
+	private Set<PedagogicalSession> pedagogicalSessions = new HashSet<PedagogicalSession>(0);
+
 	@RelatedTo(elementClass = PedagogicalActivityNode.class, type="activityRequiringResourceFromCategory", direction = INCOMING)
 	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
@@ -127,6 +132,16 @@ public class ResourceCategoryNode extends AbstractNode implements ResourceCatego
 	}
 
 	@Override
+	public Set<PedagogicalSession> getPedagogicalSessions() {
+		return pedagogicalSessions;
+	}
+
+	@Override
+	public void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions) {
+		this.pedagogicalSessions = pedagogicalSessions;
+	}
+
+	@Override
 	public Set<PedagogicalActivity> getPedagogicalActivities() {
 		return pedagogicalActivities;
 	}
@@ -135,10 +150,10 @@ public class ResourceCategoryNode extends AbstractNode implements ResourceCatego
 	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
 		this.pedagogicalActivities = pedagogicalActivities;
 	}
-	
+
 	@Override
 	public int compareTo(ResourceCategory o) {
 		return getName().compareTo(o.getName());
 	}
-	
+
 }

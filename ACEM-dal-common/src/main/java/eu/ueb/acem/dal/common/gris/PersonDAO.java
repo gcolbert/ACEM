@@ -18,8 +18,6 @@
  */
 package eu.ueb.acem.dal.common.gris;
 
-import java.io.Serializable;
-
 import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 
@@ -28,7 +26,7 @@ import eu.ueb.acem.domain.beans.gris.Person;
  * @since 2015-05-21
  * 
  */
-public interface PersonDAO<ID extends Serializable, E extends Person> extends DAO<ID, E> {
+public interface PersonDAO<ID, E extends Person> extends DAO<ID, E> {
 
 	E create(String name, String login, String encodedPassword);
 

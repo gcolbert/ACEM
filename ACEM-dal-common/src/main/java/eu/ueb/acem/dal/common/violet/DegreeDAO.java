@@ -18,17 +18,12 @@
  */
 package eu.ueb.acem.dal.common.violet;
 
-import java.io.Serializable;
-
-import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.violet.Degree;
 
 /**
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
-public interface DegreeDAO<ID extends Serializable> extends DAO<ID, Degree> {
-
-	Degree create(String name);
+public interface DegreeDAO<ID> extends TeachingUnitDAO<ID, Degree> {
 
 }

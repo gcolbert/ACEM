@@ -18,10 +18,7 @@
  */
 package eu.ueb.acem.domain.beans.violet;
 
-import java.io.Serializable;
-import java.util.Set;
-
-import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
@@ -29,13 +26,7 @@ import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
  * @since 2013-11-20
  * 
  */
-public interface Class extends Serializable, Comparable<Class> {
-
-	Long getId();
-
-	String getName();
-
-	void setName(String name);
+public interface Class extends TeachingUnit {
 
 	String getDate();
 
@@ -45,17 +36,9 @@ public interface Class extends Serializable, Comparable<Class> {
 
 	void setTime(String time);
 
-	String getDuration();
+	TeachingMode getTeachingMode();
 
-	void setDuration(String duration);
-
-	String getTeachingMode();
-
-	void setTeachingMode(String teachingMode);
-
-	Integer getNumberOfLearners();
-
-	void setNumberOfLearners(Integer numberOfLearners);
+	void setTeachingMode(TeachingMode teachingMode);
 
 	Course getCourse();
 
@@ -64,9 +47,5 @@ public interface Class extends Serializable, Comparable<Class> {
 	PhysicalSpace getLocation();
 
 	void setLocation(PhysicalSpace location);
-
-	Set<PedagogicalScenario> getPedagogicalScenarios();
-
-	void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios);
 
 }

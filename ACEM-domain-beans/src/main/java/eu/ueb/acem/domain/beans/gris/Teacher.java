@@ -21,7 +21,7 @@ package eu.ueb.acem.domain.beans.gris;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
  * @author Grégoire Colbert
@@ -30,12 +30,12 @@ import eu.ueb.acem.domain.beans.violet.Class;
  */
 public interface Teacher extends Person {
 
-	Set<Class> getClasses();
+	Set<TeachingUnit> getTeachingUnits();
 
-	void setClasses(Set<Class> classes);
+	void setTeachingUnits(Set<TeachingUnit> teachingUnits);
 
-	Set<PedagogicalScenario> getScenarios();
+	Set<PedagogicalScenario> getPedagogicalScenarios();
 
-	void setScenarios(Set<PedagogicalScenario> scenarios);
+	void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios);
 
 }

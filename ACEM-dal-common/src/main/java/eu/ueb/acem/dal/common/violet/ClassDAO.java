@@ -18,17 +18,12 @@
  */
 package eu.ueb.acem.dal.common.violet;
 
-import java.io.Serializable;
-
-import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.violet.Class;
 
 /**
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
-public interface ClassDAO<ID extends Serializable> extends DAO<ID, Class> {
-
-	Class create(String name);
+public interface ClassDAO<ID> extends TeachingUnitDAO<ID, Class> {
 
 }

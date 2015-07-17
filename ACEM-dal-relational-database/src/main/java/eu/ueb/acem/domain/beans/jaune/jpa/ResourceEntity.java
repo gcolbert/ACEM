@@ -28,6 +28,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import eu.ueb.acem.domain.beans.bleu.TeachingMode;
+import eu.ueb.acem.domain.beans.bleu.jpa.TeachingModeEntity;
 import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -42,7 +44,7 @@ import eu.ueb.acem.domain.beans.rouge.jpa.OrganisationEntity;
  * 
  */
 @Entity(name = "Resource")
-@DiscriminatorColumn(length=50)
+@DiscriminatorColumn(length=50) /* needed because PedagogicalAndDocumentaryResource is longer than 30 */
 public abstract class ResourceEntity extends AbstractEntity implements Resource {
 
 	/**
@@ -78,6 +80,9 @@ public abstract class ResourceEntity extends AbstractEntity implements Resource 
 	//@RelatedTo(elementClass = DocumentationNode.class, type = "documents", direction = INCOMING)
 	@ManyToMany(targetEntity = DocumentationEntity.class, fetch = FetchType.LAZY, mappedBy = "resources")
 	private Set<Documentation> documentations = new HashSet<Documentation>(0);
+
+	@ManyToOne(targetEntity = TeachingModeEntity.class)
+	private TeachingMode teachingMode;
 
 	public ResourceEntity() {
 	}
@@ -165,6 +170,16 @@ public abstract class ResourceEntity extends AbstractEntity implements Resource 
 	@Override
 	public void setDocumentations(Set<Documentation> documentations) {
 		this.documentations = documentations;
+	}
+
+	@Override
+	public TeachingMode getTeachingMode() {
+		return teachingMode;
+	}
+
+	@Override
+	public void setTeachingMode(TeachingMode teachingMode) {
+		this.teachingMode = teachingMode;
 	}
 
 	@Override

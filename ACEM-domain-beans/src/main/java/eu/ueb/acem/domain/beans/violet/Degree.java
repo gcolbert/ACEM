@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.domain.beans.violet;
 
-import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -26,13 +25,7 @@ import java.util.Set;
  * @since 2013-11-20
  * 
  */
-public interface Degree extends Serializable, Comparable<Degree> {
-
-	Long getId();
-
-	String getName();
-
-	void setName(String name);
+public interface Degree extends TeachingUnit {
 
 	Set<Credit> getCredits();
 

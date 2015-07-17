@@ -23,6 +23,7 @@ import java.util.Set;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 
 /**
  * @author Grégoire Colbert
@@ -52,6 +53,10 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 	String getIconFileName();
 
 	void setIconFileName(String iconFileName);
+
+	Set<PedagogicalSession> getPedagogicalSessions();
+
+	void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions);
 
 	Set<PedagogicalActivity> getPedagogicalActivities();
 

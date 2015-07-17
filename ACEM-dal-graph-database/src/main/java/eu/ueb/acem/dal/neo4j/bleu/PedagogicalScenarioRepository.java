@@ -44,10 +44,10 @@ public interface PedagogicalScenarioRepository extends GenericRepository<Pedagog
 	@Query(value = "MATCH (t:Teacher)-[:authorsScenario]->(s:PedagogicalScenario) WHERE id(t)=({teacherId}) RETURN s")
 	Set<PedagogicalScenarioNode> findScenariosWithAuthor(@Param("teacherId") Long id);
 
-	@Query(value = "MATCH (a:PedagogicalAnswer)-[:answeredUsingResourceCategory]->(:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForScenario]->(s:PedagogicalScenario) WHERE id(a)=({pedagogicalAnswerId}) RETURN s")
+	@Query(value = "MATCH (a:PedagogicalAnswer)-[:answeredUsingResourceCategory]->(:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForSession]->(ses:PedagogicalSession)-[:sessionForSequence]->(seq:PedagogicalSequence)-[:sequenceForScenario]->(sce:PedagogicalScenario) WHERE id(a)=({pedagogicalAnswerId}) RETURN sce")
 	Set<PedagogicalScenarioNode> findScenariosAssociatedWithPedagogicalAnswer(@Param("pedagogicalAnswerId") Long id);
 
-	@Query(value = "MATCH (c:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForScenario]->(s:PedagogicalScenario) WHERE id(c)=({resourceCategoryId}) RETURN s")
+	@Query(value = "MATCH (c:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForSession]->(ses:PedagogicalSession)-[:sessionForSequence]->(seq:PedagogicalSequence)-[:sequenceForScenario]->(sce:PedagogicalScenario) WHERE id(c)=({resourceCategoryId}) RETURN sce")
 	Set<PedagogicalScenarioNode> findScenariosAssociatedWithResourceCategory(@Param("resourceCategoryId") Long id);
 
 }

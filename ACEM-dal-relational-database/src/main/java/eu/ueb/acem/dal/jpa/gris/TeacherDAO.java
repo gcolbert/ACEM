@@ -53,8 +53,8 @@ public class TeacherDAO extends AbstractDAO<Teacher, TeacherEntity> implements P
 	protected final void initializeCollections(Teacher entity) {
 		if (entity != null) {
 			entity.getFavoriteToolCategories().size();
-			entity.getScenarios().size();
-			entity.getClasses().size();
+			entity.getPedagogicalScenarios().size();
+			entity.getTeachingUnits().size();
 			entity.getWorksForOrganisations().size();
 		}
 	}

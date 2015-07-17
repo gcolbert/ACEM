@@ -18,14 +18,17 @@
  */
 package eu.ueb.acem.domain.beans.neo4j.violet;
 
+import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
+
+import java.util.Set;
 
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
+import eu.ueb.acem.domain.beans.violet.Class;
 import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Credit;
 
@@ -36,7 +39,7 @@ import eu.ueb.acem.domain.beans.violet.Credit;
  */
 @NodeEntity
 @TypeAlias("Course")
-public class CourseNode extends AbstractNode implements Course {
+public class CourseNode extends TeachingUnitNode implements Course {
 
 	/**
 	 * For serialization.
@@ -46,10 +49,11 @@ public class CourseNode extends AbstractNode implements Course {
 	@Indexed
 	private String name;
 
-	private String duration;
-
-	@RelatedTo(elementClass = CreditNode.class, type = "isPartOfCredit", direction = OUTGOING)
+	@RelatedTo(elementClass = CreditNode.class, type = "coursePartOfCredit", direction = OUTGOING)
 	private Credit credit;
+
+	@RelatedTo(elementClass = ClassNode.class, type = "classPartOfCourse", direction = INCOMING)
+	private Set<Class> classes;
 
 	public CourseNode() {
 	}
@@ -69,23 +73,23 @@ public class CourseNode extends AbstractNode implements Course {
 	}
 
 	@Override
-	public String getDuration() {
-		return duration;
-	}
-
-	@Override
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
-
-	@Override
 	public Credit getCredit() {
 		return credit;
 	}
 
 	@Override
-	public int compareTo(Course o) {
-		return this.getName().compareTo(o.getName());
+	public void setCredit(Credit credit) {
+		this.credit = credit;
 	}
-	
+
+	@Override
+	public Set<Class> getClasses() {
+		return classes;
+	}
+
+	@Override
+	public void setClasses(Set<Class> classes) {
+		this.classes = classes;
+	}
+
 }

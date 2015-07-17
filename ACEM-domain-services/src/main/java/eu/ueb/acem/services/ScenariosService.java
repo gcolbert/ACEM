@@ -23,8 +23,10 @@ import java.util.Collection;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.gris.Teacher;
 
 /**
  * @author Grégoire Colbert
@@ -38,13 +40,35 @@ public interface ScenariosService extends Serializable {
 	PedagogicalScenario createScenario(Teacher author, String name, String objective);
 
 	PedagogicalScenario retrievePedagogicalScenario(Long id, boolean initialize);
-	
+
 	PedagogicalScenario updateScenario(PedagogicalScenario pedagogicalScenario);
 
 	Boolean deleteScenario(Long id);
 
+	Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author);
+
 	Boolean dissociateAuthorOrDeleteScenarioIfLastAuthor(Long idScenario, Long idAuthor);
+
+	Long countPedagogicalSequences();
+
+	PedagogicalSequence createPedagogicalSequence(String name);
+
+	PedagogicalSequence retrievePedagogicalSequence(Long id, boolean initialize);
+
+	PedagogicalSequence updatePedagogicalSequence(PedagogicalSequence pedagogicalSequence);
+
+	Boolean deletePedagogicalSequence(Long id);
 	
+	Long countPedagogicalSessions();
+
+	PedagogicalSession createPedagogicalSession(String name);
+
+	PedagogicalSession retrievePedagogicalSession(Long id, boolean initialize);
+
+	PedagogicalSession updatePedagogicalSession(PedagogicalSession pedagogicalSession);
+
+	Boolean deletePedagogicalSession(Long id);
+
 	Long countPedagogicalActivities();
 
 	PedagogicalActivity createPedagogicalActivity(String name);
@@ -54,7 +78,5 @@ public interface ScenariosService extends Serializable {
 	PedagogicalActivity updatePedagogicalActivity(PedagogicalActivity pedagogicalActivity);
 
 	Boolean deletePedagogicalActivity(Long id);
-
-	Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author);
 
 }

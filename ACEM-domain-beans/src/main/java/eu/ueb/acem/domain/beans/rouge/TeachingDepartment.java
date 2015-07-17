@@ -20,6 +20,8 @@ package eu.ueb.acem.domain.beans.rouge;
 
 import java.util.Set;
 
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
+
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
@@ -31,4 +33,8 @@ public interface TeachingDepartment extends Organisation {
 
 	void setInstitutions(Set<Institution> institutions);
 
+	Set<TeachingUnit> getTeachingUnits();
+	
+	void setTeachingUnits(Set<TeachingUnit> teachingUnits);
+	
 }

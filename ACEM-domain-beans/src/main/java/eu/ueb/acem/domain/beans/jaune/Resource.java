@@ -21,6 +21,7 @@ package eu.ueb.acem.domain.beans.jaune;
 import java.io.Serializable;
 import java.util.Set;
 
+import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
@@ -65,7 +66,11 @@ public interface Resource extends Serializable, Comparable<Resource> {
 	void setOrganisationsHavingAccessToResource(Set<Organisation> organisations);
 
 	Set<Documentation> getDocumentations();
-	
+
 	void setDocumentations(Set<Documentation> documentations);
+
+	TeachingMode getTeachingMode();
+
+	void setTeachingMode(TeachingMode teachingMode);
 
 }

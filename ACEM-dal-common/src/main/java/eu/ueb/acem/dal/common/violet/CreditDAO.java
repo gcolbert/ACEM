@@ -18,17 +18,12 @@
  */
 package eu.ueb.acem.dal.common.violet;
 
-import java.io.Serializable;
-
-import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.violet.Credit;
 
 /**
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
-public interface CreditDAO<ID extends Serializable> extends DAO<ID, Credit> {
-
-	Credit create(String name);
+public interface CreditDAO<ID> extends TeachingUnitDAO<ID, Credit> {
 
 }

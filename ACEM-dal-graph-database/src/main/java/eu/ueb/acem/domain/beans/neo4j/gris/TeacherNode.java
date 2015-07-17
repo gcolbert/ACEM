@@ -30,8 +30,8 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalScenarioNode;
-import eu.ueb.acem.domain.beans.neo4j.violet.ClassNode;
-import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.neo4j.violet.TeachingUnitNode;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
  * @author Grégoire Colbert
@@ -47,8 +47,8 @@ public class TeacherNode extends PersonNode implements Teacher {
 	 */
 	private static final long serialVersionUID = -3193454107919543890L;
 
-	@RelatedTo(elementClass = ClassNode.class, type = "leadsClass", direction = OUTGOING)
-	private Set<Class> classes = new HashSet<Class>(0);
+	@RelatedTo(elementClass = TeachingUnitNode.class, type = "teacherInvolvedInPedagogicalUnit", direction = OUTGOING)
+	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
 	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "authorsScenario", direction = OUTGOING)
 	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
@@ -60,25 +60,25 @@ public class TeacherNode extends PersonNode implements Teacher {
 		super(name, login, password);
 		setTeacher(true);
 	}
-	
+
 	@Override
-	public Set<PedagogicalScenario> getScenarios() {
+	public Set<PedagogicalScenario> getPedagogicalScenarios() {
 		return pedagogicalScenarios;
 	}
 
 	@Override
-	public void setScenarios(Set<PedagogicalScenario> pedagogicalScenarios) {
+	public void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios) {
 		this.pedagogicalScenarios = pedagogicalScenarios;
-	}
-	
-	@Override
-	public Set<Class> getClasses() {
-		return classes;
 	}
 
 	@Override
-	public void setClasses(Set<Class> classes) {
-		this.classes = classes;
+	public Set<TeachingUnit> getTeachingUnits() {
+		return teachingUnits;
+	}
+
+	@Override
+	public void setTeachingUnits(Set<TeachingUnit> teachingUnits) {
+		this.teachingUnits = teachingUnits;
 	}
 
 }

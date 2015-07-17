@@ -26,13 +26,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
-import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 
 /**
  * @author Grégoire Colbert
@@ -40,33 +39,22 @@ import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
  * 
  */
 @Entity(name = "PedagogicalActivity")
-@Table(name = "PedagogicalActivity")
-public class PedagogicalActivityEntity extends AbstractEntity implements PedagogicalActivity {
+public class PedagogicalActivityEntity extends PedagogicalUnitEntity implements PedagogicalActivity {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -3649534092473417932L;
 
-	private String name;
-
-	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY)
-	@JoinTable(name = "PedagogicalScenario_PedagogicalActivity")
-	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
+	@ManyToOne(targetEntity = PedagogicalSessionEntity.class, fetch = FetchType.LAZY)
+	@JoinTable(name = "PedagogicalSession_PedagogicalActivity")
+	private PedagogicalSession pedagogicalSession;
 
 	@ManyToMany(targetEntity = ResourceCategoryEntity.class, fetch = FetchType.LAZY)
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
-	private Long positionInScenario;
-
-	@Lob
-	private String objective;
-
 	@Lob
 	private String instructions;
-
-	@Lob
-	private String duration;
 
 	public PedagogicalActivityEntity() {
 	}
@@ -76,44 +64,9 @@ public class PedagogicalActivityEntity extends AbstractEntity implements Pedagog
 		setName(name);
 	}
 
-	@Override
-	public Set<PedagogicalScenario> getScenarios() {
-		return pedagogicalScenarios;
-	}
-
-	@Override
-	public void setScenarios(Set<PedagogicalScenario> scenarios) {
-		this.pedagogicalScenarios = scenarios;
-	}
-
-	@Override
-	public Long getPositionInScenario() {
-		return positionInScenario;
-	}
-
-	@Override
-	public void setPositionInScenario(Long positionInScenario) {
-		this.positionInScenario = positionInScenario;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getObjective() {
-		return objective;
-	}
-
-	@Override
-	public void setObjective(String objective) {
-		this.objective = objective;
+	public PedagogicalActivityEntity(String name, String objective) {
+		this(name);
+		setObjective(objective);
 	}
 
 	@Override
@@ -127,16 +80,6 @@ public class PedagogicalActivityEntity extends AbstractEntity implements Pedagog
 	}
 
 	@Override
-	public String getDuration() {
-		return duration;
-	}
-
-	@Override
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
-
-	@Override
 	public Set<ResourceCategory> getResourceCategories() {
 		return resourceCategories;
 	}
@@ -147,8 +90,23 @@ public class PedagogicalActivityEntity extends AbstractEntity implements Pedagog
 	}
 
 	@Override
-	public int compareTo(PedagogicalActivity o) {
-		return (int) (positionInScenario - o.getPositionInScenario());
+	public PedagogicalSession getPedagogicalSession() {
+		return pedagogicalSession;
+	}
+
+	@Override
+	public void setPedagogicalSession(PedagogicalSession pedagogicalSession) {
+		this.pedagogicalSession = pedagogicalSession;
+	}
+
+	@Override
+	public PedagogicalActivity getNextPedagogicalActivity() {
+		return (PedagogicalActivity)getNext();
+	}
+
+	@Override
+	public void setNextPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
+		setNext(pedagogicalActivity);
 	}
 
 }

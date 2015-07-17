@@ -31,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.services.OrganisationsService;
@@ -74,35 +76,71 @@ public class ScenariosServiceTest extends TestCase {
 		PedagogicalScenario scenario1 = scenariosService.createScenario(teacher, "Study of the G-clef",
 				"Make the learners able to read out loud the notes written in the G-clef");
 
+		PedagogicalScenario scenario1bis = scenariosService.retrievePedagogicalScenario(scenario1.getId(), false);
+
+		assertTrue(scenario1bis.getAuthors().contains(teacher));
+	}
+
+	/**
+	 * Count sequences, sessions and activities
+	 */
+	@Test
+	@Transactional
+	@Rollback(true)
+	public final void t02_TestGetScenariosSequencesSessionsActivities() {
+		Institution institution = organisationsService.createInstitution("University of Music", "UoM", null);
+
+		Teacher teacher = usersService.createTeacher("Grégoire COLBERT", "gcolbert", "pass");
+		teacher.getWorksForOrganisations().add(institution);
+		teacher = usersService.updateTeacher(teacher);
+
+		PedagogicalScenario scenario1 = scenariosService.createScenario(teacher, "Study of the G-clef",
+				"Make the learners able to read out loud the notes written in the G-clef");
+
+		PedagogicalSequence sequence1 = scenariosService.createPedagogicalSequence("Introduction to the western musical notation");
+		scenario1.getFirstPedagogicalSequences().add(sequence1);
+		sequence1.setPedagogicalScenario(scenario1);
+		scenariosService.updatePedagogicalSequence(sequence1);
+
+		PedagogicalSession session1 = scenariosService.createPedagogicalSession("Session 1");
+		sequence1.setFirstPedagogicalSession(session1);
+		session1.getPedagogicalSequences().add(sequence1);
+		scenariosService.updatePedagogicalSession(session1);
+
 		PedagogicalActivity pedagogicalActivity1 = scenariosService
-				.createPedagogicalActivity("Introduction to the western musical notation");
-		scenario1.getPedagogicalActivities().add(pedagogicalActivity1);
-		pedagogicalActivity1.getScenarios().add(scenario1);
+				.createPedagogicalActivity("Reading a sequence of C and D");
+		session1.setFirstPedagogicalActivity(pedagogicalActivity1);
+		pedagogicalActivity1.setPedagogicalSession(session1);
 		pedagogicalActivity1 = scenariosService.updatePedagogicalActivity(pedagogicalActivity1);
 
 		PedagogicalActivity pedagogicalActivity2 = scenariosService
 				.createPedagogicalActivity("Reading a sequence of D and E");
-		scenario1.getPedagogicalActivities().add(pedagogicalActivity2);
-		pedagogicalActivity2.getScenarios().add(scenario1);
+		pedagogicalActivity1.setNextPedagogicalActivity(pedagogicalActivity2);
+		pedagogicalActivity2.setPedagogicalSession(session1);
 		pedagogicalActivity2 = scenariosService.updatePedagogicalActivity(pedagogicalActivity2);
 
 		PedagogicalActivity pedagogicalActivity3 = scenariosService
 				.createPedagogicalActivity("Reading a sequence of E and F");
-		scenario1.getPedagogicalActivities().add(pedagogicalActivity3);
-		pedagogicalActivity3.getScenarios().add(scenario1);
+		pedagogicalActivity2.setNextPedagogicalActivity(pedagogicalActivity3);
+		pedagogicalActivity3.setPedagogicalSession(session1);
 		pedagogicalActivity3 = scenariosService.updatePedagogicalActivity(pedagogicalActivity3);
 
 		PedagogicalActivity pedagogicalActivity4 = scenariosService
 				.createPedagogicalActivity("Reading a sequence of F and G");
-		scenario1.getPedagogicalActivities().add(pedagogicalActivity4);
-		pedagogicalActivity4.getScenarios().add(scenario1);
+		pedagogicalActivity3.setNextPedagogicalActivity(pedagogicalActivity4);
+		pedagogicalActivity4.setPedagogicalSession(session1);
 		pedagogicalActivity4 = scenariosService.updatePedagogicalActivity(pedagogicalActivity4);
 
 		scenario1 = scenariosService.updateScenario(scenario1);
 
 		PedagogicalScenario scenario1bis = scenariosService.retrievePedagogicalScenario(scenario1.getId(), false);
+		assertEquals(1, scenario1bis.getFirstPedagogicalSequences().size());
 
-		assertEquals(4, scenario1bis.getPedagogicalActivities().size());
+		PedagogicalSequence sequence1bis = scenariosService.retrievePedagogicalSequence(sequence1.getId(), false);
+		assertNotNull(sequence1bis.getFirstPedagogicalSession());
+
+		PedagogicalSession session1bis = scenariosService.retrievePedagogicalSession(session1.getId(), false);
+		assertNotNull(session1bis.getFirstPedagogicalActivity());
 	}
 
 	/**
@@ -111,13 +149,13 @@ public class ScenariosServiceTest extends TestCase {
 	@Test
 	@Transactional
 	@Rollback(true)
-	public final void t02_TestDeleteScenarioWithAuthor() {
+	public final void t03_TestDeleteScenarioWithAuthor() {
 		Teacher teacher = usersService.createTeacher("Grégoire COLBERT", "gcolbert", "pass");
 
 		PedagogicalScenario scenario1 = scenariosService.createScenario(teacher, "Study of the G-clef",
 				"Make the learners able to read out loud the notes written in the G-clef");
 
-		teacher.getScenarios().add(scenario1);
+		teacher.getPedagogicalScenarios().add(scenario1);
 		scenario1.getAuthors().add(teacher);
 		scenario1 = scenariosService.updateScenario(scenario1);
 		teacher = usersService.updateTeacher(teacher);

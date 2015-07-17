@@ -18,12 +18,14 @@
  */
 package eu.ueb.acem.domain.beans.violet.jpa;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 
-import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
+import eu.ueb.acem.domain.beans.violet.Class;
 import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Credit;
 
@@ -33,46 +35,24 @@ import eu.ueb.acem.domain.beans.violet.Credit;
  * 
  */
 @Entity(name = "Course")
-@Table(name = "Course")
-public class CourseEntity extends AbstractEntity implements Course {
+public class CourseEntity extends TeachingUnitEntity implements Course {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 5617849758695365829L;
 
-	private String name;
-
-	private String duration;
-
 	@ManyToOne(targetEntity = CreditEntity.class, fetch = FetchType.LAZY)
 	private Credit credit;
+
+	@OneToMany(targetEntity = ClassEntity.class, fetch = FetchType.LAZY)
+	private Set<Class> classes;
 
 	public CourseEntity() {
 	}
 
 	public CourseEntity(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getDuration() {
-		return duration;
-	}
-
-	@Override
-	public void setDuration(String duration) {
-		this.duration = duration;
+		setName(name);
 	}
 
 	@Override
@@ -81,8 +61,18 @@ public class CourseEntity extends AbstractEntity implements Course {
 	}
 
 	@Override
-	public int compareTo(Course o) {
-		return this.getName().compareTo(o.getName());
+	public void setCredit(Credit credit) {
+		this.credit = credit;
+	}
+
+	@Override
+	public Set<Class> getClasses() {
+		return classes;
+	}
+
+	@Override
+	public void setClasses(Set<Class> classes) {
+		this.classes = classes;
 	}
 	
 }

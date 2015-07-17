@@ -18,36 +18,17 @@
  */
 package eu.ueb.acem.domain.beans.bleu;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface PedagogicalScenario extends Serializable, Comparable<PedagogicalScenario> {
-
-	Long getId();
-
-	String getName();
-
-	void setName(String name);
-
-	Long getCreationDate();
-
-	void setCreationDate(Long date);
-
-	Long getModificationDate();
-
-	void setModificationDate(Long date);
-
-	String getObjective();
-
-	void setObjective(String objective);
+public interface PedagogicalScenario extends PedagogicalUnit {
 
 	String getEvaluationModes();
 
@@ -57,20 +38,23 @@ public interface PedagogicalScenario extends Serializable, Comparable<Pedagogica
 
 	void setAuthors(Set<Teacher> authors);
 
-	Set<PedagogicalKeyword> getPedagogicalKeywords();
-
-	void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords);
-
 	Boolean isPublished();
 
 	void setPublished(Boolean published);
 
-	Set<PedagogicalActivity> getPedagogicalActivities();
+	Set<TeachingUnit> getTeachingUnits();
 
-	void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities);
+	void setTeachingUnits(Set<TeachingUnit> teachingUnits);
 
-	Set<Class> getClasses();
+	// TODO : voir comment gérer les requêtes pour la base relationnelle dans PedagogicalScenarioRepository
+//	Set<PedagogicalSequence> getAllPedagogicalSequences();
 
-	void setClasses(Set<Class> classes);
+	Set<PedagogicalSequence> getFirstPedagogicalSequences();
+
+	void setFirstPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences);
+
+	PedagogicalScenario getNextPedagogicalScenario();
+
+	void setNextPedagogicalScenario(PedagogicalScenario pedagogicalScenario);
 
 }

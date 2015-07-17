@@ -23,13 +23,14 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalScenarioEntity;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.violet.Class;
-import eu.ueb.acem.domain.beans.violet.jpa.ClassEntity;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
+import eu.ueb.acem.domain.beans.violet.jpa.TeachingUnitEntity;
 
 /**
  * @author Grégoire Colbert
@@ -44,8 +45,9 @@ public class TeacherEntity extends PersonEntity implements Teacher {
 	 */
 	private static final long serialVersionUID = 1289247284705705734L;
 
-	@ManyToMany(targetEntity = ClassEntity.class,  fetch = FetchType.LAZY)
-	private Set<Class> classes = new HashSet<Class>(0);
+	@ManyToMany(targetEntity = TeachingUnitEntity.class,  fetch = FetchType.LAZY)
+	@JoinTable(name = "Teachers_TeachingUnits")
+	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
 	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY, mappedBy = "authors")
 	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
@@ -59,23 +61,23 @@ public class TeacherEntity extends PersonEntity implements Teacher {
 	}
 
 	@Override
-	public Set<PedagogicalScenario> getScenarios() {
+	public Set<PedagogicalScenario> getPedagogicalScenarios() {
 		return pedagogicalScenarios;
 	}
 
 	@Override
-	public void setScenarios(Set<PedagogicalScenario> pedagogicalScenarios) {
+	public void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios) {
 		this.pedagogicalScenarios = pedagogicalScenarios;
 	}
 
 	@Override
-	public Set<Class> getClasses() {
-		return classes;
+	public Set<TeachingUnit> getTeachingUnits() {
+		return teachingUnits;
 	}
 
 	@Override
-	public void setClasses(Set<Class> classes) {
-		this.classes = classes;
+	public void setTeachingUnits(Set<TeachingUnit> teachingUnits) {
+		this.teachingUnits = teachingUnits;
 	}
 
 }

@@ -60,9 +60,9 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 	@Override
 	protected final void initializeCollections(PedagogicalScenario entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getPedagogicalActivities());
+			neo4jOperations.fetch(entity.getFirstPedagogicalSequences());
 			neo4jOperations.fetch(entity.getAuthors());
-			neo4jOperations.fetch(entity.getClasses());
+			neo4jOperations.fetch(entity.getTeachingUnits());
 			neo4jOperations.fetch(entity.getPedagogicalKeywords());
 		}
 	}
@@ -119,8 +119,15 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 	}
 
 	@Override
-	public PedagogicalScenario create(String name, String description) {
-		PedagogicalScenario entity = new PedagogicalScenarioNode(name, description);
+	public PedagogicalScenario create(String name) {
+		PedagogicalScenario entity = new PedagogicalScenarioNode(name);
+		entity.setCreationDate(TimeTicker.tick());
+		return super.create(entity);
+	}
+
+	@Override
+	public PedagogicalScenario create(String name, String objective) {
+		PedagogicalScenario entity = new PedagogicalScenarioNode(name, objective);
 		entity.setCreationDate(TimeTicker.tick());
 		return super.create(entity);
 	}

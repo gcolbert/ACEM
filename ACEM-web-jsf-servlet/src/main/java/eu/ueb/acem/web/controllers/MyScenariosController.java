@@ -169,7 +169,7 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	public void deleteSelectedScenario() {
 		if (selectedPedagogicalScenarioViewBean != null) {
 			if (scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(selectedPedagogicalScenarioViewBean.getId(), getCurrentUser().getId())) {
-				((Teacher)getCurrentUserViewBean().getDomainBean()).getScenarios().remove(selectedPedagogicalScenarioViewBean);
+				((Teacher)getCurrentUserViewBean().getDomainBean()).getPedagogicalScenarios().remove(selectedPedagogicalScenarioViewBean);
 				pedagogicalScenarioViewBeans.getTableEntries().remove(selectedPedagogicalScenarioViewBean);
 				MessageDisplayer.info(
 						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
@@ -322,7 +322,7 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			newPedagogicalActivity.setPositionInScenario(new Long(selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().size()+1));
 			newPedagogicalActivity.setDuration(objectEditedPedagogicalActivityViewBean.getDuration());
 			newPedagogicalActivity.setInstructions(objectEditedPedagogicalActivityViewBean.getInstructions());
-			newPedagogicalActivity.getScenarios().add(selectedPedagogicalScenarioViewBean.getDomainBean());
+			newPedagogicalActivity.getPedagogicalScenarios().add(selectedPedagogicalScenarioViewBean.getDomainBean());
 			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
 				newPedagogicalActivity.getResourceCategories().add(toolCategoryViewBean.getDomainBean());
 				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(newPedagogicalActivity);

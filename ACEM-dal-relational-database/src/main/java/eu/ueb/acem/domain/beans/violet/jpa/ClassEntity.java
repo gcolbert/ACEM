@@ -18,19 +18,13 @@
  */
 package eu.ueb.acem.domain.beans.violet.jpa;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
-import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalScenarioEntity;
-import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
+import eu.ueb.acem.domain.beans.bleu.TeachingMode;
+import eu.ueb.acem.domain.beans.bleu.jpa.TeachingModeEntity;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 import eu.ueb.acem.domain.beans.vert.jpa.PhysicalSpaceEntity;
 import eu.ueb.acem.domain.beans.violet.Class;
@@ -42,48 +36,31 @@ import eu.ueb.acem.domain.beans.violet.Course;
  * 
  */
 @Entity(name = "Class")
-@Table(name = "Class")
-public class ClassEntity extends AbstractEntity implements Class {
+public class ClassEntity extends TeachingUnitEntity implements Class {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = -734932205095203141L;
 
-	private String name;
+	private String date;
+	
+	private String time;
 
 	@ManyToOne(targetEntity = CourseEntity.class, fetch = FetchType.LAZY)
 	private Course course;
 
-	//@RelatedTo(elementClass = PhysicalSpaceNode.class, type = "classHappensInLocation", direction = OUTGOING)
 	@OneToOne(targetEntity = PhysicalSpaceEntity.class, fetch = FetchType.LAZY)
 	private PhysicalSpace location;
 
-	//@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "scenarioUsedForClass", direction = INCOMING)
-	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY)
-	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
-
-	private String date;
-	private String time;
-	private String duration;
-	private String teachingMode;
-	private Integer numberOfLearners;
+	@ManyToOne(targetEntity = TeachingModeEntity.class, fetch = FetchType.LAZY)
+	private TeachingMode teachingMode;
 
 	public ClassEntity() {
 	}
 
 	public ClassEntity(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
+		setName(name);
 	}
 	
 	@Override
@@ -107,33 +84,13 @@ public class ClassEntity extends AbstractEntity implements Class {
 	}
 
 	@Override
-	public String getDuration() {
-		return duration;
-	}
-
-	@Override
-	public void setDuration(String duree) {
-		this.duration = duree;
-	}
-
-	@Override
-	public String getTeachingMode() {
+	public TeachingMode getTeachingMode() {
 		return teachingMode;
 	}
 
 	@Override
-	public void setTeachingMode(String teachingMode) {
+	public void setTeachingMode(TeachingMode teachingMode) {
 		this.teachingMode = teachingMode;
-	}
-
-	@Override
-	public Integer getNumberOfLearners() {
-		return numberOfLearners;
-	}
-
-	@Override
-	public void setNumberOfLearners(Integer nbApprenants) {
-		this.numberOfLearners = nbApprenants;
 	}
 
 	@Override
@@ -154,21 +111,6 @@ public class ClassEntity extends AbstractEntity implements Class {
 	@Override
 	public void setLocation(PhysicalSpace location) {
 		this.location = location;
-	}
-
-	@Override
-	public Set<PedagogicalScenario> getPedagogicalScenarios() {
-		return pedagogicalScenarios;
-	}
-
-	@Override
-	public void setPedagogicalScenarios(Set<PedagogicalScenario> scenarios) {
-		this.pedagogicalScenarios = scenarios;
-	}
-
-	@Override
-	public int compareTo(Class o) {
-		return this.getName().compareTo(o.getName());
 	}
 
 }

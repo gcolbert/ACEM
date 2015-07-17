@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.dal.common.rouge;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import eu.ueb.acem.dal.common.DAO;
@@ -29,7 +28,7 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * @author Grégoire Colbert
  * @since 2014-03-11
  */
-public interface OrganisationDAO<ID extends Serializable, E extends Organisation> extends DAO<ID, E> {
+public interface OrganisationDAO<ID, E extends Organisation> extends DAO<ID, E> {
 
 	Collection<E> retrieveSupportServicesForPerson(Person person);
 

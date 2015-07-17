@@ -28,8 +28,10 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.neo4j.violet.TeachingUnitNode;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
  * @author Grégoire Colbert
@@ -50,6 +52,9 @@ public class TeachingDepartmentNode extends OrganisationNode implements Teaching
 
 	@RelatedTo(elementClass = InstitutionNode.class, type = "teachingDepartmentPartOfInstitution", direction = OUTGOING)
 	private Set<Institution> institutions = new HashSet<Institution>(0);
+
+	@RelatedTo(elementClass = TeachingUnitNode.class, type = "teachesTeachingUnit", direction = OUTGOING)
+	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
 	public TeachingDepartmentNode() {
 	}
@@ -79,6 +84,16 @@ public class TeachingDepartmentNode extends OrganisationNode implements Teaching
 	@Override
 	public void setInstitutions(Set<Institution> institutions) {
 		this.institutions = institutions;
+	}
+
+	@Override
+	public Set<TeachingUnit> getTeachingUnits() {
+		return teachingUnits;
+	}
+
+	@Override
+	public void setTeachingUnits(Set<TeachingUnit> teachingUnits) {
+		this.teachingUnits = teachingUnits;
 	}
 
 }

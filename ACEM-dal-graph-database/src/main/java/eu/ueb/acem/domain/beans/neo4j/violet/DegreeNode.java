@@ -28,7 +28,6 @@ import org.springframework.data.neo4j.annotation.Indexed;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 import eu.ueb.acem.domain.beans.violet.Credit;
 import eu.ueb.acem.domain.beans.violet.Degree;
 
@@ -39,16 +38,16 @@ import eu.ueb.acem.domain.beans.violet.Degree;
  */
 @NodeEntity
 @TypeAlias("Degree")
-public class DegreeNode extends AbstractNode implements Degree {
+public class DegreeNode extends TeachingUnitNode implements Degree {
 
 	/**
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 3007792198756655816L;
 
-	@RelatedTo(elementClass = CreditNode.class, type = "isPartOfDegree", direction = INCOMING)
+	@RelatedTo(elementClass = CreditNode.class, type = "creditPartOfDegree", direction = INCOMING)
 	private Set<Credit> credits = new HashSet<Credit>(0);
-	
+
 	@Indexed
 	private String name;
 
@@ -56,16 +55,6 @@ public class DegreeNode extends AbstractNode implements Degree {
 	}
 
 	public DegreeNode(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
 		this.name = name;
 	}
 	
@@ -77,11 +66,6 @@ public class DegreeNode extends AbstractNode implements Degree {
 	@Override
 	public void setCredits(Set<Credit> credits) {
 		this.credits = credits;
-	}
-
-	@Override
-	public int compareTo(Degree o) {
-		return this.getName().compareTo(o.getName());
 	}
 
 }

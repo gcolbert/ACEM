@@ -24,9 +24,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
-import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 import eu.ueb.acem.domain.beans.violet.Credit;
 import eu.ueb.acem.domain.beans.violet.Degree;
 
@@ -36,8 +34,7 @@ import eu.ueb.acem.domain.beans.violet.Degree;
  * 
  */
 @Entity(name = "Degree")
-@Table(name = "Degree")
-public class DegreeEntity extends AbstractEntity implements Degree {
+public class DegreeEntity extends TeachingUnitEntity implements Degree {
 
 	/**
 	 * For serialization.
@@ -46,26 +43,14 @@ public class DegreeEntity extends AbstractEntity implements Degree {
 
 	@ManyToMany(targetEntity = CreditEntity.class, fetch = FetchType.LAZY, mappedBy = "degrees")
 	private Set<Credit> credits = new HashSet<Credit>(0);
-	
-	private String name;
 
 	public DegreeEntity() {
 	}
 
 	public DegreeEntity(String name) {
-		this.name = name;
+		setName(name);
 	}
 
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	@Override
 	public Set<Credit> getCredits() {
 		return credits;
@@ -74,11 +59,6 @@ public class DegreeEntity extends AbstractEntity implements Degree {
 	@Override
 	public void setCredits(Set<Credit> credits) {
 		this.credits = credits;
-	}
-
-	@Override
-	public int compareTo(Degree o) {
-		return this.getName().compareTo(o.getName());
 	}
 
 }
