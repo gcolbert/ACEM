@@ -222,19 +222,20 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		PedagogicalScenario pedagogicalScenario = scenariosService.createScenario(teacher, "Étude d'une théorie et argumentation", "Développer la capacité à s'approprier une problématique scientifique");
 
 		PedagogicalSequence pedagogicalSequence1 = scenariosService.createPedagogicalSequence("Sequence 1");
-		pedagogicalScenario.getFirstPedagogicalSequences().add(pedagogicalSequence1);
 		pedagogicalSequence1.setPedagogicalScenario(pedagogicalScenario);
+		pedagogicalScenario.getPedagogicalSequences().add(pedagogicalSequence1);
 
 		PedagogicalSession pedagogicalSession1 = scenariosService.createPedagogicalSession("Séance 1");
 		pedagogicalSession1.setObjective("À la fin de la séance, les étudiants seront capables de définir et d'expliquer les principales notions relatives à une théorie présentée en classe.");
-		pedagogicalSession1.getPedagogicalSequences().add(pedagogicalSequence1);
-		pedagogicalSequence1.setFirstPedagogicalSession(pedagogicalSession1);
+		pedagogicalSession1.setPedagogicalSequence(pedagogicalSequence1);
+		pedagogicalSequence1.getPedagogicalSessions().add(pedagogicalSession1);
+
 		PedagogicalActivity activity1 = scenariosService.createPedagogicalActivity("Appropriation de la problématique");
 		activity1.setInstructions("Les étudiants sont invités à poser des questions et à participer à de courtes discussions par petits groupes.");
 		activity1.setTeachingMode(teachingModeOnsiteCourse);
 		activity1.setDuration(2*60L); // 2 hours
 		activity1.setPedagogicalSession(pedagogicalSession1);
-		pedagogicalSession1.setFirstPedagogicalActivity(activity1);
+		pedagogicalSession1.getPedagogicalActivities().add(activity1);
 		activity1 = scenariosService.updatePedagogicalActivity(activity1);
 
 		PedagogicalActivity activity2 = scenariosService.createPedagogicalActivity("Comparaison d'articles scientifiques");
@@ -246,6 +247,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		plateformesApprentissage.getPedagogicalActivities().add(activity2);
 		plateformesApprentissage = resourcesService.updateResourceCategory(plateformesApprentissage);
 		activity2.setPedagogicalSession(pedagogicalSession1);
+		pedagogicalSession1.getPedagogicalActivities().add(activity2);
 		activity1.setNextPedagogicalActivity(activity2);
 		activity2 = scenariosService.updatePedagogicalActivity(activity2);
 
@@ -258,6 +260,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		plateformesApprentissage.getPedagogicalActivities().add(activity3);
 		plateformesApprentissage = resourcesService.updateResourceCategory(plateformesApprentissage);
 		activity3.setPedagogicalSession(pedagogicalSession1);
+		pedagogicalSession1.getPedagogicalActivities().add(activity3);
 		activity2.setNextPedagogicalActivity(activity3);
 		activity3 = scenariosService.updatePedagogicalActivity(activity3);
 

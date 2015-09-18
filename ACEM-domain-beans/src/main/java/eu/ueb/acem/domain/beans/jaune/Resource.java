@@ -33,6 +33,40 @@ public interface Resource extends Serializable, Comparable<Resource> {
 
 	Long getId();
 
+	/**
+	 * The id of the original object in the information system, if any.
+	 * @return the id of the original object, or null.
+	 */
+	Long getIdSource();
+
+	void setIdSource(Long idSource);
+
+	/**
+	 * Some resources can be used for a PedagogicalActivity (a mobile equipment,
+	 * for example), whereas some other resources can be used for a
+	 * PedagogicalSession (a special room, for example). This field is used to
+	 * filter the various resources available when associating a resource with a
+	 * PedagogicalActivity or with a PedagogicalSession.
+	 * 
+	 * @return true if the Resource can be used during an activity.
+	 */
+	boolean isForPedagogicalActivity();
+
+	void setForPedagogicalActivity(boolean isForActivity);
+
+	/**
+	 * Some resources can be used for a PedagogicalActivity (a mobile equipment,
+	 * for example), whereas some other resources can be used for a
+	 * PedagogicalSession (a special room, for example). This field is used to
+	 * filter the various resources available when associating a resource with a
+	 * PedagogicalActivity or with a PedagogicalSession.
+	 * 
+	 * @return true if the Resource can be used during an activity.
+	 */
+	boolean isForPedagogicalSession();
+
+	void setForPedagogicalSession(boolean isForSession);
+
 	String getName();
 
 	void setName(String name);

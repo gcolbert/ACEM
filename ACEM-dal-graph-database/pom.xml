@@ -29,7 +29,7 @@
 	<description>Data Access Layer (using Spring Data Neo4j)</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-data.version>3.3.0.RELEASE</spring-data.version>
+		<spring-data.version>3.3.2.RELEASE</spring-data.version>
 	</properties>
 	<dependencies>
 		<!-- Compilation -->

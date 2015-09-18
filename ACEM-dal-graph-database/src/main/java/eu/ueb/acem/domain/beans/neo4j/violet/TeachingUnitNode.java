@@ -70,7 +70,7 @@ public abstract class TeachingUnitNode extends AbstractNode implements TeachingU
 
 	@RelatedTo(elementClass = TeacherNode.class, type = "teacherInvolvedInPedagogicalUnit", direction = INCOMING)
 	private Set<Teacher> teachers = new HashSet<Teacher>(0);
-	
+
 	@Override
 	public Long getIdSource() {
 		return idSource;

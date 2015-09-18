@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.dal.common.bleu;
 
+import java.util.Collection;
+
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 
 /**
@@ -27,4 +30,6 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
  */
 public interface PedagogicalSequenceDAO<ID> extends PedagogicalUnitDAO<ID, PedagogicalSequence> {
 
+	Collection<PedagogicalSequence> retrieveFirstSequencesOfScenario(PedagogicalScenario pedagogicalScenario);
+	
 }

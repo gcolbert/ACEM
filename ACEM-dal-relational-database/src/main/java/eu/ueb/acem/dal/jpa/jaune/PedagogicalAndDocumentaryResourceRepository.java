@@ -32,7 +32,7 @@ import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
  * @since 2015-05-29
  * 
  */
-public interface PedagogicalAndDocumentaryResourcesRepository extends
+public interface PedagogicalAndDocumentaryResourceRepository extends
 		GenericRepository<PedagogicalAndDocumentaryResourceEntity> {
 
 	@Override

@@ -18,13 +18,19 @@
  */
 package eu.ueb.acem.dal.jpa.bleu;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.common.TimeTicker;
 import eu.ueb.acem.dal.common.bleu.PedagogicalSequenceDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalSequenceEntity;
 
@@ -51,19 +57,44 @@ public class PedagogicalSequenceDAOImpl extends AbstractDAO<PedagogicalSequence,
 	@Override
 	protected final void initializeCollections(PedagogicalSequence entity) {
 		if (entity != null) {
-			entity.getFirstPedagogicalSession();
+			entity.getPedagogicalSessions().size();
 			entity.getPedagogicalScenario();
 		}
 	}
 
 	@Override
 	public PedagogicalSequence create(String name) {
-		return super.create(new PedagogicalSequenceEntity(name));
+		PedagogicalSequence entity = new PedagogicalSequenceEntity(name);
+		entity.setCreationDate(TimeTicker.tick());
+		return super.create(entity);
 	}
 
 	@Override
 	public PedagogicalSequence create(String name, String objective) {
-		return super.create(new PedagogicalSequenceEntity(name, objective));
+		PedagogicalSequence entity = new PedagogicalSequenceEntity(name, objective);
+		entity.setCreationDate(TimeTicker.tick());
+		return super.create(entity);
+	}
+
+	@Override
+	public PedagogicalSequence update(PedagogicalSequence entity) {
+		entity.setModificationDate(TimeTicker.tick());
+		return super.update(entity);
+	}
+
+	@Override
+	public Collection<PedagogicalSequence> retrieveFirstSequencesOfScenario(PedagogicalScenario pedagogicalScenario) {
+		Iterable<PedagogicalSequenceEntity> endResults = repository.findFirstSequencesOfScenario(pedagogicalScenario.getId());
+		Collection<PedagogicalSequence> collection = new HashSet<PedagogicalSequence>();
+		if (endResults.iterator() != null) {
+			Iterator<PedagogicalSequenceEntity> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				PedagogicalSequence entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
 	}
 
 }

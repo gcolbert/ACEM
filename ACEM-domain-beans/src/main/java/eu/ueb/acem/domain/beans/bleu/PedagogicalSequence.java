@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.domain.beans.bleu;
 
+import java.util.Set;
+
 /**
  * @author Grégoire Colbert
  * @since 2015-07-13
@@ -29,15 +31,20 @@ public interface PedagogicalSequence extends PedagogicalUnit {
 
 	void setPedagogicalScenario(PedagogicalScenario pedagogicalScenario);
 
+	Set<PedagogicalSession> getPedagogicalSessions();
+
+	void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions);
+
+	Set<PedagogicalActivity> getPedagogicalActivities();
+
+	void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities);
+
+	PedagogicalSequence getPreviousPedagogicalSequence();
+
+	void setPreviousPedagogicalSequence(PedagogicalSequence pedagogicalSequence);
+
 	PedagogicalSequence getNextPedagogicalSequence();
 
 	void setNextPedagogicalSequence(PedagogicalSequence pedagogicalSequence);
-
-	// TODO : voir comment gérer les requêtes pour la base relationnelle dans PedagogicalScenarioRepository
-//	Set<PedagogicalSession> getAllPedagogicalSessions();
-
-	PedagogicalSession getFirstPedagogicalSession();
-
-	void setFirstPedagogicalSession(PedagogicalSession pedagogicalSession);
 
 }

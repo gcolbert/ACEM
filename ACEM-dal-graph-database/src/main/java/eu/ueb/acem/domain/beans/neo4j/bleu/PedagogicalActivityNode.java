@@ -29,6 +29,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
@@ -49,6 +50,9 @@ public class PedagogicalActivityNode extends PedagogicalUnitNode implements Peda
 
 	@Indexed
 	private String name;
+
+	@RelatedTo(elementClass = PedagogicalSequenceNode.class, type = "activityForSequence", direction = OUTGOING)
+	private PedagogicalSequence pedagogicalSequence;
 
 	@RelatedTo(elementClass = PedagogicalSessionNode.class, type = "activityForSession", direction = OUTGOING)
 	private PedagogicalSession pedagogicalSession;
@@ -102,6 +106,16 @@ public class PedagogicalActivityNode extends PedagogicalUnitNode implements Peda
 	}
 
 	@Override
+	public PedagogicalSequence getPedagogicalSequence() {
+		return pedagogicalSequence;
+	}
+
+	@Override
+	public void setPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
+		this.pedagogicalSequence = pedagogicalSequence;
+	}
+
+	@Override
 	public PedagogicalSession getPedagogicalSession() {
 		return pedagogicalSession;
 	}
@@ -109,6 +123,16 @@ public class PedagogicalActivityNode extends PedagogicalUnitNode implements Peda
 	@Override
 	public void setPedagogicalSession(PedagogicalSession pedagogicalSession) {
 		this.pedagogicalSession = pedagogicalSession;
+	}
+
+	@Override
+	public PedagogicalActivity getPreviousPedagogicalActivity() {
+		return (PedagogicalActivity)getPrevious();
+	}
+
+	@Override
+	public void setPreviousPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
+		setPrevious(pedagogicalActivity);
 	}
 
 	@Override

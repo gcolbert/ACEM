@@ -51,7 +51,7 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	private static final long serialVersionUID = -5750921886981813580L;
 
 	@Inject
-	private PedagogicalAndDocumentaryResourcesRepository repository;
+	private PedagogicalAndDocumentaryResourceRepository repository;
 
 	@Override
 	protected final GenericRepository<PedagogicalAndDocumentaryResourceEntity> getRepository() {

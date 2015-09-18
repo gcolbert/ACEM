@@ -39,4 +39,7 @@ public interface PedagogicalSequenceRepository extends GenericRepository<Pedagog
 	@Query(value = "MATCH (n:PedagogicalSequence) WHERE n.name=({name}) RETURN n")
 	Iterable<PedagogicalSequenceNode> findByName(@Param("name") String name);
 
+	@Query(value = "MATCH (seq:PedagogicalSequence)-[:sequenceForScenario]->(sce:PedagogicalScenario) WHERE not (sce)<-[:sequenceForScenario]-()-[:next]->(seq) AND id(sce)=({scenarioId}) RETURN seq")
+	Iterable<PedagogicalSequenceNode> findFirstSequencesOfScenario(@Param("scenarioId") Long scenarioId);
+
 }

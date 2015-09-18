@@ -27,7 +27,7 @@
 	<beans profile="relational-database, default">
 		<import resource="classpath*:dal-relational-database-test-context.xml"/>
 	</beans>
-
+ 
 	<!-- Import "dal-graph-database-test-context.xml if the "graph-database" 
 		Spring profile is active -->
 	<beans profile="graph-database">

@@ -46,12 +46,13 @@ public interface PedagogicalScenario extends PedagogicalUnit {
 
 	void setTeachingUnits(Set<TeachingUnit> teachingUnits);
 
-	// TODO : voir comment gérer les requêtes pour la base relationnelle dans PedagogicalScenarioRepository
-//	Set<PedagogicalSequence> getAllPedagogicalSequences();
+	Set<PedagogicalSequence> getPedagogicalSequences();
 
-	Set<PedagogicalSequence> getFirstPedagogicalSequences();
+	void setPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences);
 
-	void setFirstPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences);
+	PedagogicalScenario getPreviousPedagogicalScenario();
+
+	void setPreviousPedagogicalScenario(PedagogicalScenario pedagogicalScenario);
 
 	PedagogicalScenario getNextPedagogicalScenario();
 

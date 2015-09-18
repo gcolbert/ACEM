@@ -23,7 +23,10 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
@@ -47,14 +50,15 @@ public class PedagogicalSessionEntity extends PedagogicalUnitEntity implements P
 	 */
 	private static final long serialVersionUID = -2515537793203483574L;
 
-	@ManyToMany(targetEntity = PedagogicalSequenceEntity.class, fetch = FetchType.LAZY)
-	private Set<PedagogicalSequence> pedagogicalSequences = new HashSet<PedagogicalSequence>(0);
+	@ManyToOne(targetEntity = PedagogicalSequenceEntity.class, fetch = FetchType.LAZY)
+	private PedagogicalSequence pedagogicalSequence;
 
 	@ManyToMany(targetEntity = ResourceCategoryEntity.class, fetch = FetchType.LAZY)
+	@JoinTable(name = "ResourceCategory_PedagogicalSession")
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
-	@OneToOne(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY)
-	private PedagogicalActivity firstPedagogicalActivity;
+	@OneToMany(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY, mappedBy = "pedagogicalSession")
+	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
 	@OneToOne(targetEntity = ClassEntity.class)
 	private Class referredClass;
@@ -83,33 +87,23 @@ public class PedagogicalSessionEntity extends PedagogicalUnitEntity implements P
 	}
 
 	@Override
-	public Set<PedagogicalSequence> getPedagogicalSequences() {
-		return pedagogicalSequences;
+	public PedagogicalSequence getPedagogicalSequence() {
+		return pedagogicalSequence;
 	}
 
 	@Override
-	public void setPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences) {
-		this.pedagogicalSequences = pedagogicalSequences;
+	public void setPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
+		this.pedagogicalSequence = pedagogicalSequence;
 	}
 
 	@Override
-	public PedagogicalActivity getFirstPedagogicalActivity() {
-		return firstPedagogicalActivity;
+	public Set<PedagogicalActivity> getPedagogicalActivities() {
+		return pedagogicalActivities;
 	}
 
 	@Override
-	public void setFirstPedagogicalActivity(PedagogicalActivity firstPedagogicalActivity) {
-		this.firstPedagogicalActivity = firstPedagogicalActivity;
-	}
-
-	@Override
-	public PedagogicalSession getNextPedagogicalSession() {
-		return (PedagogicalSession)getNext();
-	}
-
-	@Override
-	public void setNextPedagogicalSession(PedagogicalSession pedagogicalSession) {
-		setNext(pedagogicalSession);
+	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
+		this.pedagogicalActivities = pedagogicalActivities;
 	}
 
 	@Override
@@ -120,6 +114,26 @@ public class PedagogicalSessionEntity extends PedagogicalUnitEntity implements P
 	@Override
 	public void setReferredClass(Class referredClass) {
 		this.referredClass = referredClass;
+	}
+
+	@Override
+	public PedagogicalSession getPreviousPedagogicalSession() {
+		return (PedagogicalSession)getPrevious();
+	}
+
+	@Override
+	public void setPreviousPedagogicalSession(PedagogicalSession pedagogicalSession) {
+		setPrevious(pedagogicalSession);
+	}
+
+	@Override
+	public PedagogicalSession getNextPedagogicalSession() {
+		return (PedagogicalSession)getNext();
+	}
+
+	@Override
+	public void setNextPedagogicalSession(PedagogicalSession pedagogicalSession) {
+		setNext(pedagogicalSession);
 	}
 
 }

@@ -20,7 +20,6 @@ package eu.ueb.acem.services;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -36,6 +35,7 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.services.exceptions.ServiceException;
 
 /**
  * @author Grégoire Colbert
@@ -101,6 +101,16 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 		return pedagogicalScenarioDAO.update(pedagogicalScenario);
 	}
 
+	/**
+	 * This method dissociates the given scenario from the given author. The
+	 * scenario is deleted if it doesn't have any author left.
+	 * 
+	 * @param idScenario
+	 *            The id of the scenario
+	 * @param idAuthor
+	 *            The id of the author
+	 * @return true if the scenario exists, false otherwise
+	 */
 	@Override
 	public Boolean dissociateAuthorOrDeleteScenarioIfLastAuthor(Long idScenario, Long idAuthor) {
 		if (pedagogicalScenarioDAO.exists(idScenario)) {
@@ -114,7 +124,7 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 				return true;
 			}
 			else {
-				// It's the last author, we really delete the scenario
+				// We dissociated the scenario from the last author, we really delete the scenario
 				return deleteScenario(idScenario);
 			}
 		}
@@ -123,21 +133,32 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 		}
 	}
 
+	/**
+	 * This method deletes the scenario with the given id.
+	 * 
+	 * @param id The id of the scenario.
+	 * 
+	 * @return true if the scenario doesn't exist, false if is still exists.
+	 */
 	@Override
 	public Boolean deleteScenario(Long id) {
 		if (pedagogicalScenarioDAO.exists(id)) {
 			PedagogicalScenario scenario = pedagogicalScenarioDAO.retrieveById(id);
-			Set<PedagogicalSequence> firstPedagogicalSequences = scenario.getFirstPedagogicalSequences();
-			for (PedagogicalSequence firstSequence : firstPedagogicalSequences) {
-				PedagogicalSequence pedagogicalSequence = firstSequence;
-				while (pedagogicalSequence != null) {
-					deletePedagogicalSequence(pedagogicalSequence.getId());
-					pedagogicalSequence = pedagogicalSequence.getNextPedagogicalSequence();
+			Collection<PedagogicalSequence> firstPedagogicalSequences = pedagogicalSequenceDAO.retrieveFirstSequencesOfScenario(scenario);
+			for (PedagogicalSequence sequence : firstPedagogicalSequences) {
+				while (sequence != null) {
+					deletePedagogicalSequence(sequence.getId());
+					sequence = sequence.getNextPedagogicalSequence();
 				}
 			}
 			pedagogicalScenarioDAO.delete(scenario);
 		}
 		return !pedagogicalScenarioDAO.exists(id);
+	}
+
+	@Override
+	public Collection<PedagogicalSequence> getFirstPedagogicalSequencesOfScenario(PedagogicalScenario pedagogicalScenario) {
+		return pedagogicalSequenceDAO.retrieveFirstSequencesOfScenario(pedagogicalScenario);
 	}
 
 	/* ***********
@@ -166,20 +187,22 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 	@Override
 	public Boolean deletePedagogicalSequence(Long id) {
 		if (pedagogicalSequenceDAO.exists(id)) {
-			PedagogicalSequence pedagogicalSequence = pedagogicalSequenceDAO.retrieveById(id);
-			PedagogicalSession pedagogicalSession = pedagogicalSequence.getFirstPedagogicalSession();
-			while (pedagogicalSession != null) {
-				// We delete a session only if it is associated with exactly 1 sequence
-				// (because sequences are running in parallel, we allow the deletion of
-				// a sequence but have to keep the sessions associated with another sequence)
-				if (pedagogicalSession.getPedagogicalSequences().size() == 1) {
-					deletePedagogicalSession(pedagogicalSession.getId());
+			PedagogicalSequence sequence = pedagogicalSequenceDAO.retrieveById(id);
+			Collection<PedagogicalSession> firstPedagogicalSessions = pedagogicalSessionDAO.retrieveFirstSessionsOfSequence(sequence);
+			for (PedagogicalSession session : firstPedagogicalSessions) {
+				while (session != null) {
+					deletePedagogicalSession(session.getId());
+					session = session.getNextPedagogicalSession();
 				}
-				pedagogicalSession = pedagogicalSession.getNextPedagogicalSession();
 			}
-			pedagogicalSequenceDAO.delete(pedagogicalSequence);
+			pedagogicalSequenceDAO.delete(sequence);
 		}
 		return !pedagogicalSequenceDAO.exists(id);
+	}
+
+	@Override
+	public Collection<PedagogicalSession> getFirstPedagogicalSessionsOfSequence(PedagogicalSequence pedagogicalSequence) {
+		return pedagogicalSessionDAO.retrieveFirstSessionsOfSequence(pedagogicalSequence);
 	}
 
 	/* **********
@@ -209,14 +232,21 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 	public Boolean deletePedagogicalSession(Long id) {
 		if (pedagogicalSessionDAO.exists(id)) {
 			PedagogicalSession pedagogicalSession = pedagogicalSessionDAO.retrieveById(id);
-			PedagogicalActivity pedagogicalActivity = pedagogicalSession.getFirstPedagogicalActivity();
-			while (pedagogicalActivity != null) {
-				deletePedagogicalActivity(pedagogicalActivity.getId());
-				pedagogicalActivity = pedagogicalActivity.getNextPedagogicalActivity();
+			Collection<PedagogicalActivity> firstPedagogicalActivities = pedagogicalActivityDAO.retrieveFirstActivitiesOfSession(pedagogicalSession);
+			for (PedagogicalActivity activity : firstPedagogicalActivities) {
+				while (activity != null) {
+					deletePedagogicalActivity(activity.getId());
+					activity = activity.getNextPedagogicalActivity();
+				}
 			}
 			pedagogicalSessionDAO.delete(pedagogicalSession);
 		}
 		return !pedagogicalSessionDAO.exists(id);
+	}
+
+	@Override
+	public Collection<PedagogicalActivity> getFirstPedagogicalActivitiesOfSession(PedagogicalSession pedagogicalSession) {
+		return pedagogicalActivityDAO.retrieveFirstActivitiesOfSession(pedagogicalSession);
 	}
 
 	/* ************
@@ -242,12 +272,134 @@ public class ScenariosServiceImpl implements ScenariosService, Serializable {
 		return pedagogicalActivityDAO.update(pedagogicalActivity);
 	}
 
+	/**
+	 * This method deletes the PedagogicalActivity whose id is given. It takes
+	 * care of maintaining the consistency of the existing chain of activities
+	 * (that uses the PedagogicalUnit.getNext()) of the owning
+	 * PedagogicalSessions and PedagogicalSequences.
+	 * 
+	 * @param id
+	 *            The id of the PedagogicalActivity to delete.
+	 * 
+	 * @return true if the PedagogicalActivity doesn't exist after the call,
+	 *         false otherwise.
+	 */
 	@Override
 	public Boolean deletePedagogicalActivity(Long id) {
 		if (pedagogicalActivityDAO.exists(id)) {
-			pedagogicalActivityDAO.delete(pedagogicalActivityDAO.retrieveById(id));
+			PedagogicalActivity pedagogicalActivityToDelete = pedagogicalActivityDAO.retrieveById(id);
+
+			// We dissociate this activity from its PedagogicalSequence
+			if (pedagogicalActivityToDelete.getPedagogicalSequence() != null) {
+				PedagogicalSequence pedagogicalSequence = pedagogicalActivityToDelete.getPedagogicalSequence();
+				pedagogicalSequence.getPedagogicalActivities().remove(pedagogicalActivityToDelete);
+				pedagogicalActivityToDelete.setPedagogicalSequence(null);
+				pedagogicalSequence = pedagogicalSequenceDAO.update(pedagogicalSequence);
+			}
+
+			// We search this activity in its PedagogicalSession
+			if (pedagogicalActivityToDelete.getPedagogicalSession() != null) {
+				PedagogicalSession pedagogicalSession = pedagogicalActivityToDelete.getPedagogicalSession();
+				pedagogicalSession.getPedagogicalActivities().remove(pedagogicalActivityToDelete);
+				pedagogicalActivityToDelete.setPedagogicalSession(null);
+				pedagogicalSession = pedagogicalSessionDAO.update(pedagogicalSession);
+			}
+
+			// We maintain the chain of Activities
+			if (pedagogicalActivityToDelete.getPreviousPedagogicalActivity()!=null) {
+				PedagogicalActivity previousPedagogicalActivity = pedagogicalActivityToDelete.getPreviousPedagogicalActivity();
+				previousPedagogicalActivity.setNextPedagogicalActivity(pedagogicalActivityToDelete.getNextPedagogicalActivity());
+				previousPedagogicalActivity = pedagogicalActivityDAO.update(previousPedagogicalActivity);
+			}
+			if (pedagogicalActivityToDelete.getNextPedagogicalActivity()!=null) {
+				PedagogicalActivity nextPedagogicalActivity = pedagogicalActivityToDelete.getNextPedagogicalActivity();
+				nextPedagogicalActivity.setPreviousPedagogicalActivity(pedagogicalActivityToDelete.getPreviousPedagogicalActivity());
+				nextPedagogicalActivity = pedagogicalActivityDAO.update(nextPedagogicalActivity);
+			}
+
+			// Now, we can safely delete the activity to delete
+			pedagogicalActivityDAO.delete(pedagogicalActivityToDelete);
 		}
 		return !pedagogicalActivityDAO.exists(id);
+	}
+
+	/**
+	 * This method inserts a PedagogicalActivity (pedagogicalActivityToAdd) in a
+	 * Session (pedagogicalSession). If "previousPedagogicalActivity" is not
+	 * null, then "pedagogicalActivityToAdd" is inserted after
+	 * "previousPedagogicalActivity". If "nextPedagogicalActivity" is not null,
+	 * then "pedagogicalActivityToAdd" is inserted before
+	 * "nextPedagogicalActivity". If both "previous" and "next" are specified,
+	 * then they must be chained together already, otherwise an exception will
+	 * be thrown.
+	 * 
+	 * @param pedagogicalActivityToAdd
+	 *            the PedagogicalActivity to add to the PedagogicalSession
+	 * @param pedagogicalSession
+	 *            the PedagogicalSession that will contain
+	 *            pedagogicalActivityToAdd
+	 * @param previousPedagogicalActivity
+	 *            the PedagogicalActivity preceding pedagogicalActivityToAdd
+	 *            (can be null, but if not null, it must be referenced by
+	 *            "pedagogicalSession" otherwise an exception will be thrown)
+	 * @param nextPedagogicalActivity
+	 *            the PedagogicalActivity that comes after
+	 *            pedagogicalActivityToAdd (can be null, but if not null, it
+	 *            must be referenced by "pedagogicalSession" otherwise an
+	 *            exception will be thrown)
+	 */
+	@Override
+	public Boolean addActivityToSession(PedagogicalActivity pedagogicalActivityToAdd,
+			PedagogicalSession pedagogicalSession, PedagogicalActivity previousPedagogicalActivity,
+			PedagogicalActivity nextPedagogicalActivity) throws ServiceException {
+		// Parameter validation
+		if (previousPedagogicalActivity != null
+				&& !previousPedagogicalActivity.getPedagogicalSession().equals(pedagogicalSession)) {
+			throw new ServiceException("EXCEPTION.PREVIOUS_UNIT_BAD_OWNER.TITLE");
+		}
+		if (nextPedagogicalActivity != null
+				&& !nextPedagogicalActivity.getPedagogicalSession().equals(pedagogicalSession)) {
+			throw new ServiceException("EXCEPTION.NEXT_UNIT_BAD_OWNER.TITLE");
+		}
+		if ((nextPedagogicalActivity != null && nextPedagogicalActivity.getPreviousPedagogicalActivity() != null && !nextPedagogicalActivity
+				.getPreviousPedagogicalActivity().equals(previousPedagogicalActivity))
+				|| (previousPedagogicalActivity != null
+						&& previousPedagogicalActivity.getNextPedagogicalActivity() != null && !previousPedagogicalActivity
+						.getNextPedagogicalActivity().equals(nextPedagogicalActivity))) {
+			throw new ServiceException("EXCEPTION.PREVIOUS_AND_NEXT_UNITS_ARE_NOT_CHAINED.TITLE");
+		}
+		if (pedagogicalSession.getDuration() < pedagogicalActivityToAdd.getDuration()) {
+			throw new ServiceException("EXCEPTION.PEDAGOGICAL_UNIT_DURATION.TITLE");
+		}
+
+		// We set the container
+		pedagogicalActivityToAdd.setPedagogicalSession(pedagogicalSession);
+		pedagogicalSession.getPedagogicalActivities().add(pedagogicalActivityToAdd);
+		pedagogicalSession = pedagogicalSessionDAO.update(pedagogicalSession);
+
+		// We maintain the chain of activities
+		if ((previousPedagogicalActivity == null) && (nextPedagogicalActivity != null)) {
+			pedagogicalActivityToAdd.setNextPedagogicalActivity(nextPedagogicalActivity);
+			nextPedagogicalActivity = pedagogicalActivityDAO.update(nextPedagogicalActivity);
+			pedagogicalActivityToAdd = pedagogicalActivityDAO.update(pedagogicalActivityToAdd);
+		}
+		else if ((previousPedagogicalActivity != null) && (nextPedagogicalActivity == null)) {
+			pedagogicalActivityToAdd.setPreviousPedagogicalActivity(previousPedagogicalActivity);
+			previousPedagogicalActivity = pedagogicalActivityDAO.update(previousPedagogicalActivity);
+			pedagogicalActivityToAdd = pedagogicalActivityDAO.update(pedagogicalActivityToAdd);
+		}
+		else if ((previousPedagogicalActivity != null) && (nextPedagogicalActivity != null)) {
+			pedagogicalActivityToAdd.setNextPedagogicalActivity(nextPedagogicalActivity);
+			pedagogicalActivityToAdd.setPreviousPedagogicalActivity(previousPedagogicalActivity);
+			nextPedagogicalActivity = pedagogicalActivityDAO.update(nextPedagogicalActivity);
+			previousPedagogicalActivity = pedagogicalActivityDAO.update(previousPedagogicalActivity);
+			pedagogicalActivityToAdd = pedagogicalActivityDAO.update(pedagogicalActivityToAdd);
+		}
+
+		return pedagogicalSession.getPedagogicalActivities().contains(pedagogicalActivityToAdd)
+				&& pedagogicalActivityToAdd.getPedagogicalSession().equals(pedagogicalSession)
+				&& (pedagogicalActivityToAdd.getPreviousPedagogicalActivity()==null || pedagogicalActivityToAdd.getPreviousPedagogicalActivity().equals(previousPedagogicalActivity))
+				&& (pedagogicalActivityToAdd.getNextPedagogicalActivity()==null || pedagogicalActivityToAdd.getNextPedagogicalActivity().equals(nextPedagogicalActivity));
 	}
 
 }

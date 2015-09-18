@@ -30,44 +30,120 @@ public interface PedagogicalUnit extends Serializable, Comparable<PedagogicalUni
 
 	Long getId();
 
+	/**
+	 * The name of the PedagogicalUnit. It should be distinctive and short.
+	 * 
+	 * @return the name of the PedagogicalUnit
+	 */
 	String getName();
 
 	void setName(String name);
 
+	/**
+	 * A description of this PedagogicalUnit.
+	 * It can be long, and can contain formatted HTML.
+	 * 
+	 * @return the description of the PedagogicalUnit
+	 */
+	String getDescription();
+
+	void setDescription(String description);
+
+	/**
+	 * The objective (purpose) of this PedagogicalUnit relatively to the
+	 * Scenario. It can be long, and can contain formatted HTML.
+	 * 
+	 * @return the objective
+	 */
 	String getObjective();
 
 	void setObjective(String objective);
 
-	Long getStart();
+	/**
+	 * A text describing what the students need to know or know-how before they can begin this PedagogicalUnit.
+	 * It can be long, and can contain formatted HTML.
+	 * 
+	 * @return the prerequisites
+	 */
+	String getPrerequisites();
 
-	void setStart(Long startTimeStampInSeconds);
+	void setPrerequisites(String prerequisites);
 
-	Long getDuration();
+	/**
+	 * The targeted skills of the students at the end of this PedagogicalUnit,
+	 * what will they be able to understand or to do once they have completed
+	 * this PedagogicalUnit.
+	 * 
+	 * @return a string describing the targeted skills
+	 */
+	String getTargetedSkills();
 
-	void setDuration(Long duration);
+	void setTargetedSkills(String targetedSkills);
 
-	Long getCreationDate();
+	/**
+	 * The URL to the education material/medium of this PedagogicalUnit.
+	 * 
+	 * @return URL to the education material
+	 */
+	String getPedagogicalMaterial();
 
-	void setCreationDate(Long date);
+	void setPedagogicalMaterial(String pedagogicalMaterial);
 
-	Long getModificationDate();
-
-	void setModificationDate(Long date);
-
+	/**
+	 * The TeachingMode of this PedagogicalUnit.
+	 * 
+	 * @return the TeachingMode associated with this PedagogicalUnit
+	 */
 	TeachingMode getTeachingMode();
 
 	void setTeachingMode(TeachingMode teachingMode);
 
+	/**
+	 * The keywords (tags) associated with this PedagogicalUnit.
+	 * 
+	 * @return the Keywords associated with this PedagogicalUnit
+	 */
 	Set<PedagogicalKeyword> getPedagogicalKeywords();
 
 	void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords);
 
-	Set<PedagogicalUnit> getPrequisites();
+	/**
+	 * The start time of this PedagogicalUnit. It is a relative number of
+	 * seconds, relatively to the owning PedagogicalUnit (the Scenario for a
+	 * Sequence, the Sequence for a Session or an Activity, and the Session for
+	 * an Activity).
+	 * 
+	 * @return the start time of the PedagogicalUnit
+	 */
+	Long getStart();
 
-	void setPrerequisites(Set<PedagogicalUnit> prerequisites);
+	void setStart(Long startTimeStampInSeconds);
 
-	Set<PedagogicalUnit> getDependentPedagogicalUnits();
+	/**
+	 * The duration of the PedagogicalUnit. It is a number of seconds.
+	 * 
+	 * @return the duration of the PedagogicalUnit
+	 */
+	Long getDuration();
 
-	void setDependentPedagogicalUnits(Set<PedagogicalUnit> dependentPedagogicalUnits);
+	void setDuration(Long durationInSeconds);
+
+	/**
+	 * The creation date (as a TimeStamp relative to Unix epoch).
+	 * 
+	 * @return the creation date
+	 */
+	Long getCreationDate();
+
+	void setCreationDate(Long date);
+
+	/**
+	 * The last modification date (as a TimeStamp relative to Unix epoch).
+	 * 
+	 * @return the last modification date
+	 */
+	Long getModificationDate();
+
+	void setModificationDate(Long date);
 
 }

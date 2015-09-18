@@ -29,7 +29,7 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalUnit;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 
 /**
@@ -49,9 +49,9 @@ public class PedagogicalKeywordNode extends AbstractNode implements PedagogicalK
 	@Indexed
 	private String name;
 
-	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "hasKeyword", direction = INCOMING)
-	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
-	
+	@RelatedTo(elementClass = PedagogicalUnitNode.class, type = "hasKeyword", direction = INCOMING)
+	private Set<PedagogicalUnit> pedagogicalUnits = new HashSet<PedagogicalUnit>(0);
+
 	public PedagogicalKeywordNode() {
 	}
 
@@ -71,13 +71,13 @@ public class PedagogicalKeywordNode extends AbstractNode implements PedagogicalK
 	}
 
 	@Override
-	public Set<PedagogicalScenario> getPedagogicalScenarios() {
-		return pedagogicalScenarios;
+	public Set<PedagogicalUnit> getPedagogicalUnits() {
+		return pedagogicalUnits;
 	}
 
 	@Override
-	public void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios) {
-		this.pedagogicalScenarios = pedagogicalScenarios;
+	public void setPedagogicalUnits(Set<PedagogicalUnit> pedagogicalUnits) {
+		this.pedagogicalUnits = pedagogicalUnits;
 	}
 
 	@Override

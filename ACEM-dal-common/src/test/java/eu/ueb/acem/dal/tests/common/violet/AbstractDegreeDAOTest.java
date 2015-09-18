@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.tests.common.violet;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -49,17 +51,21 @@ public abstract class AbstractDegreeDAOTest extends TestCase {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(AbstractDegreeDAOTest.class);
 
+	@Inject
+	private DegreeDAO<Long> degreeDAO;
+
+	@Inject
+	private CreditDAO<Long> creditDAO;
+
+	@Inject
+	private CourseDAO<Long> courseDAO;
+
+	@Inject
+	private ClassDAO<Long> classDAO;
+
 	public AbstractDegreeDAOTest() {
 
 	}
-	
-	protected abstract DegreeDAO<Long> getDegreeDAO();
-	
-	protected abstract CreditDAO<Long> getCreditDAO();
-	
-	protected abstract CourseDAO<Long> getCourseDAO();
-	
-	protected abstract ClassDAO<Long> getClassDAO();
 
 	/**
 	 * Create

@@ -34,8 +34,8 @@ public interface PedagogicalKeyword extends Serializable, Comparable<Pedagogical
 
 	void setName(String name);
 
-	Set<PedagogicalScenario> getPedagogicalScenarios();
+	Set<PedagogicalUnit> getPedagogicalUnits();
 
-	void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios);
-
+	void setPedagogicalUnits(Set<PedagogicalUnit> pedagogicalUnits);
+	
 }

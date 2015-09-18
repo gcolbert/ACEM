@@ -18,11 +18,15 @@
  */
 package eu.ueb.acem.domain.beans.bleu.jpa;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
@@ -43,8 +47,11 @@ public class PedagogicalSequenceEntity extends PedagogicalUnitEntity implements 
 	@ManyToOne(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY)
 	private PedagogicalScenario pedagogicalScenario;
 
-	@OneToOne(targetEntity = PedagogicalSessionEntity.class, fetch = FetchType.LAZY)
-	private PedagogicalSession firstPedagogicalSession;
+	@OneToMany(targetEntity = PedagogicalSessionEntity.class, fetch = FetchType.LAZY, mappedBy = "pedagogicalSequence")
+	private Set<PedagogicalSession> pedagogicalSessions = new HashSet<PedagogicalSession>(0);
+
+	@OneToMany(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY, mappedBy = "pedagogicalSequence")
+	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
 	public PedagogicalSequenceEntity() {
 	}
@@ -70,13 +77,33 @@ public class PedagogicalSequenceEntity extends PedagogicalUnitEntity implements 
 	}
 
 	@Override
-	public PedagogicalSession getFirstPedagogicalSession() {
-		return firstPedagogicalSession;
+	public Set<PedagogicalSession> getPedagogicalSessions() {
+		return pedagogicalSessions;
 	}
 
 	@Override
-	public void setFirstPedagogicalSession(PedagogicalSession pedagogicalSession) {
-		this.firstPedagogicalSession = pedagogicalSession;
+	public void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions) {
+		this.pedagogicalSessions = pedagogicalSessions;
+	}
+
+	@Override
+	public Set<PedagogicalActivity> getPedagogicalActivities() {
+		return pedagogicalActivities;
+	}
+
+	@Override
+	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
+		this.pedagogicalActivities = pedagogicalActivities;
+	}
+
+	@Override
+	public PedagogicalSequence getPreviousPedagogicalSequence() {
+		return (PedagogicalSequence)getPrevious();
+	}
+
+	@Override
+	public void setPreviousPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
+		setPrevious(pedagogicalSequence);
 	}
 
 	@Override

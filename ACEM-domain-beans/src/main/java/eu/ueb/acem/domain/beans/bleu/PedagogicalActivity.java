@@ -29,17 +29,48 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
  */
 public interface PedagogicalActivity extends PedagogicalUnit {
 
+	/**
+	 * The instructions given to the students in order to complete the activity.
+	 * 
+	 * @return the instructions given to the students
+	 */
 	String getInstructions();
 
 	void setInstructions(String instructions);
 
+	// ----------- SEQUENCES --------------
+
+//	Set<PedagogicalSequence> getPedagogicalSequences();
+//
+//	void setPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences);
+
+	PedagogicalSequence getPedagogicalSequence();
+
+	void setPedagogicalSequence(PedagogicalSequence pedagogicalSequence);
+
+	// ----------- SESSIONS --------------
+
+//	// TODO : enable if an Activity can be associated with many sessions
+//	Set<PedagogicalSession> getPedagogicalSessions();
+//
+//	void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions);
+
+	// TODO : enable if an Activity can be associated with only one session
 	PedagogicalSession getPedagogicalSession();
 
 	void setPedagogicalSession(PedagogicalSession pedagogicalSession);
 
+	// ----------- RESOURCE CATEGORIES --------------
+
 	Set<ResourceCategory> getResourceCategories();
 
 	void setResourceCategories(Set<ResourceCategory> resourceCategories);
+
+	// ----------- LINKING --------------
+
+	PedagogicalActivity getPreviousPedagogicalActivity();
+
+	void setPreviousPedagogicalActivity(PedagogicalActivity pedagogicalActivity);
 
 	PedagogicalActivity getNextPedagogicalActivity();
 

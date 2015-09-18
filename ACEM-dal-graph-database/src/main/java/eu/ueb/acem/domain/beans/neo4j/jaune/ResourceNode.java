@@ -52,10 +52,16 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 	 */
 	private static final long serialVersionUID = -7922906613944705977L;
 
+	private Long idSource;
+
 	private String iconFileName;
 	
 	private String description;
-	
+
+	private boolean forSession;
+
+	private boolean forActivity;
+
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "categoryContains", direction = INCOMING)
 	private Set<ResourceCategory> categories = new HashSet<ResourceCategory>(0);
 	
@@ -86,6 +92,16 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 	}
 
 	@Override
+	public Long getIdSource() {
+		return idSource;
+	}
+
+	@Override
+	public void setIdSource(Long idSource) {
+		this.idSource = idSource;
+	}
+
+	@Override
 	public String getDescription() {
 		return description;
 	}
@@ -103,6 +119,26 @@ public abstract class ResourceNode extends AbstractNode implements Resource {
 	@Override
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
+	}
+
+	@Override
+	public boolean isForPedagogicalActivity() {
+		return forActivity;
+	}
+
+	@Override
+	public void setForPedagogicalActivity(boolean isForActivity) {
+		this.forActivity = isForActivity;
+	}
+
+	@Override
+	public boolean isForPedagogicalSession() {
+		return forSession;
+	}
+
+	@Override
+	public void setForPedagogicalSession(boolean isForSession) {
+		this.forSession = isForSession;
 	}
 
 	@Override

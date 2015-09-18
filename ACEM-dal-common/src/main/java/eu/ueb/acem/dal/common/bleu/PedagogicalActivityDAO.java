@@ -18,7 +18,10 @@
  */
 package eu.ueb.acem.dal.common.bleu;
 
+import java.util.Collection;
+
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 
 /**
  * @author Grégoire Colbert
@@ -26,5 +29,7 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
  * 
  */
 public interface PedagogicalActivityDAO<ID> extends PedagogicalUnitDAO<ID, PedagogicalActivity> {
+
+	Collection<PedagogicalActivity> retrieveFirstActivitiesOfSession(PedagogicalSession session);
 
 }

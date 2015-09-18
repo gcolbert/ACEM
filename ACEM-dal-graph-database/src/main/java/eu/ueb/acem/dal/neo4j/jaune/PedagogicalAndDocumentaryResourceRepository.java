@@ -32,7 +32,7 @@ import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
  * @since 2013-11-20
  * 
  */
-public interface PedagogicalAndDocumentaryResourcesRepository extends
+public interface PedagogicalAndDocumentaryResourceRepository extends
 		GenericRepository<PedagogicalAndDocumentaryResourceNode> {
 
 	@Override

@@ -18,23 +18,11 @@ package eu.ueb.acem.dal.tests.jpa.gris;
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
 
-import javax.inject.Inject;
-
 import org.springframework.test.context.ActiveProfiles;
 
-import eu.ueb.acem.dal.common.gris.PersonDAO;
 import eu.ueb.acem.dal.tests.common.gris.AbstractPersonDAOTest;
-import eu.ueb.acem.domain.beans.gris.Teacher;
 
 @ActiveProfiles(profiles = "relational-database")
 public class PersonDAOTest extends AbstractPersonDAOTest {
-
-	@Inject
-	private PersonDAO<Long, Teacher> teacherDAO;
-
-	@Override
-	protected PersonDAO<Long, Teacher> getTeacherDAO() {
-		return teacherDAO;
-	}
 
 }

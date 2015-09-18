@@ -16,13 +16,13 @@
  *     You should have received a copy of the GNU General Public License
  *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
  */
-package eu.ueb.acem.dal.tests.jpa.vert;
+package eu.ueb.acem.dal.tests.neo4j.bleu;
 
 import org.springframework.test.context.ActiveProfiles;
 
-import eu.ueb.acem.dal.tests.common.vert.AbstractBuildingDAOTest;
+import eu.ueb.acem.dal.tests.common.bleu.AbstractPedagogicalUnitDAOTest;
 
-@ActiveProfiles(profiles = "relational-database")
-public class BuildingDAOTest extends AbstractBuildingDAOTest {
+@ActiveProfiles(profiles = "graph-database")
+public class PedagogicalUnitDAOTest extends AbstractPedagogicalUnitDAOTest {
 
 }

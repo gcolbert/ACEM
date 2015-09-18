@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.neo4j.bleu;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
@@ -26,6 +30,7 @@ import eu.ueb.acem.dal.common.bleu.PedagogicalActivityDAO;
 import eu.ueb.acem.dal.neo4j.AbstractDAO;
 import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalActivityNode;
 
 /**
@@ -53,7 +58,6 @@ public class PedagogicalActivityDAOImpl extends AbstractDAO<PedagogicalActivity,
 	protected final void initializeCollections(PedagogicalActivity entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getResourceCategories());
-			neo4jOperations.fetch(entity.getPedagogicalSession());
 		}
 	}
 
@@ -65,6 +69,21 @@ public class PedagogicalActivityDAOImpl extends AbstractDAO<PedagogicalActivity,
 	@Override
 	public PedagogicalActivity create(String name, String objective) {
 		return super.create(new PedagogicalActivityNode(name, objective));
+	}
+
+	@Override
+	public Collection<PedagogicalActivity> retrieveFirstActivitiesOfSession(PedagogicalSession session) {
+		Iterable<PedagogicalActivityNode> endResults = repository.findFirstActivitiesOfSession(session.getId());
+		Collection<PedagogicalActivity> collection = new HashSet<PedagogicalActivity>();
+		if (endResults.iterator() != null) {
+			Iterator<PedagogicalActivityNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				PedagogicalActivity entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
 	}
 
 }

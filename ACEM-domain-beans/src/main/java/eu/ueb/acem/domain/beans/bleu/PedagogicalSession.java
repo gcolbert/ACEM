@@ -34,24 +34,24 @@ public interface PedagogicalSession extends PedagogicalUnit {
 
 	void setResourceCategories(Set<ResourceCategory> resourceCategories);
 
-	// a Session can be associated with many sequences in parallel, so we use a Set here.
-	Set<PedagogicalSequence> getPedagogicalSequences();
+	PedagogicalSequence getPedagogicalSequence();
 
-	void setPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences);
+	void setPedagogicalSequence(PedagogicalSequence pedagogicalSequence);
 
-	PedagogicalSession getNextPedagogicalSession();
+	Set<PedagogicalActivity> getPedagogicalActivities();
 
-	void setNextPedagogicalSession(PedagogicalSession pedagogicalSession);
-
-	// TODO : voir comment gérer les requêtes pour la base relationnelle dans PedagogicalScenarioRepository
-//	Set<PedagogicalActivity> getAllPedagogicalActivities();
-
-	PedagogicalActivity getFirstPedagogicalActivity();
-
-	void setFirstPedagogicalActivity(PedagogicalActivity pedagogicalActivity);
+	void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities);
 
 	Class getReferredClass();
 
 	void setReferredClass(Class referredClass);
+
+	PedagogicalSession getPreviousPedagogicalSession();
+
+	void setPreviousPedagogicalSession(PedagogicalSession pedagogicalSession);
+
+	PedagogicalSession getNextPedagogicalSession();
+
+	void setNextPedagogicalSession(PedagogicalSession pedagogicalSession);
 
 }

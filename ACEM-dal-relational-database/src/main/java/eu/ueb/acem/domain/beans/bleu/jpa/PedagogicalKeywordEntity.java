@@ -27,7 +27,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword;
-import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalUnit;
 import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 
 /**
@@ -46,8 +46,8 @@ public class PedagogicalKeywordEntity extends AbstractEntity implements Pedagogi
 
 	private String name;
 
-	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY)
-	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
+	@ManyToMany(targetEntity = PedagogicalUnitEntity.class, fetch = FetchType.LAZY)
+	private Set<PedagogicalUnit> pedagogicalUnits = new HashSet<PedagogicalUnit>(0);
 
 	public PedagogicalKeywordEntity() {
 	}
@@ -68,13 +68,13 @@ public class PedagogicalKeywordEntity extends AbstractEntity implements Pedagogi
 	}
 
 	@Override
-	public Set<PedagogicalScenario> getPedagogicalScenarios() {
-		return pedagogicalScenarios;
+	public Set<PedagogicalUnit> getPedagogicalUnits() {
+		return pedagogicalUnits;
 	}
 
 	@Override
-	public void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios) {
-		this.pedagogicalScenarios = pedagogicalScenarios;
+	public void setPedagogicalUnits(Set<PedagogicalUnit> pedagogicalUnits) {
+		this.pedagogicalUnits = pedagogicalUnits;
 	}
 
 	@Override

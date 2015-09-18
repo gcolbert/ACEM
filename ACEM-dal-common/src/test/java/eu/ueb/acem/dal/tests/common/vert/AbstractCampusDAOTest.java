@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.tests.common.vert;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -47,11 +49,12 @@ public abstract class AbstractCampusDAOTest extends TestCase {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(AbstractCampusDAOTest.class);
 
+	@Inject
+	private CampusDAO<Long> campusDAO;
+
 	public AbstractCampusDAOTest() {
 
 	}
-	
-	protected abstract CampusDAO<Long> getCampusDAO();
 
 	/**
 	 * Create campus
@@ -66,19 +69,19 @@ public abstract class AbstractCampusDAOTest extends TestCase {
 		Double longitude = new Double("-1.636717");
 
 		// We create our object
-		Campus campus = getCampusDAO().create(name, latitude, longitude);
+		Campus campus = campusDAO.create(name, latitude, longitude);
 
 		// We check that "create" is idempotent (multiple calls must not
 		// duplicate data)
-		campus = getCampusDAO().create(campus);
+		campus = campusDAO.create(campus);
 
 		// There must exactly 1 object in the datastore
-		assertEquals("There should be exactly one object in the datastore", new Long(1), getCampusDAO().count());
+		assertEquals("There should be exactly one object in the datastore", new Long(1), campusDAO.count());
 
-		Campus campusReloaded = getCampusDAO().retrieveById(campus.getId(), false);
+		Campus campusReloaded = campusDAO.retrieveById(campus.getId(), false);
 		assertNotNull("The reloaded campus is null", campusReloaded);
 
-		assertEquals("RetrieveByName didn't return the correct number of Campus", new Long(1), new Long(getCampusDAO()
+		assertEquals("RetrieveByName didn't return the correct number of Campus", new Long(1), new Long(campusDAO
 				.retrieveByName(campus.getName()).size()));
 
 		// The name must be good

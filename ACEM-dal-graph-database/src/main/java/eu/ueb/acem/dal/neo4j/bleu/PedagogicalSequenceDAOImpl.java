@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.neo4j.bleu;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
@@ -26,6 +30,7 @@ import eu.ueb.acem.dal.common.TimeTicker;
 import eu.ueb.acem.dal.common.bleu.PedagogicalSequenceDAO;
 import eu.ueb.acem.dal.neo4j.AbstractDAO;
 import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalSequenceNode;
 
@@ -54,7 +59,7 @@ public class PedagogicalSequenceDAOImpl extends AbstractDAO<PedagogicalSequence,
 	protected final void initializeCollections(PedagogicalSequence entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getPedagogicalScenario());
-			neo4jOperations.fetch(entity.getFirstPedagogicalSession());
+			neo4jOperations.fetch(entity.getPedagogicalSessions());
 		}
 	}
 
@@ -82,6 +87,21 @@ public class PedagogicalSequenceDAOImpl extends AbstractDAO<PedagogicalSequence,
 	public PedagogicalSequence update(PedagogicalSequence entity) {
 		entity.setModificationDate(TimeTicker.tick());
 		return super.update(entity);
+	}
+
+	@Override
+	public Collection<PedagogicalSequence> retrieveFirstSequencesOfScenario(PedagogicalScenario pedagogicalScenario) {
+		Iterable<PedagogicalSequenceNode> endResults = repository.findFirstSequencesOfScenario(pedagogicalScenario.getId());
+		Collection<PedagogicalSequence> collection = new HashSet<PedagogicalSequence>();
+		if (endResults.iterator() != null) {
+			Iterator<PedagogicalSequenceNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				PedagogicalSequence entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
 	}
 
 }

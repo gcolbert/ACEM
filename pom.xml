@@ -26,7 +26,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<spring-security.version>4.0.1.RELEASE</spring-security.version>
-		<spring-security-saml2-core>1.0.0.RELEASE</spring-security-saml2-core>
+		<spring-security-saml2-core.version>1.0.1.RELEASE</spring-security-saml2-core.version>
 	</properties>
 	<!-- TODO 2 Configure repo2.maven.org as a repository. -->
 	<repositories>
@@ -78,8 +78,8 @@
 	<modules>
 		<module>ACEM-domain-beans</module>
 		<module>ACEM-dal-common</module>
-		<module>ACEM-dal-relational-database</module>
 		<module>ACEM-dal-graph-database</module>
+		<module>ACEM-dal-relational-database</module>
 		<module>ACEM-domain-services</module>
 		<module>ACEM-web-jsf-servlet</module>
 	</modules>

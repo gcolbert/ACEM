@@ -52,32 +52,32 @@ public abstract class ResourceEntity extends AbstractEntity implements Resource 
 	 */
 	private static final long serialVersionUID = 6066042683646249966L;
 
+	private Long idSource;
+
 	private String iconFileName;
 
 	@Lob
 	private String description;
 
-	//@RelatedTo(elementClass = ResourceCategoryNode.class, type = "categoryContains", direction = INCOMING)
+	private boolean forSession;
+
+	private boolean forActivity;
+
 	@ManyToMany(targetEntity = ResourceCategoryEntity.class, fetch = FetchType.LAZY, mappedBy = "resources")
 	private Set<ResourceCategory> categories = new HashSet<ResourceCategory>(0);
 
-	//@RelatedTo(elementClass = UseModeNode.class, type = "resourceHasUseMode", direction = OUTGOING)
 	@ManyToMany(targetEntity = UseModeEntity.class, fetch = FetchType.LAZY)
 	private Set<UseMode> useModes = new HashSet<UseMode>(0);
 
-	//@RelatedTo(elementClass = OrganisationNode.class, type = "possessesResource", direction = INCOMING)
 	@ManyToOne(targetEntity = OrganisationEntity.class, fetch = FetchType.LAZY)
 	private Organisation organisationPossessingResource;
 
-	//@RelatedTo(elementClass = OrganisationNode.class, type = "supportsResource", direction = INCOMING)
 	@ManyToOne(targetEntity = OrganisationEntity.class, fetch = FetchType.LAZY)
 	private Organisation organisationSupportingResource;
 
-	//@RelatedTo(elementClass = OrganisationNode.class, type = "accessesResource", direction = INCOMING)
 	@ManyToMany(targetEntity = OrganisationEntity.class, fetch = FetchType.LAZY)
 	private Set<Organisation> organisationsHavingAccessToResource = new HashSet<Organisation>(0);
 
-	//@RelatedTo(elementClass = DocumentationNode.class, type = "documents", direction = INCOMING)
 	@ManyToMany(targetEntity = DocumentationEntity.class, fetch = FetchType.LAZY, mappedBy = "resources")
 	private Set<Documentation> documentations = new HashSet<Documentation>(0);
 
@@ -90,6 +90,16 @@ public abstract class ResourceEntity extends AbstractEntity implements Resource 
 	public ResourceEntity(String name) {
 		this();
 		setName(name);
+	}
+
+	@Override
+	public Long getIdSource() {
+		return idSource;
+	}
+
+	@Override
+	public void setIdSource(Long idSource) {
+		this.idSource = idSource;
 	}
 
 	@Override
@@ -110,6 +120,26 @@ public abstract class ResourceEntity extends AbstractEntity implements Resource 
 	@Override
 	public void setIconFileName(String iconFileName) {
 		this.iconFileName = iconFileName;
+	}
+
+	@Override
+	public boolean isForPedagogicalActivity() {
+		return forActivity;
+	}
+
+	@Override
+	public void setForPedagogicalActivity(boolean isForActivity) {
+		this.forActivity = isForActivity;
+	}
+
+	@Override
+	public boolean isForPedagogicalSession() {
+		return forSession;
+	}
+
+	@Override
+	public void setForPedagogicalSession(boolean isForSession) {
+		this.forSession = isForSession;
 	}
 
 	@Override

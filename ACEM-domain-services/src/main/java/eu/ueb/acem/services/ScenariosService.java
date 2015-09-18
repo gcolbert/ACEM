@@ -49,6 +49,7 @@ public interface ScenariosService extends Serializable {
 
 	Boolean dissociateAuthorOrDeleteScenarioIfLastAuthor(Long idScenario, Long idAuthor);
 
+
 	Long countPedagogicalSequences();
 
 	PedagogicalSequence createPedagogicalSequence(String name);
@@ -58,7 +59,10 @@ public interface ScenariosService extends Serializable {
 	PedagogicalSequence updatePedagogicalSequence(PedagogicalSequence pedagogicalSequence);
 
 	Boolean deletePedagogicalSequence(Long id);
-	
+
+	Collection<PedagogicalSequence> getFirstPedagogicalSequencesOfScenario(PedagogicalScenario pedagogicalScenario);
+
+
 	Long countPedagogicalSessions();
 
 	PedagogicalSession createPedagogicalSession(String name);
@@ -69,6 +73,9 @@ public interface ScenariosService extends Serializable {
 
 	Boolean deletePedagogicalSession(Long id);
 
+	Collection<PedagogicalSession> getFirstPedagogicalSessionsOfSequence(PedagogicalSequence pedagogicalSequence);
+
+
 	Long countPedagogicalActivities();
 
 	PedagogicalActivity createPedagogicalActivity(String name);
@@ -78,5 +85,10 @@ public interface ScenariosService extends Serializable {
 	PedagogicalActivity updatePedagogicalActivity(PedagogicalActivity pedagogicalActivity);
 
 	Boolean deletePedagogicalActivity(Long id);
+
+	Collection<PedagogicalActivity> getFirstPedagogicalActivitiesOfSession(PedagogicalSession pedagogicalSession);
+
+	Boolean addActivityToSession(PedagogicalActivity pedagogicalActivityToAdd, PedagogicalSession pedagogicalSession,
+			PedagogicalActivity previousPedagogicalActivity, PedagogicalActivity nextPedagogicalActivity);
 
 }

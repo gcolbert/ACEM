@@ -35,4 +35,8 @@ public interface PedagogicalSequenceRepository extends GenericRepository<Pedagog
 	@Query("SELECT seq FROM PedagogicalSequence seq WHERE seq.name = :name")
 	Iterable<PedagogicalSequenceEntity> findByName(@Param("name") String name);
 
+//	@Query("SELECT seq FROM PedagogicalSequence seq, PedagogicalScenario sce WHERE sce.id = :scenarioId AND seq MEMBER OF sce.pedagogicalSequences AND seq NOT IN ( SELECT seq2 FROM PedagogicalSequence seq2, PedagogicalSequence seq3 WHERE seq3.nextPedagogicalUnit = seq2 AND seq3 MEMBER OF sce.pedagogicalSequences )")
+	@Query("SELECT seq FROM PedagogicalSequence seq, PedagogicalScenario sce WHERE sce.id = :scenarioId AND seq MEMBER OF sce.pedagogicalSequences AND seq NOT IN ( SELECT seq2 FROM PedagogicalSequence seq2, PedagogicalSequence seq3 WHERE seq3.nextPedagogicalUnit = seq2 AND seq3 MEMBER OF sce.pedagogicalSequences )")
+	Iterable<PedagogicalSequenceEntity> findFirstSequencesOfScenario(@Param("scenarioId") Long id);
+
 }

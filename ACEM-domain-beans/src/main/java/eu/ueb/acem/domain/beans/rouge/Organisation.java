@@ -34,6 +34,14 @@ public interface Organisation extends Serializable, Comparable<Organisation> {
 
 	Long getId();
 
+	/**
+	 * The id of the original object in the information system, if any.
+	 * @return the id of the original object, or null.
+	 */
+	Long getIdSource();
+
+	void setIdSource(Long idSource);
+
 	String getName();
 
 	void setName(String name);
@@ -41,6 +49,10 @@ public interface Organisation extends Serializable, Comparable<Organisation> {
 	String getShortname();
 
 	void setShortname(String shortname);
+
+	String getDescription();
+
+	void setDescription(String description);
 
 	String getIconFileName();
 

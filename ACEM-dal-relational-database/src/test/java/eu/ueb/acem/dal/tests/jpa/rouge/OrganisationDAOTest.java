@@ -18,71 +18,11 @@
  */
 package eu.ueb.acem.dal.tests.jpa.rouge;
 
-import javax.inject.Inject;
-
 import org.springframework.test.context.ActiveProfiles;
 
-import eu.ueb.acem.dal.common.gris.PersonDAO;
-import eu.ueb.acem.dal.common.jaune.ResourceDAO;
-import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
 import eu.ueb.acem.dal.tests.common.rouge.AbstractOrganisationDAOTest;
-import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.jaune.Equipment;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
-import eu.ueb.acem.domain.beans.rouge.Community;
-import eu.ueb.acem.domain.beans.rouge.Institution;
-import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 @ActiveProfiles(profiles = "relational-database")
 public class OrganisationDAOTest extends AbstractOrganisationDAOTest {
 
-	@Inject
-	private OrganisationDAO<Long, Community> communityDAO;
-
-	@Inject
-	private OrganisationDAO<Long, Institution> institutionDAO;
-
-	@Inject
-	private OrganisationDAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
-
-	@Inject
-	private OrganisationDAO<Long, TeachingDepartment> teachingDepartmentDAO;
-
-	@Inject
-	private PersonDAO<Long, Teacher> teacherDAO;
-
-	@Inject
-	private ResourceDAO<Long, Equipment> equipmentDAO;
-
-	@Override
-	protected OrganisationDAO<Long, Community> getCommunityDAO() {
-		return communityDAO;
-	}
-
-	@Override
-	protected OrganisationDAO<Long, Institution> getInstitutionDAO() {
-		return institutionDAO;
-	}
-
-	@Override
-	protected OrganisationDAO<Long, AdministrativeDepartment> getAdministrativeDepartmentDAO() {
-		return administrativeDepartmentDAO;
-	}
-
-	@Override
-	protected OrganisationDAO<Long, TeachingDepartment> getTeachingDepartmentDAO() {
-		return teachingDepartmentDAO;
-	}
-
-	@Override
-	protected PersonDAO<Long, Teacher> getTeacherDAO() {
-		return teacherDAO;
-	}
-
-	@Override
-	protected ResourceDAO<Long, Equipment> getEquipmentDAO() {
-		return equipmentDAO;
-	}
-
-	
 }

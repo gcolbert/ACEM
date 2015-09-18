@@ -48,7 +48,11 @@ public abstract class OrganisationEntity extends AbstractEntity implements Organ
 	 */
 	private static final long serialVersionUID = -2531021468394665325L;
 
+	private Long idSource;
+
 	private String shortname;
+
+	private String description;
 
 	private String iconFileName;
 
@@ -73,6 +77,16 @@ public abstract class OrganisationEntity extends AbstractEntity implements Organ
 	}
 
 	@Override
+	public Long getIdSource() {
+		return idSource;
+	}
+
+	@Override
+	public void setIdSource(Long idSource) {
+		this.idSource = idSource;
+	}
+
+	@Override
 	public String getShortname() {
 		return shortname;
 	}
@@ -80,6 +94,16 @@ public abstract class OrganisationEntity extends AbstractEntity implements Organ
 	@Override
 	public void setShortname(String shortname) {
 		this.shortname = shortname;
+	}
+
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

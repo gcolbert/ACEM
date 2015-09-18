@@ -18,6 +18,9 @@
  */
 package eu.ueb.acem.dal.common.bleu;
 
+import java.util.Collection;
+
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 
 /**
@@ -26,5 +29,7 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
  * 
  */
 public interface PedagogicalSessionDAO<ID> extends PedagogicalUnitDAO<ID, PedagogicalSession> {
+
+	Collection<PedagogicalSession> retrieveFirstSessionsOfSequence(PedagogicalSequence sequence);
 
 }

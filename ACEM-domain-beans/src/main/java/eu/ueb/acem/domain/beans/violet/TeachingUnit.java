@@ -36,7 +36,7 @@ public interface TeachingUnit extends Serializable, Comparable<TeachingUnit> {
 
 	/**
 	 * The id of the original object in the information system, if any.
-	 * @return 
+	 * @return the id of the original object, or null.
 	 */
 	Long getIdSource();
 

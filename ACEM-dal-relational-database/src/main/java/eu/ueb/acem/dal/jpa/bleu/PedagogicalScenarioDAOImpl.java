@@ -59,7 +59,7 @@ public class PedagogicalScenarioDAOImpl extends AbstractDAO<PedagogicalScenario,
 	@Override
 	protected final void initializeCollections(PedagogicalScenario entity) {
 		if (entity != null) {
-			entity.getFirstPedagogicalSequences().size();
+			entity.getPedagogicalSequences().size();
 			entity.getAuthors().size();
 			entity.getTeachingUnits().size();
 			entity.getPedagogicalKeywords().size();

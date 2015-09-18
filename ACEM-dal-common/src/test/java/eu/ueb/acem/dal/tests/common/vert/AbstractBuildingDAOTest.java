@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.dal.tests.common.vert;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -47,11 +49,12 @@ public abstract class AbstractBuildingDAOTest extends TestCase {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(AbstractBuildingDAOTest.class);
 
+	@Inject
+	private BuildingDAO<Long> buildingDAO;
+
 	public AbstractBuildingDAOTest() {
 
 	}
-	
-	protected abstract BuildingDAO<Long> getBuildingDAO();
 
 	/**
 	 * Create building
@@ -66,19 +69,19 @@ public abstract class AbstractBuildingDAOTest extends TestCase {
 		Double longitude = new Double("-1.641221");
 
 		// We create our object
-		Building building = getBuildingDAO().create(name, latitude, longitude);
+		Building building = buildingDAO.create(name, latitude, longitude);
 
 		// We check that "create" is idempotent (multiple calls must not
 		// duplicate data)
-		building = getBuildingDAO().create(building);
+		building = buildingDAO.create(building);
 
 		// There must exactly 1 object in the datastore
-		assertEquals("There should be exactly one object in the datastore", new Long(1), getBuildingDAO().count());
+		assertEquals("There should be exactly one object in the datastore", new Long(1), buildingDAO.count());
 
-		Building buildingReloaded = getBuildingDAO().retrieveById(building.getId(), false);
+		Building buildingReloaded = buildingDAO.retrieveById(building.getId(), false);
 		assertNotNull("The reloaded building is null", buildingReloaded);
 
-		assertEquals("RetrieveByName didn't return the correct number of Building", new Long(1), new Long(getBuildingDAO()
+		assertEquals("RetrieveByName didn't return the correct number of Building", new Long(1), new Long(buildingDAO
 				.retrieveByName(building.getName()).size()));
 
 		// The name must be good

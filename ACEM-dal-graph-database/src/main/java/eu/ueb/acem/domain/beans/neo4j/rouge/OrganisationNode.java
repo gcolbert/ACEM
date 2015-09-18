@@ -51,6 +51,10 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	 */
 	private static final long serialVersionUID = -4961037643458063514L;
 
+	private Long idSource;
+
+	private String description;
+
 	private String shortname;
 
 	private String iconFileName;
@@ -73,6 +77,26 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	private Set<PhysicalSpace> occupiedPhysicalSpaces = new HashSet<PhysicalSpace>(0);
 
 	public OrganisationNode() {
+	}
+
+	@Override
+	public Long getIdSource() {
+		return idSource;
+	}
+
+	@Override
+	public void setIdSource(Long idSource) {
+		this.idSource = idSource;
+	}
+
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

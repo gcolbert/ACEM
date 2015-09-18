@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.dal.neo4j.bleu;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
@@ -26,6 +30,7 @@ import eu.ueb.acem.dal.common.TimeTicker;
 import eu.ueb.acem.dal.common.bleu.PedagogicalSessionDAO;
 import eu.ueb.acem.dal.neo4j.AbstractDAO;
 import eu.ueb.acem.dal.neo4j.GenericRepository;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalSessionNode;
 
@@ -53,8 +58,7 @@ public class PedagogicalSessionDAOImpl extends AbstractDAO<PedagogicalSession, P
 	@Override
 	protected final void initializeCollections(PedagogicalSession entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getPedagogicalSequences());
-			neo4jOperations.fetch(entity.getFirstPedagogicalActivity());
+			neo4jOperations.fetch(entity.getPedagogicalActivities());
 		}
 	}
 
@@ -82,6 +86,21 @@ public class PedagogicalSessionDAOImpl extends AbstractDAO<PedagogicalSession, P
 	public PedagogicalSession update(PedagogicalSession entity) {
 		entity.setModificationDate(TimeTicker.tick());
 		return super.update(entity);
+	}
+
+	@Override
+	public Collection<PedagogicalSession> retrieveFirstSessionsOfSequence(PedagogicalSequence pedagogicalSequence) {
+		Iterable<PedagogicalSessionNode> endResults = repository.findFirstSessionsOfSequence(pedagogicalSequence.getId());
+		Collection<PedagogicalSession> collection = new HashSet<PedagogicalSession>();
+		if (endResults.iterator() != null) {
+			Iterator<PedagogicalSessionNode> iterator = endResults.iterator();
+			while (iterator.hasNext()) {
+				PedagogicalSession entity = iterator.next();
+				initializeCollections(entity);
+				collection.add(entity);
+			}
+		}
+		return collection;
 	}
 
 }

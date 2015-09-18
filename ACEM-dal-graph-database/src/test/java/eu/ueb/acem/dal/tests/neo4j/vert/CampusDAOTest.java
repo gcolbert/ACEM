@@ -18,22 +18,11 @@
  */
 package eu.ueb.acem.dal.tests.neo4j.vert;
 
-import javax.inject.Inject;
-
 import org.springframework.test.context.ActiveProfiles;
 
-import eu.ueb.acem.dal.common.vert.CampusDAO;
 import eu.ueb.acem.dal.tests.common.vert.AbstractCampusDAOTest;
 
 @ActiveProfiles(profiles = "graph-database")
 public class CampusDAOTest extends AbstractCampusDAOTest {
-
-	@Inject
-	private CampusDAO<Long> campusDAO;
-
-	@Override
-	protected CampusDAO<Long> getCampusDAO() {
-		return campusDAO;
-	}
 	
 }

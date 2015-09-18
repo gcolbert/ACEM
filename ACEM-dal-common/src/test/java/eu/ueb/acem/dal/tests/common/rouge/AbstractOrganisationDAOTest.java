@@ -20,6 +20,8 @@ package eu.ueb.acem.dal.tests.common.rouge;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -56,22 +58,28 @@ public abstract class AbstractOrganisationDAOTest extends TestCase {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(AbstractOrganisationDAOTest.class);
 
+	@Inject
+	private OrganisationDAO<Long, Community> communityDAO;
+
+	@Inject
+	private OrganisationDAO<Long, Institution> institutionDAO;
+
+	@Inject
+	private OrganisationDAO<Long, AdministrativeDepartment> administrativeDepartmentDAO;
+
+	@Inject
+	private OrganisationDAO<Long, TeachingDepartment> teachingDepartmentDAO;
+
+	@Inject
+	private PersonDAO<Long, Teacher> teacherDAO;
+
+	@Inject
+	private ResourceDAO<Long, Equipment> equipmentDAO;
+
 	public AbstractOrganisationDAOTest() {
 
 	}
 
-	protected abstract OrganisationDAO<Long, Community> getCommunityDAO();
-
-	protected abstract OrganisationDAO<Long, Institution> getInstitutionDAO();
-
-	protected abstract OrganisationDAO<Long, AdministrativeDepartment> getAdministrativeDepartmentDAO();
-
-	protected abstract OrganisationDAO<Long, TeachingDepartment> getTeachingDepartmentDAO();
-
-	protected abstract PersonDAO<Long, Teacher> getTeacherDAO();
-	
-	protected abstract ResourceDAO<Long, Equipment> getEquipmentDAO();
-	
 	/**
 	 * Create
 	 */
@@ -83,19 +91,19 @@ public abstract class AbstractOrganisationDAOTest extends TestCase {
 		String name = "University of California, Los Angeles";
 		String shortname = "UCLA";
 		// We create our object
-		Community community = getCommunityDAO().create(name, shortname, null);
+		Community community = communityDAO.create(name, shortname, null);
 
 		// We check that "create" is idempotent (multiple calls must not
 		// duplicate data)
-		community = getCommunityDAO().create(community);
+		community = communityDAO.create(community);
 
 		// There must exactly 1 object in the datastore
-		assertEquals("There should be exactly one object in the datastore", new Long(1), getCommunityDAO().count());
+		assertEquals("There should be exactly one object in the datastore", new Long(1), communityDAO.count());
 
-		Community communityReloaded = getCommunityDAO().retrieveById(community.getId());
+		Community communityReloaded = communityDAO.retrieveById(community.getId());
 		assertNotNull("The reloaded community is null", communityReloaded);
 
-		assertEquals("RetrieveByName didn't return the correct number of Community", new Long(1),  new Long(getCommunityDAO()
+		assertEquals("RetrieveByName didn't return the correct number of Community", new Long(1),  new Long(communityDAO
 				.retrieveByName(community.getName()).size()));
 
 		// The name and shortname must be good
@@ -110,18 +118,18 @@ public abstract class AbstractOrganisationDAOTest extends TestCase {
 	@Transactional
 	@Rollback(true)
 	public final void t02_TestAssociateInstitutionWithAdministrativeDepartment() {
-		assertEquals(new Long(0), getInstitutionDAO().count());
+		assertEquals(new Long(0), institutionDAO.count());
 
-		Institution institution = getInstitutionDAO().create("University of California, Los Angeles", "UCLA", null);
+		Institution institution = institutionDAO.create("University of California, Los Angeles", "UCLA", null);
 
-		AdministrativeDepartment administrativeDepartment = getAdministrativeDepartmentDAO().create("Department of Health Policy and Management", "HPM", null);
+		AdministrativeDepartment administrativeDepartment = administrativeDepartmentDAO.create("Department of Health Policy and Management", "HPM", null);
 
 		administrativeDepartment.getInstitutions().add(institution);
 		institution.getAdministrativeDepartments().add(administrativeDepartment);
-		getAdministrativeDepartmentDAO().update(administrativeDepartment);
+		administrativeDepartmentDAO.update(administrativeDepartment);
 
 		// The administrative department must be associated with the institution
-		Institution institution2 = getInstitutionDAO().retrieveById(institution.getId(), true);
+		Institution institution2 = institutionDAO.retrieveById(institution.getId(), true);
 		assertTrue("The administrative department is not associated with the institution", institution2
 				.getAdministrativeDepartments().contains(administrativeDepartment));
 	}
@@ -134,23 +142,23 @@ public abstract class AbstractOrganisationDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t03_TestExists() {
 		// We create a new institution
-		Institution institution = getInstitutionDAO().create("Université de Rennes 1", "UR1", null);
+		Institution institution = institutionDAO.create("Université de Rennes 1", "UR1", null);
 
 		// We create a new community
-		Community community = getCommunityDAO().create("Université européenne de Bretagne", "UEB", null);
+		Community community = communityDAO.create("Université européenne de Bretagne", "UEB", null);
 
 		// There must be exactly 1 object in the community repository
-		assertEquals("There are more than one object in the community repository", new Long(1), getCommunityDAO().count());
+		assertEquals("There are more than one object in the community repository", new Long(1), communityDAO.count());
 
 		// There must be exactly 1 object in the institution repository
 		assertEquals("There are more than one object in the institution repository", new Long(1),
-				getInstitutionDAO().count());
+				institutionDAO.count());
 
 		assertFalse("The institution was found through the Community repository",
-				getCommunityDAO().exists(institution.getId()));
+				communityDAO.exists(institution.getId()));
 
 		assertTrue("The community was not found through the Community repository",
-				getCommunityDAO().exists(community.getId()));
+				communityDAO.exists(community.getId()));
 	}
 
 	/**
@@ -165,60 +173,60 @@ public abstract class AbstractOrganisationDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t04_TestSupportServiceRetrievalWithImplicitAccessThroughOrganisationsAssociations() {
 
-		Community community = getCommunityDAO().create("Comunity", "COM", null);
+		Community community = communityDAO.create("Comunity", "COM", null);
 
 		// ***********************************************
 		// We create a math professor
 		// ***********************************************
-		Teacher mathTeacher = getTeacherDAO().create("Prof. Euler", "euler", "euler");
+		Teacher mathTeacher = teacherDAO.create("Prof. Euler", "euler", "euler");
 
-		Institution mathUniversity = getInstitutionDAO().create("University of Math", "UM", null);
+		Institution mathUniversity = institutionDAO.create("University of Math", "UM", null);
 
-		TeachingDepartment mathDepartment = getTeachingDepartmentDAO().create("Math", "MD", null);
+		TeachingDepartment mathDepartment = teachingDepartmentDAO.create("Math", "MD", null);
 
-		Equipment equipment = getEquipmentDAO().create("A brand new interactive whiteboard", null);
+		Equipment equipment = equipmentDAO.create("A brand new interactive whiteboard", null);
 
 		// We associate the math teacher and the math department
 		mathTeacher.getWorksForOrganisations().add(mathDepartment);
-		mathTeacher = getTeacherDAO().update(mathTeacher);
+		mathTeacher = teacherDAO.update(mathTeacher);
 
 		// We associate the math department with the university
 		mathDepartment.getInstitutions().add(mathUniversity);
 		mathUniversity.getTeachingDepartments().add(mathDepartment);
-		mathDepartment = getTeachingDepartmentDAO().update(mathDepartment);
-		mathUniversity =  getInstitutionDAO().update(mathUniversity);
+		mathDepartment = teachingDepartmentDAO.update(mathDepartment);
+		mathUniversity =  institutionDAO.update(mathUniversity);
 
 		// We associate the university with the community
 		mathUniversity.getCommunities().add(community);
 		community.getInstitutions().add(mathUniversity);
-		mathUniversity = getInstitutionDAO().update(mathUniversity);
-		community = getCommunityDAO().update(community);
+		mathUniversity = institutionDAO.update(mathUniversity);
+		community = communityDAO.update(community);
 
 		// We associate the community and the resource
 		community.getPossessedResources().add(equipment);
 		equipment.setOrganisationPossessingResource(community);
-		community = getCommunityDAO().update(community);
-		equipment = getEquipmentDAO().update(equipment);
+		community = communityDAO.update(community);
+		equipment = equipmentDAO.update(equipment);
 
 		// ***********************************************
 		// We create a support service for the equipment
 		// ***********************************************
-		AdministrativeDepartment supportService = getAdministrativeDepartmentDAO().create("Support service", "S", null);
+		AdministrativeDepartment supportService = administrativeDepartmentDAO.create("Support service", "S", null);
 
 		// We associate the equipment and the support service
 		supportService.getSupportedResources().add(equipment);
 		equipment.setOrganisationSupportingResource(supportService);
-		supportService = getAdministrativeDepartmentDAO().update(supportService);
-		equipment = getEquipmentDAO().update(equipment);
+		supportService = administrativeDepartmentDAO.update(supportService);
+		equipment = equipmentDAO.update(equipment);
 
-		Collection<AdministrativeDepartment> supportServicesOfMathTeacher = getAdministrativeDepartmentDAO().retrieveSupportServicesForPerson(mathTeacher);
+		Collection<AdministrativeDepartment> supportServicesOfMathTeacher = administrativeDepartmentDAO.retrieveSupportServicesForPerson(mathTeacher);
 		assertEquals(
-				"The math teacher working for the math department should see exactly one support service from the getAdministrativeDepartmentDAO().",
+				"The math teacher working for the math department should see exactly one support service from the administrativeDepartmentDAO.",
 				1,
 				supportServicesOfMathTeacher.size());
 		assertTrue(
 				"The math teacher working for the math department should see the support service for the equipment.",
 				supportServicesOfMathTeacher.contains(supportService));
 	}
-	
+
 }

@@ -52,7 +52,7 @@ public class PedagogicalKeywordDAOImpl extends AbstractDAO<PedagogicalKeyword, P
 	@Override
 	protected final void initializeCollections(PedagogicalKeyword entity) {
 		if (entity != null) {
-			neo4jOperations.fetch(entity.getPedagogicalScenarios());
+			neo4jOperations.fetch(entity.getPedagogicalUnits());
 		}
 	}
 

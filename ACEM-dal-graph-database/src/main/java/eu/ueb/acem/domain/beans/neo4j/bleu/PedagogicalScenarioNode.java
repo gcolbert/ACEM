@@ -60,7 +60,7 @@ public class PedagogicalScenarioNode extends PedagogicalUnitNode implements Peda
 	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
 	@RelatedTo(elementClass = PedagogicalSequenceNode.class, type = "sequenceForScenario", direction = INCOMING)
-	private Set<PedagogicalSequence> firstPedagogicalSequences = new HashSet<PedagogicalSequence>(0);
+	private Set<PedagogicalSequence> pedagogicalSequences = new HashSet<PedagogicalSequence>(0);
 
 	@RelatedTo(elementClass = TeacherNode.class, type = "authorsScenario", direction = INCOMING)
 	private Set<Teacher> authors = new HashSet<Teacher>(0);
@@ -120,16 +120,6 @@ public class PedagogicalScenarioNode extends PedagogicalUnitNode implements Peda
 	}
 
 	@Override
-	public Set<PedagogicalSequence> getFirstPedagogicalSequences() {
-		return firstPedagogicalSequences;
-	}
-
-	@Override
-	public void setFirstPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences) {
-		this.firstPedagogicalSequences = pedagogicalSequences;
-	}
-
-	@Override
 	public Set<TeachingUnit> getTeachingUnits() {
 		return teachingUnits;
 	}
@@ -137,6 +127,26 @@ public class PedagogicalScenarioNode extends PedagogicalUnitNode implements Peda
 	@Override
 	public void setTeachingUnits(Set<TeachingUnit> teachingUnits) {
 		this.teachingUnits = teachingUnits;
+	}
+
+	@Override
+	public Set<PedagogicalSequence> getPedagogicalSequences() {
+		return pedagogicalSequences;
+	}
+
+	@Override
+	public void setPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences) {
+		this.pedagogicalSequences = pedagogicalSequences;
+	}
+
+	@Override
+	public PedagogicalScenario getPreviousPedagogicalScenario() {
+		return (PedagogicalScenario)getPrevious();
+	}
+
+	@Override
+	public void setPreviousPedagogicalScenario(PedagogicalScenario pedagogicalScenario) {
+		setPrevious(pedagogicalScenario);
 	}
 
 	@Override

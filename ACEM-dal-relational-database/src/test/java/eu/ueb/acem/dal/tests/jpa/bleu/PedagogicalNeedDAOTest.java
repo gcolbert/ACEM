@@ -18,22 +18,11 @@
  */
 package eu.ueb.acem.dal.tests.jpa.bleu;
 
-import javax.inject.Inject;
-
 import org.springframework.test.context.ActiveProfiles;
 
-import eu.ueb.acem.dal.common.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.dal.tests.common.bleu.AbstractPedagogicalNeedDAOTest;
 
 @ActiveProfiles(profiles = "relational-database")
 public class PedagogicalNeedDAOTest extends AbstractPedagogicalNeedDAOTest {
-
-	@Inject
-	private PedagogicalNeedDAO<Long> pedagogicalNeedDAO;
-	
-	@Override
-	protected PedagogicalNeedDAO<Long> getPedagogicalNeedDAO() {
-		return pedagogicalNeedDAO;
-	}
 
 }

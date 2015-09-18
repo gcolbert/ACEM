@@ -18,13 +18,15 @@
  */
 package eu.ueb.acem.domain.beans.neo4j.bleu;
 
-import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
+import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
@@ -40,6 +42,8 @@ import eu.ueb.acem.domain.beans.violet.Class;
  * @since 2015-07-13
  * 
  */
+@NodeEntity
+@TypeAlias("PedagogicalSession")
 public class PedagogicalSessionNode extends PedagogicalUnitNode implements PedagogicalSession {
 
 	/**
@@ -51,13 +55,13 @@ public class PedagogicalSessionNode extends PedagogicalUnitNode implements Pedag
 	private String name;
 
 	@RelatedTo(elementClass = PedagogicalSequenceNode.class, type = "sessionForSequence", direction = OUTGOING)
-	private Set<PedagogicalSequence> pedagogicalSequences = new HashSet<PedagogicalSequence>(0);
+	private PedagogicalSequence pedagogicalSequence;
 
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "sessionRequiringResourceFromCategory", direction = OUTGOING)
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
 	@RelatedTo(elementClass = PedagogicalActivityNode.class, type = "activityForSession", direction = INCOMING)
-	private PedagogicalActivity firstPedagogicalActivity;
+	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
 	@RelatedTo(elementClass = ClassNode.class, type = "refersToClass", direction = OUTGOING)
 	private Class referredClass;
@@ -96,33 +100,23 @@ public class PedagogicalSessionNode extends PedagogicalUnitNode implements Pedag
 	}
 
 	@Override
-	public Set<PedagogicalSequence> getPedagogicalSequences() {
-		return pedagogicalSequences;
+	public PedagogicalSequence getPedagogicalSequence() {
+		return pedagogicalSequence;
 	}
 
 	@Override
-	public void setPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences) {
-		this.pedagogicalSequences = pedagogicalSequences;
+	public void setPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
+		this.pedagogicalSequence = pedagogicalSequence;
 	}
 
 	@Override
-	public PedagogicalActivity getFirstPedagogicalActivity() {
-		return firstPedagogicalActivity;
+	public Set<PedagogicalActivity> getPedagogicalActivities() {
+		return pedagogicalActivities;
 	}
 
 	@Override
-	public void setFirstPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		this.firstPedagogicalActivity = pedagogicalActivity;
-	}
-
-	@Override
-	public PedagogicalSession getNextPedagogicalSession() {
-		return (PedagogicalSession)getNext();
-	}
-
-	@Override
-	public void setNextPedagogicalSession(PedagogicalSession pedagogicalSession) {
-		setNext(pedagogicalSession);
+	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
+		this.pedagogicalActivities = pedagogicalActivities;
 	}
 
 	@Override
@@ -133,6 +127,26 @@ public class PedagogicalSessionNode extends PedagogicalUnitNode implements Pedag
 	@Override
 	public void setReferredClass(Class referredClass) {
 		this.referredClass = referredClass;
+	}
+
+	@Override
+	public PedagogicalSession getPreviousPedagogicalSession() {
+		return (PedagogicalSession)getPrevious();
+	}
+
+	@Override
+	public void setPreviousPedagogicalSession(PedagogicalSession pedagogicalSession) {
+		setPrevious(pedagogicalSession);
+	}
+	
+	@Override
+	public PedagogicalSession getNextPedagogicalSession() {
+		return (PedagogicalSession)getNext();
+	}
+
+	@Override
+	public void setNextPedagogicalSession(PedagogicalSession pedagogicalSession) {
+		setNext(pedagogicalSession);
 	}
 
 }

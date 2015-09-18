@@ -23,7 +23,6 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
@@ -49,8 +48,19 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 	private String name;
 
 	@Lob
+	private String description;
+
+	@Lob
 	private String objective;
 
+	@Lob
+	private String prerequisites;
+
+	@Lob
+	private String targetedSkills;
+	
+	private String pedagogicalMaterial;
+	
 	private Long start;
 
 	private Long duration;
@@ -65,16 +75,12 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 	@ManyToMany(targetEntity = PedagogicalKeywordEntity.class, fetch = FetchType.LAZY)
 	private Set<PedagogicalKeyword> pedagogicalKeywords = new HashSet<PedagogicalKeyword>(0);
 
-	@ManyToMany(targetEntity = PedagogicalUnitEntity.class, fetch = FetchType.LAZY, mappedBy = "parentsPrerequisites")
-	private Set<PedagogicalUnit> childrenPrerequisites = new HashSet<PedagogicalUnit>(0);
-
-	@ManyToMany(targetEntity = PedagogicalUnitEntity.class, fetch = FetchType.LAZY)
-	@JoinTable(name="pedagogicalUnits_prerequisites")
-	private Set<PedagogicalUnit> parentsPrerequisites = new HashSet<PedagogicalUnit>(0);
-
 	@OneToOne(targetEntity = PedagogicalUnitEntity.class, fetch = FetchType.LAZY)
 	private PedagogicalUnit nextPedagogicalUnit;
-	
+
+	@OneToOne(targetEntity = PedagogicalUnitEntity.class, fetch = FetchType.LAZY, mappedBy = "nextPedagogicalUnit")
+	private PedagogicalUnit previousPedagogicalUnit;
+
 	public PedagogicalUnitEntity() {
 	}
 
@@ -87,7 +93,17 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	@Override
 	public String getObjective() {
 		return objective;
@@ -96,6 +112,56 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 	@Override
 	public void setObjective(String objective) {
 		this.objective = objective;
+	}
+
+	@Override
+	public String getPrerequisites() {
+		return prerequisites;
+	}
+
+	@Override
+	public void setPrerequisites(String prerequisites) {
+		this.prerequisites = prerequisites;
+	}
+
+	@Override
+	public String getTargetedSkills() {
+		return targetedSkills;
+	}
+
+	@Override
+	public void setTargetedSkills(String targetedSkills) {
+		this.targetedSkills = targetedSkills;
+	}
+	
+	@Override
+	public String getPedagogicalMaterial() {
+		return pedagogicalMaterial;
+	}
+
+	@Override
+	public void setPedagogicalMaterial(String pedagogicalMaterial) {
+		this.pedagogicalMaterial = pedagogicalMaterial;
+	}
+
+	@Override
+	public TeachingMode getTeachingMode() {
+		return teachingMode;
+	}
+
+	@Override
+	public void setTeachingMode(TeachingMode teachingMode) {
+		this.teachingMode = teachingMode;
+	}
+
+	@Override
+	public Set<PedagogicalKeyword> getPedagogicalKeywords() {
+		return pedagogicalKeywords;
+	}
+
+	@Override
+	public void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords) {
+		this.pedagogicalKeywords = pedagogicalKeywords;
 	}
 
 	@Override
@@ -138,24 +204,17 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 		this.modificationDate = date;
 	}
 
-	@Override
-	public TeachingMode getTeachingMode() {
-		return teachingMode;
+	protected PedagogicalUnit getPrevious() {
+		return previousPedagogicalUnit;
 	}
 
-	@Override
-	public void setTeachingMode(TeachingMode teachingMode) {
-		this.teachingMode = teachingMode;
-	}
-
-	@Override
-	public Set<PedagogicalKeyword> getPedagogicalKeywords() {
-		return pedagogicalKeywords;
-	}
-
-	@Override
-	public void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords) {
-		this.pedagogicalKeywords = pedagogicalKeywords;
+	protected void setPrevious(PedagogicalUnit pedagogicalUnit) {
+		this.previousPedagogicalUnit = pedagogicalUnit;
+		if ((((PedagogicalUnitEntity) pedagogicalUnit).getNext() == null)
+				|| ((((PedagogicalUnitEntity) pedagogicalUnit).getNext() != null) && (!((PedagogicalUnitEntity) pedagogicalUnit)
+						.getNext().equals(this)))) {
+			((PedagogicalUnitEntity) pedagogicalUnit).setNext(this);
+		}
 	}
 
 	protected PedagogicalUnit getNext() {
@@ -164,26 +223,11 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 
 	protected void setNext(PedagogicalUnit pedagogicalUnit) {
 		this.nextPedagogicalUnit = pedagogicalUnit;
-	}
-
-	@Override
-	public Set<PedagogicalUnit> getPrequisites() {
-		return parentsPrerequisites;
-	}
-
-	@Override
-	public void setPrerequisites(Set<PedagogicalUnit> parentsPrerequisites) {
-		this.parentsPrerequisites = parentsPrerequisites;
-	}
-
-	@Override
-	public Set<PedagogicalUnit> getDependentPedagogicalUnits() {
-		return childrenPrerequisites;
-	}
-
-	@Override
-	public void setDependentPedagogicalUnits(Set<PedagogicalUnit> childrenPrerequisites) {
-		this.childrenPrerequisites = childrenPrerequisites;
+		if ((((PedagogicalUnitEntity) pedagogicalUnit).getPrevious() == null)
+				|| ((((PedagogicalUnitEntity) pedagogicalUnit).getPrevious() != null) && (!((PedagogicalUnitEntity) pedagogicalUnit)
+						.getPrevious().equals(this)))) {
+			((PedagogicalUnitEntity) pedagogicalUnit).setPrevious(this);
+		}
 	}
 
 	@Override

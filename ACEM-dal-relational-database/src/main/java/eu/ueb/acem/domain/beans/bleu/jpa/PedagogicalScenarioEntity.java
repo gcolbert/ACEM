@@ -61,7 +61,7 @@ public class PedagogicalScenarioEntity extends PedagogicalUnitEntity implements 
 	private Set<Teacher> authors = new HashSet<Teacher>(0);
 
 	@OneToMany(targetEntity = PedagogicalSequenceEntity.class, mappedBy = "pedagogicalScenario")
-	private Set<PedagogicalSequence> firstPedagogicalSequences;
+	private Set<PedagogicalSequence> pedagogicalSequences = new HashSet<PedagogicalSequence>(0);
 
 	public PedagogicalScenarioEntity() {
 		published = false;
@@ -118,19 +118,24 @@ public class PedagogicalScenarioEntity extends PedagogicalUnitEntity implements 
 	}
 
 	@Override
-	public Set<PedagogicalSequence> getFirstPedagogicalSequences() {
-		return firstPedagogicalSequences;
+	public Set<PedagogicalSequence> getPedagogicalSequences() {
+		return pedagogicalSequences;
 	}
 
 	@Override
-	public void setFirstPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences) {
-		this.firstPedagogicalSequences = pedagogicalSequences;
+	public void setPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences) {
+		this.pedagogicalSequences = pedagogicalSequences;
 	}
 
-//	@Override
-//	public Set<PedagogicalSequence> getAllPedagogicalSequences() {
-//		return allPedagogicalSequences;
-//	}
+	@Override
+	public PedagogicalScenario getPreviousPedagogicalScenario() {
+		return (PedagogicalScenario)getPrevious();
+	}
+
+	@Override
+	public void setPreviousPedagogicalScenario(PedagogicalScenario pedagogicalScenario) {
+		setPrevious(pedagogicalScenario);
+	}
 
 	@Override
 	public PedagogicalScenario getNextPedagogicalScenario() {

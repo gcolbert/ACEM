@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
-import eu.ueb.acem.web.viewbeans.AbstractViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
 /**
@@ -31,18 +30,13 @@ import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
  * @since 2014-02-25
  * 
  */
-public class PedagogicalActivityViewBean extends AbstractViewBean implements Serializable,
-		Comparable<PedagogicalActivityViewBean> {
+public class PedagogicalActivityViewBean extends AbstractPedagogicalUnitViewBean<PedagogicalActivity> implements Serializable {
 
 	private static final long serialVersionUID = 8190209757734229700L;
 
 	private PedagogicalActivity domainBean;
 
-	private Long positionInScenario;
-	private String name;
-	private String objective;
 	private String instructions;
-	private String duration;
 	private List<ToolCategoryViewBean> toolCategoryViewBeans;
 
 	public PedagogicalActivityViewBean() {
@@ -59,46 +53,8 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 	}
 
 	public void setDomainBean(PedagogicalActivity domainBean) {
-		this.domainBean = domainBean;
-		setId(domainBean.getId());
-		setPositionInScenario(domainBean.getPositionInScenario());
-		setName(domainBean.getName());
-		setObjective(domainBean.getObjective());
+		super.setDomainBean(domainBean);
 		setInstructions(domainBean.getInstructions());
-		setDuration(domainBean.getDuration());
-	}
-
-	public Long getPositionInScenario() {
-		return positionInScenario;
-	}
-
-	public void setPositionInScenario(Long positionInScenario) {
-		this.positionInScenario = positionInScenario;
-		if (domainBean != null) {
-			domainBean.setPositionInScenario(positionInScenario);
-		}
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-		if (domainBean != null) {
-			domainBean.setName(name);
-		}
-	}
-
-	public String getObjective() {
-		return objective;
-	}
-
-	public void setObjective(String objective) {
-		this.objective = objective;
-		if (domainBean != null) {
-			domainBean.setObjective(objective);
-		}
 	}
 
 	public String getInstructions() {
@@ -112,28 +68,8 @@ public class PedagogicalActivityViewBean extends AbstractViewBean implements Ser
 		}
 	}
 
-	public String getDuration() {
-		return duration;
-	}
-
-	public void setDuration(String duration) {
-		this.duration = duration;
-		if (domainBean != null) {
-			domainBean.setDuration(duration);
-		}
-	}
-
 	public List<ToolCategoryViewBean> getToolCategoryViewBeans() {
 		return toolCategoryViewBeans;
-	}
-
-	public void setToolCategoryViewBeans(List<ToolCategoryViewBean> toolCategoryViewBeans) {
-		this.toolCategoryViewBeans = toolCategoryViewBeans;
-	}
-
-	@Override
-	public int compareTo(PedagogicalActivityViewBean o) {
-		return getDomainBean().compareTo(o.getDomainBean());
 	}
 
 }

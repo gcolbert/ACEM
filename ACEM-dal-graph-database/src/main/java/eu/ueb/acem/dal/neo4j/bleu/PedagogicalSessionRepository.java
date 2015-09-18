@@ -39,4 +39,7 @@ public interface PedagogicalSessionRepository extends GenericRepository<Pedagogi
 	@Query(value = "MATCH (n:PedagogicalSession) WHERE n.name=({name}) RETURN n")
 	Iterable<PedagogicalSessionNode> findByName(@Param("name") String name);
 
+	@Query(value = "MATCH (ses:PedagogicalSession)-[:sessionForSequence]->(seq:PedagogicalSequence) WHERE id(seq)=({sequenceId}) AND not (seq)<-[:sessionForSequence]-()-[:next]->(ses) RETURN ses")
+	Iterable<PedagogicalSessionNode> findFirstSessionsOfSequence(@Param("sequenceId") Long sequenceId);
+
 }

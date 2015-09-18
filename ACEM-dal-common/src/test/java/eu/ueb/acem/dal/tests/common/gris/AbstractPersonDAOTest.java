@@ -18,10 +18,10 @@
  */
 package eu.ueb.acem.dal.tests.common.gris;
 
+import javax.inject.Inject;
+
 import junit.framework.TestCase;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -50,18 +50,11 @@ public abstract class AbstractPersonDAOTest extends TestCase {
 	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(AbstractPersonDAOTest.class);
 
+	@Inject
+	private PersonDAO<Long, Teacher> teacherDAO;
+	
 	public AbstractPersonDAOTest() {
 
-	}
-
-	protected abstract PersonDAO<Long, Teacher> getTeacherDAO();
-	
-	@Before
-	public void before() {
-	}
-
-	@After
-	public void after() {
 	}
 
 	/**
@@ -72,14 +65,14 @@ public abstract class AbstractPersonDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t01_TestCreateTeacher() {
 		// We create our object
-		Teacher teacher1 = getTeacherDAO().create("Pr. John Doe", "jdoe", "pass");
+		Teacher teacher1 = teacherDAO.create("Pr. John Doe", "jdoe", "pass");
 
 		// We check that "create" is idempotent (multiple calls must not
 		// duplicate data)
-		teacher1 = getTeacherDAO().create(teacher1);
+		teacher1 = teacherDAO.create(teacher1);
 
 		// There must exactly 1 object in the datastore
-		assertEquals("There are more than one object in the datastore", new Long(1), getTeacherDAO().count());
+		assertEquals("There are more than one object in the datastore", new Long(1), teacherDAO.count());
 	}
 
 	/**
@@ -90,15 +83,15 @@ public abstract class AbstractPersonDAOTest extends TestCase {
 	@Rollback(true)
 	public final void t02_TestRetrieveByLogin() {
 		// We create our object
-		Teacher teacher1 = getTeacherDAO().create("Grégoire Colbert", "gcolbert", "pass");
+		Teacher teacher1 = teacherDAO.create("Grégoire Colbert", "gcolbert", "pass");
 		// We create a new object in the datastore
 		teacher1.setAdministrator(true);
 
 		// We save our object
-		teacher1 = getTeacherDAO().update(teacher1);
+		teacher1 = teacherDAO.update(teacher1);
 
 		// We don't need to initialize the associated collections for this test
-		Person person1bis = getTeacherDAO().retrieveByLogin(teacher1.getLogin(), false);
+		Person person1bis = teacherDAO.retrieveByLogin(teacher1.getLogin(), false);
 
 		assertNotNull(person1bis);
 		assertEquals(person1bis, teacher1);

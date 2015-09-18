@@ -21,9 +21,15 @@ package eu.ueb.acem.domain.beans.neo4j.bleu;
 import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.Indexed;
+import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
@@ -31,8 +37,9 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 /**
  * @author Grégoire Colbert
  * @since 2015-07-13
- * 
  */
+@NodeEntity
+@TypeAlias("PedagogicalSequence")
 public class PedagogicalSequenceNode extends PedagogicalUnitNode implements PedagogicalSequence {
 
 	/**
@@ -43,11 +50,11 @@ public class PedagogicalSequenceNode extends PedagogicalUnitNode implements Peda
 	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "sequenceForScenario", direction = OUTGOING)
 	private PedagogicalScenario pedagogicalScenario;
 
-	@RelatedTo(elementClass = PedagogicalSequenceNode.class, type = "nextPedagogicalSequence", direction = OUTGOING)
-	private PedagogicalSequence nextPedagogicalSequence;
-
 	@RelatedTo(elementClass = PedagogicalSessionNode.class, type = "sessionForSequence", direction = INCOMING)
-	private PedagogicalSession firstPedagogicalSession;
+	private Set<PedagogicalSession> pedagogicalSessions = new HashSet<PedagogicalSession>(0);
+
+	@RelatedTo(elementClass = PedagogicalActivityNode.class, type = "activityForSequence", direction = INCOMING)
+	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
 	@Indexed
 	private String name;
@@ -86,23 +93,43 @@ public class PedagogicalSequenceNode extends PedagogicalUnitNode implements Peda
 	}
 
 	@Override
-	public PedagogicalSession getFirstPedagogicalSession() {
-		return firstPedagogicalSession;
+	public Set<PedagogicalActivity> getPedagogicalActivities() {
+		return pedagogicalActivities;
 	}
 
 	@Override
-	public void setFirstPedagogicalSession(PedagogicalSession pedagogicalSession) {
-		this.firstPedagogicalSession = pedagogicalSession;
+	public void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities) {
+		this.pedagogicalActivities = pedagogicalActivities;
+	}
+
+	@Override
+	public Set<PedagogicalSession> getPedagogicalSessions() {
+		return pedagogicalSessions;
+	}
+
+	@Override
+	public void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions) {
+		this.pedagogicalSessions = pedagogicalSessions;
+	}
+
+	@Override
+	public PedagogicalSequence getPreviousPedagogicalSequence() {
+		return (PedagogicalSequence)getPrevious();
+	}
+
+	@Override
+	public void setPreviousPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
+		setPrevious(pedagogicalSequence);
 	}
 
 	@Override
 	public PedagogicalSequence getNextPedagogicalSequence() {
-		return nextPedagogicalSequence;
+		return (PedagogicalSequence)getNext();
 	}
 
 	@Override
 	public void setNextPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
-		nextPedagogicalSequence = pedagogicalSequence;
+		setNext(pedagogicalSequence);
 	}
 
 }

@@ -50,7 +50,7 @@ public class PedagogicalKeywordDAOImpl extends AbstractDAO<PedagogicalKeyword, P
 
 	@Override
 	protected void initializeCollections(PedagogicalKeyword entity) {
-		entity.getPedagogicalScenarios().size();
+		entity.getPedagogicalUnits().size();
 	}
 
 	@Override
