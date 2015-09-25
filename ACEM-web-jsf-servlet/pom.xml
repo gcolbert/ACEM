@@ -257,6 +257,18 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+				<!-- Filtering keystore files breaks them -->
+				<excludes>
+					<exclude>**/*.jks</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<!-- Filtering keystore files breaks them -->
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.jks</include>
+				</includes>
 			</resource>
 		</resources>
 		<plugins>

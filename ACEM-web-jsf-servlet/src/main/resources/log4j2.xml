@@ -6,6 +6,9 @@
 		</Console>
 	</Appenders>
 	<Loggers>
+		<Logger name="org.opensaml" level="info" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
 		<Logger name="org.springframework" level="warn" additivity="false">
 			<AppenderRef ref="Console" />
 		</Logger>

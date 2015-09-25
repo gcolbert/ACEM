@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns:b="http://www.springframework.org/schema/beans"
+	xmlns="http://www.springframework.org/schema/security" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Enable auto-wiring -->
+	<context:annotation-config/>
+
+	<!-- Scan for auto-wiring classes in spring saml packages -->
+	<context:component-scan base-package="org.springframework.security.saml" />
+
+	<b:bean id="metadata"
+		class="org.springframework.security.saml.metadata.CachingMetadataManager">
+		<b:constructor-arg>
+			<b:list>
+				<b:bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
+					<b:constructor-arg>
+						<b:value type="java.lang.String">https://federation.renater.fr/renater/renater-metadata.xml</b:value>
+					</b:constructor-arg>
+					<b:constructor-arg>
+						<b:value type="int">5000</b:value>
+					</b:constructor-arg>
+					<b:property name="parserPool" ref="parserPool"/>
+				</b:bean>
+			</b:list>
+		</b:constructor-arg>
+	</b:bean>
+
+	<b:bean id="metadataGeneratorFilter"
+		class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
+		<b:constructor-arg>
+			<b:bean
+				class="org.springframework.security.saml.metadata.MetadataGenerator">
+				<b:property name="extendedMetadata">
+					<b:bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
+						<b:property name="idpDiscoveryEnabled" value="true" />
+					</b:bean>
+				</b:property>
+				<b:property name="includeDiscoveryExtension" value="true" />
+			</b:bean>
+		</b:constructor-arg>
+	</b:bean>
+
+	<b:bean id="keyManager"
+		class="org.springframework.security.saml.key.EmptyKeyManager" />
+
+    <!-- XML parser pool needed for OpenSAML parsing -->
+    <b:bean id="parserPool" class="org.opensaml.xml.parse.StaticBasicParserPool" init-method="initialize">
+        <b:property name="builderFeatures">
+            <b:map>
+                <b:entry key="http://apache.org/xml/features/dom/defer-node-expansion" value="false"/>
+            </b:map>
+        </b:property>
+    </b:bean>
+ 
+	<http entry-point-ref="samlEntryPoint">
+		<custom-filter before="FIRST" ref="metadataGeneratorFilter" />
+		<custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter" />
+	</http>
+
+</b:beans>

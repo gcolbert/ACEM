@@ -17,4 +17,9 @@
 		<import resource="security/applicationContext-security-cas.xml" />
 	</beans>
 
+	<!-- Spring Security configuration for SAML authentication -->
+	<beans profile="auth-saml">
+		<import resource="security/applicationContext-security-saml-sample.xml" />
+	</beans>
+
 </beans>
