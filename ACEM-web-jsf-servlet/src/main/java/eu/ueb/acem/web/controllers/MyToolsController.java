@@ -647,7 +647,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 * This method prepares objectEditedResource to be a copy of an existing
 	 * ResourceViewBean.
 	 * 
-	 * @param resourceViewBean
+	 * @param resourceViewBean A resourceViewBean to copy and prepare for modification
 	 */
 	public void prepareResourceModification(ResourceViewBean resourceViewBean) {
 		// To make sure we work on a copy, we load the domain bean
@@ -874,11 +874,10 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	/**
-	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
-	 *      java.lang.String)
+	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.nio.file.Path)
 	 */
 	@Override
-	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath, String originalFileName) {
+	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath) {
 		// Remove previously uploaded file if it exists
 		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 
@@ -918,7 +917,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	/**
 	 * Called when the user closes the dialog containing an image uploader.
-	 * @param event
+	 * @param event A Primefaces CloseEvent
 	 */
 	public void onCloseDialogWithUploadedFile(CloseEvent event) {
 		// Remove previously uploaded file if it exists

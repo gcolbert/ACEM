@@ -230,12 +230,23 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	}
 
 	/**
-	 * This method tries to disable the organisationViewBeans for the "works for organisation" relationships.
+	 * This method tries to determine if the given organisationViewBean should
+	 * be disabled or enabled in the picklist of organisations. It should be
+	 * disabled if, based on the "works for organisation" relationships and
+	 * organisation associations, enabling it would introduce redundant
+	 * information.
 	 * 
-	 * Example : if the person works for UNIV, and UNIV is associated with COMMUNITY, then when we say
-	 * the person works for UNIV, we should disable COMMUNITY (because he implicitly can access resources of
-	 * COMMUNITY through the UNIV->COMMUNITY association). And so there is no need to state that he works
-	 * for COMMUNITY too.
+	 * Example : if a person works for UNIV, and UNIV is associated with
+	 * COMMUNITY, then when we say the person works for UNIV, we should disable
+	 * COMMUNITY (because he implicitly can access resources of COMMUNITY
+	 * through the UNIV-COMMUNITY association). And so there is no need to state
+	 * that he works for COMMUNITY too.
+	 * 
+	 * @param organisationViewBean
+	 *            A organisationViewBean to test for redundancy about the
+	 *            "worksForOrganisation" relationship
+	 * @return true if the organisationViewBean should be disabled, false if it
+	 *         should be enabled
 	 */
 	public Boolean isDisabledInPickList(OrganisationViewBean organisationViewBean) {
 		if (selectedUserViewBean.getOrganisationViewBeans().contains(organisationViewBean)) {
@@ -250,7 +261,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 		}
 		return false;
 	}
-	
+
 	/************************************************* LDAP *******************************************/
 	/**
 	 * True if a user is selected in the list of LDAP users
@@ -358,13 +369,11 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	}
 
 	/**
-	 * Get the selected LDAP user for toolbar update
+	 * Sets the selected LDAP user for toolbar update
 	 * 
-	 * @param event
+	 * @param event A Primefaces SelectEvent
 	 */
 	public void onRowSelectLdapUser(SelectEvent event) {
 		this.selectedLdapUser = (LdapUser) event.getObject();
 	}
-	
-	
 }

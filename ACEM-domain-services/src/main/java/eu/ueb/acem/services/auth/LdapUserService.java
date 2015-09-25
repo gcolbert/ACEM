@@ -43,7 +43,7 @@ public class LdapUserService implements Serializable {
 	 * 
 	 * @param search
 	 *            text(wildcards will be inserted)
-	 * @return
+	 * @return List of LdapUsers matching the search criterion
 	 */
 	public List<LdapUser> findAllByCnAndUid(String search) {
 		// Mapping
@@ -63,7 +63,7 @@ public class LdapUserService implements Serializable {
 
 	/**
 	 * Given by Ldap.xml
-	 * @param ldapTemplate
+	 * @param ldapTemplate A LdapTemplate
 	 */
 	public void setLdapTemplate(LdapTemplate ldapTemplate) {
 		this.ldapTemplate = ldapTemplate;
@@ -71,7 +71,7 @@ public class LdapUserService implements Serializable {
 
 	/**
 	 * Given by Ldap.xml
-	 * @param uidAttribute
+	 * @param uidAttribute A user id
 	 */
 	public void setUidAttribute(String uidAttribute) {
 		this.uidAttribute = uidAttribute;
@@ -79,7 +79,7 @@ public class LdapUserService implements Serializable {
 
 	/**
 	 * Given by Ldap.xml
-	 * @param nameAttribute
+	 * @param nameAttribute A name
 	 */
 	public void setNameAttribute(String nameAttribute) {
 		this.nameAttribute = nameAttribute;
@@ -87,7 +87,7 @@ public class LdapUserService implements Serializable {
 
 	/**
 	 * Given by Ldap.xml
-	 * @param givenNameAttribute
+	 * @param givenNameAttribute A given name
 	 */
 	public void setGivenNameAttribute(String givenNameAttribute) {
 		this.givenNameAttribute = givenNameAttribute;
@@ -95,7 +95,7 @@ public class LdapUserService implements Serializable {
 
 	/**
 	 * Given by Ldap.xml
-	 * @param emailAttribute
+	 * @param emailAttribute An email address
 	 */
 	public void setEmailAttribute(String emailAttribute) {
 		this.emailAttribute = emailAttribute;
@@ -103,7 +103,7 @@ public class LdapUserService implements Serializable {
 
 	/**
 	 * Given by Ldap.xml
-	 * @param searchAttribute
+	 * @param searchAttribute A search criterion
 	 */
 	public void setSearchAttribute(String searchAttribute) {
 		this.searchAttribute = searchAttribute;
@@ -111,7 +111,7 @@ public class LdapUserService implements Serializable {
 
 	/**
 	 * Given by Ldap.xml
-	 * @param objectclass
+	 * @param objectclass A objectclass
 	 */
 	public void setObjectclass(String objectclass) {
 		this.objectclass = objectclass;

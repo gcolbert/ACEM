@@ -30,7 +30,7 @@ import eu.ueb.acem.services.auth.LdapUserService;
 public interface DomainService extends Serializable {
 
 	/**
-	 * @param uid
+	 * @param uid A user id
 	 * @return a user.
 	 */
 	Person getUser(String uid);

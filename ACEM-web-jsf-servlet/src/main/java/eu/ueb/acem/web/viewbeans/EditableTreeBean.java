@@ -167,6 +167,9 @@ public class EditableTreeBean implements Serializable {
 	 * this instance of EditableTreeBean so that only the given leaves and their
 	 * parents remain. All nodes which are not in the given set, and which are
 	 * not parents of the given nodes, will be deleted.
+	 * 
+	 * @param idsOfLeavesToKeep
+	 *            The set of node identifiers to keep
 	 */
 	public void retainLeavesAndParents(Set<Long> idsOfLeavesToKeep) {
 		Set<TreeNode> nodesToKeep = new HashSet<TreeNode>();

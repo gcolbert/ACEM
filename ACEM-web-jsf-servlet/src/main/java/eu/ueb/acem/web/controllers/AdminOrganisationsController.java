@@ -97,7 +97,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	private PickListBean pickListBean;
 
 	/**
-	 * Dialog for upload of one file
+	 * Dialog for uploading a file
 	 */
 	private CommonUploadOneDialog commonUploadOneDialog;
 
@@ -308,7 +308,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	/**
 	 * Called when we change the tab
 	 * 
-	 * @param event
+	 * @param event A Primefaces TabChangeEvent
 	 */
 	public void onOrganisationsTabViewTabChange(TabChangeEvent event) {
 		/*
@@ -837,11 +837,10 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	}
 
 	/**
-	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
-	 *      java.lang.String)
+	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.nio.file.Path)
 	 */
 	@Override
-	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath, String originalFileName) {
+	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath) {
 		// Remove previously uploaded file if it exists
 		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 
@@ -875,7 +874,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	/**
 	 * Called when the user closes the dialog containing an image uploader.
 	 * 
-	 * @param event
+	 * @param event A Primefaces CloseEvent
 	 */
 	public void onCloseDialogWithUploadedFile(CloseEvent event) {
 		// Remove previously uploaded file if it exists

@@ -30,24 +30,27 @@ import eu.ueb.acem.services.DomainService;
  *
  */
 public interface CommonUploadOneDialogInterface {
-	
+
 	/**
-	 * Return the commonDialog Bean
+	 * Returns the commonDialog bean
+	 * 
 	 * @return the bean
 	 */
 	public CommonUploadOneDialog getCommonUploadOneDialog();
 
 	/**
-	 * Set the selected object from the Dialog to the caller 
-	 * If null there is an error on temporary file writing
+	 * Sets the selected object from the dialog.
+	 * 
 	 * @param temporaryFilePath
-	 * @param originalFileName
+	 *            The temporary path where the uploaded file is written at the
+	 *            end of the upload process
 	 */
-	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath, String originalFileName);
-	
+	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath);
+
 	/**
 	 * Get DomainService from caller
-	 * @return
+	 * 
+	 * @return The caller's instance of DomainService
 	 */
 	public DomainService getDomainService();
 

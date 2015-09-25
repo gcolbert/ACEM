@@ -86,6 +86,8 @@ public class PedagogicalAdviceTreeGenerator {
 	 *            right-click on an existing node. That way, the user will be
 	 *            able to start creating nodes even if there is no node returned
 	 *            from the service.
+	 * @return An instance of EditableTreeBean containing the pedagogical needs
+	 *         and answers
 	 */
 	public EditableTreeBean createNeedAndAnswersTree(String singleVisibleTreeRootLabel) {
 		EditableTreeBean treeBean = new EditableTreeBean();

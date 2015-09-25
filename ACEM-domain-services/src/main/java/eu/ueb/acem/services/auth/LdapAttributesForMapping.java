@@ -31,11 +31,12 @@ public class LdapAttributesForMapping implements AttributesMapper<LdapUser>, Ser
 	private String emailAttribute;
 
 	/**
-	 * Constructor with attributes names in Ldap
-	 * @param uidAttribute
-	 * @param nameAttribute
-	 * @param givenNameAttribute
-	 * @param emailAttribute
+	 * Constructor with attribute names in Ldap
+	 * 
+	 * @param uidAttribute The UID attribute
+	 * @param nameAttribute The name attribute
+	 * @param givenNameAttribute The givenName attribute
+	 * @param emailAttribute The email attribute
 	 */
 	public LdapAttributesForMapping(String uidAttribute, String nameAttribute,
 			String givenNameAttribute, String emailAttribute) {

@@ -32,7 +32,12 @@ public class ServiceException extends RuntimeException {
 	 * Bean constructor.
 	 * 
 	 * @param message
+	 *            should be a key of a i18n message property (we don't deal with
+	 *            internationalization of error strings in the service layer, so
+	 *            the ServiceException only contains a key, not the
+	 *            user-friendly message)
 	 * @param cause
+	 *            A cause
 	 */
 	protected ServiceException(final String message, final Exception cause) {
 		super(message, cause);
@@ -55,6 +60,7 @@ public class ServiceException extends RuntimeException {
 	 * Bean constructor.
 	 * 
 	 * @param cause
+	 *            A cause
 	 */
 	public ServiceException(final Exception cause) {
 		super(cause);

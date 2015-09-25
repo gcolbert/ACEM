@@ -38,8 +38,7 @@ import eu.ueb.acem.services.util.file.FileUtil;
 /**
  * A visual bean for the dialog Upload.
  * 
- * @author rlorthio
- *
+ * @author gcolbert
  */
 public class CommonUploadOneDialog implements Serializable {
 
@@ -78,7 +77,10 @@ public class CommonUploadOneDialog implements Serializable {
 
 	/**
 	 * Bean constructor.
+	 * 
 	 * @param caller
+	 *            The controller that will control the opening and closing of
+	 *            the upload dialog.
 	 */
 	public CommonUploadOneDialog(CommonUploadOneDialogInterface caller) {
 		super();
@@ -105,22 +107,26 @@ public class CommonUploadOneDialog implements Serializable {
 	 */
 
 	/**
-	 * Get the file Uploaded
+	 * Accesses the uploaded file on the local storage and sets the caller's
+	 * setSelectedFromCommonUploadOneDialog method.
 	 * 
 	 * @param event
+	 *            A Primefaces FileUploadEvent
 	 */
 	public void handleFileUpload(FileUploadEvent event) {
 		fileUploaded = (UploadedFile) event.getFile();
-		if (caller != null){
-			Path temporaryFilePath = FileSystems.getDefault().getPath(FileUtil.getNormalizedFilePath(caller.getDomainService().getTemporaryDirectory() + File.separator
-					+ fileUploaded.getFileName() + RandomUtils.nextInt(100000)));
+		if (caller != null) {
+			Path temporaryFilePath = FileSystems.getDefault().getPath(
+					FileUtil.getNormalizedFilePath(caller.getDomainService().getTemporaryDirectory() + File.separator
+							+ fileUploaded.getFileName() + RandomUtils.nextInt(100000)));
 			try {
 				FileUtil.copyInputStream(temporaryFilePath.toString(), fileUploaded.getInputstream());
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				logger.error(e.getMessage());
 				temporaryFilePath = null;
 			}
-			caller.setSelectedFromCommonUploadOneDialog(temporaryFilePath, fileUploaded.getFileName());
+			caller.setSelectedFromCommonUploadOneDialog(temporaryFilePath);
 		}
 	}
 

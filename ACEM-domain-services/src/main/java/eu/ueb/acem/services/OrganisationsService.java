@@ -35,22 +35,100 @@ import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
  */
 public interface OrganisationsService extends Serializable {
 
+	/**
+	 * Counts the number of persistent Community objects
+	 * 
+	 * @return number of communities
+	 */
 	Long countCommunities();
 
+	/**
+	 * Counts the number of persistent Institution objects
+	 * 
+	 * @return number of institutions
+	 */
 	Long countInstitutions();
 
+	/**
+	 * Counts the number of persistent AdministrativeDepartment objects
+	 * 
+	 * @return number of administrative departments
+	 */
 	Long countAdministrativeDepartments();
 
+	/**
+	 * Counts the number of persistent TeachingDepartment objects
+	 * 
+	 * @return number of teaching departments
+	 */
 	Long countTeachingDepartments();
 
+	/**
+	 * Creates a new persistent Community object.
+	 * 
+	 * @param name
+	 *            A name describing the Community (e.g.
+	 *            "Community of Somewhere")
+	 * @param shortname
+	 *            A shortname for the Community (e.g. "CoS")
+	 * @param iconFileName
+	 *            (optional) Icon path (relative to the images.path property)
+	 * @return The newly created Community, or null.
+	 */
 	Community createCommunity(String name, String shortname, String iconFileName);
 
+	/**
+	 * Creates a new persistent Institution object.
+	 * 
+	 * @param name
+	 *            A name describing the Institution (e.g.
+	 *            "Institution of Somewhere")
+	 * @param shortname
+	 *            A shortname for the Institution (e.g. "IoS")
+	 * @param iconFileName
+	 *            (optional) Icon path (relative to the images.path property)
+	 * @return The newly created Institution, or null.
+	 */
 	Institution createInstitution(String name, String shortname, String iconFileName);
 
+	/**
+	 * Creates a new persistent AdministrativeDepartment object.
+	 * 
+	 * @param name
+	 *            A name describing the AdministrativeDepartment (e.g.
+	 *            "Some administrative department")
+	 * @param shortname
+	 *            A shortname for the AdministrativeDepartment (e.g. "AD")
+	 * @param iconFileName
+	 *            (optional) Icon path (relative to the images.path property)
+	 * @return The newly created AdministrativeDepartment, or null.
+	 */
 	AdministrativeDepartment createAdministrativeDepartment(String name, String shortname, String iconFileName);
 
+	/**
+	 * Creates a new persistent TeachingDepartment object.
+	 * 
+	 * @param name
+	 *            A name describing the TeachingDepartment (e.g.
+	 *            "Math department")
+	 * @param shortname
+	 *            A shortname for the TeachingDepartment (e.g. "MATH")
+	 * @param iconFileName
+	 *            (optional) Icon path (relative to the images.path property)
+	 * @return The newly created TeachingDepartment, or null.
+	 */
 	TeachingDepartment createTeachingDepartment(String name, String shortname, String iconFileName);
 
+	/**
+	 * Retrieves an existing Organisation object.
+	 * 
+	 * @param idOrganisation
+	 *            The id of the Organisation to load from the Data Access Layer
+	 * @param initialize
+	 *            Set to true if the collections of associated objects should be
+	 *            loaded as well
+	 * @return the retrieved {@link Organisation}
+	 */
 	Organisation retrieveOrganisation(Long idOrganisation, boolean initialize);
 
 	Community retrieveCommunity(Long id, boolean initialize);

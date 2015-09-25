@@ -42,8 +42,11 @@ public class DaoUserDetailsService implements UserDetailsService, Serializable {
 
 	/**
 	 * @param targetUser
-	 * @return userDetail for Spring
+	 *            The Person to load
+	 * @return userDetails for Spring
 	 * @throws UsernameNotFoundException
+	 *             If the targetUser cannot be loaded (bad targetUser.login
+	 *             and/or targetUser.password)
 	 */
 	public UserDetails loadUserByUser(Person targetUser) {
 

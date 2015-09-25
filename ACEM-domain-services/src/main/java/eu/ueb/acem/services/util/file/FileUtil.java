@@ -79,6 +79,9 @@ public final class FileUtil {
 	 * @param out
 	 *            the target outputStream
 	 * @throws IOException
+	 *             If the first byte cannot be read for any reason other than
+	 *             the end of the file, if the input stream has been closed, or
+	 *             if some other I/O error occurs.
 	 */
 	public static void copyInputStream(final InputStream in,
 			final OutputStream out) throws IOException {
@@ -103,6 +106,7 @@ public final class FileUtil {
 	 * @param deleteFileAfterUnZip
 	 *            if true delete the original zip file
 	 * @throws IOException
+	 *             If an I/O error has occurred
 	 */
 	public static void unzipFile(final String directoryTarget,
 			final String inputFile, final boolean deleteFileAfterUnZip)
@@ -172,6 +176,7 @@ public final class FileUtil {
 	 * @param in
 	 *            the inputStream to copy
 	 * @throws IOException
+	 *             If an I/O error has occurred
 	 */
 	public static void copyInputStream(final String outputFile,
 			final InputStream in) throws IOException {
@@ -189,7 +194,7 @@ public final class FileUtil {
 	/**
 	 * Delete an non empty directory.
 	 * 
-	 * @param directoryToDelete
+	 * @param directoryToDelete The directory to delete
 	 * @return true if deleted
 	 */
 	public static boolean deleteDir(final File directoryToDelete) {
@@ -211,7 +216,7 @@ public final class FileUtil {
 	/**
 	 * Delete an non empty directory.
 	 * 
-	 * @param directoryNameToDelete
+	 * @param directoryNameToDelete The name of the directory to delete
 	 * @return true if deleted
 	 */
 	public static boolean deleteDir(final String directoryNameToDelete) {
@@ -237,9 +242,9 @@ public final class FileUtil {
 	 * Method to get all the file that respond to a filter. If recursiveSearch
 	 * is set to true the same search will be done in all the subdirectories
 	 * 
-	 * @param pathToSearch
-	 * @param filter
-	 * @param recursiveSearch
+	 * @param pathToSearch A path where the files will be searched
+	 * @param filter A filename filter
+	 * @param recursiveSearch Set to true for a recursive search
 	 * @return collection of filenames
 	 */
 	public static Collection<String> getFiles(final String pathToSearch,
@@ -276,9 +281,9 @@ public final class FileUtil {
 	/**
 	 * Use by public getFiles.
 	 * 
-	 * @param list
-	 * @param directory
-	 * @param filter
+	 * @param list A list
+	 * @param directory A directory
+	 * @param filter A filter
 	 * @param directoryFilenameFilter
 	 */
 	private static void getFiles(final Collection<String> list,
@@ -306,10 +311,11 @@ public final class FileUtil {
 	/**
 	 * Copy a directory from strPath to dstPath (Content only).
 	 * 
-	 * @param srcPath
-	 * @param dstPath
+	 * @param srcPath Source path
+	 * @param dstPath Destination path
 	 * @return true if copy Ok
-	 * @throws IOException
+	 * @throws IOException 
+	 *             If an I/O error has occurred
 	 */
 	public static boolean copyDirectory(final File srcPath, final File dstPath)
 			throws IOException {
@@ -347,9 +353,12 @@ public final class FileUtil {
 	 * Copy a file from strPath to dstPath.
 	 * 
 	 * @param srcPath
+	 *            Source path
 	 * @param dstPath
+	 *            Destination path
 	 * @return true if copy Ok
 	 * @throws IOException
+	 *             If an I/O error has occurred
 	 */
 	public static boolean copyFile(final File srcPath, final File dstPath)
 			throws IOException {
@@ -374,7 +383,7 @@ public final class FileUtil {
 	/**
 	 * Get normalized file path (replace with good File.separator).
 	 * 
-	 * @param filePath
+	 * @param filePath The file path to normalize
 	 * @return Normalized file path
 	 */
 	public static String getNormalizedFilePath(final String filePath) {
@@ -420,8 +429,8 @@ public final class FileUtil {
 	 * Method that returns the files with the given extension (eg:"xml", do NOT
 	 * specify the dot) in the directory.
 	 * 
-	 * @param directory
-	 * @param extension
+	 * @param directory The directory to scan
+	 * @param extension The extension to filter
 	 * @return array of the files with the given extension in the directory
 	 */
 	public static File[] getFilesWithExtension(File directory,
@@ -441,8 +450,6 @@ public final class FileUtil {
 	 * @param imgFile
 	 *            image file
 	 * @return dimensions of image
-	 * @throws IOException
-	 *             if the file is not a known image
 	 */
 	public static Dimension getImageDimension(final File imgFile) {
 		int pos = imgFile.getName().lastIndexOf(".");
@@ -469,20 +476,21 @@ public final class FileUtil {
 	}
 
 	/**
-	 * Calulate the dimension of a thumbnail based on real image dimension with
-	 * max height or with to size parameter. Scale the dimension
+	 * Calculates the dimension of a thumbnail from a original dimension of an
+	 * image and a maximum size (height or width depending of the original
+	 * image).
 	 * 
 	 * @param originalDimension
+	 *            The original dimension of the image
 	 * @param size
-	 * @return
+	 *            The length of the thumbnail's height of width
+	 * @return The computed dimension of the thumbnail
 	 */
-	public static Dimension getThumbnailDimension(Dimension originalDimension,
-			int size) {
+	public static Dimension getThumbnailDimension(Dimension originalDimension, int size) {
 		Dimension d = new Dimension();
 		d.setSize(originalDimension.width, originalDimension.height);
 		if (d.height > size || d.width > size) {
-			float result = (float) originalDimension.height
-					/ originalDimension.width * size;
+			float result = (float) originalDimension.height / originalDimension.width * size;
 			d.setSize(size, (new Float(result)).intValue());
 		}
 		return d;
@@ -493,7 +501,9 @@ public final class FileUtil {
 	 * gif, bmp, jpeg, tiff, tif
 	 * 
 	 * @param fileName
-	 * @return true/false
+	 *            The file name
+	 * @return true if the file name ends with an image extension, false
+	 *         otherwise
 	 */
 	public static boolean isImage(String fileName) {
 		if (fileName.toLowerCase().endsWith(".png")
