@@ -32,7 +32,7 @@ import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
-import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalActivityEntity;
+import eu.ueb.acem.domain.beans.jpa.bleu.PedagogicalActivityEntity;
 
 /**
  * @author Grégoire Colbert

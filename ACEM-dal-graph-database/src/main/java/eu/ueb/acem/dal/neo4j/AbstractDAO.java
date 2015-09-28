@@ -29,6 +29,18 @@ import org.springframework.data.neo4j.template.Neo4jOperations;
 
 import eu.ueb.acem.dal.common.DAO;
 
+/**
+ * This abstract class uses Java generics to define the common methods of all
+ * Spring Data Neo4j DAO instances.
+ * 
+ * @author gcolbert
+ *
+ * @param <E>
+ *            The name of a bean interface
+ * @param <N>
+ *            The name of a Spring Data Neo4j implementation of the bean
+ *            interface E
+ */
 public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Serializable {
 
 	/**

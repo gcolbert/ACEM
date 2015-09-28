@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import eu.ueb.acem.domain.beans.ldap.LdapUser;
 
 /**
- * Simple Ldap Service to get a list of ldap User from a search text
- * Use configuration in Ldap.xml
+ * Simple LDAP service to get a list of {@link eu.ueb.acem.domain.beans.ldap.LdapUser}
+ * from a search text. Uses configuration in file "ldap.xml".
  * 
  * @author Romuald Lorthioir
  */
@@ -47,71 +47,82 @@ public class LdapUserService implements Serializable {
 	 */
 	public List<LdapUser> findAllByCnAndUid(String search) {
 		// Mapping
-		LdapAttributesForMapping ldapAttributesForMapping = new LdapAttributesForMapping(
-				uidAttribute, nameAttribute, givenNameAttribute, emailAttribute);
-		//Build from Ldap
+		LdapAttributesForMapping ldapAttributesForMapping = new LdapAttributesForMapping(uidAttribute, nameAttribute,
+				givenNameAttribute, emailAttribute);
+		// Build from Ldap
 		List<LdapUser> ldapUsers = ldapTemplate.search(
 				query().where("objectclass")
 						.is(objectclass)
-						.and(query().where(searchAttribute)
-								.whitespaceWildcardsLike(search)
-								.or(uidAttribute)
-								.whitespaceWildcardsLike(search)),
-				ldapAttributesForMapping);
+						.and(query().where(searchAttribute).whitespaceWildcardsLike(search).or(uidAttribute)
+								.whitespaceWildcardsLike(search)), ldapAttributesForMapping);
 		return ldapUsers;
 	}
 
 	/**
-	 * Given by Ldap.xml
-	 * @param ldapTemplate A LdapTemplate
+	 * Given by ldap.xml
+	 * 
+	 * @param ldapTemplate
+	 *            A LdapTemplate
 	 */
 	public void setLdapTemplate(LdapTemplate ldapTemplate) {
 		this.ldapTemplate = ldapTemplate;
 	}
 
 	/**
-	 * Given by Ldap.xml
-	 * @param uidAttribute A user id
+	 * Given by ldap.xml
+	 * 
+	 * @param uidAttribute
+	 *            A user id
 	 */
 	public void setUidAttribute(String uidAttribute) {
 		this.uidAttribute = uidAttribute;
 	}
 
 	/**
-	 * Given by Ldap.xml
-	 * @param nameAttribute A name
+	 * Given by ldap.xml
+	 * 
+	 * @param nameAttribute
+	 *            A name
 	 */
 	public void setNameAttribute(String nameAttribute) {
 		this.nameAttribute = nameAttribute;
 	}
 
 	/**
-	 * Given by Ldap.xml
-	 * @param givenNameAttribute A given name
+	 * Given by ldap.xml
+	 * 
+	 * @param givenNameAttribute
+	 *            A given name
 	 */
 	public void setGivenNameAttribute(String givenNameAttribute) {
 		this.givenNameAttribute = givenNameAttribute;
 	}
 
 	/**
-	 * Given by Ldap.xml
-	 * @param emailAttribute An email address
+	 * Given by ldap.xml
+	 * 
+	 * @param emailAttribute
+	 *            An email address
 	 */
 	public void setEmailAttribute(String emailAttribute) {
 		this.emailAttribute = emailAttribute;
 	}
 
 	/**
-	 * Given by Ldap.xml
-	 * @param searchAttribute A search criterion
+	 * Given by ldap.xml
+	 * 
+	 * @param searchAttribute
+	 *            A search criterion
 	 */
 	public void setSearchAttribute(String searchAttribute) {
 		this.searchAttribute = searchAttribute;
 	}
 
 	/**
-	 * Given by Ldap.xml
-	 * @param objectclass A objectclass
+	 * Given by ldap.xml
+	 * 
+	 * @param objectclass
+	 *            A objectclass
 	 */
 	public void setObjectclass(String objectclass) {
 		this.objectclass = objectclass;

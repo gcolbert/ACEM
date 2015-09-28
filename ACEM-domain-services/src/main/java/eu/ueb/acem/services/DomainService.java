@@ -20,6 +20,8 @@ package eu.ueb.acem.services;
 
 import java.io.Serializable;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.services.auth.LdapUserService;
 
@@ -30,10 +32,19 @@ import eu.ueb.acem.services.auth.LdapUserService;
 public interface DomainService extends Serializable {
 
 	/**
-	 * @param uid A user id
-	 * @return a user.
+	 * Gets a user from its login. If the user doesn't exist and the
+	 * authentication scheme is "auth-cas", the account is automatically
+	 * created. If it doesn't exist and the authentication scheme is
+	 * "auth-manual", an exception is thrown.
+	 * 
+	 * @param login
+	 *            A user login
+	 * @return a User instance
+	 * @throws UsernameNotFoundException
+	 *             if the user doesn't exist and the authentication scheme
+	 *             doesn't guarantee a genuine authentication.
 	 */
-	Person getUser(String uid);
+	Person getUser(String login) throws UsernameNotFoundException;
 
 	LdapUserService getLdapUserService();
 

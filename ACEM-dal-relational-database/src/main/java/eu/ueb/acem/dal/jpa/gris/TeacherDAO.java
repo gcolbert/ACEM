@@ -26,7 +26,7 @@ import eu.ueb.acem.dal.common.gris.PersonDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.gris.jpa.TeacherEntity;
+import eu.ueb.acem.domain.beans.jpa.gris.TeacherEntity;
 
 /**
  * @author Grégoire Colbert

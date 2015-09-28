@@ -24,12 +24,25 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of PedagogicalSequence beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-02-27
  * 
  */
 public interface PedagogicalSequenceDAO<ID> extends PedagogicalUnitDAO<ID, PedagogicalSequence> {
 
+	/**
+	 * This method retrieves the first sequences of a scenario. First sequences
+	 * are sequences associated with a scenario and potentially to following
+	 * sequences, but that have no predecessors.
+	 * 
+	 * @param pedagogicalScenario
+	 *            A PedagogicalScenario to extract the collection of first
+	 *            sequences from
+	 * @return The collection of first sequences in the scenario
+	 */
 	Collection<PedagogicalSequence> retrieveFirstSequencesOfScenario(PedagogicalScenario pedagogicalScenario);
 	
 }

@@ -19,6 +19,9 @@
 package eu.ueb.acem.dal.common;
 
 /**
+ * This class is used by the DAOs of beans that have the "creation date" and
+ * "modification date" properties.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
@@ -28,8 +31,14 @@ public class TimeTicker {
 	private TimeTicker() {
 	}
 
+	/**
+	 * This method should be called from the DAOs of beans that have a
+	 * "creation date" and "modification date" properties.
+	 * 
+	 * @return a timestamp in seconds
+	 */
 	public static long tick() {
-		return System.currentTimeMillis() / 1000L;
+		return System.currentTimeMillis() / 1000;
 	}
 
 }

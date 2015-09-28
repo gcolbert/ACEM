@@ -58,6 +58,7 @@
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>${maven-javadoc-plugin.version}</version>
 					<configuration>
+						<aggregate>true</aggregate>
 						<minmemory>128m</minmemory>
 						<maxmemory>512m</maxmemory>
 						<goal>javadoc:javadoc</goal>

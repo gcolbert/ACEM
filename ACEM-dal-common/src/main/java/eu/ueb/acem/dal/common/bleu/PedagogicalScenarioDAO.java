@@ -26,16 +26,43 @@ import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of PedagogicalScenario beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-02-27
  * 
  */
 public interface PedagogicalScenarioDAO<ID> extends PedagogicalUnitDAO<ID, PedagogicalScenario> {
 
+	/**
+	 * This method returns the collection of all scenarios for the specified
+	 * author.
+	 * 
+	 * @param author
+	 *            A Person instance
+	 * @return The collection of scenarios
+	 */
 	Collection<PedagogicalScenario> retrieveScenariosWithAuthor(Person author);
-	
+
+	/**
+	 * This method returns the collection of all scenarios indirectly associated
+	 * with the given PedagogicalAnswer.
+	 * 
+	 * @param answer
+	 *            A PedagogicalAnswer instance
+	 * @return The collection of scenarios associated with the given PedagogicalAnswer
+	 */
 	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithPedagogicalAnswer(PedagogicalAnswer answer);
 
+	/**
+	 * This method returns the collection of all scenarios indirectly associated
+	 * with the given ResourceCategory.
+	 * 
+	 * @param resourceCategory
+	 *            A ResourceCategory instance
+	 * @return The collection of scenarios associated with the given ResourceCategory
+	 */
 	Collection<PedagogicalScenario> retrieveScenariosAssociatedWithResourceCategory(ResourceCategory resourceCategory);
 
 }

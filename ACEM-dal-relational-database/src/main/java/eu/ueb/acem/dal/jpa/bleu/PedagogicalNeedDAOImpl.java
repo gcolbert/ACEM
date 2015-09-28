@@ -29,7 +29,7 @@ import eu.ueb.acem.dal.common.bleu.PedagogicalNeedDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
-import eu.ueb.acem.domain.beans.bleu.jpa.PedagogicalNeedEntity;
+import eu.ueb.acem.domain.beans.jpa.bleu.PedagogicalNeedEntity;
 
 /**
  * @author Grégoire Colbert

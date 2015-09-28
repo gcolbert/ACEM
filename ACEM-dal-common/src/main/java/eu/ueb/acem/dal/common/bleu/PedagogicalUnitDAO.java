@@ -22,13 +22,32 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalUnit;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of beans that implement the PedagogicalUnit interface.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-15
  */
 public interface PedagogicalUnitDAO<ID, E extends PedagogicalUnit> extends DAO<ID, E> {
 
+	/**
+	 * Creates a new PedagogicalUnit with the given name.
+	 * 
+	 * @param name
+	 *            A name for the PedagogicalUnit
+	 * @return the newly created PedagogicalUnit
+	 */
 	E create(String name);
 
+	/**
+	 * Creates a new PedagogicalUnit with the given name and description.
+	 * 
+	 * @param name
+	 *            A name for the PedagogicalUnit
+	 * @param objective
+	 *            A objective for the PedagogicalUnit
+	 * @return the newly created PedagogicalUnit
+	 */
 	E create(String name, String objective);
 
 }

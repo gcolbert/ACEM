@@ -25,8 +25,8 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.common.violet.CourseDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
+import eu.ueb.acem.domain.beans.jpa.violet.CourseEntity;
 import eu.ueb.acem.domain.beans.violet.Course;
-import eu.ueb.acem.domain.beans.violet.jpa.CourseEntity;
 
 /**
  * @author Grégoire Colbert

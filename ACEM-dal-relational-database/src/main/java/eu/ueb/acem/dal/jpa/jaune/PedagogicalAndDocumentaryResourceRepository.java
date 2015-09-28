@@ -24,8 +24,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.jpa.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.jpa.PedagogicalAndDocumentaryResourceEntity;
-import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
+import eu.ueb.acem.domain.beans.jpa.jaune.PedagogicalAndDocumentaryResourceEntity;
+import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 /**
  * @author Grégoire Colbert

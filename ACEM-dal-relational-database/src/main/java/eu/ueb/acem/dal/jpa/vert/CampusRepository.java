@@ -22,7 +22,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.jpa.GenericRepository;
-import eu.ueb.acem.domain.beans.vert.jpa.CampusEntity;
+import eu.ueb.acem.domain.beans.jpa.vert.CampusEntity;
 
 /**
  * @author Grégoire Colbert

@@ -22,14 +22,33 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of PedagogicalAnswer beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-21
  * 
  */
 public interface PedagogicalAnswerDAO<ID> extends DAO<ID, PedagogicalAnswer> {
 
+	/**
+	 * Creates a new PedagogicalAnswer with the given name.
+	 * 
+	 * @param name
+	 *            A name for the PedagogicalAnswer
+	 * @return the newly created PedagogicalAnswer
+	 */
 	PedagogicalAnswer create(String name);
 
+	/**
+	 * Creates a new PedagogicalAnswer with the given name and description.
+	 * 
+	 * @param name
+	 *            A name for the PedagogicalAnswer
+	 * @param description
+	 *            A description for the PedagogicalAnswer
+	 * @return the newly created PedagogicalAnswer
+	 */
 	PedagogicalAnswer create(String name, String description);
 
 }

@@ -8,14 +8,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Simple object to map a user objet from Ldap
+ * Simple object to map a user object from Ldap
  * 
  * @author rlorthio
  *
  */
 public class LdapUser implements Serializable, Comparable<LdapUser> {
+
 	/**
-	 * 
+	 * For serialization.
 	 */
 	private static final long serialVersionUID = 7759917888447778318L;
 

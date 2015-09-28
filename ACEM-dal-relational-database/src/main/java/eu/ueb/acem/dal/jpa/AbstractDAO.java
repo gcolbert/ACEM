@@ -28,6 +28,17 @@ import javax.persistence.PersistenceContext;
 
 import eu.ueb.acem.dal.common.DAO;
 
+/**
+ * This abstract class uses Java generics to define the common methods of all
+ * JPA DAO instances.
+ * 
+ * @author gcolbert
+ *
+ * @param <E>
+ *            The name of a bean interface
+ * @param <N>
+ *            The name of a JPA implementation of the bean interface
+ */
 public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Serializable {
 
 	/**

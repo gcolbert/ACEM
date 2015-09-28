@@ -22,12 +22,22 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of PedagogicalKeyword beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 
  */
 public interface PedagogicalKeywordDAO<ID> extends DAO<ID, PedagogicalKeyword> {
 
+	/**
+	 * Creates a new PedagogicalKeyword with the given name.
+	 * 
+	 * @param name
+	 *            A name for the PedagogicalKeyword
+	 * @return the newly created PedagogicalKeyword
+	 */
 	PedagogicalKeyword create(String name);
 
 }

@@ -25,7 +25,6 @@
 	</bean>
 
 	<bean id="ldapUserService" class="eu.ueb.acem.services.auth.LdapUserService">
-
 		<property name="ldapTemplate" ref="ldapTemplate" />
 		<property name="searchAttribute" value="${ldap.searchAttribute}" />
 		<property name="uidAttribute" value="${ldap.uidAttribute}" />
@@ -33,7 +32,6 @@
 		<property name="givenNameAttribute" value="${ldap.givenNameAttribute}" />
 		<property name="emailAttribute" value="${ldap.emailAttribute}" />
 		<property name="objectclass" value="${ldap.objectclass}" />
-
 	</bean>
 
 </beans>

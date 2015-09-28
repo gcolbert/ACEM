@@ -28,6 +28,15 @@ import eu.ueb.acem.domain.beans.bleu.TeachingMode;
  */
 public interface TeachingModeDAO<ID> extends DAO<ID, TeachingMode> {
 
+	/**
+	 * Creates a new TeachingMode with the given name and description.
+	 * 
+	 * @param name
+	 *            A name for the TeachingMode
+	 * @param description
+	 *            A description for the TeachingMode
+	 * @return the newly created TeachingMode
+	 */
 	TeachingMode create(String name, String description);
 
 }

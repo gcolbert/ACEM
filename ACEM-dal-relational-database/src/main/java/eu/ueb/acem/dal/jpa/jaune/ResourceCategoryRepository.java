@@ -22,7 +22,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import eu.ueb.acem.dal.jpa.GenericRepository;
-import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
+import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 public interface ResourceCategoryRepository extends GenericRepository<ResourceCategoryEntity> {
 

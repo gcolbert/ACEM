@@ -26,7 +26,7 @@ import eu.ueb.acem.dal.common.jaune.UseModeDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
-import eu.ueb.acem.domain.beans.jaune.jpa.UseModeEntity;
+import eu.ueb.acem.domain.beans.jpa.jaune.UseModeEntity;
 
 /**
  * @author Grégoire Colbert

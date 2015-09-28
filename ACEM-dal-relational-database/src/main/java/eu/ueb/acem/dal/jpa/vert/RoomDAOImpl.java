@@ -26,8 +26,8 @@ import org.springframework.stereotype.Repository;
 import eu.ueb.acem.dal.common.vert.RoomDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
+import eu.ueb.acem.domain.beans.jpa.vert.RoomEntity;
 import eu.ueb.acem.domain.beans.vert.Room;
-import eu.ueb.acem.domain.beans.vert.jpa.RoomEntity;
 
 /**
  * @author Grégoire Colbert

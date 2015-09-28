@@ -32,8 +32,8 @@ import eu.ueb.acem.dal.jpa.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
-import eu.ueb.acem.domain.beans.jaune.jpa.DocumentationEntity;
-import eu.ueb.acem.domain.beans.jaune.jpa.ResourceCategoryEntity;
+import eu.ueb.acem.domain.beans.jpa.jaune.DocumentationEntity;
+import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 /**
  * @author Grégoire Colbert

@@ -26,7 +26,7 @@ import eu.ueb.acem.dal.common.bleu.TeachingModeDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
 import eu.ueb.acem.domain.beans.bleu.TeachingMode;
-import eu.ueb.acem.domain.beans.bleu.jpa.TeachingModeEntity;
+import eu.ueb.acem.domain.beans.jpa.bleu.TeachingModeEntity;
 
 /**
  * @author Grégoire Colbert

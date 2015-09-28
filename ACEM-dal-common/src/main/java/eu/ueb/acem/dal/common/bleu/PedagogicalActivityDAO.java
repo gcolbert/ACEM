@@ -24,12 +24,25 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of PedagogicalActivity beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-02-27
  * 
  */
 public interface PedagogicalActivityDAO<ID> extends PedagogicalUnitDAO<ID, PedagogicalActivity> {
 
+	/**
+	 * This method retrieves the first activities of a session. First activities
+	 * are activities associated with a session and potentially to following
+	 * activities, but that have no predecessors.
+	 * 
+	 * @param session
+	 *            A PedagogicalSession to extract the collection of first
+	 *            activities from
+	 * @return The collection of first activities in the session
+	 */
 	Collection<PedagogicalActivity> retrieveFirstActivitiesOfSession(PedagogicalSession session);
 
 }

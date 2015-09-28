@@ -24,12 +24,25 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of PedagogicalSession beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-02-27
  * 
  */
 public interface PedagogicalSessionDAO<ID> extends PedagogicalUnitDAO<ID, PedagogicalSession> {
 
+	/**
+	 * This method retrieves the first sessions of a sequence. First sessions
+	 * are sessions associated with a sequence and potentially to following
+	 * sessions, but that have no predecessors.
+	 * 
+	 * @param sequence
+	 *            A PedagogicalSequence to extract the collection of first
+	 *            sessions from
+	 * @return The collection of first sessions in the sequence
+	 */
 	Collection<PedagogicalSession> retrieveFirstSessionsOfSequence(PedagogicalSequence sequence);
 
 }

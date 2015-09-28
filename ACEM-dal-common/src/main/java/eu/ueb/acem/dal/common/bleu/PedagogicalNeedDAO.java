@@ -23,11 +23,42 @@ import java.util.Set;
 import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 
+/**
+ * This interface describes the methods expected from DAO instances that take
+ * care of PedagogicalNeed beans.
+ * 
+ * @author Grégoire Colbert
+ * @since 2015-05-21
+ * 
+ */
 public interface PedagogicalNeedDAO<ID> extends DAO<ID, PedagogicalNeed> {
 
+	/**
+	 * This method retrieves the PedagogicalNeeds that have no parents.
+	 * Therefore, they are supposed to be the root entries of the tree of
+	 * PedagogicalNeeds.
+	 * 
+	 * @return The Set of PedagogicalNeeds that have no parents
+	 */
 	Set<PedagogicalNeed> retrieveNeedsAtRoot();
 
+	/**
+	 * Creates a new PedagogicalNeed with the given name.
+	 * 
+	 * @param name
+	 *            A name for the PedagogicalNeed
+	 * @return the newly created PedagogicalNeed
+	 */
 	PedagogicalNeed create(String name);
 
+	/**
+	 * Creates a new PedagogicalNeed with the given name and description.
+	 * 
+	 * @param name
+	 *            A name for the PedagogicalNeed
+	 * @param description
+	 *            A description for the PedagogicalNeed
+	 * @return the newly created PedagogicalNeed
+	 */
 	PedagogicalNeed create(String name, String description);
 }

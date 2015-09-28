@@ -30,8 +30,8 @@ import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.jpa.rouge.AdministrativeDepartmentEntity;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
-import eu.ueb.acem.domain.beans.rouge.jpa.AdministrativeDepartmentEntity;
 
 /**
  * @author Grégoire Colbert
