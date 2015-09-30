@@ -36,6 +36,8 @@ import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 import eu.ueb.acem.domain.beans.jpa.jaune.SoftwareEntity;
 
 /**
+ * The Spring Data JPA implementation of ResourceDAO for Software domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  */
@@ -100,7 +102,8 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareEntity> implement
 	}
 
 	/**
-	 * Returns the categories containing at least one "Software" entity that the given person can see.
+	 * Returns the categories containing at least one "Software" entity that the
+	 * given person can see.
 	 */
 	@Override
 	public Collection<Software> retrieveAllWithCategory(ResourceCategory category) {
@@ -119,7 +122,8 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareEntity> implement
 
 	@Override
 	public Collection<Software> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<SoftwareEntity> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Iterable<SoftwareEntity> endResults = repository.getResourcesInCategoryForPerson(category.getId(),
+				person.getId());
 		Collection<Software> collection = new HashSet<Software>();
 		if (endResults.iterator() != null) {
 			Iterator<SoftwareEntity> iterator = endResults.iterator();

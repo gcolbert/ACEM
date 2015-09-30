@@ -18,11 +18,11 @@
  */
 package eu.ueb.acem.domain.beans.bleu;
 
-
 /**
+ * The TeachingMode domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-15
- * 
  */
 public interface TeachingMode {
 

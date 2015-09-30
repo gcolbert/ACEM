@@ -22,11 +22,29 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.vert.Building;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of beans that implement the Building interface.
+ * 
+ * @param <ID>
+ *            The type of the id property of objects stored in the database
+ *            (typically java.lang.Long)
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
 public interface BuildingDAO<ID> extends DAO<ID, Building> {
 
+	/**
+	 * Creates a new Building with the given name, latitude and longitude.
+	 * 
+	 * @param name
+	 *            A name for the new Building
+	 * @param latitude
+	 *            A latitude value
+	 * @param longitude
+	 *            A longitude value
+	 * @return the newly created Building
+	 */
 	Building create(String name, Double latitude, Double longitude);
 
 }

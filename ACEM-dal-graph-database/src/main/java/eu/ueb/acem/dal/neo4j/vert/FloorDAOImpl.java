@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.neo4j.vert.FloorNode;
 import eu.ueb.acem.domain.beans.vert.Floor;
 
 /**
+ * The Spring Data Neo4j implementation of FloorDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 

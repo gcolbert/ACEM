@@ -20,8 +20,9 @@ package eu.ueb.acem.domain.beans.violet;
 
 import java.util.Set;
 
-
 /**
+ * The Course domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 

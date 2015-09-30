@@ -34,6 +34,9 @@ import eu.ueb.acem.domain.beans.jpa.rouge.AdministrativeDepartmentEntity;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 
 /**
+ * The Spring Data JPA implementation of OrganisationDAO for
+ * AdministrativeDepartment domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-03
  * 

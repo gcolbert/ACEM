@@ -23,6 +23,8 @@ import javax.persistence.Entity;
 import eu.ueb.acem.domain.beans.jaune.Software;
 
 /**
+ * The Spring Data JPA implementation of Software domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

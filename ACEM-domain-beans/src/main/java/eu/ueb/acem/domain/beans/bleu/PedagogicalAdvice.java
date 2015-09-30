@@ -21,9 +21,11 @@ package eu.ueb.acem.domain.beans.bleu;
 import java.io.Serializable;
 
 /**
+ * The PedagogicalAdvice interface defines the common methods of
+ * {@link PedagogicalNeed} and {@link PedagogicalAnswer}.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface PedagogicalAdvice extends Serializable {
 

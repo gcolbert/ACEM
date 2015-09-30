@@ -36,6 +36,8 @@ import eu.ueb.acem.domain.beans.jpa.jaune.EquipmentEntity;
 import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 /**
+ * The Spring Data JPA implementation of ResourceDAO for Equipment domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  * 
@@ -119,7 +121,8 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentEntity> implem
 
 	@Override
 	public Collection<Equipment> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<EquipmentEntity> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Iterable<EquipmentEntity> endResults = repository.getResourcesInCategoryForPerson(category.getId(),
+				person.getId());
 		Collection<Equipment> collection = new HashSet<Equipment>();
 		if (endResults.iterator() != null) {
 			Iterator<EquipmentEntity> iterator = endResults.iterator();

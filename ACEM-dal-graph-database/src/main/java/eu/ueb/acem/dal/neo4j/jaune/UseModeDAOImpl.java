@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.neo4j.jaune.UseModeNode;
 
 /**
+ * The Spring Data Neo4j implementation of UseModeDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-03-19
  * 

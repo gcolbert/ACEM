@@ -34,6 +34,9 @@ import eu.ueb.acem.domain.beans.neo4j.rouge.CommunityNode;
 import eu.ueb.acem.domain.beans.rouge.Community;
 
 /**
+ * The Spring Data Neo4j implementation of OrganisationDAO for Community domain
+ * beans.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 

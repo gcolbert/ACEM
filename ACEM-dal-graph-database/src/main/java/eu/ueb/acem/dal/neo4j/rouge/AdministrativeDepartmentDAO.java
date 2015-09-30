@@ -34,12 +34,16 @@ import eu.ueb.acem.domain.beans.neo4j.rouge.AdministrativeDepartmentNode;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 
 /**
+ * The Spring Data Neo4j implementation of OrganisationDAO for
+ * AdministrativeDepartment domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
 @Repository("administrativeDepartmentDAO")
-public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepartment, AdministrativeDepartmentNode> implements OrganisationDAO<Long, AdministrativeDepartment> {
+public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepartment, AdministrativeDepartmentNode>
+		implements OrganisationDAO<Long, AdministrativeDepartment> {
 
 	/**
 	 * For serialization.

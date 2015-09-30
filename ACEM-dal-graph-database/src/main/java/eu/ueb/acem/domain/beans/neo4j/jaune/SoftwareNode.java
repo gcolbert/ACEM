@@ -25,6 +25,8 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import eu.ueb.acem.domain.beans.jaune.Software;
 
 /**
+ * The Spring Data Neo4j implementation of Software domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 

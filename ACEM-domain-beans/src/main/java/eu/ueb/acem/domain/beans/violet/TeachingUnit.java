@@ -26,9 +26,10 @@ import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
+ * The TeachingUnit domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-13
- * 
  */
 public interface TeachingUnit extends Serializable, Comparable<TeachingUnit> {
 

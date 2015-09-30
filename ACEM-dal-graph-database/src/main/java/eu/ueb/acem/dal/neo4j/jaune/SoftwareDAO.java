@@ -36,6 +36,9 @@ import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
 import eu.ueb.acem.domain.beans.neo4j.jaune.SoftwareNode;
 
 /**
+ * The Spring Data Neo4j implementation of ResourceDAO for Software domain
+ * beans.
+ * 
  * @author Grégoire Colbert
  * @since 2014-03-11
  */
@@ -98,7 +101,8 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 	}
 
 	/**
-	 * Returns the categories containing at least one "Software" entity that the given person can see.
+	 * Returns the categories containing at least one "Software" entity that the
+	 * given person can see.
 	 */
 	@Override
 	public Collection<Software> retrieveAllWithCategory(ResourceCategory category) {
@@ -117,7 +121,8 @@ public class SoftwareDAO extends AbstractDAO<Software, SoftwareNode> implements 
 
 	@Override
 	public Collection<Software> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<SoftwareNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Iterable<SoftwareNode> endResults = repository
+				.getResourcesInCategoryForPerson(category.getId(), person.getId());
 		Collection<Software> collection = new HashSet<Software>();
 		if (endResults.iterator() != null) {
 			Iterator<SoftwareNode> iterator = endResults.iterator();

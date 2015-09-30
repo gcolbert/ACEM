@@ -24,13 +24,28 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 /**
- * @author Grégoire Colbert
- * @since 2013-11-20
+ * Generic repository for JPA entities. It extends JpaRepository which is part
+ * of Spring Data JPA and declares all the common methods. All interfaces that
+ * extend this interface are to be automatically implemented by Spring Data JPA.
  * 
+ * @author Grégoire Colbert
+ * @see <a
+ *      href="http://static.springsource.org/spring-data/data-jpa/docs/current/reference/html/#repositories.custom-behaviour-for-all-repositories">[Spring
+ *      Data JPA documentation] Adding custom behaviour repository</a>
+ * @since 2013-11-20
  */
 @NoRepositoryBean
 public interface GenericRepository<N> extends Serializable, JpaRepository<N, Long> {
 
+	/**
+	 * This query will be automatically implemented by it's name, "findBy" is
+	 * the action, and "Name" is parsed as the criteria.
+	 *
+	 * @param name
+	 *            the "name" value of the entities to look for
+	 * @return the collection of entities having the given value for the "name"
+	 *         property
+	 */
 	Iterable<N> findByName(String name);
 
 }

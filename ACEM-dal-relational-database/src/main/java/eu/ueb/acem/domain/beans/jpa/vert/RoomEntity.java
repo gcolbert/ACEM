@@ -26,6 +26,8 @@ import eu.ueb.acem.domain.beans.vert.Floor;
 import eu.ueb.acem.domain.beans.vert.Room;
 
 /**
+ * The Spring Data JPA implementation of Room domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  * 

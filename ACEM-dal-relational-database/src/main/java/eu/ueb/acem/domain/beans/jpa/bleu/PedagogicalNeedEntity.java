@@ -33,6 +33,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalNeed domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-19
  * 

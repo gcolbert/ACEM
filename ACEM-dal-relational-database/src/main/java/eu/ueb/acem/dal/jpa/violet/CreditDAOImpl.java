@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jpa.violet.CreditEntity;
 import eu.ueb.acem.domain.beans.violet.Credit;
 
 /**
+ * The Spring Data JPA implementation of CreditDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

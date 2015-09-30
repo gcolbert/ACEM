@@ -35,6 +35,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.jpa.bleu.PedagogicalSequenceEntity;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalSequenceDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-15
  */

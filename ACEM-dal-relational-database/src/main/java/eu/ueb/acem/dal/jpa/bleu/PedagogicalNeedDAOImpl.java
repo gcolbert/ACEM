@@ -32,6 +32,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.jpa.bleu.PedagogicalNeedEntity;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalNeedDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-26
  */

@@ -34,6 +34,9 @@ import eu.ueb.acem.domain.beans.jpa.rouge.TeachingDepartmentEntity;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
+ * The Spring Data JPA implementation of OrganisationDAO for TeachingDepartment
+ * domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-03
  * 

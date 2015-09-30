@@ -35,6 +35,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.jpa.bleu.PedagogicalActivityEntity;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalActivityDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  */

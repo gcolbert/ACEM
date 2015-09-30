@@ -34,6 +34,9 @@ import eu.ueb.acem.domain.beans.jpa.rouge.InstitutionEntity;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 
 /**
+ * The Spring Data JPA implementation of OrganisationDAO for Institution domain
+ * beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-03
  * 

@@ -32,9 +32,10 @@ import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 
 /**
+ * The Spring Data Neo4j implementation of AdministrativeDepartment domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @NodeEntity
 @TypeAlias("AdministrativeDepartment")

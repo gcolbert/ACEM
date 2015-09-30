@@ -34,6 +34,8 @@ import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalAnswer domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-20
  * 

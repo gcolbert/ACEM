@@ -38,6 +38,8 @@ import eu.ueb.acem.domain.beans.jpa.violet.ClassEntity;
 import eu.ueb.acem.domain.beans.violet.Class;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalSession domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-13
  * 

@@ -32,6 +32,8 @@ import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
+ * The Spring Data JPA implementation of Institution domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

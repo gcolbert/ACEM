@@ -33,9 +33,10 @@ import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Credit;
 
 /**
+ * The Spring Data Neo4j implementation of Course domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @NodeEntity
 @TypeAlias("Course")

@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jpa.violet.DegreeEntity;
 import eu.ueb.acem.domain.beans.violet.Degree;
 
 /**
+ * The Spring Data JPA implementation of DegreeDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

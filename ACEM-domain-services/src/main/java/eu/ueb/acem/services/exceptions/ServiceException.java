@@ -19,7 +19,7 @@
 package eu.ueb.acem.services.exceptions;
 
 /**
- * An exception thrown when forbidden action.
+ * An exception thrown when something wrong happens in the service layer.
  */
 public class ServiceException extends RuntimeException {
 

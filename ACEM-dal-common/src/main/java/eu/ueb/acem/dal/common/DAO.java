@@ -40,7 +40,7 @@ public interface DAO<ID, E> {
 	 * entities of type E.
 	 * 
 	 * @param id
-	 *            Identifier of the object
+	 *            The id value to test
 	 * @return true if the object was found through this DAO, false otherwise
 	 */
 	Boolean exists(ID id);
@@ -59,7 +59,7 @@ public interface DAO<ID, E> {
 	 * Retrieves an entity of type E with the given id.
 	 * 
 	 * @param id
-	 *            The identifier value of the object to retrieve through the DAO
+	 *            The id value of the object to retrieve through the DAO
 	 * @return the retrieved object, or null
 	 */
 	E retrieveById(ID id);
@@ -68,11 +68,11 @@ public interface DAO<ID, E> {
 	 * Retrieves an entity of type E with the given id.
 	 * 
 	 * @param id
-	 *            The identifier value of the object to retrieve through the DAO
+	 *            The id value of the object to retrieve through the DAO
 	 * @param initialize
 	 *            Sets to true if the DAO must initialize the associated objects
 	 *            (in the collections of the entity), false if it can leave them
-	 *            uninitialized. If in doubt, use true here.
+	 *            uninitialized. If in doubt, pass true.
 	 * @return the retrieved object, or null
 	 */
 	E retrieveById(ID id, boolean initialize);
@@ -96,7 +96,7 @@ public interface DAO<ID, E> {
 	 * @param initialize
 	 *            Sets to true if the DAO must initialize the associated objects
 	 *            (in the collections of the entity), false if it can leave them
-	 *            uninitialized. If in doubt, use true here.
+	 *            uninitialized. If in doubt, pass true.
 	 * @return the retrieved object
 	 */
 	Collection<E> retrieveByName(String name, boolean initialize);

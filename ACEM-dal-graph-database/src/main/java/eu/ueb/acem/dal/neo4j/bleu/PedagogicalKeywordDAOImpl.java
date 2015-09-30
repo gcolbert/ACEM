@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalKeywordNode;
 
 /**
+ * The Spring Data Neo4j implementation of PedagogicalKeywordDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

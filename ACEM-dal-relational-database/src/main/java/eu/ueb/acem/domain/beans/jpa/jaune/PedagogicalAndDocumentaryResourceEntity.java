@@ -23,12 +23,16 @@ import javax.persistence.Entity;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalAndDocumentaryResource
+ * domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 
  */
 @Entity(name = "PedagogicalAndDocumentaryResource")
-public class PedagogicalAndDocumentaryResourceEntity extends ResourceEntity implements PedagogicalAndDocumentaryResource {
+public class PedagogicalAndDocumentaryResourceEntity extends ResourceEntity implements
+		PedagogicalAndDocumentaryResource {
 
 	/**
 	 * For serialization.

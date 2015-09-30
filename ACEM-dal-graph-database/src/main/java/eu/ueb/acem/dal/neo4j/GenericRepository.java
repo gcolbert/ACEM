@@ -24,7 +24,15 @@ import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
 
 /**
+ * Generic repository for Neo4j nodes. It extends GraphRepository and
+ * RelationshipOperationsRepository, which are part of Spring Data Neo4j, and
+ * declares all the common methods. All interfaces that extend this interface
+ * are to be automatically implemented by Spring Data Neo4j.
+ * 
  * @author Grégoire Colbert
+ * @see <a
+ *      href="http://docs.spring.io/spring-data/neo4j/docs/current/reference/html/#reference_programming-model_repositories">[Spring
+ *      Data Neo4j documentation] CRUD with repositories</a>
  * @since 2013-11-20
  * 
  */

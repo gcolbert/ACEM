@@ -24,6 +24,8 @@ import javax.persistence.Entity;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 
 /**
+ * The Spring Data JPA implementation of ProfessionalTraining domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

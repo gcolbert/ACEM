@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.jpa.jaune.UseModeEntity;
 
 /**
+ * The Spring Data JPA implementation of UseModeDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  * 

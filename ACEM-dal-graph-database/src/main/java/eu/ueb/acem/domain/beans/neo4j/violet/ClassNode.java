@@ -33,9 +33,10 @@ import eu.ueb.acem.domain.beans.violet.Class;
 import eu.ueb.acem.domain.beans.violet.Course;
 
 /**
+ * The Spring Data Neo4j implementation of Class domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @NodeEntity
 @TypeAlias("Class")

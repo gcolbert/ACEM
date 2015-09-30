@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
 
 /**
+ * The Spring Data Neo4j implementation of ResourceCategoryDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-04-09
  * 

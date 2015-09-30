@@ -24,9 +24,10 @@ import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
+ * The Spring Data JPA implementation of PhysicalSpace abstract domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
- * 
  */
 @Entity(name = "PhysicalSpace")
 public abstract class PhysicalSpaceEntity extends AbstractEntity implements PhysicalSpace {

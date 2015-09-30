@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalAnswerNode;
 
 /**
+ * The Spring Data Neo4j implementation of PedagogicalAnswerDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-26
  * 

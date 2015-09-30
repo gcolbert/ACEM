@@ -25,6 +25,8 @@ import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.neo4j.AbstractNode;
 
 /**
+ * The Spring Data Neo4j implementation of TeachingMode domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-15
  * 

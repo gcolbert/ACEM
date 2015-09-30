@@ -34,12 +34,15 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalActivityNode;
 
 /**
+ * The Spring Data Neo4j implementation of PedagogicalActivityDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
 @Repository("pedagogicalActivityDAO")
-public class PedagogicalActivityDAOImpl extends AbstractDAO<PedagogicalActivity, PedagogicalActivityNode> implements PedagogicalActivityDAO<Long> {
+public class PedagogicalActivityDAOImpl extends AbstractDAO<PedagogicalActivity, PedagogicalActivityNode> implements
+		PedagogicalActivityDAO<Long> {
 
 	/**
 	 * For serialization.

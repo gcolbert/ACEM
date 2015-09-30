@@ -29,6 +29,10 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
  * This interface describes the methods expected from DAO instances that take
  * care of PedagogicalScenario beans.
  * 
+ * @param <ID>
+ *            The type of the id property of objects stored in the database
+ *            (typically java.lang.Long)
+ * 
  * @author Grégoire Colbert
  * @since 2015-02-27
  * 

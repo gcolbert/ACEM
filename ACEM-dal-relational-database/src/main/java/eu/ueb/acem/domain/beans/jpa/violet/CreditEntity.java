@@ -31,9 +31,10 @@ import eu.ueb.acem.domain.beans.violet.Credit;
 import eu.ueb.acem.domain.beans.violet.Degree;
 
 /**
+ * The Spring Data JPA implementation of Credit domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
- * 
  */
 @Entity(name = "Credit")
 public class CreditEntity extends TeachingUnitEntity implements Credit {
@@ -43,11 +44,9 @@ public class CreditEntity extends TeachingUnitEntity implements Credit {
 	 */
 	private static final long serialVersionUID = 6318566194747849738L;
 
-	//@RelatedTo(elementClass = DegreeNode.class, type = "isPartOfDegree", direction = OUTGOING)
 	@ManyToMany(targetEntity = DegreeEntity.class, fetch = FetchType.LAZY)
 	private Set<Degree> degrees = new HashSet<Degree>(0);
 
-	//@RelatedTo(elementClass = CourseNode.class, type = "isPartOfCredit", direction = INCOMING)
 	@OneToMany(targetEntity = CourseEntity.class, fetch = FetchType.LAZY, mappedBy = "credit")
 	private Set<Course> courses;
 

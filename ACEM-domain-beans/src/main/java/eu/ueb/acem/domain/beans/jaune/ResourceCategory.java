@@ -26,9 +26,13 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 
 /**
+ * The ResourceCategory interface is used to group implementations of the
+ * {@link Resource} interface. Resource categories are more stable entities than
+ * concrete resources (categories are less likely to be deleted than plain
+ * resources), and that's why this interface is so full of collections.
+ * 
  * @author Grégoire Colbert
  * @since 2014-04-09
- * 
  */
 public interface ResourceCategory extends Serializable, Comparable<ResourceCategory> {
 

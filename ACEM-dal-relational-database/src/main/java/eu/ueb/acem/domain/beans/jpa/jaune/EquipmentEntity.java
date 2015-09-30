@@ -30,6 +30,8 @@ import eu.ueb.acem.domain.beans.jpa.vert.PhysicalSpaceEntity;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
+ * The Spring Data JPA implementation of Equipment domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

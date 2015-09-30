@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 
 /**
+ * The Spring Data JPA implementation of Community domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

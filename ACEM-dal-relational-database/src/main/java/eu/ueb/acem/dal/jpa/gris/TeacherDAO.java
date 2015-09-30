@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.jpa.gris.TeacherEntity;
 
 /**
+ * The Spring Data JPA implementation of PersonDAO for Teacher domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  * 

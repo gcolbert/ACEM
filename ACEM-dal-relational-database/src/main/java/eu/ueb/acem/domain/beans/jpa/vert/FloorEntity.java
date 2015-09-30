@@ -31,9 +31,10 @@ import eu.ueb.acem.domain.beans.vert.Floor;
 import eu.ueb.acem.domain.beans.vert.Room;
 
 /**
+ * The Spring Data JPA implementation of Floor domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
- * 
  */
 @Entity(name = "Floor")
 public class FloorEntity extends PhysicalSpaceEntity implements Floor {

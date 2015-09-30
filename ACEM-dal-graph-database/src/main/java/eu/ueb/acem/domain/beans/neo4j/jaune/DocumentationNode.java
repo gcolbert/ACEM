@@ -32,6 +32,8 @@ import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 
 /**
+ * The Spring Data Neo4j implementation of Documentation domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 

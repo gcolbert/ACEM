@@ -31,9 +31,10 @@ import eu.ueb.acem.domain.beans.vert.Campus;
 import eu.ueb.acem.domain.beans.vert.Floor;
 
 /**
+ * The Spring Data JPA implementation of Building domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
- * 
  */
 @Entity(name = "Building")
 public class BuildingEntity extends PhysicalSpaceEntity implements Building {

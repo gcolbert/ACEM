@@ -32,6 +32,8 @@ import eu.ueb.acem.domain.beans.vert.Building;
 import eu.ueb.acem.domain.beans.vert.Campus;
 
 /**
+ * The Spring Data Neo4j implementation of Campus domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 

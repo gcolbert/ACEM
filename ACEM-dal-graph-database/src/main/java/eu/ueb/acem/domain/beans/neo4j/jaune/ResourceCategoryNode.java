@@ -40,6 +40,8 @@ import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalAnswerNode;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalSessionNode;
 
 /**
+ * The Spring Data Neo4j implementation of ResourceCategory domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2014-04-09
  * 

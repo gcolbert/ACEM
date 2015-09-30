@@ -22,11 +22,25 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of beans that implement the TeachingUnit interface.
+ * 
+ * @param <ID>
+ *            The type of the id property of objects stored in the database
+ *            (typically java.lang.Long)
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-15
  */
 public interface TeachingUnitDAO<ID, E extends TeachingUnit> extends DAO<ID, E> {
 
+	/**
+	 * Creates a new subclass E of TeachingUnit, with the given name.
+	 * 
+	 * @param name
+	 *            A name for the new implementation of TeachingUnit
+	 * @return the newly created TeachingUnit of class E
+	 */
 	E create(String name);
 
 }

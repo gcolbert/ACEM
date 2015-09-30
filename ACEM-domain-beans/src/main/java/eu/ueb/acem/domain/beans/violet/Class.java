@@ -22,6 +22,8 @@ import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
+ * The Class domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 

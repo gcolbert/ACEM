@@ -22,6 +22,8 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
+ * The PedagogicalKeyword domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

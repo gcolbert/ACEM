@@ -25,9 +25,11 @@ import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
+ * The Resource interface defines the set of methods that must be implemented by
+ * all specific (more concrete) types of resources.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface Resource extends Serializable, Comparable<Resource> {
 
@@ -35,6 +37,7 @@ public interface Resource extends Serializable, Comparable<Resource> {
 
 	/**
 	 * The id of the original object in the information system, if any.
+	 * 
 	 * @return the id of the original object, or null.
 	 */
 	Long getIdSource();

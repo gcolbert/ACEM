@@ -26,9 +26,11 @@ import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
+ * The Organisation interface defines the set of methods that should be
+ * implemented by concrete kinds of organisations.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface Organisation extends Serializable, Comparable<Organisation> {
 

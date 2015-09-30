@@ -31,6 +31,8 @@ import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 
 /**
+ * The Spring Data Neo4j implementation of Community domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
@@ -43,10 +45,10 @@ public class CommunityNode extends OrganisationNode implements Community {
 	 * For serialization.
 	 */
 	private static final long serialVersionUID = 1861762804925897713L;
-	
+
 	@Indexed
 	private String name;
-	
+
 	@RelatedTo(elementClass = InstitutionNode.class, type = "institutionMemberOfCommunity", direction = INCOMING)
 	private Set<Institution> institutions;
 

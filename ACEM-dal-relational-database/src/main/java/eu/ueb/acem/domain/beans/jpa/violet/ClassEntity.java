@@ -31,9 +31,10 @@ import eu.ueb.acem.domain.beans.violet.Class;
 import eu.ueb.acem.domain.beans.violet.Course;
 
 /**
+ * The Spring Data JPA implementation of Class domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
- * 
  */
 @Entity(name = "Class")
 public class ClassEntity extends TeachingUnitEntity implements Class {

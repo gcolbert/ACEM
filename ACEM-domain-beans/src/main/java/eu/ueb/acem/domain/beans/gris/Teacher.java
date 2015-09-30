@@ -24,9 +24,10 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
+ * The Teacher interface extends {@link Person}.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface Teacher extends Person {
 

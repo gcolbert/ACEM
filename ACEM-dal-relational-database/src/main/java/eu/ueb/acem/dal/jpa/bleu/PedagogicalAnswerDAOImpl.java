@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.jpa.bleu.PedagogicalAnswerEntity;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalAnswerDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-26
  */

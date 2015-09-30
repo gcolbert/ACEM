@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 /**
+ * The Spring Data JPA implementation of ResourceCategoryDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  * 

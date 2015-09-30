@@ -18,11 +18,12 @@
  */
 package eu.ueb.acem.domain.beans.jaune;
 
-
 /**
+ * The Software domain bean interface defines a specific kind of
+ * {@link Resource}.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface Software extends Resource {
 

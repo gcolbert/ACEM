@@ -34,12 +34,16 @@ import eu.ueb.acem.domain.beans.neo4j.rouge.TeachingDepartmentNode;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
+ * The Spring Data Neo4j implementation of OrganisationDAO for
+ * TeachingDepartment domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
 @Repository("teachingDepartmentDAO")
-public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, TeachingDepartmentNode> implements OrganisationDAO<Long, TeachingDepartment> {
+public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, TeachingDepartmentNode> implements
+		OrganisationDAO<Long, TeachingDepartment> {
 
 	/**
 	 * For serialization.

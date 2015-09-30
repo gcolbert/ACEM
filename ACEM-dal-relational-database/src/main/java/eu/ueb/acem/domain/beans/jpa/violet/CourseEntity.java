@@ -30,6 +30,8 @@ import eu.ueb.acem.domain.beans.violet.Course;
 import eu.ueb.acem.domain.beans.violet.Credit;
 
 /**
+ * The Spring Data JPA implementation of Course domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  * 

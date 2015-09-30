@@ -34,6 +34,8 @@ import eu.ueb.acem.domain.beans.vert.Floor;
 import eu.ueb.acem.domain.beans.vert.Room;
 
 /**
+ * The Spring Data Neo4j implementation of Floor domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 

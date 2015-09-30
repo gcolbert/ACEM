@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.neo4j.vert.BuildingNode;
 import eu.ueb.acem.domain.beans.vert.Building;
 
 /**
+ * The Spring Data Neo4j implementation of BuildingDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 

@@ -22,12 +22,32 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of beans that implement the ResourceCategory interface.
+ * 
+ * @param <ID>
+ *            The type of the id property of objects stored in the database
+ *            (typically java.lang.Long)
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-21
  * 
  */
 public interface ResourceCategoryDAO<ID> extends DAO<ID, ResourceCategory> {
 
+	/**
+	 * Creates a new ResourceCategory with the given name, description and icon.
+	 * 
+	 * @param name
+	 *            A name for the ResourceCategory
+	 * @param description
+	 *            A description for the ResourceCategory
+	 * @param iconFileName
+	 *            A icon file name for the ResourceCategory, including a
+	 *            relative path starting after the base directory defined in the
+	 *            "images.path" configuration property
+	 * @return the newly created ResourceCategory
+	 */
 	ResourceCategory create(String name, String description, String iconFileName);
 
 }

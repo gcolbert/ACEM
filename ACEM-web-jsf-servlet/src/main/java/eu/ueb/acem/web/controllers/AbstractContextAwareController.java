@@ -29,12 +29,12 @@ import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 
 /**
- * An abstract class inherited by all the beans for them to get:
+ * An abstract class inherited by all the controllers for them to get:
  * 
  * <ul>
- * <li>the context of the application (sessionController).</li>
- * <li>the domain service (domainService).</li>
- * <li>the application service (applicationService).</li>
+ * <li>the context of the application (sessionController);</li>
+ * <li>the domain service (domainService);</li>
+ * <li>the application service (applicationService);</li>
  * <li>the i18n service (i18nService).
  * </ul>
  */
@@ -102,7 +102,7 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	public PersonViewBean getCurrentUserViewBean() {
 		return sessionController.getCurrentUserViewBean();
 	}
-	
+
 	/**
 	 * @param sessionController
 	 *            the sessionController to set

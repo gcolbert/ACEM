@@ -35,6 +35,8 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
 
 /**
+ * The Spring Data Neo4j implementation of PedagogicalActivity domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
@@ -127,7 +129,7 @@ public class PedagogicalActivityNode extends PedagogicalUnitNode implements Peda
 
 	@Override
 	public PedagogicalActivity getPreviousPedagogicalActivity() {
-		return (PedagogicalActivity)getPrevious();
+		return (PedagogicalActivity) getPrevious();
 	}
 
 	@Override
@@ -137,7 +139,7 @@ public class PedagogicalActivityNode extends PedagogicalUnitNode implements Peda
 
 	@Override
 	public PedagogicalActivity getNextPedagogicalActivity() {
-		return (PedagogicalActivity)getNext();
+		return (PedagogicalActivity) getNext();
 	}
 
 	@Override

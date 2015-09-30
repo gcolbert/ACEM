@@ -22,9 +22,12 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
+ * The PedagogicalUnit interface defines the set of methods that are shared by
+ * all components of a PedagogicalScenario (including PedagogicalScenario
+ * itself).
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-13
- * 
  */
 public interface PedagogicalUnit extends Serializable, Comparable<PedagogicalUnit> {
 
@@ -40,8 +43,8 @@ public interface PedagogicalUnit extends Serializable, Comparable<PedagogicalUni
 	void setName(String name);
 
 	/**
-	 * A description of this PedagogicalUnit.
-	 * It can be long, and can contain formatted HTML.
+	 * A description of this PedagogicalUnit. It can be long, and can contain
+	 * formatted HTML.
 	 * 
 	 * @return the description of the PedagogicalUnit
 	 */
@@ -60,8 +63,9 @@ public interface PedagogicalUnit extends Serializable, Comparable<PedagogicalUni
 	void setObjective(String objective);
 
 	/**
-	 * A text describing what the students need to know or know-how before they can begin this PedagogicalUnit.
-	 * It can be long, and can contain formatted HTML.
+	 * A text describing what the students need to know or know-how before they
+	 * can begin this PedagogicalUnit. It can be long, and can contain formatted
+	 * HTML.
 	 * 
 	 * @return the prerequisites
 	 */

@@ -22,12 +22,26 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of beans that implement the UseMode interface.
+ * 
+ * @param <ID>
+ *            The type of the id property of objects stored in the database
+ *            (typically java.lang.Long)
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-21
  * 
  */
 public interface UseModeDAO<ID> extends DAO<ID, UseMode> {
 
+	/**
+	 * Creates a new UseMode with the given name.
+	 * 
+	 * @param name
+	 *            A name for the UseMode
+	 * @return the newly created UseMode
+	 */
 	UseMode create(String name);
 
 }

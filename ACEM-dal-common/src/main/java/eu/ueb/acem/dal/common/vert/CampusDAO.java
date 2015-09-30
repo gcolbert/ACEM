@@ -22,11 +22,29 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.vert.Campus;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of beans that implement the Campus interface.
+ * 
+ * @param <ID>
+ *            The type of the id property of objects stored in the database
+ *            (typically java.lang.Long)
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
 public interface CampusDAO<ID> extends DAO<ID, Campus> {
 
+	/**
+	 * Creates a new Campus with the given name, latitude and longitude.
+	 * 
+	 * @param name
+	 *            A name for the new Campus
+	 * @param latitude
+	 *            A latitude value
+	 * @param longitude
+	 *            A longitude value
+	 * @return the newly created Campus
+	 */
 	Campus create(String name, Double latitude, Double longitude);
 
 }

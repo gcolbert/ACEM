@@ -26,7 +26,7 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.services.InitDatabaseService;
 
 /**
- * @author gcolbert
+ * @author Grégoire Colbert
  * @since 2015-06-17
  */
 @Controller("adminDatabaseController")

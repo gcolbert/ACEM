@@ -36,9 +36,10 @@ import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
+ * The Spring Data JPA implementation of TeachingUnit domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-13
- * 
  */
 @Entity(name = "TeachingUnit")
 public abstract class TeachingUnitEntity extends AbstractEntity implements TeachingUnit {

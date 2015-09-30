@@ -23,26 +23,36 @@ import java.util.Set;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
+ * The PedagogicalActivity domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface PedagogicalActivity extends PedagogicalUnit {
 
 	/**
-	 * The instructions given to the students in order to complete the activity.
+	 * Gets the instructions given to the students in order to complete the
+	 * activity.
 	 * 
 	 * @return the instructions given to the students
 	 */
 	String getInstructions();
 
+	/**
+	 * Sets the instructions that will be given to the students so that they can
+	 * complete the activity.
+	 * 
+	 * @param instructions
+	 *            the instructions given to the students
+	 */
 	void setInstructions(String instructions);
 
 	// ----------- SEQUENCES --------------
 
-//	Set<PedagogicalSequence> getPedagogicalSequences();
-//
-//	void setPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences);
+	// Set<PedagogicalSequence> getPedagogicalSequences();
+	//
+	// void setPedagogicalSequences(Set<PedagogicalSequence>
+	// pedagogicalSequences);
 
 	PedagogicalSequence getPedagogicalSequence();
 
@@ -50,10 +60,10 @@ public interface PedagogicalActivity extends PedagogicalUnit {
 
 	// ----------- SESSIONS --------------
 
-//	// TODO : enable if an Activity can be associated with many sessions
-//	Set<PedagogicalSession> getPedagogicalSessions();
-//
-//	void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions);
+	// // TODO : enable if an Activity can be associated with many sessions
+	// Set<PedagogicalSession> getPedagogicalSessions();
+	//
+	// void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions);
 
 	// TODO : enable if an Activity can be associated with only one session
 	PedagogicalSession getPedagogicalSession();

@@ -36,6 +36,9 @@ import eu.ueb.acem.domain.beans.jpa.jaune.DocumentationEntity;
 import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 /**
+ * The Spring Data JPA implementation of ResourceDAO for Documentation domain
+ * beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  * 
@@ -67,14 +70,13 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationEn
 			entity.getUseModes().size();
 			// Resources that are documented by the Documentation entity
 			entity.getResources().size();
-            // Documentations about this Documentation entity should be empty
+			// Documentations about this Documentation entity should be empty
 			entity.getDocumentations().size();
 		}
 	}
 
 	/**
-	 * Returns the categories containing at least one "Documentation"
-	 * entity.
+	 * Returns the categories containing at least one "Documentation" entity.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategories() {
@@ -123,7 +125,8 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationEn
 
 	@Override
 	public Collection<Documentation> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<DocumentationEntity> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Iterable<DocumentationEntity> endResults = repository.getResourcesInCategoryForPerson(category.getId(),
+				person.getId());
 		Collection<Documentation> collection = new HashSet<Documentation>();
 		if (endResults.iterator() != null) {
 			Iterator<DocumentationEntity> iterator = endResults.iterator();

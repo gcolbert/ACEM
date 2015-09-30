@@ -30,6 +30,8 @@ import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 
 /**
+ * The Spring Data JPA implementation of Documentation domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

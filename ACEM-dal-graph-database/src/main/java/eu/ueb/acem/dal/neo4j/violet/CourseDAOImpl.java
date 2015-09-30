@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.neo4j.violet.CourseNode;
 import eu.ueb.acem.domain.beans.violet.Course;
 
 /**
+ * The Spring Data Neo4j implementation of CourseDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 

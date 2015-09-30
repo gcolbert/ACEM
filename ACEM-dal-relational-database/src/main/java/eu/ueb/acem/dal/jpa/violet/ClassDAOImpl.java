@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jpa.violet.ClassEntity;
 import eu.ueb.acem.domain.beans.violet.Class;
 
 /**
+ * The Spring Data JPA implementation of ClassDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

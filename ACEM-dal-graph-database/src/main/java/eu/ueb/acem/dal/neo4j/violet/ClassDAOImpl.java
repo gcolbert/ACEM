@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.neo4j.violet.ClassNode;
 import eu.ueb.acem.domain.beans.violet.Class;
 
 /**
+ * The Spring Data Neo4j implementation of ClassDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 

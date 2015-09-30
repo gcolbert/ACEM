@@ -33,7 +33,7 @@ import eu.ueb.acem.dal.common.DAO;
  * This abstract class uses Java generics to define the common methods of all
  * Spring Data Neo4j DAO instances.
  * 
- * @author gcolbert
+ * @author Grégoire Colbert
  *
  * @param <E>
  *            The name of a bean interface
@@ -51,10 +51,30 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 	@Inject
 	protected transient Neo4jOperations neo4jOperations;
 
+	/**
+	 * This method returns the repository that deals with entities of class N.
+	 * 
+	 * @return the repository for entities of class N
+	 */
 	protected abstract GenericRepository<N> getRepository();
 
+	/**
+	 * This method initializes the {@link java.util.Collection}s of the given
+	 * entity.
+	 * 
+	 * @param entity
+	 *            The entity with collections to initialize
+	 */
 	protected abstract void initializeCollections(E entity);
 
+	/**
+	 * This method persists the given entity in the datastore, initializes the
+	 * collections and returns the stored version of the entity.
+	 * 
+	 * @param entity
+	 *            The entity to persist
+	 * @return the entity received, with potentially new property values
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public E create(E entity) {
@@ -64,12 +84,18 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 	}
 
 	/**
-	 * We should use simply return (id != null) ? repository.exists(id) : false;
-	 * but this bug https://jira.spring.io/browse/DATAGRAPH-438 prevents the
-	 * correct detection of the entity's class. It means that the standard
-	 * implementation of exists only checks if a node with this id exists in the
-	 * whole database, independently of the type that the repository deals with.
+	 * This method tests that a node of type N exists with the given "id"
+	 * property.
 	 * 
+	 * We should use simply return (id != null) ? repository.exists(id) : false;
+	 * but <a href="https://jira.spring.io/browse/DATAGRAPH-438">this bug</a>
+	 * prevents the correct detection of the entity's class. It means that the
+	 * standard implementation of "exists" only checks if a node with this id
+	 * exists in the whole database, independently of the type that the
+	 * repository deals with.
+	 * 
+	 * @param id
+	 *            The "id" to check for existence
 	 * @return true if there's an entity with the given id in the current DAO,
 	 *         false otherwise
 	 */
@@ -83,6 +109,9 @@ public abstract class AbstractDAO<E, N extends E> implements DAO<Long, E>, Seria
 		}
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public E retrieveById(Long id) {
 		if (exists(id)) {

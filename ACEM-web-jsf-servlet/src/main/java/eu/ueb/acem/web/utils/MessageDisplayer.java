@@ -33,12 +33,14 @@ import eu.ueb.acem.services.exceptions.ServiceException;
 
 /**
  * Tool to display a message to the user after an action has been performed on
- * the server side. The JSF page must have a
- * &lt;p:growl id="someId"&gt;
+ * the server side. The JSF page must have a &lt;p:growl id="someId"&gt;
  * component in the same form, and the component that calls the server must
  * reference this id using update=":someId" attribute.
  * 
- * @author gcolbert
+ * @author Grégoire Colbert
+ * @see <a
+ *      href="http://www.primefaces.org/showcase/ui/message/growl.xhtml">Primefaces
+ *      Growl demo</a>
  * @since 2014-03-17
  */
 public class MessageDisplayer {

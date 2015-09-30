@@ -34,6 +34,9 @@ import eu.ueb.acem.domain.beans.jpa.rouge.CommunityEntity;
 import eu.ueb.acem.domain.beans.rouge.Community;
 
 /**
+ * The Spring Data JPA implementation of OrganisationDAO for Community domain
+ * beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-03
  * 

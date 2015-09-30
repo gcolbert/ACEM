@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jpa.vert.CampusEntity;
 import eu.ueb.acem.domain.beans.vert.Campus;
 
 /**
+ * The Spring Data JPA implementation of CampusDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

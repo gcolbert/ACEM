@@ -36,9 +36,10 @@ import eu.ueb.acem.domain.beans.neo4j.rouge.OrganisationNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
+ * The Spring Data Neo4j implementation of Person domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @NodeEntity
 @TypeAlias("Person")
@@ -62,13 +63,13 @@ public class PersonNode extends AbstractNode implements Person {
 	private String login;
 
 	private String password;
-	
+
 	private String email;
-	
+
 	private String language;
 
 	private Boolean administrator;
-	
+
 	private Boolean teacher;
 
 	public PersonNode() {
@@ -128,7 +129,7 @@ public class PersonNode extends AbstractNode implements Person {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	@Override
 	public String getLanguage() {
 		return language;

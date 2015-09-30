@@ -35,6 +35,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalSequenceNode;
 
 /**
+ * The Spring Data Neo4j implementation of PedagogicalSequenceDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-15
  * 

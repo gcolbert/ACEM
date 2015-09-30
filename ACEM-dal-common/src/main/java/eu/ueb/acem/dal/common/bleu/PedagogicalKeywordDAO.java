@@ -25,6 +25,10 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalKeyword;
  * This interface describes the methods expected from DAO instances that take
  * care of PedagogicalKeyword beans.
  * 
+ * @param <ID>
+ *            The type of the id property of objects stored in the database
+ *            (typically java.lang.Long)
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

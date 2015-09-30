@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jpa.violet.CourseEntity;
 import eu.ueb.acem.domain.beans.violet.Course;
 
 /**
+ * The Spring Data JPA implementation of CourseDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

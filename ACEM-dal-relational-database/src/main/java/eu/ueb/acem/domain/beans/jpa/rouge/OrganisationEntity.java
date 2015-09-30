@@ -36,6 +36,8 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
+ * The Spring Data JPA implementation of Organisation domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

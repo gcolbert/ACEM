@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.neo4j.violet.DegreeNode;
 import eu.ueb.acem.domain.beans.violet.Degree;
 
 /**
+ * The Spring Data Neo4j implementation of DegreeDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 

@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 
 /**
+ * The Spring Data JPA implementation of AdministrativeDepartment domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

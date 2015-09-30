@@ -28,9 +28,12 @@ import javax.persistence.MappedSuperclass;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
+ * An abstract class that defines the most basic methods of all database
+ * entities: the "id" property, the overload of functions "hashCode", "equals"
+ * and "toString".
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
- * 
  */
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable {

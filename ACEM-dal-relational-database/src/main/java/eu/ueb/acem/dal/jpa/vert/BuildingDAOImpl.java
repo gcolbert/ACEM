@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jpa.vert.BuildingEntity;
 import eu.ueb.acem.domain.beans.vert.Building;
 
 /**
+ * The Spring Data JPA implementation of BuildingDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

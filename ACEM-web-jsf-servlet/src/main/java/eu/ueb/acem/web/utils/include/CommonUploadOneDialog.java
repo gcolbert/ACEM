@@ -38,7 +38,7 @@ import eu.ueb.acem.services.util.file.FileUtil;
 /**
  * A visual bean for the dialog Upload.
  * 
- * @author gcolbert
+ * @author Grégoire Colbert
  */
 public class CommonUploadOneDialog implements Serializable {
 

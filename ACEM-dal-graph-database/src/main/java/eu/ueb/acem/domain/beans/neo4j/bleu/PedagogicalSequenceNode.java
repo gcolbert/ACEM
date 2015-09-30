@@ -35,6 +35,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 
 /**
+ * The Spring Data Neo4j implementation of PedagogicalSequence domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-13
  */

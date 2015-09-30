@@ -35,6 +35,8 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalActivity domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 
@@ -115,7 +117,7 @@ public class PedagogicalActivityEntity extends PedagogicalUnitEntity implements 
 
 	@Override
 	public PedagogicalActivity getPreviousPedagogicalActivity() {
-		return (PedagogicalActivity)getPrevious();
+		return (PedagogicalActivity) getPrevious();
 	}
 
 	@Override
@@ -125,7 +127,7 @@ public class PedagogicalActivityEntity extends PedagogicalUnitEntity implements 
 
 	@Override
 	public PedagogicalActivity getNextPedagogicalActivity() {
-		return (PedagogicalActivity)getNext();
+		return (PedagogicalActivity) getNext();
 	}
 
 	@Override

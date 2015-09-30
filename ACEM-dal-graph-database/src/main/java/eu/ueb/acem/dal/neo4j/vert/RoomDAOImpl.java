@@ -30,6 +30,8 @@ import eu.ueb.acem.domain.beans.neo4j.vert.RoomNode;
 import eu.ueb.acem.domain.beans.vert.Room;
 
 /**
+ * The Spring Data Neo4j implementation of RoomDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 

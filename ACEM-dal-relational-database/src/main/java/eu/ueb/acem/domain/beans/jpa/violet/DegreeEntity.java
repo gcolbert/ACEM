@@ -29,9 +29,10 @@ import eu.ueb.acem.domain.beans.violet.Credit;
 import eu.ueb.acem.domain.beans.violet.Degree;
 
 /**
+ * The Spring Data JPA implementation of Degree domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
- * 
  */
 @Entity(name = "Degree")
 public class DegreeEntity extends TeachingUnitEntity implements Degree {

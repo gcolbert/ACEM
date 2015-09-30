@@ -36,6 +36,9 @@ import eu.ueb.acem.domain.beans.neo4j.jaune.ProfessionalTrainingNode;
 import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
 
 /**
+ * The Spring Data Neo4j implementation of ResourceDAO for ProfessionalTraining
+ * domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2013-12-11
  * 
@@ -119,8 +122,10 @@ public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, P
 	}
 
 	@Override
-	public Collection<ProfessionalTraining> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<ProfessionalTrainingNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+	public Collection<ProfessionalTraining> retrieveResourcesInCategoryForPerson(ResourceCategory category,
+			Person person) {
+		Iterable<ProfessionalTrainingNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(),
+				person.getId());
 		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();
 		if (endResults.iterator() != null) {
 			Iterator<ProfessionalTrainingNode> iterator = endResults.iterator();

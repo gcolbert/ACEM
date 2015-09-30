@@ -25,6 +25,8 @@ import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 
 /**
+ * The Spring Data JPA implementation of TeachingMode domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

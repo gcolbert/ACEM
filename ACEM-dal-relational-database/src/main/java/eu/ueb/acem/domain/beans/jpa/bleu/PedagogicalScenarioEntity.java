@@ -36,6 +36,8 @@ import eu.ueb.acem.domain.beans.jpa.violet.TeachingUnitEntity;
 import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalScenario domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

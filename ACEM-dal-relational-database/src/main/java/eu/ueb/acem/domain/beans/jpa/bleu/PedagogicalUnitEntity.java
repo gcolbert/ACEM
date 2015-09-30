@@ -33,6 +33,8 @@ import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalUnit abstract domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-13
  * 
@@ -58,9 +60,9 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 
 	@Lob
 	private String targetedSkills;
-	
+
 	private String pedagogicalMaterial;
-	
+
 	private Long start;
 
 	private Long duration;
@@ -88,7 +90,7 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 	public String getName() {
 		return name;
 	}
-	
+
 	@Override
 	public void setName(String name) {
 		this.name = name;
@@ -133,7 +135,7 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 	public void setTargetedSkills(String targetedSkills) {
 		this.targetedSkills = targetedSkills;
 	}
-	
+
 	@Override
 	public String getPedagogicalMaterial() {
 		return pedagogicalMaterial;

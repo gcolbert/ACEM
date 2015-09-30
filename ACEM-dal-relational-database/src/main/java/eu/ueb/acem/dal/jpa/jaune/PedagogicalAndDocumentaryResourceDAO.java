@@ -36,6 +36,9 @@ import eu.ueb.acem.domain.beans.jpa.jaune.PedagogicalAndDocumentaryResourceEntit
 import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 /**
+ * The Spring Data JPA implementation of ResourceDAO for
+ * PedagogicalAndDocumentaryResource domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  * 
@@ -57,7 +60,7 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	protected final GenericRepository<PedagogicalAndDocumentaryResourceEntity> getRepository() {
 		return repository;
 	}
-	
+
 	@Override
 	protected final void initializeCollections(PedagogicalAndDocumentaryResource entity) {
 		if (entity != null) {
@@ -106,7 +109,8 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 
 	@Override
 	public Collection<PedagogicalAndDocumentaryResource> retrieveAllWithCategory(ResourceCategory category) {
-		Iterable<PedagogicalAndDocumentaryResourceEntity> endResults = repository.getEntitiesWithCategory(category.getId());
+		Iterable<PedagogicalAndDocumentaryResourceEntity> endResults = repository.getEntitiesWithCategory(category
+				.getId());
 		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalAndDocumentaryResourceEntity> iterator = endResults.iterator();
@@ -120,8 +124,10 @@ public class PedagogicalAndDocumentaryResourceDAO extends
 	}
 
 	@Override
-	public Collection<PedagogicalAndDocumentaryResource> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<PedagogicalAndDocumentaryResourceEntity> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+	public Collection<PedagogicalAndDocumentaryResource> retrieveResourcesInCategoryForPerson(
+			ResourceCategory category, Person person) {
+		Iterable<PedagogicalAndDocumentaryResourceEntity> endResults = repository.getResourcesInCategoryForPerson(
+				category.getId(), person.getId());
 		Collection<PedagogicalAndDocumentaryResource> collection = new HashSet<PedagogicalAndDocumentaryResource>();
 		if (endResults.iterator() != null) {
 			Iterator<PedagogicalAndDocumentaryResourceEntity> iterator = endResults.iterator();

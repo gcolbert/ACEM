@@ -39,6 +39,8 @@ import eu.ueb.acem.domain.beans.jpa.bleu.PedagogicalAnswerEntity;
 import eu.ueb.acem.domain.beans.jpa.bleu.PedagogicalSessionEntity;
 
 /**
+ * The Spring Data JPA implementation of ResourceCategory domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

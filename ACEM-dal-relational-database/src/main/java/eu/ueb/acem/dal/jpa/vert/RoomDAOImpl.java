@@ -30,6 +30,8 @@ import eu.ueb.acem.domain.beans.jpa.vert.RoomEntity;
 import eu.ueb.acem.domain.beans.vert.Room;
 
 /**
+ * The Spring Data JPA implementation of RoomDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

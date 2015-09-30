@@ -26,6 +26,8 @@ import org.springframework.data.neo4j.annotation.NodeEntity;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 
 /**
+ * The Spring Data Neo4j implementation of ProfessionalTraining domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-06
  * 

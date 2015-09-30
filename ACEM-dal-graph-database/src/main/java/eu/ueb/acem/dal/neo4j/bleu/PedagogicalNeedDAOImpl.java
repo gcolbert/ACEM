@@ -32,6 +32,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalNeedNode;
 
 /**
+ * The Spring Data Neo4j implementation of PedagogicalNeedDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 

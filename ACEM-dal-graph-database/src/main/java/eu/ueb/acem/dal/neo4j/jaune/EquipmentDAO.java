@@ -36,6 +36,9 @@ import eu.ueb.acem.domain.beans.neo4j.jaune.EquipmentNode;
 import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
 
 /**
+ * The Spring Data Neo4j implementation of ResourceDAO for Equipment domain
+ * beans.
+ * 
  * @author Grégoire Colbert
  * @since 2014-03-11
  * 
@@ -119,7 +122,8 @@ public class EquipmentDAO extends AbstractDAO<Equipment, EquipmentNode> implemen
 
 	@Override
 	public Collection<Equipment> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<EquipmentNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Iterable<EquipmentNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(),
+				person.getId());
 		Collection<Equipment> collection = new HashSet<Equipment>();
 		if (endResults.iterator() != null) {
 			Iterator<EquipmentNode> iterator = endResults.iterator();

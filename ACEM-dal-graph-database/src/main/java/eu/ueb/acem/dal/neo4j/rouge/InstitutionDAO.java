@@ -34,12 +34,16 @@ import eu.ueb.acem.domain.beans.neo4j.rouge.InstitutionNode;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 
 /**
+ * The Spring Data Neo4j implementation of OrganisationDAO for Institution
+ * domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
 @Repository("institutionDAO")
-public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> implements OrganisationDAO<Long, Institution> {
+public class InstitutionDAO extends AbstractDAO<Institution, InstitutionNode> implements
+		OrganisationDAO<Long, Institution> {
 
 	/**
 	 * FOr serialization.

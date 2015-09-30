@@ -29,9 +29,10 @@ import eu.ueb.acem.domain.beans.vert.Building;
 import eu.ueb.acem.domain.beans.vert.Campus;
 
 /**
+ * The Spring Data JPA implementation of Campus domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
- * 
  */
 @Entity(name = "Campus")
 public class CampusEntity extends PhysicalSpaceEntity implements Campus {

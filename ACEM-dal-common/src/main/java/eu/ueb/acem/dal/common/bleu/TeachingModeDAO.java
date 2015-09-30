@@ -22,6 +22,13 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of beans that implement the TeachingMode interface.
+ * 
+ * @param <ID>
+ *            The type of the id property of objects stored in the database
+ *            (typically java.lang.Long)
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-15
  * 

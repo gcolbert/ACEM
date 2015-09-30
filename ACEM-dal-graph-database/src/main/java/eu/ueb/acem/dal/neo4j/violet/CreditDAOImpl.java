@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.neo4j.violet.CreditNode;
 import eu.ueb.acem.domain.beans.violet.Credit;
 
 /**
+ * The Spring Data Neo4j implementation of CreditDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 

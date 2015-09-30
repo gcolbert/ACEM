@@ -31,6 +31,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalUnit;
 import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
 
 /**
+ * The Spring Data JPA implementation of PedagogicalKeyword domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

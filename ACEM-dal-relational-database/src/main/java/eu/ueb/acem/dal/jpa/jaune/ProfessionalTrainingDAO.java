@@ -36,6 +36,9 @@ import eu.ueb.acem.domain.beans.jpa.jaune.ProfessionalTrainingEntity;
 import eu.ueb.acem.domain.beans.jpa.jaune.ResourceCategoryEntity;
 
 /**
+ * The Spring Data JPA implementation of ResourceDAO for ProfessionalTraining
+ * domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-29
  * 
@@ -119,8 +122,10 @@ public class ProfessionalTrainingDAO extends AbstractDAO<ProfessionalTraining, P
 	}
 
 	@Override
-	public Collection<ProfessionalTraining> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<ProfessionalTrainingEntity> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+	public Collection<ProfessionalTraining> retrieveResourcesInCategoryForPerson(ResourceCategory category,
+			Person person) {
+		Iterable<ProfessionalTrainingEntity> endResults = repository.getResourcesInCategoryForPerson(category.getId(),
+				person.getId());
 		Collection<ProfessionalTraining> collection = new HashSet<ProfessionalTraining>();
 		if (endResults.iterator() != null) {
 			Iterator<ProfessionalTrainingEntity> iterator = endResults.iterator();

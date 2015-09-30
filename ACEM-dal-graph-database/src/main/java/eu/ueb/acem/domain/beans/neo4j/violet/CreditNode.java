@@ -34,9 +34,10 @@ import eu.ueb.acem.domain.beans.violet.Credit;
 import eu.ueb.acem.domain.beans.violet.Degree;
 
 /**
+ * The Spring Data Neo4j implementation of Credit domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @NodeEntity
 @TypeAlias("Credit")

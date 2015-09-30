@@ -35,6 +35,8 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalSessionNode;
 
 /**
+ * The Spring Data Neo4j implementation of PedagogicalSessionDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-15
  * 

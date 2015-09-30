@@ -32,6 +32,8 @@ import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
+ * The Spring Data JPA implementation of TeachingDepartment domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

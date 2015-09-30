@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.neo4j.gris.TeacherNode;
 
 /**
+ * The Spring Data Neo4j implementation of PersonDAO for Teacher domain beans.
+ * 
  * @author Grégoire Colbert
  * @since 2013-12-11
  * 

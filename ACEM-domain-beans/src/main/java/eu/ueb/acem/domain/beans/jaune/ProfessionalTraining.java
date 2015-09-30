@@ -19,9 +19,11 @@
 package eu.ueb.acem.domain.beans.jaune;
 
 /**
+ * The ProfessionalTraining domain bean interface defines a specific kind of
+ * {@link Resource}.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-06
- * 
  */
 public interface ProfessionalTraining extends Resource {
 

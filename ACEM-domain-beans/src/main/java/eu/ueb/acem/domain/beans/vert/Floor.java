@@ -21,9 +21,10 @@ package eu.ueb.acem.domain.beans.vert;
 import java.util.Set;
 
 /**
+ * The Floor domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface Floor extends PhysicalSpace {
 

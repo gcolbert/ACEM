@@ -22,11 +22,31 @@ import eu.ueb.acem.dal.common.DAO;
 import eu.ueb.acem.domain.beans.vert.Room;
 
 /**
+ * This interface describes the methods expected from DAO instances that take
+ * care of beans that implement the Room interface.
+ * 
+ * @param <ID>
+ *            The type of the id property of objects stored in the database
+ *            (typically java.lang.Long)
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-22
  */
 public interface RoomDAO<ID> extends DAO<ID, Room> {
 
+	/**
+	 * Creates a new Room with the given name, roomCapacity and Wifi
+	 * accessibility boolean.
+	 * 
+	 * @param name
+	 *            A name for the new Room
+	 * @param roomCapacity
+	 *            A room capacity
+	 * @param hasWifiAccess
+	 *            Pass true if the Room is covered by a Wifi hotspot, false
+	 *            otherwise
+	 * @return the newly created Room
+	 */
 	Room create(String name, Integer roomCapacity, Boolean hasWifiAccess);
 
 }

@@ -21,9 +21,10 @@ package eu.ueb.acem.domain.beans.bleu;
 import java.util.Set;
 
 /**
+ * The PedagogicalSequence domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-13
- * 
  */
 public interface PedagogicalSequence extends PedagogicalUnit {
 

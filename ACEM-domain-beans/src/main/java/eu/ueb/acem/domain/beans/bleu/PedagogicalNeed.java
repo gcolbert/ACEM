@@ -21,9 +21,10 @@ package eu.ueb.acem.domain.beans.bleu;
 import java.util.Set;
 
 /**
+ * The PedagogicalNeed domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface PedagogicalNeed extends PedagogicalAdvice, Comparable<PedagogicalNeed> {
 

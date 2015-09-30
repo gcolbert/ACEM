@@ -35,6 +35,8 @@ import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
+ * The Spring Data Neo4j implementation of Institution domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 

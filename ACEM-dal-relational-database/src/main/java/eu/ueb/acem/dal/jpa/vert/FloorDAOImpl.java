@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.jpa.vert.FloorEntity;
 import eu.ueb.acem.domain.beans.vert.Floor;
 
 /**
+ * The Spring Data JPA implementation of FloorDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-04
  * 

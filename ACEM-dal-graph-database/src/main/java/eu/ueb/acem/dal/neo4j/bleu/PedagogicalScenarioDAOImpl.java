@@ -37,6 +37,8 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.neo4j.bleu.PedagogicalScenarioNode;
 
 /**
+ * The Spring Data Neo4j implementation of PedagogicalScenarioDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2013-12-11
  * 

@@ -33,6 +33,8 @@ import eu.ueb.acem.domain.beans.jpa.rouge.OrganisationEntity;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
+ * The Spring Data JPA implementation of Person domain bean.
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  * 

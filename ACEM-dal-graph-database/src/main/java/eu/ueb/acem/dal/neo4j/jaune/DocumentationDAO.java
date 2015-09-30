@@ -36,6 +36,9 @@ import eu.ueb.acem.domain.beans.neo4j.jaune.DocumentationNode;
 import eu.ueb.acem.domain.beans.neo4j.jaune.ResourceCategoryNode;
 
 /**
+ * The Spring Data Neo4j implementation of ResourceDAO for Documentation domain
+ * beans.
+ * 
  * @author Grégoire Colbert
  * @since 2014-03-11
  * 
@@ -67,14 +70,13 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNo
 			neo4jOperations.fetch(entity.getUseModes());
 			// Resources that are documented by the Documentation entity
 			neo4jOperations.fetch(entity.getResources());
-            // Documentations about this Documentation entity should be empty
+			// Documentations about this Documentation entity should be empty
 			neo4jOperations.fetch(entity.getDocumentations());
 		}
 	}
 
 	/**
-	 * Returns the categories containing at least one "Documentation"
-	 * entity.
+	 * Returns the categories containing at least one "Documentation" entity.
 	 */
 	@Override
 	public Collection<ResourceCategory> retrieveCategories() {
@@ -123,7 +125,8 @@ public class DocumentationDAO extends AbstractDAO<Documentation, DocumentationNo
 
 	@Override
 	public Collection<Documentation> retrieveResourcesInCategoryForPerson(ResourceCategory category, Person person) {
-		Iterable<DocumentationNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(), person.getId());
+		Iterable<DocumentationNode> endResults = repository.getResourcesInCategoryForPerson(category.getId(),
+				person.getId());
 		Collection<Documentation> collection = new HashSet<Documentation>();
 		if (endResults.iterator() != null) {
 			Iterator<DocumentationNode> iterator = endResults.iterator();

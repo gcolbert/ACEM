@@ -29,6 +29,8 @@ import eu.ueb.acem.domain.beans.neo4j.vert.CampusNode;
 import eu.ueb.acem.domain.beans.vert.Campus;
 
 /**
+ * The Spring Data Neo4j implementation of CampusDAO.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 

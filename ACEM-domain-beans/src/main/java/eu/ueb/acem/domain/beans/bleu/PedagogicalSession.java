@@ -24,9 +24,10 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.violet.Class;
 
 /**
+ * The PedagogicalSession domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-13
- * 
  */
 public interface PedagogicalSession extends PedagogicalUnit {
 
