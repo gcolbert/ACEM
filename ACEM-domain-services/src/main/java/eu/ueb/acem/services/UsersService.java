@@ -21,6 +21,8 @@ package eu.ueb.acem.services;
 import java.io.Serializable;
 import java.util.Collection;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 
@@ -31,12 +33,27 @@ import eu.ueb.acem.domain.beans.gris.Teacher;
  */
 public interface UsersService extends Serializable {
 
+	/**
+	 * Gets a user from its login. If the user doesn't exist and the
+	 * authentication scheme is "auth-cas", the account is automatically
+	 * created. If it doesn't exist and the authentication scheme is
+	 * "auth-manual", an exception is thrown.
+	 * 
+	 * @param login
+	 *            A user login
+	 * @return a User instance
+	 * @throws UsernameNotFoundException
+	 *             if the user doesn't exist and the authentication scheme
+	 *             doesn't guarantee a genuine authentication.
+	 */
+	Person getUser(String login) throws UsernameNotFoundException;	
+
 	Long countTeachers();
-	
+
 	Teacher createTeacher(String name, String login, String password);
-	
+
 	Teacher retrieveTeacher(Long id);
-	
+
 	Person updatePerson(Person domainBean);
 
 	Teacher updateTeacher(Teacher teacher);
@@ -48,7 +65,7 @@ public interface UsersService extends Serializable {
 	Boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation);
 
 	Boolean addFavoriteToolCategoryForPerson(Long idTeacher, Long idToolCategory);
-	
+
 	Boolean removeFavoriteToolCategoryForPerson(Long idTeacher, Long idToolCategory);
 
 	Collection<Teacher> retrieveAllTeachers();

@@ -56,6 +56,8 @@ import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.services.ApplicationService;
+import eu.ueb.acem.services.ImagesService;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.ResourcesService;
 import eu.ueb.acem.services.UsersService;
@@ -155,6 +157,12 @@ public class MyToolsController extends AbstractContextAwareController implements
 	 * Uploaded file
 	 */
 	private Path temporaryFilePath;
+
+	@Inject
+	private ImagesService imagesService;
+
+	@Inject
+	private ApplicationService applicationService;
 
 	/* ***********************************************************************/
 
@@ -863,6 +871,16 @@ public class MyToolsController extends AbstractContextAwareController implements
 	/*
 	 * ****************** Modal dialogs ********************
 	 */
+	@Override
+	public ImagesService getImagesService() {
+		return imagesService;
+	}
+
+	@Override
+	public ApplicationService getApplicationService() {
+		return applicationService;
+	}
+
 	/**
 	 * Get the Bean to manage dialog
 	 * 

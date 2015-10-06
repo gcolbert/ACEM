@@ -20,51 +20,22 @@ package eu.ueb.acem.services;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 /**
- * A service that can return the application version.
+ * A service that can return Application level information.
+ * 
+ * @author Grégoire Colbert
+ * @since 2013-11-20
  */
-@Service("applicationService")
-public class ApplicationService implements InitializingBean, Serializable {
+public interface ApplicationService extends Serializable {
 
 	/**
-	 * The serialization id.
+	 * @return The version of the Application
 	 */
-	private static final long serialVersionUID = -5370486400815436620L;
+	String getVersion();
 
 	/**
-	 * A logger.
+	 * @return Path to the temp directory for uploaded files
 	 */
-	private static final Logger logger = LoggerFactory
-			.getLogger(ApplicationService.class);
-
-	/**
-	 * The version as a string.
-	 */
-	@Value("${project.version}")
-	private String version;
-
-	/**
-	 * Bean constructor.
-	 */
-	public ApplicationService() {
-	}
-
-	@Override
-	public void afterPropertiesSet() {
-		logger.info("Starting version " + getVersion() + "...");
-	}
-
-	/**
-	 * @return The composed version
-	 */
-	public String getVersion() {
-		return version;
-	}
+	String getTemporaryDirectory();
 
 }

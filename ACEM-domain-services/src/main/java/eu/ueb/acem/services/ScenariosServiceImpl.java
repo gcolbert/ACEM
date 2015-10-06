@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.services;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import javax.inject.Inject;
@@ -43,7 +42,7 @@ import eu.ueb.acem.services.exceptions.ServiceException;
  * 
  */
 @Service("scenariosService")
-public class ScenariosServiceImpl implements ScenariosService, Serializable {
+public class ScenariosServiceImpl implements ScenariosService {
 
 	/**
 	 * For serialization.

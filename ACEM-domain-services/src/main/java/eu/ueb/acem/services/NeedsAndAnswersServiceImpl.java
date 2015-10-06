@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.services;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,7 +44,7 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
  * 
  */
 @Service("needsAndAnswersService")
-public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Serializable {
+public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	/**
 	 * For serialization.

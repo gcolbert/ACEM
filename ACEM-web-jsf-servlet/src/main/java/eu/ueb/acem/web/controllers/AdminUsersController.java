@@ -40,6 +40,7 @@ import eu.ueb.acem.domain.beans.ldap.LdapUser;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.UsersService;
+import eu.ueb.acem.services.auth.LdapUserService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -68,6 +69,9 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 
 	@Inject
 	private UsersService usersService;
+
+	@Inject
+	private LdapUserService ldapUserService;
 
 	@Inject
 	private OrganisationsService organisationsService;
@@ -286,7 +290,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 			this.ldapUsers = new ArrayList<LdapUser>();
 			if (searchLdap != null && searchLdap.trim().length() > 2) {
 				try{
-					this.ldapUsers = getDomainService().getLdapUserService().findAllByCnAndUid(searchLdap);
+					this.ldapUsers = ldapUserService.findAllByCnAndUid(searchLdap);
 				}
 				catch(Exception e){
 					MessageDisplayer.error(e, msgs, getCurrentUserLocale(), logger);

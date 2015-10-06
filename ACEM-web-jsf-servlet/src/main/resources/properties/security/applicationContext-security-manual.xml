@@ -31,9 +31,7 @@
 
 	<b:bean id="authProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
 		<b:property name="userDetailsService">
-			<b:bean class="eu.ueb.acem.services.auth.DaoUserDetailsService">
-				<b:property name="domainService" ref="domainService" />
-			</b:bean>
+			<b:bean class="eu.ueb.acem.services.auth.DaoUserDetailsService"/>
 		</b:property>
 		<b:property name="passwordEncoder" ref="bcryptEncoder" />
 	</b:bean>

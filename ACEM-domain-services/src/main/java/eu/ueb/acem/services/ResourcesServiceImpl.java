@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.services;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -51,7 +50,7 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * 
  */
 @Service("resourcesService")
-public class ResourcesServiceImpl implements ResourcesService, Serializable {
+public class ResourcesServiceImpl implements ResourcesService {
 
 	/**
 	 * For serialization.

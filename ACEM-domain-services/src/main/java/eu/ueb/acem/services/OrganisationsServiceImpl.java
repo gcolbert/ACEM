@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.services;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -42,7 +41,7 @@ import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
  * 
  */
 @Service("organisationsService")
-public class OrganisationsServiceImpl implements OrganisationsService, Serializable {
+public class OrganisationsServiceImpl implements OrganisationsService {
 
 	/**
 	 * For serialization.

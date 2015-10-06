@@ -39,6 +39,8 @@ import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.services.ApplicationService;
+import eu.ueb.acem.services.ImagesService;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
@@ -100,6 +102,12 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	 * Dialog for uploading a file
 	 */
 	private CommonUploadOneDialog commonUploadOneDialog;
+
+	@Inject
+	private ImagesService imagesService;
+
+	@Inject
+	private ApplicationService applicationService;
 
 	/**
 	 * Uploaded file
@@ -826,6 +834,16 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	/*
 	 * ***************** IMAGE UPLOAD ************************************
 	 */
+	@Override
+	public ImagesService getImagesService() {
+		return imagesService;
+	}
+
+	@Override
+	public ApplicationService getApplicationService() {
+		return applicationService;
+	}
+
 	/**
 	 * Get the Bean to manage dialog
 	 * 

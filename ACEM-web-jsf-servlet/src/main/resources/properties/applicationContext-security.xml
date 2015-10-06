@@ -19,7 +19,7 @@
 
 	<!-- Spring Security configuration for SAML authentication -->
 	<beans profile="auth-saml">
-		<import resource="security/applicationContext-security-saml-sample.xml" />
+		<import resource="security/applicationContext-security-saml.xml" />
 	</beans>
 
 </beans>

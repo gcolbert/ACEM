@@ -24,9 +24,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.services.DomainService;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,6 +32,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.services.UsersService;
 
 /**
  * A bean to manage Spring DAO authentication.
@@ -49,15 +49,7 @@ public class DatabaseUserDetailsService implements AuthenticationUserDetailsServ
 	private static final long serialVersionUID = 7308722131142441000L;
 
 	@Inject
-	private DomainService domainService;
-
-	public DomainService getDomainService() {
-		return domainService;
-	}
-
-	public void setDomainService(DomainService domainService) {
-		this.domainService = domainService;
-	}
+	private UsersService usersService;
 
 	/**
 	 * @param targetUser
@@ -91,7 +83,7 @@ public class DatabaseUserDetailsService implements AuthenticationUserDetailsServ
 
 	@Override
 	public UserDetails loadUserDetails(Authentication arg0) {
-		Person user = getDomainService().getUser(arg0.getName());
+		Person user = usersService.getUser(arg0.getName());
 		return loadUserByUser(user);
 	}
 

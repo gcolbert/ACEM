@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
@@ -27,6 +29,7 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 
@@ -47,6 +50,9 @@ public class SessionController extends AbstractDomainAwareBean {
 	 */
 	private PersonViewBean currentUserViewBean;
 
+	@Inject
+	private UsersService usersService;
+	
 	/*
 	 * ****************** INIT ********************
 	 */
@@ -72,7 +78,7 @@ public class SessionController extends AbstractDomainAwareBean {
 		boolean authorized = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
 				|| authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
 		if (authorized) {
-			currentUser = getDomainService().getUser(authentication.getName());
+			currentUser = usersService.getUser(authentication.getName());
 		}
 		return currentUser;
 	}

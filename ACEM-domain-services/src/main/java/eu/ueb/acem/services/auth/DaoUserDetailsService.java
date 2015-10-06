@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.services.DomainService;
+import eu.ueb.acem.services.UsersService;
 
 /**
  * A bean to manage Spring DAO authentication.
@@ -48,15 +48,7 @@ public class DaoUserDetailsService implements UserDetailsService, Serializable {
 	private static final long serialVersionUID = 999452925502659537L;
 
 	@Inject
-	private DomainService domainService;
-
-	public DomainService getDomainService() {
-		return domainService;
-	}
-
-	public void setDomainService(DomainService domainService) {
-		this.domainService = domainService;
-	}
+	private UsersService usersService;
 
 	/**
 	 * @param targetUser
@@ -90,7 +82,7 @@ public class DaoUserDetailsService implements UserDetailsService, Serializable {
 
 	@Override
 	public UserDetails loadUserByUsername(String arg0) {
-		Person user = getDomainService().getUser(arg0);
+		Person user = usersService.getUser(arg0);
 		return loadUserByUser(user);
 	}
 

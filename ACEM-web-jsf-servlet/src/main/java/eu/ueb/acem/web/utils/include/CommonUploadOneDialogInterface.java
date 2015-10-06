@@ -20,13 +20,13 @@ package eu.ueb.acem.web.utils.include;
 
 import java.nio.file.Path;
 
-import eu.ueb.acem.services.DomainService;
-
+import eu.ueb.acem.services.ApplicationService;
+import eu.ueb.acem.services.ImagesService;
 
 /**
  * Interface for CommonUploadOneDialog
  * 
- * @author rlorthio
+ * @author gcolbert
  *
  */
 public interface CommonUploadOneDialogInterface {
@@ -48,10 +48,17 @@ public interface CommonUploadOneDialogInterface {
 	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath);
 
 	/**
-	 * Get DomainService from caller
+	 * Get ImagesService from caller
 	 * 
-	 * @return The caller's instance of DomainService
+	 * @return The caller's reference to ImagesService
 	 */
-	public DomainService getDomainService();
+	public ImagesService getImagesService();
+
+	/**
+	 * Get ApplicationService from caller
+	 * 
+	 * @return The caller's reference to ApplicationService
+	 */
+	public ApplicationService getApplicationService();
 
 }

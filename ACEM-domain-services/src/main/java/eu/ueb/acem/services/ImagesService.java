@@ -32,5 +32,7 @@ public interface ImagesService extends Serializable {
 	File getImage(String imageFileName);
 
 	File getImage(Path imageFilePath);
-	
+
+	String getImagesDirectory();
+
 }

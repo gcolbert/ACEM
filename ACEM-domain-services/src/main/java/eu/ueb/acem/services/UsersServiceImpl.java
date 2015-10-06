@@ -18,14 +18,19 @@
  */
 package eu.ueb.acem.services;
 
-import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import eu.ueb.acem.dal.common.gris.PersonDAO;
@@ -40,7 +45,7 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * 
  */
 @Service("usersService")
-public class UsersServiceImpl implements UsersService, Serializable {
+public class UsersServiceImpl implements UsersService, EnvironmentAware {
 
 	/**
 	 * For serialization.
@@ -61,11 +66,91 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	@Inject
 	private ResourcesService resourcesService;
 
+	/**
+	 * Auto create users?
+	 */
+	private Boolean autoCreateUsers;
+
+	private Environment environment;
+
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
+	}
+
 	public UsersServiceImpl() {
+		autoCreateUsers = false;
 	}
 
 	@PostConstruct
 	public void initUsersService() {
+		logger.info("*************************** initUserService********************");
+		List<String> activeProfiles = Arrays.asList(environment.getActiveProfiles());
+		List<String> defaultProfiles = Arrays.asList(environment.getDefaultProfiles());
+		if (activeProfiles.contains("auth-manual")) {
+			autoCreateUsers = false;
+		}
+		else if (activeProfiles.contains("auth-cas")) {
+			autoCreateUsers = true;
+		}
+		else {
+			if (defaultProfiles.contains("auth-manual")) {
+				autoCreateUsers = false;
+			}
+			else if (defaultProfiles.contains("auth-cas")) {
+				autoCreateUsers = true;
+			}
+			else {
+				autoCreateUsers = false;
+			}
+		}
+	}
+
+//	@Override
+//	public void afterPropertiesSet() throws Exception {
+//		List<String> activeProfiles = Arrays.asList(environment.getActiveProfiles());
+//		List<String> defaultProfiles = Arrays.asList(environment.getDefaultProfiles());
+//		if (activeProfiles.contains("auth-manual")) {
+//			autoCreateUsers = false;
+//		}
+//		else if (activeProfiles.contains("auth-cas")) {
+//			autoCreateUsers = true;
+//		}
+//		else {
+//			if (defaultProfiles.contains("auth-manual")) {
+//				autoCreateUsers = false;
+//			}
+//			else if (defaultProfiles.contains("auth-cas")) {
+//				autoCreateUsers = true;
+//			}
+//			else {
+//				autoCreateUsers = false;
+//			}
+//		}
+//	}
+
+	@Override
+	public Person getUser(String login) throws UsernameNotFoundException {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		Person user = teacherDAO.retrieveByLogin(login, true);
+		// If the "admin" account gets deleted, we recreate it.
+		if (user==null && login.equals("admin")) {
+			user = teacherDAO.create("Administrator", "admin", passwordEncoder.encode("admin"));
+			user.setAdministrator(true);
+			user = teacherDAO.update((Teacher)user);
+		}
+		// If the user is missing from the database but the authentication mode
+		// guarantees a legit authentication (e.g. CAS), then we want to
+		// automatically create a user account.
+		if ((user == null) && autoCreateUsers) {
+			user = teacherDAO.create(login, login, passwordEncoder.encode("pass"));
+			user.setLogin(login);
+			user.setLanguage("fr");
+		}
+		else if (user == null) {
+			throw new UsernameNotFoundException("User not found");
+		}
+		return user;
 	}
 
 	@Override

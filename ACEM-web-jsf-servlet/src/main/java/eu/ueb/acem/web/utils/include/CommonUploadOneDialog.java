@@ -117,7 +117,7 @@ public class CommonUploadOneDialog implements Serializable {
 		fileUploaded = (UploadedFile) event.getFile();
 		if (caller != null) {
 			Path temporaryFilePath = FileSystems.getDefault().getPath(
-					FileUtil.getNormalizedFilePath(caller.getDomainService().getTemporaryDirectory() + File.separator
+					FileUtil.getNormalizedFilePath(caller.getApplicationService().getTemporaryDirectory() + File.separator
 							+ fileUploaded.getFileName() + RandomUtils.nextInt(100000)));
 			try {
 				FileUtil.copyInputStream(temporaryFilePath.toString(), fileUploaded.getInputstream());
@@ -168,7 +168,7 @@ public class CommonUploadOneDialog implements Serializable {
 	public void moveUploadedIconToImagesFolder(Path temporaryFilePath, String imageFileName) {
 		// We move the file from the temporary folder to the images folder,
 		// and give it its original file name
-		String destinationFilePath = FileUtil.getNormalizedFilePath(caller.getDomainService().getImagesDirectory()
+		String destinationFilePath = FileUtil.getNormalizedFilePath(caller.getImagesService().getImagesDirectory()
 				+ File.separator + imageFileName);
 		if (Files.notExists(Paths.get(destinationFilePath), LinkOption.NOFOLLOW_LINKS)) {
 			FileUtil.renameDirectoryOrFile(temporaryFilePath.toString(), destinationFilePath);

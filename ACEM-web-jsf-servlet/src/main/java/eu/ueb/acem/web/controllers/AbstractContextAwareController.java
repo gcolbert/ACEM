@@ -20,7 +20,6 @@ package eu.ueb.acem.web.controllers;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.Validate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -33,7 +32,6 @@ import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
  * 
  * <ul>
  * <li>the context of the application (sessionController);</li>
- * <li>the domain service (domainService);</li>
  * <li>the application service (applicationService);</li>
  * <li>the i18n service (i18nService).
  * </ul>
@@ -41,10 +39,6 @@ import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 @Controller("abstractContextAwareController")
 @Scope("session")
 public abstract class AbstractContextAwareController extends AbstractDomainAwareBean {
-
-	/*
-	 * ****************** PROPERTIES ********************
-	 */
 
 	/**
 	 * For serialization.
@@ -63,33 +57,12 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 	@Inject
 	protected ReloadableResourceBundleMessageSource msgs;
 
-	/*
-	 * ****************** INIT ********************
-	 */
-
 	/**
 	 * Constructor.
 	 */
 	protected AbstractContextAwareController() {
 		super();
 	}
-
-	/**
-	 * @see eu.ueb.acem.web.controllers.AbstractDomainAwareBean#afterPropertiesSetInternal()
-	 */
-	@Override
-	public void afterPropertiesSetInternal() {
-		Validate.notNull(this.sessionController, "property sessionController of class " + this.getClass().getName()
-				+ " can not be null");
-	}
-
-	/*
-	 * ****************** CALLBACK ********************
-	 */
-
-	/*
-	 * ****************** METHODS ********************
-	 */
 
 	/**
 	 * @see eu.ueb.acem.web.controllers.AbstractDomainAwareBean#getCurrentUser()
