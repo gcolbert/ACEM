@@ -62,7 +62,7 @@
 						<minmemory>128m</minmemory>
 						<maxmemory>512m</maxmemory>
 						<goal>javadoc:javadoc</goal>
-						<reportOutputDirectory>docs/javadoc</reportOutputDirectory>
+						<reportOutputDirectory>documentation/javadoc</reportOutputDirectory>
 					</configuration>
 				</plugin>
 				<plugin>
