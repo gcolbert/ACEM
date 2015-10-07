@@ -48,6 +48,11 @@ import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
+/**
+ * Controller for the "Administration/Users" page.
+ * 
+ * @author Grégoire Colbert
+ */
 @Controller("adminUsersController")
 @Scope("view")
 public class AdminUsersController extends AbstractContextAwareController implements PageController {
@@ -82,7 +87,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	public String getPageTitle() {
 		return msgs.getMessage(
 				"ADMINISTRATION.USERS.HEADER", null,
-				getCurrentUserLocale());
+				getSessionController().getCurrentUserLocale());
 	}
 
 	/*************** LDAP ********************/
@@ -185,8 +190,8 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 		personViewBean.setDomainBean(usersService.updatePerson(personViewBean.getDomainBean()));
 		Object[] userName = { personViewBean.getName() };
 		MessageDisplayer.info(
-				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.TITLE"), null, getCurrentUserLocale()),
-				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.DETAILS"), userName, getCurrentUserLocale()));
+				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.TITLE"), null, getSessionController().getCurrentUserLocale()),
+				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.DETAILS"), userName, getSessionController().getCurrentUserLocale()));
 
 		// if the modified personViewBean is the currentUserViewBean, we update currentUserViewBean too
 		if (getSessionController().getCurrentUserViewBean().equals(personViewBean)) {
@@ -293,7 +298,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 					this.ldapUsers = ldapUserService.findAllByCnAndUid(searchLdap);
 				}
 				catch(Exception e){
-					MessageDisplayer.error(e, msgs, getCurrentUserLocale(), logger);
+					MessageDisplayer.error(e, msgs, getSessionController().getCurrentUserLocale(), logger);
 				}
 			}
 		}

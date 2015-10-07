@@ -40,9 +40,10 @@ import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
+ * Implementation of UsersService.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Service("usersService")
 public class UsersServiceImpl implements UsersService, EnvironmentAware {
@@ -84,20 +85,19 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 
 	@PostConstruct
 	public void initUsersService() {
-		logger.info("*************************** initUserService********************");
 		List<String> activeProfiles = Arrays.asList(environment.getActiveProfiles());
 		List<String> defaultProfiles = Arrays.asList(environment.getDefaultProfiles());
 		if (activeProfiles.contains("auth-manual")) {
 			autoCreateUsers = false;
 		}
-		else if (activeProfiles.contains("auth-cas")) {
+		else if (activeProfiles.contains("auth-cas") || activeProfiles.contains("auth-saml")) {
 			autoCreateUsers = true;
 		}
 		else {
 			if (defaultProfiles.contains("auth-manual")) {
 				autoCreateUsers = false;
 			}
-			else if (defaultProfiles.contains("auth-cas")) {
+			else if (defaultProfiles.contains("auth-cas") || activeProfiles.contains("auth-saml")) {
 				autoCreateUsers = true;
 			}
 			else {
@@ -106,36 +106,12 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 		}
 	}
 
-//	@Override
-//	public void afterPropertiesSet() throws Exception {
-//		List<String> activeProfiles = Arrays.asList(environment.getActiveProfiles());
-//		List<String> defaultProfiles = Arrays.asList(environment.getDefaultProfiles());
-//		if (activeProfiles.contains("auth-manual")) {
-//			autoCreateUsers = false;
-//		}
-//		else if (activeProfiles.contains("auth-cas")) {
-//			autoCreateUsers = true;
-//		}
-//		else {
-//			if (defaultProfiles.contains("auth-manual")) {
-//				autoCreateUsers = false;
-//			}
-//			else if (defaultProfiles.contains("auth-cas")) {
-//				autoCreateUsers = true;
-//			}
-//			else {
-//				autoCreateUsers = false;
-//			}
-//		}
-//	}
-
 	@Override
 	public Person getUser(String login) throws UsernameNotFoundException {
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		Person user = teacherDAO.retrieveByLogin(login, true);
 		// If the "admin" account gets deleted, we recreate it.
 		if (user==null && login.equals("admin")) {
-			user = teacherDAO.create("Administrator", "admin", passwordEncoder.encode("admin"));
+			user = teacherDAO.create("Administrator", "admin", "admin");
 			user.setAdministrator(true);
 			user = teacherDAO.update((Teacher)user);
 		}
@@ -143,7 +119,7 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 		// guarantees a legit authentication (e.g. CAS), then we want to
 		// automatically create a user account.
 		if ((user == null) && autoCreateUsers) {
-			user = teacherDAO.create(login, login, passwordEncoder.encode("pass"));
+			user = teacherDAO.create(login, login, "pass");
 			user.setLogin(login);
 			user.setLanguage("fr");
 		}
@@ -165,7 +141,9 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 
 	@Override
 	public Teacher createTeacher(String name, String login, String password) {
-		return teacherDAO.create(name, login, password);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(password);
+		return teacherDAO.create(name, login, encodedPassword);
 	}
 
 	@Override

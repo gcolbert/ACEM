@@ -23,20 +23,59 @@ import java.io.Serializable;
 import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 
 /**
+ * A service to manage {@link TeachingMode}s.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-16
- * 
  */
 public interface TeachingModesService extends Serializable {
 
+	/**
+	 * Counts the number of persistent TeachingMode objects
+	 * 
+	 * @return number of teaching modes
+	 */
 	Long countTeachingModes();
 
+	/**
+	 * Creates a new persistent TeachingMode.
+	 * 
+	 * @param name
+	 *            A name for the TeachingMode
+	 * @param description
+	 *            A description for the TeachingMode
+	 * @return The newly created TeachingMode, or null.
+	 */
 	TeachingMode createTeachingMode(String name, String description);
 
+	/**
+	 * Returns the TeachingMode whose id is given.
+	 * 
+	 * @param id
+	 *            The id of the TeachingMode to retrieve
+	 * @param initialize
+	 *            Set to true if the collections of associated objects should be
+	 *            loaded as well
+	 * @return The TeachingMode with the given id, or null if it doesn't exist
+	 */
 	TeachingMode retrieveTeachingMode(Long id, boolean initialize);
 
+	/**
+	 * Updates the given TeachingMode and returns the updated entity.
+	 * 
+	 * @param teachingMode
+	 *            The TeachingMode to update
+	 * @return the updated entity
+	 */
 	TeachingMode updateTeachingMode(TeachingMode teachingMode);
 
+	/**
+	 * Deletes the TeachingMode whose id is given.
+	 * 
+	 * @param id
+	 *            The id of the TeachingMode to delete.
+	 * @return true if the entity doesn't exist after the call, false otherwise
+	 */
 	Boolean deleteTeachingMode(Long id);
 
 }

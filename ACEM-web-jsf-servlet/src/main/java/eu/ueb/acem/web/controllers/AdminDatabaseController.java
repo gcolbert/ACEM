@@ -26,12 +26,14 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.services.InitDatabaseService;
 
 /**
+ * Controller for the "Administration/Database" page.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-17
  */
 @Controller("adminDatabaseController")
 @Scope("view")
-public class AdminDatabase extends AbstractContextAwareController implements PageController {
+public class AdminDatabaseController extends AbstractContextAwareController implements PageController {
 
 	/**
 	 * For serialization.
@@ -43,7 +45,7 @@ public class AdminDatabase extends AbstractContextAwareController implements Pag
 	
 	@Override
 	public String getPageTitle() {
-		return msgs.getMessage("ADMINISTRATION.DATABASE.HEADER", null, getCurrentUserLocale());
+		return msgs.getMessage("ADMINISTRATION.DATABASE.HEADER", null, getSessionController().getCurrentUserLocale());
 	}
 	
 	public void initDatabase() {

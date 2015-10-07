@@ -73,7 +73,7 @@ public class ScenariosServiceTest extends TestCase {
 		teacher.getWorksForOrganisations().add(institution);
 		teacher = usersService.updateTeacher(teacher);
 
-		PedagogicalScenario scenario1 = scenariosService.createScenario(teacher, "Study of the G-clef",
+		PedagogicalScenario scenario1 = scenariosService.createPedagogicalScenario(teacher, "Study of the G-clef",
 				"Make the learners able to read out loud the notes written in the G-clef");
 
 		PedagogicalScenario scenario1bis = scenariosService.retrievePedagogicalScenario(scenario1.getId(), false);
@@ -94,7 +94,7 @@ public class ScenariosServiceTest extends TestCase {
 		teacher.getWorksForOrganisations().add(institution);
 		teacher = usersService.updateTeacher(teacher);
 
-		PedagogicalScenario scenario1 = scenariosService.createScenario(teacher, "Study of the G-clef",
+		PedagogicalScenario scenario1 = scenariosService.createPedagogicalScenario(teacher, "Study of the G-clef",
 				"Make the learners able to read out loud the notes written in the G-clef");
 
 		PedagogicalSequence sequence1 = scenariosService.createPedagogicalSequence("Introduction to the western musical notation");
@@ -135,7 +135,7 @@ public class ScenariosServiceTest extends TestCase {
 		session1.getPedagogicalActivities().add(pedagogicalActivity4);
 		pedagogicalActivity4 = scenariosService.updatePedagogicalActivity(pedagogicalActivity4);
 
-		scenario1 = scenariosService.updateScenario(scenario1);
+		scenario1 = scenariosService.updatePedagogicalScenario(scenario1);
 
 		PedagogicalScenario scenario1bis = scenariosService.retrievePedagogicalScenario(scenario1.getId(), false);
 		assertEquals("There should be 1 sequence in the scenario", 1, scenario1bis.getPedagogicalSequences().size());
@@ -156,23 +156,23 @@ public class ScenariosServiceTest extends TestCase {
 	public final void t03_TestDissociateScenarioFromUniqueAuthor() {
 		Teacher teacher1 = usersService.createTeacher("Grégoire COLBERT", "gcolbert", "pass");
 
-		PedagogicalScenario scenario1 = scenariosService.createScenario(teacher1, "Study of the G-clef",
+		PedagogicalScenario scenario1 = scenariosService.createPedagogicalScenario(teacher1, "Study of the G-clef",
 				"Make the learners able to read out loud the notes written in the G-clef");
-		assertEquals("The scenario should exist because we created it.", new Long(1L), scenariosService.countScenarios());
+		assertEquals("The scenario should exist because we created it.", new Long(1L), scenariosService.countPedagogicalScenarios());
 
 		Teacher teacher2 = usersService.createTeacher("JS Bach", "bach", "welltempered");
 		teacher2.getPedagogicalScenarios().add(scenario1);
 		scenario1.getAuthors().add(teacher2);
-		scenario1 = scenariosService.updateScenario(scenario1);
+		scenario1 = scenariosService.updatePedagogicalScenario(scenario1);
 		teacher2 = usersService.updateTeacher(teacher2);
 
 		scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(scenario1.getId(), teacher2.getId());
 
-		assertEquals("The scenario should still exist because teacher1 is still associated with it.", new Long(1L), scenariosService.countScenarios());
+		assertEquals("The scenario should still exist because teacher1 is still associated with it.", new Long(1L), scenariosService.countPedagogicalScenarios());
 
 		scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(scenario1.getId(), teacher1.getId());
 
-		assertEquals("The scenario shouldn't exist because we dissociated it from its unique author.", new Long(0L), scenariosService.countScenarios());
+		assertEquals("The scenario shouldn't exist because we dissociated it from its unique author.", new Long(0L), scenariosService.countPedagogicalScenarios());
 
 		assertEquals("The teachers should still exists.", new Long(2L), usersService.countTeachers());
 	}
@@ -186,16 +186,16 @@ public class ScenariosServiceTest extends TestCase {
 	public final void t04_TestDeleteScenarioWithParallelSequences() {
 		Teacher teacher = usersService.createTeacher("Grégoire COLBERT", "gcolbert", "pass");
 
-		PedagogicalScenario scenario1 = scenariosService.createScenario(teacher, "Study of the C-clef",
+		PedagogicalScenario scenario1 = scenariosService.createPedagogicalScenario(teacher, "Study of the C-clef",
 				"Make the learners able to read out loud the notes written in the C-clef");
 
-		assertEquals("The scenario should exist because we created it.", new Long(1L), scenariosService.countScenarios());
+		assertEquals("The scenario should exist because we created it.", new Long(1L), scenariosService.countPedagogicalScenarios());
 
 		PedagogicalSequence sequenceA1 = scenariosService.createPedagogicalSequence("Sequence A1");
 		scenario1.getPedagogicalSequences().add(sequenceA1);
 		sequenceA1.setPedagogicalScenario(scenario1);
 		scenariosService.updatePedagogicalSequence(sequenceA1);
-		scenariosService.updateScenario(scenario1);
+		scenariosService.updatePedagogicalScenario(scenario1);
 
 		PedagogicalSequence sequenceA2 = scenariosService.createPedagogicalSequence("Sequence A2");
 		scenario1.getPedagogicalSequences().add(sequenceA2);
@@ -203,7 +203,7 @@ public class ScenariosServiceTest extends TestCase {
 		sequenceA1.setNextPedagogicalSequence(sequenceA2);
 		scenariosService.updatePedagogicalSequence(sequenceA1);
 		scenariosService.updatePedagogicalSequence(sequenceA2);
-		scenariosService.updateScenario(scenario1);
+		scenariosService.updatePedagogicalScenario(scenario1);
 
 		PedagogicalSequence sequenceA3 = scenariosService.createPedagogicalSequence("Sequence A3");
 		scenario1.getPedagogicalSequences().add(sequenceA3);
@@ -211,13 +211,13 @@ public class ScenariosServiceTest extends TestCase {
 		sequenceA2.setNextPedagogicalSequence(sequenceA3);
 		scenariosService.updatePedagogicalSequence(sequenceA2);
 		scenariosService.updatePedagogicalSequence(sequenceA3);
-		scenariosService.updateScenario(scenario1);
+		scenariosService.updatePedagogicalScenario(scenario1);
 
 		PedagogicalSequence sequenceB1 = scenariosService.createPedagogicalSequence("Sequence B1");
 		scenario1.getPedagogicalSequences().add(sequenceB1);
 		sequenceB1.setPedagogicalScenario(scenario1);
 		scenariosService.updatePedagogicalSequence(sequenceB1);
-		scenariosService.updateScenario(scenario1);
+		scenariosService.updatePedagogicalScenario(scenario1);
 
 		PedagogicalSequence sequenceB2 = scenariosService.createPedagogicalSequence("Sequence B2");
 		scenario1.getPedagogicalSequences().add(sequenceB2);
@@ -225,14 +225,14 @@ public class ScenariosServiceTest extends TestCase {
 		sequenceB1.setNextPedagogicalSequence(sequenceB2);
 		scenariosService.updatePedagogicalSequence(sequenceB1);
 		scenariosService.updatePedagogicalSequence(sequenceB2);
-		scenariosService.updateScenario(scenario1);
+		scenariosService.updatePedagogicalScenario(scenario1);
 
-		assertEquals("Before deletion of the scenario, we should count 1 scenario", new Long(1), scenariosService.countScenarios());
+		assertEquals("Before deletion of the scenario, we should count 1 scenario", new Long(1), scenariosService.countPedagogicalScenarios());
 		assertEquals("Before deletion of the scenario, we should count 5 sequences", new Long(5), scenariosService.countPedagogicalSequences());
 
-		scenariosService.deleteScenario(scenario1.getId());
+		scenariosService.deletePedagogicalScenario(scenario1.getId());
 		
-		assertEquals("After deletion of the scenario, we should count 0 scenario", new Long(0), scenariosService.countScenarios());
+		assertEquals("After deletion of the scenario, we should count 0 scenario", new Long(0), scenariosService.countPedagogicalScenarios());
 		assertEquals("After deletion of the scenario, we should count 0 sequence", new Long(0), scenariosService.countPedagogicalSequences());
 	}
 

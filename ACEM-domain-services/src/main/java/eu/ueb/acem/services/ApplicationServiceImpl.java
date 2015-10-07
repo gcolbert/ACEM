@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * A service that can return Application level information.
+ * Implementation of ApplicationService.
  * 
  * @author Grégoire Colbert
  * @since 2013-09-20

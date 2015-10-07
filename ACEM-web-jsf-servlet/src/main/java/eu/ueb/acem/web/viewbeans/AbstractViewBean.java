@@ -20,6 +20,13 @@ package eu.ueb.acem.web.viewbeans;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+/**
+ * An abstract class that defines the most basic methods of all view beans : the
+ * "id" property, the overload of functions "hashCode", "equals" and "toString".
+ * 
+ * @author Grégoire Colbert
+ * @since 2015-01-23
+ */
 public abstract class AbstractViewBean implements Pickable {
 
 	private Long id;

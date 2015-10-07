@@ -29,9 +29,10 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 
 /**
+ * A service to manage the {@link Organisation}s.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface OrganisationsService extends Serializable {
 
@@ -64,7 +65,7 @@ public interface OrganisationsService extends Serializable {
 	Long countTeachingDepartments();
 
 	/**
-	 * Creates a new persistent Community object.
+	 * Creates a new persistent Community.
 	 * 
 	 * @param name
 	 *            A name describing the Community (e.g.
@@ -78,7 +79,7 @@ public interface OrganisationsService extends Serializable {
 	Community createCommunity(String name, String shortname, String iconFileName);
 
 	/**
-	 * Creates a new persistent Institution object.
+	 * Creates a new persistent Institution.
 	 * 
 	 * @param name
 	 *            A name describing the Institution (e.g.
@@ -92,7 +93,7 @@ public interface OrganisationsService extends Serializable {
 	Institution createInstitution(String name, String shortname, String iconFileName);
 
 	/**
-	 * Creates a new persistent AdministrativeDepartment object.
+	 * Creates a new persistent AdministrativeDepartment.
 	 * 
 	 * @param name
 	 *            A name describing the AdministrativeDepartment (e.g.
@@ -106,7 +107,7 @@ public interface OrganisationsService extends Serializable {
 	AdministrativeDepartment createAdministrativeDepartment(String name, String shortname, String iconFileName);
 
 	/**
-	 * Creates a new persistent TeachingDepartment object.
+	 * Creates a new persistent TeachingDepartment.
 	 * 
 	 * @param name
 	 *            A name describing the TeachingDepartment (e.g.
@@ -120,69 +121,299 @@ public interface OrganisationsService extends Serializable {
 	TeachingDepartment createTeachingDepartment(String name, String shortname, String iconFileName);
 
 	/**
-	 * Retrieves an existing Organisation object.
+	 * Retrieves an existing Organisation.
 	 * 
 	 * @param idOrganisation
 	 *            The id of the Organisation to load from the Data Access Layer
 	 * @param initialize
 	 *            Set to true if the collections of associated objects should be
 	 *            loaded as well
-	 * @return the retrieved {@link Organisation}
+	 * @return the {@link Organisation} with the given id, or null if it doesn't
+	 *         exist
 	 */
 	Organisation retrieveOrganisation(Long idOrganisation, boolean initialize);
 
+	/**
+	 * Retrieves an existing Community.
+	 * 
+	 * @param id
+	 *            The id of the Community to load from the Data Access Layer
+	 * @param initialize
+	 *            Set to true if the collections of associated objects should be
+	 *            loaded as well
+	 * @return the {@link Community} with the given id, or null if it doesn't
+	 *         exist
+	 */
 	Community retrieveCommunity(Long id, boolean initialize);
 
+	/**
+	 * Retrieves an existing Institution.
+	 * 
+	 * @param id
+	 *            The id of the Institution to load from the Data Access Layer
+	 * @param initialize
+	 *            Set to true if the collections of associated objects should be
+	 *            loaded as well
+	 * @return the {@link Institution} with the given id, or null if it doesn't
+	 *         exist
+	 */
 	Institution retrieveInstitution(Long id, boolean initialize);
 
+	/**
+	 * Retrieves an existing AdministrativeDepartment.
+	 * 
+	 * @param id
+	 *            The id of the AdministrativeDepartment to load from the Data
+	 *            Access Layer
+	 * @param initialize
+	 *            Set to true if the collections of associated objects should be
+	 *            loaded as well
+	 * @return the {@link AdministrativeDepartment} with the given id, or null
+	 *         if it doesn't exist
+	 */
 	AdministrativeDepartment retrieveAdministrativeDepartment(Long id, boolean initialize);
 
+	/**
+	 * Retrieves an existing TeachingDepartment.
+	 * 
+	 * @param id
+	 *            The id of the TeachingDepartment to load from the Data Access
+	 *            Layer
+	 * @param initialize
+	 *            Set to true if the collections of associated objects should be
+	 *            loaded as well
+	 * @return the {@link TeachingDepartment} with the given id, or null if it
+	 *         doesn't exist
+	 */
 	TeachingDepartment retrieveTeachingDepartment(Long id, boolean initialize);
 
+	/**
+	 * Retrieves all existing Organisation objects.
+	 * 
+	 * @return the collection of all existing organisations
+	 */
 	Collection<Organisation> retrieveAllOrganisations();
-	
+
+	/**
+	 * Retrieves all existing Community objects.
+	 * 
+	 * @return the collection of all existing communities
+	 */
 	Collection<Community> retrieveAllCommunities();
-	
+
+	/**
+	 * Retrieves all existing Institution objects.
+	 * 
+	 * @return the collection of all existing institutions
+	 */
 	Collection<Institution> retrieveAllInstitutions();
-	
+
+	/**
+	 * Retrieves all existing AdministrativeDepartment objects.
+	 * 
+	 * @return the collection of all existing administrative departments
+	 */
 	Collection<AdministrativeDepartment> retrieveAllAdministrativeDepartments();
-	
+
+	/**
+	 * Retrieves all existing TeachingDepartment objects.
+	 * 
+	 * @return the collection of all existing teaching departments
+	 */
 	Collection<TeachingDepartment> retrieveAllTeachingDepartments();
-	
+
+	/**
+	 * Updates the given Organisation and returns the updated entity.
+	 * 
+	 * @param organisation
+	 *            The Organisation to update
+	 * @return the updated Organisation
+	 */
 	Organisation updateOrganisation(Organisation organisation);
 
+	/**
+	 * Updates the given Community and returns the updated entity.
+	 * 
+	 * @param community
+	 *            The Community to update
+	 * @return the updated Community
+	 */
 	Community updateCommunity(Community community);
 
+	/**
+	 * Updates the given Institution and returns the updated entity.
+	 * 
+	 * @param institution
+	 *            The Institution to update
+	 * @return the updated Institution
+	 */
 	Institution updateInstitution(Institution institution);
 
+	/**
+	 * Updates the given AdministrativeDepartment and returns the updated
+	 * entity.
+	 * 
+	 * @param administrativeDepartment
+	 *            The AdministrativeDepartment to update
+	 * @return the updated AdministrativeDepartment
+	 */
 	AdministrativeDepartment updateAdministrativeDepartment(AdministrativeDepartment administrativeDepartment);
 
+	/**
+	 * Updates the given TeachingDepartment and returns the updated entity.
+	 * 
+	 * @param teachingDepartment
+	 *            The TeachingDepartment to update
+	 * @return the updated TeachingDepartment
+	 */
 	TeachingDepartment updateTeachingDepartment(TeachingDepartment teachingDepartment);
 
+	/**
+	 * Deletes the Organisation having the given id value.
+	 * 
+	 * @param id
+	 *            The id property value of the Organisation to delete
+	 * @return true if the Organisation doesn't exists after this call, false if
+	 *         the Organisation still exists
+	 */
 	Boolean deleteOrganisation(Long id);
 
+	/**
+	 * Deletes the Community having the given id value.
+	 * 
+	 * @param id
+	 *            The id property value of the Community to delete
+	 * @return true if the Community doesn't exists after this call, false if
+	 *         the Community still exists
+	 */
 	Boolean deleteCommunity(Long id);
 
+	/**
+	 * Deletes the Institution having the given id value.
+	 * 
+	 * @param id
+	 *            The id property value of the Institution to delete
+	 * @return true if the Institution doesn't exists after this call, false if
+	 *         the Institution still exists
+	 */
 	Boolean deleteInstitution(Long id);
 
+	/**
+	 * Deletes the AdministrativeDepartment having the given id value.
+	 * 
+	 * @param id
+	 *            The id property value of the AdministrativeDepartment to
+	 *            delete
+	 * @return true if the AdministrativeDepartment doesn't exists after this
+	 *         call, false if the AdministrativeDepartment still exists
+	 */
 	Boolean deleteAdministrativeDepartment(Long id);
 
+	/**
+	 * Deletes the TeachingDepartment having the given id value.
+	 * 
+	 * @param id
+	 *            The id property value of the TeachingDepartment to delete
+	 * @return true if the TeachingDepartment doesn't exists after this call,
+	 *         false if the TeachingDepartment still exists
+	 */
 	Boolean deleteTeachingDepartment(Long id);
 
+	/**
+	 * Associates a Community and an Institution.
+	 * 
+	 * @param idCommunity
+	 *            The id of the Community
+	 * @param idInstitution
+	 *            The id of the Institution
+	 * @return true if the Community and the Institution are associated after
+	 *         this call, false otherwise
+	 */
 	Boolean associateCommunityAndInstitution(Long idCommunity, Long idInstitution);
 
+	/**
+	 * Dissociates a Community and an Institution.
+	 * 
+	 * @param idCommunity
+	 *            The id of the Community
+	 * @param idInstitution
+	 *            The id of the Institution
+	 * @return true if the Community and the Institution are not associated,
+	 *         false if they are still associated
+	 */
 	Boolean dissociateCommunityAndInstitution(Long idCommunity, Long idInstitution);
 
+	/**
+	 * Associates a Institution and an AdministrativeDepartment.
+	 * 
+	 * @param idInstitution
+	 *            The id of the Institution
+	 * @param idAdministrativeDepartment
+	 *            The id of the AdministrativeDepartment
+	 * @return true if the Institution and the AdministrativeDepartment are
+	 *         associated after this call, false otherwise
+	 */
 	Boolean associateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment);
 
+	/**
+	 * Dissociates a Institution and an AdministrativeDepartment.
+	 * 
+	 * @param idInstitution
+	 *            The id of the Institution
+	 * @param idAdministrativeDepartment
+	 *            The id of the AdministrativeDepartment
+	 * @return true if the Institution and the AdministrativeDepartment are not
+	 *         associated, false if they are still associated
+	 */
 	Boolean dissociateInstitutionAndAdministrativeDepartment(Long idInstitution, Long idAdministrativeDepartment);
 
+	/**
+	 * Associates a Institution and a TeachingDepartment.
+	 * 
+	 * @param idInstitution
+	 *            The id of the Institution
+	 * @param idTeachingDepartment
+	 *            The id of the TeachingDepartment
+	 * @return true if the Institution and the TeachingDepartment are associated
+	 *         after this call, false otherwise
+	 */
 	Boolean associateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment);
 
+	/**
+	 * Dissociates a Institution and a TeachingDepartment.
+	 * 
+	 * @param idInstitution
+	 *            The id of the Institution
+	 * @param idTeachingDepartment
+	 *            The id of the TeachingDepartment
+	 * @return true if the Institution and the TeachingDepartment are not
+	 *         associated, false if they are still associated
+	 */
 	Boolean dissociateInstitutionAndTeachingDepartment(Long idInstitution, Long idTeachingDepartment);
 
+	/**
+	 * Tests if two Organisations implicitly share Resources because they are
+	 * associated.
+	 * 
+	 * @param organisation1
+	 *            The first Organisation
+	 * @param organisation2
+	 *            The second Organisation
+	 * @return true if organisation1 and organisation2 implicitly share
+	 *         Resources, false otherwise
+	 */
 	Boolean isImplicitlySharingResourcesWith(Organisation organisation1, Organisation organisation2);
 
+	/**
+	 * Returns the collection of all {@link Organisation}s that act as support
+	 * services for the given {@link Person}, based on the resources that the
+	 * person can use.
+	 * 
+	 * @param person
+	 *            The Person
+	 * @return the collection of Organisations that are support services for the
+	 *         person
+	 */
 	Collection<Organisation> retrieveAllSupportServicesForPerson(Person person);
 
 }

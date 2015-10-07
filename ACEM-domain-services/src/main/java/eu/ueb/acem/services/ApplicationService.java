@@ -29,11 +29,16 @@ import java.io.Serializable;
 public interface ApplicationService extends Serializable {
 
 	/**
+	 * Returns the version of the deployed Application.
+	 * 
 	 * @return The version of the Application
 	 */
 	String getVersion();
 
 	/**
+	 * Returns the value of "tmp.path" config property where uploaded files can
+	 * be stored and read.
+	 * 
 	 * @return Path to the temp directory for uploaded files
 	 */
 	String getTemporaryDirectory();

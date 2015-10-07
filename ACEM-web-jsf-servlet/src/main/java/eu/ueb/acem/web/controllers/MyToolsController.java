@@ -81,9 +81,10 @@ import eu.ueb.acem.web.viewbeans.jaune.UseModeViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
+ * Controller for the "My Tools" page.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-19
- * 
  */
 @Controller("myToolsController")
 @Scope("view")
@@ -184,7 +185,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	@Override
 	public String getPageTitle() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(msgs.getMessage("MENU.MY_TOOLS",null,getCurrentUserLocale()));
+		sb.append(msgs.getMessage("MENU.MY_TOOLS",null,getSessionController().getCurrentUserLocale()));
 		if (getSelectedToolCategoryViewBean() != null) {
 			sb.append(" - ");
 			sb.append(getSelectedToolCategoryViewBean().getName());
@@ -197,7 +198,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	}
 
 	public void loadAllOrganisationViewBeans() {
-		SelectItemGroup groupCommunities = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.COMMUNITIES",null,getCurrentUserLocale()));
+		SelectItemGroup groupCommunities = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.COMMUNITIES",null,getSessionController().getCurrentUserLocale()));
 		List<Community> communities = new ArrayList<Community>(organisationsService.retrieveAllCommunities());
 		Collections.sort(communities);
 		SelectItem[] arrayForCommunities = new SelectItem[communities.size()];
@@ -209,7 +210,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		groupCommunities.setSelectItems(arrayForCommunities);
 		allOrganisationViewBeans.add(groupCommunities);
 
-		SelectItemGroup groupInstitutions = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.INSTITUTIONS",null,getCurrentUserLocale()));
+		SelectItemGroup groupInstitutions = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.INSTITUTIONS",null,getSessionController().getCurrentUserLocale()));
 		List<Institution> institutions = new ArrayList<Institution>(organisationsService.retrieveAllInstitutions());
 		Collections.sort(institutions);
 		SelectItem[] arrayForInstitutions = new SelectItem[institutions.size()];
@@ -221,7 +222,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		groupInstitutions.setSelectItems(arrayForInstitutions);
 		allOrganisationViewBeans.add(groupInstitutions);
 
-		SelectItemGroup groupAdministrativeDepartments = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.ADMINISTRATIVE_DEPARTMENTS",null,getCurrentUserLocale()));
+		SelectItemGroup groupAdministrativeDepartments = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.ADMINISTRATIVE_DEPARTMENTS",null,getSessionController().getCurrentUserLocale()));
 		List<AdministrativeDepartment> administrativeDepartments = new ArrayList<AdministrativeDepartment>(organisationsService.retrieveAllAdministrativeDepartments());
 		Collections.sort(administrativeDepartments);
 		SelectItem[] arrayForAdministrativeDepartments = new SelectItem[administrativeDepartments.size()];
@@ -233,7 +234,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		groupAdministrativeDepartments.setSelectItems(arrayForAdministrativeDepartments);
 		allOrganisationViewBeans.add(groupAdministrativeDepartments);
 
-		SelectItemGroup groupTeachingDepartments = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.TEACHING_DEPARTMENTS",null,getCurrentUserLocale()));
+		SelectItemGroup groupTeachingDepartments = new SelectItemGroup(msgs.getMessage("ORGANISATIONS_GROUP.TEACHING_DEPARTMENTS",null,getSessionController().getCurrentUserLocale()));
 		List<TeachingDepartment> teachingDepartments = new ArrayList<TeachingDepartment>(organisationsService.retrieveAllTeachingDepartments());
 		Collections.sort(teachingDepartments);
 		SelectItem[] arrayForTeachingDepartments = new SelectItem[teachingDepartments.size()];
@@ -279,6 +280,30 @@ public class MyToolsController extends AbstractContextAwareController implements
 		}
 	}
 
+	/**
+	 * Prepares the ResourceCategory tree to display the categories containing
+	 * Resources of the given ResourceViewBean.
+	 * 
+	 * If the current user is an administrator, this method prepares the
+	 * "categoriesTreeBean" property (instance of {@link EditableTreeBean}) so
+	 * that it contains the {@link ResourceCategory} objects associated with at
+	 * least one object with the given ResourceViewBean's type.
+	 * 
+	 * If the current user is not an administrator, this method prepares the
+	 * "categoriesTreeBean" property with the ResourceCategory objects that
+	 * contain objects of the given type that the user can use.
+	 * 
+	 * In other wording, this method loads all ResourceCategory objects that
+	 * contain at least one entity with the given ResourceViewBean's type. If
+	 * the current user is not an administrator, the EditableTreeBean will
+	 * contain only ResourceViewBeans corresponding to Resources that the user
+	 * can see/access/use. If the current user is an administrator, the
+	 * EditableTreeBean will contain all ResourceViewBeans with the given type.
+	 * 
+	 * @param resourceViewBean
+	 *            A ResourceViewBean with a getType() value that will serve as a
+	 *            filter to retrieve the ResourceCategory objects
+	 */
 	public void prepareToolCategoryTreeForResourceType(ResourceViewBean resourceViewBean) {
 		logger.debug("Entering prepareToolCategoryTreeForResourceType for type={}", resourceViewBean.getType());
 		categoriesTreeBean.clear();
@@ -288,7 +313,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 		List<ResourceCategory> resourceCategoriesForCurrentType = new ArrayList<ResourceCategory>();
 		// If the user is an administrator, he sees all the resources
-		if (getCurrentUserViewBean().getAdministrator()) {
+		if (getSessionController().getCurrentUserViewBean().getAdministrator()) {
 			resourceCategoriesForCurrentType.addAll(resourcesService.retrieveCategoriesForResourceType(resourceViewBean
 					.getType()));
 		}
@@ -297,7 +322,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 			// by the organisation he works for and the associations between
 			// this organisation and the other organisations.
 			resourceCategoriesForCurrentType.addAll(resourcesService.retrieveCategoriesForResourceTypeAndPerson(
-					resourceViewBean.getType(), getCurrentUserViewBean().getDomainBean()));
+					resourceViewBean.getType(), getSessionController().getCurrentUserViewBean().getDomainBean()));
 		}
 		Collections.sort(resourceCategoriesForCurrentType);
 
@@ -307,7 +332,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		boolean repeatSelectedCategoryAsVisibleRootNode = false;
 		if (repeatSelectedCategoryAsVisibleRootNode) {
 			categoriesTreeBean.addVisibleRoot(msgs.getMessage(resourceViewBean.getTypePluralFormMessageKey(), null,
-					getCurrentUserLocale()));
+					getSessionController().getCurrentUserLocale()));
 			for (ResourceCategory resourceCategory : resourceCategoriesForCurrentType) {
 				categoriesTreeBean.addChild(getTreeNodeType_CATEGORY(), categoriesTreeBean.getVisibleRoots().get(0),
 						resourceCategory.getId(), resourceCategory.getName(), "category");
@@ -355,21 +380,21 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 		if (selectedToolCategoryViewBean != null) {
 			// We initialize the checkbox "category is a favorite category for the user"
-			selectedToolCategoryViewBean.setFavoriteToolCategory(getCurrentUserViewBean()
+			selectedToolCategoryViewBean.setFavoriteToolCategory(getSessionController().getCurrentUserViewBean()
 					.getFavoriteToolCategoryViewBeans().contains(selectedToolCategoryViewBean));
 
 			// We associate the ResourceViewBeans
 			selectedToolCategoryViewBean.getResourceViewBeans().clear();
 			Collection<Resource> resourcesTheUserCanUse = new HashSet<Resource>(0);
 			// If the user is an administrator, he sees all resources
-			if (getCurrentUserViewBean().getAdministrator()) {
+			if (getSessionController().getCurrentUserViewBean().getAdministrator()) {
 				resourcesTheUserCanUse.addAll(selectedToolCategoryViewBean.getDomainBean().getResources());
 			}
 			else {
 				// Otherwise he only sees a subset of the resources determined
 				// by the organisation he works for and the associations between
 				// this organisation and the other organisations.
-				resourcesTheUserCanUse.addAll(resourcesService.getResourcesInCategoryForPerson(selectedToolCategoryViewBean.getDomainBean(), getCurrentUserViewBean().getDomainBean()));
+				resourcesTheUserCanUse.addAll(resourcesService.getResourcesInCategoryForPerson(selectedToolCategoryViewBean.getDomainBean(), getSessionController().getCurrentUserViewBean().getDomainBean()));
 			}
 			for (Resource resource : resourcesTheUserCanUse) {
 				resource = resourcesService.retrieveResource(resource.getId(), true);
@@ -493,13 +518,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 			allToolCategoryViewBeans.add(newToolCategoryViewBean);
 			Collections.sort(allToolCategoryViewBeans);
 			MessageDisplayer.info(
-					msgs.getMessage("TOOL_CATEGORIES.CREATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
-					msgs.getMessage("TOOL_CATEGORIES.CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
+					msgs.getMessage("TOOL_CATEGORIES.CREATION_SUCCESSFUL.TITLE", null, getSessionController().getCurrentUserLocale()),
+					msgs.getMessage("TOOL_CATEGORIES.CREATION_SUCCESSFUL.DETAILS", null, getSessionController().getCurrentUserLocale()));
 		}
 		else {
 			MessageDisplayer.error(
-					msgs.getMessage("TOOL_CATEGORIES.CREATION_FAILURE.TITLE", null, getCurrentUserLocale()),
-					msgs.getMessage("TOOL_CATEGORIES.CREATION_FAILURE.DETAILS", null, getCurrentUserLocale()), logger);
+					msgs.getMessage("TOOL_CATEGORIES.CREATION_FAILURE.TITLE", null, getSessionController().getCurrentUserLocale()),
+					msgs.getMessage("TOOL_CATEGORIES.CREATION_FAILURE.DETAILS", null, getSessionController().getCurrentUserLocale()), logger);
 		}
 	}
 
@@ -531,8 +556,8 @@ public class MyToolsController extends AbstractContextAwareController implements
 			}
 
 			MessageDisplayer.info(
-					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
-					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
+					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.TITLE", null, getSessionController().getCurrentUserLocale()),
+					msgs.getMessage("TOOL_CATEGORIES.MODIFICATION_SUCCESSFUL.DETAILS", null, getSessionController().getCurrentUserLocale()));
 		}
 	}
 
@@ -541,19 +566,19 @@ public class MyToolsController extends AbstractContextAwareController implements
 			if (resourcesService.deleteResourceCategory(toolCategoryViewBean.getDomainBean().getId())) {
 				allToolCategoryViewBeans.remove(toolCategoryViewBean);
 				MessageDisplayer.info(
-						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
 			}
 			else {
 				MessageDisplayer.info(
-						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
-						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()));
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.TITLE",null,getSessionController().getCurrentUserLocale()),
+						msgs.getMessage("TOOL_CATEGORIES.DELETE_TOOL_CATEGORY.DELETION_FAILED.DETAILS",null,getSessionController().getCurrentUserLocale()));
 			}
 		}
 	}
 
 	public void toggleFavoriteToolCategoryForCurrentUser(ToolCategoryViewBean toolCategoryViewBean) {
-		PersonViewBean currentUserViewBean = getCurrentUserViewBean();
+		PersonViewBean currentUserViewBean = getSessionController().getCurrentUserViewBean();
 		if (currentUserViewBean.getFavoriteToolCategoryViewBeans().contains(toolCategoryViewBean)) {
 			if (usersService.removeFavoriteToolCategoryForPerson(currentUserViewBean.getId(), toolCategoryViewBean.getId())) {
 				currentUserViewBean.getFavoriteToolCategoryViewBeans().remove(toolCategoryViewBean);
@@ -717,13 +742,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 			Collections.sort(selectedToolCategoryViewBean.getResourceViewBeans());
 
 			MessageDisplayer.info(
-					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
-					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
+					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.TITLE", null, getSessionController().getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_SUCCESSFUL.DETAILS", null, getSessionController().getCurrentUserLocale()));
 		}
 		else {
 			MessageDisplayer.error(
-					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_FAILURE.TITLE", null, getCurrentUserLocale()),
-					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_FAILURE.DETAILS", null, getCurrentUserLocale()),logger);
+					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_FAILURE.TITLE", null, getSessionController().getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.RESOURCE_CREATION_FAILURE.DETAILS", null, getSessionController().getCurrentUserLocale()),logger);
 		}
 	}
 
@@ -759,13 +784,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 				selectedResourceViewBean = resourceViewBean;
 
 				MessageDisplayer.info(
-						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.TITLE", null, getCurrentUserLocale()),
-						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
+						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.TITLE", null, getSessionController().getCurrentUserLocale()),
+						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_SUCCESSFUL.DETAILS", null, getSessionController().getCurrentUserLocale()));
 			}
 			else {
 				MessageDisplayer.error(
-						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_FAILURE.TITLE", null, getCurrentUserLocale()),
-						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_FAILURE.DETAILS", null, getCurrentUserLocale()),logger);
+						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_FAILURE.TITLE", null, getSessionController().getCurrentUserLocale()),
+						msgs.getMessage("MY_TOOLS.RESOURCE_MODIFICATION_FAILURE.DETAILS", null, getSessionController().getCurrentUserLocale()),logger);
 			}
 		}
 	}
@@ -776,13 +801,13 @@ public class MyToolsController extends AbstractContextAwareController implements
 			selectedToolCategoryViewBean.getResourceViewBeans().remove(getSelectedResourceViewBean());
 			setSelectedResourceViewBean(null);
 			MessageDisplayer.info(
-					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
 		}
 		else {
 			MessageDisplayer.error(
-					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS",null,getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.TITLE",null,getSessionController().getCurrentUserLocale()),
+					msgs.getMessage("MY_TOOLS.DELETE_TOOL_MODAL_WINDOW.DELETION_FAILURE.DETAILS",null,getSessionController().getCurrentUserLocale()),
 					logger);
 		}
 	}
@@ -906,7 +931,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 		if (temporaryFilePath == null) {
 			MessageDisplayer.error(msgs.getMessage(
 					"SERVICE_FILEUTIL_FILE_NOT_CREATED", null,
-					getCurrentUserLocale()), "", logger);
+					getSessionController().getCurrentUserLocale()), "", logger);
 		}
 
 		Ajax.update("createToolCategoryForm:iconOutputPanel", "modifyToolCategoryForm:iconOutputPanel",

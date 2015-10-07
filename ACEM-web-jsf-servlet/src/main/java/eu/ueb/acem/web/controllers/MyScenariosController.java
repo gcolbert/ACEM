@@ -51,9 +51,10 @@ import eu.ueb.acem.web.viewbeans.bleu.PedagogicalSessionViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
 /**
+ * Controller for the "My Scenarios" page.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-19
- * 
  */
 @Controller("myScenariosController")
 @Scope("view")
@@ -106,7 +107,7 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	@Override
 	public String getPageTitle() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(msgs.getMessage("MENU.MY_SCENARIOS", null, getCurrentUserLocale()));
+		sb.append(msgs.getMessage("MENU.MY_SCENARIOS", null, getSessionController().getCurrentUserLocale()));
 		if (getSelectedPedagogicalScenarioViewBean() != null) {
 			sb.append(" - ");
 			sb.append(getSelectedPedagogicalScenarioViewBean().getName());
@@ -217,16 +218,16 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	public void deleteSelectedScenario() {
 		if (selectedPedagogicalScenarioViewBean != null) {
 			if (scenariosService.dissociateAuthorOrDeleteScenarioIfLastAuthor(selectedPedagogicalScenarioViewBean.getId(), getCurrentUser().getId())) {
-				((Teacher)getCurrentUserViewBean().getDomainBean()).getPedagogicalScenarios().remove(selectedPedagogicalScenarioViewBean);
+				((Teacher)getSessionController().getCurrentUserViewBean().getDomainBean()).getPedagogicalScenarios().remove(selectedPedagogicalScenarioViewBean);
 				pedagogicalScenarioViewBeans.getTableEntries().remove(selectedPedagogicalScenarioViewBean);
 				MessageDisplayer.info(
-						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
+						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
 			}
 			else {
 				MessageDisplayer.error(
-						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
-						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()),
+						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.TITLE",null,getSessionController().getCurrentUserLocale()),
+						msgs.getMessage("MY_SCENARIOS.DELETE_SCENARIO.DELETION_FAILED.DETAILS",null,getSessionController().getCurrentUserLocale()),
 						logger);
 			}
 			selectedPedagogicalScenarioViewBean = null;
@@ -253,20 +254,20 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	public void onSavePedagogicalScenario() {
 		if (objectEditedPedagogicalScenarioViewBean.getDomainBean()==null) {
 			// Create
-			PedagogicalScenario scenario = scenariosService.createScenario((Teacher) getCurrentUser(),
+			PedagogicalScenario scenario = scenariosService.createPedagogicalScenario((Teacher) getCurrentUser(),
 					objectEditedPedagogicalScenarioViewBean.getName(), objectEditedPedagogicalScenarioViewBean.getObjective());
 			if (scenario != null) {
 				PedagogicalScenarioViewBean pedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(scenario);
 				pedagogicalScenarioViewBeans.getTableEntries().add(pedagogicalScenarioViewBean);
 				setSelectedPedagogicalScenarioViewBean(pedagogicalScenarioViewBean);
 				MessageDisplayer.info(msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.TITLE",
-						null, getCurrentUserLocale()), msgs.getMessage(
-						"MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS", null, getCurrentUserLocale()));
+						null, getSessionController().getCurrentUserLocale()), msgs.getMessage(
+						"MY_SCENARIOS.CREATE_SCENARIO.CREATION_SUCCESSFUL.DETAILS", null, getSessionController().getCurrentUserLocale()));
 			}
 			else {
 				MessageDisplayer.error(msgs.getMessage("MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.TITLE", null,
-						getCurrentUserLocale()), msgs.getMessage(
-						"MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.DETAILS", null, getCurrentUserLocale()),
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
+						"MY_SCENARIOS.CREATE_SCENARIO.CREATION_FAILED.DETAILS", null, getSessionController().getCurrentUserLocale()),
 						logger);
 			}
 		}
@@ -275,10 +276,10 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			selectedPedagogicalScenarioViewBean.setName(objectEditedPedagogicalScenarioViewBean.getName());
 			selectedPedagogicalScenarioViewBean.setObjective(objectEditedPedagogicalScenarioViewBean.getObjective());
 			selectedPedagogicalScenarioViewBean.setEvaluationModes(objectEditedPedagogicalScenarioViewBean.getEvaluationModes());
-			selectedPedagogicalScenarioViewBean.setScenario(scenariosService.updateScenario(selectedPedagogicalScenarioViewBean.getDomainBean()));
+			selectedPedagogicalScenarioViewBean.setScenario(scenariosService.updatePedagogicalScenario(selectedPedagogicalScenarioViewBean.getDomainBean()));
 			MessageDisplayer.info(
-					msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-					msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+					msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
+					msgs.getMessage("MY_SCENARIOS.SELECTED_SCENARIO.SAVE_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
 		}
 		pedagogicalScenarioViewBeans.sortReverseOrder();
 	}
@@ -331,13 +332,13 @@ public class MyScenariosController extends AbstractContextAwareController implem
 //					pedagogicalActivityViewBeanNeedingANewPosition.setDomainBean(pedagogicalActivity);
 //				}
 //				MessageDisplayer.info(
-//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.TITLE",null,getSessionController().getSessionController().getCurrentUserLocale()),
+//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.DETAILS",null,getSessionController().getSessionController().getCurrentUserLocale()));
 			}
 			else {
 				MessageDisplayer.info(
-						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.TITLE",null,getCurrentUserLocale()),
-						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.DETAILS",null,getCurrentUserLocale()));
+						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.TITLE",null,getSessionController().getCurrentUserLocale()),
+						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.DETAILS",null,getSessionController().getCurrentUserLocale()));
 			}
 		}
 	}
@@ -396,8 +397,8 @@ public class MyScenariosController extends AbstractContextAwareController implem
 //			selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().set(i, objectEditedPedagogicalActivityViewBean);
 		}
 		MessageDisplayer.info(
-				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE",null,getCurrentUserLocale()),
-				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getCurrentUserLocale()));
+				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
+				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
 	}
 
 }

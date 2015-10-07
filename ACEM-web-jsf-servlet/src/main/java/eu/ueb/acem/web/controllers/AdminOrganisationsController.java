@@ -55,9 +55,10 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 /**
+ * Controller for the "Administration/Organisations" page.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-19
- * 
  */
 @Controller("adminOrganisationsController")
 @Scope("view")
@@ -171,7 +172,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 
 	@Override
 	public String getPageTitle() {
-		return msgs.getMessage("ADMINISTRATION.ORGANISATIONS.HEADER", null, getCurrentUserLocale());
+		return msgs.getMessage("ADMINISTRATION.ORGANISATIONS.HEADER", null, getSessionController().getCurrentUserLocale());
 	}
 
 	public TableBean<CommunityViewBean> getCommunityViewBeans() {
@@ -497,9 +498,9 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 
 		MessageDisplayer.info(msgs.getMessage(
 				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.TITLE", null,
-				getCurrentUserLocale()), msgs.getMessage(
+				getSessionController().getCurrentUserLocale()), msgs.getMessage(
 				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.DETAILS", null,
-				getCurrentUserLocale()));
+				getSessionController().getCurrentUserLocale()));
 	}
 
 	/*
@@ -522,16 +523,16 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 			}
 			MessageDisplayer.info(msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE", null,
-					getCurrentUserLocale()), msgs.getMessage(
+					getSessionController().getCurrentUserLocale()), msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS", null,
-					getCurrentUserLocale()));
+					getSessionController().getCurrentUserLocale()));
 		}
 		else {
 			MessageDisplayer.error(msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.TITLE", null,
-					getCurrentUserLocale()), msgs.getMessage(
+					getSessionController().getCurrentUserLocale()), msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.DETAILS", null,
-					getCurrentUserLocale()), logger);
+					getSessionController().getCurrentUserLocale()), logger);
 		}
 	}
 
@@ -867,7 +868,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 
 		// If null there was an error on file copy
 		if (temporaryFilePath == null) {
-			MessageDisplayer.error(msgs.getMessage("SERVICE_FILEUTIL_FILE_NOT_CREATED", null, getCurrentUserLocale()),
+			MessageDisplayer.error(msgs.getMessage("SERVICE_FILEUTIL_FILE_NOT_CREATED", null, getSessionController().getCurrentUserLocale()),
 					"", logger);
 		}
 

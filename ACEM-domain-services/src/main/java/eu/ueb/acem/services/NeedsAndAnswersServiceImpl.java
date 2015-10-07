@@ -39,9 +39,10 @@ import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
+ * Implementation of NeedsAndAnswersService.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Service("needsAndAnswersService")
 public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {

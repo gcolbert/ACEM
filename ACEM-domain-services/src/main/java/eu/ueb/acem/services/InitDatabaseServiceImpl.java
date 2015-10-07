@@ -40,9 +40,10 @@ import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
+ * Implementation of InitDatabaseService.
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-16
- * 
  */
 @Service("initDatabaseService")
 public class InitDatabaseServiceImpl implements InitDatabaseService, Serializable {
@@ -219,7 +220,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 
 		Teacher teacher = usersService.retrieveTeacherByLogin("admin");
 
-		PedagogicalScenario pedagogicalScenario = scenariosService.createScenario(teacher, "Étude d'une théorie et argumentation", "Développer la capacité à s'approprier une problématique scientifique");
+		PedagogicalScenario pedagogicalScenario = scenariosService.createPedagogicalScenario(teacher, "Étude d'une théorie et argumentation", "Développer la capacité à s'approprier une problématique scientifique");
 
 		PedagogicalSequence pedagogicalSequence1 = scenariosService.createPedagogicalSequence("Sequence 1");
 		pedagogicalSequence1.setPedagogicalScenario(pedagogicalScenario);
@@ -267,7 +268,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		pedagogicalSession1 = scenariosService.updatePedagogicalSession(pedagogicalSession1);
 		pedagogicalSequence1 = scenariosService.updatePedagogicalSequence(pedagogicalSequence1);
 		pedagogicalScenario.setEvaluationModes("<span style=\"font-weight: bold;\">Travaux remis par les étudiants :</span> chaque étudiant aura remis un travail de groupe (synthèse d'un texte et note critique de lecture) et un travail individuel (feed-back à un autre groupe).<br> <span style=\"font-weight: bold;\"><br> Forme du feed-back :</span> le feed-back donné par l'enseignant aux étudiants est formulé à la demande ou de façon informelle via le forum de discussion du cours.<br> <br> <span style=\"font-weight: bold;\">Technologies utilisées :</span> forum de discussion<br> <br> <span style=\"font-weight: bold;\">Critères d'évaluation :</span><br> <ul><li>Pour le travail de groupe : précision et exhaustivité de la synthèse de lecture, clarté et structure de la comparaison des textes, articulation de l'argumentation;</li><li>Pour le travail individuel : clarté et structure du feed-back fourni, pertinence et précision des suggestions d'amélioration.</li></ul>");
-		pedagogicalScenario = scenariosService.updateScenario(pedagogicalScenario);
+		pedagogicalScenario = scenariosService.updatePedagogicalScenario(pedagogicalScenario);
 
 		// ******************
 		// PEDAGOGICAL ADVICE

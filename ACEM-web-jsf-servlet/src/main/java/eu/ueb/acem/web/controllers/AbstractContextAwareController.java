@@ -18,6 +18,8 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.io.Serializable;
+
 import javax.inject.Inject;
 
 import org.springframework.context.annotation.Scope;
@@ -32,13 +34,12 @@ import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
  * 
  * <ul>
  * <li>the context of the application (sessionController);</li>
- * <li>the application service (applicationService);</li>
- * <li>the i18n service (i18nService).
+ * <li>the ReloadableResourceBundleMessageSource (msgs).
  * </ul>
  */
 @Controller("abstractContextAwareController")
 @Scope("session")
-public abstract class AbstractContextAwareController extends AbstractDomainAwareBean {
+public abstract class AbstractContextAwareController implements Serializable {
 
 	/**
 	 * For serialization.
@@ -64,24 +65,12 @@ public abstract class AbstractContextAwareController extends AbstractDomainAware
 		super();
 	}
 
-	/**
-	 * @see eu.ueb.acem.web.controllers.AbstractDomainAwareBean#getCurrentUser()
-	 */
-	@Override
 	public Person getCurrentUser() {
 		return sessionController.getCurrentUser();
 	}
 
 	public PersonViewBean getCurrentUserViewBean() {
 		return sessionController.getCurrentUserViewBean();
-	}
-
-	/**
-	 * @param sessionController
-	 *            the sessionController to set
-	 */
-	public void setSessionController(final SessionController sessionController) {
-		this.sessionController = sessionController;
 	}
 
 	/**

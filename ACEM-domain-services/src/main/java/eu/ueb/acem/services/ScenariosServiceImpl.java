@@ -37,9 +37,10 @@ import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.services.exceptions.ServiceException;
 
 /**
+ * Implementation of ScenariosService.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Service("scenariosService")
 public class ScenariosServiceImpl implements ScenariosService {
@@ -71,12 +72,12 @@ public class ScenariosServiceImpl implements ScenariosService {
         SCENARIOS
        *********** */
 	@Override
-	public Long countScenarios() {
+	public Long countPedagogicalScenarios() {
 		return pedagogicalScenarioDAO.count();
 	}
 
 	@Override
-	public PedagogicalScenario createScenario(Teacher author, String name, String objective) {
+	public PedagogicalScenario createPedagogicalScenario(Teacher author, String name, String objective) {
 		PedagogicalScenario scenario = pedagogicalScenarioDAO.create(name, objective);
 		scenario.getAuthors().add(author);
 		author.getPedagogicalScenarios().add(scenario);
@@ -96,7 +97,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 	}
 
 	@Override
-	public PedagogicalScenario updateScenario(PedagogicalScenario pedagogicalScenario) {
+	public PedagogicalScenario updatePedagogicalScenario(PedagogicalScenario pedagogicalScenario) {
 		return pedagogicalScenarioDAO.update(pedagogicalScenario);
 	}
 
@@ -124,7 +125,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 			}
 			else {
 				// We dissociated the scenario from the last author, we really delete the scenario
-				return deleteScenario(idScenario);
+				return deletePedagogicalScenario(idScenario);
 			}
 		}
 		else {
@@ -132,15 +133,8 @@ public class ScenariosServiceImpl implements ScenariosService {
 		}
 	}
 
-	/**
-	 * This method deletes the scenario with the given id.
-	 * 
-	 * @param id The id of the scenario.
-	 * 
-	 * @return true if the scenario doesn't exist, false if is still exists.
-	 */
 	@Override
-	public Boolean deleteScenario(Long id) {
+	public Boolean deletePedagogicalScenario(Long id) {
 		if (pedagogicalScenarioDAO.exists(id)) {
 			PedagogicalScenario scenario = pedagogicalScenarioDAO.retrieveById(id);
 			Collection<PedagogicalSequence> firstPedagogicalSequences = pedagogicalSequenceDAO.retrieveFirstSequencesOfScenario(scenario);

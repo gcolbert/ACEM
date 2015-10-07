@@ -18,6 +18,10 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.io.Serializable;
+import java.util.Locale;
+
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -38,7 +42,7 @@ import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
  */
 @Controller("sessionController")
 @Scope("session")
-public class SessionController extends AbstractDomainAwareBean {
+public class SessionController implements Serializable {
 
 	/**
 	 * For serialization.
@@ -71,7 +75,6 @@ public class SessionController extends AbstractDomainAwareBean {
 	/**
 	 * @return the current user, or null if guest.
 	 */
-	@Override
 	public Person getCurrentUser() {
 		Person currentUser = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -91,6 +94,27 @@ public class SessionController extends AbstractDomainAwareBean {
 			}
 		}
 		return currentUserViewBean;
+	}
+
+	/**
+	 * @return the current user's locale.
+	 */
+	public Locale getCurrentUserLocale() {
+		Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//		Person currentUser = getCurrentUser();
+//		if (currentUser == null) {
+//			locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//		}
+//		else {
+//			String lang = currentUser.getLanguage();
+//			if (lang == null) {
+//				locale = new Locale("fr");
+//			}
+//			else {
+//				locale = new Locale(lang);
+//			}
+//		}
+		return locale;
 	}
 
 	/**

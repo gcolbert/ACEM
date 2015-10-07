@@ -26,9 +26,10 @@ import eu.ueb.acem.dal.common.bleu.TeachingModeDAO;
 import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 
 /**
+ * Implementation of TeachingModesService.
+ * 
  * @author Grégoire Colbert
  * @since 2015-07-16
- * 
  */
 @Service("teachingModesService")
 public class TeachingModesServiceImpl implements TeachingModesService {

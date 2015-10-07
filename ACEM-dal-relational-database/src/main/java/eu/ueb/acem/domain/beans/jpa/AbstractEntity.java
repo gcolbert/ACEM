@@ -65,17 +65,6 @@ public abstract class AbstractEntity implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-//		if (obj == null) {
-//			return false;
-//		}
-//		if (getClass() != obj.getClass()) {
-//			return false;
-//		}
-//		AbstractEntity other = (AbstractEntity) obj;
-//		if (other.getId()!=null && !getId().equals(other.getId())) {
-//			return false;
-//		}
-//		return true;
 		if (this == obj) {
 			return true;
 		}
@@ -95,7 +84,6 @@ public abstract class AbstractEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		//return ToStringBuilder.reflectionToString(this);
 		return new ToStringBuilder(this).append("id",id).toString();
 	}
 

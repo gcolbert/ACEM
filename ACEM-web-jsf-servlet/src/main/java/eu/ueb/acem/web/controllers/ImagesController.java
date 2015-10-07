@@ -39,9 +39,10 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.services.ImagesService;
 
 /**
+ * Controller for managing images.
+ * 
  * @author Grégoire Colbert
  * @since 2014-01-22
- * 
  */
 @Controller("imagesController")
 @Scope("singleton")

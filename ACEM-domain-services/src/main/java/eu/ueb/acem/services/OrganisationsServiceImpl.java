@@ -36,9 +36,10 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
 
 /**
+ * Implementation of OrganisationsService.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Service("organisationsService")
 public class OrganisationsServiceImpl implements OrganisationsService {

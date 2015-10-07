@@ -47,7 +47,6 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Service("resourcesService")
 public class ResourcesServiceImpl implements ResourcesService {
@@ -403,7 +402,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
-	public Collection<Equipment> retrieveEquipmentWithCategory(ResourceCategory category) {
+	public Collection<Equipment> retrieveEquipmentsWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return equipmentDAO.retrieveAllWithCategory(category);
 		}

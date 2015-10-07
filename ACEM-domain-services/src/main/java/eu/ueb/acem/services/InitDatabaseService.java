@@ -19,12 +19,19 @@
 package eu.ueb.acem.services;
 
 /**
+ * A service to initialize the database with some data suitable for the
+ * "Université européenne de Bretagne".
+ * 
  * @author Grégoire Colbert
  * @since 2015-06-16
- * 
  */
 public interface InitDatabaseService {
 
+	/**
+	 * Initializes the database with some data for the Université européenne de
+	 * Bretagne. Don't call this multiple times, it would create redundant
+	 * entities.
+	 */
 	void initDatabase();
 
 }
