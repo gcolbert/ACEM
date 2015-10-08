@@ -21,13 +21,12 @@ package eu.ueb.acem.dal.neo4j;
 import java.io.Serializable;
 
 import org.springframework.data.neo4j.repository.GraphRepository;
-import org.springframework.data.neo4j.repository.RelationshipOperationsRepository;
 
 /**
- * Generic repository for Neo4j nodes. It extends GraphRepository and
- * RelationshipOperationsRepository, which are part of Spring Data Neo4j, and
- * declares all the common methods. All interfaces that extend this interface
- * are to be automatically implemented by Spring Data Neo4j.
+ * Generic repository for Neo4j nodes. It extends GraphRepository, which is part
+ * of Spring Data Neo4j, and declares all the common methods. All interfaces
+ * that extend this interface are to be automatically implemented by Spring Data
+ * Neo4j.
  * 
  * @author Grégoire Colbert
  * @see <a
@@ -36,7 +35,7 @@ import org.springframework.data.neo4j.repository.RelationshipOperationsRepositor
  * @since 2013-11-20
  * 
  */
-public interface GenericRepository<N> extends Serializable, GraphRepository<N>, RelationshipOperationsRepository<N> {
+public interface GenericRepository<N> extends Serializable, GraphRepository<N> {
 
 	Iterable<N> findByName(String name);
 

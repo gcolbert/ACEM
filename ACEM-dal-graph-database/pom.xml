@@ -29,7 +29,7 @@
 	<description>Data Access Layer (using Spring Data Neo4j)</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-data.version>3.3.2.RELEASE</spring-data.version>
+		<spring-data-neo4j.version>3.4.0.RELEASE</spring-data-neo4j.version>
 	</properties>
 	<dependencies>
 		<!-- Compilation -->
@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-neo4j</artifactId>
-			<version>${spring-data.version}</version>
+			<version>${spring-data-neo4j.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework</groupId>
@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-neo4j-rest</artifactId>
-			<version>${spring-data.version}</version>
+			<version>${spring-data-neo4j.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework</groupId>
