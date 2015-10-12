@@ -18,6 +18,7 @@
 		<intercept-url access="permitAll" pattern="/javax.faces.resource/**" />
 		<intercept-url access="permitAll" pattern="/resources/**" />
 		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration/**" />
+		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/rest/**" />
 		<intercept-url access="isAuthenticated()" pattern="/**" />
 		<logout logout-url="/logout" logout-success-url='/home' />
 	</http>

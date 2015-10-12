@@ -14,6 +14,7 @@
 		<java.version>1.7</java.version>
 		<javax.validation-version>1.1.0.Final</javax.validation-version>
 		<javax.inject-version>1</javax.inject-version>
+		<jersey-json.version>1.19</jersey-json.version>
 		<junit-version>4.12</junit-version>
 		<!-- TODO 1 Pick the version of jetty you want. -->
 		<jetty.version>9.3.0.M2</jetty.version>

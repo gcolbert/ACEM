@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -40,6 +41,7 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * 
  */
 @Entity(name = "Person")
+@XmlRootElement(name = "persons")
 public class PersonEntity extends AbstractEntity implements Person {
 
 	/**

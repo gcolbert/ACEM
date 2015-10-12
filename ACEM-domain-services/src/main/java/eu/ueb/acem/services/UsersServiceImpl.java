@@ -24,6 +24,11 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +51,7 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * @since 2013-11-20
  */
 @Service("usersService")
+@Path("/users")
 public class UsersServiceImpl implements UsersService, EnvironmentAware {
 
 	/**
@@ -111,7 +117,7 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 		Person user = teacherDAO.retrieveByLogin(login, true);
 		// If the "admin" account gets deleted, we recreate it.
 		if (user==null && login.equals("admin")) {
-			user = teacherDAO.create("Administrator", "admin", "admin");
+			user = createTeacher("Administrator", "admin", "admin");
 			user.setAdministrator(true);
 			user = teacherDAO.update((Teacher)user);
 		}
@@ -119,7 +125,7 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 		// guarantees a legit authentication (e.g. CAS), then we want to
 		// automatically create a user account.
 		if ((user == null) && autoCreateUsers) {
-			user = teacherDAO.create(login, login, "pass");
+			user = createTeacher(login, login, "pass");
 			user.setLogin(login);
 			user.setLanguage("fr");
 		}
@@ -129,9 +135,13 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 		return user;
 	}
 
+	@GET
+	@Path("/{login}")
+	@Produces({ MediaType.APPLICATION_JSON })
 	@Override
-	public Teacher retrieveTeacherByLogin(String login) {
-		return teacherDAO.retrieveByLogin(login, false);
+	public Teacher retrieveTeacherByLogin(@PathParam("login") String login) {
+		Teacher teacher = teacherDAO.retrieveByLogin(login, false);
+		return teacher;
 	}
 
 	@Override

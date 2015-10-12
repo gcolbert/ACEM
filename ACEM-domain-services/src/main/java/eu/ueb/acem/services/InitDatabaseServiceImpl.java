@@ -424,7 +424,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		PedagogicalAnswer answer2_7_1_2 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un outil de podcast", need2_7_1);
 		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_7_1_2.getId(), captationVideo.getId());
 		PedagogicalNeed need2_7_2 = needsAndAnswersService.createPedagogicalNeed("Faire appel à un service audiovisuel", need2_7);
-		PedagogicalAnswer answer2_7_2_1 = needsAndAnswersService.createPedagogicalAnswer("Contacter le service audiovisuel", need2_7_2);  // TODO : link this answer to a administrative department?!
+		PedagogicalAnswer answer2_7_2_1 = needsAndAnswersService.createPedagogicalAnswer("Contacter le service audiovisuel", need2_7_2);
 
 		PedagogicalNeed need3 = needsAndAnswersService.createPedagogicalNeed("Évaluer un cours");
 		PedagogicalNeed need3_1 = needsAndAnswersService.createPedagogicalNeed("Créer un questionnaire / sondage pour évaluer l'enseignement", need3);

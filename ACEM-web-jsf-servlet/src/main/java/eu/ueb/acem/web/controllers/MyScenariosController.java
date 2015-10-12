@@ -256,6 +256,19 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			// Create
 			PedagogicalScenario scenario = scenariosService.createPedagogicalScenario((Teacher) getCurrentUser(),
 					objectEditedPedagogicalScenarioViewBean.getName(), objectEditedPedagogicalScenarioViewBean.getObjective());
+			// TODO : for now, we create a PedagogicalSequence in the scenario so that we can keep the current JSF
+			PedagogicalSequence pedagogicalSequence1 = scenariosService.createPedagogicalSequence("Invisible sequence");
+			pedagogicalSequence1.setPedagogicalScenario(scenario);
+			scenario.getPedagogicalSequences().add(pedagogicalSequence1);
+			pedagogicalSequence1 = scenariosService.updatePedagogicalSequence(pedagogicalSequence1);
+			scenario = scenariosService.updatePedagogicalScenario(scenario);
+			// TODO : for now, we create a PedagogicalSession in the sequence so that we can keep the current JSF
+			PedagogicalSession pedagogicalSession1 = scenariosService.createPedagogicalSession("Invisible session");
+			pedagogicalSession1.setPedagogicalSequence(pedagogicalSequence1);
+			pedagogicalSequence1.getPedagogicalSessions().add(pedagogicalSession1);
+			pedagogicalSequence1 = scenariosService.updatePedagogicalSequence(pedagogicalSequence1);
+			pedagogicalSession1 = scenariosService.updatePedagogicalSession(pedagogicalSession1);
+
 			if (scenario != null) {
 				PedagogicalScenarioViewBean pedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(scenario);
 				pedagogicalScenarioViewBeans.getTableEntries().add(pedagogicalScenarioViewBean);
@@ -320,8 +333,8 @@ public class MyScenariosController extends AbstractContextAwareController implem
 
 	public void onDeletePedagogicalActivity(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
 		if (pedagogicalActivityViewBean != null) {
-			if (scenariosService.deletePedagogicalActivity(pedagogicalActivityViewBean.getDomainBean().getId())) {
-				// TODO : adapt the selectedPedagogicalScenarioViewBean to the new structure (Scenario/Sequences/Session/Activity)
+//			if (scenariosService.deletePedagogicalActivity(pedagogicalActivityViewBean.getDomainBean().getId())) {
+//				// TODO : adapt the selectedPedagogicalScenarioViewBean to the new structure (Scenario/Sequences/Session/Activity)
 //				int positionOfDeletedActivity = selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().indexOf(pedagogicalActivityViewBean);
 //				selectedPedagogicalScenarioViewBean.getPedagogicalSequenceViewBeans().remove(pedagogicalActivityViewBean);
 //				// We renumber the remaining pedagogical activities of the selected scenario
@@ -332,14 +345,14 @@ public class MyScenariosController extends AbstractContextAwareController implem
 //					pedagogicalActivityViewBeanNeedingANewPosition.setDomainBean(pedagogicalActivity);
 //				}
 //				MessageDisplayer.info(
-//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.TITLE",null,getSessionController().getSessionController().getCurrentUserLocale()),
-//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.DETAILS",null,getSessionController().getSessionController().getCurrentUserLocale()));
-			}
-			else {
-				MessageDisplayer.info(
-						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.TITLE",null,getSessionController().getCurrentUserLocale()),
-						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.DETAILS",null,getSessionController().getCurrentUserLocale()));
-			}
+//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
+//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
+//			}
+//			else {
+//				MessageDisplayer.info(
+//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.TITLE",null,getSessionController().getCurrentUserLocale()),
+//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.DETAILS",null,getSessionController().getCurrentUserLocale()));
+//			}
 		}
 	}
 
@@ -365,7 +378,7 @@ public class MyScenariosController extends AbstractContextAwareController implem
 
 	// TODO Adapt to the new Scenario/Sequence/Session/Activity scheme
 	public void onSavePedagogicalActivity() {
-		if (objectEditedPedagogicalActivityViewBean.getDomainBean()==null) {
+//		if (objectEditedPedagogicalActivityViewBean.getDomainBean()==null) {
 //			// Create
 //			PedagogicalActivity newPedagogicalActivity = scenariosService.createPedagogicalActivity(objectEditedPedagogicalActivityViewBean.getName());
 //			newPedagogicalActivity.setObjective(objectEditedPedagogicalActivityViewBean.getObjective());
@@ -379,8 +392,8 @@ public class MyScenariosController extends AbstractContextAwareController implem
 //			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(newPedagogicalActivity));
 //			selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().add(
 //					objectEditedPedagogicalActivityViewBean);
-		}
-		else {
+//		}
+//		else {
 //			// Update
 //			objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().clear();
 //			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
@@ -395,10 +408,10 @@ public class MyScenariosController extends AbstractContextAwareController implem
 //				current = selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().get(i);
 //			}
 //			selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().set(i, objectEditedPedagogicalActivityViewBean);
-		}
-		MessageDisplayer.info(
-				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
-				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
+//		}
+//		MessageDisplayer.info(
+//				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
+//				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
 	}
 
 }

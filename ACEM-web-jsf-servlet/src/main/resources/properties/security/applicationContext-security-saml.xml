@@ -119,7 +119,8 @@
                 <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
                         <property name="idpDiscoveryEnabled" value="true"/>
-                        <property name="idpDiscoveryURL" value="https://discovery.renater.fr/renater/"/>
+                        <property name="idpDiscoveryURL" value="https://discovery.renater.fr/test"/>
+                        <property name="idpDiscoveryResponseURL" value="https://discovery.renater.fr/test"/>
                     </bean>
                 </property>
             </bean>
@@ -141,7 +142,6 @@
         <constructor-arg>
             <list>
                 <!-- Example of classpath metadata with Extended Metadata -->
-                <!-- 
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider">
@@ -161,13 +161,11 @@
                         </bean>
                     </constructor-arg>
                 </bean>
-                -->
                 <!-- Example of HTTP metadata without Extended Metadata -->
                 <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
                     <!-- URL containing the metadata -->
                     <constructor-arg>
                     	<value type="java.lang.String">https://federation.renater.fr/test/renater-test-metadata.xml</value>
-                        <!-- <value type="java.lang.String">http://idp.ssocircle.com/idp-meta.xml</value> -->
                     </constructor-arg>
                     <!-- Timeout for metadata loading in ms -->
                     <constructor-arg>

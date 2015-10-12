@@ -20,6 +20,7 @@
 		<intercept-url access="permitAll" pattern="/javax.faces.resource/**" />
 		<intercept-url access="permitAll" pattern="/resources/**" />
 		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration/**" />
+		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/rest/**" />
         <intercept-url access="isAuthenticated()" pattern="/**"/><!-- When the user is authentificated by CAS, but doesn't exist in the application database -->
         <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
         <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
