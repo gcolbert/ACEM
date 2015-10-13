@@ -41,7 +41,6 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  * 
  */
 @Entity(name = "Person")
-@XmlRootElement(name = "persons")
 public class PersonEntity extends AbstractEntity implements Person {
 
 	/**

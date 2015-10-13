@@ -26,9 +26,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
-import org.codehaus.jackson.annotate.JsonManagedReference;
-
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
 import eu.ueb.acem.domain.beans.jpa.AbstractEntity;
@@ -64,15 +61,12 @@ public abstract class TeachingUnitEntity extends AbstractEntity implements Teach
 
 	private Long ectsCredits;
 
-	@JsonManagedReference
 	@ManyToOne(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY)
 	private PedagogicalScenario pedagogicalScenario;
 
-	@JsonManagedReference
 	@ManyToOne(targetEntity = TeachingDepartmentEntity.class, fetch = FetchType.LAZY)
 	private TeachingDepartment teachingDepartment;
 
-	@JsonBackReference
 	@ManyToMany(targetEntity = TeacherEntity.class, mappedBy = "teachingUnits", fetch = FetchType.LAZY)
 	private Set<Teacher> teachers = new HashSet<Teacher>(0);
 

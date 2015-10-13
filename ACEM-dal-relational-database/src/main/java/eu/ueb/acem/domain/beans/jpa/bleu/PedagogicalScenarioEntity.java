@@ -47,7 +47,6 @@ import eu.ueb.acem.domain.beans.violet.TeachingUnit;
  * 
  */
 @Entity(name = "PedagogicalScenario")
-@XmlRootElement(name = "pedagogicalScenarios")
 public class PedagogicalScenarioEntity extends PedagogicalUnitEntity implements PedagogicalScenario {
 
 	/**
@@ -60,16 +59,13 @@ public class PedagogicalScenarioEntity extends PedagogicalUnitEntity implements 
 
 	private Boolean published;
 
-	@JsonBackReference
 	@OneToMany(targetEntity = TeachingUnitEntity.class, mappedBy = "pedagogicalScenario")
 	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
-	@JsonManagedReference
 	@ManyToMany(targetEntity = TeacherEntity.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "Teachers_PedagogicalScenarios")
 	private Set<Teacher> authors = new HashSet<Teacher>(0);
 
-	@JsonBackReference
 	@OneToMany(targetEntity = PedagogicalSequenceEntity.class, mappedBy = "pedagogicalScenario")
 	private Set<PedagogicalSequence> pedagogicalSequences = new HashSet<PedagogicalSequence>(0);
 

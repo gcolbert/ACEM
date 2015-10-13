@@ -25,10 +25,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.codehaus.jackson.annotate.JsonBackReference;
-import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Teacher;
@@ -44,7 +40,6 @@ import eu.ueb.acem.domain.beans.violet.TeachingUnit;
  * 
  */
 @Entity(name = "Teacher")
-@XmlRootElement(name = "teachers")
 public class TeacherEntity extends PersonEntity implements Teacher {
 
 	/**
@@ -52,12 +47,10 @@ public class TeacherEntity extends PersonEntity implements Teacher {
 	 */
 	private static final long serialVersionUID = 1289247284705705734L;
 
-	@JsonManagedReference
 	@ManyToMany(targetEntity = TeachingUnitEntity.class,  fetch = FetchType.LAZY)
 	@JoinTable(name = "Teachers_TeachingUnits")
 	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
-	@JsonBackReference
 	@ManyToMany(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY, mappedBy = "authors")
 	private Set<PedagogicalScenario> pedagogicalScenarios = new HashSet<PedagogicalScenario>(0);
 
