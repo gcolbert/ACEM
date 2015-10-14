@@ -1,4 +1,4 @@
-*Note* : the official repository for this project is now at (http://sourcesup.renater.fr/projects/acem). The GitHub repository will be up to date until 30/11/2015 (then I will have to look for a new job and won't have write-access to the official repository).
+*Note* : the official repository for this project is now at http://sourcesup.renater.fr/projects/acem. The GitHub repository will be up to date until 30/11/2015 (then I will have to look for a new job and won't have write-access to the official repository).
 
 ACEM
 ====
