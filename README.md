@@ -1,4 +1,4 @@
-*Note* : the official repository for this project is now at http://sourcesup.renater.fr/projects/acem. The GitHub repository will be up to date until 30/11/2015 (then I will have to look for a new job and won't have write-access to the official repository).
+*Note* : the official repository for this project is now at http://sourcesup.renater.fr/projects/acem which is a forge dedicated to universities in France (you must have a valid login/password associated with a french university or high school to access SourceSup). The GitHub repository will be updated at least until 30/11/2015, then I will have to look for a new job and won't have write-access to the official repository anymore. I could continue to work on the project on my spare time, though.
 
 ACEM
 ====
