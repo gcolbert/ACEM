@@ -25,6 +25,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
@@ -43,6 +46,7 @@ import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
  * 
  */
 @Entity(name = "Organisation")
+@XmlRootElement(name = "organisations")
 public abstract class OrganisationEntity extends AbstractEntity implements Organisation {
 
 	/**
@@ -61,16 +65,20 @@ public abstract class OrganisationEntity extends AbstractEntity implements Organ
 	private String contactMode;
 
 	@OneToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY, mappedBy = "organisationPossessingResource")
+	@JsonBackReference
 	private Set<Resource> possessedResources = new HashSet<Resource>(0);
 
 	@OneToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY, mappedBy = "organisationSupportingResource")
+	@JsonBackReference
 	private Set<Resource> supportedResources = new HashSet<Resource>(0);
 
 	@ManyToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY, mappedBy = "organisationsHavingAccessToResource")
+	@JsonBackReference
 	private Set<Resource> viewedResources = new HashSet<Resource>(0);
 
 	@OneToMany(targetEntity = UseModeEntity.class, fetch = FetchType.LAZY, mappedBy = "referredOrganisation")
-	private Set<UseMode> referringUseModes = new HashSet<UseMode>(0);
+	@JsonBackReference
+	private Set<UseMode> useModes = new HashSet<UseMode>(0);
 
 	@ManyToMany(targetEntity = PhysicalSpaceEntity.class, fetch = FetchType.LAZY)
 	private Set<PhysicalSpace> occupiedPhysicalSpaces = new HashSet<PhysicalSpace>(0);
@@ -160,12 +168,12 @@ public abstract class OrganisationEntity extends AbstractEntity implements Organ
 
 	@Override
 	public Set<UseMode> getUseModes() {
-		return referringUseModes;
+		return useModes;
 	}
 
 	@Override
 	public void setUseModes(Set<UseMode> referringUseModes) {
-		this.referringUseModes = referringUseModes;
+		this.useModes = referringUseModes;
 	}
 
 	@Override

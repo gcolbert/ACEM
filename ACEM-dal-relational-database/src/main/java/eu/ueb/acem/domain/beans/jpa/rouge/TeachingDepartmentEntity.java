@@ -25,6 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.ueb.acem.domain.beans.jpa.violet.TeachingUnitEntity;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -39,6 +40,7 @@ import eu.ueb.acem.domain.beans.violet.TeachingUnit;
  * 
  */
 @Entity(name = "TeachingDepartment")
+@XmlRootElement(name = "teachingDepartments")
 public class TeachingDepartmentEntity extends OrganisationEntity implements TeachingDepartment {
 
 	/**

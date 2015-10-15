@@ -26,16 +26,26 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * An abstract class that defines the most basic methods of all database
  * entities: the "id" property, the overload of functions "hashCode", "equals"
  * and "toString".
  * 
+ * It is annotated with @JsonIgnoreProperties({"hibernateLazyInitializer",
+ * "handler"}) to prevent the following error which happened during JSON
+ * serialization of objects having lazy-loaded collections which were not yet
+ * initialized: "No serializer found for class
+ * org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer and no properties
+ * discovered to create BeanSerializer (to avoid exception, disable
+ * SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS) )"
+ * 
  * @author Grégoire Colbert
  * @since 2015-05-28
  */
 @MappedSuperclass
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public abstract class AbstractEntity implements Serializable {
 
 	/**

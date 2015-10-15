@@ -282,7 +282,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 		if (pedagogicalActivityDAO.exists(id)) {
 			PedagogicalActivity pedagogicalActivityToDelete = pedagogicalActivityDAO.retrieveById(id);
 
-			// We dissociate this activity from its PedagogicalSequence
+			// We search this activity from its PedagogicalSequence and dissociate the objects
 			if (pedagogicalActivityToDelete.getPedagogicalSequence() != null) {
 				PedagogicalSequence pedagogicalSequence = pedagogicalActivityToDelete.getPedagogicalSequence();
 				pedagogicalSequence.getPedagogicalActivities().remove(pedagogicalActivityToDelete);
@@ -290,7 +290,7 @@ public class ScenariosServiceImpl implements ScenariosService {
 				pedagogicalSequence = pedagogicalSequenceDAO.update(pedagogicalSequence);
 			}
 
-			// We search this activity in its PedagogicalSession
+			// We search this activity in its PedagogicalSession and dissociate the objects
 			if (pedagogicalActivityToDelete.getPedagogicalSession() != null) {
 				PedagogicalSession pedagogicalSession = pedagogicalActivityToDelete.getPedagogicalSession();
 				pedagogicalSession.getPedagogicalActivities().remove(pedagogicalActivityToDelete);
@@ -361,7 +361,8 @@ public class ScenariosServiceImpl implements ScenariosService {
 						.getNextPedagogicalActivity().equals(nextPedagogicalActivity))) {
 			throw new ServiceException("EXCEPTION.PREVIOUS_AND_NEXT_UNITS_ARE_NOT_CHAINED.TITLE");
 		}
-		if (pedagogicalSession.getDuration() < pedagogicalActivityToAdd.getDuration()) {
+		if (pedagogicalSession.getDuration() != null && pedagogicalActivityToAdd.getDuration() != null
+				&& (pedagogicalSession.getDuration() < pedagogicalActivityToAdd.getDuration())) {
 			throw new ServiceException("EXCEPTION.PEDAGOGICAL_UNIT_DURATION.TITLE");
 		}
 

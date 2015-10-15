@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Institution;
@@ -36,6 +37,7 @@ import eu.ueb.acem.domain.beans.rouge.Institution;
  * 
  */
 @Entity(name = "AdministrativeDepartment")
+@XmlRootElement(name = "administrativeDepartments")
 public class AdministrativeDepartmentEntity extends OrganisationEntity implements AdministrativeDepartment {
 
 	/**

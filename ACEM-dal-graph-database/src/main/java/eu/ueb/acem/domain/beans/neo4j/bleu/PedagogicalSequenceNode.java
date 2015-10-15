@@ -58,6 +58,12 @@ public class PedagogicalSequenceNode extends PedagogicalUnitNode implements Peda
 	@RelatedTo(elementClass = PedagogicalActivityNode.class, type = "activityForSequence", direction = INCOMING)
 	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
+	@RelatedTo(elementClass = PedagogicalSequenceNode.class, type = "next", direction = INCOMING)
+	private PedagogicalSequence previousPedagogicalSequence;
+
+	@RelatedTo(elementClass = PedagogicalSequenceNode.class, type = "next", direction = OUTGOING)
+	private PedagogicalSequence nextPedagogicalSequence;
+
 	@Indexed
 	private String name;
 
@@ -116,22 +122,34 @@ public class PedagogicalSequenceNode extends PedagogicalUnitNode implements Peda
 
 	@Override
 	public PedagogicalSequence getPreviousPedagogicalSequence() {
-		return (PedagogicalSequence)getPrevious();
+		return previousPedagogicalSequence;
 	}
 
 	@Override
 	public void setPreviousPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
-		setPrevious(pedagogicalSequence);
+		this.previousPedagogicalSequence = pedagogicalSequence;
+		if (pedagogicalSequence != null
+				&& ((pedagogicalSequence.getNextPedagogicalSequence() == null) || ((pedagogicalSequence
+						.getNextPedagogicalSequence() != null) && (!pedagogicalSequence.getNextPedagogicalSequence()
+						.equals(this))))) {
+			pedagogicalSequence.setNextPedagogicalSequence(this);
+		}
 	}
 
 	@Override
 	public PedagogicalSequence getNextPedagogicalSequence() {
-		return (PedagogicalSequence)getNext();
+		return nextPedagogicalSequence;
 	}
 
 	@Override
 	public void setNextPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
-		setNext(pedagogicalSequence);
+		this.nextPedagogicalSequence = pedagogicalSequence;
+		if (pedagogicalSequence != null
+				&& ((pedagogicalSequence.getPreviousPedagogicalSequence() == null) || ((pedagogicalSequence
+						.getPreviousPedagogicalSequence() != null) && (!pedagogicalSequence
+						.getPreviousPedagogicalSequence().equals(this))))) {
+			pedagogicalSequence.setPreviousPedagogicalSequence(this);
+		}
 	}
 
 }

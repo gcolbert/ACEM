@@ -25,6 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
@@ -54,6 +55,12 @@ public class PedagogicalSequenceEntity extends PedagogicalUnitEntity implements 
 
 	@OneToMany(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY, mappedBy = "pedagogicalSequence")
 	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
+
+	@OneToOne(targetEntity = PedagogicalSequenceEntity.class, fetch = FetchType.LAZY)
+	private PedagogicalSequence nextPedagogicalSequence;
+
+	@OneToOne(targetEntity = PedagogicalSequenceEntity.class, fetch = FetchType.LAZY, mappedBy = "nextPedagogicalSequence")
+	private PedagogicalSequence previousPedagogicalSequence;
 
 	public PedagogicalSequenceEntity() {
 	}
@@ -100,22 +107,34 @@ public class PedagogicalSequenceEntity extends PedagogicalUnitEntity implements 
 
 	@Override
 	public PedagogicalSequence getPreviousPedagogicalSequence() {
-		return (PedagogicalSequence)getPrevious();
+		return previousPedagogicalSequence;
 	}
 
 	@Override
 	public void setPreviousPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
-		setPrevious(pedagogicalSequence);
+		this.previousPedagogicalSequence = pedagogicalSequence;
+		if (pedagogicalSequence != null
+				&& ((pedagogicalSequence.getNextPedagogicalSequence() == null) || ((pedagogicalSequence
+						.getNextPedagogicalSequence() != null) && (!pedagogicalSequence.getNextPedagogicalSequence()
+						.equals(this))))) {
+			pedagogicalSequence.setNextPedagogicalSequence(this);
+		}
 	}
 
 	@Override
 	public PedagogicalSequence getNextPedagogicalSequence() {
-		return (PedagogicalSequence)getNext();
+		return nextPedagogicalSequence;
 	}
 
 	@Override
 	public void setNextPedagogicalSequence(PedagogicalSequence pedagogicalSequence) {
-		setNext(pedagogicalSequence);
+		this.nextPedagogicalSequence = pedagogicalSequence;
+		if (pedagogicalSequence != null
+				&& ((pedagogicalSequence.getPreviousPedagogicalSequence() == null) || ((pedagogicalSequence
+						.getPreviousPedagogicalSequence() != null) && (!pedagogicalSequence
+						.getPreviousPedagogicalSequence().equals(this))))) {
+			pedagogicalSequence.setPreviousPedagogicalSequence(this);
+		}
 	}
 
 }

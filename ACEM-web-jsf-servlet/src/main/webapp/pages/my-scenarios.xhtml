@@ -169,11 +169,10 @@
 					oncomplete="PF('dialogEditScenario').show()"
 					update=":createOrModifyPedagogicalScenarioForm:idDialogCreateOrModifyPedagogicalScenario"
 					process="@this" />
-
 				<p:dataTable id="pedagogicalActivitiesDataTable" styleClass="selectedScenarioActivitiesDataTable"
 					editable="true"
 					emptyMessage="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
-					value="#{associateBean.selectedPedagogicalScenarioViewBean.pedagogicalActivityViewBeans}"
+					value="#{associateBean.selectedPedagogicalScenarioViewBean.pedagogicalSequenceViewBeans[0].pedagogicalSessionViewBeans[0].pedagogicalActivityViewBeans}"
 					var="pedagogicalActivityViewBean"
 					rowKey="pedagogicalActivityViewBean.id">
 
@@ -238,7 +237,6 @@
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-
 				<p:commandButton
 					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.ADD_ACTIVITY_LABEL']}"
 					icon="ui-icon-plusthick"

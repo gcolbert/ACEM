@@ -152,11 +152,10 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			this.selectedPedagogicalScenarioViewBean.getPedagogicalSequenceViewBeans().clear();
 
 			// We find the first parallel sequences of the scenario
-			Collection<PedagogicalSequence> firstSequences = scenariosService.getFirstPedagogicalSequencesOfScenario(selectedScenarioViewBean.getDomainBean()); 
+			Collection<PedagogicalSequence> firstSequences = scenariosService.getFirstPedagogicalSequencesOfScenario(selectedScenarioViewBean.getDomainBean());
 			for (PedagogicalSequence pedagogicalSequence : firstSequences) {
 
 				while (pedagogicalSequence != null) {
-
 					// We reload the PedagogicalSequence from database to prevent potential obsolete data
 					pedagogicalSequence = scenariosService.retrievePedagogicalSequence(pedagogicalSequence.getId(), true);
 
@@ -169,7 +168,6 @@ public class MyScenariosController extends AbstractContextAwareController implem
 					for (PedagogicalSession pedagogicalSession : firstSessions) {
 
 						while (pedagogicalSession != null) {
-
 							// We reload the PedagogicalSession from database to prevent potential obsolete data
 							pedagogicalSession = scenariosService.retrievePedagogicalSession(pedagogicalSession.getId(), true);
 
@@ -182,7 +180,6 @@ public class MyScenariosController extends AbstractContextAwareController implem
 							for (PedagogicalActivity pedagogicalActivity : firstActivities) {
 
 								while (pedagogicalActivity != null) {
-
 									// We reload the PedagogicalActivity from database to prevent potential obsolete data
 									pedagogicalActivity = scenariosService.retrievePedagogicalActivity(pedagogicalActivity.getId(), true);
 
@@ -256,13 +253,17 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			// Create
 			PedagogicalScenario scenario = scenariosService.createPedagogicalScenario((Teacher) getCurrentUser(),
 					objectEditedPedagogicalScenarioViewBean.getName(), objectEditedPedagogicalScenarioViewBean.getObjective());
-			// TODO : for now, we create a PedagogicalSequence in the scenario so that we can keep the current JSF
+
+			// TODO : for now, we create an invisible PedagogicalSequence in the scenario
+			// but we will later need to modify the JSF to display sequences
 			PedagogicalSequence pedagogicalSequence1 = scenariosService.createPedagogicalSequence("Invisible sequence");
 			pedagogicalSequence1.setPedagogicalScenario(scenario);
 			scenario.getPedagogicalSequences().add(pedagogicalSequence1);
 			pedagogicalSequence1 = scenariosService.updatePedagogicalSequence(pedagogicalSequence1);
 			scenario = scenariosService.updatePedagogicalScenario(scenario);
-			// TODO : for now, we create a PedagogicalSession in the sequence so that we can keep the current JSF
+
+			// TODO : for now, we create an invisible PedagogicalSession in the scenario
+			// but we will later need to modify the JSF to display sessions
 			PedagogicalSession pedagogicalSession1 = scenariosService.createPedagogicalSession("Invisible session");
 			pedagogicalSession1.setPedagogicalSequence(pedagogicalSequence1);
 			pedagogicalSequence1.getPedagogicalSessions().add(pedagogicalSession1);
@@ -333,26 +334,23 @@ public class MyScenariosController extends AbstractContextAwareController implem
 
 	public void onDeletePedagogicalActivity(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
 		if (pedagogicalActivityViewBean != null) {
-//			if (scenariosService.deletePedagogicalActivity(pedagogicalActivityViewBean.getDomainBean().getId())) {
-//				// TODO : adapt the selectedPedagogicalScenarioViewBean to the new structure (Scenario/Sequences/Session/Activity)
-//				int positionOfDeletedActivity = selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().indexOf(pedagogicalActivityViewBean);
-//				selectedPedagogicalScenarioViewBean.getPedagogicalSequenceViewBeans().remove(pedagogicalActivityViewBean);
-//				// We renumber the remaining pedagogical activities of the selected scenario
-//				for (int i = positionOfDeletedActivity; i < selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().size(); i++) {
-//					PedagogicalActivityViewBean pedagogicalActivityViewBeanNeedingANewPosition = selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().get(i);
-//					PedagogicalActivity pedagogicalActivity = pedagogicalActivityViewBeanNeedingANewPosition.getDomainBean();
-//					pedagogicalActivity = scenariosService.updatePedagogicalActivity(pedagogicalActivity);
-//					pedagogicalActivityViewBeanNeedingANewPosition.setDomainBean(pedagogicalActivity);
-//				}
-//				MessageDisplayer.info(
-//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
-//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
-//			}
-//			else {
-//				MessageDisplayer.info(
-//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.TITLE",null,getSessionController().getCurrentUserLocale()),
-//						msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.DETAILS",null,getSessionController().getCurrentUserLocale()));
-//			}
+			if (scenariosService.deletePedagogicalActivity(pedagogicalActivityViewBean.getDomainBean().getId())) {
+				// TODO : deal with real sequence and session (not necessarily at index 0)
+				selectedPedagogicalScenarioViewBean.getPedagogicalSequenceViewBeans().get(0)
+						.getPedagogicalSessionViewBeans().get(0).getPedagogicalActivityViewBeans()
+						.remove(pedagogicalActivityViewBean);
+				MessageDisplayer.info(msgs.getMessage(
+						"MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.TITLE", null,
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
+						"MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_SUCCESSFUL.DETAILS", null,
+						getSessionController().getCurrentUserLocale()));
+			}
+			else {
+				MessageDisplayer.info(msgs.getMessage("MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.TITLE",
+						null, getSessionController().getCurrentUserLocale()), msgs.getMessage(
+						"MY_SCENARIOS.DELETE_PEDAGOGICAL_ACTIVITY.DELETION_FAILED.DETAILS", null,
+						getSessionController().getCurrentUserLocale()));
+			}
 		}
 	}
 
@@ -376,42 +374,46 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		return pickListBean;
 	}
 
-	// TODO Adapt to the new Scenario/Sequence/Session/Activity scheme
 	public void onSavePedagogicalActivity() {
-//		if (objectEditedPedagogicalActivityViewBean.getDomainBean()==null) {
-//			// Create
-//			PedagogicalActivity newPedagogicalActivity = scenariosService.createPedagogicalActivity(objectEditedPedagogicalActivityViewBean.getName());
-//			newPedagogicalActivity.setObjective(objectEditedPedagogicalActivityViewBean.getObjective());
-//			newPedagogicalActivity.setDuration(new Long(objectEditedPedagogicalActivityViewBean.getDuration()));
-//			newPedagogicalActivity.setInstructions(objectEditedPedagogicalActivityViewBean.getInstructions());
-//			newPedagogicalActivity.getPedagogicalScenarios().add(selectedPedagogicalScenarioViewBean.getDomainBean());
-//			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
-//				newPedagogicalActivity.getResourceCategories().add(toolCategoryViewBean.getDomainBean());
-//				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(newPedagogicalActivity);
-//			}
-//			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(newPedagogicalActivity));
-//			selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().add(
-//					objectEditedPedagogicalActivityViewBean);
-//		}
-//		else {
-//			// Update
-//			objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().clear();
-//			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
-//				objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().add(toolCategoryViewBean.getDomainBean());
-//				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(objectEditedPedagogicalActivityViewBean.getDomainBean());
-//			}
-//			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(objectEditedPedagogicalActivityViewBean.getDomainBean()));
-//			int i = 0;
-//			PedagogicalActivityViewBean current = selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().get(0);
-//			while (current != objectEditedPedagogicalActivityViewBean) {
-//				i++;
-//				current = selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().get(i);
-//			}
-//			selectedPedagogicalScenarioViewBean.getPedagogicalActivityViewBeans().set(i, objectEditedPedagogicalActivityViewBean);
-//		}
-//		MessageDisplayer.info(
-//				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
-//				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
+		if (objectEditedPedagogicalActivityViewBean.getDomainBean()==null) {
+			// Create
+			PedagogicalActivity newPedagogicalActivity = scenariosService.createPedagogicalActivity(objectEditedPedagogicalActivityViewBean.getName());
+			newPedagogicalActivity.setObjective(objectEditedPedagogicalActivityViewBean.getObjective());
+			newPedagogicalActivity.setDuration(new Long(objectEditedPedagogicalActivityViewBean.getDuration()));
+			newPedagogicalActivity.setInstructions(objectEditedPedagogicalActivityViewBean.getInstructions());
+
+			// TODO : generalize these calls to deal with many sequences and many sessions
+			PedagogicalSessionViewBean pedagogicalSessionViewBean = selectedPedagogicalScenarioViewBean.getPedagogicalSequenceViewBeans().get(0).getPedagogicalSessionViewBeans().get(0);
+			PedagogicalSession pedagogicalSession = pedagogicalSessionViewBean.getDomainBean();
+			PedagogicalActivityViewBean currentLastActivityViewBean = pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().get(pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().size()-1);
+			if (scenariosService.addActivityToSession(newPedagogicalActivity, pedagogicalSession, currentLastActivityViewBean.getDomainBean(), null)) {
+				PedagogicalActivityViewBean pedagogicalActivityViewBean = new PedagogicalActivityViewBean(newPedagogicalActivity);
+				pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().add(pedagogicalActivityViewBean);
+			}
+
+			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
+				newPedagogicalActivity.getResourceCategories().add(toolCategoryViewBean.getDomainBean());
+				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(newPedagogicalActivity);
+			}
+			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(newPedagogicalActivity));
+		}
+		else {
+			// Update
+			objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().clear();
+			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
+				objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().add(toolCategoryViewBean.getDomainBean());
+				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(objectEditedPedagogicalActivityViewBean.getDomainBean());
+			}
+			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(objectEditedPedagogicalActivityViewBean.getDomainBean()));
+
+			// TODO : generalize these calls to deal with many sequences and many sessions
+			PedagogicalSessionViewBean pedagogicalSessionViewBean = selectedPedagogicalScenarioViewBean.getPedagogicalSequenceViewBeans().get(0).getPedagogicalSessionViewBeans().get(0);
+
+			pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().set(pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().indexOf(objectEditedPedagogicalActivityViewBean),  objectEditedPedagogicalActivityViewBean);
+		}
+		MessageDisplayer.info(
+				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE",null,getSessionController().getCurrentUserLocale()),
+				msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.DETAILS",null,getSessionController().getCurrentUserLocale()));
 	}
 
 }

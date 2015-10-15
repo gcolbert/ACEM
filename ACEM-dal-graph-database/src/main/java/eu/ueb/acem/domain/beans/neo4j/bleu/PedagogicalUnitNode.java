@@ -19,7 +19,6 @@
 package eu.ueb.acem.domain.beans.neo4j.bleu;
 
 import static org.neo4j.graphdb.Direction.OUTGOING;
-import static org.neo4j.graphdb.Direction.INCOMING;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -72,12 +71,6 @@ public abstract class PedagogicalUnitNode extends AbstractNode implements Pedago
 
 	@RelatedTo(elementClass = PedagogicalKeywordNode.class, type = "hasKeyword", direction = OUTGOING)
 	private Set<PedagogicalKeyword> pedagogicalKeywords = new HashSet<PedagogicalKeyword>(0);
-
-	@RelatedTo(elementClass = PedagogicalUnitNode.class, type = "next", direction = INCOMING)
-	private PedagogicalUnit previousPedagogicalUnit;
-
-	@RelatedTo(elementClass = PedagogicalUnitNode.class, type = "next", direction = OUTGOING)
-	private PedagogicalUnit nextPedagogicalUnit;
 
 	public PedagogicalUnitNode() {
 	}
@@ -190,32 +183,6 @@ public abstract class PedagogicalUnitNode extends AbstractNode implements Pedago
 	@Override
 	public void setPedagogicalKeywords(Set<PedagogicalKeyword> pedagogicalKeywords) {
 		this.pedagogicalKeywords = pedagogicalKeywords;
-	}
-
-	protected PedagogicalUnit getPrevious() {
-		return previousPedagogicalUnit;
-	}
-
-	protected void setPrevious(PedagogicalUnit pedagogicalUnit) {
-		this.previousPedagogicalUnit = pedagogicalUnit;
-		if ((((PedagogicalUnitNode) pedagogicalUnit).getNext() == null)
-				|| ((((PedagogicalUnitNode) pedagogicalUnit).getNext() != null) && (!((PedagogicalUnitNode) pedagogicalUnit)
-						.getNext().equals(this)))) {
-			((PedagogicalUnitNode) pedagogicalUnit).setNext(this);
-		}
-	}
-
-	protected PedagogicalUnit getNext() {
-		return nextPedagogicalUnit;
-	}
-
-	protected void setNext(PedagogicalUnit pedagogicalUnit) {
-		this.nextPedagogicalUnit = pedagogicalUnit;
-		if ((((PedagogicalUnitNode) pedagogicalUnit).getPrevious() == null)
-				|| ((((PedagogicalUnitNode) pedagogicalUnit).getPrevious() != null) && (!((PedagogicalUnitNode) pedagogicalUnit)
-						.getPrevious().equals(this)))) {
-			((PedagogicalUnitNode) pedagogicalUnit).setPrevious(this);
-		}
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
@@ -39,6 +40,7 @@ import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
  * 
  */
 @Entity(name = "Institution")
+@XmlRootElement(name = "institutions")
 public class InstitutionEntity extends OrganisationEntity implements Institution {
 
 	/**

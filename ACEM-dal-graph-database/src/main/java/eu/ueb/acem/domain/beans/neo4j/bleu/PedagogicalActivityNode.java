@@ -18,6 +18,7 @@
  */
 package eu.ueb.acem.domain.beans.neo4j.bleu;
 
+import static org.neo4j.graphdb.Direction.INCOMING;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.HashSet;
@@ -61,6 +62,12 @@ public class PedagogicalActivityNode extends PedagogicalUnitNode implements Peda
 
 	@RelatedTo(elementClass = ResourceCategoryNode.class, type = "activityRequiringResourceFromCategory", direction = OUTGOING)
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
+
+	@RelatedTo(elementClass = PedagogicalActivityNode.class, type = "next", direction = INCOMING)
+	private PedagogicalActivity previousPedagogicalActivity;
+
+	@RelatedTo(elementClass = PedagogicalActivityNode.class, type = "next", direction = OUTGOING)
+	private PedagogicalActivity nextPedagogicalActivity;
 
 	private String instructions;
 
@@ -129,22 +136,34 @@ public class PedagogicalActivityNode extends PedagogicalUnitNode implements Peda
 
 	@Override
 	public PedagogicalActivity getPreviousPedagogicalActivity() {
-		return (PedagogicalActivity) getPrevious();
+		return previousPedagogicalActivity;
 	}
 
 	@Override
 	public void setPreviousPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		setPrevious(pedagogicalActivity);
+		this.previousPedagogicalActivity = pedagogicalActivity;
+		if (pedagogicalActivity != null
+				&& ((pedagogicalActivity.getNextPedagogicalActivity() == null) || ((pedagogicalActivity
+						.getNextPedagogicalActivity() != null) && (!pedagogicalActivity.getNextPedagogicalActivity()
+						.equals(this))))) {
+			pedagogicalActivity.setNextPedagogicalActivity(this);
+		}
 	}
 
 	@Override
 	public PedagogicalActivity getNextPedagogicalActivity() {
-		return (PedagogicalActivity) getNext();
+		return nextPedagogicalActivity;
 	}
 
 	@Override
 	public void setNextPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		setNext(pedagogicalActivity);
+		this.nextPedagogicalActivity = pedagogicalActivity;
+		if (pedagogicalActivity != null
+				&& ((pedagogicalActivity.getPreviousPedagogicalActivity() == null) || ((pedagogicalActivity
+						.getPreviousPedagogicalActivity() != null) && (!pedagogicalActivity
+						.getPreviousPedagogicalActivity().equals(this))))) {
+			pedagogicalActivity.setPreviousPedagogicalActivity(this);
+		}
 	}
 
 }

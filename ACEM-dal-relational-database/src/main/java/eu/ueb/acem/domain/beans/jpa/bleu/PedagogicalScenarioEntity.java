@@ -27,6 +27,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
@@ -47,6 +48,7 @@ import eu.ueb.acem.domain.beans.violet.TeachingUnit;
  * 
  */
 @Entity(name = "PedagogicalScenario")
+@XmlRootElement(name = "pedagogicalScenarios")
 public class PedagogicalScenarioEntity extends PedagogicalUnitEntity implements PedagogicalScenario {
 
 	/**
@@ -59,15 +61,24 @@ public class PedagogicalScenarioEntity extends PedagogicalUnitEntity implements 
 
 	private Boolean published;
 
+	@JsonBackReference
 	@OneToMany(targetEntity = TeachingUnitEntity.class, mappedBy = "pedagogicalScenario")
 	private Set<TeachingUnit> teachingUnits = new HashSet<TeachingUnit>(0);
 
+	@JsonManagedReference
 	@ManyToMany(targetEntity = TeacherEntity.class, fetch = FetchType.LAZY)
 	@JoinTable(name = "Teachers_PedagogicalScenarios")
 	private Set<Teacher> authors = new HashSet<Teacher>(0);
 
+	@JsonBackReference
 	@OneToMany(targetEntity = PedagogicalSequenceEntity.class, mappedBy = "pedagogicalScenario")
 	private Set<PedagogicalSequence> pedagogicalSequences = new HashSet<PedagogicalSequence>(0);
+
+	@OneToOne(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY)
+	private PedagogicalScenario nextPedagogicalScenario;
+
+	@OneToOne(targetEntity = PedagogicalScenarioEntity.class, fetch = FetchType.LAZY, mappedBy = "nextPedagogicalScenario")
+	private PedagogicalScenario previousPedagogicalScenario;
 
 	public PedagogicalScenarioEntity() {
 		published = false;
@@ -135,22 +146,34 @@ public class PedagogicalScenarioEntity extends PedagogicalUnitEntity implements 
 
 	@Override
 	public PedagogicalScenario getPreviousPedagogicalScenario() {
-		return (PedagogicalScenario)getPrevious();
+		return previousPedagogicalScenario;
 	}
 
 	@Override
 	public void setPreviousPedagogicalScenario(PedagogicalScenario pedagogicalScenario) {
-		setPrevious(pedagogicalScenario);
+		this.previousPedagogicalScenario = pedagogicalScenario;
+		if (pedagogicalScenario != null
+				&& ((pedagogicalScenario.getNextPedagogicalScenario() == null) || ((pedagogicalScenario
+						.getNextPedagogicalScenario() != null) && (!pedagogicalScenario.getNextPedagogicalScenario()
+						.equals(this))))) {
+			pedagogicalScenario.setNextPedagogicalScenario(this);
+		}
 	}
 
 	@Override
 	public PedagogicalScenario getNextPedagogicalScenario() {
-		return (PedagogicalScenario)getNext();
+		return nextPedagogicalScenario;
 	}
 
 	@Override
 	public void setNextPedagogicalScenario(PedagogicalScenario pedagogicalScenario) {
-		setNext(pedagogicalScenario);
+		this.nextPedagogicalScenario = pedagogicalScenario;
+		if (pedagogicalScenario != null
+				&& ((pedagogicalScenario.getPreviousPedagogicalScenario() == null) || ((pedagogicalScenario
+						.getPreviousPedagogicalScenario() != null) && (!pedagogicalScenario
+						.getPreviousPedagogicalScenario().equals(this))))) {
+			pedagogicalScenario.setPreviousPedagogicalScenario(this);
+		}
 	}
 
 }

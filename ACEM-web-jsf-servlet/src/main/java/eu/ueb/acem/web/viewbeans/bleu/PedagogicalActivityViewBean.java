@@ -34,8 +34,6 @@ public class PedagogicalActivityViewBean extends AbstractPedagogicalUnitViewBean
 
 	private static final long serialVersionUID = 8190209757734229700L;
 
-	private PedagogicalActivity domainBean;
-
 	private String instructions;
 	private List<ToolCategoryViewBean> toolCategoryViewBeans;
 
@@ -45,16 +43,7 @@ public class PedagogicalActivityViewBean extends AbstractPedagogicalUnitViewBean
 
 	public PedagogicalActivityViewBean(PedagogicalActivity pedagogicalActivity) {
 		this();
-		setDomainBean(pedagogicalActivity);
-	}
-
-	public PedagogicalActivity getDomainBean() {
-		return domainBean;
-	}
-
-	public void setDomainBean(PedagogicalActivity domainBean) {
-		super.setDomainBean(domainBean);
-		setInstructions(domainBean.getInstructions());
+		setActivity(pedagogicalActivity);
 	}
 
 	public String getInstructions() {
@@ -63,13 +52,19 @@ public class PedagogicalActivityViewBean extends AbstractPedagogicalUnitViewBean
 
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
-		if (domainBean != null) {
-			domainBean.setInstructions(instructions);
+		if (getDomainBean() != null) {
+			getDomainBean().setInstructions(instructions);
 		}
 	}
 
 	public List<ToolCategoryViewBean> getToolCategoryViewBeans() {
 		return toolCategoryViewBeans;
+	}
+
+	public void setActivity(PedagogicalActivity domainBean) {
+		super.setDomainBean(domainBean);
+		setInstructions(domainBean.getInstructions());
+		setDuration(domainBean.getDuration().toString());
 	}
 
 }

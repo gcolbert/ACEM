@@ -51,7 +51,7 @@ public interface PedagogicalUnitViewBean  extends Pickable, Comparable<Pedagogic
 
 	String getDuration();
 
-	void setDuration(Long duration);
+	void setDuration(String duration);
 
 	String getCreationDate();
 

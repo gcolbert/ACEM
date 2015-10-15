@@ -28,6 +28,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
@@ -47,6 +52,7 @@ import eu.ueb.acem.domain.beans.jpa.bleu.PedagogicalSessionEntity;
  */
 @Entity(name = "ResourceCategory")
 @Table(name = "ResourceCategory")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ResourceCategoryEntity extends AbstractEntity implements ResourceCategory {
 
 	/**
@@ -62,16 +68,20 @@ public class ResourceCategoryEntity extends AbstractEntity implements ResourceCa
 	private String description;
 
 	@ManyToMany(targetEntity = PedagogicalAnswerEntity.class, fetch = FetchType.LAZY, mappedBy = "resourceCategories")
+	@JsonBackReference
 	private Set<PedagogicalAnswer> answers = new HashSet<PedagogicalAnswer>(0);
 
 	@ManyToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	@JoinTable(name = "ResourceCategory_Resource")
 	private Set<Resource> resources = new HashSet<Resource>(0);
 
 	@ManyToMany(targetEntity = PedagogicalSessionEntity.class, fetch = FetchType.LAZY, mappedBy = "resourceCategories")
+	@JsonIgnore
 	private Set<PedagogicalSession> pedagogicalSessions = new HashSet<PedagogicalSession>(0);
 
 	@ManyToMany(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY, mappedBy = "resourceCategories")
+	@JsonIgnore
 	private Set<PedagogicalActivity> pedagogicalActivities = new HashSet<PedagogicalActivity>(0);
 
 	public ResourceCategoryEntity() {

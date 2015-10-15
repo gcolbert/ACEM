@@ -73,7 +73,7 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 	private Set<Resource> viewedResources = new HashSet<Resource>(0);
 
 	@RelatedTo(elementClass = UseModeNode.class, type = "referredOrganisations", direction = INCOMING)
-	private Set<UseMode> referringUseModes = new HashSet<UseMode>(0);
+	private Set<UseMode> useModes = new HashSet<UseMode>(0);
 
 	@RelatedTo(elementClass = PhysicalSpaceNode.class, type = "occupies", direction = OUTGOING)
 	private Set<PhysicalSpace> occupiedPhysicalSpaces = new HashSet<PhysicalSpace>(0);
@@ -163,12 +163,12 @@ public abstract class OrganisationNode extends AbstractNode implements Organisat
 
 	@Override
 	public Set<UseMode> getUseModes() {
-		return referringUseModes;
+		return useModes;
 	}
 
 	@Override
 	public void setUseModes(Set<UseMode> referringUseModes) {
-		this.referringUseModes = referringUseModes;
+		this.useModes = referringUseModes;
 	}
 
 	@Override

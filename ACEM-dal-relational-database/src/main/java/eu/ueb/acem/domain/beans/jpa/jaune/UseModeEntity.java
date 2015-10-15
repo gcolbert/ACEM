@@ -26,6 +26,9 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
@@ -42,6 +45,7 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  */
 @Entity(name = "UseMode")
 @Table(name = "UseMode")
+@XmlRootElement(name = "useModes")
 public class UseModeEntity extends AbstractEntity implements UseMode {
 
 	/**
@@ -53,11 +57,10 @@ public class UseModeEntity extends AbstractEntity implements UseMode {
 
 	private String description;
 
-	//@RelatedTo(elementClass = ResourceNode.class, type = "resourceHasUseMode", direction = INCOMING)
 	@ManyToMany(targetEntity = ResourceEntity.class, fetch = FetchType.LAZY, mappedBy = "useModes")
+	@JsonBackReference
 	private Set<Resource> resources = new HashSet<Resource>(0);
 
-	//@RelatedTo(elementClass = OrganisationNode.class, type = "refersToOrganisation", direction = OUTGOING)
 	@ManyToOne(targetEntity = OrganisationEntity.class, fetch = FetchType.LAZY)
 	private Organisation referredOrganisation;
 

@@ -65,6 +65,12 @@ public class PedagogicalSessionEntity extends PedagogicalUnitEntity implements P
 	@OneToOne(targetEntity = ClassEntity.class)
 	private Class referredClass;
 
+	@OneToOne(targetEntity = PedagogicalSessionEntity.class, fetch = FetchType.LAZY)
+	private PedagogicalSession nextPedagogicalSession;
+
+	@OneToOne(targetEntity = PedagogicalSessionEntity.class, fetch = FetchType.LAZY, mappedBy = "nextPedagogicalSession")
+	private PedagogicalSession previousPedagogicalSession;
+
 	public PedagogicalSessionEntity() {
 	}
 
@@ -120,22 +126,34 @@ public class PedagogicalSessionEntity extends PedagogicalUnitEntity implements P
 
 	@Override
 	public PedagogicalSession getPreviousPedagogicalSession() {
-		return (PedagogicalSession)getPrevious();
+		return previousPedagogicalSession;
 	}
 
 	@Override
 	public void setPreviousPedagogicalSession(PedagogicalSession pedagogicalSession) {
-		setPrevious(pedagogicalSession);
+		this.previousPedagogicalSession = pedagogicalSession;
+		if (pedagogicalSession != null
+				&& ((pedagogicalSession.getNextPedagogicalSession() == null) || ((pedagogicalSession
+						.getNextPedagogicalSession() != null) && (!pedagogicalSession.getNextPedagogicalSession()
+						.equals(this))))) {
+			pedagogicalSession.setNextPedagogicalSession(this);
+		}
 	}
 
 	@Override
 	public PedagogicalSession getNextPedagogicalSession() {
-		return (PedagogicalSession)getNext();
+		return nextPedagogicalSession;
 	}
 
 	@Override
 	public void setNextPedagogicalSession(PedagogicalSession pedagogicalSession) {
-		setNext(pedagogicalSession);
+		this.nextPedagogicalSession = pedagogicalSession;
+		if (pedagogicalSession != null
+				&& ((pedagogicalSession.getPreviousPedagogicalSession() == null) || ((pedagogicalSession
+						.getPreviousPedagogicalSession() != null) && (!pedagogicalSession
+						.getPreviousPedagogicalSession().equals(this))))) {
+			pedagogicalSession.setPreviousPedagogicalSession(this);
+		}
 	}
 
 }

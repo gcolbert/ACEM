@@ -27,6 +27,10 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 import eu.ueb.acem.domain.beans.bleu.TeachingMode;
 import eu.ueb.acem.domain.beans.jaune.Documentation;
@@ -47,6 +51,7 @@ import eu.ueb.acem.domain.beans.rouge.Organisation;
  */
 @Entity(name = "Resource")
 @DiscriminatorColumn(length=50) /* needed because PedagogicalAndDocumentaryResource is longer than 30 */
+@XmlRootElement(name = "resources")
 public abstract class ResourceEntity extends AbstractEntity implements Resource {
 
 	/**
@@ -66,24 +71,31 @@ public abstract class ResourceEntity extends AbstractEntity implements Resource 
 	private boolean forActivity;
 
 	@ManyToMany(targetEntity = ResourceCategoryEntity.class, fetch = FetchType.LAZY, mappedBy = "resources")
+	@JsonBackReference
 	private Set<ResourceCategory> categories = new HashSet<ResourceCategory>(0);
 
 	@ManyToMany(targetEntity = UseModeEntity.class, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private Set<UseMode> useModes = new HashSet<UseMode>(0);
 
 	@ManyToOne(targetEntity = OrganisationEntity.class, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private Organisation organisationPossessingResource;
 
 	@ManyToOne(targetEntity = OrganisationEntity.class, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private Organisation organisationSupportingResource;
 
 	@ManyToMany(targetEntity = OrganisationEntity.class, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private Set<Organisation> organisationsHavingAccessToResource = new HashSet<Organisation>(0);
 
 	@ManyToMany(targetEntity = DocumentationEntity.class, fetch = FetchType.LAZY, mappedBy = "resources")
+	@JsonBackReference
 	private Set<Documentation> documentations = new HashSet<Documentation>(0);
 
 	@ManyToOne(targetEntity = TeachingModeEntity.class)
+	@JsonManagedReference
 	private TeachingMode teachingMode;
 
 	public ResourceEntity() {

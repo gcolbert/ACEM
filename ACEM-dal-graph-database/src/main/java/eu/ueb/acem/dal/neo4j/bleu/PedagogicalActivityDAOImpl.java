@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
+import eu.ueb.acem.dal.common.TimeTicker;
 import eu.ueb.acem.dal.common.bleu.PedagogicalActivityDAO;
 import eu.ueb.acem.dal.neo4j.AbstractDAO;
 import eu.ueb.acem.dal.neo4j.GenericRepository;
@@ -66,12 +67,16 @@ public class PedagogicalActivityDAOImpl extends AbstractDAO<PedagogicalActivity,
 
 	@Override
 	public PedagogicalActivity create(String name) {
-		return super.create(new PedagogicalActivityNode(name));
+		PedagogicalActivityNode entity = new PedagogicalActivityNode(name);
+		entity.setCreationDate(TimeTicker.tick());
+		return super.create(entity);
 	}
 
 	@Override
 	public PedagogicalActivity create(String name, String objective) {
-		return super.create(new PedagogicalActivityNode(name, objective));
+		PedagogicalActivityNode entity = new PedagogicalActivityNode(name, objective);
+		entity.setCreationDate(TimeTicker.tick());
+		return super.create(entity);
 	}
 
 	@Override

@@ -374,7 +374,7 @@ public class ResourcesServiceImpl implements ResourcesService {
 
 	@Override
 	@GET
-	@Path("/{categories}")
+	@Path("/categories")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Collection<ResourceCategory> retrieveAllCategories() {
 		return resourceCategoryDAO.retrieveAll();

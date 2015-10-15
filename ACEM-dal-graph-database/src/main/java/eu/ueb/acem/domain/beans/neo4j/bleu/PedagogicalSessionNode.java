@@ -68,6 +68,12 @@ public class PedagogicalSessionNode extends PedagogicalUnitNode implements Pedag
 	@RelatedTo(elementClass = ClassNode.class, type = "refersToClass", direction = OUTGOING)
 	private Class referredClass;
 
+	@RelatedTo(elementClass = PedagogicalSessionNode.class, type = "next", direction = INCOMING)
+	private PedagogicalSession previousPedagogicalSession;
+
+	@RelatedTo(elementClass = PedagogicalSessionNode.class, type = "next", direction = OUTGOING)
+	private PedagogicalSession nextPedagogicalSession;
+	
 	public PedagogicalSessionNode() {
 	}
 
@@ -133,22 +139,34 @@ public class PedagogicalSessionNode extends PedagogicalUnitNode implements Pedag
 
 	@Override
 	public PedagogicalSession getPreviousPedagogicalSession() {
-		return (PedagogicalSession)getPrevious();
+		return previousPedagogicalSession;
 	}
 
 	@Override
 	public void setPreviousPedagogicalSession(PedagogicalSession pedagogicalSession) {
-		setPrevious(pedagogicalSession);
+		this.previousPedagogicalSession = pedagogicalSession;
+		if (pedagogicalSession != null
+				&& ((pedagogicalSession.getNextPedagogicalSession() == null) || ((pedagogicalSession
+						.getNextPedagogicalSession() != null) && (!pedagogicalSession.getNextPedagogicalSession()
+						.equals(this))))) {
+			pedagogicalSession.setNextPedagogicalSession(this);
+		}
 	}
-	
+
 	@Override
 	public PedagogicalSession getNextPedagogicalSession() {
-		return (PedagogicalSession)getNext();
+		return nextPedagogicalSession;
 	}
 
 	@Override
 	public void setNextPedagogicalSession(PedagogicalSession pedagogicalSession) {
-		setNext(pedagogicalSession);
+		this.nextPedagogicalSession = pedagogicalSession;
+		if (pedagogicalSession != null
+				&& ((pedagogicalSession.getPreviousPedagogicalSession() == null) || ((pedagogicalSession
+						.getPreviousPedagogicalSession() != null) && (!pedagogicalSession
+						.getPreviousPedagogicalSession().equals(this))))) {
+			pedagogicalSession.setPreviousPedagogicalSession(this);
+		}
 	}
 
 }

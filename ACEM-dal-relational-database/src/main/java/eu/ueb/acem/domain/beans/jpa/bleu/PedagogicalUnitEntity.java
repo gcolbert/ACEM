@@ -77,12 +77,6 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 	@ManyToMany(targetEntity = PedagogicalKeywordEntity.class, fetch = FetchType.LAZY)
 	private Set<PedagogicalKeyword> pedagogicalKeywords = new HashSet<PedagogicalKeyword>(0);
 
-	@OneToOne(targetEntity = PedagogicalUnitEntity.class, fetch = FetchType.LAZY)
-	private PedagogicalUnit nextPedagogicalUnit;
-
-	@OneToOne(targetEntity = PedagogicalUnitEntity.class, fetch = FetchType.LAZY, mappedBy = "nextPedagogicalUnit")
-	private PedagogicalUnit previousPedagogicalUnit;
-
 	public PedagogicalUnitEntity() {
 	}
 
@@ -204,32 +198,6 @@ public abstract class PedagogicalUnitEntity extends AbstractEntity implements Pe
 	@Override
 	public void setModificationDate(Long date) {
 		this.modificationDate = date;
-	}
-
-	protected PedagogicalUnit getPrevious() {
-		return previousPedagogicalUnit;
-	}
-
-	protected void setPrevious(PedagogicalUnit pedagogicalUnit) {
-		this.previousPedagogicalUnit = pedagogicalUnit;
-		if ((((PedagogicalUnitEntity) pedagogicalUnit).getNext() == null)
-				|| ((((PedagogicalUnitEntity) pedagogicalUnit).getNext() != null) && (!((PedagogicalUnitEntity) pedagogicalUnit)
-						.getNext().equals(this)))) {
-			((PedagogicalUnitEntity) pedagogicalUnit).setNext(this);
-		}
-	}
-
-	protected PedagogicalUnit getNext() {
-		return nextPedagogicalUnit;
-	}
-
-	protected void setNext(PedagogicalUnit pedagogicalUnit) {
-		this.nextPedagogicalUnit = pedagogicalUnit;
-		if ((((PedagogicalUnitEntity) pedagogicalUnit).getPrevious() == null)
-				|| ((((PedagogicalUnitEntity) pedagogicalUnit).getPrevious() != null) && (!((PedagogicalUnitEntity) pedagogicalUnit)
-						.getPrevious().equals(this)))) {
-			((PedagogicalUnitEntity) pedagogicalUnit).setPrevious(this);
-		}
 	}
 
 	@Override

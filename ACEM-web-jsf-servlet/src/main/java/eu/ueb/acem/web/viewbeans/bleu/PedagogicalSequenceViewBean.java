@@ -44,8 +44,11 @@ public class PedagogicalSequenceViewBean extends AbstractPedagogicalUnitViewBean
 
 	private List<PedagogicalSessionViewBean> pedagogicalSessionViewBeans;
 
+	private List<PedagogicalActivityViewBean> pedagogicalActivityViewBeans;
+
 	public PedagogicalSequenceViewBean() {
 		pedagogicalSessionViewBeans = new ArrayList<PedagogicalSessionViewBean>();
+		pedagogicalActivityViewBeans = new ArrayList<PedagogicalActivityViewBean>();
 	}
 
 	public PedagogicalSequenceViewBean(PedagogicalSequence sequence) {
@@ -55,6 +58,10 @@ public class PedagogicalSequenceViewBean extends AbstractPedagogicalUnitViewBean
 
 	public List<PedagogicalSessionViewBean> getPedagogicalSessionViewBeans() {
 		return pedagogicalSessionViewBeans;
+	}
+
+	public List<PedagogicalActivityViewBean> getPedagogicalActivityViewBeans() {
+		return pedagogicalActivityViewBeans;
 	}
 
 	public void setSequence(PedagogicalSequence domainBean) {

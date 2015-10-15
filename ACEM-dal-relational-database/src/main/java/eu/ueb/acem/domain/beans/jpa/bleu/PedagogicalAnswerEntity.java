@@ -27,6 +27,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
@@ -58,6 +60,7 @@ public class PedagogicalAnswerEntity extends AbstractEntity implements Pedagogic
 	private Set<PedagogicalNeed> pedagogicalNeeds = new HashSet<PedagogicalNeed>(0);
 
 	@ManyToMany(targetEntity = ResourceCategoryEntity.class, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
 	public PedagogicalAnswerEntity() {

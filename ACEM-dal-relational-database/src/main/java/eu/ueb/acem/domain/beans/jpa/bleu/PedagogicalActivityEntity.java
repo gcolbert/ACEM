@@ -27,6 +27,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalSequence;
@@ -59,6 +60,12 @@ public class PedagogicalActivityEntity extends PedagogicalUnitEntity implements 
 	@JoinTable(name = "ResourceCategory_PedagogicalActivity")
 	private Set<ResourceCategory> resourceCategories = new HashSet<ResourceCategory>(0);
 
+	@OneToOne(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY)
+	private PedagogicalActivity nextPedagogicalActivity;
+
+	@OneToOne(targetEntity = PedagogicalActivityEntity.class, fetch = FetchType.LAZY, mappedBy = "nextPedagogicalActivity")
+	private PedagogicalActivity previousPedagogicalActivity;
+	
 	@Lob
 	private String instructions;
 
@@ -117,22 +124,34 @@ public class PedagogicalActivityEntity extends PedagogicalUnitEntity implements 
 
 	@Override
 	public PedagogicalActivity getPreviousPedagogicalActivity() {
-		return (PedagogicalActivity) getPrevious();
+		return previousPedagogicalActivity;
 	}
 
 	@Override
 	public void setPreviousPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		setPrevious(pedagogicalActivity);
+		this.previousPedagogicalActivity = pedagogicalActivity;
+		if (pedagogicalActivity != null
+				&& ((pedagogicalActivity.getNextPedagogicalActivity() == null) || ((pedagogicalActivity
+						.getNextPedagogicalActivity() != null) && (!pedagogicalActivity.getNextPedagogicalActivity()
+						.equals(this))))) {
+			pedagogicalActivity.setNextPedagogicalActivity(this);
+		}
 	}
 
 	@Override
 	public PedagogicalActivity getNextPedagogicalActivity() {
-		return (PedagogicalActivity) getNext();
+		return nextPedagogicalActivity;
 	}
 
 	@Override
 	public void setNextPedagogicalActivity(PedagogicalActivity pedagogicalActivity) {
-		setNext(pedagogicalActivity);
+		this.nextPedagogicalActivity = pedagogicalActivity;
+		if (pedagogicalActivity != null
+				&& ((pedagogicalActivity.getPreviousPedagogicalActivity() == null) || ((pedagogicalActivity
+						.getPreviousPedagogicalActivity() != null) && (!pedagogicalActivity
+						.getPreviousPedagogicalActivity().equals(this))))) {
+			pedagogicalActivity.setPreviousPedagogicalActivity(this);
+		}
 	}
 
 }

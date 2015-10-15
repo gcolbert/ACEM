@@ -117,8 +117,8 @@ public abstract class AbstractPedagogicalUnitViewBean<E extends PedagogicalUnit>
 	}
 
 	@Override
-	public void setDuration(Long duration) {
-		this.duration = duration.toString();
+	public void setDuration(String duration) {
+		this.duration = duration;
 	}
 
 	@Override

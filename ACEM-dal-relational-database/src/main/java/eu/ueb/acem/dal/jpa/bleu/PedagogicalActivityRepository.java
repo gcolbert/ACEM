@@ -34,7 +34,7 @@ public interface PedagogicalActivityRepository extends GenericRepository<Pedagog
 	@Query("SELECT pa FROM PedagogicalActivity pa WHERE pa.name = :name")
 	Iterable<PedagogicalActivityEntity> findByName(@Param("name") String name);
 
-	@Query("SELECT pa FROM PedagogicalActivity pa, PedagogicalSession ses WHERE ses.id = :sessionId AND pa MEMBER OF ses.pedagogicalActivities AND pa NOT IN ( SELECT pa2 FROM PedagogicalActivity pa2, PedagogicalActivity pa3 WHERE pa3.nextPedagogicalUnit = pa2 AND pa3 MEMBER OF ses.pedagogicalActivities )")	
+	@Query("SELECT pa FROM PedagogicalActivity pa, PedagogicalSession ses WHERE ses.id = :sessionId AND pa MEMBER OF ses.pedagogicalActivities AND pa NOT IN ( SELECT pa2 FROM PedagogicalActivity pa2, PedagogicalActivity pa3 WHERE pa3.nextPedagogicalActivity = pa2 AND pa3 MEMBER OF ses.pedagogicalActivities )")	
 	Iterable<PedagogicalActivityEntity> findFirstActivitiesOfSession(@Param("sessionId") Long sessionId);
 
 }

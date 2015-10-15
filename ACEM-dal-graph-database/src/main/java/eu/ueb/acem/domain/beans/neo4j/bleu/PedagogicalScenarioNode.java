@@ -67,6 +67,12 @@ public class PedagogicalScenarioNode extends PedagogicalUnitNode implements Peda
 	@RelatedTo(elementClass = TeacherNode.class, type = "authorsScenario", direction = INCOMING)
 	private Set<Teacher> authors = new HashSet<Teacher>(0);
 
+	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "next", direction = INCOMING)
+	private PedagogicalScenario previousPedagogicalScenario;
+
+	@RelatedTo(elementClass = PedagogicalScenarioNode.class, type = "next", direction = OUTGOING)
+	private PedagogicalScenario nextPedagogicalScenario;
+
 	public PedagogicalScenarioNode() {
 		published = false;
 	}
@@ -143,22 +149,34 @@ public class PedagogicalScenarioNode extends PedagogicalUnitNode implements Peda
 
 	@Override
 	public PedagogicalScenario getPreviousPedagogicalScenario() {
-		return (PedagogicalScenario)getPrevious();
+		return previousPedagogicalScenario;
 	}
 
 	@Override
 	public void setPreviousPedagogicalScenario(PedagogicalScenario pedagogicalScenario) {
-		setPrevious(pedagogicalScenario);
+		this.previousPedagogicalScenario = pedagogicalScenario;
+		if (pedagogicalScenario != null
+				&& ((pedagogicalScenario.getNextPedagogicalScenario() == null) || ((pedagogicalScenario
+						.getNextPedagogicalScenario() != null) && (!pedagogicalScenario.getNextPedagogicalScenario()
+						.equals(this))))) {
+			pedagogicalScenario.setNextPedagogicalScenario(this);
+		}
 	}
 
 	@Override
 	public PedagogicalScenario getNextPedagogicalScenario() {
-		return (PedagogicalScenario)getNext();
+		return nextPedagogicalScenario;
 	}
 
 	@Override
 	public void setNextPedagogicalScenario(PedagogicalScenario pedagogicalScenario) {
-		setNext(pedagogicalScenario);
+		this.nextPedagogicalScenario = pedagogicalScenario;
+		if (pedagogicalScenario != null
+				&& ((pedagogicalScenario.getPreviousPedagogicalScenario() == null) || ((pedagogicalScenario
+						.getPreviousPedagogicalScenario() != null) && (!pedagogicalScenario
+						.getPreviousPedagogicalScenario().equals(this))))) {
+			pedagogicalScenario.setPreviousPedagogicalScenario(this);
+		}
 	}
 
 }
