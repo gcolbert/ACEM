@@ -31,16 +31,6 @@ Install Eclipse for Java EE
 
 - tar -xzf eclipse-jee-kepler-SR1-linux-gtk-x86_64.tar.gz 
 
-- there's currently a bug in Ubuntu not displaying Eclipse menu.
-Workaround : create a file "eclipse-with-menus.sh" inside the "eclipse" folder.
-
-        #!/bin/bash
-        env UBUNTU_MENUPROXY=0 ~/ACEM-project/eclipse/eclipse
-
-where ~/ACEM-project/eclipse/eclipse is the path to launch the eclipse executable.
-
-- chmod +x ~/ACEM-project/eclipse/eclipse-with-menus.sh
-
 Create workspace folder
 -----------------------
 
@@ -60,7 +50,7 @@ It should download sources into ~/ACEM-project/workspace-ACEM/ACEM
 Configure Eclipse
 -----------------
 
-- Launch Eclipse with ~/ACEM-project/eclipse/eclipse-with-menus.sh
+- Launch Eclipse
 
 - Choose ~/ACEM-project/workspace-ACEM as workspace
 
@@ -69,6 +59,16 @@ Configure Eclipse
 - Set root directory to: ~/ACEM-project/workspace-ACEM/ACEM
 
 - Click Finish
+
+Create a config.properties file
+-------------------------------
+
+You must **create a "config.properties" file** in ~/ACEM-project/workspace-ACEM/ACEM/ACEM-web-jsf-servlet/src/main/resources/properties for the server to start properly.
+
+You may want to adjust, at least, the paths in tmp.path and images.path whose default values are:
+
+     images.path=D:/ACEM-data/uploaded-content/images/
+     tmp.path=D:/ACEM-data/upload-tmp/
 
 Build the project using Maven
 -----------------------------
