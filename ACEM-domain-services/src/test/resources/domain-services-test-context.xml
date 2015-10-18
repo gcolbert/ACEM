@@ -17,15 +17,10 @@
 						http://www.springframework.org/schema/context 
 						http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<import resource="classpath*:dal-test-context.xml"/>
-
-	<context:annotation-config/>
+	<import resource="classpath*:dal-common-test-context.xml"/>
 
  	<context:component-scan base-package="eu.ueb.acem.services"/>
 
-	<import resource="classpath*:META-INF/components/ACEM-domain-services-domain.xml" />
-	<import resource="classpath*:META-INF/components/ACEM-domain-services-abstractBeans.xml" />
-	<import resource="classpath*:META-INF/components/ACEM-domain-services-application.xml" />
 	<import resource="classpath*:META-INF/components/ACEM-domain-services-i18n.xml" />
 
 </beans>

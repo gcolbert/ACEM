@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright (c) 2013 Grégoire COLBERT.
   All rights reserved. This program and the accompanying materials
@@ -17,9 +17,7 @@
 						http://www.springframework.org/schema/context 
 						http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<import resource="classpath*:META-INF/ACEM-dal-context.xml"/>
-
-	<context:annotation-config/>
+	<import resource="classpath*:META-INF/ACEM-dal-common-context.xml"/>
 
  	<context:component-scan base-package="eu.ueb.acem.services"/>
 

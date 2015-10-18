@@ -26,9 +26,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 /**
+ * Controller for the main menu.
+ * 
  * @author Grégoire Colbert
  * @since 2014-01-22
- * 
  */
 @Controller("mainMenuController")
 @Scope("session")

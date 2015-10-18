@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -21,21 +21,22 @@ package eu.ueb.acem.domain.beans.gris;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
+ * The Teacher interface extends {@link Person}.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface Teacher extends Person {
 
-	Set<Class> getClasses();
+	Set<TeachingUnit> getTeachingUnits();
 
-	void setClasses(Set<Class> classes);
+	void setTeachingUnits(Set<TeachingUnit> teachingUnits);
 
-	Set<PedagogicalScenario> getScenarios();
+	Set<PedagogicalScenario> getPedagogicalScenarios();
 
-	void setScenarios(Set<PedagogicalScenario> scenarios);
+	void setPedagogicalScenarios(Set<PedagogicalScenario> pedagogicalScenarios);
 
 }

@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.services;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,23 +29,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.bleu.PedagogicalNeedDAO;
-import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
+import eu.ueb.acem.dal.common.DAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalAnswerDAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalNeedDAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalScenarioDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalAnswerNode;
-import eu.ueb.acem.domain.beans.bleu.neo4j.PedagogicalNeedNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
+ * Implementation of NeedsAndAnswersService.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Service("needsAndAnswersService")
-public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Serializable {
+public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 
 	/**
 	 * For serialization.
@@ -59,10 +58,10 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	private static final Logger logger = LoggerFactory.getLogger(NeedsAndAnswersServiceImpl.class);
 
 	@Inject
-	private PedagogicalNeedDAO<Long, PedagogicalNeed> needDAO;
+	private PedagogicalNeedDAO<Long> needDAO;
 
 	@Inject
-	private DAO<Long, PedagogicalAnswer> answerDAO;
+	private PedagogicalAnswerDAO<Long> answerDAO;
 
 	@Inject
 	private DAO<Long, ResourceCategory> resourceCategoryDAO;
@@ -74,7 +73,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	}
 
 	@Override
-	public Boolean deleteNode(Long id) {
+	public Boolean deletePedagogicalNeedOrPedagogicalAnswer(Long id) {
 		if (needDAO.exists(id)) {
 			return deleteNeed(id);
 		}
@@ -85,7 +84,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 			return false;
 		}
 	}
-	
+
 	@Override
 	public Long countNeeds() {
 		return needDAO.count();
@@ -93,14 +92,38 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 
 	@Override
 	public PedagogicalNeed createPedagogicalNeed(String name) {
-		return needDAO.create(new PedagogicalNeedNode(name));
+		return needDAO.create(name);
 	}
 
 	@Override
 	public PedagogicalNeed createPedagogicalNeed(String name, String description) {
-		return needDAO.create(new PedagogicalNeedNode(name, description));
+		return needDAO.create(name, description);
 	}
-	
+
+	@Override
+	public PedagogicalNeed createPedagogicalNeed(String name, PedagogicalNeed parent) {
+		PedagogicalNeed need = needDAO.create(name);
+		if ((need != null) && (parent != null)) {
+			need.getParents().add(parent);
+			parent.getChildren().add(need);
+			need = needDAO.update(need);
+			parent = needDAO.update(parent);
+		}
+		return need;
+	}
+
+	@Override
+	public PedagogicalNeed createPedagogicalNeed(String name, String description, PedagogicalNeed parent) {
+		PedagogicalNeed need = needDAO.create(name, description);
+		if ((need != null) && (parent != null)) {
+			need.getParents().add(parent);
+			parent.getChildren().add(need);
+			need = needDAO.update(need);
+			parent = needDAO.update(parent);
+		}
+		return need;
+	}
+
 	@Override
 	public Collection<PedagogicalNeed> retrieveNeedsAtRoot() {
 		return needDAO.retrieveNeedsAtRoot();
@@ -112,6 +135,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	}
 
 	@Override
+	@Transactional
 	public PedagogicalNeed updatePedagogicalNeed(PedagogicalNeed pedagogicalNeed) {
 		return needDAO.update(pedagogicalNeed);
 	}
@@ -132,12 +156,36 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 
 	@Override
 	public PedagogicalAnswer createPedagogicalAnswer(String name) {
-		return answerDAO.create(new PedagogicalAnswerNode(name));
+		return answerDAO.create(name);
 	}
 
 	@Override
 	public PedagogicalAnswer createPedagogicalAnswer(String name, String description) {
-		return answerDAO.create(new PedagogicalAnswerNode(name, description));
+		return answerDAO.create(name, description);
+	}
+
+	@Override
+	public PedagogicalAnswer createPedagogicalAnswer(String name, PedagogicalNeed parent) {
+		PedagogicalAnswer answer = answerDAO.create(name);
+		if ((answer != null) && (parent != null)) {
+			answer.getNeeds().add(parent);
+			parent.getAnswers().add(answer);
+			answer = answerDAO.update(answer);
+			parent = needDAO.update(parent);
+		}
+		return answer;
+	}
+
+	@Override
+	public PedagogicalAnswer createPedagogicalAnswer(String name, String description, PedagogicalNeed parent) {
+		PedagogicalAnswer answer = answerDAO.create(name, description);
+		if ((answer != null) && (parent != null)) {
+			answer.getNeeds().add(parent);
+			parent.getAnswers().add(answer);
+			answer = answerDAO.update(answer);
+			parent = needDAO.update(parent);
+		}
+		return answer;
 	}
 
 	@Override
@@ -170,7 +218,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 				need = needDAO.update(need);
 			}
 		} else {
-			need = needDAO.create(new PedagogicalNeedNode(name));
+			need = needDAO.create(name);
 		}
 		if (needDAO.exists(idParent)) {
 			PedagogicalNeed parent = needDAO.retrieveById(idParent);
@@ -185,18 +233,9 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 	}
 
 	@Override
-	public void saveNeedName(Long id, String newName) {
-		if (needDAO.exists(id)) {
-			PedagogicalNeed need = needDAO.retrieveById(id);
-			need.setName(newName);
-			need = needDAO.update(need);
-		}
-	}
-
-	@Override
 	@Transactional
 	public void changeParentOfNeedOrAnswer(Long id, Long idNewParent) {
-		logger.debug("entering changeParentOfNeed({}, {})", id, idNewParent);
+		logger.debug("entering changeParentOfNeedOrAnswer({}, {})", id, idNewParent);
 		// The "visible root node" has id=null, but it is forbidden to move it.
 		// Moreover, the id parameter must identify an existing entity.
 		if ((id != null) && (needDAO.exists(id) || answerDAO.exists(id))) {
@@ -256,7 +295,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 		else {
 			logger.error("There is no PedagogicalNeed, nor PedagogicalAnswer, with id={}", id);
 		}
-		logger.debug("leaving changeParentOfNeed({}, {})", id, idNewParent);
+		logger.debug("leaving changeParentOfNeedOrAnswer({}, {})", id, idNewParent);
 	}
 
 	@Override
@@ -268,7 +307,7 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 			answer.setName(name);
 			answer = answerDAO.update(answer);
 		} else {
-			answer = answerDAO.create(new PedagogicalAnswerNode(name));
+			answer = answerDAO.create(name);
 		}
 		if (needDAO.exists(idAssociatedNeed)) {
 			PedagogicalNeed associatedNeed = needDAO.retrieveById(idAssociatedNeed);
@@ -278,15 +317,6 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService, Seria
 			answerDAO.update(answer);
 		}
 		return answer;
-	}
-
-	@Override
-	public void saveAnswerName(Long id, String newName) {
-		if (answerDAO.exists(id)) {
-			PedagogicalAnswer answer = answerDAO.retrieveById(id);
-			answer.setName(newName);
-			answer = answerDAO.update(answer);
-		}
 	}
 
 	@Override

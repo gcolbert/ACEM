@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -18,7 +18,6 @@
  */
 package eu.ueb.acem.services;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -28,25 +27,22 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.rouge.OrganisationDAO;
+import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
-import eu.ueb.acem.domain.beans.rouge.neo4j.AdministrativeDepartmentNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.CommunityNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.InstitutionNode;
-import eu.ueb.acem.domain.beans.rouge.neo4j.TeachingDepartmentNode;
 
 /**
+ * Implementation of OrganisationsService.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Service("organisationsService")
-public class OrganisationsServiceImpl implements OrganisationsService, Serializable {
+public class OrganisationsServiceImpl implements OrganisationsService {
 
 	/**
 	 * For serialization.
@@ -87,22 +83,22 @@ public class OrganisationsServiceImpl implements OrganisationsService, Serializa
 
 	@Override
 	public Community createCommunity(String name, String shortname, String iconFileName) {
-		return communityDAO.create(new CommunityNode(name, shortname, iconFileName));
+		return communityDAO.create(name, shortname, iconFileName);
 	}
 
 	@Override
 	public Institution createInstitution(String name, String shortname, String iconFileName) {
-		return institutionDAO.create(new InstitutionNode(name, shortname, iconFileName));
+		return institutionDAO.create(name, shortname, iconFileName);
 	}
 
 	@Override
 	public AdministrativeDepartment createAdministrativeDepartment(String name, String shortname, String iconFileName) {
-		return administrativeDepartmentDAO.create(new AdministrativeDepartmentNode(name, shortname, iconFileName));
+		return administrativeDepartmentDAO.create(name, shortname, iconFileName);
 	}
 
 	@Override
 	public TeachingDepartment createTeachingDepartment(String name, String shortname, String iconFileName) {
-		return teachingDepartmentDAO.create(new TeachingDepartmentNode(name, shortname, iconFileName));
+		return teachingDepartmentDAO.create(name, shortname, iconFileName);
 	}
 
 	@Override

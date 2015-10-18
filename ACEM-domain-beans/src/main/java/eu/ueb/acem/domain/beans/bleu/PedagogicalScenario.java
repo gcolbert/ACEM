@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -18,36 +18,18 @@
  */
 package eu.ueb.acem.domain.beans.bleu;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.violet.Class;
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
 
 /**
+ * The PedagogicalScenario domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
-public interface PedagogicalScenario extends Serializable, Comparable<PedagogicalScenario> {
-
-	Long getId();
-
-	String getName();
-
-	void setName(String name);
-
-	Long getCreationDate();
-
-	void setCreationDate(Long date);
-
-	Long getModificationDate();
-
-	void setModificationDate(Long date);
-
-	String getObjective();
-
-	void setObjective(String objective);
+public interface PedagogicalScenario extends PedagogicalUnit {
 
 	String getEvaluationModes();
 
@@ -61,12 +43,20 @@ public interface PedagogicalScenario extends Serializable, Comparable<Pedagogica
 
 	void setPublished(Boolean published);
 
-	Set<PedagogicalActivity> getPedagogicalActivities();
+	Set<TeachingUnit> getTeachingUnits();
 
-	void setPedagogicalActivities(Set<PedagogicalActivity> pedagogicalActivities);
+	void setTeachingUnits(Set<TeachingUnit> teachingUnits);
 
-	Set<Class> getClasses();
+	Set<PedagogicalSequence> getPedagogicalSequences();
 
-	void setClasses(Set<Class> classes);
+	void setPedagogicalSequences(Set<PedagogicalSequence> pedagogicalSequences);
+
+	PedagogicalScenario getPreviousPedagogicalScenario();
+
+	void setPreviousPedagogicalScenario(PedagogicalScenario pedagogicalScenario);
+
+	PedagogicalScenario getNextPedagogicalScenario();
+
+	void setNextPedagogicalScenario(PedagogicalScenario pedagogicalScenario);
 
 }

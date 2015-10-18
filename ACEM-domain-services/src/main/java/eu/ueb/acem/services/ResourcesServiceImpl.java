@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -18,46 +18,43 @@
  */
 package eu.ueb.acem.services;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.DAO;
-import eu.ueb.acem.dal.bleu.PedagogicalScenarioDAO;
-import eu.ueb.acem.dal.jaune.ResourceDAO;
+import eu.ueb.acem.dal.common.bleu.PedagogicalScenarioDAO;
+import eu.ueb.acem.dal.common.jaune.ResourceCategoryDAO;
+import eu.ueb.acem.dal.common.jaune.ResourceDAO;
+import eu.ueb.acem.dal.common.jaune.UseModeDAO;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.Equipment;
 import eu.ueb.acem.domain.beans.jaune.PedagogicalAndDocumentaryResource;
 import eu.ueb.acem.domain.beans.jaune.ProfessionalTraining;
 import eu.ueb.acem.domain.beans.jaune.Resource;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.jaune.Software;
-import eu.ueb.acem.domain.beans.jaune.Documentation;
 import eu.ueb.acem.domain.beans.jaune.UseMode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.EquipmentNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.PedagogicalAndDocumentaryResourceNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ProfessionalTrainingNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.ResourceCategoryNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.DocumentationNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.SoftwareNode;
-import eu.ueb.acem.domain.beans.jaune.neo4j.UseModeNode;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Service("resourcesService")
-public class ResourcesServiceImpl implements ResourcesService, Serializable {
+@Path("/resources")
+public class ResourcesServiceImpl implements ResourcesService {
 
 	/**
 	 * For serialization.
@@ -82,10 +79,10 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	private PedagogicalScenarioDAO<Long> pedagogicalScenarioDAO;
 
 	@Inject
-	private DAO<Long, ResourceCategory> resourceCategoryDAO;
+	private ResourceCategoryDAO<Long> resourceCategoryDAO;
 	
 	@Inject
-	private DAO<Long, UseMode> useModeDAO;
+	private UseModeDAO<Long> useModeDAO;
 
 	@Inject
 	private ResourceDAO<Long, Equipment> equipmentDAO;
@@ -194,19 +191,19 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 		if ((ownerOrganisation != null) && (supportOrganisation != null) && (resourceCategory != null)) {
 			switch (resourceType) {
 			case RESOURCE_TYPE_SOFTWARE:
-				resource = new SoftwareNode(name, iconFileName);
+				resource = softwareDAO.create(name, iconFileName);
 				break;
 			case RESOURCE_TYPE_DOCUMENTATION:
-				resource = new DocumentationNode(name, iconFileName);
+				resource = documentationDAO.create(name, iconFileName);
 				break;
 			case RESOURCE_TYPE_EQUIPMENT:
-				resource = new EquipmentNode(name, iconFileName);
+				resource = equipmentDAO.create(name, iconFileName);
 				break;
 			case RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE:
-				resource = new PedagogicalAndDocumentaryResourceNode(name, iconFileName);
+				resource = pedagogicalAndDocumentaryResourcesDAO.create(name, iconFileName);
 				break;
 			case RESOURCE_TYPE_PROFESSIONAL_TRAINING:
-				resource = new ProfessionalTrainingNode(name, iconFileName);
+				resource = professionalTrainingDAO.create(name, iconFileName);
 				break;
 			default:
 				logger.error("createResource, don't know how to instanciate a domain bean having resourceType '{}'.",
@@ -235,19 +232,19 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 
 				switch (resourceType) {
 				case RESOURCE_TYPE_SOFTWARE:
-					resource = softwareDAO.create((Software) resource);
+					resource = softwareDAO.update((Software) resource);
 					break;
 				case RESOURCE_TYPE_DOCUMENTATION:
-					resource = documentationDAO.create((Documentation) resource);
+					resource = documentationDAO.update((Documentation) resource);
 					break;
 				case RESOURCE_TYPE_EQUIPMENT:
-					resource = equipmentDAO.create((Equipment) resource);
+					resource = equipmentDAO.update((Equipment) resource);
 					break;
 				case RESOURCE_TYPE_PEDAGOGICAL_AND_DOCUMENTARY_RESOURCE:
-					resource = pedagogicalAndDocumentaryResourcesDAO.create((PedagogicalAndDocumentaryResource) resource);
+					resource = pedagogicalAndDocumentaryResourcesDAO.update((PedagogicalAndDocumentaryResource) resource);
 					break;
 				case RESOURCE_TYPE_PROFESSIONAL_TRAINING:
-					resource = professionalTrainingDAO.create((ProfessionalTraining) resource);
+					resource = professionalTrainingDAO.update((ProfessionalTraining) resource);
 					break;
 				default:
 				}
@@ -349,7 +346,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 
 	@Override
 	public ResourceCategory createResourceCategory(String name, String description, String iconFileName) {
-		return resourceCategoryDAO.create(new ResourceCategoryNode(name, description, iconFileName));
+		return resourceCategoryDAO.create(name, description, iconFileName);
 	}
 
 	@Override
@@ -376,6 +373,9 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	}
 
 	@Override
+	@GET
+	@Path("/categories")
+	@Produces({ MediaType.APPLICATION_JSON })
 	public Collection<ResourceCategory> retrieveAllCategories() {
 		return resourceCategoryDAO.retrieveAll();
 	}
@@ -410,7 +410,7 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 	}
 
 	@Override
-	public Collection<Equipment> retrieveEquipmentWithCategory(ResourceCategory category) {
+	public Collection<Equipment> retrieveEquipmentsWithCategory(ResourceCategory category) {
 		if (category != null) {
 			return equipmentDAO.retrieveAllWithCategory(category);
 		}
@@ -442,10 +442,10 @@ public class ResourcesServiceImpl implements ResourcesService, Serializable {
 
 	@Override
 	public UseMode createUseMode(String name, Organisation referredOrganisation) {
-		UseMode entity = new UseModeNode(name);
+		UseMode entity = useModeDAO.create(name);
 		entity.setReferredOrganisation(referredOrganisation);
 		referredOrganisation.getUseModes().add(entity);
-		return useModeDAO.create(entity);
+		return useModeDAO.update(entity);
 	}
 
 	@Override

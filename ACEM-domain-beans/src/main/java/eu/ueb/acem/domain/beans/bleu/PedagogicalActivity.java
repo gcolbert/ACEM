@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -18,46 +18,72 @@
  */
 package eu.ueb.acem.domain.beans.bleu;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
+ * The PedagogicalActivity domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
-public interface PedagogicalActivity extends Serializable, Comparable<PedagogicalActivity> {
+public interface PedagogicalActivity extends PedagogicalUnit {
 
-	Long getId();
-
-	String getName();
-
-	void setName(String name);
-
-	Long getPositionInScenario();
-
-	void setPositionInScenario(Long positionInScenario);
-
-	String getObjective();
-
-	void setObjective(String objectif);
-
+	/**
+	 * Gets the instructions given to the students in order to complete the
+	 * activity.
+	 * 
+	 * @return the instructions given to the students
+	 */
 	String getInstructions();
 
-	void setInstructions(String descriptif);
+	/**
+	 * Sets the instructions that will be given to the students so that they can
+	 * complete the activity.
+	 * 
+	 * @param instructions
+	 *            the instructions given to the students
+	 */
+	void setInstructions(String instructions);
 
-	String getDuration();
+	// ----------- SEQUENCES --------------
 
-	void setDuration(String duree);
+	// Set<PedagogicalSequence> getPedagogicalSequences();
+	//
+	// void setPedagogicalSequences(Set<PedagogicalSequence>
+	// pedagogicalSequences);
 
-	Set<PedagogicalScenario> getScenarios();
+	PedagogicalSequence getPedagogicalSequence();
 
-	void setScenarios(Set<PedagogicalScenario> scenarios);
+	void setPedagogicalSequence(PedagogicalSequence pedagogicalSequence);
+
+	// ----------- SESSIONS --------------
+
+	// // TODO : enable if an Activity can be associated with many sessions
+	// Set<PedagogicalSession> getPedagogicalSessions();
+	//
+	// void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions);
+
+	// TODO : enable if an Activity can be associated with only one session
+	PedagogicalSession getPedagogicalSession();
+
+	void setPedagogicalSession(PedagogicalSession pedagogicalSession);
+
+	// ----------- RESOURCE CATEGORIES --------------
 
 	Set<ResourceCategory> getResourceCategories();
 
 	void setResourceCategories(Set<ResourceCategory> resourceCategories);
+
+	// ----------- LINKING --------------
+
+	PedagogicalActivity getPreviousPedagogicalActivity();
+
+	void setPreviousPedagogicalActivity(PedagogicalActivity pedagogicalActivity);
+
+	PedagogicalActivity getNextPedagogicalActivity();
+
+	void setNextPedagogicalActivity(PedagogicalActivity pedagogicalActivity);
 
 }

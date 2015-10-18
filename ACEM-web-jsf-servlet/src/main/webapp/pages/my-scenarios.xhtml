@@ -15,8 +15,6 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
-	<ui:param name="northPanelCollapsible" value="true"/>
-	<ui:param name="northPanelCollapsed" value="false"/>
 
 	<ui:param name="displayWest" value="true" />
 	<ui:param name="titleWest" value="#{msg['MY_SCENARIOS.LIST_USER_SCENARIOS.HEADER']}" />
@@ -171,21 +169,15 @@
 					oncomplete="PF('dialogEditScenario').show()"
 					update=":createOrModifyPedagogicalScenarioForm:idDialogCreateOrModifyPedagogicalScenario"
 					process="@this" />
-
 				<p:dataTable id="pedagogicalActivitiesDataTable" styleClass="selectedScenarioActivitiesDataTable"
 					editable="true"
 					emptyMessage="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.NO_RECORDS_FOUND']}"
-					value="#{associateBean.selectedPedagogicalScenarioViewBean.pedagogicalActivityViewBeans}"
+					value="#{associateBean.selectedPedagogicalScenarioViewBean.pedagogicalSequenceViewBeans[0].pedagogicalSessionViewBeans[0].pedagogicalActivityViewBeans}"
 					var="pedagogicalActivityViewBean"
 					rowKey="pedagogicalActivityViewBean.id">
 
 					<f:facet name="header">#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.TABLE_HEADER']}</f:facet>
 
-					<p:column width="20"
-						headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_POSITION_IN_SCENARIO']}">
-						<h:outputText
-							value="#{pedagogicalActivityViewBean.positionInScenario}" />
-					</p:column>
 					<p:column
 						headerText="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.LIST.COLUMN_HEADER.ACTIVITY_NAME']}">
 						<h:outputText value="#{pedagogicalActivityViewBean.name}" escape="false" />
@@ -245,7 +237,6 @@
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
-
 				<p:commandButton
 					value="#{msg['MY_SCENARIOS.SELECTED_SCENARIO.ADD_ACTIVITY_LABEL']}"
 					icon="ui-icon-plusthick"

@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ *     Copyright Université Européenne de Bretagne 2015
+ * 
+ *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
+ * 
+ *     ACEM is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     ACEM is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -6,7 +24,7 @@
 	<parent>
 		<artifactId>ACEM</artifactId>
 		<groupId>eu.ueb</groupId>
-		<version>0.1.2-SNAPSHOT</version>
+		<version>0.2.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>ACEM-web-jsf-servlet</artifactId>
 	<packaging>war</packaging>
@@ -23,6 +41,7 @@
 		<omnifaces.version>1.8.1</omnifaces.version>
 		<primefaces.version>5.2</primefaces.version>
 		<primefaces-themes.version>1.0.10</primefaces-themes.version>
+		<primefaces-extensions.version>3.2.0</primefaces-extensions.version>
 
 		<tomcat.host>localhost</tomcat.host>
 		<tomcat.port.string>:8080</tomcat.port.string>
@@ -87,6 +106,11 @@
 			<version>${primefaces-themes.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.primefaces.extensions</groupId>
+			<artifactId>primefaces-extensions</artifactId>
+			<version>${primefaces-extensions.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.omnifaces</groupId>
 			<artifactId>omnifaces</artifactId>
 			<version>${omnifaces.version}</version>
@@ -126,16 +150,6 @@
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>${javax.inject-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -181,7 +195,7 @@
 		<dependency>
 			<groupId>org.springframework.security.extensions</groupId>
 			<artifactId>spring-security-saml2-core</artifactId>
-			<version>${spring-security-saml2-core}</version>
+			<version>${spring-security-saml2-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
@@ -199,7 +213,21 @@
 		</dependency>
 		<dependency>
 			<groupId>eu.ueb</groupId>
-			<artifactId>ACEM-dal</artifactId>
+			<artifactId>ACEM-dal-relational-database</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-graph-database</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-common</artifactId>
 			<version>${project.version}</version>
 			<type>test-jar</type>
 			<scope>test</scope>
@@ -229,6 +257,18 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+				<!-- Filtering keystore files breaks them -->
+				<excludes>
+					<exclude>**/*.jks</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<!-- Filtering keystore files breaks them -->
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**/*.jks</include>
+				</includes>
 			</resource>
 		</resources>
 		<plugins>

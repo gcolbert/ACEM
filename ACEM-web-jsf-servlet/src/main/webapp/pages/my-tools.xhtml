@@ -3,6 +3,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	template="/templates/commonLayout.xhtml">
 
 	<f:metadata>
@@ -18,8 +19,6 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
-	<ui:param name="northPanelCollapsible" value="true"/>
-	<ui:param name="northPanelCollapsed" value="false"/>
 	<ui:param name="displayWest" value="true" />
 	<ui:param name="westPanelSize" value="220" />
 	<ui:param name="westPanelCollapsible" value="true"/>
@@ -265,6 +264,68 @@
 				</p:graphicImage>
 
 				<p class="categoryDescription"><h:outputText value="#{associateBean.selectedToolCategoryViewBean.description}" escape="false" /></p>
+
+			    <p:carousel value="#{associateBean.selectedToolCategoryViewBean.resourceViewBeans}" headerText="Ressources" var="toolViewBean" itemStyleClass="" numVisible="3">
+			        <p:panelGrid style="width:200px; height:300px;">
+			            <p:row>
+			            	<p:column colspan="2"  style="text-align:center">
+								<p:graphicImage id="resourceIcon"
+									rendered="#{not empty toolViewBean.iconFileName}"
+									styleClass="toolIcon" alt="#{toolViewBean.name}"
+									cache="true" width="100" value="#{imagesController.image}">
+									<f:param name="imageFileName"
+										value="#{toolViewBean.iconFileName}" />
+								</p:graphicImage>
+							</p:column>
+			            </p:row>
+
+						<p:row>
+							<p:column colspan="2"  style="text-align:center">
+								<h:outputText value="#{toolViewBean.name}" styleClass="section-title"/>
+							</p:column>
+						</p:row>
+
+			            <p:row>
+							<p:column>
+								<h:outputText value="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.TOOL_TYPE']}" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{msg[toolViewBean.type]}" />
+							</p:column>
+				        </p:row>
+
+			            <p:row>
+							<p:column>
+								<h:outputText value="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.SUPPORT_ORGANISATION_NAME']}" />
+							</p:column>
+							<p:column>
+								<h:link id="goToSupportServiceBtn" outcome="pretty:my-services-param"
+									rendered="#{toolViewBean.organisationSupportingResourceViewBean != null}">
+									<f:param name="serviceId"
+										value="#{toolViewBean.organisationSupportingResourceViewBean.id}" />
+									<h:outputText
+										value="#{toolViewBean.organisationSupportingResourceViewBean.name}" />
+									<h:outputText styleClass="ui-icon ui-icon-arrowthickstop-1-e"
+										style="display:inline-block; vertical-align:middle;" />
+									<p:tooltip
+										value="#{msg['GO_TO_TOOL_SUPPORT_SERVICE.TOOLTIP']}"
+										for="goToSupportServiceBtn" />
+								</h:link>
+							</p:column>
+						</p:row>
+
+			            <p:row>
+			            	<p:column colspan="2">
+					            <p:commandButton value="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.TOOLS.COLUMN_HEADER.USE_MODES']}" />
+					            <p:commandButton value="Disponibilité" />
+					            <p:commandButton value="Localisation" />
+							</p:column>
+				        </p:row>
+			        </p:panelGrid>
+			        <f:facet name="footer">
+			                Au total, il y a #{fn:length(associateBean.selectedToolCategoryViewBean.resourceViewBeans)} ressources disponibles.
+			        </f:facet>
+			    </p:carousel>
  
 				<p:dataTable id="toolsDataTable" var="toolViewBean" dynamic="true" styleClass="resourcesDataTable"
 					value="#{associateBean.selectedToolCategoryViewBean.resourceViewBeans}"
@@ -459,6 +520,7 @@
 						<h:outputText value="#{scenario.authors}" />
 					</p:column>
 				</p:dataTable>
+
 			</p:panel>
 		</p:outputPanel>
 	</ui:define>

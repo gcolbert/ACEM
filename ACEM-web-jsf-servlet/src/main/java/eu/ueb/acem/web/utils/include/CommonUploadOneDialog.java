@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -27,7 +27,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
@@ -38,8 +38,7 @@ import eu.ueb.acem.services.util.file.FileUtil;
 /**
  * A visual bean for the dialog Upload.
  * 
- * @author rlorthio
- *
+ * @author Grégoire Colbert
  */
 public class CommonUploadOneDialog implements Serializable {
 
@@ -78,7 +77,10 @@ public class CommonUploadOneDialog implements Serializable {
 
 	/**
 	 * Bean constructor.
+	 * 
 	 * @param caller
+	 *            The controller that will control the opening and closing of
+	 *            the upload dialog.
 	 */
 	public CommonUploadOneDialog(CommonUploadOneDialogInterface caller) {
 		super();
@@ -105,22 +107,26 @@ public class CommonUploadOneDialog implements Serializable {
 	 */
 
 	/**
-	 * Get the file Uploaded
+	 * Accesses the uploaded file on the local storage and sets the caller's
+	 * setSelectedFromCommonUploadOneDialog method.
 	 * 
 	 * @param event
+	 *            A Primefaces FileUploadEvent
 	 */
 	public void handleFileUpload(FileUploadEvent event) {
 		fileUploaded = (UploadedFile) event.getFile();
-		if (caller != null){
-			Path temporaryFilePath = FileSystems.getDefault().getPath(FileUtil.getNormalizedFilePath(caller.getDomainService().getTemporaryDirectory() + File.separator
-					+ fileUploaded.getFileName() + RandomUtils.nextInt(0,100000)));
+		if (caller != null) {
+			Path temporaryFilePath = FileSystems.getDefault().getPath(
+					FileUtil.getNormalizedFilePath(caller.getApplicationService().getTemporaryDirectory() + File.separator
+							+ fileUploaded.getFileName() + RandomUtils.nextInt(100000)));
 			try {
 				FileUtil.copyInputStream(temporaryFilePath.toString(), fileUploaded.getInputstream());
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				logger.error(e.getMessage());
 				temporaryFilePath = null;
 			}
-			caller.setSelectedFromCommonUploadOneDialog(temporaryFilePath, fileUploaded.getFileName());
+			caller.setSelectedFromCommonUploadOneDialog(temporaryFilePath);
 		}
 	}
 
@@ -162,7 +168,7 @@ public class CommonUploadOneDialog implements Serializable {
 	public void moveUploadedIconToImagesFolder(Path temporaryFilePath, String imageFileName) {
 		// We move the file from the temporary folder to the images folder,
 		// and give it its original file name
-		String destinationFilePath = FileUtil.getNormalizedFilePath(caller.getDomainService().getImagesDirectory()
+		String destinationFilePath = FileUtil.getNormalizedFilePath(caller.getImagesService().getImagesDirectory()
 				+ File.separator + imageFileName);
 		if (Files.notExists(Paths.get(destinationFilePath), LinkOption.NOFOLLOW_LINKS)) {
 			FileUtil.renameDirectoryOrFile(temporaryFilePath.toString(), destinationFilePath);

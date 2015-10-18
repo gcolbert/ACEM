@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -18,32 +18,41 @@
  */
 package eu.ueb.acem.services;
 
-import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import eu.ueb.acem.dal.gris.PersonDAO;
-import eu.ueb.acem.dal.gris.TeacherDAO;
+import eu.ueb.acem.dal.common.gris.PersonDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
-import eu.ueb.acem.domain.beans.gris.neo4j.PersonNode;
-import eu.ueb.acem.domain.beans.gris.neo4j.TeacherNode;
 import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 
 /**
+ * Implementation of UsersService.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Service("usersService")
-public class UsersServiceImpl implements UsersService, Serializable {
+@Path("/users")
+public class UsersServiceImpl implements UsersService, EnvironmentAware {
 
 	/**
 	 * For serialization.
@@ -56,10 +65,7 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(UsersServiceImpl.class);
 
 	@Inject
-	private TeacherDAO teacherDAO;
-
-	@Inject
-	private PersonDAO personDAO;
+	private PersonDAO<Long, Teacher> teacherDAO;
 
 	@Inject
 	private OrganisationsService organisationsService;
@@ -67,17 +73,75 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	@Inject
 	private ResourcesService resourcesService;
 
+	/**
+	 * Auto create users?
+	 */
+	private Boolean autoCreateUsers;
+
+	private Environment environment;
+
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
+	}
+
 	public UsersServiceImpl() {
+		autoCreateUsers = false;
 	}
 
 	@PostConstruct
 	public void initUsersService() {
+		List<String> activeProfiles = Arrays.asList(environment.getActiveProfiles());
+		List<String> defaultProfiles = Arrays.asList(environment.getDefaultProfiles());
+		if (activeProfiles.contains("auth-manual")) {
+			autoCreateUsers = false;
+		}
+		else if (activeProfiles.contains("auth-cas") || activeProfiles.contains("auth-saml")) {
+			autoCreateUsers = true;
+		}
+		else {
+			if (defaultProfiles.contains("auth-manual")) {
+				autoCreateUsers = false;
+			}
+			else if (defaultProfiles.contains("auth-cas") || activeProfiles.contains("auth-saml")) {
+				autoCreateUsers = true;
+			}
+			else {
+				autoCreateUsers = false;
+			}
+		}
 	}
 
 	@Override
-	public Person retrievePersonByLogin(String login) {
-		Person person = personDAO.retrieveByLogin(login, false);
-		return person;
+	public Person getUser(String login) throws UsernameNotFoundException {
+		Person user = teacherDAO.retrieveByLogin(login, true);
+		// If the "admin" account gets deleted, we recreate it.
+		if (user==null && login.equals("admin")) {
+			user = createTeacher("Administrator", "admin", "admin");
+			user.setAdministrator(true);
+			user = teacherDAO.update((Teacher)user);
+		}
+		// If the user is missing from the database but the authentication mode
+		// guarantees a legit authentication (e.g. CAS), then we want to
+		// automatically create a user account.
+		if ((user == null) && autoCreateUsers) {
+			user = createTeacher(login, login, "pass");
+			user.setLogin(login);
+			user.setLanguage("fr");
+		}
+		else if (user == null) {
+			throw new UsernameNotFoundException("User not found");
+		}
+		return user;
+	}
+
+	@GET
+	@Path("/{login}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	@Override
+	public Teacher retrieveTeacherByLogin(@PathParam("login") String login) {
+		Teacher teacher = teacherDAO.retrieveByLogin(login, false);
+		return teacher;
 	}
 
 	@Override
@@ -86,46 +150,28 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	}
 
 	@Override
-	public Long countPersons() {
-		return personDAO.count();
-	}
-
-	@Override
-	public Person createPerson(String name, String login, String password) {
-		return personDAO.create(new PersonNode(name, login, password));
-	}
-
-	@Override
-	public Collection<Person> retrieveAllPersons() {
-		return personDAO.retrieveAll();
-	}
-	
-	@Override
-	public Person retrievePerson(Long id) {
-		return personDAO.retrieveById(id);
-	}
-
-	@Override
-	public Person updatePerson(Person person) {
-		return personDAO.update(person);
-	}
-
-	@Override
-	public Boolean deletePerson(Long id) {
-		if (personDAO.exists(id)) {
-			personDAO.delete(personDAO.retrieveById(id));
-		}
-		return !personDAO.exists(id);
-	}
-
-	@Override
 	public Teacher createTeacher(String name, String login, String password) {
-		return teacherDAO.create(new TeacherNode(name, login, password));
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(password);
+		return teacherDAO.create(name, login, encodedPassword);
 	}
 
 	@Override
 	public Teacher retrieveTeacher(Long id) {
 		return teacherDAO.retrieveById(id);
+	}
+
+	@Override
+	public Person updatePerson(Person person) {
+		Person updatedPerson = null;
+		if (person instanceof Teacher) {
+			updatedPerson = updateTeacher((Teacher) person);
+		}
+		else {
+			logger.error("Unknown concrete type of Person interface.");
+			updatedPerson = null;
+		}
+		return updatedPerson;
 	}
 
 	@Override
@@ -145,12 +191,12 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	public Boolean associateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
 		logger.debug("associateUserWorkingForOrganisation");
 		boolean success = false;
-		if (personDAO.exists(idPerson)) {
-			Person person = personDAO.retrieveById(idPerson);
+		if (teacherDAO.exists(idPerson)) {
+			Teacher teacher = teacherDAO.retrieveById(idPerson);
 			Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation, true);
 			if (organisation != null) {
-				person.getWorksForOrganisations().add(organisation);
-				person = personDAO.update(person);
+				teacher.getWorksForOrganisations().add(organisation);
+				teacher = teacherDAO.update(teacher);
 				organisation = organisationsService.updateOrganisation(organisation);
 				success = true;
 				logger.debug("association successful");
@@ -166,12 +212,12 @@ public class UsersServiceImpl implements UsersService, Serializable {
 	public Boolean dissociateUserWorkingForOrganisation(Long idPerson, Long idOrganisation) {
 		logger.debug("dissociateUserWorkingForOrganisation");
 		boolean success = false;
-		if (personDAO.exists(idPerson)) {
-			Person person = personDAO.retrieveById(idPerson);
+		if (teacherDAO.exists(idPerson)) {
+			Teacher teacher = teacherDAO.retrieveById(idPerson);
 			Organisation organisation = organisationsService.retrieveOrganisation(idOrganisation, true);
 			if (organisation != null) {
-				person.getWorksForOrganisations().remove(organisation);
-				person = personDAO.update(person);
+				teacher.getWorksForOrganisations().remove(organisation);
+				teacher = teacherDAO.update(teacher);
 				success = true;
 				logger.debug("dissociation successful");
 			}
@@ -193,12 +239,6 @@ public class UsersServiceImpl implements UsersService, Serializable {
 				teacher = teacherDAO.update(teacher);
 				success = true;
 			}
-			else if (personDAO.exists(idPerson)) {
-				Person person = personDAO.retrieveById(idPerson);
-				person.getFavoriteToolCategories().add(toolCategory);
-				person = personDAO.update(person);
-				success = true;
-			}
 		}
 		return success;
 	}
@@ -214,14 +254,13 @@ public class UsersServiceImpl implements UsersService, Serializable {
 				teacher = teacherDAO.update(teacher);
 				success = true;
 			}
-			else if (personDAO.exists(idPerson)) {
-				Person person = personDAO.retrieveById(idPerson);
-				person.getFavoriteToolCategories().remove(toolCategory);
-				person = personDAO.update(person);
-				success = true;
-			}
 		}
 		return success;
+	}
+
+	@Override
+	public Collection<Teacher> retrieveAllTeachers() {
+		return teacherDAO.retrieveAll();
 	}
 
 }

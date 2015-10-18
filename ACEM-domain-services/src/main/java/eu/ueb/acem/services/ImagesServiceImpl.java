@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -19,19 +19,19 @@
 package eu.ueb.acem.services;
 
 import java.io.File;
-import java.io.Serializable;
 import java.nio.file.Path;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
+ * Implementation of ImagesService.
+ * 
  * @author Grégoire Colbert
  * @since 2014-03-20
- * 
  */
 @Service("imagesService")
-public class ImagesServiceImpl implements ImagesService, Serializable {
+public class ImagesServiceImpl implements ImagesService {
 
 	/**
 	 * For serialization.
@@ -40,6 +40,11 @@ public class ImagesServiceImpl implements ImagesService, Serializable {
 
 	@Value("${images.path}")
 	private String localPathToImagesFolder;
+
+	@Override
+	public String getImagesDirectory() {
+		return localPathToImagesFolder;
+	}
 
 	@Override
 	public File getImage(String imageFileName) {
@@ -56,5 +61,5 @@ public class ImagesServiceImpl implements ImagesService, Serializable {
 		File file = imageFilePath.toFile();
 		return file;
 	}
-	
+
 }

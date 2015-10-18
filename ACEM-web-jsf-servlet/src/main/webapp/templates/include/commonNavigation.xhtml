@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui">
 	
 	<ui:param name="associateBean" value="#{mainMenuController}"/>
-	
+
 	<!-- Default navigation -->
 	<p:menubar id="mainMenuBar">
 		<p:menuitem value="#{msg['MENU.HOME']}" url="/home"
@@ -45,13 +45,16 @@
 			<p:menuitem value="#{msg['MENU.ADMIN_USERS']}" outcome="adminUsers"
 				styleClass="#{associateBean.getMenuitemStyleClass('users')}"
 				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
+			<p:menuitem value="#{msg['MENU.ADMIN_DATABASE']}" outcome="adminDatabase"
+				styleClass="#{associateBean.getMenuitemStyleClass('users')}"
+				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
 		</p:submenu>
 		<p:menuitem value="#{msg['MENU.LOGIN']}" url="/login"
-			rendered="#{! request.isUserInRole('ROLE_USER')}"
+			rendered="#{! request.isUserInRole('USER')}"
 			styleClass="#{associateBean.getMenuitemStyleClass('login')}"
 			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 		<p:menuitem value="#{msg['MENU.LOGOUT']}" url="/logout"
-			rendered="#{request.isUserInRole('ROLE_USER')}"
+			rendered="#{request.isUserInRole('USER')}"
 			styleClass="#{associateBean.getMenuitemStyleClass('logout')}"
 			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
 	</p:menubar>

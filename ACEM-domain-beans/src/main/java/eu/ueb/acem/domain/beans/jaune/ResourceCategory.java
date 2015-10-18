@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -23,11 +23,16 @@ import java.util.Set;
 
 import eu.ueb.acem.domain.beans.bleu.PedagogicalActivity;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
+import eu.ueb.acem.domain.beans.bleu.PedagogicalSession;
 
 /**
+ * The ResourceCategory interface is used to group implementations of the
+ * {@link Resource} interface. Resource categories are more stable entities than
+ * concrete resources (categories are less likely to be deleted than plain
+ * resources), and that's why this interface is so full of collections.
+ * 
  * @author Grégoire Colbert
  * @since 2014-04-09
- * 
  */
 public interface ResourceCategory extends Serializable, Comparable<ResourceCategory> {
 
@@ -52,6 +57,10 @@ public interface ResourceCategory extends Serializable, Comparable<ResourceCateg
 	String getIconFileName();
 
 	void setIconFileName(String iconFileName);
+
+	Set<PedagogicalSession> getPedagogicalSessions();
+
+	void setPedagogicalSessions(Set<PedagogicalSession> pedagogicalSessions);
 
 	Set<PedagogicalActivity> getPedagogicalActivities();
 

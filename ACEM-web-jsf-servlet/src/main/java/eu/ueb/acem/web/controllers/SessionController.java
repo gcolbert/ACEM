@@ -18,6 +18,12 @@
  */
 package eu.ueb.acem.web.controllers;
 
+import java.io.Serializable;
+import java.util.Locale;
+
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
@@ -27,6 +33,7 @@ import org.springframework.stereotype.Controller;
 
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.gris.Teacher;
+import eu.ueb.acem.services.UsersService;
 import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 
@@ -35,7 +42,7 @@ import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
  */
 @Controller("sessionController")
 @Scope("session")
-public class SessionController extends AbstractDomainAwareBean {
+public class SessionController implements Serializable {
 
 	/**
 	 * For serialization.
@@ -47,6 +54,9 @@ public class SessionController extends AbstractDomainAwareBean {
 	 */
 	private PersonViewBean currentUserViewBean;
 
+	@Inject
+	private UsersService usersService;
+	
 	/*
 	 * ****************** INIT ********************
 	 */
@@ -65,14 +75,13 @@ public class SessionController extends AbstractDomainAwareBean {
 	/**
 	 * @return the current user, or null if guest.
 	 */
-	@Override
 	public Person getCurrentUser() {
 		Person currentUser = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		boolean authorized = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
 				|| authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"));
 		if (authorized) {
-			currentUser = getDomainService().getUser(authentication.getName());
+			currentUser = usersService.getUser(authentication.getName());
 		}
 		return currentUser;
 	}
@@ -83,11 +92,29 @@ public class SessionController extends AbstractDomainAwareBean {
 			if (user instanceof Teacher) {
 				currentUserViewBean = new TeacherViewBean((Teacher) user);
 			}
-			else if (user instanceof Person) {
-				currentUserViewBean = new PersonViewBean(user);
-			}
 		}
 		return currentUserViewBean;
+	}
+
+	/**
+	 * @return the current user's locale.
+	 */
+	public Locale getCurrentUserLocale() {
+		Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//		Person currentUser = getCurrentUser();
+//		if (currentUser == null) {
+//			locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//		}
+//		else {
+//			String lang = currentUser.getLanguage();
+//			if (lang == null) {
+//				locale = new Locale("fr");
+//			}
+//			else {
+//				locale = new Locale(lang);
+//			}
+//		}
+		return locale;
 	}
 
 	/**

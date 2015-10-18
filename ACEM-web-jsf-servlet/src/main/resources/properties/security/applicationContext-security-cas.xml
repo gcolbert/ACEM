@@ -1,23 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
-
-    Licensed to ESUP-Portail under one or more contributor license
-    agreements. See the NOTICE file distributed with this work for
-    additional information regarding copyright ownership.
-
-    ESUP-Portail licenses this file to you under the Apache License,
-    Version 2.0 (the "License"); you may not use this file except in
-    compliance with the License. You may obtain a copy of the License at:
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
+<?xml version="1.0" encoding="UTF-8"?>
 <b:beans xmlns:b="http://www.springframework.org/schema/beans"
     xmlns="http://www.springframework.org/schema/security"
     xmlns:p="http://www.springframework.org/schema/p"
@@ -39,6 +20,7 @@
 		<intercept-url access="permitAll" pattern="/javax.faces.resource/**" />
 		<intercept-url access="permitAll" pattern="/resources/**" />
 		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/administration/**" />
+		<intercept-url access="hasRole('ROLE_ADMIN')" pattern="/rest/**" />
         <intercept-url access="isAuthenticated()" pattern="/**"/><!-- When the user is authentificated by CAS, but doesn't exist in the application database -->
         <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
         <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
@@ -101,9 +83,7 @@
         p:serviceProperties-ref="serviceProperties"
         p:key="authProviderKey">
         <b:property name="authenticationUserDetailsService">
-            <b:bean class="eu.ueb.acem.services.auth.DatabaseUserDetailsService">
-        		<b:property name="domainService" ref="domainService"/>
-            </b:bean>
+            <b:bean class="eu.ueb.acem.services.auth.DatabaseUserDetailsService"/>
         </b:property>
         <b:property name="ticketValidator">
             <b:bean

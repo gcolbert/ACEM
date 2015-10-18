@@ -23,7 +23,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +86,8 @@ public class PedagogicalAdviceTreeGenerator {
 	 *            right-click on an existing node. That way, the user will be
 	 *            able to start creating nodes even if there is no node returned
 	 *            from the service.
+	 * @return An instance of EditableTreeBean containing the pedagogical needs
+	 *         and answers
 	 */
 	public EditableTreeBean createNeedAndAnswersTree(String singleVisibleTreeRootLabel) {
 		EditableTreeBean treeBean = new EditableTreeBean();

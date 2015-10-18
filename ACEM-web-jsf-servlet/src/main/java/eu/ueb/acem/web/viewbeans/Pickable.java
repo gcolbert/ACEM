@@ -21,8 +21,9 @@ package eu.ueb.acem.web.viewbeans;
 /**
  * This interface must be implemented by "view beans" that will be used inside a
  * PickList component. The "Pickable.getId()" method is used in the
- * PickListConverter class to serialize/deserialize a view bean from client-side
- * to server-side and the other way round.
+ * {@link eu.ueb.acem.web.utils.PickListConverter} class to
+ * serialize/deserialize a view bean from client-side to server-side and the
+ * other way round.
  * 
  * @author Grégoire Colbert
  * @since 2014-02-25

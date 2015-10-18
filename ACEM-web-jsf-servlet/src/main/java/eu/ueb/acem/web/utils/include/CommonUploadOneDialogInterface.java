@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -20,35 +20,45 @@ package eu.ueb.acem.web.utils.include;
 
 import java.nio.file.Path;
 
-import eu.ueb.acem.services.DomainService;
-
+import eu.ueb.acem.services.ApplicationService;
+import eu.ueb.acem.services.ImagesService;
 
 /**
  * Interface for CommonUploadOneDialog
  * 
- * @author rlorthio
+ * @author gcolbert
  *
  */
 public interface CommonUploadOneDialogInterface {
-	
+
 	/**
-	 * Return the commonDialog Bean
+	 * Returns the commonDialog bean
+	 * 
 	 * @return the bean
 	 */
 	public CommonUploadOneDialog getCommonUploadOneDialog();
 
 	/**
-	 * Set the selected object from the Dialog to the caller 
-	 * If null there is an error on temporary file writing
+	 * Sets the selected object from the dialog.
+	 * 
 	 * @param temporaryFilePath
-	 * @param originalFileName
+	 *            The temporary path where the uploaded file is written at the
+	 *            end of the upload process
 	 */
-	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath, String originalFileName);
-	
+	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath);
+
 	/**
-	 * Get DomainService from caller
-	 * @return
+	 * Get ImagesService from caller
+	 * 
+	 * @return The caller's reference to ImagesService
 	 */
-	public DomainService getDomainService();
+	public ImagesService getImagesService();
+
+	/**
+	 * Get ApplicationService from caller
+	 * 
+	 * @return The caller's reference to ApplicationService
+	 */
+	public ApplicationService getApplicationService();
 
 }

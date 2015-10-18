@@ -40,6 +40,7 @@ import eu.ueb.acem.domain.beans.ldap.LdapUser;
 import eu.ueb.acem.domain.beans.rouge.Organisation;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.UsersService;
+import eu.ueb.acem.services.auth.LdapUserService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.OrganisationViewBeanGenerator;
 import eu.ueb.acem.web.viewbeans.PickListBean;
@@ -47,6 +48,11 @@ import eu.ueb.acem.web.viewbeans.gris.PersonViewBean;
 import eu.ueb.acem.web.viewbeans.gris.TeacherViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
+/**
+ * Controller for the "Administration/Users" page.
+ * 
+ * @author Grégoire Colbert
+ */
 @Controller("adminUsersController")
 @Scope("view")
 public class AdminUsersController extends AbstractContextAwareController implements PageController {
@@ -70,6 +76,9 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	private UsersService usersService;
 
 	@Inject
+	private LdapUserService ldapUserService;
+
+	@Inject
 	private OrganisationsService organisationsService;
 
 	private List<PersonViewBean> personViewBeans;
@@ -78,7 +87,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	public String getPageTitle() {
 		return msgs.getMessage(
 				"ADMINISTRATION.USERS.HEADER", null,
-				getCurrentUserLocale());
+				getSessionController().getCurrentUserLocale());
 	}
 
 	/*************** LDAP ********************/
@@ -120,7 +129,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	 */
 	@Value("${ldap.emailAttribute}")
 	private String mailLdapAttribute;
-	
+
 	public AdminUsersController() {
 		personViewBeans = new ArrayList<PersonViewBean>();
 	}
@@ -128,16 +137,11 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	@PostConstruct
 	public void init() {
 		personViewBeans.clear();
-		Collection<Person> persons = usersService.retrieveAllPersons();
-		for (Person person : persons) {
+		Collection<Teacher> teachers = usersService.retrieveAllTeachers();
+		for (Person person : teachers) {
 			PersonViewBean personViewBean;
-			if (person instanceof Teacher) {
-				Teacher teacher = (Teacher)person;
-				personViewBean = new TeacherViewBean(teacher);
-			}
-			else {
-				personViewBean = new PersonViewBean(person);
-			}
+			Teacher teacher = (Teacher)person;
+			personViewBean = new TeacherViewBean(teacher);
 			for (Organisation organisation : person.getWorksForOrganisations()) {
 				personViewBean.getOrganisationViewBeans().add(OrganisationViewBeanGenerator.getViewBean(organisation));
 			}
@@ -186,8 +190,8 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 		personViewBean.setDomainBean(usersService.updatePerson(personViewBean.getDomainBean()));
 		Object[] userName = { personViewBean.getName() };
 		MessageDisplayer.info(
-				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.TITLE"), null, getCurrentUserLocale()),
-				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.DETAILS"), userName, getCurrentUserLocale()));
+				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.TITLE"), null, getSessionController().getCurrentUserLocale()),
+				msgs.getMessage(("ADMINISTRATION.USERS.ADMINISTRATOR_STATUS.UPDATE_SUCCESSFUL.DETAILS"), userName, getSessionController().getCurrentUserLocale()));
 
 		// if the modified personViewBean is the currentUserViewBean, we update currentUserViewBean too
 		if (getSessionController().getCurrentUserViewBean().equals(personViewBean)) {
@@ -235,12 +239,23 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	}
 
 	/**
-	 * This method tries to disable the organisationViewBeans for the "works for organisation" relationships.
+	 * This method tries to determine if the given organisationViewBean should
+	 * be disabled or enabled in the picklist of organisations. It should be
+	 * disabled if, based on the "works for organisation" relationships and
+	 * organisation associations, enabling it would introduce redundant
+	 * information.
 	 * 
-	 * Example : if the person works for UNIV, and UNIV is associated with COMMUNITY, then when we say
-	 * the person works for UNIV, we should disable COMMUNITY (because he implicitly can access resources of
-	 * COMMUNITY through the UNIV->COMMUNITY association). And so there is no need to state that he works
-	 * for COMMUNITY too.
+	 * Example : if a person works for UNIV, and UNIV is associated with
+	 * COMMUNITY, then when we say the person works for UNIV, we should disable
+	 * COMMUNITY (because he implicitly can access resources of COMMUNITY
+	 * through the UNIV-COMMUNITY association). And so there is no need to state
+	 * that he works for COMMUNITY too.
+	 * 
+	 * @param organisationViewBean
+	 *            A organisationViewBean to test for redundancy about the
+	 *            "worksForOrganisation" relationship
+	 * @return true if the organisationViewBean should be disabled, false if it
+	 *         should be enabled
 	 */
 	public Boolean isDisabledInPickList(OrganisationViewBean organisationViewBean) {
 		if (selectedUserViewBean.getOrganisationViewBeans().contains(organisationViewBean)) {
@@ -255,7 +270,7 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 		}
 		return false;
 	}
-	
+
 	/************************************************* LDAP *******************************************/
 	/**
 	 * True if a user is selected in the list of LDAP users
@@ -280,10 +295,10 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 			this.ldapUsers = new ArrayList<LdapUser>();
 			if (searchLdap != null && searchLdap.trim().length() > 2) {
 				try{
-					this.ldapUsers = getDomainService().getLdapUserService().findAllByCnAndUid(searchLdap);
+					this.ldapUsers = ldapUserService.findAllByCnAndUid(searchLdap);
 				}
 				catch(Exception e){
-					MessageDisplayer.error(e, msgs, getCurrentUserLocale(), logger);
+					MessageDisplayer.error(e, msgs, getSessionController().getCurrentUserLocale(), logger);
 				}
 			}
 		}
@@ -340,12 +355,12 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	 */
 	public void addFromLdapAction() {
 		if (selectedLdapUser != null) {
-			Person person = usersService.retrievePersonByLogin(selectedLdapUser.getId());
+			Person person = usersService.retrieveTeacherByLogin(selectedLdapUser.getId());
 			if (person == null) {
 				Teacher teacher = usersService.createTeacher(selectedLdapUser.getFirstName()+" "+selectedLdapUser.getLastName(), selectedLdapUser.getId(), "pass");
 				teacher.setEmail(selectedLdapUser.getEmail());
 				teacher = usersService.updateTeacher(teacher);
-				PersonViewBean personViewBean = new PersonViewBean(teacher);
+				PersonViewBean personViewBean = new TeacherViewBean(teacher);
 				personViewBeans.add(personViewBean);
 				Collections.sort(personViewBeans);
 			}
@@ -363,13 +378,11 @@ public class AdminUsersController extends AbstractContextAwareController impleme
 	}
 
 	/**
-	 * Get the selected LDAP user for toolbar update
+	 * Sets the selected LDAP user for toolbar update
 	 * 
-	 * @param event
+	 * @param event A Primefaces SelectEvent
 	 */
 	public void onRowSelectLdapUser(SelectEvent event) {
 		this.selectedLdapUser = (LdapUser) event.getObject();
 	}
-	
-	
 }

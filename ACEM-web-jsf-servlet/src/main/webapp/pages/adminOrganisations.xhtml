@@ -10,8 +10,6 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
-	<ui:param name="northPanelCollapsible" value="true"/>
-	<ui:param name="northPanelCollapsed" value="false"/>
 
 	<ui:param name="displayWest" value="false" />
 
@@ -304,8 +302,8 @@
 				</p:commandButton>
 				<p:accordionPanel id="accordionPanelForTeachingDepartments" styleClass="administrationAccordionPanel"
 					value="#{associateBean.teachingDepartmentViewBeans.tableEntries}"
-					var="teachingDepartmentViewBean" activeIndex="-1" dynamic="true"
-					collapsible="true">
+					var="teachingDepartmentViewBean" activeIndex="-1"
+					dynamic="true" collapsible="true">
 					<p:ajax event="tabChange"
 						listener="#{associateBean.onTeachingDepartmentsAccordionPanelTabChange}"
 						update="@this" />
@@ -323,8 +321,7 @@
 								<p:commandButton
 									value="#{msg['ADMINISTRATION.ORGANISATIONS.MODIFY_TEACHING_DEPARTMENT_LABEL']}"
 									icon="ui-icon-pencil"
-									actionListener="#{associateBean.commonUploadOneDialog.reset}"
-									action="#{associateBean.setCurrentOrganisationViewBean(teachingDepartmentViewBean)}"
+									action="#{associateBean.prepareTeachingDepartmentModification(teachingDepartmentViewBean)}"
 									update=":modifyOrganisationForm:idDialogCreateOrModifyOrganisation"
 									oncomplete="PF('dialogModifyOrganisation').show()"
 									process="@this" />

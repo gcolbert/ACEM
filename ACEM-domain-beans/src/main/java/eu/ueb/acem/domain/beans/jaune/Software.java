@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -18,11 +18,12 @@
  */
 package eu.ueb.acem.domain.beans.jaune;
 
-
 /**
+ * The Software domain bean interface defines a specific kind of
+ * {@link Resource}.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface Software extends Resource {
 

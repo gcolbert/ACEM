@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -26,13 +26,23 @@ import eu.ueb.acem.domain.beans.jaune.UseMode;
 import eu.ueb.acem.domain.beans.vert.PhysicalSpace;
 
 /**
+ * The Organisation interface defines the set of methods that should be
+ * implemented by concrete kinds of organisations.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface Organisation extends Serializable, Comparable<Organisation> {
 
 	Long getId();
+
+	/**
+	 * The id of the original object in the information system, if any.
+	 * @return the id of the original object, or null.
+	 */
+	Long getIdSource();
+
+	void setIdSource(Long idSource);
 
 	String getName();
 
@@ -41,6 +51,10 @@ public interface Organisation extends Serializable, Comparable<Organisation> {
 	String getShortname();
 
 	void setShortname(String shortname);
+
+	String getDescription();
+
+	void setDescription(String description);
 
 	String getIconFileName();
 

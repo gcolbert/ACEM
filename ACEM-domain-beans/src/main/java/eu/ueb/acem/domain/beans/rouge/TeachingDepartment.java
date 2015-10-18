@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -20,10 +20,13 @@ package eu.ueb.acem.domain.beans.rouge;
 
 import java.util.Set;
 
+import eu.ueb.acem.domain.beans.violet.TeachingUnit;
+
 /**
+ * The TeachingDepartment domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 public interface TeachingDepartment extends Organisation {
 
@@ -31,4 +34,8 @@ public interface TeachingDepartment extends Organisation {
 
 	void setInstitutions(Set<Institution> institutions);
 
+	Set<TeachingUnit> getTeachingUnits();
+	
+	void setTeachingUnits(Set<TeachingUnit> teachingUnits);
+	
 }

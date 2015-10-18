@@ -52,9 +52,10 @@ import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 import eu.ueb.acem.web.viewbeans.jaune.ToolCategoryViewBean;
 
 /**
+ * Controller for the "Pedagogical advice" page.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
- * 
  */
 @Controller("pedagogicalAdviceController")
 @Scope("view")
@@ -122,14 +123,14 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 	@PostConstruct
 	public void init() {
 		pedagogicalAdviceTreeBean = pedagogicalAdviceTreeGenerator.createNeedAndAnswersTree(msgs.getMessage(
-				"PEDAGOGICAL_ADVICE.TREE.VISIBLE_ROOT.LABEL", null, getCurrentUserLocale()));
+				"PEDAGOGICAL_ADVICE.TREE.VISIBLE_ROOT.LABEL", null, getSessionController().getCurrentUserLocale()));
 		toolCategoryViewBeans = getAllToolCategoryViewBeans();
 	}
 
 	@Override
 	public String getPageTitle() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(msgs.getMessage("MENU.PEDAGOGICAL_ADVICE", null, getCurrentUserLocale()));
+		sb.append(msgs.getMessage("MENU.PEDAGOGICAL_ADVICE", null, getSessionController().getCurrentUserLocale()));
 		if (getSelectedPedagogicalAnswer() != null) {
 			sb.append(" - ");
 			sb.append(getSelectedPedagogicalAnswer().getName());
@@ -226,7 +227,7 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 			// Business-level constraint : we don't make possible to recursively
 			// delete nodes
 			if (selectedNode.isLeaf()) {
-				if (needsAndAnswersService.deleteNode(((TreeNodeData) selectedNode.getData()).getId())) {
+				if (needsAndAnswersService.deletePedagogicalNeedOrPedagogicalAnswer(((TreeNodeData) selectedNode.getData()).getId())) {
 					// If the selectedNode was the only child, we must change
 					// back the parent's type to be a "Need leaf"
 					if ((selectedNode.getParent().getChildCount() == 1)
@@ -242,18 +243,18 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				else {
 					MessageDisplayer.error(msgs.getMessage(
 							"PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.TITLE", null,
-							getCurrentUserLocale()), msgs.getMessage(
+							getSessionController().getCurrentUserLocale()), msgs.getMessage(
 							"PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE.DELETION_FAILED.DETAILS", null,
-							getCurrentUserLocale()), logger);
+							getSessionController().getCurrentUserLocale()), logger);
 					logger.info("The service failed to delete the node.");
 				}
 			}
 			else {
 				MessageDisplayer.error(msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.TITLE", null,
-						getCurrentUserLocale()), msgs.getMessage(
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.TREE.CONTEXT_MENU.DELETE_NODE.HAS_CHILDREN_ERROR.DETAILS", null,
-						getCurrentUserLocale()), logger);
+						getSessionController().getCurrentUserLocale()), logger);
 				logger.info("The selected node has children, cannot delete!");
 			}
 		}
@@ -265,11 +266,11 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 		logger.debug("entering associateNeedWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
 		PedagogicalNeed newNeed = needsAndAnswersService.createOrUpdateNeed(null,
-				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()),
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getSessionController().getCurrentUserLocale()),
 				((TreeNodeData) selectedNode.getData()).getId());
 
 		TreeNode newNode = pedagogicalAdviceTreeBean.addChild(getTreeNodeType_NEED_LEAF(), selectedNode, newNeed.getId(),
-				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getCurrentUserLocale()), "PedagogicalNeed");
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_NEED_LABEL", null, getSessionController().getCurrentUserLocale()), "PedagogicalNeed");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS());
 		setSelectedNode(newNode);
 		pedagogicalAdviceTreeBean.expandOnlyOneNode(newNode);
@@ -281,12 +282,12 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 		logger.debug("entering associateAnswerWithSelectedNode, selectedNode={}", (TreeNodeData) selectedNode.getData());
 
 		PedagogicalAnswer newAnswer = needsAndAnswersService.createOrUpdateAnswer(null,
-				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()),
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getSessionController().getCurrentUserLocale()),
 				((TreeNodeData) selectedNode.getData()).getId());
 
 		TreeNode newNode = pedagogicalAdviceTreeBean.addChild(getTreeNodeType_ANSWER_LEAF(), selectedNode,
 				newAnswer.getId(),
-				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getCurrentUserLocale()), "PedagogicalAnswer");
+				msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.NEW_ANSWER_LABEL", null, getSessionController().getCurrentUserLocale()), "PedagogicalAnswer");
 		((DefaultTreeNode) selectedNode).setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
 		setSelectedNode(newNode);
 		pedagogicalAdviceTreeBean.expandOnlyOneNode(newNode);
@@ -319,27 +320,27 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				}
 
 				MessageDisplayer.info(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.DRAG_AND_DROP_SUCCESSFUL.TITLE", null,
-						getCurrentUserLocale()), "");
+						getSessionController().getCurrentUserLocale()), "");
 			}
 			else if ("default".equals(dropNode.getType())) {
 				revertDragDrop = true;
 				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
-						getCurrentUserLocale()), msgs.getMessage(
-						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_ANSWER_ON_ROOT", null, getCurrentUserLocale()),
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
+						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_ANSWER_ON_ROOT", null, getSessionController().getCurrentUserLocale()),
 						logger);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_NEEDS())) {
 				revertDragDrop = true;
 				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
-						getCurrentUserLocale()), msgs.getMessage(
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_ANSWER_ON_NEED_WITH_ASSOCIATED_NEEDS", null,
-						getCurrentUserLocale()), logger);
+						getSessionController().getCurrentUserLocale()), logger);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 				revertDragDrop = true;
 				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
-						getCurrentUserLocale()), msgs.getMessage(
-						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_ANSWER_ON_ANSWER", null, getCurrentUserLocale()),
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
+						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_ANSWER_ON_ANSWER", null, getSessionController().getCurrentUserLocale()),
 						logger);
 			}
 		}
@@ -363,21 +364,21 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				}
 
 				MessageDisplayer.info(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.DRAG_AND_DROP_SUCCESSFUL.TITLE", null,
-						getCurrentUserLocale()), "");
+						getSessionController().getCurrentUserLocale()), "");
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 				revertDragDrop = true;
 				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
-						getCurrentUserLocale()), msgs.getMessage(
-						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_NEED_ON_ANSWER", null, getCurrentUserLocale()),
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
+						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_NEED_ON_ANSWER", null, getSessionController().getCurrentUserLocale()),
 						logger);
 			}
 			else if (dropNode.getType().equals(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS())) {
 				revertDragDrop = true;
 				MessageDisplayer.error(msgs.getMessage("PEDAGOGICAL_ADVICE.TREE.ERROR.FORBIDDEN_DRAG_AND_DROP", null,
-						getCurrentUserLocale()), msgs.getMessage(
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.TREE.ERROR.CANNOT_DROP_NEED_ON_NEED_WITH_ASSOCIATED_ANSWERS", null,
-						getCurrentUserLocale()), logger);
+						getSessionController().getCurrentUserLocale()), logger);
 			}
 		}
 
@@ -408,18 +409,18 @@ public class PedagogicalAdviceController extends AbstractContextAwareController 
 				((TreeNodeData)selectedNode.getData()).setLabel(selectedPedagogicalNeed.getName());
 				MessageDisplayer.info(msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.TITLE", null,
-						getCurrentUserLocale()), msgs.getMessage(
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.DETAILS", null,
-						getCurrentUserLocale()));
+						getSessionController().getCurrentUserLocale()));
 			}
 			else if (selectedNode.getType().equals(getTreeNodeType_ANSWER_LEAF())) {
 				needsAndAnswersService.updatePedagogicalAnswer(selectedPedagogicalAnswer);
 				((TreeNodeData)selectedNode.getData()).setLabel(selectedPedagogicalAnswer.getName());
 				MessageDisplayer.info(msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.TITLE", null,
-						getCurrentUserLocale()), msgs.getMessage(
+						getSessionController().getCurrentUserLocale()), msgs.getMessage(
 						"PEDAGOGICAL_ADVICE.SELECTED_PEDAGOGICAL_ADVICE.SAVE_SUCCESSFUL.DETAILS", null,
-						getCurrentUserLocale()));
+						getSessionController().getCurrentUserLocale()));
 			}
 		}
 	}

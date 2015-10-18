@@ -30,9 +30,12 @@ import org.springframework.stereotype.Component;
 
 /**
  * A simple view bean that allows to display domain view beans in a table.
+ * 
  * @author Grégoire Colbert
  * @since 2014-01-10
  * @param <E>
+ *            A domain view bean, chosen from the eu.ueb.acem.web.viewbeans.*
+ *            packages
  * @see SortableTableBean An extended TableBean that allows sorting.
  * 
  */

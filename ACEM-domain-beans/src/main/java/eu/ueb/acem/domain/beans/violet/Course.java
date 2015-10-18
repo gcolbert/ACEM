@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -18,25 +18,22 @@
  */
 package eu.ueb.acem.domain.beans.violet;
 
-import java.io.Serializable;
+import java.util.Set;
 
 /**
+ * The Course domain bean interface.
+ * 
  * @author Grégoire Colbert
  * @since 2013-11-20
  * 
  */
-public interface Course extends Serializable, Comparable<Course> {
-
-	Long getId();
-
-	String getName();
-
-	void setName(String name);
-
-	String getDuration();
-
-	void setDuration(String duration);
+public interface Course extends TeachingUnit {
 
 	Credit getCredit();
 
+	void setCredit(Credit credit);
+
+	Set<Class> getClasses();
+	
+	void setClasses(Set<Class> classes);
 }

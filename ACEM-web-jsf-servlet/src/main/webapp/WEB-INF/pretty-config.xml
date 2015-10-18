@@ -73,4 +73,9 @@
 		<view-id value="/pages/adminUsers.xhtml" />
 	</url-mapping>
 
+	<url-mapping id="adminDatabase">
+		<pattern value="/administration/database/" />
+		<view-id value="/pages/adminDatabase.xhtml" />
+	</url-mapping>
+
 </pretty-config>

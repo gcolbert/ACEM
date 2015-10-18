@@ -1,42 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ *     Copyright Université Européenne de Bretagne 2015
+ * 
+ *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
+ * 
+ *     ACEM is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     ACEM is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with ACEM.  If not, see <http://www.gnu.org/licenses/>
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>ACEM</artifactId>
 		<groupId>eu.ueb</groupId>
-		<version>0.1.2-SNAPSHOT</version>
+		<version>0.2.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>ACEM-domain-services</artifactId>
 	<description>Domain Interface and Impl</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<genson.version>1.3</genson.version>
+		<jersey-spring.version>1.19</jersey-spring.version>
+		<jersey-json.version>1.19</jersey-json.version>
 		<spring-ldap.version>2.0.2.RELEASE</spring-ldap.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>eu.ueb</groupId>
-			<artifactId>ACEM-domain-beans</artifactId>
+			<artifactId>ACEM-dal-common</artifactId>
 			<version>${project.version}</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>eu.ueb</groupId>
-			<artifactId>ACEM-dal</artifactId>
+			<artifactId>ACEM-dal-relational-database</artifactId>
 			<version>${project.version}</version>
-			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-graph-database</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 			<version>${spring.version}</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -48,7 +70,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -77,11 +98,52 @@
 	        	</exclusion>
 	        </exclusions>
 	    </dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-spring</artifactId>
+			<version>${jersey-spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<!-- Test -->
 		<dependency>
 			<groupId>eu.ueb</groupId>
-			<artifactId>ACEM-dal</artifactId>
+			<artifactId>ACEM-dal-common</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-relational-database</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>eu.ueb</groupId>
+			<artifactId>ACEM-dal-graph-database</artifactId>
 			<version>${project.version}</version>
 			<type>test-jar</type>
 			<scope>test</scope>

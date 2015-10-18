@@ -39,6 +39,8 @@ import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
 import eu.ueb.acem.domain.beans.rouge.Community;
 import eu.ueb.acem.domain.beans.rouge.Institution;
 import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.services.ApplicationService;
+import eu.ueb.acem.services.ImagesService;
 import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.web.utils.MessageDisplayer;
 import eu.ueb.acem.web.utils.include.CommonUploadOneDialog;
@@ -53,9 +55,10 @@ import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 import eu.ueb.acem.web.viewbeans.rouge.TeachingDepartmentViewBean;
 
 /**
+ * Controller for the "Administration/Organisations" page.
+ * 
  * @author Grégoire Colbert
  * @since 2014-02-19
- * 
  */
 @Controller("adminOrganisationsController")
 @Scope("view")
@@ -97,9 +100,15 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	private PickListBean pickListBean;
 
 	/**
-	 * Dialog for upload of one file
+	 * Dialog for uploading a file
 	 */
 	private CommonUploadOneDialog commonUploadOneDialog;
+
+	@Inject
+	private ImagesService imagesService;
+
+	@Inject
+	private ApplicationService applicationService;
 
 	/**
 	 * Uploaded file
@@ -163,7 +172,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 
 	@Override
 	public String getPageTitle() {
-		return msgs.getMessage("ADMINISTRATION.ORGANISATIONS.HEADER", null, getCurrentUserLocale());
+		return msgs.getMessage("ADMINISTRATION.ORGANISATIONS.HEADER", null, getSessionController().getCurrentUserLocale());
 	}
 
 	public TableBean<CommunityViewBean> getCommunityViewBeans() {
@@ -308,7 +317,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	/**
 	 * Called when we change the tab
 	 * 
-	 * @param event
+	 * @param event A Primefaces TabChangeEvent
 	 */
 	public void onOrganisationsTabViewTabChange(TabChangeEvent event) {
 		/*
@@ -489,9 +498,9 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 
 		MessageDisplayer.info(msgs.getMessage(
 				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.TITLE", null,
-				getCurrentUserLocale()), msgs.getMessage(
+				getSessionController().getCurrentUserLocale()), msgs.getMessage(
 				"ADMINISTRATION.ORGANISATIONS.MODIFY_ORGANISATION_MODAL_WINDOW.MODIFICATION_SUCCESSFUL.DETAILS", null,
-				getCurrentUserLocale()));
+				getSessionController().getCurrentUserLocale()));
 	}
 
 	/*
@@ -514,16 +523,16 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 			}
 			MessageDisplayer.info(msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.TITLE", null,
-					getCurrentUserLocale()), msgs.getMessage(
+					getSessionController().getCurrentUserLocale()), msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_SUCCESSFUL.DETAILS", null,
-					getCurrentUserLocale()));
+					getSessionController().getCurrentUserLocale()));
 		}
 		else {
 			MessageDisplayer.error(msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.TITLE", null,
-					getCurrentUserLocale()), msgs.getMessage(
+					getSessionController().getCurrentUserLocale()), msgs.getMessage(
 					"ADMINISTRATION.ORGANISATIONS.DELETE_ORGANISATION_MODAL_WINDOW.DELETION_FAILURE.DETAILS", null,
-					getCurrentUserLocale()), logger);
+					getSessionController().getCurrentUserLocale()), logger);
 		}
 	}
 
@@ -826,6 +835,16 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	/*
 	 * ***************** IMAGE UPLOAD ************************************
 	 */
+	@Override
+	public ImagesService getImagesService() {
+		return imagesService;
+	}
+
+	@Override
+	public ApplicationService getApplicationService() {
+		return applicationService;
+	}
+
 	/**
 	 * Get the Bean to manage dialog
 	 * 
@@ -837,11 +856,10 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	}
 
 	/**
-	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.lang.String,
-	 *      java.lang.String)
+	 * @see eu.ueb.acem.web.utils.include.CommonUploadOneDialogInterface#setSelectedFromCommonUploadOneDialog(java.nio.file.Path)
 	 */
 	@Override
-	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath, String originalFileName) {
+	public void setSelectedFromCommonUploadOneDialog(Path temporaryFilePath) {
 		// Remove previously uploaded file if it exists
 		commonUploadOneDialog.deleteTemporaryFileIfExists(this.temporaryFilePath);
 
@@ -850,7 +868,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 
 		// If null there was an error on file copy
 		if (temporaryFilePath == null) {
-			MessageDisplayer.error(msgs.getMessage("SERVICE_FILEUTIL_FILE_NOT_CREATED", null, getCurrentUserLocale()),
+			MessageDisplayer.error(msgs.getMessage("SERVICE_FILEUTIL_FILE_NOT_CREATED", null, getSessionController().getCurrentUserLocale()),
 					"", logger);
 		}
 
@@ -875,7 +893,7 @@ public class AdminOrganisationsController extends AbstractContextAwareController
 	/**
 	 * Called when the user closes the dialog containing an image uploader.
 	 * 
-	 * @param event
+	 * @param event A Primefaces CloseEvent
 	 */
 	public void onCloseDialogWithUploadedFile(CloseEvent event) {
 		// Remove previously uploaded file if it exists

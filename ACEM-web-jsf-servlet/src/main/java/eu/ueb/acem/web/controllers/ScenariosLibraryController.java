@@ -24,9 +24,10 @@ import org.springframework.stereotype.Controller;
 import eu.ueb.acem.web.viewbeans.bleu.PedagogicalScenarioViewBean;
 
 /**
+ * Controller for the "Scenarios library" page.
+ * 
  * @author Grégoire Colbert
  * @since 2015-01-06
- * 
  */
 @Controller("scenariosLibraryController")
 @Scope("view")
@@ -40,7 +41,7 @@ public class ScenariosLibraryController extends AbstractContextAwareController i
 	@Override
 	public String getPageTitle() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(msgs.getMessage("MENU.SCENARIOS_LIBRARY",null,getCurrentUserLocale()));
+		sb.append(msgs.getMessage("MENU.SCENARIOS_LIBRARY",null,getSessionController().getCurrentUserLocale()));
 		if (getSelectedScenarioViewBean() != null) {
 			sb.append(" - ");
 			sb.append(getSelectedScenarioViewBean().getName());

@@ -1,5 +1,5 @@
 /**
- *     Copyright Grégoire COLBERT 2013
+ *     Copyright Université Européenne de Bretagne 2012-2015
  * 
  *     This file is part of Atelier de Création d'Enseignement Multimodal (ACEM).
  * 
@@ -60,21 +60,36 @@ public class NeedsAndAnswersServiceTest extends TestCase {
 		PedagogicalNeed need1 = needsAndAnswersService.createPedagogicalNeed("t01 need 1");
 		PedagogicalNeed need11 = needsAndAnswersService.createPedagogicalNeed("t01 need 1.1");
 		need1.getChildren().add(need11);
+		need11.getParents().add(need1);
+		need11 = needsAndAnswersService.updatePedagogicalNeed(need11);
+		need1 = needsAndAnswersService.updatePedagogicalNeed(need1);
 
 		PedagogicalNeed need111 = needsAndAnswersService.createPedagogicalNeed("t01 need 1.1.1");
 		need11.getChildren().add(need111);
+		need111.getParents().add(need11);
+		need11 = needsAndAnswersService.updatePedagogicalNeed(need11);
+		need111 = needsAndAnswersService.updatePedagogicalNeed(need111);
+
 		PedagogicalNeed need112 = needsAndAnswersService.createPedagogicalNeed("t01 need 1.1.2");
 		need11.getChildren().add(need112);
+		need112.getParents().add(need11);
 		need11 = needsAndAnswersService.updatePedagogicalNeed(need11);
+		need112 = needsAndAnswersService.updatePedagogicalNeed(need112);
 
 		PedagogicalNeed need12 = needsAndAnswersService.createPedagogicalNeed("t01 need 1.2");
 		need1.getChildren().add(need12);
+		need12.getParents().add(need1);
+		need1 = needsAndAnswersService.updatePedagogicalNeed(need1);
+		need12 = needsAndAnswersService.updatePedagogicalNeed(need12);
+
 		PedagogicalNeed need13 = needsAndAnswersService.createPedagogicalNeed("t01 need 1.3");
 		need1.getChildren().add(need13);
+		need13.getParents().add(need1);
+		need1 = needsAndAnswersService.updatePedagogicalNeed(need1);
+		need13 = needsAndAnswersService.updatePedagogicalNeed(need13);
+
 		PedagogicalNeed need2 = needsAndAnswersService.createPedagogicalNeed("t01 need 2");
 		PedagogicalNeed need3 = needsAndAnswersService.createPedagogicalNeed("t01 need 3");
-
-		need1 = needsAndAnswersService.updatePedagogicalNeed(need1);
 
 		Collection<PedagogicalNeed> rootNeeds = needsAndAnswersService.retrieveNeedsAtRoot();
 		assertEquals(3, rootNeeds.size());
@@ -91,11 +106,13 @@ public class NeedsAndAnswersServiceTest extends TestCase {
 
 		PedagogicalNeed need11 = needsAndAnswersService.createPedagogicalNeed("t02 need 1.1");
 		need1.getChildren().add(need11);
+		need11.getParents().add(need1);
 		need1 = needsAndAnswersService.updatePedagogicalNeed(need1);
 		need11 = needsAndAnswersService.updatePedagogicalNeed(need11);
 
 		PedagogicalNeed need111 = needsAndAnswersService.createPedagogicalNeed("t02 need 1.1.1");
 		need11.getChildren().add(need111);
+		need111.getParents().add(need11);
 		need11 = needsAndAnswersService.updatePedagogicalNeed(need11);
 		need111 = needsAndAnswersService.updatePedagogicalNeed(need111);
 
@@ -105,17 +122,21 @@ public class NeedsAndAnswersServiceTest extends TestCase {
 
 		PedagogicalNeed need12 = needsAndAnswersService.createPedagogicalNeed("t02 need 1.2");
 		need1.getChildren().add(need12);
+		need12.getParents().add(need1);
 		need1 = needsAndAnswersService.updatePedagogicalNeed(need1);
 		need12 = needsAndAnswersService.updatePedagogicalNeed(need12);
 
 		PedagogicalNeed need121 = needsAndAnswersService.createPedagogicalNeed("t02 need 1.2.1");
 		need12.getChildren().add(need121);
+		need121.getParents().add(need12);
 		need121 = needsAndAnswersService.updatePedagogicalNeed(need121);
 		PedagogicalNeed need122 = needsAndAnswersService.createPedagogicalNeed("t02 need 1.2.2");
 		need12.getChildren().add(need122);
+		need122.getParents().add(need12);
 		need122 = needsAndAnswersService.updatePedagogicalNeed(need122);
 		PedagogicalNeed need123 = needsAndAnswersService.createPedagogicalNeed("t02 need 1.2.3");
 		need12.getChildren().add(need123);
+		need123.getParents().add(need12);
 		need123 = needsAndAnswersService.updatePedagogicalNeed(need123);
 		need12 = needsAndAnswersService.updatePedagogicalNeed(need12);
 

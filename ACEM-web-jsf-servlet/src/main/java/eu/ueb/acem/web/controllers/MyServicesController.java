@@ -35,9 +35,10 @@ import eu.ueb.acem.web.viewbeans.SortableTableBean;
 import eu.ueb.acem.web.viewbeans.rouge.OrganisationViewBean;
 
 /**
+ * Controller for the "My Services" page.
+ * 
  * @author Grégoire Colbert
  * @since 2015-01-30
- * 
  */
 @Controller("myServicesController")
 @Scope("view")
@@ -82,7 +83,7 @@ public class MyServicesController extends AbstractContextAwareController impleme
 	@Override
 	public String getPageTitle() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(msgs.getMessage("MENU.MY_SERVICES",null,getCurrentUserLocale()));
+		sb.append(msgs.getMessage("MENU.MY_SERVICES",null,getSessionController().getCurrentUserLocale()));
 		if (getSelectedServiceViewBean() != null) {
 			sb.append(" - ");
 			sb.append(getSelectedServiceViewBean().getName());

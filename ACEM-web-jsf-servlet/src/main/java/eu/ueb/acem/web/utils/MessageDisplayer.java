@@ -33,12 +33,14 @@ import eu.ueb.acem.services.exceptions.ServiceException;
 
 /**
  * Tool to display a message to the user after an action has been performed on
- * the server side. The JSF page must have a
- * <p:growl id="someId">
+ * the server side. The JSF page must have a &lt;p:growl id="someId"&gt;
  * component in the same form, and the component that calls the server must
  * reference this id using update=":someId" attribute.
  * 
- * @author gcolbert
+ * @author Grégoire Colbert
+ * @see <a
+ *      href="http://www.primefaces.org/showcase/ui/message/growl.xhtml">Primefaces
+ *      Growl demo</a>
  * @since 2014-03-17
  */
 public class MessageDisplayer {
@@ -77,23 +79,22 @@ public class MessageDisplayer {
 	 * Displays an error message for exception e.
 	 * 
 	 * @param e
+	 *            An exception
 	 * @param msgs
+	 *            A resource bundle message source
 	 * @param locale
+	 *            A locale
 	 * @param logger
+	 *            A logger
 	 */
-	public static void error(Exception e,
-			ReloadableResourceBundleMessageSource msgs,
-			Locale locale, Logger logger) {
+	public static void error(Exception e, ReloadableResourceBundleMessageSource msgs, Locale locale, Logger logger) {
 		if (e instanceof ServiceException) {
-			MessageDisplayer.error(msgs.getMessage(
-					e.getMessage(), null,
-					locale), "", logger);
+			MessageDisplayer.error(msgs.getMessage(e.getMessage(), null, locale), "", logger);
 		}
 		else if (e instanceof ConstraintViolationException) {
 			ConstraintViolationException cve = (ConstraintViolationException) e;
 			for (ConstraintViolation<?> cv : cve.getConstraintViolations()) {
-				MessageDisplayer.error(msgs.getMessage(cv.getMessageTemplate(),
-						null, locale), "", logger);
+				MessageDisplayer.error(msgs.getMessage(cv.getMessageTemplate(), null, locale), "", logger);
 			}
 		}
 		else if (e instanceof TransactionSystemException) {
@@ -101,15 +102,15 @@ public class MessageDisplayer {
 			if (tse.getRootCause() instanceof ConstraintViolationException) {
 				ConstraintViolationException cve = (ConstraintViolationException) tse.getRootCause();
 				for (ConstraintViolation<?> cv : cve.getConstraintViolations()) {
-					MessageDisplayer.error(msgs.getMessage(cv.getMessageTemplate(),
-							null, locale), "", logger);
+					MessageDisplayer.error(msgs.getMessage(cv.getMessageTemplate(), null, locale), "", logger);
 				}
 			}
-		}else{
-			MessageDisplayer.error(msgs.getMessage("APPLICATION.MESSAGE.ERROR",
-					null, locale) + e.getMessage(), "", logger);
 		}
-			
+		else {
+			MessageDisplayer.error(msgs.getMessage("APPLICATION.MESSAGE.ERROR", null, locale) + e.getMessage(), "",
+					logger);
+		}
+
 	}
 	
 }
