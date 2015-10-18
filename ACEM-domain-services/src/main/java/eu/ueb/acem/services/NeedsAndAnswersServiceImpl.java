@@ -343,6 +343,16 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 	}
 
 	@Override
+	public Boolean associateAnswerWithResourceCategory(PedagogicalAnswer answer, ResourceCategory resourceCategory) {
+		answer.getResourceCategories().add(resourceCategory);
+		resourceCategory.getAnswers().add(answer);
+
+		answer = answerDAO.update(answer);
+		resourceCategory = resourceCategoryDAO.update(resourceCategory);
+		return answer.getResourceCategories().contains(resourceCategory) && resourceCategory.getAnswers().contains(answer);
+	}
+
+	@Override
 	public Boolean dissociateAnswerWithResourceCategory(Long answerId, Long toolCategoryId) {
 		PedagogicalAnswer answer = answerDAO.retrieveById(answerId);
 		ResourceCategory resourceCategory = resourceCategoryDAO.retrieveById(toolCategoryId);
@@ -355,4 +365,14 @@ public class NeedsAndAnswersServiceImpl implements NeedsAndAnswersService {
 		return !answer.getResourceCategories().contains(resourceCategory) && !resourceCategory.getAnswers().contains(answer);
 	}
 
+	@Override
+	public Boolean dissociateAnswerWithResourceCategory(PedagogicalAnswer answer, ResourceCategory resourceCategory) {
+		answer.getResourceCategories().remove(resourceCategory);
+		resourceCategory.getAnswers().remove(answer);
+
+		answer = answerDAO.update(answer);
+		resourceCategory = resourceCategoryDAO.update(resourceCategory);
+		return !answer.getResourceCategories().contains(resourceCategory) && !resourceCategory.getAnswers().contains(answer);
+	}
+	
 }

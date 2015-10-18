@@ -277,25 +277,25 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 
 		PedagogicalNeed need1_1 = needsAndAnswersService.createPedagogicalNeed("Organiser un enseignement en présentiel", need1);
 		PedagogicalAnswer answer1_1_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un amphithéâtre", need1_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_1.getId(), sallesAmphitheatresSonorises.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_1, sallesAmphitheatresSonorises);
 		PedagogicalAnswer answer1_1_2 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une salle de visioconférence", need1_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_2.getId(), sallesVisioConferences.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_2, sallesVisioConferences);
 		PedagogicalAnswer answer1_1_3 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un labo de langues", need1_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_3.getId(), sallesLaboratoiresDeLangues.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_3, sallesLaboratoiresDeLangues);
 		PedagogicalAnswer answer1_1_4 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une salle de cours", need1_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_4.getId(), sallesDeCours.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_4, sallesDeCours);
 		PedagogicalAnswer answer1_1_5 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une salle informatique", need1_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_5.getId(), sallesInformatiques.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_1_5, sallesInformatiques);
 
 		PedagogicalNeed need1_2 = needsAndAnswersService.createPedagogicalNeed("Organiser un enseignement à distance / hybride", need1);
 		PedagogicalAnswer answer1_2_1 = needsAndAnswersService.createPedagogicalAnswer("Créer un espace de cours sur la plateforme d'apprentissage", need1_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_2_1.getId(), plateformesApprentissage.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_2_1, plateformesApprentissage);
 		PedagogicalAnswer answer1_2_2 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une salle immersive", need1_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_2_2.getId(), sallesImmersives.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_2_2, sallesImmersives);
 		PedagogicalAnswer answer1_2_3 = needsAndAnswersService.createPedagogicalAnswer("Utiliser la visioconférence", need1_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_2_3.getId(), visioconferencesWebconferences.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_2_3, visioconferencesWebconferences);
 		PedagogicalAnswer answer1_2_4 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une classe virtuelle", need1_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_2_4.getId(), classesVirtuelles.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_2_4, classesVirtuelles);
 
 		PedagogicalNeed need1_3 = needsAndAnswersService.createPedagogicalNeed("Construire des supports de cours", need1);
 		// answer1_3_1 == "Créer un espace de cours sur la plateforme d'apprentissage" == answer1_2_1
@@ -316,29 +316,29 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		PedagogicalNeed need1_6 = needsAndAnswersService.createPedagogicalNeed("Communiquer avec les étudiants", need1);
 		PedagogicalAnswer answer1_6_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une liste de diffusion", need1_6); // TODO : link this answer to a resource category, or delete this answer
 		PedagogicalAnswer answer1_6_2 = needsAndAnswersService.createPedagogicalAnswer("Utiliser le forum d'un espace de cours d'une plateforme d'apprentissage", need1_6);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_6_2.getId(), plateformesApprentissage.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_6_2, plateformesApprentissage);
 
 		PedagogicalNeed need1_7 = needsAndAnswersService.createPedagogicalNeed("Trouver des ressources complémentaires", need1);
 		PedagogicalNeed need1_7_1 = needsAndAnswersService.createPedagogicalNeed("Trouver des ressources documentaires", need1_7);
 		PedagogicalAnswer answer1_7_1_1 = needsAndAnswersService.createPedagogicalAnswer("Consulter le catalogue des ressources électroniques", need1_7_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_1_1.getId(), ressourcesDocumentairesElectroniques.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_1_1, ressourcesDocumentairesElectroniques);
 		PedagogicalNeed need1_7_2 = needsAndAnswersService.createPedagogicalNeed("Trouver des ressources pédagogiques", need1_7);
 		PedagogicalAnswer answer1_7_2_1 = needsAndAnswersService.createPedagogicalAnswer("Consulter les ressources de Canal-U", need1_7_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_1.getId(), ressourcesMultimedia.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_1, ressourcesMultimedia);
 		PedagogicalAnswer answer1_7_2_2 = needsAndAnswersService.createPedagogicalAnswer("Consulter les vidéos de l'Aire d'U", need1_7_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_2.getId(), ressourcesMultimedia.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_2, ressourcesMultimedia);
 		PedagogicalAnswer answer1_7_2_3 = needsAndAnswersService.createPedagogicalAnswer("Consulter les ressources ENVAM", need1_7_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_3.getId(), ressourcesDocumentairesElectroniques.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_3, ressourcesDocumentairesElectroniques);
 		PedagogicalAnswer answer1_7_2_4 = needsAndAnswersService.createPedagogicalAnswer("Consulter les ressources des UNT", need1_7_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_4.getId(), ressourcesDocumentairesElectroniques.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_4, ressourcesDocumentairesElectroniques);
 		PedagogicalAnswer answer1_7_2_5 = needsAndAnswersService.createPedagogicalAnswer("Consulter les podcasts de la WikiRadio", need1_7_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_5.getId(), ressourcesMultimedia.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_5, ressourcesMultimedia);
 		PedagogicalAnswer answer1_7_2_6 = needsAndAnswersService.createPedagogicalAnswer("Consulter un moteur de recherche de ressources", need1_7_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_6.getId(), ressourcesDocumentairesElectroniques.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_6, ressourcesDocumentairesElectroniques);
 		PedagogicalAnswer answer1_7_2_7 = needsAndAnswersService.createPedagogicalAnswer("Consulter les ressources de l'UEB C@mpus", need1_7_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_7.getId(), ressourcesDocumentairesElectroniques.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_7, ressourcesDocumentairesElectroniques);
 		PedagogicalAnswer answer1_7_2_8 = needsAndAnswersService.createPedagogicalAnswer("Consulter les podcasts d'iTunes U", need1_7_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_8.getId(), ressourcesMultimedia.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer1_7_2_8, ressourcesMultimedia);
 
 		PedagogicalNeed need2 = needsAndAnswersService.createPedagogicalNeed("Animer un cours");
 		PedagogicalNeed need2_1 = needsAndAnswersService.createPedagogicalNeed("Tutorer un cours à distance", need2);
@@ -370,25 +370,25 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		PedagogicalNeed need2_2 = needsAndAnswersService.createPedagogicalNeed("Partager des documents avec les étudiants", need2);
 		PedagogicalNeed need2_2_1 = needsAndAnswersService.createPedagogicalNeed("Partager des documents en distanciel", need2_2);
 		PedagogicalAnswer answer2_2_1_1 = needsAndAnswersService.createPedagogicalAnswer("Déposer les documents sur l'espace de cours d'une plateforme d'apprentissage", need2_2_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_1_1.getId(), plateformesApprentissage.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_1_1, plateformesApprentissage);
 		PedagogicalAnswer answer2_2_1_2 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une solution de GED", need2_2_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_1_2.getId(), gestionDocumentaireGED.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_1_2, gestionDocumentaireGED);
 		PedagogicalAnswer answer2_2_1_3 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une fonction d'envoi de fichiers volumineux", need2_2_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_1_3.getId(), distributionFichiers.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_1_3, distributionFichiers);
 		PedagogicalNeed need2_2_2 = needsAndAnswersService.createPedagogicalNeed("Partager des documents en présentiel", need2_2);
 		PedagogicalAnswer answer2_2_2_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un TBI", need2_2_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_2_1.getId(), tableauxBlancsInteractifs.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_2_1, tableauxBlancsInteractifs);
 		PedagogicalAnswer answer2_2_2_2 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un vidéoprojecteur", need2_2_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_2_2.getId(), videoprojecteurs.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_2_2, videoprojecteurs);
 		PedagogicalAnswer answer2_2_2_3 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une tablette graphique", need2_2_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_2_3.getId(), tablettesGraphiques.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_2_3, tablettesGraphiques);
 		PedagogicalAnswer answer2_2_2_4 = needsAndAnswersService.createPedagogicalAnswer("Utiliser une tablette numérique", need2_2_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_2_4.getId(), tablettesTactiles.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_2_2_4, tablettesTactiles);
 
 		PedagogicalNeed need2_3 = needsAndAnswersService.createPedagogicalNeed("Interagir avec les étudiants", need2);
 		PedagogicalNeed need2_3_1 = needsAndAnswersService.createPedagogicalNeed("Interagir avec les étudiants en présentiel", need2_3);
 		PedagogicalAnswer answer2_3_1_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser des boitiers de vote", need2_3_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_3_1_1.getId(), boitiersDeVote.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_3_1_1, boitiersDeVote);
 		PedagogicalNeed need2_3_2 = needsAndAnswersService.createPedagogicalNeed("Interagir avec les étudiants en distanciel", need2_3);
 		// answer2_3_1_2 == "Utiliser une classe virtuelle" == answer1_2_4
 		need2_3_2.getAnswers().add(answer1_2_4);
@@ -399,48 +399,48 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 
 		PedagogicalNeed need2_4 = needsAndAnswersService.createPedagogicalNeed("Faire collaborer les étudiants", need2);
 		PedagogicalAnswer answer2_4_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un wiki", need2_4);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_4_1.getId(), plateformesApprentissage.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_4_1, plateformesApprentissage);
 		PedagogicalAnswer answer2_4_2 = needsAndAnswersService.createPedagogicalAnswer("Utiliser l'outil Glossaire d'une plateforme d'apprentissage", need2_4);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_4_2.getId(), plateformesApprentissage.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_4_2, plateformesApprentissage);
 		PedagogicalAnswer answer2_4_3 = needsAndAnswersService.createPedagogicalAnswer("Utiliser l'outil Base de données d'une plateforme d'apprentissage", need2_4);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_4_3.getId(), plateformesApprentissage.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_4_3, plateformesApprentissage);
 		PedagogicalAnswer answer2_4_4 = needsAndAnswersService.createPedagogicalAnswer("Enregistrer une émission sur la WikiRadio", need2_4);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_4_4.getId(), ressourcesMultimedia.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_4_4, ressourcesMultimedia);
 
 		PedagogicalNeed need2_5 = needsAndAnswersService.createPedagogicalNeed("Enregistrer un cours en audio", need2);
 		PedagogicalAnswer answer2_5_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser du matériel d'enregistrement audio", need2_5);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_5_1.getId(), materielsEnregistrementAudio.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_5_1, materielsEnregistrementAudio);
 
 		PedagogicalNeed need2_6 = needsAndAnswersService.createPedagogicalNeed("Mettre à disposition un cours enregistré", need2);
 		PedagogicalAnswer answer2_6_1 = needsAndAnswersService.createPedagogicalAnswer("Déposer son cours sur un serveur vidéo", need2_6);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_6_1.getId(), hebergementDeVideos.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_6_1, hebergementDeVideos);
 		PedagogicalAnswer answer2_6_2 = needsAndAnswersService.createPedagogicalAnswer("Déposer un podcast sur son espace de cours", need2_6);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_6_2.getId(), plateformesApprentissage.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_6_2, plateformesApprentissage);
 
 		PedagogicalNeed need2_7 = needsAndAnswersService.createPedagogicalNeed("Filmer un cours", need2);
 		PedagogicalNeed need2_7_1 = needsAndAnswersService.createPedagogicalNeed("Filmer un cours de manière autonome", need2_7);
 		PedagogicalAnswer answer2_7_1_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser du matériel d'enregistrement vidéo", need2_7_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_7_1_1.getId(), materielsEnregistrementVideo.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_7_1_1, materielsEnregistrementVideo);
 		PedagogicalAnswer answer2_7_1_2 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un outil de podcast", need2_7_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_7_1_2.getId(), captationVideo.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_7_1_2, captationVideo);
 		PedagogicalNeed need2_7_2 = needsAndAnswersService.createPedagogicalNeed("Faire appel à un service audiovisuel", need2_7);
 		PedagogicalAnswer answer2_7_2_1 = needsAndAnswersService.createPedagogicalAnswer("Contacter le service audiovisuel", need2_7_2);
 
 		PedagogicalNeed need3 = needsAndAnswersService.createPedagogicalNeed("Évaluer un cours");
 		PedagogicalNeed need3_1 = needsAndAnswersService.createPedagogicalNeed("Créer un questionnaire / sondage pour évaluer l'enseignement", need3);
 		PedagogicalAnswer answer3_1_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un outil de création d'enquêtes", need3_1);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_1_1.getId(), creationEnquetes.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_1_1, creationEnquetes);
 		PedagogicalNeed need3_2 = needsAndAnswersService.createPedagogicalNeed("Gérer l'évaluation et la certification des compétences", need3);
 		PedagogicalAnswer answer3_2_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un outil de certification", need3_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_2_1.getId(), evaluationCompetences.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_2_1, evaluationCompetences);
 		PedagogicalAnswer answer3_2_2 = needsAndAnswersService.createPedagogicalAnswer("Utiliser l'outil Référentiel d'une plateforme d'apprentissage", need3_2);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_2_2.getId(), plateformesApprentissage.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_2_2, plateformesApprentissage);
 		PedagogicalNeed need3_3 = needsAndAnswersService.createPedagogicalNeed("Contrôler le plagiat dans les devoirs des étudiants", need3);
 		PedagogicalAnswer answer3_3_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser un outil anti-plagiat", need3_3);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_3_1.getId(), antiplagiat.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_3_1, antiplagiat);
 		PedagogicalNeed need3_4 = needsAndAnswersService.createPedagogicalNeed("Mettre en place une évaluation en ligne des étudiants", need3);
 		PedagogicalAnswer answer3_4_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser l'outil Test/Devoir d'une plateforme d'apprentissage", need3_4);
-		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_4_1.getId(), plateformesApprentissage.getId());
+		needsAndAnswersService.associateAnswerWithResourceCategory(answer3_4_1, plateformesApprentissage);
 	}
 
 }

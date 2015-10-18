@@ -24,6 +24,7 @@ import java.util.Collection;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalAnswer;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalNeed;
 import eu.ueb.acem.domain.beans.bleu.PedagogicalScenario;
+import eu.ueb.acem.domain.beans.jaune.ResourceCategory;
 
 /**
  * A service to manage the pedagogical needs and pedagogical answers.
@@ -304,6 +305,18 @@ public interface NeedsAndAnswersService extends Serializable {
 	Boolean associateAnswerWithResourceCategory(Long answerId, Long resourceCategoryId);
 
 	/**
+	 * Associates a PedagogicalAnswer with a ResourceCategory.
+	 * 
+	 * @param answer
+	 *            The PedagogicalAnswer
+	 * @param resourceCategory
+	 *            The ResourceCategory
+	 * @return true if entities are associated at the end of the call, false
+	 *         otherwise
+	 */
+	Boolean associateAnswerWithResourceCategory(PedagogicalAnswer answer, ResourceCategory resourceCategory);
+
+	/**
 	 * Dissociates a PedagogicalAnswer from a ResourceCategory.
 	 * 
 	 * @param answerId
@@ -314,5 +327,17 @@ public interface NeedsAndAnswersService extends Serializable {
 	 *         otherwise
 	 */
 	Boolean dissociateAnswerWithResourceCategory(Long answerId, Long resourceCategoryId);
+
+	/**
+	 * Dissociates a PedagogicalAnswer from a ResourceCategory.
+	 * 
+	 * @param answer
+	 *            The PedagogicalAnswer
+	 * @param resourceCategory
+	 *            The ResourceCategory
+	 * @return true if entities are dissociated at the end of the call, false
+	 *         otherwise
+	 */
+	Boolean dissociateAnswerWithResourceCategory(PedagogicalAnswer answer, ResourceCategory resourceCategory);
 
 }
