@@ -36,16 +36,13 @@ public interface PedagogicalScenarioRepository extends GenericRepository<Pedagog
 	@Query("SELECT ps FROM PedagogicalScenario ps WHERE ps.name = :name")
 	Iterable<PedagogicalScenarioEntity> findByName(@Param("name") String name);
 
-	//@Query(value = "MATCH (t:Teacher)-[:authorsScenario]->(s:PedagogicalScenario) WHERE id(t)=({teacherId}) RETURN s")
 	@Query("SELECT ps FROM PedagogicalScenario ps, Teacher t WHERE t.id = :teacherId AND t MEMBER OF ps.authors")
 	Set<PedagogicalScenarioEntity> findScenariosWithAuthor(@Param("teacherId") Long id);
 
-	//@Query(value = "MATCH (a:PedagogicalAnswer)-[:answeredUsingResourceCategory]->(:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForSession]->(ses:PedagogicalSession)-[:sessionForSequence]->(seq:PedagogicalSequence)-[:sequenceForScenario]->(sce:PedagogicalScenario) WHERE id(a)=({pedagogicalAnswerId}) RETURN sce")
-	@Query("SELECT sce FROM PedagogicalScenario sce, PedagogicalSequence seq, PedagogicalSession ses, PedagogicalActivity act, ResourceCategory rc, PedagogicalAnswer ans WHERE ans.id = :pedagogicalAnswerId AND rc MEMBER OF ans.resourceCategories AND act MEMBER OF rc.pedagogicalActivities AND act MEMBER OF ses.pedagogicalActivities AND ses MEMBER OF seq.pedagogicalSessions AND seq MEMBER OF sce.pedagogicalSequences")
+	@Query("SELECT sce FROM PedagogicalScenario sce, PedagogicalSequence seq, PedagogicalSession ses, PedagogicalActivity act, ResourceCategory rc, PedagogicalAnswer ans WHERE ans.id = :pedagogicalAnswerId AND rc MEMBER OF ans.resourceCategories AND act MEMBER OF rc.pedagogicalActivities AND ((act MEMBER OF ses.pedagogicalActivities AND ses MEMBER OF seq.pedagogicalSessions) OR (act MEMBER OF seq.pedagogicalActivities)) AND seq MEMBER OF sce.pedagogicalSequences")
 	Set<PedagogicalScenarioEntity> findScenariosAssociatedWithPedagogicalAnswer(@Param("pedagogicalAnswerId") Long id);
 
-	//@Query(value = "MATCH (c:ResourceCategory)<-[:activityRequiringResourceFromCategory]-(:PedagogicalActivity)-[:activityForSession]->(ses:PedagogicalSession)-[:sessionForSequence]->(seq:PedagogicalSequence)-[:sequenceForScenario]->(sce:PedagogicalScenario) WHERE id(c)=({resourceCategoryId}) RETURN sce")
-	@Query("SELECT sce FROM PedagogicalScenario sce, PedagogicalSequence seq, PedagogicalSession ses, PedagogicalActivity act, ResourceCategory rc WHERE rc.id = :resourceCategoryId AND act MEMBER OF rc.pedagogicalActivities AND act MEMBER OF ses.pedagogicalActivities AND ses MEMBER OF seq.pedagogicalSessions AND seq MEMBER OF sce.pedagogicalSequences")
+	@Query("SELECT sce FROM PedagogicalScenario sce, PedagogicalSequence seq, PedagogicalSession ses, PedagogicalActivity act, ResourceCategory rc WHERE rc.id = :resourceCategoryId AND act MEMBER OF rc.pedagogicalActivities AND ((act MEMBER OF ses.pedagogicalActivities AND ses MEMBER OF seq.pedagogicalSessions) OR (act MEMBER OF seq.pedagogicalActivities)) AND seq MEMBER OF sce.pedagogicalSequences")
 	Set<PedagogicalScenarioEntity> findScenariosAssociatedWithResourceCategory(@Param("resourceCategoryId") Long id);
 
 }
