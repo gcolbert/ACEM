@@ -372,26 +372,33 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	private Boolean isImplicitlySharingResourcesWith(Community c, Institution i) {
+		i = institutionDAO.retrieveById(i.getId(), true);
 		return i.getCommunities().contains(c);
 	}
 
 	private Boolean isImplicitlySharingResourcesWith(Community c, AdministrativeDepartment ad) {
+		c = communityDAO.retrieveById(c.getId(), true);
+		ad = administrativeDepartmentDAO.retrieveById(ad.getId(), true);
 		Set<Institution> intersection = new HashSet<Institution>(ad.getInstitutions());
 		intersection.retainAll(c.getInstitutions());
 		return !intersection.isEmpty();
 	}
 
 	private Boolean isImplicitlySharingResourcesWith(Community c, TeachingDepartment td) {
+		c = communityDAO.retrieveById(c.getId(), true);
+		td = teachingDepartmentDAO.retrieveById(td.getId(), true);
 		Set<Institution> intersection = new HashSet<Institution>(td.getInstitutions());
 		intersection.retainAll(c.getInstitutions());
 		return !intersection.isEmpty();
 	}
 
 	private Boolean isImplicitlySharingResourcesWith(Institution i, AdministrativeDepartment ad) {
+		ad = administrativeDepartmentDAO.retrieveById(ad.getId(), true);
 		return ad.getInstitutions().contains(i);
 	}
 
 	private Boolean isImplicitlySharingResourcesWith(Institution i, TeachingDepartment td) {
+		td = teachingDepartmentDAO.retrieveById(td.getId(), true);
 		return td.getInstitutions().contains(i);
 	}
 	
