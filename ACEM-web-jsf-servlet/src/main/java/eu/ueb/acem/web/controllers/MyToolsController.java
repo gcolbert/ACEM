@@ -427,12 +427,24 @@ public class MyToolsController extends AbstractContextAwareController implements
 			// We initialize the "pedagogical advice" tree
 			setPedagogicalUsesTreeRoot(selectedToolCategoryViewBean.getDomainBean());
 
-			// We associate the PedagogicalScenarioViewBeans
-			Collection<PedagogicalScenario> pedagogicalScenarios = resourcesService.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryViewBean.getDomainBean());
+			// We retrieve the pedagogical scenarios which are associated with
+			// the selected category, then we filter the retrieved collection
+			// with scenarios which are either published, either whose one of
+			// the authors is the current user
+			Collection<PedagogicalScenario> pedagogicalScenarios = resourcesService
+					.retrieveScenariosAssociatedWithResourceCategory(selectedToolCategoryViewBean
+							.getDomainBean());
 			for (PedagogicalScenario pedagogicalScenario : pedagogicalScenarios) {
-				PedagogicalScenarioViewBean pedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(pedagogicalScenario);
-				if (! selectedToolCategoryViewBean.getScenarioViewBeans().contains(pedagogicalScenarioViewBean)) {
-					selectedToolCategoryViewBean.getScenarioViewBeans().add(pedagogicalScenarioViewBean);
+				PedagogicalScenarioViewBean pedagogicalScenarioViewBean = new PedagogicalScenarioViewBean(
+						pedagogicalScenario);
+				if (!selectedToolCategoryViewBean.getScenarioViewBeans()
+						.contains(pedagogicalScenarioViewBean)) {
+					if (pedagogicalScenarioViewBean.isPublished()
+							|| (pedagogicalScenarioViewBean.getDomainBean()
+									.getAuthors().contains(getCurrentUser()))) {
+						selectedToolCategoryViewBean.getScenarioViewBeans()
+								.add(pedagogicalScenarioViewBean);
+					}
 				}
 			}
 		}
