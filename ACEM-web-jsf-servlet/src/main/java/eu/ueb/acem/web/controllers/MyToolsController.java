@@ -899,7 +899,6 @@ public class MyToolsController extends AbstractContextAwareController implements
 		pedagogicalUsesTreeBean = pedagogicalAdviceTreeGenerator.createNeedAndAnswersTree(null);
 		Set<Long> idsOfLeavesToKeep = new HashSet<Long>();
 		for (PedagogicalAnswer answer : resourceCategory.getAnswers()) {
-			logger.debug("category={}, answer={}", resourceCategory.getName(), answer.getName());
 			idsOfLeavesToKeep.add(answer.getId());
 		}
 		pedagogicalUsesTreeBean.retainLeavesAndParents(idsOfLeavesToKeep);

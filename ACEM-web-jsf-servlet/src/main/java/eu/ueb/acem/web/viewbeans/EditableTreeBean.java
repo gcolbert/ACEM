@@ -52,7 +52,7 @@ public class EditableTreeBean implements Serializable {
 
 	private List<TreeNode> visibleRoots;
 
-	private Map<Long, TreeNode> allNodes;
+	private Map<Long, TreeNode> allAnswerLeaves;
 
 	public EditableTreeBean() {
 		// For some reason, the root of the tree is not visible
@@ -62,7 +62,7 @@ public class EditableTreeBean implements Serializable {
 		// right click on something to add children nodes
 		visibleRoots = new ArrayList<TreeNode>();
 
-		allNodes = new HashMap<Long, TreeNode>();
+		allAnswerLeaves = new HashMap<Long, TreeNode>();
 	}
 
 	public void clear() {
@@ -108,7 +108,6 @@ public class EditableTreeBean implements Serializable {
 	 */
 	public TreeNode addChild(String nodeType, TreeNode parent, Long id, String label, String concept) {
 		TreeNode child = new DefaultTreeNode(nodeType, new TreeNodeData(id, label, concept, parent), parent);
-		allNodes.put(id, child);
 		return child;
 	}
 
@@ -155,11 +154,14 @@ public class EditableTreeBean implements Serializable {
 	}
 
 	/**
-	 * This method accesses the Map of all nodes in order to return the node
-	 * (value) having the given id (key).
+	 * This method stores the given node in a Map for fast access of
+	 * "pedagogical answer" leaves.
+	 * 
+	 * @param node
+	 *            A TreeNode built upon a PedagogicalAnswer
 	 */
-	private TreeNode getNodeWithId(Long id) {
-		return allNodes.get(id);
+	public void putAnswerLeaf(TreeNode node) {
+		allAnswerLeaves.put(((TreeNodeData) node.getData()).getId(), node);
 	}
 
 	/**
@@ -174,7 +176,7 @@ public class EditableTreeBean implements Serializable {
 	public void retainLeavesAndParents(Set<Long> idsOfLeavesToKeep) {
 		Set<TreeNode> nodesToKeep = new HashSet<TreeNode>();
 		for (Long id : idsOfLeavesToKeep) {
-			TreeNode node = getNodeWithId(id);
+			TreeNode node = allAnswerLeaves.get(id);
 			if (node != null) {
 				nodesToKeep.add(node);
 				while (node.getParent() != null) {

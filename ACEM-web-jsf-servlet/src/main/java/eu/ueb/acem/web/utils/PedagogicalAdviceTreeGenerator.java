@@ -19,7 +19,6 @@
 package eu.ueb.acem.web.utils;
 
 import java.util.Collection;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -135,13 +134,13 @@ public class PedagogicalAdviceTreeGenerator {
 		Collection<PedagogicalAnswer> associatedPedagogicalAnswers = need.getAnswers();
 		if (!associatedPedagogicalAnswers.isEmpty()) {
 			newNode.setType(getTreeNodeType_NEED_WITH_ASSOCIATED_ANSWERS());
-			need.setAnswers((Set<PedagogicalAnswer>) associatedPedagogicalAnswers);
 			for (PedagogicalAnswer answer : associatedPedagogicalAnswers) {
-				treeBean.addChild(getTreeNodeType_ANSWER_LEAF(), newNode, answer.getId(), answer.getName(),
+				TreeNode answerNode = treeBean.addChild(getTreeNodeType_ANSWER_LEAF(), newNode, answer.getId(), answer.getName(),
 						"PedagogicalAnswer");
+				treeBean.putAnswerLeaf(answerNode); // We store leaves in a HashMap
 			}
 		}
-		
+
 		return newNode;
 	}
 	
