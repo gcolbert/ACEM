@@ -390,7 +390,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		PedagogicalAnswer answer2_3_1_1 = needsAndAnswersService.createPedagogicalAnswer("Utiliser des boitiers de vote", need2_3_1);
 		needsAndAnswersService.associateAnswerWithResourceCategory(answer2_3_1_1, boitiersDeVote);
 		PedagogicalNeed need2_3_2 = needsAndAnswersService.createPedagogicalNeed("Interagir avec les étudiants en distanciel", need2_3);
-		// answer2_3_1_2 == "Utiliser une classe virtuelle" == answer1_2_4
+		// answer2_3_2_1 == "Utiliser une classe virtuelle" == answer1_2_4
 		need2_3_2.getAnswers().add(answer1_2_4);
 		answer1_2_4.getNeeds().add(need2_3_2);
 		answer1_2_4 = needsAndAnswersService.updatePedagogicalAnswer(answer1_2_4);
