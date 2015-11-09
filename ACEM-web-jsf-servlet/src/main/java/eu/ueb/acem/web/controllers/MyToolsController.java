@@ -185,7 +185,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 	@Override
 	public String getPageTitle() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(msgs.getMessage("MENU.MY_TOOLS",null,getSessionController().getCurrentUserLocale()));
+		sb.append(msgs.getMessage("MENU.DISCOVER_THE_RESOURCES",null,getSessionController().getCurrentUserLocale()));
 		if (getSelectedToolCategoryViewBean() != null) {
 			sb.append(" - ");
 			sb.append(getSelectedToolCategoryViewBean().getName());
