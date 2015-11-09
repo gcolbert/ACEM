@@ -4,59 +4,64 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-	
-	<ui:param name="associateBean" value="#{mainMenuController}"/>
+
+	<ui:param name="associateBean" value="#{mainMenuController}" />
 
 	<!-- Default navigation -->
 	<p:menubar id="mainMenuBar">
 		<p:menuitem value="#{msg['MENU.HOME']}" url="/home"
 			styleClass="#{associateBean.getMenuitemStyleClass('home')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+			ajax="false" />
 		<p:submenu label="#{msg['MENU.GET_SOME_ADVICES']}" icon="ui-icon-help">
-			<p:menuitem value="#{msg['MENU.PEDAGOGICAL_ADVICE']}" outcome="pedagogical-advice"
+			<p:menuitem value="#{msg['MENU.PEDAGOGICAL_ADVICE']}"
+				outcome="pedagogical-advice"
 				styleClass="#{associateBean.getMenuitemStyleClass('pedagogical-advice')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-			<p:menuitem value="#{msg['MENU.SCENARIOS_LIBRARY']}" outcome="scenarios-library"
+				ajax="false" />
+			<p:menuitem value="#{msg['MENU.SCENARIOS_LIBRARY']}"
+				outcome="scenarios-library"
 				styleClass="#{associateBean.getMenuitemStyleClass('scenarios-library')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
+				ajax="false" />
 			<p:menuitem value="#{msg['MENU.MY_SERVICES']}" outcome="my-services"
 				styleClass="#{associateBean.getMenuitemStyleClass('my-services')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+				ajax="false" />
 		</p:submenu>
-		<p:submenu label="#{msg['MENU.PREPARE_MY_CLASS']}" icon="ui-icon-pencil">
-			<p:menuitem value="#{msg['MENU.MY_TEACHINGS']}" outcome="my-teachings"
+		<p:submenu label="#{msg['MENU.PREPARE_MY_CLASS']}"
+			icon="ui-icon-pencil">
+			<p:menuitem value="#{msg['MENU.MY_TEACHINGS']}"
+				outcome="my-teachings"
 				styleClass="#{associateBean.getMenuitemStyleClass('my-teachings')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-	 		<p:menuitem value="#{msg['MENU.MY_SCENARIOS']}" outcome="my-scenarios"
+				ajax="false" />
+			<p:menuitem value="#{msg['MENU.MY_SCENARIOS']}"
+				outcome="my-scenarios"
 				styleClass="#{associateBean.getMenuitemStyleClass('my-scenarios')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+				ajax="false" />
 		</p:submenu>
-		<p:submenu label="#{msg['MENU.USE_THE_TOOLS']}" icon="ui-icon-wrench">
-			<p:menuitem value="#{msg['MENU.MY_TOOLS']}" outcome="my-tools"
-				styleClass="#{associateBean.getMenuitemStyleClass('my-tools')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
-		</p:submenu>
+		<p:menuitem value="#{msg['MENU.DISCOVER_THE_RESOURCES']}"
+			outcome="my-tools" icon="ui-icon-wrench"
+			styleClass="#{associateBean.getMenuitemStyleClass('my-tools')}"
+			ajax="false" />
 		<p:submenu label="#{msg['MENU.ADMIN']}" outcome="administration"
 			rendered="#{(associateBean.currentUserViewBean != null) and associateBean.currentUserViewBean.administrator}">
 			<p:menuitem value="#{msg['MENU.ADMIN_ORGANISATIONS']}"
 				outcome="adminOrganisations"
-				styleClass="#{associateBean.getMenuitemStyleClass('organisations')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
+				styleClass="#{associateBean.getMenuitemStyleClass('adminOrganisations')}"
+				ajax="false" />
 			<p:menuitem value="#{msg['MENU.ADMIN_USERS']}" outcome="adminUsers"
-				styleClass="#{associateBean.getMenuitemStyleClass('users')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
-			<p:menuitem value="#{msg['MENU.ADMIN_DATABASE']}" outcome="adminDatabase"
-				styleClass="#{associateBean.getMenuitemStyleClass('users')}"
-				onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false" />
+				styleClass="#{associateBean.getMenuitemStyleClass('adminUsers')}"
+				ajax="false" />
+			<p:menuitem value="#{msg['MENU.ADMIN_DATABASE']}"
+				outcome="adminDatabase"
+				styleClass="#{associateBean.getMenuitemStyleClass('adminDatabase')}"
+				ajax="false" />
 		</p:submenu>
 		<p:menuitem value="#{msg['MENU.LOGIN']}" url="/login"
 			rendered="#{! request.isUserInRole('USER')}"
 			styleClass="#{associateBean.getMenuitemStyleClass('login')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+			ajax="false" />
 		<p:menuitem value="#{msg['MENU.LOGOUT']}" url="/logout"
 			rendered="#{request.isUserInRole('USER')}"
 			styleClass="#{associateBean.getMenuitemStyleClass('logout')}"
-			onclick="selectMenuitemLink('#mainMenuBar',this)" ajax="false"/>
+			ajax="false" />
 	</p:menubar>
 	<!-- BreadCrumb : Home + 2 levels -->
 	<p:breadCrumb>

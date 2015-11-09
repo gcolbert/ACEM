@@ -39,6 +39,19 @@ html {
 }
 
 /****************/
+/* MENUBAR      */
+/****************/
+/* There's currently a bug in Primefaces 5.2 that makes the CSS class
+   "ui-state-active" disappear when hovering over the menuitems.
+   As a workaround, we have to define a custom "ui-menuitem-style-of-active-page"
+   containing the copy of the ".ui-state-active" background color's value.
+   The value to copy is defined in "theme.css" at line 83.
+*/
+.ui-menuitem-style-of-active-page {
+	background-color:#93a9cc; /* Must be a copy of the theme.css .ui-state-active "background-color" */
+}
+
+/****************/
 /* CONTENT GRID */
 /****************/
 .contentGrid {

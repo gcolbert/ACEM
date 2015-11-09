@@ -50,7 +50,7 @@ public class MainMenuController extends AbstractContextAwareController {
 		String styleClass = "";
 		String viewId = getViewId();
 		if ((viewId != null) && (viewId.equals(page))) {
-			styleClass = "ui-state-active";
+			styleClass = "ui-menuitem-style-of-active-page";
 		}
 		return styleClass;
 	}
