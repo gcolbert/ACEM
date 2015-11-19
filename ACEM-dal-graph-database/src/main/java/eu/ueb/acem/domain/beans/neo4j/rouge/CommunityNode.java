@@ -49,6 +49,9 @@ public class CommunityNode extends OrganisationNode implements Community {
 	@Indexed
 	private String name;
 
+	@Indexed
+	private String supannEtablissement;
+	
 	@RelatedTo(elementClass = InstitutionNode.class, type = "institutionMemberOfCommunity", direction = INCOMING)
 	private Set<Institution> institutions;
 
@@ -71,6 +74,16 @@ public class CommunityNode extends OrganisationNode implements Community {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String getSupannEtablissement() {
+		return supannEtablissement;
+	}
+
+	@Override
+	public void setSupannEtablissement(String supannEtablissement) {
+		this.supannEtablissement = supannEtablissement;
 	}
 
 	@Override

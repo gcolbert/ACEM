@@ -41,6 +41,9 @@ public interface InstitutionRepository extends GenericRepository<InstitutionNode
 	@Query(value = "MATCH (n:Institution) WHERE n.name=({name}) RETURN n")
 	Iterable<InstitutionNode> findByName(@Param("name") String name);
 
+	@Query(value = "MATCH (n:Institution) WHERE n.supannEtablissement=({supannEtablissement}) RETURN n")
+	InstitutionNode findBySupannEtablissement(@Param("supannEtablissement") String supannEtablissement);
+
 	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Resource)<-[:supportsResource]-(s:Institution) WHERE id(p)=({personId}) RETURN s")
 	Set<InstitutionNode> getSupportServicesForPerson(@Param("personId") Long personId);
 

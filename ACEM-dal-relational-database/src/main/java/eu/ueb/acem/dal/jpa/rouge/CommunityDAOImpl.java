@@ -26,7 +26,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
+import eu.ueb.acem.dal.common.rouge.CommunityDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
@@ -42,7 +42,7 @@ import eu.ueb.acem.domain.beans.rouge.Community;
  * 
  */
 @Repository("communityDAO")
-public class CommunityDAO extends AbstractDAO<Community, CommunityEntity> implements OrganisationDAO<Long, Community> {
+public class CommunityDAOImpl extends AbstractDAO<Community, CommunityEntity> implements CommunityDAO<Long> {
 
 	/**
 	 * For serialization.
@@ -83,6 +83,12 @@ public class CommunityDAO extends AbstractDAO<Community, CommunityEntity> implem
 	@Override
 	public Community create(String name, String shortname, String iconFileName) {
 		return super.create(new CommunityEntity(name, shortname, iconFileName));
+	}
+
+
+	@Override
+	public Community retrieveBySupannEtablissement(String supannEtablissement) {
+		return repository.findBySupannEtablissement(supannEtablissement);
 	}
 
 }

@@ -41,6 +41,9 @@ public interface CommunityRepository extends GenericRepository<CommunityNode> {
 	@Query(value = "MATCH (n:Community) WHERE n.name=({name}) RETURN n")
 	Iterable<CommunityNode> findByName(@Param("name") String name);
 
+	@Query(value = "MATCH (n:Community) WHERE n.supannEtablissement=({supannEtablissement}) RETURN n")
+	CommunityNode findBySupannEtablissement(@Param("supannEtablissement") String supannEtablissement);
+
 	@Query(value = "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Resource)<-[:supportsResource]-(s:Community) WHERE id(p)=({personId}) RETURN s")
 	Set<CommunityNode> getSupportServicesForPerson(@Param("personId") Long personId);
 

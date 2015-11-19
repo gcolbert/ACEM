@@ -379,14 +379,23 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			// Create
 			PedagogicalActivity newPedagogicalActivity = scenariosService.createPedagogicalActivity(objectEditedPedagogicalActivityViewBean.getName());
 			newPedagogicalActivity.setObjective(objectEditedPedagogicalActivityViewBean.getObjective());
-			newPedagogicalActivity.setDuration(new Long(objectEditedPedagogicalActivityViewBean.getDuration()));
+			try {
+				newPedagogicalActivity.setDuration(new Long(objectEditedPedagogicalActivityViewBean.getDuration()));
+			}
+			catch (NumberFormatException e) {
+				newPedagogicalActivity.setDuration(0L);
+			}
 			newPedagogicalActivity.setInstructions(objectEditedPedagogicalActivityViewBean.getInstructions());
 
 			// TODO : generalize these calls to deal with many sequences and many sessions
 			PedagogicalSessionViewBean pedagogicalSessionViewBean = selectedPedagogicalScenarioViewBean.getPedagogicalSequenceViewBeans().get(0).getPedagogicalSessionViewBeans().get(0);
 			PedagogicalSession pedagogicalSession = pedagogicalSessionViewBean.getDomainBean();
-			PedagogicalActivityViewBean currentLastActivityViewBean = pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().get(pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().size()-1);
-			if (scenariosService.addActivityToSession(newPedagogicalActivity, pedagogicalSession, currentLastActivityViewBean.getDomainBean(), null)) {
+			PedagogicalActivity currentLastActivity = null;
+			if (pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().size() > 0) {
+				PedagogicalActivityViewBean currentLastActivityViewBean = pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().get(pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().size()-1);
+				currentLastActivity = currentLastActivityViewBean.getDomainBean();
+			}
+			if (scenariosService.addActivityToSession(newPedagogicalActivity, pedagogicalSession, currentLastActivity, null)) {
 				PedagogicalActivityViewBean pedagogicalActivityViewBean = new PedagogicalActivityViewBean(newPedagogicalActivity);
 				pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().add(pedagogicalActivityViewBean);
 			}

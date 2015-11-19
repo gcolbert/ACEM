@@ -40,4 +40,8 @@ public interface Institution extends Organisation {
 
 	void setAdministrativeDepartments(Set<AdministrativeDepartment> administrativeDepartments);
 
+	String getSupannEtablissement();
+
+	void setSupannEtablissement(String supannEtablissement);
+
 }

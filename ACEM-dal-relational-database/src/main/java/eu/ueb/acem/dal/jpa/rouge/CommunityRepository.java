@@ -37,6 +37,9 @@ public interface CommunityRepository extends GenericRepository<CommunityEntity> 
 	@Query("SELECT d FROM Community d WHERE d.name = :name")
 	Iterable<CommunityEntity> findByName(@Param("name") String name);
 
+	@Query("SELECT d FROM Community d WHERE d.supannEtablissement = :supannEtablissement")
+	CommunityEntity findBySupannEtablissement(@Param("supannEtablissement") String supannEtablissement);
+
 	// @Query(value =
 	// "MATCH (p:Person)-[:worksForOrganisation]->(o:Organisation)-[*0..2]->(:Organisation)-[:possessesResource|:accessesResource|:supportsResource]->(r:Resource)<-[:supportsResource]-(s:Community) WHERE id(p)=({personId}) RETURN s")
 	@Query("SELECT DISTINCT (supportService) FROM Community supportService JOIN supportService.supportedResources d "

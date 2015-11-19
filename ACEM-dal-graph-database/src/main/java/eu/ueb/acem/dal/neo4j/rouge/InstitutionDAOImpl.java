@@ -26,54 +26,56 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
+import eu.ueb.acem.dal.common.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.neo4j.AbstractDAO;
 import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.neo4j.rouge.AdministrativeDepartmentNode;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.neo4j.rouge.InstitutionNode;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 
 /**
- * The Spring Data Neo4j implementation of OrganisationDAO for
- * AdministrativeDepartment domain beans.
+ * The Spring Data Neo4j implementation of OrganisationDAO for Institution
+ * domain beans.
  * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
-@Repository("administrativeDepartmentDAO")
-public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepartment, AdministrativeDepartmentNode>
-		implements OrganisationDAO<Long, AdministrativeDepartment> {
+@Repository("institutionDAO")
+public class InstitutionDAOImpl extends AbstractDAO<Institution, InstitutionNode> implements
+		InstitutionDAO<Long> {
 
 	/**
-	 * For serialization.
+	 * FOr serialization.
 	 */
-	private static final long serialVersionUID = 515628413371430770L;
+	private static final long serialVersionUID = -1248475351876837707L;
 
 	@Inject
-	private AdministrativeDepartmentRepository repository;
+	private InstitutionRepository repository;
 
 	@Override
-	protected final GenericRepository<AdministrativeDepartmentNode> getRepository() {
+	protected final GenericRepository<InstitutionNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(AdministrativeDepartment entity) {
+	protected final void initializeCollections(Institution entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getPossessedResources());
 			neo4jOperations.fetch(entity.getViewedResources());
 			neo4jOperations.fetch(entity.getUseModes());
-			neo4jOperations.fetch(entity.getInstitutions());
+			neo4jOperations.fetch(entity.getCommunities());
+			neo4jOperations.fetch(entity.getAdministrativeDepartments());
+			neo4jOperations.fetch(entity.getTeachingDepartments());
 		}
 	}
 
 	@Override
-	public Collection<AdministrativeDepartment> retrieveSupportServicesForPerson(Person person) {
-		Iterable<AdministrativeDepartmentNode> endResults = repository.getSupportServicesForPerson(person.getId());
-		Collection<AdministrativeDepartment> collection = new HashSet<AdministrativeDepartment>();
+	public Collection<Institution> retrieveSupportServicesForPerson(Person person) {
+		Iterable<InstitutionNode> endResults = repository.getSupportServicesForPerson(person.getId());
+		Collection<Institution> collection = new HashSet<Institution>();
 		if (endResults.iterator() != null) {
-			Iterator<AdministrativeDepartmentNode> iterator = endResults.iterator();
+			Iterator<InstitutionNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -82,8 +84,13 @@ public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepar
 	}
 
 	@Override
-	public AdministrativeDepartment create(String name, String shortname, String iconFileName) {
-		return super.create(new AdministrativeDepartmentNode(name, shortname, iconFileName));
+	public Institution create(String name, String shortname, String iconFileName) {
+		return super.create(new InstitutionNode(name, shortname, iconFileName));
+	}
+
+	@Override
+	public Institution retrieveBySupannEtablissement(String supannEtablissement) {
+		return repository.findBySupannEtablissement(supannEtablissement);
 	}
 
 }

@@ -43,6 +43,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import eu.ueb.acem.domain.beans.gris.Person;
+import eu.ueb.acem.domain.beans.rouge.Community;
+import eu.ueb.acem.domain.beans.rouge.Institution;
+import eu.ueb.acem.services.OrganisationsService;
 import eu.ueb.acem.services.UsersService;
 
 /**
@@ -61,6 +64,9 @@ public class SamlAuthenticationUserDetailsService implements SAMLUserDetailsServ
 
 	@Inject
 	private UsersService usersService;
+
+	@Inject
+	private OrganisationsService organisationsService;
 
 	/**
 	 * @param targetUser
@@ -92,9 +98,7 @@ public class SamlAuthenticationUserDetailsService implements SAMLUserDetailsServ
 
 	@Override
 	public Object loadUserBySAML(SAMLCredential credential) throws UsernameNotFoundException {
-		logger.info("entering loadUserBySAML({})", credential);
-		String userID = credential.getNameID().getValue();
-		logger.info("{} is logged in", userID);
+		logger.info("entering loadUserBySAML, nameId={}", credential.getNameID().getValue());
 		Map<String, String> mapOfAttributesFriendlyNamesAndValues = new HashMap<String, String>();
 		mapOfAttributesFriendlyNamesAndValues.put("eduPersonAffiliation", null);
 		mapOfAttributesFriendlyNamesAndValues.put("eduPersonPrincipalName", null);
@@ -121,15 +125,37 @@ public class SamlAuthenticationUserDetailsService implements SAMLUserDetailsServ
 				logger.info("We don't care about this attribute");
 			}
 		}
-		// TODO : vérifier que l'utilisateur est dans "staff" (voir la doc ICC pour le test exact à appliquer)
-		Person user = usersService.getUser(mapOfAttributesFriendlyNamesAndValues.get("eduPersonPrincipalName"));
-		user.setLogin(mapOfAttributesFriendlyNamesAndValues.get("eduPersonPrincipalName"));
-		user.setEmail(mapOfAttributesFriendlyNamesAndValues.get("mail"));
-		user.setName(mapOfAttributesFriendlyNamesAndValues.get("displayName"));
-		user.setAdministrator(true);
-		user = usersService.updatePerson(user);
-		logger.info("leaving loadUserBySAML");
-		return loadUserByUser(user);
+		// We check that the user is a teacher or staff (not a student)
+		if (mapOfAttributesFriendlyNamesAndValues.get("eduPersonAffiliation").contains("staff")
+				|| mapOfAttributesFriendlyNamesAndValues.get("eduPersonAffiliation").contains("employee")
+				|| mapOfAttributesFriendlyNamesAndValues.get("eduPersonAffiliation").contains("faculty")
+				|| mapOfAttributesFriendlyNamesAndValues.get("eduPersonAffiliation").contains("teacher")
+				|| mapOfAttributesFriendlyNamesAndValues.get("eduPersonAffiliation").contains("researcher")
+				|| (mapOfAttributesFriendlyNamesAndValues.get("eduPersonAffiliation").contains("member") && !mapOfAttributesFriendlyNamesAndValues
+						.get("eduPersonAffiliation").contains("student"))) {
+			Person user = usersService.getUser(mapOfAttributesFriendlyNamesAndValues.get("eduPersonPrincipalName"));
+			user.setLogin(mapOfAttributesFriendlyNamesAndValues.get("eduPersonPrincipalName"));
+			user.setEmail(mapOfAttributesFriendlyNamesAndValues.get("mail"));
+			user.setName(mapOfAttributesFriendlyNamesAndValues.get("displayName"));
+			user.setAdministrator(true);
+			Community communityForWhichTheUserWorks = organisationsService.retrieveCommunityBySupannEtablissement(mapOfAttributesFriendlyNamesAndValues.get("supannEtablissement"));  
+			if (communityForWhichTheUserWorks != null) {
+				usersService.associateUserWorkingForOrganisation(user.getId(), communityForWhichTheUserWorks.getId());
+			}
+			else {
+				Institution institutionForWhichTheUserWorks = organisationsService.retrieveInstitutionBySupannEtablissement(mapOfAttributesFriendlyNamesAndValues.get("supannEtablissement"));  
+				if (institutionForWhichTheUserWorks != null) {
+					usersService.associateUserWorkingForOrganisation(user.getId(), institutionForWhichTheUserWorks.getId());
+				}
+			}
+			user = usersService.updatePerson(user);
+			logger.info("leaving loadUserBySAML, we return a User (good eduPersonAffiliation property)");
+			return loadUserByUser(user);
+		}
+		else {
+			logger.info("leaving loadUserBySAML, we don't return a User (bad eduPersonAffiliation property)");
+			return null;
+		}
 	}
 
 	private String getAttributeValue(XMLObject attributeValueXMLObject) {

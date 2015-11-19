@@ -32,4 +32,8 @@ public interface Community extends Organisation {
 
 	void setInstitutions(Set<Institution> institutions);
 
+	String getSupannEtablissement();
+
+	void setSupannEtablissement(String supannEtablissement);
+
 }

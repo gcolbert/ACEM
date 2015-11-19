@@ -75,20 +75,47 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 	public void initDatabase() {
 
 		// *************
+		// ADMIN ACCOUNT
+		// *************
+		Teacher adminUser = usersService.createTeacher("admin",  "admin", "admin");
+		adminUser.setAdministrator(true);
+		adminUser = usersService.updateTeacher(adminUser);
+		
+		// *************
 		// ORGANISATIONS
 		// *************
 		Community ueb = organisationsService.createCommunity("Université européenne de Bretagne", "UEB", "logo-ueb.png");
+		ueb.setSupannEtablissement("{AUTRE}Autres");
+		ueb = organisationsService.updateCommunity(ueb);
 		Community minesTelecom = organisationsService.createCommunity("Institut Mines Télécom", "MINES-TELECOM", "logo-institut-mines-telecom.png");
 
 		Institution agrocampusOuest = organisationsService.createInstitution("Agrocampus Ouest", "AGROCAMPUS", "logo-agrocampusouest-transparent.png");
+		agrocampusOuest.setSupannEtablissement("{EES}0352692L");
+		agrocampusOuest = organisationsService.updateInstitution(agrocampusOuest);
 		Institution enscr = organisationsService.createInstitution("École Nationale Supérieure de Chimie de Rennes", "ENSCR", "logo-enscr.png");
+		enscr.setSupannEtablissement("{EES}0350077U");
+		enscr = organisationsService.updateInstitution(enscr);
 		Institution ensRennes = organisationsService.createInstitution("École Normale Supérieure de Rennes", "ENS-RENNES", "logo-ens-rennes.png");
+		ensRennes.setSupannEtablissement("{EES}0352440M");
+		ensRennes = organisationsService.updateInstitution(ensRennes);
 		Institution insaRennes = organisationsService.createInstitution("INSA Rennes", "INSA-RENNES", "logo-insa-rennes.png");
+		insaRennes.setSupannEtablissement("{EES}0350097R");
+		insaRennes = organisationsService.updateInstitution(insaRennes);
 		Institution telecomBretagne = organisationsService.createInstitution("Télécom Bretagne", "TB", "logo-telecom-bretagne.png");
+		telecomBretagne.setSupannEtablissement("{UAI}0291811L");
+		telecomBretagne = organisationsService.updateInstitution(telecomBretagne);
 		Institution ubs = organisationsService.createInstitution("Université de Bretagne Sud", "UBS", "logo-ubs.png");
+		ubs.setSupannEtablissement("{UAI}0561718N");
+		ubs = organisationsService.updateInstitution(ubs);
 		Institution ubo = organisationsService.createInstitution("Université de Bretagne Occidentale", "UBO", "logo-ubo-transparent.png");
+		ubo.setSupannEtablissement("annuaireUBO");
+		ubo = organisationsService.updateInstitution(ubo);
 		Institution ur1 = organisationsService.createInstitution("Université de Rennes 1", "UR1", "logo-rennes1.png");
+		ur1.setSupannEtablissement("{EES}0350936C");
+		ur1 = organisationsService.updateInstitution(ur1);
 		Institution ur2 = organisationsService.createInstitution("Université Rennes 2", "UR2", "logo-rennes2-transparent.png");
+		ur2.setSupannEtablissement("{RNE}0350937D");
+		ur2 = organisationsService.updateInstitution(ur2);
 
 		organisationsService.associateCommunityAndInstitution(ueb.getId(), agrocampusOuest.getId());
 		organisationsService.associateCommunityAndInstitution(ueb.getId(), enscr.getId());
@@ -218,9 +245,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		TeachingMode teachingModeOnlineCourse = teachingModesService.createTeachingMode("Distanciel", "Cours à distance");
 		TeachingMode teachingModeOnsiteCourse = teachingModesService.createTeachingMode("Présentiel", "Cours en présentiel");
 
-		Teacher teacher = usersService.retrieveTeacherByLogin("admin");
-
-		PedagogicalScenario pedagogicalScenario = scenariosService.createPedagogicalScenario(teacher, "Étude d'une théorie et argumentation", "Développer la capacité à s'approprier une problématique scientifique");
+		PedagogicalScenario pedagogicalScenario = scenariosService.createPedagogicalScenario(adminUser, "Étude d'une théorie et argumentation", "Développer la capacité à s'approprier une problématique scientifique");
 
 		PedagogicalSequence pedagogicalSequence1 = scenariosService.createPedagogicalSequence("Sequence 1");
 		pedagogicalSequence1.setPedagogicalScenario(pedagogicalScenario);

@@ -27,6 +27,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import eu.ueb.acem.dal.common.rouge.CommunityDAO;
+import eu.ueb.acem.dal.common.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
 import eu.ueb.acem.domain.beans.gris.Person;
 import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
@@ -50,10 +52,10 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	private static final long serialVersionUID = -4629646991379337991L;
 
 	@Inject
-	private OrganisationDAO<Long, Community> communityDAO;
+	private CommunityDAO<Long> communityDAO;
 
 	@Inject
-	private OrganisationDAO<Long, Institution> institutionDAO;
+	private InstitutionDAO<Long> institutionDAO;
 
 	@Inject
 	private OrganisationDAO<Long, TeachingDepartment> teachingDepartmentDAO;
@@ -125,10 +127,20 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
+	public Community retrieveCommunityBySupannEtablissement(String supannEtablissement) {
+		return communityDAO.retrieveBySupannEtablissement(supannEtablissement);
+	}
+
+	@Override
 	public Institution retrieveInstitution(Long id, boolean initialize) {
 		return institutionDAO.retrieveById(id, initialize);
 	}
 
+	@Override
+	public Institution retrieveInstitutionBySupannEtablissement(String supannEtablissement) {
+		return institutionDAO.retrieveBySupannEtablissement(supannEtablissement);
+	}
+	
 	@Override
 	public AdministrativeDepartment retrieveAdministrativeDepartment(Long id, boolean initialize) {
 		return administrativeDepartmentDAO.retrieveById(id, initialize);
@@ -342,7 +354,6 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 	}
 
 	@Override
-	// TODO : should be replaced by a request in the DAL (if using Neo4j)
 	public Boolean isImplicitlySharingResourcesWith(Organisation organisation1, Organisation organisation2) {
 		Boolean implicitShare = false;
 		if (organisation1 instanceof Community) {
@@ -411,4 +422,5 @@ public class OrganisationsServiceImpl implements OrganisationsService {
 		supportServices.addAll(teachingDepartmentDAO.retrieveSupportServicesForPerson(person));
 		return supportServices;
 	}
+
 }

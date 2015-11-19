@@ -147,6 +147,18 @@ public interface OrganisationsService extends Serializable {
 	Community retrieveCommunity(Long id, boolean initialize);
 
 	/**
+	 * Retrieves the existing Community that have the property
+	 * "supannEtablissement" with the given value.
+	 * 
+	 * @param supannEtablissement
+	 *            The "supannEtablissement" property value of the Community to
+	 *            load from the Data Access Layer
+	 * @return the {@link Community} with the given "supannEtablissement" value,
+	 *         or null if it doesn't exist
+	 */
+	Community retrieveCommunityBySupannEtablissement(String supannEtablissement);
+	
+	/**
 	 * Retrieves an existing Institution.
 	 * 
 	 * @param id
@@ -159,6 +171,18 @@ public interface OrganisationsService extends Serializable {
 	 */
 	Institution retrieveInstitution(Long id, boolean initialize);
 
+	/**
+	 * Retrieves the existing Institution that have the property
+	 * "supannEtablissement" with the given value.
+	 * 
+	 * @param supannEtablissement
+	 *            The "supannEtablissement" property value of the Institution to
+	 *            load from the Data Access Layer
+	 * @return the {@link Institution} with the given "supannEtablissement" value,
+	 *         or null if it doesn't exist
+	 */
+	Institution retrieveInstitutionBySupannEtablissement(String supannEtablissement);
+	
 	/**
 	 * Retrieves an existing AdministrativeDepartment.
 	 * 

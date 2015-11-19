@@ -234,6 +234,34 @@
 	</ui:define>
 
 	<ui:define name="content">
+<!-- 
+        WORK IN PROGRESS : display tool categories in a grid 
+ 		<p:outputPanel id="allServicesOutputPanel" rendered="#{associateBean.selectedToolCategoryViewBean == null}">
+		    <p:dataGrid value="#{associateBean.allToolCategoryViewBeans}" var="toolCategoryViewBean" 
+		    	layout="grid" columns="3" rows="12" paginator="true" id="supportServices" styleClass="contentGrid"
+		        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		        rowsPerPageTemplate="6,12,18" paginatorPosition="bottom">
+
+		        <p:panel styleClass="panelInGrid">
+					<h:link id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
+						<f:param name="toolCategoryId"
+							value="#{toolCategoryViewBean.id}" />
+						<p:graphicImage id="toolCategoryIcon"
+							rendered="#{not empty toolCategoryViewBean.iconFileName}"
+							styleClass="imageInGrid" 
+							alt="#{toolCategoryViewBean.name}" cache="true"
+							value="#{imagesController.image}">
+							<f:param name="imageFileName"
+								value="#{toolCategoryViewBean.iconFileName}" />
+						</p:graphicImage>
+						<h:outputText value="#{toolCategoryViewBean.name}" />
+					</h:link>
+		        </p:panel>
+
+		    </p:dataGrid>
+		</p:outputPanel>
+-->
+
 		<p:outputPanel id="selectedToolCategoryOutputPanel">
 			<p:panel styleClass="selectedToolCategoryPanel"
 				id="selectedToolCategoryPanel"

@@ -47,6 +47,8 @@ public class CommunityEntity extends OrganisationEntity implements Community {
 
 	private String name;
 
+	private String supannEtablissement;
+
 	@ManyToMany(targetEntity = InstitutionEntity.class, fetch = FetchType.LAZY, mappedBy = "communities")
 	private Set<Institution> institutions = new HashSet<Institution>(0);
 
@@ -69,6 +71,16 @@ public class CommunityEntity extends OrganisationEntity implements Community {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String getSupannEtablissement() {
+		return supannEtablissement;
+	}
+
+	@Override
+	public void setSupannEtablissement(String supannEtablissement) {
+		this.supannEtablissement = supannEtablissement;
 	}
 
 	@Override

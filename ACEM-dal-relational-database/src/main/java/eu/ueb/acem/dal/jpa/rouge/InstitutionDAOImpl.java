@@ -26,54 +26,55 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
+import eu.ueb.acem.dal.common.rouge.InstitutionDAO;
 import eu.ueb.acem.dal.jpa.AbstractDAO;
 import eu.ueb.acem.dal.jpa.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.jpa.rouge.AdministrativeDepartmentEntity;
-import eu.ueb.acem.domain.beans.rouge.AdministrativeDepartment;
+import eu.ueb.acem.domain.beans.jpa.rouge.InstitutionEntity;
+import eu.ueb.acem.domain.beans.rouge.Institution;
 
 /**
- * The Spring Data JPA implementation of OrganisationDAO for
- * AdministrativeDepartment domain beans.
+ * The Spring Data JPA implementation of OrganisationDAO for Institution domain
+ * beans.
  * 
  * @author Grégoire Colbert
  * @since 2015-06-03
  * 
  */
-@Repository("administrativeDepartmentDAO")
-public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepartment, AdministrativeDepartmentEntity>
-		implements OrganisationDAO<Long, AdministrativeDepartment> {
+@Repository("institutionDAO")
+public class InstitutionDAOImpl extends AbstractDAO<Institution, InstitutionEntity> implements InstitutionDAO<Long> {
 
 	/**
 	 * For serialization.
 	 */
-	private static final long serialVersionUID = -3156159594445340421L;
+	private static final long serialVersionUID = 129914253180127789L;
 
 	@Inject
-	private AdministrativeDepartmentRepository repository;
+	private InstitutionRepository repository;
 
 	@Override
-	protected final GenericRepository<AdministrativeDepartmentEntity> getRepository() {
+	protected final GenericRepository<InstitutionEntity> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(AdministrativeDepartment entity) {
+	protected final void initializeCollections(Institution entity) {
 		if (entity != null) {
 			entity.getPossessedResources().size();
 			entity.getViewedResources().size();
 			entity.getUseModes().size();
-			entity.getInstitutions().size();
+			entity.getCommunities().size();
+			entity.getAdministrativeDepartments().size();
+			entity.getTeachingDepartments().size();
 		}
 	}
 
 	@Override
-	public Collection<AdministrativeDepartment> retrieveSupportServicesForPerson(Person person) {
-		Iterable<AdministrativeDepartmentEntity> endResults = repository.getSupportServicesForPerson(person.getId());
-		Collection<AdministrativeDepartment> collection = new HashSet<AdministrativeDepartment>();
+	public Collection<Institution> retrieveSupportServicesForPerson(Person person) {
+		Iterable<InstitutionEntity> endResults = repository.getSupportServicesForPerson(person.getId());
+		Collection<Institution> collection = new HashSet<Institution>();
 		if (endResults.iterator() != null) {
-			Iterator<AdministrativeDepartmentEntity> iterator = endResults.iterator();
+			Iterator<InstitutionEntity> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -82,8 +83,13 @@ public class AdministrativeDepartmentDAO extends AbstractDAO<AdministrativeDepar
 	}
 
 	@Override
-	public AdministrativeDepartment create(String name, String shortname, String iconFileName) {
-		return super.create(new AdministrativeDepartmentEntity(name, shortname, iconFileName));
+	public Institution create(String name, String shortname, String iconFileName) {
+		return super.create(new InstitutionEntity(name, shortname, iconFileName));
+	}
+
+	@Override
+	public Institution retrieveBySupannEtablissement(String supannEtablissement) {
+		return repository.findBySupannEtablissement(supannEtablissement);
 	}
 
 }

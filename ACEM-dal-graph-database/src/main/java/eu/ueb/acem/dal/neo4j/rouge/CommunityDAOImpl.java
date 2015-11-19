@@ -26,40 +26,39 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
 
-import eu.ueb.acem.dal.common.rouge.OrganisationDAO;
+import eu.ueb.acem.dal.common.rouge.CommunityDAO;
 import eu.ueb.acem.dal.neo4j.AbstractDAO;
 import eu.ueb.acem.dal.neo4j.GenericRepository;
 import eu.ueb.acem.domain.beans.gris.Person;
-import eu.ueb.acem.domain.beans.neo4j.rouge.TeachingDepartmentNode;
-import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
+import eu.ueb.acem.domain.beans.neo4j.rouge.CommunityNode;
+import eu.ueb.acem.domain.beans.rouge.Community;
 
 /**
- * The Spring Data Neo4j implementation of OrganisationDAO for
- * TeachingDepartment domain beans.
+ * The Spring Data Neo4j implementation of OrganisationDAO for Community domain
+ * beans.
  * 
  * @author Grégoire Colbert
  * @since 2014-02-07
  * 
  */
-@Repository("teachingDepartmentDAO")
-public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, TeachingDepartmentNode> implements
-		OrganisationDAO<Long, TeachingDepartment> {
+@Repository("communityDAO")
+public class CommunityDAOImpl extends AbstractDAO<Community, CommunityNode> implements CommunityDAO<Long> {
 
 	/**
-	 * For serialization.
+	 * FOr serialization.
 	 */
-	private static final long serialVersionUID = 1601784002431717278L;
+	private static final long serialVersionUID = -6005681827386719691L;
 
 	@Inject
-	private TeachingDepartmentRepository repository;
+	private CommunityRepository repository;
 
 	@Override
-	protected final GenericRepository<TeachingDepartmentNode> getRepository() {
+	protected final GenericRepository<CommunityNode> getRepository() {
 		return repository;
 	}
 
 	@Override
-	protected final void initializeCollections(TeachingDepartment entity) {
+	protected final void initializeCollections(Community entity) {
 		if (entity != null) {
 			neo4jOperations.fetch(entity.getPossessedResources());
 			neo4jOperations.fetch(entity.getViewedResources());
@@ -69,11 +68,11 @@ public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, Teach
 	}
 
 	@Override
-	public Collection<TeachingDepartment> retrieveSupportServicesForPerson(Person person) {
-		Iterable<TeachingDepartmentNode> endResults = repository.getSupportServicesForPerson(person.getId());
-		Collection<TeachingDepartment> collection = new HashSet<TeachingDepartment>();
+	public Collection<Community> retrieveSupportServicesForPerson(Person person) {
+		Iterable<CommunityNode> endResults = repository.getSupportServicesForPerson(person.getId());
+		Collection<Community> collection = new HashSet<Community>();
 		if (endResults.iterator() != null) {
-			Iterator<TeachingDepartmentNode> iterator = endResults.iterator();
+			Iterator<CommunityNode> iterator = endResults.iterator();
 			while (iterator.hasNext()) {
 				collection.add(iterator.next());
 			}
@@ -82,8 +81,13 @@ public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, Teach
 	}
 
 	@Override
-	public TeachingDepartment create(String name, String shortname, String iconFileName) {
-		return super.create(new TeachingDepartmentNode(name, shortname, iconFileName));
+	public Community create(String name, String shortname, String iconFileName) {
+		return super.create(new CommunityNode(name, shortname, iconFileName));
+	}
+
+	@Override
+	public Community retrieveBySupannEtablissement(String supannEtablissement) {
+		return repository.findBySupannEtablissement(supannEtablissement);
 	}
 
 }

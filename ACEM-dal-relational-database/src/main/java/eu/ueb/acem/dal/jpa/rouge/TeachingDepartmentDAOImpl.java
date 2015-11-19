@@ -42,7 +42,7 @@ import eu.ueb.acem.domain.beans.rouge.TeachingDepartment;
  * 
  */
 @Repository("teachingDepartmentDAO")
-public class TeachingDepartmentDAO extends AbstractDAO<TeachingDepartment, TeachingDepartmentEntity> implements
+public class TeachingDepartmentDAOImpl extends AbstractDAO<TeachingDepartment, TeachingDepartmentEntity> implements
 		OrganisationDAO<Long, TeachingDepartment> {
 
 	/**
