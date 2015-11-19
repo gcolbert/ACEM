@@ -83,7 +83,7 @@
         p:serviceProperties-ref="serviceProperties"
         p:key="authProviderKey">
         <b:property name="authenticationUserDetailsService">
-            <b:bean class="eu.ueb.acem.services.auth.DatabaseUserDetailsService"/>
+            <b:bean class="eu.ueb.acem.services.auth.CasAuthenticationUserDetailsService"/>
         </b:property>
         <b:property name="ticketValidator">
             <b:bean
