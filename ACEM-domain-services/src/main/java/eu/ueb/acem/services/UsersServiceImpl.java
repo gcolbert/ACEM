@@ -114,6 +114,7 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 
 	@Override
 	public Person getUser(String login) throws UsernameNotFoundException {
+		logger.info("entering getUser({})", login);
 		Person user = teacherDAO.retrieveByLogin(login, true);
 		// If the "admin" account gets deleted, we recreate it.
 		if (user==null && login.equals("admin")) {
