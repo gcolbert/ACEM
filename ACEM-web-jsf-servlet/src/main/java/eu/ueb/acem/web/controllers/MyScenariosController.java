@@ -346,8 +346,11 @@ public class MyScenariosController extends AbstractContextAwareController implem
 	}
 
 	public void prepareModifyPedagogicalActivity(PedagogicalActivityViewBean pedagogicalActivityViewBean) {
-		objectEditedPedagogicalActivityViewBean = new PedagogicalActivityViewBean(
-				scenariosService.retrievePedagogicalActivity(pedagogicalActivityViewBean.getId(), true));
+		PedagogicalActivity pedagogicalActivity = scenariosService.retrievePedagogicalActivity(pedagogicalActivityViewBean.getId(), true);
+		objectEditedPedagogicalActivityViewBean = new PedagogicalActivityViewBean(pedagogicalActivity);
+		for (ResourceCategory resourceCategory : pedagogicalActivity.getResourceCategories()) {
+			objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans().add(new ToolCategoryViewBean(resourceCategory));
+		}
 		preparePicklistToolCategoryViewBeansForPedagogicalActivity(pedagogicalActivityViewBean);
 	}
 
@@ -434,7 +437,6 @@ public class MyScenariosController extends AbstractContextAwareController implem
 			PedagogicalActivityViewBean pedagogicalActivityViewBean = new PedagogicalActivityViewBean(newPedagogicalActivity);
 			
 			// We add the resource categories associated with the new activity
-			pedagogicalActivityViewBean.getToolCategoryViewBeans().clear();
 			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean
 					.getToolCategoryViewBeans()) {
 				newPedagogicalActivity.getResourceCategories().add(toolCategoryViewBean.getDomainBean());
@@ -459,20 +461,19 @@ public class MyScenariosController extends AbstractContextAwareController implem
 		}
 		else {
 			// UPDATE
+			// We add the resource categories associated with the modified activity
 			objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().clear();
-			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean
-					.getToolCategoryViewBeans()) {
-				objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories()
-						.add(toolCategoryViewBean.getDomainBean());
-				toolCategoryViewBean.getDomainBean().getPedagogicalActivities()
-						.add(objectEditedPedagogicalActivityViewBean.getDomainBean());
+			for (ToolCategoryViewBean toolCategoryViewBean : objectEditedPedagogicalActivityViewBean.getToolCategoryViewBeans()) {
+				logger.info("objectEditedToolCategoryViewBean is associated with {}", toolCategoryViewBean.getName());
+				objectEditedPedagogicalActivityViewBean.getDomainBean().getResourceCategories().add(toolCategoryViewBean.getDomainBean());
+				toolCategoryViewBean.getDomainBean().getPedagogicalActivities().add(objectEditedPedagogicalActivityViewBean.getDomainBean());
 			}
-			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService
-					.updatePedagogicalActivity(objectEditedPedagogicalActivityViewBean.getDomainBean()));
-
+			objectEditedPedagogicalActivityViewBean.setDomainBean(scenariosService.updatePedagogicalActivity(objectEditedPedagogicalActivityViewBean.getDomainBean()));
+			
+			// We update the PedagogicalActivityViewBean corresponding to objectEditedPedagogicalActivityViewBean
 			pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().set(
-					pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().indexOf(
-							objectEditedPedagogicalActivityViewBean), objectEditedPedagogicalActivityViewBean);
+					pedagogicalSessionViewBean.getPedagogicalActivityViewBeans().indexOf(objectEditedPedagogicalActivityViewBean),
+					objectEditedPedagogicalActivityViewBean);
 		}
 		MessageDisplayer.info(msgs.getMessage("MY_SCENARIOS.SELECTED_PEDAGOGICAL_ACTIVITY.SAVE_SUCCESSFUL.TITLE", null,
 				getSessionController().getCurrentUserLocale()), msgs.getMessage(
