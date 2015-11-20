@@ -354,11 +354,11 @@ public class ScenariosServiceImpl implements ScenariosService {
 				&& !nextPedagogicalActivity.getPedagogicalSession().equals(pedagogicalSession)) {
 			throw new ServiceException("EXCEPTION.NEXT_UNIT_BAD_OWNER.TITLE");
 		}
-		if ((nextPedagogicalActivity != null && nextPedagogicalActivity.getPreviousPedagogicalActivity() != null && !nextPedagogicalActivity
-				.getPreviousPedagogicalActivity().equals(previousPedagogicalActivity))
-				|| (previousPedagogicalActivity != null
-						&& previousPedagogicalActivity.getNextPedagogicalActivity() != null && !previousPedagogicalActivity
-						.getNextPedagogicalActivity().equals(nextPedagogicalActivity))) {
+		if ((nextPedagogicalActivity != null && previousPedagogicalActivity != null
+				&& nextPedagogicalActivity.getPreviousPedagogicalActivity() != null
+				&& previousPedagogicalActivity.getNextPedagogicalActivity() != null && (!nextPedagogicalActivity
+				.getPreviousPedagogicalActivity().equals(previousPedagogicalActivity) || !previousPedagogicalActivity
+				.getNextPedagogicalActivity().equals(nextPedagogicalActivity)))) {
 			throw new ServiceException("EXCEPTION.PREVIOUS_AND_NEXT_UNITS_ARE_NOT_CHAINED.TITLE");
 		}
 		if (pedagogicalSession.getDuration() != null && pedagogicalActivityToAdd.getDuration() != null
