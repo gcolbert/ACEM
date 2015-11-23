@@ -77,10 +77,15 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		// *************
 		// ADMIN ACCOUNT
 		// *************
-		Teacher adminUser = usersService.createTeacher("admin",  "admin", "admin");
+		Teacher adminUser = usersService.retrieveTeacherByLogin("admin"); 
+		if (adminUser == null) {
+			adminUser = usersService.createTeacher("admin",  "admin", "admin");
+		}
+		adminUser.setName("admin");
+		adminUser.setPassword("admin");
 		adminUser.setAdministrator(true);
 		adminUser = usersService.updateTeacher(adminUser);
-		
+
 		// *************
 		// ORGANISATIONS
 		// *************
