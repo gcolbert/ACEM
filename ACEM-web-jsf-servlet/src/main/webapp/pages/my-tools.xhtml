@@ -19,7 +19,7 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
-	<ui:param name="displayWest" value="true" />
+	<ui:param name="displayWest" value="false" />
 	<ui:param name="westPanelSize" value="220" />
 	<ui:param name="westPanelCollapsible" value="true"/>
 	<ui:param name="westPanelCollapsed" value="#{associateBean.selectedToolCategoryId!=null}" />
@@ -234,8 +234,6 @@
 	</ui:define>
 
 	<ui:define name="content">
-<!-- 
-        WORK IN PROGRESS : display tool categories in a grid 
  		<p:outputPanel id="allServicesOutputPanel" rendered="#{associateBean.selectedToolCategoryViewBean == null}">
 		    <p:dataGrid value="#{associateBean.allToolCategoryViewBeans}" var="toolCategoryViewBean" 
 		    	layout="grid" columns="3" rows="12" paginator="true" id="supportServices" styleClass="contentGrid"
@@ -260,7 +258,6 @@
 
 		    </p:dataGrid>
 		</p:outputPanel>
--->
 
 		<p:outputPanel id="selectedToolCategoryOutputPanel">
 			<p:panel styleClass="selectedToolCategoryPanel"
@@ -294,7 +291,7 @@
 				<p class="categoryDescription"><h:outputText value="#{associateBean.selectedToolCategoryViewBean.description}" escape="false" /></p>
 
 			    <p:carousel value="#{associateBean.selectedToolCategoryViewBean.resourceViewBeans}" headerText="Ressources" var="toolViewBean" itemStyleClass="" numVisible="3">
-			        <p:panelGrid style="width:200px; height:300px;">
+			        <p:panelGrid>
 			            <p:row>
 			            	<p:column colspan="2"  style="text-align:center">
 								<p:graphicImage id="resourceIcon"
