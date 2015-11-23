@@ -68,8 +68,8 @@
 	
 		        <p:panel styleClass="panelInGrid">
 					<h:link id="goToServiceBtn" outcome="pretty:my-services-param">
-						<f:param name="serviceId"
-							value="#{organisationViewBean.id}" />
+			        <h3><f:param name="serviceId" value="#{organisationViewBean.id}" />
+						<h:outputText value="#{organisationViewBean.name}" />
 						<p:graphicImage id="organisationIcon"
 							rendered="#{not empty organisationViewBean.iconFileName}"
 							styleClass="imageInGrid" 
@@ -78,7 +78,10 @@
 							<f:param name="imageFileName"
 								value="#{organisationViewBean.iconFileName}" />
 						</p:graphicImage>
-						<h:outputText value="#{organisationViewBean.name}" />
+						<p:tooltip
+							value="#{organisationViewBean.name}"
+							for="goToServiceBtn" trackMouse="true" />
+					</h3>
 					</h:link>
 		        </p:panel>
 	
