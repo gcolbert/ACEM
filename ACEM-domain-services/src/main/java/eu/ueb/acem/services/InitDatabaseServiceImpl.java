@@ -81,8 +81,6 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		if (adminUser == null) {
 			adminUser = usersService.createTeacher("admin",  "admin", "admin");
 		}
-		adminUser.setName("admin");
-		adminUser.setPassword("admin");
 		adminUser.setAdministrator(true);
 		adminUser = usersService.updateTeacher(adminUser);
 
