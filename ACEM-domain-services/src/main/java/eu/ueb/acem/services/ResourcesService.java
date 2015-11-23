@@ -158,6 +158,17 @@ public interface ResourcesService extends Serializable {
 	Collection<ResourceCategory> retrieveCategoriesForResourceTypeAndPerson(String resourceType, Person person);
 
 	/**
+	 * Returns the collection of {@link ResourceCategory} objects that contain
+	 * {@link Resource}s visible to the given Person.
+	 * 
+	 * @param person
+	 *            A Person
+	 * @return The collection of matching ResourceCategory objects
+	 * @see eu.ueb.acem.dal.common.jaune.ResourceDAO#retrieveCategoriesForPerson(Person)
+	 */
+	Collection<ResourceCategory> retrieveCategoriesForPerson(Person person);
+
+	/**
 	 * Retrieves all existing ResourceCategory objects.
 	 * 
 	 * @return the collection of all existing resource categories

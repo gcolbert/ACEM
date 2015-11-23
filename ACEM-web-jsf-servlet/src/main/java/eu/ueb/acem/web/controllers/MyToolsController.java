@@ -282,7 +282,7 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	/**
 	 * Prepares the ResourceCategory tree to display the categories containing
-	 * Resources of the given ResourceViewBean.
+	 * Resources of the same class of the given ResourceViewBean.
 	 * 
 	 * If the current user is an administrator, this method prepares the
 	 * "categoriesTreeBean" property (instance of {@link EditableTreeBean}) so
@@ -496,6 +496,20 @@ public class MyToolsController extends AbstractContextAwareController implements
 
 	public List<ToolCategoryViewBean> getAllToolCategoryViewBeans() {
 		return allToolCategoryViewBeans;
+	}
+
+	public List<ToolCategoryViewBean> getToolCategoryViewBeansForCurrentUser() {
+		List<ToolCategoryViewBean> toolCategoriesForCurrentUser = new ArrayList<ToolCategoryViewBean>();
+		if (getCurrentUser().isAdministrator()) {
+			toolCategoriesForCurrentUser = getAllToolCategoryViewBeans();
+		}
+		else {
+			for (ResourceCategory resourceCategory : resourcesService.retrieveCategoriesForPerson(getCurrentUser())) {
+				toolCategoriesForCurrentUser.add(new ToolCategoryViewBean(resourceCategory));
+			}
+		}
+		Collections.sort(toolCategoriesForCurrentUser);
+		return toolCategoriesForCurrentUser;
 	}
 
 	public void loadAllToolCategoryViewBeans() {

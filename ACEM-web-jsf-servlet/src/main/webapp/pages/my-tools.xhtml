@@ -19,7 +19,7 @@
 
 	<!-- Control display of the layouts -->
 	<ui:param name="displayNorth" value="true" />
-	<ui:param name="displayWest" value="false" />
+	<ui:param name="displayWest" value="false" /><!-- THE GRID PRESENTATION MAKES THE WEST PANEL USELESS -->
 	<ui:param name="westPanelSize" value="220" />
 	<ui:param name="westPanelCollapsible" value="true"/>
 	<ui:param name="westPanelCollapsed" value="#{associateBean.selectedToolCategoryId!=null}" />
@@ -32,7 +32,7 @@
 	<ui:param name="southPanelCollapsed" value="false"/>
 
 	<ui:param name="pageTitle" value="#{associateBean.pageTitle}" />
-	<ui:param name="titleContent" value="#{msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.HEADER']}" />
+	<ui:param name="titleContent" value="#{associateBean.selectedToolCategoryViewBean == null ? msg['TOOL_CATEGORIES.HEADER'] : msg['MY_TOOLS.SELECTED_RESOURCE_CATEGORY.HEADER']}" />
 	<ui:param name="titleWest" value="#{msg['MY_TOOLS.TREE.HEADER']}" />
 	<ui:param name="titleEast" value="#{msg['TOOL_CATEGORIES.HEADER']}" />
 	<ui:param name="titleSouth" value="#{msg['MY_TOOLS.MY_FAVORITE_TOOL_CATEGORIES.HEADER']}" />
@@ -235,12 +235,13 @@
 
 	<ui:define name="content">
  		<p:outputPanel id="allServicesOutputPanel" rendered="#{associateBean.selectedToolCategoryViewBean == null}">
-		    <p:dataGrid value="#{associateBean.allToolCategoryViewBeans}" var="toolCategoryViewBean" 
+		    <p:dataGrid value="#{associateBean.toolCategoryViewBeansForCurrentUser}" var="toolCategoryViewBean" 
 		    	layout="grid" columns="3" rows="12" paginator="true" id="supportServices" styleClass="contentGrid"
 		        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		        rowsPerPageTemplate="6,12,18" paginatorPosition="bottom">
 
 		        <p:panel styleClass="panelInGrid">
+			        <h3>
 					<h:link id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
 						<f:param name="toolCategoryId"
 							value="#{toolCategoryViewBean.id}" />
@@ -253,7 +254,11 @@
 								value="#{toolCategoryViewBean.iconFileName}" />
 						</p:graphicImage>
 						<h:outputText value="#{toolCategoryViewBean.name}" />
+						<p:tooltip
+							value="#{toolCategoryViewBean.name}"
+							for="goToToolCategoryBtn" />
 					</h:link>
+					</h3>
 		        </p:panel>
 
 		    </p:dataGrid>

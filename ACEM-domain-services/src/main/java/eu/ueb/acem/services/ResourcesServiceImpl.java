@@ -185,6 +185,17 @@ public class ResourcesServiceImpl implements ResourcesService {
 	}
 
 	@Override
+	public Collection<ResourceCategory> retrieveCategoriesForPerson(Person person) {
+		Set<ResourceCategory> categories = new HashSet<ResourceCategory>();
+		categories.addAll(softwareDAO.retrieveCategoriesForPerson(person));
+		categories.addAll(documentationDAO.retrieveCategoriesForPerson(person));
+		categories.addAll(equipmentDAO.retrieveCategoriesForPerson(person));
+		categories.addAll(pedagogicalAndDocumentaryResourcesDAO.retrieveCategoriesForPerson(person));
+		categories.addAll(professionalTrainingDAO.retrieveCategoriesForPerson(person));
+		return categories;
+	}
+
+	@Override
 	public Resource createResource(ResourceCategory resourceCategory, Organisation ownerOrganisation, Organisation supportOrganisation,
 			String resourceType, String name, String iconFileName) {
 		Resource resource = null;
