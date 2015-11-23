@@ -205,7 +205,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		ResourceCategory creationDeSitesWeb = resourcesService.createResourceCategory("Création de sites web", "Logiciels de création de sites web.", null);
 		ResourceCategory evaluationCompetences = resourcesService.createResourceCategory("Evaluation des compétences", null, null);
 		ResourceCategory outilsAuteursELearning = resourcesService.createResourceCategory("Outils auteurs eLearning", "Un outil auteur vous permet de mettre en place des contenus pédagogiques et de créer des exercices interactifs de formation à distance.", "categorie-outils-auteur.jpg");
-		ResourceCategory gestionDocumentaireGED = resourcesService.createResourceCategory("Gestion documentaire (GED)", null, null);
+		ResourceCategory gestionDocumentaireGED = resourcesService.createResourceCategory("Gestion documentaire (GED)", "GED est un sigle signifiant Gestion électronique des documents. Il s'agit d'un système informatisé permettant de gérer les documents d'une organisation avec pour concept central la dématérialisation.", "categorie-gestion-documentaire-ged.jpg");
 		ResourceCategory reservationSalles = resourcesService.createResourceCategory("Réservation des salles", null, null);
 		ResourceCategory distributionFichiers = resourcesService.createResourceCategory("Distribution de fichiers", null, null);
 		ResourceCategory portFoliosEtudiants = resourcesService.createResourceCategory("Portfolios étudiants", null, null);
@@ -216,7 +216,7 @@ public class InitDatabaseServiceImpl implements InitDatabaseService, Serializabl
 		ResourceCategory creationEnquetes = resourcesService.createResourceCategory("Création d'enquêtes", null, null);
 		ResourceCategory visioconferencesWebconferences = resourcesService.createResourceCategory("Visioconférences/webconférences", "Un système d'audio et visioconférence vous permet de gérer des réunions à distance.", "categorie-visioconferences.jpg");
 		ResourceCategory antiplagiat = resourcesService.createResourceCategory("Anti-plagiat", null, null);
-		ResourceCategory geolocalisation = resourcesService.createResourceCategory("Géolocalisation", null, null);
+		ResourceCategory geolocalisation = resourcesService.createResourceCategory("Géolocalisation", null, "categorie-geolocalisation.png");
 		ResourceCategory reservationVehicules = resourcesService.createResourceCategory("Réservation de véhicules", null, null);
 		ResourceCategory ressourcesMultimedia = resourcesService.createResourceCategory("Ressources multimédia", "Les ressources multimédia vous permettent d'enrichir vos cours.", "categorie-ressources-multimedia.png");
 		ResourceCategory ressourcesDocumentairesElectroniques = resourcesService.createResourceCategory("Ressources documentaires électroniques", null, null);
