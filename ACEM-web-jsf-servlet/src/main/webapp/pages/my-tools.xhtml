@@ -241,10 +241,9 @@
 		        rowsPerPageTemplate="6,12,18" paginatorPosition="bottom">
 
 		        <p:panel styleClass="panelInGrid">
-			        <h3>
 					<h:link id="goToToolCategoryBtn" outcome="pretty:my-tools-param">
-						<f:param name="toolCategoryId"
-							value="#{toolCategoryViewBean.id}" />
+			        <h3><f:param name="toolCategoryId" value="#{toolCategoryViewBean.id}" />
+						<h:outputText value="#{toolCategoryViewBean.name}" />
 						<p:graphicImage id="toolCategoryIcon"
 							rendered="#{not empty toolCategoryViewBean.iconFileName}"
 							styleClass="imageInGrid" 
@@ -253,12 +252,11 @@
 							<f:param name="imageFileName"
 								value="#{toolCategoryViewBean.iconFileName}" />
 						</p:graphicImage>
-						<h:outputText value="#{toolCategoryViewBean.name}" />
 						<p:tooltip
 							value="#{toolCategoryViewBean.name}"
-							for="goToToolCategoryBtn" />
-					</h:link>
+							for="goToToolCategoryBtn" trackMouse="true" />
 					</h3>
+					</h:link>
 		        </p:panel>
 
 		    </p:dataGrid>
