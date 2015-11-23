@@ -38,18 +38,21 @@
 	        rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
 
 	        <p:panel styleClass="panelInGrid">
-				<p:graphicImage id="organisationIcon"
-					rendered="#{not empty organisationViewBean.iconFileName}"
-					styleClass="imageInGrid" 
-					alt="#{organisationViewBean.name}" cache="true" 
-					value="#{imagesController.image}">
-					<f:param name="imageFileName"
-						value="#{organisationViewBean.iconFileName}" />
-				</p:graphicImage>
 				<h:link id="goToServiceBtn" outcome="pretty:my-services-param">
-					<f:param name="serviceId"
-						value="#{organisationViewBean.id}" />
+		        <h3><f:param name="serviceId" value="#{organisationViewBean.id}" />
 					<h:outputText value="#{organisationViewBean.name}" />
+					<p:graphicImage id="organisationIcon"
+						rendered="#{not empty organisationViewBean.iconFileName}"
+						styleClass="imageInGrid" 
+						alt="#{organisationViewBean.name}" cache="true"
+						value="#{imagesController.image}">
+						<f:param name="imageFileName"
+							value="#{organisationViewBean.iconFileName}" />
+					</p:graphicImage>
+					<p:tooltip
+						value="#{organisationViewBean.name}"
+						for="goToServiceBtn" trackMouse="true" />
+				</h3>
 				</h:link>
 	        </p:panel>
 
