@@ -15,12 +15,6 @@
     <!-- Scan for auto-wiring classes in spring saml packages -->
     <context:component-scan base-package="org.springframework.security.saml"/>
 
-<!-- 
-    <http security="none" pattern="/favicon.ico"/>
-    <http security="none" pattern="/images/**"/>
-    <http security="none" pattern="/css/**"/>
-    <http security="none" pattern="/logout.jsp"/>
- -->
     <!-- Security for the administration UI -->
     <http pattern="/saml/web/**" use-expressions="false">
         <access-denied-handler error-page="/saml/web/metadata/login"/>
@@ -31,13 +25,6 @@
     </http>
 
     <!-- Secured pages with SAML as entry point -->
-    <!-- 
-    <http entry-point-ref="samlEntryPoint" use-expressions="false">
-        <intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
-        <custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
-        <custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
-    </http>
- 	-->
     <http entry-point-ref="samlEntryPoint"  use-expressions="true" auto-config="true">
 		<!-- For Spring Security 4.x, we need to disable csrf, otherwise AJAX requests get 403:-->
 		<csrf disabled="true"/>
