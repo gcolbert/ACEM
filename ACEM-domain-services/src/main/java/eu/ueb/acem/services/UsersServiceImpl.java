@@ -117,7 +117,7 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 		logger.info("entering getUser({})", login);
 		Person user = teacherDAO.retrieveByLogin(login, true);
 		// If the "admin" account gets deleted, we recreate it.
-		if (user==null && login.equals("admin")) {
+		if ((user==null) && login.equals("admin")) {
 			user = createTeacher("Administrator", "admin", "admin");
 			user.setAdministrator(true);
 			user = teacherDAO.update((Teacher)user);
@@ -129,6 +129,10 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 			user = createTeacher(login, login, "pass");
 			user.setLogin(login);
 			user.setLanguage("fr");
+			if (teacherDAO.count()==1) {
+				logger.info("User is the first User, we set him as Administrator");
+				user.setAdministrator(true);
+			}
 		}
 		else if (user == null) {
 			throw new UsernameNotFoundException("User not found");
