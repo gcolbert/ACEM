@@ -255,8 +255,11 @@
 						<h:graphicImage styleClass="imageInGrid"
 							url="../resources/images/my-tools.png"
 							rendered="#{empty toolCategoryViewBean.iconFileName}" />
-						<p:tooltip
+						<p:tooltip rendered="#{empty toolCategoryViewBean.description}"
 							value="#{toolCategoryViewBean.name}"
+							for="goToToolCategoryBtn" trackMouse="true" />
+						<p:tooltip rendered="#{not empty toolCategoryViewBean.description}"
+							value="#{toolCategoryViewBean.description}"
 							for="goToToolCategoryBtn" trackMouse="true" />
 					</h3>
 					</h:link>

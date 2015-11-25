@@ -54,8 +54,8 @@ html {
 /****************/
 /* CONTENT GRID */
 /****************/
-.contentGrid {
-
+.contentGrid .ui-datagrid-content {
+	min-height:511px; /* The last page of the p:dataGrid is not always full, so we set a minimum height */
 }
 .panelInGrid a {
 	text-decoration:none;
