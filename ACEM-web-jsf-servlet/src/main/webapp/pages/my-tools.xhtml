@@ -252,6 +252,9 @@
 							<f:param name="imageFileName"
 								value="#{toolCategoryViewBean.iconFileName}" />
 						</p:graphicImage>
+						<h:graphicImage styleClass="imageInGrid"
+							url="../resources/images/my-tools.png"
+							rendered="#{empty toolCategoryViewBean.iconFileName}" />
 						<p:tooltip
 							value="#{toolCategoryViewBean.name}"
 							for="goToToolCategoryBtn" trackMouse="true" />
