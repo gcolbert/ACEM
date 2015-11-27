@@ -116,26 +116,33 @@ public class UsersServiceImpl implements UsersService, EnvironmentAware {
 	public Person getUser(String login) throws UsernameNotFoundException {
 		logger.info("entering getUser({})", login);
 		Person user = teacherDAO.retrieveByLogin(login, true);
-		// If the "admin" account gets deleted, we recreate it.
-		if ((user==null) && login.equals("admin")) {
-			user = createTeacher("Administrator", "admin", "admin");
-			user.setAdministrator(true);
-			user = teacherDAO.update((Teacher)user);
-		}
-		// If the user is missing from the database but the authentication mode
-		// guarantees a legit authentication (e.g. CAS), then we want to
-		// automatically create a user account.
-		if ((user == null) && autoCreateUsers) {
-			user = createTeacher(login, login, "pass");
-			user.setLogin(login);
-			user.setLanguage("fr");
-			if (teacherDAO.count()==1) {
-				logger.info("User is the first User, we set him as Administrator");
+		if (user == null) {
+			// If the "admin" account doesn't exist yet, or has been deleted, we must recreate it.
+			if (login.equals("admin")) {
+				user = createTeacher("Administrator", "admin", "admin");
 				user.setAdministrator(true);
 			}
-		}
-		else if (user == null) {
-			throw new UsernameNotFoundException("User not found");
+			else {
+				// Else if the user (different from "admin") is missing from the
+				// database, but the authentication mode guarantees a legit
+				// authentication (e.g. CAS or SAML), then we want to automatically
+				// create a user account.
+				if (autoCreateUsers) {
+					user = createTeacher(login, login, "pass");
+					user.setLogin(login);
+					user.setLanguage("fr");
+				}
+				if (teacherDAO.count() <= 1) {
+					logger.info("User is the first User, we set him as Administrator");
+					user.setAdministrator(true);
+				}
+			}
+			if (user == null) {
+				throw new UsernameNotFoundException("User not found");
+			}
+			else {
+				user = teacherDAO.update((Teacher)user);
+			}
 		}
 		return user;
 	}

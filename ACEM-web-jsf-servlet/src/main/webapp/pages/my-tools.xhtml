@@ -299,6 +299,8 @@
 
 				<p class="categoryDescription"><h:outputText value="#{associateBean.selectedToolCategoryViewBean.description}" escape="false" /></p>
 
+<!-- TODO : this is the new future layout of resources, it should replace the dataTable.
+
 			    <p:carousel value="#{associateBean.selectedToolCategoryViewBean.resourceViewBeans}" headerText="Ressources" var="toolViewBean" itemStyleClass="" numVisible="3">
 			        <p:panelGrid>
 			            <p:row>
@@ -360,6 +362,7 @@
 			                Au total, il y a #{fn:length(associateBean.selectedToolCategoryViewBean.resourceViewBeans)} ressources disponibles.
 			        </f:facet>
 			    </p:carousel>
+  -->
  
 				<p:dataTable id="toolsDataTable" var="toolViewBean" dynamic="true" styleClass="resourcesDataTable"
 					value="#{associateBean.selectedToolCategoryViewBean.resourceViewBeans}"

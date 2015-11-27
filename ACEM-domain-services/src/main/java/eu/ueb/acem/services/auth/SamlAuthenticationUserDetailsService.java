@@ -137,7 +137,6 @@ public class SamlAuthenticationUserDetailsService implements SAMLUserDetailsServ
 			user.setLogin(mapOfAttributesFriendlyNamesAndValues.get("eduPersonPrincipalName"));
 			user.setEmail(mapOfAttributesFriendlyNamesAndValues.get("mail"));
 			user.setName(mapOfAttributesFriendlyNamesAndValues.get("displayName"));
-			user.setAdministrator(true);
 			Community communityForWhichTheUserWorks = organisationsService.retrieveCommunityBySupannEtablissement(mapOfAttributesFriendlyNamesAndValues.get("supannEtablissement"));  
 			if (communityForWhichTheUserWorks != null) {
 				usersService.associateUserWorkingForOrganisation(user.getId(), communityForWhichTheUserWorks.getId());

@@ -118,17 +118,18 @@
     <b:bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
         <b:constructor-arg>
             <b:bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                <b:property name="includeDiscoveryExtension" value="true"/>
+            	<b:property name="entityId" value="http://acem.u-bretagneloire.fr:80/ACEM"/>
                 <b:property name="entityBaseURL" value="http://acem.u-bretagneloire.fr:80/ACEM"/>
 		        <!-- POSSIBLY IMPORTANT, OTHERWISE THE USER MIGHT BE REFERENCED BY THE NameID VALUE
         		     (example: _246558c0d7c514447292d750df577b6b) AND NOT THE USERDETAILS "LOGIN" VALUE
         		     Note : I haven't tested to remove this property and see if it still works. -->
                 <b:property name="nameID" value="PERSISTENT" />
+                <b:property name="includeDiscoveryExtension" value="true"/>
                 <b:property name="extendedMetadata">
                     <b:bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
                         <b:property name="idpDiscoveryEnabled" value="true"/>
-                        <b:property name="idpDiscoveryURL" value="https://discovery.renater.fr/test"/>
-                        <b:property name="idpDiscoveryResponseURL" value="http://acem.u-bretagneloire.fr/ACEM/saml/login/alias/defaultAlias?disco=true"/>
+                        <b:property name="idpDiscoveryURL" value="http://wayf-shib.ueb.eu/fede-renater/WAYF"/>
+                        <b:property name="idpDiscoveryResponseURL" value="http://acem.u-bretagneloire.fr/ACEM/saml/login/alias/defaultAlias?disco=true&amp;return=http%3A%2F%2acem.u-bretagneloire.fr/ACEM/"/>
                     </b:bean>
                 </b:property>
             </b:bean>
@@ -171,6 +172,12 @@
 						<!-- Default extended metadata for entities not specified in the map -->
 						<b:bean
 							class="org.springframework.security.saml.metadata.ExtendedMetadata">
+							<b:property name="idpDiscoveryEnabled" value="true"/>
+							<b:property name="idpDiscoveryURL" value="https://wayf-test.ueb.eu/fede-renater-ueb-test/WAYF?return=http%3A%2F%2Facem.u-bretagneloire.fr%2FACEM%2Fsaml%2Flogin"/>
+							<!-- 
+							<b:property name="idpDiscoveryURL" value="https://discovery.renater.fr/test?entityId=http%3A%2F%2Facem.u-bretagneloire.fr%3A80%2FACEM%2Fsaml%2Fmetadata&amp;return=http%3A%2F%2Facem.u-bretagneloire.fr%2FACEM%2Fsaml%2Flogin"/>
+							-->
+	                        <b:property name="idpDiscoveryResponseURL" value="http://acem.u-bretagneloire.fr/ACEM/saml/login/alias/defaultAlias?disco=true"/>
 						</b:bean>
 					</b:constructor-arg>
 					<b:constructor-arg>
